@@ -1,0 +1,175 @@
+.login-form-box{
+    background-color: #13008a;
+    height: 100vh;
+    color: white;
+}
+.login-des-box{
+    background-color: #ffd13b;
+}
+.logo{
+    text-align: center;
+    margin-top: 10%;
+}
+.logo a img{
+    width: 100px;
+}
+.login-form-box p{
+    text-align: center;
+    font-size: 25px;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+}
+
+
+
+
+
+
+
+
+
+.authArea {
+    position: relative;
+    height: auto;
+    line-height: 50px;
+    width: 45%;
+    margin: 50px auto;
+    border-radius: 10px;
+    padding: 40px 0px;
+    background-color: #1c08748c;
+    box-shadow: 4px 4px #1e0491;
+}
+.authForm {
+    position: relative;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.authInput {
+    position: absolute;
+    width: 100%;
+    outline: none;
+    font-size: 20px;
+    padding: 0 30px;
+    line-height: 45px;
+    border-radius: 10px;
+    border: 2px solid #f0ffff;
+    background: transparent;
+    z-index: 1111;
+    color: #D2FF00;
+    margin-bottom: 30px;
+}
+.authlabelline {
+    position: absolute;
+    font-size: 15px;
+    color: #f0ffff;
+    padding: 0 25px;
+    background-color: #1c08748c;
+    transition: 0.2s ease;
+}
+.authInput:focus, .authInput:valid {
+    color: #fff;
+    border: 4px solid #fff;
+ }
+ .authInput:focus + .authlabelline,
+ .authInput:valid + .authlabelline {
+   color: #fff;
+   height: 30px;
+   line-height: 30px;
+   transform:  translate(-15px, -16px) scale(0.88);
+   z-index: 1111;
+   margin: 0 24px;
+   background-color: #1c0874;
+ }
+.authButton {
+    background-color: #ffd350;
+    width: 150px;
+    height: 45px;
+    border-radius: 35px;
+    border: 2px solid #ffd350;
+    color: white;
+    font-size: 18px;
+    line-height: 20px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.authButton:hover {
+    background-color: #ffd35000;
+    transition: all .8s ease;
+    border: 2px solid #fff;
+}
+.authIconDiv {
+    margin: 30px auto 0 auto;
+    position: relative;
+    width: 100%;
+    padding-left: 8px;
+}
+.authIcon {
+    font-size: 30px;
+    padding: 0px 20px;
+    color: white;
+}
+.authIcon:hover {
+    color: #ffd350;
+    transition: all .8s ease;
+}
+.authTextArea {
+    margin-top: 280px;
+    text-align: center;
+}
+.authTextAreaTitle{
+    color: white;
+    font-size: 45px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+.authTextAreaDescription{
+    color: white;
+    font-size: 25px;
+    width: 70%;
+    position: relative;
+    margin: 30px auto;
+}
+.authSignUpButton {
+    background-color: #1d007b;
+    width: 250px;
+    height: 65px;
+    border-radius: 35px;
+    border: 2px solid #ffd350;
+    color: white;
+    font-size: 25px;
+    line-height: 65px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+.authSignUpButton:hover {
+    background-color: #ffd35000;
+    transition: all .8s ease;
+    border: 2px solid #fff;
+    color: #fff;
+}
+.authTextForget {
+    font-size: 25px;
+    margin-top: 30px;
+    color: white;
+    display: block;
+    text-decoration: none;
+}
+
+
+@media screen and (max-width: 1080px){
+    .login-form-box {
+        height: auto;
+    }
+    .authTextArea {
+        margin-top: 20px;
+    }
+}
+@media screen and (max-width: 768px){
+    .authArea{
+        width: 90%;
+    }
+    
+}
