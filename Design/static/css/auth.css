@@ -8,7 +8,7 @@
 }
 .logo{
     text-align: center;
-    margin-top: 10%;
+    margin-top: 8%;
 }
 .logo a img{
     width: 100px;
@@ -148,7 +148,12 @@
     display: block;
     text-decoration: none;
 }
-
+.authSelectInput {
+    height: 50px;
+}
+.authSelectInput option {
+    background-color: #1d007b;
+}
 
 
 
