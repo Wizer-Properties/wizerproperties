@@ -1,0 +1,30 @@
+version: '3'
+services:
+  web:
+    build:
+      context: .
+    command: poetry run python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    environment:
+      - DJANGO_SETTINGS_MODULE=wizerproperties.settings
+      - PYTHONUNBUFFERED=1
+
+  db:
+    image: postgres:15.4  # Use an appropriate PostgreSQL version
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5492:5432"
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB_HOST=${POSTGRES_HOST}
+
+volumes:
+  postgres_data:
