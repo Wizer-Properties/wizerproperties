@@ -6,7 +6,7 @@ from core.models import TimestampedModel
 
 class ConfirmationCodeManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().filter(is_active=True, is_used=False)
+        return super().get_queryset().filter(is_valid=False)
     
 
 class ConfirmationCode(TimestampedModel):
@@ -18,8 +18,7 @@ class ConfirmationCode(TimestampedModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     code = models.CharField(max_length=100)
     code_type = models.CharField(max_length=50)
-    is_active = models.BooleanField(default=True)
-    is_used = models.BooleanField(default=False)
+    is_valid = models.BooleanField(default=True)
     
     objects = ConfirmationCodeManager()
     

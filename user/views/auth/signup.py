@@ -6,6 +6,8 @@ from django.contrib import messages
 
 from user.forms.auth import SignupForm
 from user.models.auth import ConfirmationCode
+from utils.general_func import send_email
+from django.conf import settings
 
 
 class SignupView(View):
@@ -27,9 +29,19 @@ class SignupView(View):
                 # login(request, user)
                 
                 # Create account verification code and send email for verification
-                ConfirmationCode.objects.create(
+                code = ConfirmationCode.objects.create(
                     user=user, code_type="account_verification",
                     code=secrets.secrets.token_hex(3))
+                
+                send_email(
+                    subject="Verify Your Account",
+                    to_email=user.email,
+                    html_content = "templates/email/account_verification.html",
+                    context={
+                        "site_host": settings.SITE_HOST,
+                        "token": code.code
+                    }
+                )
                 
                 messages.success(request, 'You have successfully registered.')
             except:
