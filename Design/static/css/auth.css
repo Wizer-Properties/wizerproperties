@@ -154,20 +154,62 @@
 .authSelectInput option {
     background-color: #1d007b;
 }
+.profileCompanyDeatils {
+    height: 150px;
+}
+.completeProfileButton {
+    width: 75%;
+    margin-top: 100px;
+}
+.completeProfileLogo {
+    margin-top: 4%;
+}
+.fileName{
+    position: absolute;
+    width: 100%;
+    transform: translateY(-50%);
+    padding: 0 20px;
+    color: var(--text-color);
+    z-index: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: #1d007b;
+    margin-top: 27px;
+    border: 2px solid #f0ffff;
+    border-radius: 10px;
+    font-size: 14px !important;
+    text-align: left !important;
+    line-height: 45px;
+}
+.authFile {
+    opacity: 0;
+}
+.fileName[add-file="true"]{
+    color: var(--tittle-color);
+}
+.authArea.completeProfileArea {
+    line-height: 40px;
+}
 
 
-
-@media screen and (max-width: 1080px){
+@media screen and (max-width: 1120px){
     .login-form-box {
         height: auto;
     }
     .authTextArea {
         margin-top: 20px;
     }
+    .completeProfileButton {
+        font-size: 14px;
+        width: 100%;
+    }
 }
 @media screen and (max-width: 768px){
     .authArea{
-        width: 90%;
+        width: 95%;
     }
     
 }

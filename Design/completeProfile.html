@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- for all -->
+    <link rel="stylesheet" href="static/css/libraries/bootstrap-icons.css">
+    <link rel="stylesheet" href="static/css/libraries/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/libraries/fontawesome-all.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+
+
+    <!-- for authentication page only -->
+    <link rel="stylesheet" href="static/css/auth.css">
+    
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row how-it-work-row">
+            <div class="col-lg-8 order-lg-2 login-form-box">
+                <div class="logo completeProfileLogo">
+                    <a href="/">
+                        <img src="static/media/logo.png" alt="">
+                    </a>
+                </div>
+
+                <!--- Login Form Start --->
+
+                <div class="authArea completeProfileArea">
+                    <p>Complete Your Profile</p>
+                    <div class="authForm">
+                        <input type="file" class="authInput authFile" required>
+                        <div class="fileName"> Select File</div><br><br>
+                        <input type="text" class="authInput" required>
+                        <div class="authlabelline">Company Name</div> <br><br>
+                        <input type="text" class="authInput" required>
+                        <div class="authlabelline">Phone Number</div><br><br>
+                        <input type="number" required class="authInput">
+                        <div class="authlabelline">Company Address</div> <br><br>
+                        <textarea type="text" id="emailInput" required class="authInput profileCompanyDeatils"></textarea>
+                        <div class="authlabelline">Company Details</div> <br><br>
+                        <button type="button" class="authButton completeProfileButton">Complete Profile</button>
+                    </div>
+                </div>    
+
+                <!--- Login Form End --->
+
+            </div>
+            <div class="col-lg-4 order-lg-1 login-des-box">
+                <div class="authTextArea">
+                    <p class="authTextAreaTitle">Complete Your Account</p>
+                    <p class="authTextAreaDescription">Ensure you fill out the form with correct information.</p>
+                    <a type="button" class="authSignUpButton">Logout</a>
+                    <a class="authTextForget" href="#">Forget Password ?</a>
+                </div>    
+            </div>
+        </div>
+    </div>                
+
+    <script src="static/js/libraries/jquery.min.js"></script>
+    <script src="static/js/libraries/fontawesome-all.min.js"></script>
+
+    <script src="static/js/main.js"></script>
+    <script src="static/js/utilities/input-fields.js"></script>
+
+    <script type="text/javascript">
+        console.log("Hello world")
+        $('.authFile').change(function(){
+
+        $(this).parents('[respons="error"]').attr('respons','');
+
+        console.log($(this).parents('[respons="error"]'))
+        try{
+            $('.fileName').text($(this)[0].files[0].name);
+            $('.fileName').attr('add-file','true');
+            
+        }catch{
+            $('.fileName').text('Select input');
+            $('.fileName').attr('add-file','false');
+        }
+    });
+    </script>
+
+</body>
+</html>
