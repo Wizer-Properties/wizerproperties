@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block extend_head %}
+<title>Register</title>
+<link rel="stylesheet" href="{% static '/css/auth.css' %}" />
+{% endblock extend_head %} 
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row how-it-work-row">
+    <div class="col-lg-8 login-form-box">
+      <div class="logo">
+        <a href="/">
+          <img src="static/media/logo.png" alt="" />
+        </a>
+      </div>
+
+      <!--- Login Form Start --->
+
+      <div class="authArea">
+        <p>Create a New Account</p>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <div class="authForm">
+            <form method="post">
+                {% csrf_token %}
+
+                {% render_field signup_form.user_type id="emailInput" class="authInput authSelectInput" %}
+
+                <div class="authlabelline">User Type</div>
+                <br /><br />
+
+
+                {% render_field signup_form.email id="emailInput" class="authInput" %}
+                <div class="authlabelline">Email</div>
+
+                <br /><br />
+
+                {% if signup_form.email.errors %}
+                    <ul class="errorlist">
+                        {% for error in signup_form.email.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                {% render_field signup_form.password1 class="authInput" %}
+                <div class="authlabelline">Password</div>
+                <br /><br />
+
+                {% if signup_form.password1.errors %}
+                    <ul class="errorlist">
+                        {% for error in signup_form.password1.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+
+                {% render_field signup_form.password2 class="authInput" %}
+                <div class="authlabelline">Confirm Password</div>
+                <br /><br />
+                
+                {% if signup_form.password2.errors %}
+                    <ul class="errorlist">
+                        {% for error in signup_form.password2.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <button type="submit" class="authButton">Signup</button>
+            </form>
+        </div>
+        
+        <div class="authIconDiv">
+          <a href="#"><i class="fa-brands fa-facebook authIcon"></i></a>
+          <a href="#"><i class="fa-brands fa-youtube authIcon"></i></a>
+          <a href="#"><i class="fa-brands fa-instagram authIcon"></i></a>
+        </div>
+      </div>
+
+      <!--- Login Form End --->
+    </div>
+    <div class="col-lg-4 login-des-box">
+      <div class="authTextArea">
+        <p class="authTextAreaTitle">Already Have Account ?</p>
+        <p class="authTextAreaDescription">
+          Login and enjoy a great amount of new features
+        </p>
+        <a type="button" class="authSignUpButton">Login</a>
+        <a class="authTextForget" href="#">Forget Password ?</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

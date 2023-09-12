@@ -1,0 +1,32 @@
+{% load static %} {% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- for all -->
+    <link rel="stylesheet" href="{% static 'css/libraries/bootstrap-icons.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/libraries/bootstrap.min.css' %}" />
+    <link
+      rel="stylesheet"
+      href="{% static 'css/libraries/fontawesome-all.min.css' %}"
+    />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.00" />
+
+    {% block extend_head %}{% endblock extend_head %}
+  </head>
+
+  <body>
+    {% block content %}{% endblock %}
+  </body>
+
+  <script src="{% static 'js/libraries/jquery.min.js' %}"></script>
+  <script src="{% static 'js/libraries/fontawesome-all.min.js' %}"></script>
+
+  <script src="{% static 'js/main.js' %}?v=1.00"></script>
+  <script src="{% static 'js/utilities/input-fields.js' %}?v=1.00"></script>
+
+  {% block extend_script %}{% endblock extend_script %}
+</html>

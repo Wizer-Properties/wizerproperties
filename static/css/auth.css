@@ -1,0 +1,252 @@
+.login-form-box{
+    background-color: #13008a;
+    min-height: 100vh;
+    color: white;
+}
+.login-des-box{
+    background-color: #ffd13b;
+}
+.logo{
+    text-align: center;
+    margin-top: 6%;
+}
+.logo a img{
+    width: 100px;
+}
+.login-form-box p{
+    text-align: center;
+    font-size: 25px;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+}
+.authArea {
+    position: relative;
+    height: auto;
+    line-height: 50px;
+    width: 45%;
+    margin: 50px auto;
+    border-radius: 10px;
+    padding: 40px 0px;
+    background-color: #1c08748c;
+    box-shadow: 4px 4px #1e0491;
+}
+.authForm {
+    position: relative;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.authInput {
+    position: absolute;
+    width: 100%;
+    outline: none;
+    font-size: 20px;
+    padding: 0 30px;
+    line-height: 45px;
+    border-radius: 10px;
+    border: 2px solid #f0ffff;
+    background: transparent;
+    z-index: 1111;
+    color: #D2FF00;
+}
+.authlabelline {
+    position: absolute;
+    font-size: 15px;
+    color: #f0ffff;
+    padding: 0 25px;
+    background-color: #1c08748c;
+    transition: 0.2s ease;
+}
+.authInput:focus, .authInput:invalid, .authInput:not(:placeholder-shown) {
+    color: #fff;
+    border: 4px solid #fff;
+ }
+ .authInput:focus + .authlabelline,
+ .authInput:not(:placeholder-shown) + .authlabelline {
+   color: #fff;
+   height: 30px;
+   line-height: 30px;
+   transform:  translate(-15px, -16px) scale(0.88);
+   z-index: 1111;
+   margin: 0 24px;
+   background-color: #1c0874;
+ }
+.authInput::placeholder {
+   opacity: 0; 
+}
+.authButton {
+    background-color: #ffd350;
+    width: 150px;
+    height: 45px;
+    border-radius: 35px;
+    border: 2px solid #ffd350;
+    color: white;
+    font-size: 18px;
+    line-height: 20px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.authButton:hover {
+    background-color: #ffd35000;
+    transition: all .8s ease;
+    border: 2px solid #fff;
+}
+.authIconDiv {
+    margin: 30px auto 0 auto;
+    position: relative;
+    width: 100%;
+    padding-left: 8px;
+}
+.authIcon {
+    font-size: 30px;
+    padding: 0px 20px;
+    color: white;
+}
+.authIcon:hover {
+    color: #ffd350;
+    transition: all .8s ease;
+}
+.authTextArea {
+    margin-top: 280px;
+    text-align: center;
+}
+.authTextAreaTitle{
+    color: white;
+    font-size: 45px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+.authTextAreaDescription{
+    color: white;
+    font-size: 25px;
+    width: 70%;
+    position: relative;
+    margin: 30px auto;
+}
+.authSignUpButton {
+    background-color: #1d007b;
+    width: 250px;
+    height: 65px;
+    border-radius: 35px;
+    border: 2px solid #ffd350;
+    color: white;
+    font-size: 25px;
+    line-height: 65px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+.authSignUpButton:hover {
+    background-color: #ffd35000;
+    transition: all .8s ease;
+    border: 2px solid #fff;
+    color: #fff;
+}
+.authTextForget {
+    font-size: 25px;
+    margin-top: 30px;
+    color: white;
+    display: block;
+    text-decoration: none;
+}
+.authSelectInput {
+    height: 50px;
+}
+.authSelectInput option {
+    background-color: #1d007b;
+}
+.profileCompanyDeatils {
+    height: 150px;
+}
+.completeProfileButton {
+    width: 60%;
+    margin-top: 110px;
+}
+.completeProfileLogo {
+    margin-top: 4%;
+}
+.fileName{
+    position: absolute;
+    width: 100%;
+    transform: translateY(-50%);
+    padding: 0 20px;
+    color: var(--text-color);
+    z-index: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: #1d007b;
+    margin-top: 27px;
+    border: 2px solid #f0ffff;
+    border-radius: 10px;
+    font-size: 14px !important;
+    text-align: left !important;
+    line-height: 45px;
+}
+.authFile {
+    opacity: 0;
+}
+.fileName[add-file="true"]{
+    color: var(--tittle-color);
+}
+.authArea.completeProfileArea {
+    line-height: 40px;
+}
+.authFormDiv {
+    display: flow-root;
+    list-style: none;
+    margin-bottom: 75px;
+}
+.authForm span {
+    display: block;
+    line-height: 30px;
+    margin-bottom: 20px;
+    padding-left: 20px;
+    border-radius: 10px;
+    font-size: 15px;
+    letter-spacing: 1px;
+}
+.authErrorMessage {
+    background-color: #e56767d4;
+}
+.authSuccessMessage {
+    background-color: #14b714e8;
+}
+.authcompleteProfileLabe {
+    padding: 7px 25px;
+}
+
+
+
+
+
+
+@media screen and (max-width: 1400px){
+    .completeProfileButton {
+        font-size: 14px;
+        width: 80%;
+    }
+}
+@media screen and (max-width: 1120px){
+    .login-form-box {
+        height: auto;
+    }
+    .authTextArea {
+        margin-top: 20px;
+    }
+    .completeProfileButton {
+        width: 70%;
+    }
+}
+@media screen and (max-width: 620px){
+    .authArea{
+        width: 95%;
+    }
+    .completeProfileButton {
+        width: 80%;
+    }
+    
+}

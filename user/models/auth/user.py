@@ -1,9 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.postgres.fields import CIEmailField
 
 from core.models import TimestampedModel
-
-
+    
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
@@ -40,7 +40,6 @@ class UserManager(BaseUserManager):
 
     def get_by_natural_key(self, email):
         # for user id(email) case insensitive
-        
         case_insensitive_username_field = '{}__iexact'.format(self.model.USERNAME_FIELD)
         return self.get(**{case_insensitive_username_field: email})	
 
@@ -56,21 +55,17 @@ class User(TimestampedModel, AbstractUser):
     )
     
     username = models.CharField(max_length=50)
-    email =  models.EmailField(db_collation="ci_ai", unique=True)
+    email = CIEmailField(unique=True)
     user_type = models.CharField(max_length=50, choices=USER_TYPE)
     email_verification_status = models.BooleanField(default=False)
     objects = UserManager()
     
     def __str__(self):
-        return self.get_username()
-        
-    def get_username(self):
-        if self.username:
-            return self.username
-        return self.email.split('@')[0]
-	
+        return self.username if self.username else self.email
+    
+    def save(self, *args, **kwargs):
+        if not self.id:
+            if not self.username:
+                self.username = self.email.split('@')[0]
+        super().save(*args, **kwargs)
 
-
-	# def upload_to(self, filename):
-	# 	now_time = datetime.datetime.now()
-	# 	return 'user_profile_pic/'+str(now_time.strftime("%Y-%m-%d"))+"/"+filename

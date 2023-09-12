@@ -1,3 +1,4 @@
 from django.contrib import admin
+from user.models.auth import User, ConfirmationCode
 
-# Register your models here.
+admin.site.register([User, ConfirmationCode])
