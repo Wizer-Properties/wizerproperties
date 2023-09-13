@@ -6,7 +6,7 @@ from core.models import TimestampedModel
 
 class ConfirmationCodeManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().filter(is_valid=False)
+        return super().get_queryset().filter(is_valid=True)
     
 
 class ConfirmationCode(TimestampedModel):
