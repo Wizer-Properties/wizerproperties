@@ -30,19 +30,25 @@
         {% endif %}
 
         <div class="authForm">
+            <div>
+                <span class="authErrorMessage">Overall Error Message</span>
+                <span class="authSuccessMessage">Overall Success Message</span>
+            </div>
             <form method="post">
                 {% csrf_token %}
 
-                {% render_field signup_form.user_type id="emailInput" class="authInput authSelectInput" %}
+                <div class="authFormDiv">
+                    <span class="authErrorMessage">Error Message</span>
+                    {% render_field signup_form.user_type id="emailInput" class="authInput authSelectInput" %}
+                    <div class="authlabelline">User Type</div>
+                </div> 
 
-                <div class="authlabelline">User Type</div>
-                <br /><br />
 
-
-                {% render_field signup_form.email id="emailInput" class="authInput" %}
-                <div class="authlabelline">Email</div>
-
-                <br /><br />
+                <div class="authFormDiv">
+                    <span class="authErrorMessage">Error Message</span>
+                    {% render_field signup_form.email id="emailInput" class="authInput" placeholder="Email" %}
+                    <div class="authlabelline">Email</div>
+                </div>    
 
                 {% if signup_form.email.errors %}
                     <ul class="errorlist">
@@ -52,9 +58,11 @@
                     </ul>
                 {% endif %}
 
-                {% render_field signup_form.password1 class="authInput" %}
-                <div class="authlabelline">Password</div>
-                <br /><br />
+                <div class="authFormDiv">
+                    <span class="authErrorMessage">Error Message</span>
+                    {% render_field signup_form.password1 class="authInput" placeholder="Password" %}
+                    <div class="authlabelline">Password</div>
+                </div>
 
                 {% if signup_form.password1.errors %}
                     <ul class="errorlist">
@@ -65,9 +73,11 @@
                 {% endif %}
 
 
-                {% render_field signup_form.password2 class="authInput" %}
-                <div class="authlabelline">Confirm Password</div>
-                <br /><br />
+                <div class="authFormDiv">
+                    <span class="authErrorMessage">Error Message</span>
+                    {% render_field signup_form.password2 class="authInput" placeholder="Confirm Password" %}
+                    <div class="authlabelline">Confirm Password</div>
+                </div>
                 
                 {% if signup_form.password2.errors %}
                     <ul class="errorlist">
