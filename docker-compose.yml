@@ -15,7 +15,9 @@ services:
       - PYTHONUNBUFFERED=1
 
   db:
-    image: postgres:15.4  # Use an appropriate PostgreSQL version
+    build:
+      context: .
+      dockerfile: pg-Dockerfile  # Use an appropriate PostgreSQL version
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block extend_head %}
+<title>Login</title>
+<link rel="stylesheet" href="{% static '/css/auth.css' %}" />
+{% endblock extend_head %} 
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row how-it-work-row">
+        <div class="col-lg-8 login-form-box">
+            <div class="logo">
+                <a href="/">
+                    <img src="static/media/logo.png" alt="">
+                </a>
+            </div>
+
+            <!--- Login Form Start --->
+
+            <div class="authArea">
+                <p>Login to Your Account</p>
+                <div class="authForm">
+                    <div>
+                        <span class="authSuccessMessage"></span>
+                        <span class="authErrorMessage"></span>
+                    </div>
+                    <div class="authFormDiv">   
+                        <!-- <span class="authErrorMessage">Message</span> -->
+                        <input type="text" id="email" class="authInput" placeholder="Email" required>
+                        <div class="authlabelline">Email</div>
+                    </div>
+                    <div class="authFormDiv">    
+                        <!-- <span class="authErrorMessage">Message</span>  -->   
+                        <input type="password" id="password" required class="authInput" placeholder="Password">
+                        <div class="authlabelline">Password</div>
+                    </div>
+                    <button type="button" class="authButton">Login</button>
+                </div>
+                <div class="authIconDiv">
+                    <a href="#"><i class="fa-brands fa-facebook authIcon"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube authIcon"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram authIcon"></i></a>
+                </div>
+            </div>    
+
+            <!--- Login Form End --->
+
+        </div>
+        <div class="col-lg-4 login-des-box">
+            <div class="authTextArea">
+                <p class="authTextAreaTitle">New Here ?</p>
+                <p class="authTextAreaDescription">Sing up and enjoy a great amount of new features</p>
+                <a type="button" class="authSignUpButton" href="{% url 'signup' %}">Sign Up</a>
+                <a class="authTextForget" href="#">Forget Password ?</a>
+            </div>    
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extend_script %}
+<script>
+    const login_url = "{% url 'login' %}"
+</script>
+<script src="{% static 'js/auth/login.js' %}?v=1.00"></script>
+{% endblock extend_script %}

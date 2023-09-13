@@ -28,5 +28,9 @@
   <script src="{% static 'js/main.js' %}?v=1.00"></script>
   <script src="{% static 'js/utilities/input-fields.js' %}?v=1.00"></script>
 
+  <script>
+    const csrfToken = "{{ csrf_token }}"
+  </script>
+
   {% block extend_script %}{% endblock extend_script %}
 </html>
