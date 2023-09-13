@@ -5,6 +5,13 @@
 {% block extend_head %}
 <title>Login</title>
 <link rel="stylesheet" href="{% static '/css/auth.css' %}" />
+<style>
+    #loginButtonText {
+        margin: 0;
+        padding: 0;
+        font-size: inherit;
+    }
+</style>
 {% endblock extend_head %} 
 
 {% block content %}
@@ -36,7 +43,12 @@
                         <input type="password" id="password" required class="authInput" placeholder="Password">
                         <div class="authlabelline">Password</div>
                     </div>
-                    <button type="button" class="authButton">Login</button>
+                    <button type="button" class="authButton">
+                        <span id="loginButtonText">Login</span>
+                        <div id="loadingSpinner" class="spinner-border" role="status" style="display: none;">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </button>
                 </div>
                 <div class="authIconDiv">
                     <a href="#"><i class="fa-brands fa-facebook authIcon"></i></a>
@@ -62,7 +74,7 @@
 
 {% block extend_script %}
 <script>
-    const login_url = "{% url 'login' %}"
+    var login_url = "{% url 'login' %}"
 </script>
-<script src="{% static 'js/auth/login.js' %}?v=1.00"></script>
+<script src="{% static 'js/auth/login.js' %}?v=1.01"></script>
 {% endblock extend_script %}
