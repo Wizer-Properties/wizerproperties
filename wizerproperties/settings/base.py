@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     
     # Third parties libraries
     'widget_tweaks',
+    'phonenumber_field',
     
     # Custom apps
     'core', 
