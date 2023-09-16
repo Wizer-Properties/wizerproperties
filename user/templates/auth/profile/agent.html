@@ -1,0 +1,41 @@
+{% extends "auth/profile.html" %}
+{% load static %}
+
+{% block profile %}
+
+<!--- Complete Profile Form Start --->
+<div class="authForm">
+    <div>
+        <!-- <span class="authSuccessMessage">Success Message</span> -->
+    </div>
+    <div class="authFormDiv">
+        <!-- <span class="authErrorMessage">Message</span> -->
+        <input type="file" class="authInput authFile" required>
+        <div class="fileName"> Company Logo</div>
+    </div>
+    <div class="authFormDiv">
+        <!-- <span class="authErrorMessage">Message</span> -->
+        <input type="text" class="authInput" required placeholder="Company Name">
+        <div class="authlabelline authcompleteProfileLabe">Company Name</div>
+    </div>
+    <div class="authFormDiv">
+        <!-- <span class="authErrorMessage">Message</span> -->
+        <input type="number" class="authInput" required placeholder="Phone Number">
+        <div class="authlabelline authcompleteProfileLabe">Phone Number</div>
+    </div>
+    <div class="authFormDiv">
+        <!-- <span class="authErrorMessage">Message</span> -->
+        <input type="text" required class="authInput" placeholder="Company Address">
+        <div class="authlabelline authcompleteProfileLabe">Company Address</div>
+    </div>
+    <div class="authFormDiv">
+        <!-- <span class="authErrorMessage">Message</span> -->
+        <textarea type="text" id="emailInput" required class="authInput profileCompanyDeatils"
+            placeholder="Company Details"></textarea>
+        <div class="authlabelline authcompleteProfileLabe">Company Details</div>
+    </div>
+    <button type="button" class="authButton completeProfileButton">Complete Profile</button>
+</div>
+<!--- Complete Profile Form End --->
+
+{% endblock %}

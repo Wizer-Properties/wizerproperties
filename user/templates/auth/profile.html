@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block extend_head %}
+<title>Complete profile</title>
+<link rel="stylesheet" href="{% static '/css/auth.css' %}" />
+{% endblock extend_head %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row how-it-work-row">
+        <div class="col-lg-8 order-lg-2 login-form-box">
+            <div class="logo completeProfileLogo">
+                <a href="/">
+                    <img src="{% static 'media/logo.png' %}" alt="logo">
+                </a>
+            </div>
+
+            <div class="authArea completeProfileArea">
+                <p>Complete Your Profile</p>
+                {% block profile %}
+                {% endblock %}
+            </div>
+
+        </div>
+        <div class="col-lg-4 order-lg-1 login-des-box">
+            <div class="authTextArea">
+                <p class="authTextAreaTitle">Complete Your Account</p>
+                <p class="authTextAreaDescription">Ensure you fill out the form with correct information.</p>
+                <a type="button" class="authSignUpButton" href="{% url 'logout' %}">Logout</a>
+                <a class="authTextForget" href="#">Forget Password ?</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extend_script %}
+<script type="text/javascript">
+    var userType = "{{ request.user.user_type }}"
+    var profileUrl = "";
+    if (userType == "developer") {
+        profileUrl = "{% url 'api:developer-list' %}"
+    }
+    console.log(profileUrl)
+    $('.authFile').change(function () {
+        $(this).parents('[respons="error"]').attr('respons', '');
+
+        try {
+            $('.fileName').text($(this)[0].files[0].name);
+            $('.fileName').attr('add-file', 'true');
+
+        } catch {
+            $('.fileName').text('Select input');
+            $('.fileName').attr('add-file', 'false');
+        }
+    });
+</script>
+{% endblock extend_script %}

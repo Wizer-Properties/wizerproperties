@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     # Third parties libraries
+    'rest_framework',
     'widget_tweaks',
     'phonenumber_field',
     
@@ -55,6 +56,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # Custom middleware
+    'utils.custom.middlewares.CustomMiddleware'
 ]
 
 ROOT_URLCONF = 'wizerproperties.urls'
@@ -154,3 +158,5 @@ FROM_EMAIL = config('FROM_EMAIL', default='emailorprovider@gmail.com')
 
 # Define the expiration period for confirmation codes (in days)
 CONFIRMATION_CODE_EXPIRATION_DAYS = 1
+
+LOGIN_URL = 'login'

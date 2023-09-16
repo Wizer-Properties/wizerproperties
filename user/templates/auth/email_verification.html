@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block extend_head %}
+<title>Verify email</title>
+<link rel="stylesheet" href="{% static '/css/auth.css' %}" />
+<style>
+    .resend {
+        text-align: center;
+    }
+</style>
+{% endblock extend_head %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row how-it-work-row">
+        <div class="col-lg-8 order-lg-2 login-form-box">
+            <div class="logo completeProfileLogo">
+                <a href="/">
+                    <img src="{% static 'media/logo.png' %}" alt="logo">
+                </a>
+            </div>
+
+            <div class="authArea resend">
+                <div class="authForm">
+                    <div>
+                        <span class="authSuccessMessage"></span>
+                        <span class="authErrorMessage"></span>
+                    </div>
+                    <div>
+                        <p>We send a verification link to your email ({{ email}}). Check
+                            your email and verify your account. If you haven't received it yet, you can resend.</p>
+                    </div>
+                    <button type="button" class="authButton resend">Resend</button>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-4 order-lg-1 login-des-box">
+            <div class="authTextArea">
+                <p class="authTextAreaTitle">Verify Your Account</p>
+                <a type="button" class="authSignUpButton" href="{% url 'logout' %}">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extend_script %}
+<script type="text/javascript">
+    var userType = "{{ request.user.user_type }}"
+    var profileUrl = "";
+    if (userType == "developer") {
+        profileUrl = "{% url 'api:developer-list' %}"
+    }
+    console.log(profileUrl)
+    $('.authFile').change(function () {
+        $(this).parents('[respons="error"]').attr('respons', '');
+
+        try {
+            $('.fileName').text($(this)[0].files[0].name);
+            $('.fileName').attr('add-file', 'true');
+
+        } catch {
+            $('.fileName').text('Select input');
+            $('.fileName').attr('add-file', 'false');
+        }
+    });
+</script>
+{% endblock extend_script %}
