@@ -151,4 +151,6 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='emailpassword')
 EMAIL_USE_TLS = True
 
 FROM_EMAIL = config('FROM_EMAIL', default='emailorprovider@gmail.com')             
-                
+
+# Define the expiration period for confirmation codes (in days)
+CONFIRMATION_CODE_EXPIRATION_DAYS = 1
