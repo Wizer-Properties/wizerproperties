@@ -1,5 +1,5 @@
 .login-form-box{
-    background-color: #13008a;
+    background-color: #0a1b56;
     min-height: 100vh;
     color: white;
 }
@@ -27,8 +27,8 @@
     margin: 50px auto;
     border-radius: 10px;
     padding: 40px 0px;
-    background-color: #1c08748c;
-    box-shadow: 4px 4px #1e0491;
+    background-color: #132563;
+    box-shadow: 3px 3px #f0ffff;
 }
 .authForm {
     position: relative;
@@ -54,7 +54,7 @@
     font-size: 15px;
     color: #f0ffff;
     padding: 0 25px;
-    background-color: #1c08748c;
+    background-color: #132563;
     transition: 0.2s ease;
 }
 .authInput:focus, .authInput:not(:placeholder-shown) {
@@ -69,7 +69,7 @@
    transform:  translate(-15px, -16px) scale(0.88);
    z-index: 1111;
    margin: 0 24px;
-   background-color: #1c0874;
+   background-color: #132563;
  }
 .authInput::placeholder {
    opacity: 0; 
@@ -125,7 +125,7 @@
     margin: 30px auto;
 }
 .authSignUpButton {
-    background-color: #1d007b;
+    background-color: #0a1b56;
     width: 250px;
     height: 65px;
     border-radius: 35px;
@@ -154,7 +154,7 @@
     height: 50px;
 }
 .authSelectInput option {
-    background-color: #1d007b;
+    background-color: #0a1b56;
 }
 .profileCompanyDeatils {
     height: 150px;
@@ -178,7 +178,7 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    background-color: #1d007b;
+    background-color: #132563;
     margin-top: 27px;
     border: 2px solid #f0ffff;
     border-radius: 10px;
