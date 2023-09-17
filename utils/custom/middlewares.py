@@ -9,7 +9,14 @@ class CustomMiddleware:
 
     def __call__(self, request):
         # List of URLs to skip both email verification and profile completion checks
-        skip_urls = [reverse("account_verify"), reverse("logout"), "/media/"]
+        skip_urls = [
+            reverse("account_verify"),
+            reverse("logout"),
+            reverse("api:developer-list"),
+            reverse("api:agent-list"),
+            reverse("api:prospect-list"),
+            "/media/",
+        ]
 
         # Check if the user is authenticated and not superuser not on a skip URL
         if (

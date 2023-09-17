@@ -28,3 +28,5 @@ secrets.json
 # Ignore dependency management files (customize as needed)
 venv/
 node_modules/
+
+media/

@@ -47,24 +47,4 @@
 </div>
 {% endblock %}
 {% block extend_script %}
-<script type="text/javascript">
-    var userType = "{{ request.user.user_type }}"
-    var profileUrl = "";
-    if (userType == "developer") {
-        profileUrl = "{% url 'api:developer-list' %}"
-    }
-    console.log(profileUrl)
-    $('.authFile').change(function () {
-        $(this).parents('[respons="error"]').attr('respons', '');
-
-        try {
-            $('.fileName').text($(this)[0].files[0].name);
-            $('.fileName').attr('add-file', 'true');
-
-        } catch {
-            $('.fileName').text('Select input');
-            $('.fileName').attr('add-file', 'false');
-        }
-    });
-</script>
 {% endblock extend_script %}

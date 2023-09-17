@@ -44,3 +44,18 @@ def send_email_verificaton_link(user):
         html_content="email/account_verification.html",
         context={"site_host": settings.SITE_HOST, "token": code.code},
     )
+
+
+def show_custom_error_message(fields):
+    # Override default serializers error
+    for field in fields:
+        # iterate over the serializer fields
+        fields[field].error_messages["required"] = (
+            "%s field is required" % field.replace("_obj", " ").replace("_", " ").title()
+        )
+        fields[field].error_messages["invalid"] = (
+            "%s is not valid" % field.replace("_obj", " ").replace("_", " ").title()
+        )
+        fields[field].error_messages["blank"] = (
+            "%s field is blank" % field.replace("_obj", " ").replace("_", " ").title()
+        )

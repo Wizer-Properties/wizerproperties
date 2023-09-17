@@ -5,6 +5,13 @@
 {% block extend_head %}
 <title>Complete profile</title>
 <link rel="stylesheet" href="{% static '/css/auth.css' %}" />
+<style>
+    #loginButtonText {
+        margin: 0;
+        padding: 0;
+        font-size: inherit;
+    }
+</style>
 {% endblock extend_head %}
 
 {% block content %}
@@ -19,8 +26,12 @@
 
             <div class="authArea completeProfileArea">
                 <p>Complete Your Profile</p>
-                {% block profile %}
-                {% endblock %}
+                <form id="profile-form" method="post">
+                    {% csrf_token %}
+                    {% block profile %}
+                    {% endblock %}
+                </form>
+
             </div>
 
         </div>
@@ -41,19 +52,11 @@
     var profileUrl = "";
     if (userType == "developer") {
         profileUrl = "{% url 'api:developer-list' %}"
+    } else if (userType == "agent") {
+        profileUrl = "{% url 'api:agent-list' %}"
+    } else if (userType == "prospect") {
+        profileUrl = "{% url 'api:prospect-list' %}"
     }
-    console.log(profileUrl)
-    $('.authFile').change(function () {
-        $(this).parents('[respons="error"]').attr('respons', '');
-
-        try {
-            $('.fileName').text($(this)[0].files[0].name);
-            $('.fileName').attr('add-file', 'true');
-
-        } catch {
-            $('.fileName').text('Select input');
-            $('.fileName').attr('add-file', 'false');
-        }
-    });
 </script>
+<script src="{% static 'js/auth/profile.js' %}?v=1.00"></script>
 {% endblock extend_script %}
