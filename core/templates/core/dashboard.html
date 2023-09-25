@@ -3,11 +3,13 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Verify email</title>
+<title>Complete profile</title>
 <link rel="stylesheet" href="{% static '/css/auth.css' %}" />
 <style>
-    .resend {
-        text-align: center;
+    #loginButtonText {
+        margin: 0;
+        padding: 0;
+        font-size: inherit;
     }
 </style>
 {% endblock extend_head %}
@@ -22,29 +24,16 @@
                 </a>
             </div>
 
-            <div class="authArea resend">
-                <div class="authForm">
-                    <div>
-                        <span class="authSuccessMessage"></span>
-                        <span class="authErrorMessage"></span>
-                    </div>
-                    <div>
-                        <p>We send a verification link to your email ({{ email}}). Check
-                            your email and verify your account. If you haven't received it yet, you can resend.</p>
-                    </div>
-                    <button type="button" class="authButton resend">Resend</button>
-                </div>
+            <div class="authArea completeProfileArea">
+                <p>Dashboard</p>
             </div>
 
         </div>
         <div class="col-lg-4 order-lg-1 login-des-box">
             <div class="authTextArea">
-                <p class="authTextAreaTitle">Verify Your Account</p>
                 <a type="button" class="authSignUpButton" href="{% url 'user:logout' %}">Logout</a>
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
-{% block extend_script %}
-{% endblock extend_script %}

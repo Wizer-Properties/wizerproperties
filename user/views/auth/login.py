@@ -5,7 +5,7 @@ from django.contrib import auth
 
 def login(request):
     if request.user.is_authenticated:
-        return redirect("/")
+        return redirect("dashboard")
     
     if request.method == "GET":
         return render(request, "auth/login.html")

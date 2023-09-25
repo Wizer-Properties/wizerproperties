@@ -1,8 +1,6 @@
-import secrets
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from django.template.loader import render_to_string
-from user.models.auth import ConfirmationCode
 
 
 def send_email(subject, to_email, html_content, text_content="", context={}):
@@ -32,18 +30,6 @@ def blur_email(email):
         return blurred_username + "@" + domain
     else:
         return email
-
-
-def send_email_verificaton_link(user):
-    # Create account verification code and send email for verification
-    code = ConfirmationCode.objects.create(user=user, code_type="account_verification", code=secrets.token_hex(3))
-
-    send_email(
-        subject="Verify Your Account",
-        to_email=user.email,
-        html_content="email/account_verification.html",
-        context={"site_host": settings.SITE_HOST, "token": code.code},
-    )
 
 
 def show_custom_error_message(fields):

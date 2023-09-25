@@ -101,8 +101,8 @@
         <p class="authTextAreaDescription">
           Login and enjoy a great amount of new features
         </p>
-        <a type="button" class="authSignUpButton" href="{% url 'login' %}">Login</a>
-        <a class="authTextForget" href="#">Forget Password ?</a>
+        <a type="button" class="authSignUpButton" href="{% url 'user:login' %}">Login</a>
+        <a class="authTextForget" href="{% url 'user:forgot_password' %}">Forget Password ?</a>
       </div>
     </div>
   </div>

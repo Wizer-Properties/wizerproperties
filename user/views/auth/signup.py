@@ -21,7 +21,7 @@ class SignupView(View):
             try:
                 user = form.save()
                 auth.login(request, user)
-                return redirect("email_verify")
+                return redirect("user:email_verify")
             except Exception as e:
                 print("e=======", e)
                 system_error = "Something went wrong"

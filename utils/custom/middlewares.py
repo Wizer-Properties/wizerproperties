@@ -10,11 +10,11 @@ class CustomMiddleware:
     def __call__(self, request):
         # List of URLs to skip both email verification and profile completion checks
         skip_urls = [
-            reverse("account_verify"),
-            reverse("logout"),
-            reverse("api:developer-list"),
-            reverse("api:agent-list"),
-            reverse("api:prospect-list"),
+            reverse("user:logout"),
+            reverse("user:email_verify"),
+            reverse("user:api:developer-list"),
+            reverse("user:api:agent-list"),
+            reverse("user:api:prospect-list"),
             "/media/",
         ]
 
@@ -27,18 +27,18 @@ class CustomMiddleware:
             and request.path[:7] not in [settings.MEDIA_URL, "/admin/"]
         ):
             # Check email verification status
-            if not request.user.email_verification_status and not request.path == reverse("email_verify"):
+            if not request.user.email_verification_status and not request.path == reverse("user:verify_link"):
                 # Redirect the user to the email verification page
-                return redirect(reverse("email_verify"))
+                return redirect(reverse("user:email_verify"))
 
             # Check profile completion (only if email verification is complete)
             elif (
                 request.user.email_verification_status
                 and not request.user.is_complete_profile
-                and not request.path == reverse("profile")
+                and not request.path == reverse("user:profile")
             ):
                 # Redirect the user to the profile completion page
-                return redirect(reverse("profile"))
+                return redirect(reverse("user:profile"))
 
         response = self.get_response(request)
         return response
