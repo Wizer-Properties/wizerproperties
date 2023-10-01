@@ -28,6 +28,6 @@ class ConfirmationCode(TimestampedModel):
         # Set the expiration date when a confirmation code is created or updated
         if not self.expiration_date:
             self.expiration_date = timezone.now() + timezone.timedelta(
-                days=settings.CONFIRMATION_CODE_EXPIRATION_DAYS
+                minutes=settings.CONFIRMATION_CODE_EXPIRATION_TIME
             )  # Adjust the expiration period as needed
         super().save(*args, **kwargs)

@@ -156,7 +156,7 @@ EMAIL_USE_TLS = True
 
 FROM_EMAIL = config('FROM_EMAIL', default='emailorprovider@gmail.com')             
 
-# Define the expiration period for confirmation codes (in days)
-CONFIRMATION_CODE_EXPIRATION_DAYS = 1
+# Define the expiration period for confirmation codes (in minutes)
+CONFIRMATION_CODE_EXPIRATION_TIME = 1440
 
 LOGIN_URL = 'login'
