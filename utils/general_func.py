@@ -28,7 +28,8 @@ def blur_email(email):
 
     if len(parts) == 2:
         username, domain = parts
-        blurred_username = username[0] + "*" * (len(username) - 2) + username[-1]
+        visible_chars = 2
+        blurred_username = username[:visible_chars] + "*" * (len(username) - visible_chars)
         return blurred_username + "@" + domain
     else:
         return email
