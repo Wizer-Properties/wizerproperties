@@ -28,18 +28,16 @@ $(document).ready(function () {
             data: formData,
             processData: false,
             contentType: false,
-            success: function (response) {
+            success: function (response, status, xhr) {
                 loadingSpinner.hide(); // Hide the spinner
                 loginButtonText.show(); // Show the text
 
                 $(".error-message").html("");
 
                 var successMessages = "";
-                if (response.detail) {
+                if (xhr.status == 201) {
                     successMessages +=
-                        "<span class='authSuccessMessage'>" +
-                        response.detail +
-                        "</span>";
+                        "<span class='authSuccessMessage'>Profile completed successfully</span>";
                 }
 
                 // Handle success (e.g., show a success message)
