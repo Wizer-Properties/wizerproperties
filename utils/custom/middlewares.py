@@ -32,7 +32,7 @@ class CustomMiddleware:
                 return redirect(reverse("user:email_verify"))
 
             # Check profile completion (only if email verification is complete)
-            elif (
+            if (
                 request.user.email_verification_status
                 and not request.user.is_complete_profile
                 and not request.path == reverse("user:profile")
