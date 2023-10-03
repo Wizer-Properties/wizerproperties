@@ -14,6 +14,11 @@
     </div>
     <div class="authFormDiv">
         <!-- <span class="authErrorMessage">Message</span> -->
+        <input name="email" type="email" class="authInput" placeholder="Email" value="{{ request.user.email }}" readonly>
+        <div class="authlabelline authcompleteProfileLabe">Email</div>
+    </div>
+    <div class="authFormDiv">
+        <!-- <span class="authErrorMessage">Message</span> -->
         <input name="picture" type="file" accept="image/*" class="authInput authFile" required>
         <div class="fileName">Profile Picture</div>
     </div>
@@ -29,18 +34,12 @@
     </div>
     <div class="authFormDiv">
         <!-- <span class="authErrorMessage">Message</span> -->
-        <input name="email" type="email" class="authInput" placeholder="Email" required>
-        <div class="authlabelline authcompleteProfileLabe">Email</div>
-    </div>
-    <div class="authFormDiv">
-        <!-- <span class="authErrorMessage">Message</span> -->
         <input name="phone_number" type="tel" class="authInput" placeholder="Phone Number" required>
         <div class="authlabelline authcompleteProfileLabe">Phone Number</div>
     </div>
     <div class="authFormDiv">
         <!-- <span class="authErrorMessage">Message</span> -->
-        <select name="gender" type="text" id="emailInput" class="authInput authSelectInput"
-            placeholder="Gender" required>
+        <select name="gender" type="text" id="emailInput" class="authInput authSelectInput" placeholder="Gender" required>
             <option value="">........</option>
             <option value="male">Male</option>
             <option value="female">Female</option>

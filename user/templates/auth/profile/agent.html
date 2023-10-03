@@ -14,7 +14,7 @@
     </div>
     <div class="authFormDiv">
         <!-- <span class="authErrorMessage">Message</span> -->
-        <input name="email" type="email" class="authInput" placeholder="Email" required>
+        <input name="email" type="email" class="authInput" placeholder="Email" value="{{ request.user.email }}" readonly>
         <div class="authlabelline authcompleteProfileLabe">Email</div>
     </div>
     <div class="authFormDiv">

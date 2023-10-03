@@ -8,12 +8,6 @@ from utils.general_data import UNIQUE_PROFILE_EMAIL_MESSAGE
 
 class Profile(TimestampedModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    email = models.EmailField(
-        db_collation="case_insensitive",
-        unique=True,
-        null=True,
-        error_messages={"unique": UNIQUE_PROFILE_EMAIL_MESSAGE},
-    )
     phone_number = PhoneNumberField(null=True)
 
     class Meta:
