@@ -1,35 +1,98 @@
 {% load static %} {% load widget_tweaks %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- for all -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{% static 'css/libraries/bootstrap-icons.css' %}" />
     <link rel="stylesheet" href="{% static 'css/libraries/bootstrap.min.css' %}" />
     <link
-      rel="stylesheet"
-      href="{% static 'css/libraries/fontawesome-all.min.css' %}"
+        rel="stylesheet"
+        href="{% static 'css/libraries/fontawesome-all.min.css' %}"
     />
+    <link rel="stylesheet" href="{% static 'css/header.css' %}?v=1.00" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.00" />
 
     {% block extend_head %}{% endblock extend_head %}
-  </head>
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <header class="wip-header">
+        <div class="w-100 px-5">
+            <div class="header">
+                <div class="navigations">
+                    <div class="wip-logo">
+                        <a href="/">
+                            <img src="{% static 'media/logo.png' %}" alt="logo">
+                        </a>
+                    </div>
 
-  <body>
+                    <a class="nav-link active-nav" href="">Building</a>
+                    <a class="nav-link" href="">Property</a>
+
+                    <div class="search-box">
+                        <i class="bi bi-search"></i>
+                        <input id="pac-input" type="text" placeholder="Search by location"/>
+                    </div>
+                </div>
+
+                <div class="navigation-right-side">
+                    <div class="profile-dropdown">
+                        <div class="profile-dropdown-img">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC3N4H90AMq0P9apQt3DbMe-SjO85txgTh68zplxuQqQ&s" alt="">
+                        </div>
+                        <span> Jhon Doe </span>
+
+                        <div class="profile-dropdown-area">
+                            <a class="nav-link active-nav" href="">Navigation One</a>
+                            <a class="nav-link" href="">Navigation Two</a>
+                            <a class="nav-link" href="">Navigation Three</a>
+                        </div>
+                    </div>
+    
+                    <div class="mobile-menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="side-nav-overflow"></div>
+        <div class="side-nav"></div>
+    </header>
+    {% endif %}
+
     {% block content %}{% endblock %}
-  </body>
+</body>
+<script src="{% static 'js/libraries/jquery.min.js' %}"></script>
+<script src="{% static 'js/libraries/fontawesome-all.min.js' %}"></script>
 
-  <script src="{% static 'js/libraries/jquery.min.js' %}"></script>
-  <script src="{% static 'js/libraries/fontawesome-all.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}?v=1.00"></script>
+<script src="{% static 'js/header.js' %}?v=1.00"></script>
 
-  <script src="{% static 'js/main.js' %}?v=1.00"></script>
+<script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFApEXkq_FxTWGAVwEOEYxCtIxJ3iR9kU&libraries=places&callback=initializeMap">
+</script>
 
-  <script>
+<script>
     var csrfToken = "{{ csrf_token }}"
-  </script>
 
-  {% block extend_script %}{% endblock extend_script %}
+
+    function initializeMap() {
+        const input = document.getElementById("pac-input");
+        const options = {
+            fields: ["address_components", "geometry", "icon", "name"],
+            strictBounds: false,
+        };
+        const autocomplete = new google.maps.places.Autocomplete(input);
+    }
+</script>
+
+{% block extend_script %}{% endblock extend_script %}
 </html>
