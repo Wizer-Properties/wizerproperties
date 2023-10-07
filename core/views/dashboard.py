@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 
 
 @login_required
@@ -8,6 +9,8 @@ def dashboard(request):
         to_return = developer_or_agent_dashboard(request)
     elif request.user.user_type == "prospect":
         to_return = prospect_dashboard(request)
+    elif request.user.is_superuser or request.user.is_staff:
+        to_return = redirect(reverse("admin:index"))
 
     return to_return
 
