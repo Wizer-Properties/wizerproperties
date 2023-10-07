@@ -30,3 +30,4 @@ venv/
 node_modules/
 
 media/
+static_root/
