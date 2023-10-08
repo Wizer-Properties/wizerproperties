@@ -29,5 +29,5 @@ secrets.json
 venv/
 node_modules/
 
-media/
+src/wizerproperties/media/
 static_root/
