@@ -20,55 +20,90 @@
     {% block extend_head %}{% endblock extend_head %}
 </head>
 <body>
-    {% if user.is_authenticated %}
-    <header class="wip-header">
-        <div class="w-100 px-5">
-            <div class="header">
-                <div class="navigations">
-                    <div class="wip-logo">
-                        <a href="/">
-                            <img src="{% static 'media/logo.png' %}" alt="logo">
-                        </a>
-                    </div>
-
-                    <a class="nav-link active-nav" href="">Building</a>
-                    <a class="nav-link" href="">Property</a>
-
-                    <div class="search-box">
-                        <i class="bi bi-search"></i>
-                        <input id="pac-input" type="text" placeholder="Search by location"/>
-                    </div>
-                </div>
-
-                <div class="navigation-right-side">
-                    <div class="profile-dropdown">
-                        <div class="profile-dropdown-img">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC3N4H90AMq0P9apQt3DbMe-SjO85txgTh68zplxuQqQ&s" alt="">
+    <main>
+        {% if user.is_authenticated %}
+        <header class="wip-header">
+            <div class="w-100 px-5">
+                <div class="header">
+                    <div class="navigations">
+                        <div class="wip-logo">
+                            <a href="/">
+                                <img src="{% static 'media/logo.png' %}" alt="logo">
+                            </a>
                         </div>
-                        <span> Jhon Doe </span>
-
-                        <div class="profile-dropdown-area">
-                            <a class="nav-link active-nav" href="">Navigation One</a>
-                            <a class="nav-link" href="">Navigation Two</a>
-                            <a class="nav-link" href="">Navigation Three</a>
+    
+                        <a class="nav-link active-nav" href="">Building</a>
+                        <a class="nav-link" href="">Property</a>
+    
+                        <div class="search-box">
+                            <i class="bi bi-search"></i>
+                            <input id="pac-input" type="text" placeholder="Search by location"/>
                         </div>
                     </div>
     
-                    <div class="mobile-menu">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                    <div class="navigation-right-side">
+                        <div class="profile-dropdown">
+                            <div class="profile-dropdown-img">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC3N4H90AMq0P9apQt3DbMe-SjO85txgTh68zplxuQqQ&s" alt="">
+                            </div>
+                            <span> Jhon Doe </span>
+    
+                            <div class="profile-dropdown-area">
+                                <a class="nav-link active-nav" href="">Navigation One</a>
+                                <a class="nav-link" href="">Navigation Two</a>
+                                <a class="nav-link" href="{% url 'user:logout' %}">Log out</a>
+                            </div>
+                        </div>
+        
+                        <div class="mobile-menu">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
                     </div>
                 </div>
             </div>
+    
+            <div class="side-nav-overflow"></div>
+            <div class="side-nav"></div>
+        </header>
+        {% endif %}
+
+
+
+        {% block content %}{% endblock %}
+
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content-area">
+                <div class="footer-links">
+                    <a href="">Contact Us</a>
+                    <a href="">Privacy</a>
+                    <a href="">About Us</a>
+                </div>
+
+                <div class="footer-social-links">
+                    <a target="_blank" href="">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a target="_blank" href="">
+                        <i class="bi bi-youtube"></i>
+                    </a>
+                    <a target="_blank" href="">
+                        <i class="bi bi-twitter-x"></i>
+                    </a>
+                </div>
+            </div>
+
+            <p class="copy-right">
+                © Copyright - WiSERPROPERTIES - Developed by 
+                <a href="https://vaid.tech" target="_blank"> Vaidtech </a>
+            </p>
         </div>
-
-        <div class="side-nav-overflow"></div>
-        <div class="side-nav"></div>
-    </header>
-    {% endif %}
-
-    {% block content %}{% endblock %}
+    </footer>
 </body>
 <script src="{% static 'js/libraries/jquery.min.js' %}"></script>
 <script src="{% static 'js/libraries/fontawesome-all.min.js' %}"></script>

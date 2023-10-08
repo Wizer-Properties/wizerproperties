@@ -3,15 +3,17 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Dashboard</title>
-<link rel="stylesheet" href="{% static '/css/auth.css' %}" />
-<style>
-    #loginButtonText {
-        margin: 0;
-        padding: 0;
-        font-size: inherit;
-    }
-</style>
+    <title>Developer or agent</title>
+    <link rel="stylesheet" href="{% static '/css/libraries/dataTables.min.css' %}" />
+    <link rel="stylesheet" href="{% static '/css/auth.css' %}?v=1.00" />
+    <link rel="stylesheet" href="{% static '/css/dashboard.css' %}?v=1.00" />
+    <style>
+        #loginButtonText {
+            margin: 0;
+            padding: 0;
+            font-size: inherit;
+        }
+    </style>
 {% endblock extend_head %}
 
 {% block content %}
@@ -36,4 +38,220 @@
         </div>
     </div>
 </div> -->
+
+<section id="dashboard-cards-list-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-6 dashboard-card">
+                <div class="dashboard-single-card">
+                    <div class="single-card-value">
+                        <span>2635</span>
+                        <p>Total Building</p>
+                    </div>
+                    <i class="bi bi-buildings"></i>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6 dashboard-card">
+                <div class="dashboard-single-card">
+                    <div class="single-card-value">
+                        <span>4350</span>
+                        <p>Total Properties Post</p>
+                    </div>
+                    <i class="bi bi-newspaper"></i>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-6 dashboard-card">
+                <div class="dashboard-single-card">
+                    <div class="single-card-value">
+                        <span>8823</span>
+                        <p>Active Properties Post</p>
+                    </div>
+                    <i class="bi bi-send-arrow-up"></i>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-6 dashboard-card">
+                <div class="dashboard-single-card">
+                    <div class="single-card-value">
+                        <span>7345</span>
+                        <p>Total Future Schedule</p>
+                    </div>
+                    <i class="bi bi-calendar-week"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<section>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-12">
+                <div class="table-area">
+                    <h1 class="table-title">Properties</h1>
+                    <table class="dashboard-data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Price</th>
+                                <th>Building Types</th>
+                                <th>Total Units For Sale</th>
+                                <th>Address</th>
+                                <th>Project Total Area</th>
+                                <th>Total Floors</th>
+                                <th>Construction Year</th>
+                                <th>Is Active</th>
+                                <th>  </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td> Title One </td>
+                                <td> 50,000 </td>
+                                <td> Condos </td>
+                                <td> 3 </td>
+                                <td> Address Data, One </td>
+                                <td> 7 </td>
+                                <td> 20 </td>
+                                <td> 6 </td>
+                                <td> No </td>
+                                <td>
+                                    <a class="link" href=""> See More </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td> Title Two </td>
+                                <td> 50,000 </td>
+                                <td> Condos </td>
+                                <td> 3 </td>
+                                <td> Address Data, Two </td>
+                                <td> 7 </td>
+                                <td> 20 </td>
+                                <td> 6 </td>
+                                <td> No </td>
+                                <td>
+                                    <a class="link" href=""> See More </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            
+
+            <div class="col-12">
+                <div class="table-area">
+                    <h1 class="table-title">Building</h1>
+                    <table class="dashboard-data-table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Building</th>
+                                <th>Price</th>
+                                <th>Floor Number</th>
+                                <th>Unit Area</th>
+                                <th>Bedroom</th>
+                                <th>Bathroom</th>
+                                <th>Balcony</th>
+                                <th>Car Park</th>
+                                <th>Is Active</th>
+                                <th>  </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td> Title One </td>
+                                <td> 50,000 </td>
+                                <td> Condos </td>
+                                <td> 3 </td>
+                                <td> Address Data, One </td>
+                                <td> 7 </td>
+                                <td> 20 </td>
+                                <td> 6 </td>
+                                <td> No </td>
+                                <td>
+                                    <a class="link" href=""> See More </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td> Title Two </td>
+                                <td> 50,000 </td>
+                                <td> Condos </td>
+                                <td> 3 </td>
+                                <td> Address Data, Two </td>
+                                <td> 7 </td>
+                                <td> 20 </td>
+                                <td> 6 </td>
+                                <td> No </td>
+                                <td>
+                                    <a class="link" href=""> See More </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="col-lg-8">
+                <div class="table-area">
+                    <h1 class="table-title">Property Visit Schedule</h1>
+                    <table class="dashboard-data-table mid-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Price</th>
+                                <th>Building Types</th>
+                                <th>Total Units For Sale</th>
+                                <th>  </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td> Title One </td>
+                                <td> 50,000 </td>
+                                <td> Condos </td>
+                                <td> 3 </td>
+                                <td>
+                                    <a class="link" href=""> See More </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td> Title Two </td>
+                                <td> 50,000 </td>
+                                <td> Condos </td>
+                                <td> 3 </td>
+                                <td>
+                                    <a class="link" href=""> See More </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+
+        </div>
+    </div>
+</section>
+
 {% endblock %}
+
+
+{% block extend_script %}
+<script src="{% static '/js/libraries/dataTables.min.js' %}?v=1.00"></script>
+<script src="{% static '/js/dashboard.js' %}?v=1.00"></script>
+{% endblock extend_script %}

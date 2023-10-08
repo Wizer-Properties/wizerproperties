@@ -158,6 +158,10 @@ header{
         display: flex;
     }
 
+    body[menu="open"] .side-nav .nav-link{
+        margin: 0 10px ;
+    }
+
     body[menu="open"] .mobile-menu{
         position: relative;
         z-index: 9992;
