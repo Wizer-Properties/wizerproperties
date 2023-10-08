@@ -12,6 +12,7 @@ class CustomMiddleware:
         skip_urls = [
             reverse("user:logout"),
             reverse("user:email_verify"),
+            reverse("user:forgot_password_verify"),
             reverse("user:api:developer-list"),
             reverse("user:api:agent-list"),
             reverse("user:api:prospect-list"),

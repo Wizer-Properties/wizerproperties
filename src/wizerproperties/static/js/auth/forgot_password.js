@@ -2,11 +2,11 @@ $(document).ready(function () {
     $(".authButton").click(function () {
         var email = $("#email").val();
 
-        var forgotPasswordButtonText = $('#forgotPasswordButtonText');
-        var loadingSpinner = $('#loadingSpinner');
+        var forgotPasswordButtonText = $("#forgotPasswordButtonText");
+        var loadingSpinner = $("#loadingSpinner");
 
         forgotPasswordButtonText.hide(); // Hide the text
-        loadingSpinner.show() // Show the spinner
+        loadingSpinner.show(); // Show the spinner
 
         $.ajax({
             type: "POST",
@@ -21,13 +21,7 @@ $(document).ready(function () {
                 loadingSpinner.hide(); // Hide the spinner
                 forgotPasswordButtonText.show(); // Show the text
 
-                $(".authErrorMessage").text("");
-                $(".authSuccessMessage").text(response.message);
-
-                // Redirect to the homepage after 1 second
-                setTimeout(function () {
-                    window.location.href = "/";
-                }, 1000);
+                window.location.href = forgot_password_verify_url;
             },
             error: function (error) {
                 loadingSpinner.hide(); // Hide the spinner

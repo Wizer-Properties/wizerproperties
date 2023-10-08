@@ -2,7 +2,7 @@ from django.urls import include, path
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from .views.auth import SignupView, login, profile, email_verification, forgot_password, \
-    verify_link, update_password
+    verify_link, update_password, forgot_password_verification
 
 urlpatterns = [
     path("get-started/", SignupView.as_view(), name="signup"),
@@ -12,6 +12,7 @@ urlpatterns = [
     path("profile/", profile, name="profile"),
     path("forgot-password/", forgot_password, name="forgot_password"),
     path("update-password/", update_password, name="update_password"),
+    path("forgot-password-verify/", forgot_password_verification, name="forgot_password_verify"),
     path("verify-link/", verify_link, name="verify_link"),
     path("api/", include(("user.api.urls", "user"), namespace="api")),
 ]
