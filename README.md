@@ -4,8 +4,12 @@
 
 > Note: You should have installed docker to your machine for running successfully.
 
+```sh
+cd src
 ```
-Create a .env file in project root directory following demo.env file.
+
+```
+Create a .env file in project src directory following demo.env file.
 ```
 
 ### Docker Basic Command
@@ -13,7 +17,7 @@ Create a .env file in project root directory following demo.env file.
 #### Build
 
 ```sh
-sudo docker-compose build --no-cache
+sudo docker compose build --no-cache
 ```
 
 ##### Case-Insensitive Field Configuration in Postgresql
@@ -53,13 +57,13 @@ https://docs.djangoproject.com/en/4.2/ref/contrib/postgres/operations/#managing-
 ##### Migrate
 
 ```sh
-sudo docker-compose run --rm web python manage.py migrate
+sudo docker compose run --rm web python manage.py migrate
 ```
 
 ##### Up
 
 ```sh
-sudo docker-compose up
+sudo docker compose up
 ```
 
 ### Install Packages Via Poetry
