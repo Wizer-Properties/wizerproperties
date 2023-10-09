@@ -1,5 +1,6 @@
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.template.loader import render_to_string
 
 
@@ -46,3 +47,14 @@ def show_custom_error_message(fields):
         fields[field].error_messages["blank"] = (
             "%s field is blank" % field.replace("_obj", " ").replace("_", " ").title()
         )
+
+
+def validate_video_file_extension(value):
+    if value:
+        # Get the file extension
+        ext = value.name.split(".")[-1].lower()
+        # List of allowed extensions
+        allowed_extensions = ["mp4", "avi", "mov", "wmv", "mkv", "flv"]
+        # Check if the extension is in the allowed list
+        if ext not in allowed_extensions:
+            raise ValidationError("Unsupported file format. Supported formats: mp4, avi, mov, wmv, mkv, flv")
