@@ -36,10 +36,10 @@
                                 <img src="{% static 'media/logo.png' %}" alt="logo">
                             </a>
                         </div>
-    
-                        <a class="nav-link {% if request.path == create_building_url %}active-nav{% endif %}" href="{{ create_building_url }}">Building</a>
-                        <a class="nav-link {% if request.path == create_property_url %}active-nav{% endif %}" href="{{ create_property_url }}">Property</a>
-    
+                        {% if request.user.user_type == "developer" or request.user.user_type == "agent" %}
+                            <a class="nav-link {% if request.path == create_building_url %}active-nav{% endif %}" href="{{ create_building_url }}">Building</a>
+                            <a class="nav-link {% if request.path == create_property_url %}active-nav{% endif %}" href="{{ create_property_url }}">Property</a>
+                        {% endif %}
                         <div class="search-box">
                             <i class="bi bi-search"></i>
                             <input id="pac-input" type="text" placeholder="Search by location"/>
