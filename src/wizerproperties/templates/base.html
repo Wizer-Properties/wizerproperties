@@ -45,13 +45,21 @@
                     <div class="navigation-right-side">
                         <div class="profile-dropdown">
                             <div class="profile-dropdown-img">
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC3N4H90AMq0P9apQt3DbMe-SjO85txgTh68zplxuQqQ&s" alt="">
+                                {% if request.user.user_type == "developer" %}
+                                    <img src="{{ request.user.developerprofile.company_logo.url }}" alt="Company Logo">
+                                {% elif request.user.user_type == "agent" %}
+                                    <img src="{{ request.user.agentprofile.company_logo.url }}" alt="Company Logo">
+                                {% elif request.user.user_type == "prospect" %}
+                                    <img src="{{ request.user.prospectprofile.picture.url }}" alt="Profile Picture">
+                                {% else %}
+                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC3N4H90AMq0P9apQt3DbMe-SjO85txgTh68zplxuQqQ&s" alt="">
+                                {% endif %}
                             </div>
-                            <span> Jhon Doe </span>
+                            <span>{{ request.user.username }}</span>
     
                             <div class="profile-dropdown-area">
-                                <a class="nav-link active-nav" href="">Navigation One</a>
-                                <a class="nav-link" href="">Navigation Two</a>
+                                {% url 'user:profile_settings' as profile_settings_url %}
+                                <a class="nav-link {% if request.path == profile_settings_url %}active-nav{% endif %}" href="{{ profile_settings_url }}">Profile settings</a>
                                 <a class="nav-link" href="{% url 'user:logout' %}">Log out</a>
                             </div>
                         </div>

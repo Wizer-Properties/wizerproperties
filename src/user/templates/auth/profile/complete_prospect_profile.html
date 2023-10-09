@@ -19,13 +19,18 @@
     </div>
     <div class="authFormDiv">
         <!-- <span class="authErrorMessage">Message</span> -->
-        <input name="company_logo" type="file" accept="image/*" class="authInput authFile" required>
-        <div class="fileName"> Company Logo</div>
+        <input name="picture" type="file" accept="image/*" class="authInput authFile" required>
+        <div class="fileName">Profile Picture</div>
     </div>
     <div class="authFormDiv">
         <!-- <span class="authErrorMessage">Message</span> -->
-        <input name="company_name" type="text" class="authInput" placeholder="Company Name" required>
-        <div class="authlabelline authcompleteProfileLabe">Company Name</div>
+        <input name="first_name" type="text" class="authInput" placeholder="First Name" required>
+        <div class="authlabelline authcompleteProfileLabe">First Name</div>
+    </div>
+    <div class="authFormDiv">
+        <!-- <span class="authErrorMessage">Message</span> -->
+        <input name="last_name" type="text" class="authInput" placeholder="Last Name" required>
+        <div class="authlabelline authcompleteProfileLabe">Last Name</div>
     </div>
     <div class="authFormDiv">
         <!-- <span class="authErrorMessage">Message</span> -->
@@ -34,14 +39,17 @@
     </div>
     <div class="authFormDiv">
         <!-- <span class="authErrorMessage">Message</span> -->
-        <input name="company_address" type="text" class="authInput" placeholder="Company Address" required>
-        <div class="authlabelline authcompleteProfileLabe">Company Address</div>
+        <select name="gender" type="text" id="emailInput" class="authInput authSelectInput" placeholder="Gender" required>
+            <option value="">........</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
+        <div class="authlabelline authcompleteProfileLabe">Gender</div>
     </div>
     <div class="authFormDiv">
         <!-- <span class="authErrorMessage">Message</span> -->
-        <textarea name="company_details" type="text" id="emailInput" class="authInput profileCompanyDeatils"
-            placeholder="Company Details" required></textarea>
-        <div class="authlabelline authcompleteProfileLabe">Company Details</div>
+        <input name="address" type="text" class="authInput" placeholder="Address" required>
+        <div class="authlabelline authcompleteProfileLabe">Address</div>
     </div>
     <button type="submit" class="authButton completeProfileButton">
         <span id="loginButtonText">Complete Profile</span>

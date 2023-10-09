@@ -1,0 +1,56 @@
+{% extends "auth/complete_profile.html" %}
+{% load static %}
+
+{% block profile %}
+
+<!--- Complete Profile Form Start --->
+
+<div class="authForm">
+    <div class="success-message">
+        <!-- <span class="authSuccessMessage"></span> -->
+    </div>
+    <div class="error-message">
+        <!-- <span class="authErrorMessage"></span> -->
+    </div>
+    <div class="authFormDiv">
+        <!-- <span class="authErrorMessage">Message</span> -->
+        <input name="email" type="email" class="authInput" placeholder="Email" value="{{ request.user.email }}" readonly>
+        <div class="authlabelline authcompleteProfileLabe">Email</div>
+    </div>
+    <div class="authFormDiv">
+        <!-- <span class="authErrorMessage">Message</span> -->
+        <input name="company_logo" type="file" accept="image/*" class="authInput authFile" required>
+        <div class="fileName"> Company Logo</div>
+    </div>
+    <div class="authFormDiv">
+        <!-- <span class="authErrorMessage">Message</span> -->
+        <input name="company_name" type="text" class="authInput" placeholder="Company Name" required>
+        <div class="authlabelline authcompleteProfileLabe">Company Name</div>
+    </div>
+    <div class="authFormDiv">
+        <!-- <span class="authErrorMessage">Message</span> -->
+        <input name="phone_number" type="tel" class="authInput" placeholder="Phone Number" required>
+        <div class="authlabelline authcompleteProfileLabe">Phone Number</div>
+    </div>
+    <div class="authFormDiv">
+        <!-- <span class="authErrorMessage">Message</span> -->
+        <input name="company_address" type="text" class="authInput" placeholder="Company Address" required>
+        <div class="authlabelline authcompleteProfileLabe">Company Address</div>
+    </div>
+    <div class="authFormDiv">
+        <!-- <span class="authErrorMessage">Message</span> -->
+        <textarea name="company_details" type="text" id="emailInput" class="authInput profileCompanyDeatils"
+            placeholder="Company Details" required></textarea>
+        <div class="authlabelline authcompleteProfileLabe">Company Details</div>
+    </div>
+    <button type="submit" class="authButton completeProfileButton">
+        <span id="loginButtonText">Complete Profile</span>
+        <div id="loadingSpinner" class="spinner-border" role="status" style="display: none;">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </button>
+</div>
+
+<!--- Complete Profile Form End --->
+
+{% endblock %}

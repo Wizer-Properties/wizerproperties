@@ -36,10 +36,10 @@ class CustomMiddleware:
             if (
                 request.user.email_verification_status
                 and not request.user.is_complete_profile
-                and not request.path == reverse("user:profile")
+                and not request.path == reverse("user:complete_profile")
             ):
                 # Redirect the user to the profile completion page
-                return redirect(reverse("user:profile"))
+                return redirect(reverse("user:complete_profile"))
 
         response = self.get_response(request)
         return response

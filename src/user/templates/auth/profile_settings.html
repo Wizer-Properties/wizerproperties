@@ -3,7 +3,7 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Complete profile</title>
+<title>Profile settings</title>
 <link rel="stylesheet" href="{% static '/css/auth.css' %}" />
 <style>
     #loginButtonText {
@@ -25,7 +25,7 @@
             </div>
 
             <div class="authArea completeProfileArea">
-                <p>Complete Your Profile</p>
+                <p>Profile settings</p>
                 <form id="profile-form" method="post">
                     {% csrf_token %}
                     {% block profile %}
@@ -37,10 +37,7 @@
         </div>
         <div class="col-lg-4 order-lg-1 login-des-box">
             <div class="authTextArea">
-                <p class="authTextAreaTitle">Complete Your Account</p>
-                <p class="authTextAreaDescription">Ensure you fill out the form with correct information.</p>
                 <a type="button" class="authSignUpButton" href="{% url 'user:logout' %}">Logout</a>
-                <a class="authTextForget" href="#">Forget Password ?</a>
             </div>
         </div>
     </div>
@@ -58,5 +55,5 @@
         profileUrl = "{% url 'user:api:prospect-list' %}"
     }
 </script>
-<script src="{% static 'js/auth/profile.js' %}?v=1.01"></script>
+<script src="{% static 'js/auth/complete_profile.js' %}?v=1.01"></script>
 {% endblock extend_script %}
