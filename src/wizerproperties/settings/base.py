@@ -45,7 +45,9 @@ INSTALLED_APPS = [
     'phonenumber_field',
     
     # Custom apps
-    'core', 
+    'building',
+    'core',
+    'property',
     'user'
 ]
 

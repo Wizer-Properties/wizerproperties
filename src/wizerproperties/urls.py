@@ -24,6 +24,8 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('', dashboard, name='dashboard'),
     path("user/", include(("user.urls", "user"), namespace="user")),
+    path("building/", include(("building.urls", "building"), namespace="building")),
+    path("property/", include(("property.urls", "property"), namespace="property")),
 ]
 
 if settings.DEBUG:

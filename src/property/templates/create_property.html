@@ -3,15 +3,8 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Profile settings</title>
+<title>Create property</title>
 <link rel="stylesheet" href="{% static '/css/auth.css' %}" />
-<style>
-    #loginButtonText {
-        margin: 0;
-        padding: 0;
-        font-size: inherit;
-    }
-</style>
 {% endblock extend_head %}
 
 {% block content %}
@@ -25,13 +18,7 @@
             </div>
 
             <div class="authArea completeProfileArea">
-                <p>Profile settings</p>
-                <form id="profile-form" method="post">
-                    {% csrf_token %}
-                    {% block profile %}
-                    {% endblock %}
-                </form>
-
+                <p>Create property</p>
             </div>
 
         </div>

@@ -14,7 +14,20 @@ $(document).ready(function () {
 
     $("#profile-form").submit(function (event) {
         event.preventDefault();
+
+        // Get phone code and phone number values
+        var phoneCode = $("#phone_code").val();
+        var phoneNumber = $("input[name='phone_number']").val();
+
+        var fullPhoneNumber = phoneCode + phoneNumber;
+
         var formData = new FormData(this);
+
+        // Set modified phone number in formData
+        formData.set('phone_number', fullPhoneNumber);
+
+        // Remove phone_code from formData
+        formData.delete('phone_code');
 
         var loginButtonText = $("#loginButtonText");
         var loadingSpinner = $("#loadingSpinner");
