@@ -15,31 +15,24 @@
 {% endblock extend_head %}
 
 {% block content %}
-<div class="container-fluid">
-    <div class="row how-it-work-row">
-        <div class="col-lg-8 order-lg-2 login-form-box">
+
+
+
+<section id="profile-setting">
+    <div class="container">
+        <div class="col-lg-7 profile-setting-box">
             <div class="logo completeProfileLogo">
                 <a href="/">
                     <img src="{% static 'media/logo.png' %}" alt="logo">
                 </a>
             </div>
 
-            <div class="authArea completeProfileArea">
-                <p>Profile settings</p>
-                <form id="profile-form" method="post">
-                    {% csrf_token %}
-                    {% block profile %}
-                    {% endblock %}
-                </form>
-
-            </div>
-
-        </div>
-        <div class="col-lg-4 order-lg-1 login-des-box">
-            <div class="authTextArea">
-                <a type="button" class="authSignUpButton" href="{% url 'user:logout' %}">Logout</a>
-            </div>
+            <form id="profile-form" method="post">
+                {% csrf_token %}
+                {% block profile %}
+                {% endblock %}
+            </form>
         </div>
     </div>
-</div>
+</section>
 {% endblock %}

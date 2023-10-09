@@ -175,6 +175,10 @@ footer{
     min-width: 90px;
 }
 
+#profile-setting{
+    padding: 45px 0;
+}
+
 @media screen and (max-width: 768px) {
     .table-title{
         position: initial !important;
