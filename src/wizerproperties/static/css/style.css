@@ -59,7 +59,8 @@ table.dataTable.no-footer{
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover{
-    background-color: #ffd35038 !important;
+    background: #ffd35038 !important;
+    color: #212529 !important;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current{
@@ -71,7 +72,6 @@ table.dataTable.no-footer{
 
 .link{
     display: inline-block;
-    margin-right: 10px;
     font-size: 14px;
     padding: 5px 15px;
     border-radius: 5px;
@@ -169,6 +169,10 @@ footer{
 
 .copy-right a:hover{
     text-decoration: underline !important;
+}
+
+.th-see-more{
+    min-width: 90px;
 }
 
 @media screen and (max-width: 768px) {

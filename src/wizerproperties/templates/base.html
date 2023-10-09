@@ -14,14 +14,15 @@
         rel="stylesheet"
         href="{% static 'css/libraries/fontawesome-all.min.css' %}"
     />
+    
+    {% block extend_head %}{% endblock extend_head %}
     <link rel="stylesheet" href="{% static 'css/header.css' %}?v=1.00" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.00" />
-
-    {% block extend_head %}{% endblock extend_head %}
 </head>
 <body>
     <main>
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and user.is_complete_profile %}
+
         <header class="wip-header">
             <div class="w-100 px-5">
                 <div class="header">
@@ -76,6 +77,7 @@
 
     </main>
 
+    {% if user.is_authenticated and user.is_complete_profile %}
     <footer>
         <div class="container">
             <div class="footer-content-area">
@@ -104,6 +106,7 @@
             </p>
         </div>
     </footer>
+    {% endif %}
 </body>
 <script src="{% static 'js/libraries/jquery.min.js' %}"></script>
 <script src="{% static 'js/libraries/fontawesome-all.min.js' %}"></script>
