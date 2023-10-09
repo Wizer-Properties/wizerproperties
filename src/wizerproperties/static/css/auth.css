@@ -219,7 +219,23 @@
     padding: 7px 25px;
 }
 
+#phone_code{
+    padding: 10px !important;
+}
 
+.phone_code_area,
+.phone_number_area{
+    position: relative;
+}
+
+.phone_code_area{
+    width: 100px;
+    margin-right: 10px;
+}
+
+.phone_number_area{
+    width: calc(100% - 110px);
+}
 
 
 
@@ -229,6 +245,7 @@
         font-size: 14px;
         width: 80%;
     }
+    
 }
 @media screen and (max-width: 1120px){
     .login-form-box {
@@ -240,7 +257,13 @@
     .completeProfileButton {
         width: 70%;
     }
+
+    .authArea{
+        width: 400px;
+    }
 }
+
+
 @media screen and (max-width: 620px){
     .authArea{
         width: 95%;
