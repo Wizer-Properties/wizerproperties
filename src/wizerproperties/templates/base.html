@@ -23,6 +23,10 @@
     <main>
         {% if user.is_authenticated and user.is_complete_profile %}
 
+        {% url 'user:profile_settings' as profile_settings_url %}
+        {% url 'building:create_building' as create_building_url %}
+        {% url 'property:create_property' as create_property_url %}
+
         <header class="wip-header">
             <div class="w-100 px-5">
                 <div class="header">
@@ -33,8 +37,8 @@
                             </a>
                         </div>
     
-                        <a class="nav-link active-nav" href="{% url 'building:create_building' %}">Building</a>
-                        <a class="nav-link" href="{% url 'property:create_property' %}">Property</a>
+                        <a class="nav-link {% if request.path == create_building_url %}active-nav{% endif %}" href="{{ create_building_url }}">Building</a>
+                        <a class="nav-link {% if request.path == create_property_url %}active-nav{% endif %}" href="{{ create_property_url }}">Property</a>
     
                         <div class="search-box">
                             <i class="bi bi-search"></i>
@@ -58,7 +62,6 @@
                             <span>{{ request.user.username }}</span>
     
                             <div class="profile-dropdown-area">
-                                {% url 'user:profile_settings' as profile_settings_url %}
                                 <a class="nav-link {% if request.path == profile_settings_url %}active-nav{% endif %}" href="{{ profile_settings_url }}">Profile settings</a>
                                 <a class="nav-link" href="{% url 'user:logout' %}">Log out</a>
                             </div>
