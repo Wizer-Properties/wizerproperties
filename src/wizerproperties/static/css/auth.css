@@ -47,7 +47,7 @@
     border-radius: 10px;
     border: 2px solid #f0ffff;
     background: transparent;
-    z-index: 1111;
+    z-index: 11;
     color: #D2FF00;
 }
 .authlabelline {
@@ -239,33 +239,6 @@
     width: calc(100% - 110px);
 }
 
-.profile-setting-box{
-    background-color: #375ad5;
-    border-radius: 10px;
-    margin: auto;
-    padding: 35px 0;
-    box-shadow: 0 5px 10px 10px rgba(0,0,0,.15);
-}
-
-.profile-setting-box .completeProfileLogo{
-    margin: 0 !important;
-    margin-bottom: 20px !important;
-}
-
-.authInput:focus + .authlabelline, .authInput:not(:placeholder-shown) + .authlabelline{
-    top: -5px;
-}
-
-.profile-setting-box .completeProfileButton{
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    margin-top: 175px;
-}
-
-.profile-setting-box .fileName{
-    color: #fff;
-}
 
 @media screen and (max-width: 1400px){
     .completeProfileButton {

@@ -8,25 +8,172 @@
 {% endblock extend_head %}
 
 {% block content %}
-<div class="container-fluid">
-    <div class="row how-it-work-row">
-        <div class="col-lg-8 order-lg-2 login-form-box">
-            <div class="logo completeProfileLogo">
-                <a href="/">
-                    <img src="{% static 'media/logo.png' %}" alt="logo">
-                </a>
-            </div>
 
-            <div class="authArea completeProfileArea">
-                <p>Create property</p>
-            </div>
 
-        </div>
-        <div class="col-lg-4 order-lg-1 login-des-box">
-            <div class="authTextArea">
-                <a type="button" class="authSignUpButton" href="{% url 'user:logout' %}">Logout</a>
+<section id="create_property">
+    <div class="container">
+
+        
+        <div class="light-form-box">
+            <h1 class="form-title"> Create Properties </h1>
+            
+            <div class="authForm">
+                <div class="success-message">
+                    <!-- <span class="authSuccessMessage"></span> -->
+                </div>
+                <div class="error-message">
+                    <!-- <span class="authErrorMessage"></span> -->
+                </div>
+
+                <div class="authFormDiv">
+                    <!-- <span class="authErrorMessage">Message</span> -->
+                    <input name="title" type="text" class="authInput" placeholder="Title" required>
+                    <div class="authlabelline authcompleteProfileLabe">Title</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="authFormDiv">
+                            <!-- <span class="authErrorMessage">Message</span> -->
+                            <input name="price" type="text" class="authInput" placeholder="Price" required>
+                            <div class="authlabelline authcompleteProfileLabe">Price</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="authFormDiv">
+                            <!-- <span class="authErrorMessage">Message</span> -->
+                            <select name="building" type="text" class="authInput authSelectInput" placeholder="Building" required>
+                                <option value="">........</option>
+                                <option value="1">Building One</option>
+                                <option value="2">Building Two</option>
+                            </select>
+                            <div class="authlabelline authcompleteProfileLabe">Building</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="authFormDiv">
+                            <!-- <span class="authErrorMessage">Message</span> -->
+                            <input name="unit_id" type="text" class="authInput" placeholder="Unit ID" required>
+                            <div class="authlabelline authcompleteProfileLabe">Unit ID</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="authFormDiv">
+                            <!-- <span class="authErrorMessage">Message</span> -->
+                            <input name="floor" type="text" class="authInput" placeholder="Floor" required>
+                            <div class="authlabelline authcompleteProfileLabe">Floor</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="authFormDiv">
+                            <!-- <span class="authErrorMessage">Message</span> -->
+                            <input name="unit_area" type="text" class="authInput" placeholder="Unit Area" required>
+                            <div class="authlabelline authcompleteProfileLabe">Unit Area</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="authFormDiv">
+                            <!-- <span class="authErrorMessage">Message</span> -->
+                            <input name="bathroom" type="text" class="authInput" placeholder="Bathroom" required>
+                            <div class="authlabelline authcompleteProfileLabe">Bathroom</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="authFormDiv">
+                            <!-- <span class="authErrorMessage">Message</span> -->
+                            <input name="bedroom" type="text" class="authInput" placeholder="Bedroom" required>
+                            <div class="authlabelline authcompleteProfileLabe">Bedroom</div>
+                        </div>
+
+                        <div class="authFormDiv">
+                            <!-- <span class="authErrorMessage">Message</span> -->
+                            <input name="balcony" type="text" class="authInput" placeholder="Balcony" required>
+                            <div class="authlabelline authcompleteProfileLabe">Balcony</div>
+                        </div>
+
+                        <div class="authFormDiv">
+                            <!-- <span class="authErrorMessage">Message</span> -->
+                            <input name="car_park" type="text" class="authInput" placeholder="Car Park" required>
+                            <div class="authlabelline authcompleteProfileLabe">Car Park</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="authFormDiv textarea">
+                            <!-- <span class="authErrorMessage">Message</span> -->
+                            <textarea name="description" type="text" class="authInput profileCompanyDeatils"
+                                placeholder="Description" required></textarea>
+                            <div class="authlabelline authcompleteProfileLabe">Description</div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="uploaded-file-with-view">
+                            <div class="authFormDiv">
+                                <!-- <span class="authErrorMessage">Message</span> -->
+                                <input name="floor_plan" type="file" accept="image/*" class="authInput authFile" required multiple>
+                                <div class="fileName"> Upload Building Floor Plan Images </div>
+                            </div>
+    
+                            <div class="uploaded-file-view-area">
+                                <!-- dom area -->
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-6">
+                        <div class="uploaded-file-with-view">
+                            <div class="authFormDiv">
+                                <!-- <span class="authErrorMessage">Message</span> -->
+                                <input name="master_plan" type="file" accept="image/*" class="authInput authFile" required multiple>
+                                <div class="fileName"> Upload Master Plan Images </div>
+                            </div>
+    
+                            <div class="uploaded-file-view-area">
+                                <!-- dom area -->
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-6">
+                        <div class="uploaded-file-with-view">
+                            <div class="authFormDiv">
+                                <!-- <span class="authErrorMessage">Message</span> -->
+                                <input name="master_plan" type="file" accept="video/*" class="authInput authFile" required>
+                                <div class="fileName"> Upload Video </div>
+                            </div>
+    
+                            <div class="uploaded-file-view-area">
+                                <!-- dom area -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                
+                <button type="submit" class="authButton completeProfileButton" id="create-property">
+                    <span id="loginButtonText">Complete Profile</span>
+                    <div id="loadingSpinner" class="spinner-border" role="status" style="display: none;">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </button>
             </div>
         </div>
     </div>
-</div>
+</section>
+
 {% endblock %}
