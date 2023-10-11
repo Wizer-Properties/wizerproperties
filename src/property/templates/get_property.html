@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block extend_head %}
+<title>Property details</title>
+<link rel="stylesheet" href="{% static '/css/auth.css' %}" />
+{% endblock extend_head %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row how-it-work-row">
+        <div class="col-lg-8 order-lg-2 login-form-box">
+            <div class="logo completeProfileLogo">
+                <a href="/">
+                    <img src="{% static 'media/logo.png' %}" alt="logo">
+                </a>
+            </div>
+
+            <div class="authArea completeProfileArea">
+                <p>Property details</p>
+            </div>
+
+        </div>
+        <div class="col-lg-4 order-lg-1 login-des-box">
+            <div class="authTextArea">
+                <a type="button" class="authSignUpButton" href="{% url 'user:logout' %}">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

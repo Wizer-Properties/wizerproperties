@@ -49,12 +49,8 @@ def show_custom_error_message(fields):
         )
 
 
-def validate_video_file_extension(value):
+def validate_media_file_extension(value, allowed_extensions):
     if value:
-        # Get the file extension
         ext = value.name.split(".")[-1].lower()
-        # List of allowed extensions
-        allowed_extensions = ["mp4", "avi", "mov", "wmv", "mkv", "flv"]
-        # Check if the extension is in the allowed list
         if ext not in allowed_extensions:
-            raise ValidationError("Unsupported file format. Supported formats: mp4, avi, mov, wmv, mkv, flv")
+            raise ValidationError(f"Unsupported file format. Supported formats: {', '.join(allowed_extensions)}")
