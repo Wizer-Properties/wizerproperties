@@ -176,7 +176,8 @@ footer{
 }
 
 #profile-setting,
-#create_property{
+#create_property,
+#create_building{
     padding: 45px 0;
 }
 
@@ -230,7 +231,8 @@ footer{
     color: #212529 !important;
 }
 
-#create_property .profileCompanyDeatils{
+#create_property .profileCompanyDeatils,
+#create_building .profileCompanyDeatils{
     height: 200px !important;
 }
 
@@ -296,6 +298,31 @@ footer{
     text-align: center;
     font-size: 26px;
     margin-bottom: 20px;
+}
+
+.form-check{
+    margin-bottom: 20px;
+}
+
+#create_building .form-check{
+    margin-bottom: 30px;
+}
+
+#create_building .profileCompanyDeatils {
+    height: 160px !important;
+}
+
+#create_building .authFormDiv.textarea {
+    margin-bottom: 185px !important;
+}
+
+.form-check-input{
+    box-shadow: none !important;
+}
+
+.form-check-input:checked {
+    background-color: #ffd350 !important;
+    border-color: #ffd350 !important;
 }
 
 @media screen and (max-width: 768px) {
