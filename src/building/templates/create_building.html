@@ -11,239 +11,265 @@
 <section id="create_building">
     <div class="container">
 
-        
+
         <div class="light-form-box">
-            <h1 class="form-title"> Create Building </h1>
-            
-            <div class="authForm">
-                <div class="success-message">
-                    <!-- <span class="authSuccessMessage"></span> -->
-                </div>
-                <div class="error-message">
-                    <!-- <span class="authErrorMessage"></span> -->
-                </div>
+            <h1 class="form-title">Create Building</h1>
 
-                <div class="authFormDiv">
-                    <!-- <span class="authErrorMessage">Message</span> -->
-                    <input name="title" type="text" class="authInput" placeholder="Title" required>
-                    <div class="authlabelline authcompleteProfileLabe">Title</div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="authFormDiv">
-                            <!-- <span class="authErrorMessage">Message</span> -->
-                            <input name="price" type="text" class="authInput" placeholder="Price" required>
-                            <div class="authlabelline authcompleteProfileLabe">Price</div>
-                        </div>
+            <form id="building-create-form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="authForm">
+                    <div class="success-message">
+                        <!-- <span class="authSuccessMessage"></span> -->
                     </div>
-                    <div class="col-lg-6">
-                        <div class="authFormDiv">
-                            <!-- <span class="authErrorMessage">Message</span> -->
-                            <select name="building" type="text" class="authInput authSelectInput" placeholder="Building" required>
-                                <option value="">........</option>
-                                <option value="1">Building One</option>
-                                <option value="2">Building Two</option>
-                            </select>
-                            <div class="authlabelline authcompleteProfileLabe">Building</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="authFormDiv">
-                            <!-- <span class="authErrorMessage">Message</span> -->
-                            <input name="total_unit" type="text" class="authInput" placeholder="Total Units For Sale" required>
-                            <div class="authlabelline authcompleteProfileLabe">Total Units For Sale</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="authFormDiv">
-                            <!-- <span class="authErrorMessage">Message</span> -->
-                            <input name="construction_year" type="text" class="authInput" placeholder="Construction Year" required>
-                            <div class="authlabelline authcompleteProfileLabe">Construction Year</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="authFormDiv">
-                    <!-- <span class="authErrorMessage">Message</span> -->
-                    <input name="address" type="text" class="authInput" placeholder="Address" required>
-                    <div class="authlabelline authcompleteProfileLabe">Address</div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="authFormDiv">
-                            <!-- <span class="authErrorMessage">Message</span> -->
-                            <input name="project_area" type="text" class="authInput" placeholder="Project Total Area" required>
-                            <div class="authlabelline authcompleteProfileLabe">Project Total Area</div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="authFormDiv">
-                            <!-- <span class="authErrorMessage">Message</span> -->
-                            <input name="total_floor" type="text" class="authInput" placeholder="Total Floor" required>
-                            <div class="authlabelline authcompleteProfileLabe">Total Floor</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-6">
-
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="lake_river_view">
-                                    <label class="form-check-label" for="lake_river_view">
-                                      Have Lake/River View
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="sauna">
-                                    <label class="form-check-label" for="sauna">
-                                      Have Sauna
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="guard_house">
-                                    <label class="form-check-label" for="guard_house">
-                                      Have Guard House
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="sky_lounge">
-                                    <label class="form-check-label" for="sky_lounge">
-                                      Have Sky Lounge
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="fitness_area">
-                                    <label class="form-check-label" for="fitness_area">
-                                      Have Fitness Area
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="grocery">
-                                    <label class="form-check-label" for="grocery">
-                                      Have Grocery
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        
+                    <div class="error-message">
+                        <!-- <span class="authErrorMessage"></span> -->
                     </div>
 
-                    <div class="col-lg-6">
-                        <div class="authFormDiv textarea">
-                            <!-- <span class="authErrorMessage">Message</span> -->
-                            <textarea name="description" type="text" class="authInput profileCompanyDeatils"
-                                placeholder="Description" required></textarea>
-                            <div class="authlabelline authcompleteProfileLabe">Description</div>
-                        </div>
+                    <div class="authFormDiv">
+                        <!-- <span class="authErrorMessage">Message</span> -->
+                        <input name="title" type="text" class="authInput" placeholder="Title" required>
+                        <div class="authlabelline authcompleteProfileLabe">Title</div>
                     </div>
-                </div>
 
-
-                <div class="row">
-
-                    <div class="col-lg-6">
-                        <div class="uploaded-file-with-view">
+                    <div class="row">
+                        <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="building_images" type="file" accept="image/*" class="authInput authFile" required multiple>
-                                <div class="fileName"> Upload Building Images </div>
-                            </div>
-    
-                            <div class="uploaded-file-view-area">
-                                <!-- dom area -->
+                                <input name="price" type="number" class="authInput" placeholder="Price" required>
+                                <div class="authlabelline authcompleteProfileLabe">Price</div>
                             </div>
                         </div>
-                    </div>
-
-
-                    <div class="col-lg-6">
-                        <div class="uploaded-file-with-view">
+                        <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="unit_floor_plan" type="file" accept="image/*" class="authInput authFile" required multiple>
-                                <div class="fileName"> Upload Unit Floor Plan Images </div>
-                            </div>
-    
-                            <div class="uploaded-file-view-area">
-                                <!-- dom area -->
+                                <select name="type" type="text" class="authInput authSelectInput"
+                                    placeholder="Select Building Type" required>
+                                    <option value="">........</option>
+                                    <option value="condos">Condos</option>
+                                    <option value="house">House</option>
+                                </select>
+                                <div class="authlabelline authcompleteProfileLabe">Type</div>
                             </div>
                         </div>
                     </div>
 
-
-                    <div class="col-lg-6">
-                        <div class="uploaded-file-with-view">
+                    <div class="row">
+                        <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="floor_plan" type="file" accept="image/*" class="authInput authFile" required multiple>
-                                <div class="fileName"> Upload Building Floor Plan Images </div>
-                            </div>
-    
-                            <div class="uploaded-file-view-area">
-                                <!-- dom area -->
+                                <input name="total_units_for_sale" type="number" class="authInput"
+                                    placeholder="Total Units For Sale" required>
+                                <div class="authlabelline authcompleteProfileLabe">Total Units For Sale</div>
                             </div>
                         </div>
-                    </div>
-
-
-                    <div class="col-lg-6">
-                        <div class="uploaded-file-with-view">
+                        <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="master_plan" type="file" accept="image/*" class="authInput authFile" required multiple>
-                                <div class="fileName"> Upload Master Plan Images </div>
-                            </div>
-    
-                            <div class="uploaded-file-view-area">
-                                <!-- dom area -->
+                                <input name="construction_year" type="number" class="authInput"
+                                    placeholder="Enter Year (1930 - current year)" min="1930" required>
+                                <div class="authlabelline authcompleteProfileLabe">Construction Year (1930 -
+                                    currentyear)</div>
                             </div>
                         </div>
                     </div>
 
+                    <div class="authFormDiv">
+                        <!-- <span class="authErrorMessage">Message</span> -->
+                        <input name="address" type="text" class="authInput" placeholder="Address" required>
+                        <div class="authlabelline authcompleteProfileLabe">Address</div>
+                    </div>
 
-                    <div class="col-lg-6">
-                        <div class="uploaded-file-with-view">
+                    <div class="row">
+                        <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="master_plan" type="file" accept="video/*" class="authInput authFile" required>
-                                <div class="fileName"> Upload Video </div>
+                                <input name="project_total_area" type="number" class="authInput"
+                                    placeholder="Project Total Area" required>
+                                <div class="authlabelline authcompleteProfileLabe">Project Total Area</div>
                             </div>
-    
-                            <div class="uploaded-file-view-area">
-                                <!-- dom area -->
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="authFormDiv">
+                                <!-- <span class="authErrorMessage">Message</span> -->
+                                <input name="total_floors" type="number" class="authInput" placeholder="Total Floor"
+                                    required>
+                                <div class="authlabelline authcompleteProfileLabe">Total Floor</div>
                             </div>
                         </div>
                     </div>
 
+                    <div class="row">
+                        <div class="col-lg-6">
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input name="have_lake_or_river_view" class="form-check-input" type="checkbox"
+                                            value="" id="lake_river_view">
+                                        <label class="form-check-label" for="lake_river_view">
+                                            Have Lake/River View
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input name="have_sauna" class="form-check-input" type="checkbox" value=""
+                                            id="sauna">
+                                        <label class="form-check-label" for="sauna">
+                                            Have Sauna
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input name="have_guard_house" class="form-check-input" type="checkbox" value=""
+                                            id="guard_house">
+                                        <label class="form-check-label" for="guard_house">
+                                            Have Guard House
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input name="have_sky_lounge" class="form-check-input" type="checkbox" value=""
+                                            id="sky_lounge">
+                                        <label class="form-check-label" for="sky_lounge">
+                                            Have Sky Lounge
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input name="have_fitness_area" class="form-check-input" type="checkbox"
+                                            value="" id="fitness_area">
+                                        <label class="form-check-label" for="fitness_area">
+                                            Have Fitness Area
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input name="have_grocery" class="form-check-input" type="checkbox" value=""
+                                            id="grocery">
+                                        <label class="form-check-label" for="grocery">
+                                            Have Grocery
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="authFormDiv textarea">
+                                <!-- <span class="authErrorMessage">Message</span> -->
+                                <textarea name="description" type="text" class="authInput profileCompanyDeatils"
+                                    placeholder="Description" required></textarea>
+                                <div class="authlabelline authcompleteProfileLabe">Description</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="col-lg-6">
+                            <div class="uploaded-file-with-view">
+                                <div class="authFormDiv">
+                                    <!-- <span class="authErrorMessage">Message</span> -->
+                                    <input name="images" type="file" accept="image/*" class="authInput authFile"
+                                        required multiple>
+                                    <div class="fileName"> Upload Building Images </div>
+                                </div>
+
+                                <div class="uploaded-file-view-area">
+                                    <!-- dom area -->
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-6">
+                            <div class="uploaded-file-with-view">
+                                <div class="authFormDiv">
+                                    <!-- <span class="authErrorMessage">Message</span> -->
+                                    <input name="unit_floor_plans" type="file" accept="image/*"
+                                        class="authInput authFile" required multiple>
+                                    <div class="fileName"> Upload Unit Floor Plan Images </div>
+                                </div>
+
+                                <div class="uploaded-file-view-area">
+                                    <!-- dom area -->
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-6">
+                            <div class="uploaded-file-with-view">
+                                <div class="authFormDiv">
+                                    <!-- <span class="authErrorMessage">Message</span> -->
+                                    <input name="floor_plans" type="file" accept="image/*" class="authInput authFile"
+                                        required multiple>
+                                    <div class="fileName"> Upload Building Floor Plan Images </div>
+                                </div>
+
+                                <div class="uploaded-file-view-area">
+                                    <!-- dom area -->
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-6">
+                            <div class="uploaded-file-with-view">
+                                <div class="authFormDiv">
+                                    <!-- <span class="authErrorMessage">Message</span> -->
+                                    <input name="master_plans" type="file" accept="image/*" class="authInput authFile"
+                                        required multiple>
+                                    <div class="fileName"> Upload Master Plan Images </div>
+                                </div>
+
+                                <div class="uploaded-file-view-area">
+                                    <!-- dom area -->
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-6">
+                            <div class="uploaded-file-with-view">
+                                <div class="authFormDiv">
+                                    <!-- <span class="authErrorMessage">Message</span> -->
+                                    <input name="videos" type="file" accept="video/*" class="authInput authFile"
+                                        required>
+                                    <div class="fileName"> Upload Video </div>
+                                </div>
+
+                                <div class="uploaded-file-view-area">
+                                    <!-- dom area -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <button type="submit" class="authButton completeProfileButton" id="create-property">
+                        <span id="createBuildingButtonText">Complete Profile</span>
+                        <div id="loadingSpinner" class="spinner-border" role="status" style="display: none;">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </button>
                 </div>
-
-                
-                <button type="submit" class="authButton completeProfileButton" id="create-property">
-                    <span id="loginButtonText">Complete Profile</span>
-                    <div id="loadingSpinner" class="spinner-border" role="status" style="display: none;">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                </button>
-            </div>
+            </form>
         </div>
     </div>
 </section>
 {% endblock %}
+{% block extend_script %}
+<script type="text/javascript">
+    var createBuildingUrl = "{% url 'building:api:create' %}"
+</script>
+<script src="{% static 'js/building/create_building.js' %}?v=1.00"></script>
+{% endblock extend_script %}

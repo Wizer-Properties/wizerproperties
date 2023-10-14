@@ -3,8 +3,8 @@ from .views import BuildingViewSet
 
 
 urlpatterns = [
-    # path("list/", BuildingViewSet.as_view({"get": "list"}), name="list"),
-    # path("details/<int:pk>/", BuildingViewSet.as_view({"get": "retrieve"}), name="details"),
+    path("list/", BuildingViewSet.as_view({"get": "list"}), name="list"),
+    path("details/<int:pk>/", BuildingViewSet.as_view({"get": "retrieve"}), name="details"),
     path("create/", BuildingViewSet.as_view({"post": "create"}), name="create"),
     path(
         "update/<int:pk>/",
