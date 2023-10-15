@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
-from utils.general_data import BUILDING_TYPES, BUILDING_MEDIA_TYPES
+from utils.general_data import BUILDING_TYPES, BUILDING_MEDIA_TYPES, ALLOWED_IMAGE_EXTENSIONS, ALLOWED_VIDEO_EXTENSIONS
 from utils.general_func import validate_media_file_extension
 from core.models import TimestampedModel
 
@@ -42,8 +42,6 @@ class BuildingMedia(TimestampedModel):
             return "building/images/{}".format(filename)
         elif self.type == "video":
             return "building/videos/{}".format(filename)
-        else:
-            raise ValidationError("Invalid media type")
 
     type = models.CharField(max_length=100, null=True, choices=BUILDING_MEDIA_TYPES)
     file = models.FileField(null=True, upload_to=upload_to)
@@ -53,30 +51,18 @@ class BuildingMedia(TimestampedModel):
         return str(self.id)
 
     def clean(self):
+        allowed_extensions = None
         if self.type in [
             "image",
             "floor_plan",
             "unit_floor_plan",
             "master_plan",
         ]:
-            allowed_image_extensions = [
-                "jpg",
-                "jpeg",
-                "png",
-                "gif",
-                "bmp",
-                "tiff",
-                "webp",
-                "svg",
-                "heif",
-                "bat",
-                "raw",
-                "indd",
-                "ai",
-            ]
-            validate_media_file_extension(self.file, allowed_image_extensions)
+            allowed_extensions = ALLOWED_IMAGE_EXTENSIONS
         elif self.type == "video":
-            allowed_video_extensions = ["mp4", "avi", "mov", "wmv", "mkv", "flv"]
-            validate_media_file_extension(self.file, allowed_video_extensions)
+            allowed_extensions = ALLOWED_VIDEO_EXTENSIONS
+
+        if allowed_extensions:
+            validate_media_file_extension(self.file, allowed_extensions)
         else:
             raise ValidationError("Invalid media type")

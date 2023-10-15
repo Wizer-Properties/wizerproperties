@@ -13,3 +13,27 @@ BUILDING_MEDIA_TYPES = (
     ("master_plan", "Master plan"),
     ("video", "Video"),
 )
+
+PROPERTY_MEDIA_TYPES = (
+    ("image", "Image"),
+    ("unit_floor_plan", "Unit floor plan"),
+    ("video", "Video"),
+)
+
+ALLOWED_IMAGE_EXTENSIONS = [
+    "jpg",
+    "jpeg",
+    "png",
+    "gif",
+    "bmp",
+    "tiff",
+    "webp",
+    "svg",
+    "heif",
+    "bat",
+    "raw",
+    "indd",
+    "ai",
+]
+
+ALLOWED_VIDEO_EXTENSIONS = ["mp4", "avi", "mov", "wmv", "mkv", "flv"]
