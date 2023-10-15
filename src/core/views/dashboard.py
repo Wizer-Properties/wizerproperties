@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from building.models import Building
 
 
 @login_required
@@ -17,7 +18,8 @@ def dashboard(request):
 
 @login_required
 def developer_or_agent_dashboard(request):
-    return render(request, "core/developer_or_agent_dashboard.html")
+    buildings = Building.objects.filter(created_by=request.user)
+    return render(request, "core/developer_or_agent_dashboard.html", {"buildings": buildings})
 
 
 @login_required

@@ -25,6 +25,7 @@ class Building(TimestampedModel):
     have_grocery = models.BooleanField(default=False)
     have_fitness_area = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    created_by = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return str(self.title) if self.title else str(self.id)

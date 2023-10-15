@@ -64,45 +64,28 @@ class BuildingSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         request = self.context.get("request")
-        images = request.FILES.getlist("images")
-        floor_plans = request.FILES.getlist("floor_plans")
-        unit_floor_plans = request.FILES.getlist("unit_floor_plans")
-        master_plans = request.FILES.getlist("master_plans")
-        videos = request.FILES.getlist("videos")
+        media_files_data = {
+            "image": request.FILES.getlist("images"),
+            "floor_plan": request.FILES.getlist("floor_plans"),
+            "unit_floor_plan": request.FILES.getlist("unit_floor_plans"),
+            "master_plan": request.FILES.getlist("master_plans"),
+            "video": request.FILES.getlist("videos"),
+        }
 
         # Create BuildingMedia objects for different media types
         media_files = []
-        for image_file in images:
-            media_file = BuildingMedia(type="image", file=image_file)
-            media_file.save()
-            media_files.append(media_file)
-
-        for floor_plan_file in floor_plans:
-            media_file = BuildingMedia(type="floor_plan", file=floor_plan_file)
-            media_file.save()
-            media_files.append(media_file)
-
-        for unit_floor_plan_file in unit_floor_plans:
-            media_file = BuildingMedia(type="unit_floor_plan", file=unit_floor_plan_file)
-            media_file.save()
-            media_files.append(media_file)
-
-        for master_plan_file in master_plans:
-            media_file = BuildingMedia(type="master_plan", file=master_plan_file)
-            media_file.save()
-            media_files.append(media_file)
-
-        for video_file in videos:
-            media_file = BuildingMedia(type="video", file=video_file)
-            media_file.save()
-            media_files.append(media_file)
+        for media_type, files in media_files_data.items():
+            for file in files:
+                media_file = BuildingMedia(type=media_type, file=file)
+                media_file.save()
+                media_files.append(media_file)
 
         # Remove unwanted attributes from validated_data for 'Building' instance
         skip_attributes = ["images", "floor_plans", "unit_floor_plans", "master_plans", "videos"]
         for attr in skip_attributes:
             validated_data.pop(attr, None)
 
-        building = Building.objects.create(**validated_data)
+        building = Building.objects.create(**validated_data, created_by=request.user)
         building.media_files.set(media_files)
 
         return building
