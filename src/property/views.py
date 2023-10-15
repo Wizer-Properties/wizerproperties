@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from building.models import Building
 
 
 @login_required
 def create_property(request):
-    return render(request, "create_property.html")
+    buildings = Building.objects.filter(created_by=request.user)
+    return render(request, "create_property.html", {"buildings": buildings})
 
 
 @login_required

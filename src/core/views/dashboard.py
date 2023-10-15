@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from building.models import Building
+from property.models import Property
 
 
 @login_required
@@ -18,8 +19,10 @@ def dashboard(request):
 
 @login_required
 def developer_or_agent_dashboard(request):
-    buildings = Building.objects.filter(created_by=request.user)
-    return render(request, "core/developer_or_agent_dashboard.html", {"buildings": buildings})
+    buildings = Building.objects.filter(created_by=request.user).order_by("-created_at")
+    properties = Property.objects.filter(created_by=request.user).order_by("-created_at")
+    context = {"buildings": buildings, "properties": properties}
+    return render(request, "core/developer_or_agent_dashboard.html", context)
 
 
 @login_required
