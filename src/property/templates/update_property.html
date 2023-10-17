@@ -3,7 +3,7 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Create property</title>
+<title>Update property</title>
 <link rel="stylesheet" href="{% static '/css/auth.css' %}" />
 {% endblock extend_head %}
 
@@ -15,8 +15,8 @@
 
 
         <div class="light-form-box">
-            <h1 class="form-title"> Create Property </h1>
-            <form id="property-create-form" method="post" enctype="multipart/form-data">
+            <h1 class="form-title"> Update Property </h1>
+            <form id="property-update-form" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="authForm">
                     <div class="success-message">
@@ -28,7 +28,8 @@
 
                     <div class="authFormDiv">
                         <!-- <span class="authErrorMessage">Message</span> -->
-                        <input name="title" type="text" class="authInput" placeholder="Title" required>
+                        <input name="title" type="text" class="authInput" placeholder="Title"
+                            value="{{ property.title }}" required>
                         <div class="authlabelline authcompleteProfileLabe">Title</div>
                     </div>
 
@@ -36,7 +37,8 @@
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="price" type="number" class="authInput" placeholder="Price" required>
+                                <input name="price" type="number" class="authInput" placeholder="Price"
+                                    value="{{ property.price }}" required>
                                 <div class="authlabelline authcompleteProfileLabe">Price</div>
                             </div>
                         </div>
@@ -45,9 +47,12 @@
                                 <!-- <span class="authErrorMessage">Message</span> -->
                                 <select name="building" type="text" class="authInput authSelectInput"
                                     placeholder="Building" required>
+
                                     <option value="">........</option>
                                     {% for building in buildings %}
-                                    <option value="{{ building.id }}">{{ building.title }}</option>
+                                    <option value="{{ building.id }}" {% if building.id == property.building.id %}selected{% endif %}>
+                                        {{ building.title }}
+                                    </option>
                                     {% endfor %}
                                 </select>
                                 <div class="authlabelline authcompleteProfileLabe">Building</div>
@@ -59,14 +64,16 @@
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="unit_id" type="text" class="authInput" placeholder="Unit ID" required>
+                                <input name="unit_id" type="text" class="authInput" placeholder="Unit ID"
+                                    value="{{ property.unit_id }}" required>
                                 <div class="authlabelline authcompleteProfileLabe">Unit ID</div>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="floor_number" type="text" class="authInput" placeholder="Floor" required>
+                                <input name="floor_number" type="text" class="authInput" placeholder="Floor"
+                                    value="{{ property.floor_number }}" required>
                                 <div class="authlabelline authcompleteProfileLabe">Floor</div>
                             </div>
                         </div>
@@ -76,7 +83,8 @@
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="unit_area" type="number" class="authInput" placeholder="Unit Area" required>
+                                <input name="unit_area" type="number" class="authInput" placeholder="Unit Area"
+                                    value="{{ property.unit_area }}" required>
                                 <div class="authlabelline authcompleteProfileLabe">Unit Area</div>
                             </div>
                         </div>
@@ -84,7 +92,7 @@
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
                                 <input name="number_of_bathroom" type="number" class="authInput" placeholder="Bathroom"
-                                    required>
+                                    value="{{ property.number_of_bathroom }}" required>
                                 <div class="authlabelline authcompleteProfileLabe">Bathroom</div>
                             </div>
                         </div>
@@ -95,21 +103,21 @@
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
                                 <input name="number_of_bedroom" type="number" class="authInput" placeholder="Bedroom"
-                                    required>
+                                    value="{{ property.number_of_bedroom }}" required>
                                 <div class="authlabelline authcompleteProfileLabe">Bedroom</div>
                             </div>
 
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
                                 <input name="number_of_balcony" type="number" class="authInput" placeholder="Balcony"
-                                    required>
+                                    value="{{ property.number_of_balcony }}" required>
                                 <div class="authlabelline authcompleteProfileLabe">Balcony</div>
                             </div>
 
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="number_of_car_parking" type="number" class="authInput" placeholder="Car Park"
-                                    required>
+                                <input name="number_of_car_parking" type="number" class="authInput"
+                                    placeholder="Car Park" value="{{ property.number_of_car_parking }}" required>
                                 <div class="authlabelline authcompleteProfileLabe">Car Park</div>
                             </div>
                         </div>
@@ -117,7 +125,7 @@
                             <div class="authFormDiv textarea">
                                 <!-- <span class="authErrorMessage">Message</span> -->
                                 <textarea name="description" type="text" class="authInput profileCompanyDeatils"
-                                    placeholder="Description" required></textarea>
+                                    placeholder="Description" required>{{ property.description }}</textarea>
                                 <div class="authlabelline authcompleteProfileLabe">Description</div>
                             </div>
                         </div>
@@ -130,12 +138,20 @@
                                 <div class="authFormDiv">
                                     <!-- <span class="authErrorMessage">Message</span> -->
                                     <input name="images" type="file" accept="image/*" class="authInput authFile"
-                                        required multiple>
+                                        multiple>
                                     <div class="fileName"> Upload Property Images </div>
                                 </div>
 
                                 <div class="uploaded-file-view-area">
-                                    <!-- dom area -->
+                                    {% for image in images %}
+                                    {% if image.file %}
+                                    <div class="uploaded-file-view-img">
+                                        <button class="remove-image" data-id="{{ image.id }}"><i
+                                                class="bi bi-x"></i></button>
+                                        <img src="{{ image.file.url }}" alt="Property Image">
+                                    </div>
+                                    {% endif %}
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -146,12 +162,20 @@
                                 <div class="authFormDiv">
                                     <!-- <span class="authErrorMessage">Message</span> -->
                                     <input name="unit_floor_plans" type="file" accept="image/*"
-                                        class="authInput authFile" required multiple>
+                                        class="authInput authFile" multiple>
                                     <div class="fileName"> Upload Unit Floor Plan Images </div>
                                 </div>
 
                                 <div class="uploaded-file-view-area">
-                                    <!-- dom area -->
+                                    {% for unit_floor_plan in unit_floor_plans %}
+                                    {% if unit_floor_plan.file %}
+                                    <div class="uploaded-file-view-img">
+                                        <button class="remove-image" data-id="{{ unit_floor_plan.id }}"><i
+                                                class="bi bi-x"></i></button>
+                                        <img src="{{ unit_floor_plan.file.url }}" alt="Property Image">
+                                    </div>
+                                    {% endif %}
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -161,13 +185,16 @@
                             <div class="uploaded-file-with-view">
                                 <div class="authFormDiv">
                                     <!-- <span class="authErrorMessage">Message</span> -->
-                                    <input name="videos" type="file" accept="video/*" class="authInput authFile"
-                                        required>
-                                    <div class="fileName"> Upload Video </div>
+                                    <input name="videos" type="file" accept="video/*" class="authInput authFile">
+                                    <div class="fileName">Upload video</div>
                                 </div>
 
                                 <div class="uploaded-file-view-area">
-                                    <!-- dom area -->
+                                    {% for video in videos %}
+                                    {% if video.file %}
+                                    <a href="{{ video.file.url }}" alt="Property Video">{{ video.file.url }}</a>
+                                    {% endif %}
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -176,7 +203,7 @@
 
 
                     <button type="submit" class="authButton completeProfileButton" id="create-property">
-                        <span id="createPropertyButtonText">Create Property</span>
+                        <span id="updatePropertyButtonText">Update Property</span>
                         <div id="loadingSpinner" class="spinner-border" role="status" style="display: none;">
                             <span class="sr-only">Loading...</span>
                         </div>
@@ -190,7 +217,7 @@
 {% endblock %}
 {% block extend_script %}
 <script type="text/javascript">
-    var createPropertyAPIUrl = "{% url 'property:api:create' %}"
+    var updatePropertyAPIUrl = "{% url 'property:api:update' property.id %}"
 </script>
-<script src="{% static 'js/property/create_property.js' %}?v=1.00"></script>
+<script src="{% static 'js/property/update_property.js' %}?v=1.00"></script>
 {% endblock extend_script %}

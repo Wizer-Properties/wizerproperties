@@ -26,8 +26,6 @@ $(document).ready(function(){
         _table.parent().css({
             'min-height' : total_height + 70
         });
-    
-        console.log(total_height)
     };
 
     table_height($("#properties-table"));

@@ -3,7 +3,7 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Create building</title>
+<title>Update building</title>
 <link rel="stylesheet" href="{% static '/css/auth.css' %}" />
 {% endblock extend_head %}
 
@@ -13,9 +13,9 @@
 
 
         <div class="light-form-box">
-            <h1 class="form-title">Create Building</h1>
+            <h1 class="form-title">Update Building</h1>
 
-            <form id="building-create-form" method="post" enctype="multipart/form-data">
+            <form id="building-update-form" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="authForm">
                     <div class="success-message">
@@ -27,7 +27,8 @@
 
                     <div class="authFormDiv">
                         <!-- <span class="authErrorMessage">Message</span> -->
-                        <input name="title" type="text" class="authInput" placeholder="Title" required>
+                        <input name="title" type="text" class="authInput" placeholder="Title"
+                            value="{{ building.title }}" required>
                         <div class="authlabelline authcompleteProfileLabe">Title</div>
                     </div>
 
@@ -35,7 +36,8 @@
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="price" type="number" class="authInput" placeholder="Price" required>
+                                <input name="price" type="number" class="authInput" placeholder="Price"
+                                    value="{{ building.price }}" required>
                                 <div class="authlabelline authcompleteProfileLabe">Price</div>
                             </div>
                         </div>
@@ -45,8 +47,12 @@
                                 <select name="type" type="text" class="authInput authSelectInput"
                                     placeholder="Select Building Type" required>
                                     <option value="">........</option>
-                                    <option value="condos">Condos</option>
-                                    <option value="house">House</option>
+                                    <option value="condos" {% if building.type == 'condos' %}selected{% endif %}>
+                                        Condos
+                                    </option>
+                                    <option value="house" {% if building.type == 'house' %}selected{% endif %}>
+                                        House
+                                    </option>
                                 </select>
                                 <div class="authlabelline authcompleteProfileLabe">Type</div>
                             </div>
@@ -58,7 +64,8 @@
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
                                 <input name="total_units_for_sale" type="number" class="authInput"
-                                    placeholder="Total Units For Sale" required>
+                                    placeholder="Total Units For Sale" value="{{ building.total_units_for_sale }}"
+                                    required>
                                 <div class="authlabelline authcompleteProfileLabe">Total Units For Sale</div>
                             </div>
                         </div>
@@ -66,7 +73,8 @@
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
                                 <input name="construction_year" type="number" class="authInput"
-                                    placeholder="Enter Year (1930 - current year)" min="1930" required>
+                                    placeholder="Enter Year (1930 - current year)" min="1930"
+                                    value="{{ building.construction_year }}" required>
                                 <div class="authlabelline authcompleteProfileLabe">Construction Year (1930 -
                                     currentyear)</div>
                             </div>
@@ -75,7 +83,8 @@
 
                     <div class="authFormDiv">
                         <!-- <span class="authErrorMessage">Message</span> -->
-                        <input name="address" type="text" class="authInput" placeholder="Address" required>
+                        <input name="address" type="text" class="authInput" placeholder="Address"
+                            value="{{ building.address }}" required>
                         <div class="authlabelline authcompleteProfileLabe">Address</div>
                     </div>
 
@@ -84,7 +93,7 @@
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
                                 <input name="project_total_area" type="number" class="authInput"
-                                    placeholder="Project Total Area" required>
+                                    placeholder="Project Total Area" value="{{ building.project_total_area }}" required>
                                 <div class="authlabelline authcompleteProfileLabe">Project Total Area</div>
                             </div>
                         </div>
@@ -92,7 +101,7 @@
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
                                 <input name="total_floors" type="number" class="authInput" placeholder="Total Floor"
-                                    required>
+                                    value="{{ building.total_floors }}" required>
                                 <div class="authlabelline authcompleteProfileLabe">Total Floor</div>
                             </div>
                         </div>
@@ -105,7 +114,7 @@
                                 <div class="col-6">
                                     <div class="form-check">
                                         <input name="have_lake_or_river_view" class="form-check-input" type="checkbox"
-                                            value="" id="lake_river_view">
+                                            id="lake_river_view" {% if building.have_lake_or_river_view %}checked{% endif %}>
                                         <label class="form-check-label" for="lake_river_view">
                                             Have Lake/River View
                                         </label>
@@ -113,8 +122,8 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="form-check">
-                                        <input name="have_sauna" class="form-check-input" type="checkbox" value=""
-                                            id="sauna">
+                                        <input name="have_sauna" class="form-check-input" type="checkbox" id="sauna" 
+                                        {% if building.have_sauna %}checked{% endif %}>
                                         <label class="form-check-label" for="sauna">
                                             Have Sauna
                                         </label>
@@ -122,8 +131,8 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="form-check">
-                                        <input name="have_guard_house" class="form-check-input" type="checkbox" value=""
-                                            id="guard_house">
+                                        <input name="have_guard_house" class="form-check-input" type="checkbox"
+                                            id="guard_house" {% if building.have_guard_house %}checked{% endif %}>
                                         <label class="form-check-label" for="guard_house">
                                             Have Guard House
                                         </label>
@@ -131,8 +140,8 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="form-check">
-                                        <input name="have_sky_lounge" class="form-check-input" type="checkbox" value=""
-                                            id="sky_lounge">
+                                        <input name="have_sky_lounge" class="form-check-input" type="checkbox"
+                                            id="sky_lounge" {% if building.have_sky_lounge %}checked{% endif %}>
                                         <label class="form-check-label" for="sky_lounge">
                                             Have Sky Lounge
                                         </label>
@@ -141,7 +150,7 @@
                                 <div class="col-6">
                                     <div class="form-check">
                                         <input name="have_fitness_area" class="form-check-input" type="checkbox"
-                                            value="" id="fitness_area">
+                                            id="fitness_area" {% if building.have_fitness_area %}checked{% endif %}>
                                         <label class="form-check-label" for="fitness_area">
                                             Have Fitness Area
                                         </label>
@@ -149,8 +158,8 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="form-check">
-                                        <input name="have_grocery" class="form-check-input" type="checkbox" value=""
-                                            id="grocery">
+                                        <input name="have_grocery" class="form-check-input" type="checkbox" id="grocery"
+                                            {% if building.have_grocery %}checked{% endif %}>
                                         <label class="form-check-label" for="grocery">
                                             Have Grocery
                                         </label>
@@ -164,7 +173,7 @@
                             <div class="authFormDiv textarea">
                                 <!-- <span class="authErrorMessage">Message</span> -->
                                 <textarea name="description" type="text" class="authInput profileCompanyDeatils"
-                                    placeholder="Description" required></textarea>
+                                    placeholder="Description" required>{{ building.description }}</textarea>
                                 <div class="authlabelline authcompleteProfileLabe">Description</div>
                             </div>
                         </div>
@@ -178,12 +187,20 @@
                                 <div class="authFormDiv">
                                     <!-- <span class="authErrorMessage">Message</span> -->
                                     <input name="images" type="file" accept="image/*" class="authInput authFile"
-                                        required multiple>
+                                        multiple>
                                     <div class="fileName"> Upload Building Images </div>
                                 </div>
 
                                 <div class="uploaded-file-view-area">
-                                    <!-- dom area -->
+                                    {% for image in images %}
+                                    {% if image.file %}
+                                    <div class="uploaded-file-view-img">
+                                        <button class="remove-image" data-id="{{ image.id }}"><i
+                                                class="bi bi-x"></i></button>
+                                        <img src="{{ image.file.url }}" alt="Building Image">
+                                    </div>
+                                    {% endif %}
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -194,12 +211,20 @@
                                 <div class="authFormDiv">
                                     <!-- <span class="authErrorMessage">Message</span> -->
                                     <input name="unit_floor_plans" type="file" accept="image/*"
-                                        class="authInput authFile" required multiple>
+                                        class="authInput authFile" multiple>
                                     <div class="fileName"> Upload Unit Floor Plan Images </div>
                                 </div>
 
                                 <div class="uploaded-file-view-area">
-                                    <!-- dom area -->
+                                    {% for unit_floor_plan in unit_floor_plans %}
+                                    {% if unit_floor_plan.file %}
+                                    <div class="uploaded-file-view-img">
+                                        <button class="remove-image" data-id="{{ unit_floor_plan.id }}"><i
+                                                class="bi bi-x"></i></button>
+                                        <img src="{{ unit_floor_plan.file.url }}" alt="Building Image">
+                                    </div>
+                                    {% endif %}
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -210,12 +235,20 @@
                                 <div class="authFormDiv">
                                     <!-- <span class="authErrorMessage">Message</span> -->
                                     <input name="floor_plans" type="file" accept="image/*" class="authInput authFile"
-                                        required multiple>
+                                        multiple>
                                     <div class="fileName"> Upload Building Floor Plan Images </div>
                                 </div>
 
                                 <div class="uploaded-file-view-area">
-                                    <!-- dom area -->
+                                    {% for floor_plan in floor_plans %}
+                                    {% if floor_plan.file %}
+                                    <div class="uploaded-file-view-img">
+                                        <button class="remove-image" data-id="{{ floor_plan.id }}"><i
+                                                class="bi bi-x"></i></button>
+                                        <img src="{{ floor_plan.file.url }}" alt="Building Image">
+                                    </div>
+                                    {% endif %}
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -226,12 +259,20 @@
                                 <div class="authFormDiv">
                                     <!-- <span class="authErrorMessage">Message</span> -->
                                     <input name="master_plans" type="file" accept="image/*" class="authInput authFile"
-                                        required multiple>
+                                        multiple>
                                     <div class="fileName"> Upload Master Plan Images </div>
                                 </div>
 
                                 <div class="uploaded-file-view-area">
-                                    <!-- dom area -->
+                                    {% for master_plan in master_plans %}
+                                    {% if master_plan.file %}
+                                    <div class="uploaded-file-view-img">
+                                        <button class="remove-image" data-id="{{ master_plan.id }}"><i
+                                                class="bi bi-x"></i></button>
+                                        <img src="{{ master_plan.file.url }}" alt="Building Image">
+                                    </div>
+                                    {% endif %}
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -241,13 +282,16 @@
                             <div class="uploaded-file-with-view">
                                 <div class="authFormDiv">
                                     <!-- <span class="authErrorMessage">Message</span> -->
-                                    <input name="videos" type="file" accept="video/*" class="authInput authFile"
-                                        required>
+                                    <input name="videos" type="file" accept="video/*" class="authInput authFile">
                                     <div class="fileName"> Upload Video </div>
                                 </div>
 
                                 <div class="uploaded-file-view-area">
-                                    <!-- dom area -->
+                                    {% for video in videos %}
+                                    {% if video.file %}
+                                    <a href="{{ video.file.url }}" alt="Building Video">{{ video.file.url }}</a>
+                                    {% endif %}
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -256,7 +300,7 @@
 
 
                     <button type="submit" class="authButton completeProfileButton" id="create-property">
-                        <span id="createBuildingButtonText">Complete Profile</span>
+                        <span id="updateBuildingButtonText">Complete Profile</span>
                         <div id="loadingSpinner" class="spinner-border" role="status" style="display: none;">
                             <span class="sr-only">Loading...</span>
                         </div>
@@ -269,7 +313,7 @@
 {% endblock %}
 {% block extend_script %}
 <script type="text/javascript">
-    var createBuildingAPIUrl = "{% url 'building:api:create' %}"
+    var updateBuildingAPIUrl = "{% url 'building:api:update' building.id %}"
 </script>
-<script src="{% static 'js/building/create_building.js' %}?v=1.00"></script>
+<script src="{% static 'js/building/update_building.js' %}?v=1.00"></script>
 {% endblock extend_script %}

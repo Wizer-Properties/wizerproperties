@@ -8,8 +8,6 @@ $(document).ready(function(){
                 var file = files[i];
                 var blobUrl = URL.createObjectURL(file);
 
-                console.log(files[i]?.type)
-
                 blobUrlsDom += '<div class="uploaded-file-view-img">'+
                                 '<button index="'+i+'"><i class="bi bi-x"></i></button>'+ 
                                 ' <img src="'+blobUrl+'" alt="">'+

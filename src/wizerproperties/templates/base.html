@@ -24,8 +24,8 @@
         {% if user.is_authenticated and user.is_complete_profile %}
 
         {% url 'user:profile_settings' as profile_settings_url %}
-        {% url 'building:create_building' as create_building_url %}
-        {% url 'property:create_property' as create_property_url %}
+        {% url 'building:create' as create_building_url %}
+        {% url 'property:create' as create_property_url %}
 
         <header class="wip-header">
             <div class="w-100 px-5">

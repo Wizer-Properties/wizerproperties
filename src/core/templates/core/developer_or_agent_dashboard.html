@@ -107,6 +107,7 @@
                                 <th>Construction Year</th>
                                 <th>Is Active</th>
                                 <th class="th-see-more"> </th>
+                                <th class="th-see-more"> </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -122,6 +123,9 @@
                                 <td>{{ building.total_floors }}</td>
                                 <td>{{ building.construction_year }}</td>
                                 <td>{{ building.is_active }}</td>
+                                <td>
+                                    <a class="link" href="{% url 'building:update' building.id %}">Edit</a>
+                                </td>
                                 <td>
                                     <a class="link" href="">See More</a>
                                 </td>
@@ -153,6 +157,7 @@
                                 <th>Car Parking</th>
                                 <th>Is Active</th>
                                 <th class="th-see-more"> </th>
+                                <th class="th-see-more"> </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -171,7 +176,10 @@
                                 <td>{{ property.number_of_car_parking }}</td>
                                 <td>{{ property.is_active }}</td>
                                 <td>
-                                    <a class="link" href=""> See More </a>
+                                    <a class="link" href="{% url 'property:update' property.id %}">Edit</a>
+                                </td>
+                                <td>
+                                    <a class="link" href="">See More</a>
                                 </td>
                             </tr>
                             {% endfor %}

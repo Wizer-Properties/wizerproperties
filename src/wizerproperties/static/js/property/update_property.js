@@ -1,52 +1,48 @@
 $(document).ready(function () {
-    var constructionYearInput = $("input[name='construction_year']");
-
-    // Change event listener to the construction year field
-    constructionYearInput.on("change", function () {
-        var enteredYear = $(this).val(); // Get the entered year value
-
-        // Validate the entered year against the specified range
-        if (enteredYear >= 1930 && enteredYear <= new Date().getFullYear()) {
-            $(".error-message").html("");
-        } else {
-            var errorMessages = "";
-            errorMessages +=
-                "<span class='authErrorMessage'>Invalid construction year entered. Please enter a year between 1930 and" +
-                new Date().getFullYear() +
-                "</span>";
-
-            // Invalid year, show an error message
-            $(".error-message").html(errorMessages);
+    var deletedImages = [];
+    $(".remove-image").click(function () {
+        var imageId = $(this).data("id");
+        if (imageId) {
+            deletedImages.push(imageId);
         }
     });
 
-    $("#building-create-form").submit(function (event) {
+    $("#property-update-form").submit(function (event) {
         event.preventDefault();
 
         var formData = new FormData(this);
 
-        var createBuildingButtonText = $("#createBuildingButtonText");
+        if (deletedImages.length > 0) {
+            for (var i = 0; i < deletedImages.length; i++) {
+                formData.append("deleted_images", deletedImages[i]);
+            }
+        }
+
+        var updatePropertyButtonText = $("#updatePropertyButtonText");
         var loadingSpinner = $("#loadingSpinner");
 
-        createBuildingButtonText.hide(); // Hide the text
+        updatePropertyButtonText.hide(); // Hide the text
         loadingSpinner.show(); // Show the spinner
 
         $.ajax({
-            url: createBuildingAPIUrl, // Replace with your API endpoint
-            type: "POST",
+            url: updatePropertyAPIUrl, // Replace with your API endpoint
+            type: "PUT",
             data: formData,
             processData: false,
             contentType: false,
+            headers: {
+                "X-CSRFToken": csrfToken,
+            },
             success: function (response, status, xhr) {
                 loadingSpinner.hide(); // Hide the spinner
-                createBuildingButtonText.show(); // Show the text
+                updatePropertyButtonText.show(); // Show the text
 
                 $(".error-message").html("");
 
                 var successMessages = "";
-                if (xhr.status == 201) {
+                if (xhr.status == 200) {
                     successMessages +=
-                        "<span class='authSuccessMessage'>Building created successfully</span>";
+                        "<span class='authSuccessMessage'>Property updated successfully</span>";
                 }
 
                 // Handle success (e.g., show a success message)
@@ -59,9 +55,10 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 loadingSpinner.hide(); // Hide the spinner
-                createBuildingButtonText.show(); // Show the text
+                updatePropertyButtonText.show(); // Show the text
 
                 $(".success-message").html("");
+
                 if (xhr.status === 400) {
                     // Bad Request (validation error)
                     var errorData = xhr.responseJSON;

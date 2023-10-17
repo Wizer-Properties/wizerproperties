@@ -4,10 +4,6 @@ $(document).ready(function () {
 
         var formData = new FormData(this);
 
-        for (const pair of formData.entries()) {
-            console.log(`${pair[0]}, ${pair[1]}`);
-        }
-
         var createPropertyButtonText = $("#createPropertyButtonText");
         var loadingSpinner = $("#loadingSpinner");
 
@@ -15,7 +11,7 @@ $(document).ready(function () {
         loadingSpinner.show(); // Show the spinner
 
         $.ajax({
-            url: createPropertyUrl, // Replace with your API endpoint
+            url: createPropertyAPIUrl, // Replace with your API endpoint
             type: "POST",
             data: formData,
             processData: false,
@@ -29,7 +25,7 @@ $(document).ready(function () {
                 var successMessages = "";
                 if (xhr.status == 201) {
                     successMessages +=
-                        "<span class='authSuccessMessage'>Building created successfully</span>";
+                        "<span class='authSuccessMessage'>Property created successfully</span>";
                 }
 
                 // Handle success (e.g., show a success message)

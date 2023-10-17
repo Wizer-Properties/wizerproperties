@@ -39,24 +39,28 @@ class PropertySerializer(serializers.ModelSerializer):
     # Validate that all fields are required and not blank
     def __init__(self, *args, **kwargs):
         super(PropertySerializer, self).__init__(*args, **kwargs)
+        self.request = self.context.get("request")
+
+        self.media_files_data = {
+            "image": self.request.FILES.getlist("images"),
+            "unit_floor_plan": self.request.FILES.getlist("unit_floor_plans"),
+            "video": self.request.FILES.getlist("videos"),
+        }
+
         for field_name, field in self.fields.items():
-            field.required = True
-            field.allow_null = False
-            field.allow_blank = False
+            if self.instance is not None and field_name in ["images", "unit_floor_plans", "videos"]:
+                field.required = False
+            else:
+                field.required = True
+                field.allow_null = False
+                field.allow_blank = False
 
         show_custom_error_message(self.fields)
 
     def create(self, validated_data):
-        request = self.context.get("request")
-        media_files_data = {
-            "image": request.FILES.getlist("images"),
-            "unit_floor_plan": request.FILES.getlist("unit_floor_plans"),
-            "video": request.FILES.getlist("videos"),
-        }
-
         # Create PropertyMedia objects for different media types
         media_files = []
-        for media_type, files in media_files_data.items():
+        for media_type, files in self.media_files_data.items():
             for file in files:
                 media_file = PropertyMedia(type=media_type, file=file)
                 media_file.save()
@@ -67,7 +71,34 @@ class PropertySerializer(serializers.ModelSerializer):
         for attr in skip_attributes:
             validated_data.pop(attr, None)
 
-        property = Property.objects.create(**validated_data, created_by=request.user)
+        property = Property.objects.create(**validated_data, created_by=self.request.user)
         property.media_files.set(media_files)
 
         return property
+
+    def update(self, instance, validated_data):
+        deleted_images = self.request.data.getlist("deleted_images")
+
+        # Check if all deleted_images are deletable
+        remaining_file_types = instance.media_files.exclude(id__in=deleted_images).values_list("type", flat=True)
+
+        if (
+            "image" not in remaining_file_types
+            or "unit_floor_plan" not in remaining_file_types
+            or "video" not in remaining_file_types
+        ):
+            raise serializers.ValidationError(
+                {"media_files": ["At least one image every type of media file must remain with the property."]}
+            )
+        else:
+            # Delete the deletable images
+            instance.media_files.filter(id__in=deleted_images).delete()
+
+        # Update PropertyMedia objects for different media types
+        for media_type, files in self.media_files_data.items():
+            for file in files:
+                media_file = PropertyMedia(type=media_type, file=file)
+                media_file.save()
+                instance.media_files.add(media_file)
+
+        return super().update(instance, validated_data)
