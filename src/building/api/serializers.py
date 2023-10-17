@@ -102,7 +102,9 @@ class BuildingSerializer(serializers.ModelSerializer):
 
         if (
             "image" not in remaining_file_types
+            or "floor_plan" not in remaining_file_types
             or "unit_floor_plan" not in remaining_file_types
+            or "master_plan" not in remaining_file_types
             or "video" not in remaining_file_types
         ):
             raise serializers.ValidationError(

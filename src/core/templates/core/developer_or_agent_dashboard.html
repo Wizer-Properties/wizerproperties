@@ -93,7 +93,7 @@
             <div class="col-12">
                 <div class="table-area">
                     <h1 class="table-title">Buildings</h1>
-                    <table class="dashboard-data-table" id="properties-table">
+                    <table class="dashboard-data-table" id="building-table">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -108,11 +108,12 @@
                                 <th>Is Active</th>
                                 <th class="th-see-more"> </th>
                                 <th class="th-see-more"> </th>
+                                <th class="th-see-more"> </th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for building in buildings %}
-                            <tr>
+                            <tr id="building-{{ building.id }}">
                                 <td>{{ building.id }}</td>
                                 <td>{{ building.title }}</td>
                                 <td>{{ building.price }}</td>
@@ -125,6 +126,10 @@
                                 <td>{{ building.is_active }}</td>
                                 <td>
                                     <a class="link" href="{% url 'building:update' building.id %}">Edit</a>
+                                </td>
+                                <td>
+                                    <button class="link delete-building" data-id="{{ building.id }}"
+                                        data-api-url="{% url 'building:api:delete' building.id %}">Delete</button>
                                 </td>
                                 <td>
                                     <a class="link" href="">See More</a>
@@ -141,7 +146,7 @@
             <div class="col-12">
                 <div class="table-area">
                     <h1 class="table-title">Properties</h1>
-                    <table class="dashboard-data-table" id="building-table">
+                    <table class="dashboard-data-table" id="property-table">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -158,11 +163,12 @@
                                 <th>Is Active</th>
                                 <th class="th-see-more"> </th>
                                 <th class="th-see-more"> </th>
+                                <th class="th-see-more"> </th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for property in properties %}
-                            <tr>
+                            <tr id="property-{{ property.id }}">
                                 <td>{{ property.id }}</td>
                                 <td>{{ property.building }}</td>
                                 <td>{{ property.unit_id }}</td>
@@ -177,6 +183,10 @@
                                 <td>{{ property.is_active }}</td>
                                 <td>
                                     <a class="link" href="{% url 'property:update' property.id %}">Edit</a>
+                                </td>
+                                <td>
+                                    <button class="link delete-property" data-id="{{ property.id }}"
+                                        data-api-url="{% url 'property:api:delete' property.id %}">Delete</button>
                                 </td>
                                 <td>
                                     <a class="link" href="">See More</a>
@@ -234,10 +244,33 @@
     </div>
 </section>
 
+<!-- Reusable Confirmation Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel"></h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmationModalBody"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="confirmButton"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
 
 {% block extend_script %}
 <script src="{% static '/js/libraries/dataTables.min.js' %}?v=1.00"></script>
-<script src="{% static '/js/dashboard.js' %}?v=1.00"></script>
+<script src="{% static '/js/dashboard.js' %}?v=1.01"></script>
+<script src="{% static '/js/building/delete_building.js' %}?v=1.00"></script>
+<script src="{% static '/js/property/delete_property.js' %}?v=1.00"></script>
 {% endblock extend_script %}

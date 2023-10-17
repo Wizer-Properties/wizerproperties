@@ -1,40 +1,39 @@
-$(document).ready(function(){
-
-    
-    $('.dashboard-data-table').DataTable( {
-        ordering :  false,
-        lengthChange : false,
-        info : false
+$(document).ready(function () {
+    $(".dashboard-data-table").DataTable({
+        ordering: false,
+        lengthChange: false,
+        info: false,
     });
 
-
-    function table_height(_table){
-        var table_tr = _table.find('tbody tr');
-        var table_head = _table.find('thead')
+    function table_height(_table) {
+        var table_tr = _table.find("tbody tr");
+        var table_head = _table.find("thead");
         var total_height = 0;
-        for (let i = 0; i < table_tr.length; i++) {        
+        for (let i = 0; i < table_tr.length; i++) {
             var get_height = window.getComputedStyle(table_tr[i]);
-            var get_int_value = parseInt(get_height.getPropertyValue('height'));
-    
-            total_height = total_height + get_int_value
-        };
-    
-        var get_table_head_height = window.getComputedStyle(table_head[0]);
-        var get_table_head_int_value = parseInt(get_table_head_height.getPropertyValue('height'));
-        total_height = total_height + get_table_head_int_value;
-    
-        _table.parent().css({
-            'min-height' : total_height + 70
-        });
-    };
+            var get_int_value = parseInt(get_height.getPropertyValue("height"));
 
-    table_height($("#properties-table"));
+            total_height = total_height + get_int_value;
+        }
+
+        var get_table_head_height = window.getComputedStyle(table_head[0]);
+        var get_table_head_int_value = parseInt(
+            get_table_head_height.getPropertyValue("height")
+        );
+        total_height = total_height + get_table_head_int_value;
+
+        _table.parent().css({
+            "min-height": total_height + 70,
+        });
+    }
+
+    table_height($("#property-table"));
     table_height($("#building-table"));
     table_height($("#property-visit-schedule"));
 
-    $(window).resize(function(){
-        table_height($("#properties-table"));
+    $(window).resize(function () {
+        table_height($("#property-table"));
         table_height($("#building-table"));
         table_height($("#property-visit-schedule"));
     });
-})
+});
