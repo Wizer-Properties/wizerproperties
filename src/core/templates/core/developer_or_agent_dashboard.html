@@ -45,7 +45,7 @@
             <div class="col-lg-3 col-6 dashboard-card">
                 <div class="dashboard-single-card">
                     <div class="single-card-value">
-                        <span>2635</span>
+                        <span>{{ total_buildings }}</span>
                         <p>Total Building</p>
                     </div>
                     <i class="bi bi-buildings"></i>
@@ -54,7 +54,7 @@
             <div class="col-lg-3 col-6 dashboard-card">
                 <div class="dashboard-single-card">
                     <div class="single-card-value">
-                        <span>4350</span>
+                        <span>{{ total_properties }}</span>
                         <p>Total Properties Post</p>
                     </div>
                     <i class="bi bi-newspaper"></i>
@@ -64,7 +64,9 @@
             <div class="col-lg-3 col-6 dashboard-card">
                 <div class="dashboard-single-card">
                     <div class="single-card-value">
-                        <span>8823</span>
+                        <span id="active-properties-count">
+                            {{ active_properties_count }}
+                        </span>
                         <p>Active Properties Post</p>
                     </div>
                     <i class="bi bi-send-arrow-up"></i>
@@ -74,7 +76,7 @@
             <div class="col-lg-3 col-6 dashboard-card">
                 <div class="dashboard-single-card">
                     <div class="single-card-value">
-                        <span>7345</span>
+                        <span>0</span>
                         <p>Total Future Schedule</p>
                     </div>
                     <i class="bi bi-calendar-week"></i>
@@ -126,7 +128,9 @@
                                 <td>
                                     <label class="switch">
                                         <input type="checkbox" class="toggle-active" data-id="{{ building.id }}"
-                                            data-api-url="{% url 'building:api:update' building.id %}" {% if building.is_active %}checked{% endif %}>
+                                            data-item="building"
+                                            data-api-url="{% url 'building:api:update' building.id %}"
+                                            {% if building.is_active %}checked{% endif %}>
                                         <span class="slider round"></span>
                                     </label>
                                 </td>
@@ -189,7 +193,9 @@
                                 <td>
                                     <label class="switch">
                                         <input type="checkbox" class="toggle-active" data-id="{{ property.id }}"
-                                            data-api-url="{% url 'property:api:update' property.id %}" {% if property.is_active %}checked{% endif %}>
+                                            data-item="property"
+                                            data-api-url="{% url 'property:api:update' property.id %}"
+                                            {% if property.is_active %}checked{% endif %}>
                                         <span class="slider round"></span>
                                     </label>
                                 </td>
@@ -284,7 +290,7 @@
 {% block extend_script %}
 <script src="{% static '/js/libraries/dataTables.min.js' %}?v=1.00"></script>
 <script src="{% static '/js/dashboard.js' %}?v=1.01"></script>
-<script src="{% static 'js/toggle_active_status.js' %}?v=1.00"></script>
+<script src="{% static 'js/toggle_active_status.js' %}?v=1.01"></script>
 <script src="{% static '/js/building/delete_building.js' %}?v=1.00"></script>
 <script src="{% static '/js/property/delete_property.js' %}?v=1.00"></script>
 {% endblock extend_script %}

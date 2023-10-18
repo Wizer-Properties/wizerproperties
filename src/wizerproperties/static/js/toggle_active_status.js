@@ -4,6 +4,13 @@ $(document).ready(function () {
     var isChecked;
     var checkboxElement;
     var modalId = "#confirmationModal";
+
+    // Function to update active_properties_count
+    function updateActivePropertiesCount(change) {
+        var currentCount = parseInt($("#active-properties-count").text());
+        $("#active-properties-count").text(currentCount + change);
+    }
+
     $(".toggle-active").change(function () {
         checkboxElement = $(this);
         itemId = checkboxElement.data("id");
@@ -30,6 +37,10 @@ $(document).ready(function () {
                 "X-CSRFToken": csrfToken,
             },
             success: function (response) {
+                // Update active_properties_count if successful
+                if (checkboxElement.data("item") == "property") {
+                    updateActivePropertiesCount(isChecked ? 1 : -1);
+                }
                 // Close the modal after the change button is clicked
                 $(modalId).modal("hide");
             },
