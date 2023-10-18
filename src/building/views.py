@@ -12,9 +12,9 @@ def create_building(request):
 def update_building(request, id):
     building = get_object_or_404(Building, pk=id)
     images = building.media_files.filter(type="image")
-    floor_plans = building.media_files.filter(type="unit_floor_plan")
+    floor_plans = building.media_files.filter(type="floor_plan")
     unit_floor_plans = building.media_files.filter(type="unit_floor_plan")
-    master_plans = building.media_files.filter(type="unit_floor_plan")
+    master_plans = building.media_files.filter(type="master_plan")
     videos = building.media_files.filter(type="video")
     context = {
         "building": building,
