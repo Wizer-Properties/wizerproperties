@@ -30,10 +30,6 @@ class Building(TimestampedModel):
     def __str__(self):
         return str(self.title) if self.title else str(self.id)
 
-    def inactive(self):
-        self.is_active = False
-        self.save()
-
 
 class BuildingMedia(TimestampedModel):
     def upload_to(self, filename):

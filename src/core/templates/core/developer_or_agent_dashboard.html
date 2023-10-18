@@ -123,7 +123,13 @@
                                 <td>{{ building.project_total_area }}</td>
                                 <td>{{ building.total_floors }}</td>
                                 <td>{{ building.construction_year }}</td>
-                                <td>{{ building.is_active }}</td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" class="toggle-active" data-id="{{ building.id }}"
+                                            data-api-url="{% url 'building:api:update' building.id %}" {% if building.is_active %}checked{% endif %}>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
                                 <td>
                                     <a class="link" href="{% url 'building:update' building.id %}">Edit</a>
                                 </td>
@@ -180,7 +186,13 @@
                                 <td>{{ property.number_of_bathroom }}</td>
                                 <td>{{ property.number_of_balcony }}</td>
                                 <td>{{ property.number_of_car_parking }}</td>
-                                <td>{{ property.is_active }}</td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" class="toggle-active" data-id="{{ property.id }}"
+                                            data-api-url="{% url 'property:api:update' property.id %}" {% if property.is_active %}checked{% endif %}>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
                                 <td>
                                     <a class="link" href="{% url 'property:update' property.id %}">Edit</a>
                                 </td>
@@ -245,7 +257,8 @@
 </section>
 
 <!-- Reusable Confirmation Modal -->
-<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -271,6 +284,7 @@
 {% block extend_script %}
 <script src="{% static '/js/libraries/dataTables.min.js' %}?v=1.00"></script>
 <script src="{% static '/js/dashboard.js' %}?v=1.01"></script>
+<script src="{% static 'js/toggle_active_status.js' %}?v=1.00"></script>
 <script src="{% static '/js/building/delete_building.js' %}?v=1.00"></script>
 <script src="{% static '/js/property/delete_property.js' %}?v=1.00"></script>
 {% endblock extend_script %}

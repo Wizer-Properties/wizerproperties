@@ -30,6 +30,7 @@ class PropertySerializer(serializers.ModelSerializer):
             "number_of_bathroom",
             "number_of_balcony",
             "number_of_car_parking",
+            "is_active",
             "media_files",
             "images",
             "unit_floor_plans",
@@ -67,7 +68,7 @@ class PropertySerializer(serializers.ModelSerializer):
                 media_files.append(media_file)
 
         # Remove unwanted attributes from validated_data for 'Property' instance
-        skip_attributes = ["images", "unit_floor_plans", "videos"]
+        skip_attributes = ["is_active", "images", "unit_floor_plans", "videos"]
         for attr in skip_attributes:
             validated_data.pop(attr, None)
 
