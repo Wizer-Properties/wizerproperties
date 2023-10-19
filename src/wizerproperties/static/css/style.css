@@ -7,6 +7,10 @@
     font-family: 'Roboto', sans-serif !important;
 }
 
+.z-index-3{
+    z-index: 3;
+}
+
 body{
     min-height: 100vh;
     display: flex;
@@ -95,6 +99,28 @@ table.dataTable.no-footer{
     top: 28px;
 }
 
+.delete-button{
+    border: none;
+    background: #e25c5c !important;
+    color: #fff  !important;
+}
+
+.edit-button{
+    color: #fff !important;
+    background: #417e41 !important;
+}
+
+.td-edit-delete-see{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.td-edit-delete-see a,
+.td-edit-delete-see button{
+    display: inline-block !important;
+    margin-left: 5px;
+}
 
 footer{
     background-color: #375ad5;
@@ -175,6 +201,10 @@ footer{
     min-width: 90px;
 }
 
+.th-edit-delete-see{
+    min-width: 250px ;
+}
+
 #profile-setting,
 #create_property,
 #create_building{
@@ -207,6 +237,7 @@ footer{
 
 .light-form-box .authInput{
     border: 1px solid #c8d3de !important;
+    font-size: 15px;
 }
 
 .light-form-box .authInput:focus + .authlabelline,
@@ -323,6 +354,37 @@ footer{
 .form-check-input:checked {
     background-color: #ffd350 !important;
     border-color: #ffd350 !important;
+}
+
+.nav-tabs{
+    border: none;
+    margin-top: 25px;
+}
+
+.nav-tabs .nav-link:hover{
+    background-color: #ffffff3f !important;
+}
+
+.nav-tabs .nav-link{
+    color: #212529;
+    border: 1px solid #eee !important;
+}
+
+.nav-tabs .nav-link.active{
+    background-color: #fff !important;
+}
+
+.success-message,
+.error-message{
+    margin-bottom: 25px;
+}
+
+.authcompleteProfileLabe{
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 @media screen and (max-width: 768px) {

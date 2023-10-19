@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block extend_head %}
+<title>Property details</title>
+<link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
+<link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
+<link rel="stylesheet" href="{% static '/css/detail-page.css' %}" />
+{% endblock extend_head %}
+
+{% block content %}
+
+<section id="details-banner">
+    <div class="col-xl-7 col-lg-8 col-10 details-banner-bg">
+        <img src="https://www.travelplusstyle.com/wp-content/uploads/2016/01/sonevajani-1880.jpg" alt="bg">
+    </div>
+
+    
+
+    <div class="container position-relative z-index-3">
+        <h1 class="title-perice-area">
+            <span class="title"> Grand Solaire Pattaya </span>
+            <span class="price"> Price : ৳ 12,300,000 </span>
+        </h1>
+        <address>
+            <i class="bi bi-geo-alt"></i>
+            Nong Prue, Pattaya, Chon Buri
+        </address>
+        <span class="unit-id">
+            <b>Unit ID : </b> 1122
+        </span>
+
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#nav-imges" aria-selected="true">
+                    Images
+                </button>
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-unit-floor-plans" aria-selected="false">
+                    Unit Floor Plans
+                </button>
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-building-floor-plans" aria-selected="false">
+                    Building Floor Plans
+                </button>
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-master-plans" aria-selected="false">
+                    Map Plans
+                </button>
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-map" aria-selected="false">
+                    Map
+                </button>
+            </div>
+        </nav>
+
+        <div class="tab-content" id="banner-nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-imges">
+                <div class="details-gellary">
+                    <div class="details-gellary-img-box">
+                        <img src="https://www.travelplusstyle.com/wp-content/uploads/2016/01/sonevajani-1880.jpg" alt="bg">
+                    </div>
+                    <div class="details-gellary-img-box">
+                        <img src="https://publish.purewow.net/wp-content/uploads/sites/2/2019/08/grand-velas.jpeg" alt="bg">
+                    </div>
+                    <div class="details-gellary-img-box">
+                        <img src="https://www.corporatelivewire.com/image_thumb.php?w=800&img=images/blogs/2062/143613773.jpg" alt="bg">
+                    </div>
+                    <div class="details-gellary-img-box">
+                        <img src="https://tranducfurnishings.com/wp-content/uploads/2021/06/Ritz-Carlton-Grand-Lake-Florida-2v22.jpg" alt="bg">
+                    </div>
+                    <div class="details-gellary-img-box">
+                        <img src="https://i.insider.com/5b50aa5001180c3c008b46d2?width=700" alt="bg">
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="nav-unit-floor-plans" >
+                <div class="details-gellary">
+                    <div class="details-gellary-img-box">
+                        <img src="https://1.bp.blogspot.com/-v57nmGGKNdU/XSYElRq1pII/AAAAAAAAAQ4/t4iPm4rPOeUXm7tLQlx0q_ES2ok1Y87xQCLcBGAs/s16000/3300-sqft-first-floor-plan-2.png" alt="bg">
+                    </div>
+                    <div class="details-gellary-img-box">
+                        <img src="https://www.homeisthehamilton.com/corporate/images/09e48148-a460-4619-9bb8-e991c6409c4c.png" alt="bg">
+                    </div>
+                    <div class="details-gellary-img-box">
+                        <img src="https://www.corporatelivewire.com/image_thumb.php?w=800&img=images/blogs/2062/143613773.jpg" alt="bg">
+                    </div>
+                    <div class="details-gellary-img-box">
+                        <img src="https://tranducfurnishings.com/wp-content/uploads/2021/06/Ritz-Carlton-Grand-Lake-Florida-2v22.jpg" alt="bg">
+                    </div>
+                    <div class="details-gellary-img-box">
+                        <img src="https://i.insider.com/5b50aa5001180c3c008b46d2?width=700" alt="bg">
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-building-floor-plans">
+                <div class="details-gellary">
+                    <div class="details-gellary-img-box">
+                        <img src="https://www.travelplusstyle.com/wp-content/uploads/2016/01/sonevajani-1880.jpg" alt="bg">
+                    </div>
+                    <div class="details-gellary-img-box">
+                        <img src="https://publish.purewow.net/wp-content/uploads/sites/2/2019/08/grand-velas.jpeg" alt="bg">
+                    </div>
+                    <div class="details-gellary-img-box">
+                        <img src="https://www.corporatelivewire.com/image_thumb.php?w=800&img=images/blogs/2062/143613773.jpg" alt="bg">
+                    </div>
+                    <div class="details-gellary-img-box">
+                        <img src="https://tranducfurnishings.com/wp-content/uploads/2021/06/Ritz-Carlton-Grand-Lake-Florida-2v22.jpg" alt="bg">
+                    </div>
+                    <div class="details-gellary-img-box">
+                        <img src="https://i.insider.com/5b50aa5001180c3c008b46d2?width=700" alt="bg">
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-master-plans">.5..</div>
+            <div class="tab-pane fade" id="nav-map">.6..</div>
+        </div>
+
+
+
+    </div>
+</section>
+
+<!-- <section class="splide">
+    <div class="splide__track">
+          <div class="splide__list">
+                <div class="splide__slide">
+                    <div class="details-page-banner">
+                        <img src="https://www.planetizen.com/files/images/shutterstock_2236644373.jpg" alt="bg">
+                    </div>
+                </div>
+          </div>
+    </div>
+</section> -->
+
+
+{% endblock %}
+
+{% block extend_script %}
+<script src="{% static 'js/libraries/splide.min.js' %}"></script>
+<!-- <script>
+    new Splide( '.splide' ).mount();
+</script> -->
+{% endblock extend_script %}

@@ -49,6 +49,7 @@ header{
     width: 45px;
     height: 45px;
     margin-right: 10px;
+    overflow: hidden;
 }
 
 .profile-dropdown-img img{
