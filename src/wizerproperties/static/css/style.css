@@ -7,6 +7,10 @@
     font-family: 'Roboto', sans-serif !important;
 }
 
+.material-icons{
+    font-family: 'Material Icons' !important;
+}
+
 .z-index-3{
     z-index: 3;
 }
@@ -396,6 +400,14 @@ footer{
     .uploaded-file-view-img {
         width: 95px;
         height: 70px;
+    }
+
+    .nav-tabs .nav-link.active {
+        background-color: #ffd350 !important;
+    }
+
+    #details-banner{
+        padding: 25px 0;
     }
 }
 

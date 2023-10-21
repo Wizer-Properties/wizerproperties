@@ -1,6 +1,6 @@
 #details-banner{
     position: relative;
-    padding: 45px 0;
+    padding-top: 25px;
 }
 
 .title-perice-area{
@@ -37,7 +37,7 @@
     height: 100%;
     content: '';
     z-index: 1;
-    background-color: #ffd350ee;
+    background-color: #ffd350d2;
     top: 0;
     left: 0;
 }
@@ -86,6 +86,32 @@
     min-height: 540px;
 }
 
+.property-short-info{
+    display: flex;
+    justify-content: center;
+    padding: 25px;
+}
+
+.property-short-info-box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 30px;
+}
+
+.property-short-info-icon img{
+    width: 35px;
+}
+
+.property-value{
+    display: block;
+    font-size: 14px;
+}
+
+.property-label{
+    font-size: 15px;
+    font-weight: bold;
+}
 
 @media screen and (max-width : 991px) {
     .details-gellary{
@@ -96,10 +122,29 @@
     .title-perice-area{
         font-size: 20px;
     }
+
+    .nav-tab-wrapper{
+        overflow-x: auto;
+        overflow-y: hidden;
+        height: auto;
+    }
+
+    .nav-tab-wrapper .nav-tabs{
+        margin: 0;
+        padding: 18px 0;
+        flex-wrap: nowrap;
+        width: max-content;
+    }
+
+    #banner-nav-tabContent{
+        padding-top: 0 !important;
+        min-height: auto;
+        height: 390px;
+    }
 }
 
 
-@media screen and (max-width : 600px){
+@media screen and (max-width : 768px){
     .details-gellary-img-box,
     .details-banner-bg{
         display: none;
@@ -117,5 +162,13 @@
     .title-perice-area .price{
         font-size: 18px;
         margin-top: 10px;
+    }
+
+    .container{
+        max-width: 96%;
+    }
+
+    .details-gellary-img-box{
+        height: 100%;
     }
 }

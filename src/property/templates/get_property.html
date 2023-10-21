@@ -31,7 +31,7 @@
             <b>Unit ID : </b> 1122
         </span>
 
-        <nav>
+        <nav class="nav-tab-wrapper">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#nav-imges" aria-selected="true">
                     Images
@@ -130,6 +130,50 @@
           </div>
     </div>
 </section> -->
+
+
+<section>
+    <div class="cotainer">
+        <div class="property-short-info">
+            <div class="property-short-info-box">
+                <div class="property-short-info-icon">
+                    <img src="{% static '/media/icons/bed.svg' %}" alt="bed-icon">
+                </div>
+                <span class="property-value"> 04 </span>
+                <span class="property-label">Bedroom</span>
+            </div>
+            <div class="property-short-info-box">
+                <div class="property-short-info-icon">
+                    <img src="{% static '/media/icons/bath.svg' %}" alt="bath-icon">
+                </div>
+                <span class="property-value"> 04 </span>
+                <span class="property-label">Bathroom</span>
+            </div>
+            <div class="property-short-info-box">
+                <div class="property-short-info-icon">
+                    <img src="{% static '/media/icons/plan-size.svg' %}" alt="plan-size-icon">
+                </div>
+                <span class="property-value"> 04 </span>
+                <span class="property-label">Size</span>
+            </div>
+            <div class="property-short-info-box">
+                <div class="property-short-info-icon">
+                    <img src="{% static '/media/icons/stairs.svg' %}" alt="stairs-icon">
+                </div>
+                <span class="property-value"> 04 </span>
+                <span class="property-label">Floor</span>
+            </div>
+            <div class="property-short-info-box">
+                <div class="property-short-info-icon">
+                    <img src="{% static '/media/icons/building.svg' %}" alt="building-icon">
+                </div>
+                <span class="property-value"> 04 </span>
+                <span class="property-label">Build</span>
+            </div>
+
+        </div>
+    </div>
+</section>
 
 
 {% endblock %}
