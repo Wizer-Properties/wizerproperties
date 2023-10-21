@@ -137,7 +137,7 @@
                                         <a class="link edit-button" href="{% url 'building:update' building.id %}">Edit</a>
                                         <button class="link delete-building delete-button" data-id="{{ building.id }}"
                                             data-api-url="{% url 'building:api:delete' building.id %}">Delete</button>
-                                        <a class="link" href="">See More</a>
+                                        <a class="link" href="{% url 'building:get' building.id %}">See More</a>
                                     </div>
                                 </td>
                             </tr>
@@ -198,7 +198,7 @@
                                         <a class="link edit-button" href="{% url 'property:update' property.id %}">Edit</a>
                                         <button class="link delete-property delete-button" data-id="{{ property.id }}"
                                             data-api-url="{% url 'property:api:delete' property.id %}">Delete</button>
-                                        <a class="link" href="">See More</a>
+                                        <a class="link" href="{% url 'property:get' property.id %}">See More</a>
                                     </div>
                                 </td>
                             </tr>

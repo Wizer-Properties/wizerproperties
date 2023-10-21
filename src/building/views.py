@@ -3,14 +3,7 @@ from django.contrib.auth.decorators import login_required
 from building.models import Building
 
 
-@login_required
-def create_building(request):
-    return render(request, "create_building.html")
-
-
-@login_required
-def update_building(request, id):
-    building = get_object_or_404(Building, pk=id)
+def prepare_building_context(building):
     images = building.media_files.filter(type="image")
     floor_plans = building.media_files.filter(type="floor_plan")
     unit_floor_plans = building.media_files.filter(type="unit_floor_plan")
@@ -24,4 +17,23 @@ def update_building(request, id):
         "master_plans": master_plans,
         "videos": videos,
     }
+    return context
+
+
+@login_required
+def create_building(request):
+    return render(request, "create_building.html")
+
+
+@login_required
+def get_building(request, id):
+    building = get_object_or_404(Building, pk=id)
+    context = prepare_building_context(building)
+    return render(request, "get_building.html", context)
+
+
+@login_required
+def update_building(request, id):
+    building = get_object_or_404(Building, pk=id)
+    context = prepare_building_context(building)
     return render(request, "update_building.html", context)

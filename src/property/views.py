@@ -4,19 +4,12 @@ from building.models import Building
 from .models import Property
 
 
-@login_required
-def create_property(request):
+def prepare_property_context(request, id=None):
     buildings = Building.objects.filter(created_by=request.user)
-    return render(request, "create_property.html", {"buildings": buildings})
-
-
-@login_required
-def update_property(request, id):
-    property = get_object_or_404(Property, pk=id)
-    images = property.media_files.filter(type="image")
-    unit_floor_plans = property.media_files.filter(type="unit_floor_plan")
-    videos = property.media_files.filter(type="video")
-    buildings = Building.objects.filter(created_by=request.user)
+    property = get_object_or_404(Property, pk=id) if id else None
+    images = property.media_files.filter(type="image") if property else []
+    unit_floor_plans = property.media_files.filter(type="unit_floor_plan") if property else []
+    videos = property.media_files.filter(type="video") if property else []
     context = {
         "buildings": buildings,
         "property": property,
@@ -24,4 +17,22 @@ def update_property(request, id):
         "unit_floor_plans": unit_floor_plans,
         "videos": videos,
     }
+    return context
+
+
+@login_required
+def create_property(request):
+    context = prepare_property_context(request)
+    return render(request, "create_property.html", context)
+
+
+@login_required
+def get_property(request, id):
+    context = prepare_property_context(request, id)
+    return render(request, "get_property.html", context)
+
+
+@login_required
+def update_property(request, id):
+    context = prepare_property_context(request, id)
     return render(request, "update_property.html", context)
