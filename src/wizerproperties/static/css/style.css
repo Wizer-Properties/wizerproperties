@@ -11,6 +11,10 @@
     font-family: 'Material Icons' !important;
 }
 
+.material-symbols-outlined{
+    font-family: 'Material Symbols Outlined' !important;
+}
+
 .z-index-3{
     z-index: 3;
 }

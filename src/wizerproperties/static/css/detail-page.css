@@ -113,9 +113,164 @@
     font-weight: bold;
 }
 
+.section-title{
+    font-size: 20px;
+    color: #484848 !important;
+    margin-bottom: 10px !important;
+}
+
+.section-scripts{
+    font-size: 14px;
+    color: #726E6E !important;
+    margin-bottom: 25px;
+}
+
+.info-list-box{
+    border-bottom: 1px dashed #e8e9ea;
+    padding: 5px 0;
+}
+
+.info-list-box .info-list-label{
+    font-size: 13px;
+    color: #9a959e;
+    display: block;
+}
+
+.info-list-box .info-list-data{
+    font-size: 14px;
+    color: #726E6E;
+    display: block;
+}
+
+.info-list{
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.info-list::before{
+    content: '';
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    height: 3px;
+    background-color: #fff;
+    width: 100%;
+}
+
+.building-img-gellary{
+    height: 220px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.building-details{
+    margin-bottom: 25px;
+}
+
+.building-img-gellary img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.building-details-info-list .info-list-box,
+.developer-co-details-info-list .info-list-box{
+    display: flex;
+}
+
+.building-details-info-list .info-list-label{
+    width: 120px;
+    flex: 0 0 120px;
+}
+
+.developer-co-details-info-list .info-list-label{
+    width: 35px;
+    height: 35px;
+    background-color: #ffd350;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    border-radius: 100%;
+}
+
+.facilities-box-icon{
+    background: #ffd350;
+    width: 35px;
+    height: 35px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    border-radius: 100%;
+}
+
+.facilities-box-icon i{
+    font-size: 22px;
+}
+
+.facilities-box{
+    display: flex;
+    align-items: center;
+}
+
+.facilities-box-label{
+    display: block;
+    margin-left: 10px;
+    color: #726E6E;
+    font-size: 15px;
+}
+
+.facilities-area{
+    margin-bottom: 15px;
+}
+
+.contact-info-list-btn a{
+    display: flex;
+    font-size: 15px;
+    padding: 8px;
+    text-align: center !important;
+    justify-content: center;
+    max-width: 420px;
+    margin: auto;
+    margin-bottom: 10px;
+    background-color: #fff !important;
+    color: #484848 !important;
+    border: 1px solid #d3d3d3 !important;
+}
+
+.contact-info-list-btn a:first-child{
+    background-color: #ffd350 !important;
+    border-color: #ffd350 !important;
+}
+
+.contact-info-side-box{
+    padding: 15px;
+    box-shadow: 1px 2px 13px 5px rgba(0,0,0,.05);
+    margin-bottom: 25px;
+}
+
+.developer-company-logo{
+    height: 70px;
+    box-shadow: 0px 0px 8px 1px rgba(0,0,0,.05);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.developer-company-logo img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.developer-co-info .section-title{
+    margin: 0 !important;
+    color: #726E6E !important;
+    font-size: 17px;
+}
+
 @media screen and (max-width : 991px) {
     .details-gellary{
-        height: 340px;
+        height: 390px;
         overflow: hidden;
     }
 
@@ -137,7 +292,7 @@
     }
 
     #banner-nav-tabContent{
-        padding-top: 0 !important;
+        padding: 0 !important;
         min-height: auto;
         height: 390px;
     }
@@ -171,4 +326,21 @@
     .details-gellary-img-box{
         height: 100%;
     }
+
+    .property-short-info{
+        padding: 0;
+        padding-bottom: 25px;
+    }
+
+    .property-short-info-icon img {
+        width: 27px;
+    }
+
+    .property-short-info-box{
+        margin: 0 15px;
+    }
+}
+
+@media screen and (max-width : 600px){
+
 }
