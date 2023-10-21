@@ -155,11 +155,12 @@
     }
 
     // For modal
-    function showModal(modalId, modalTitle, modalBody, buttonLabel) {
+    function showModal(modalId, modalTitle, modalBody, buttonLabel, actionType) {
         var modal = $(modalId);
         modal.find(".modal-title").text(modalTitle);
         modal.find(".modal-body").text(modalBody);
         modal.find("#confirmButton").text(buttonLabel);
+        modal.find("#confirmButton").attr("action-type", actionType);
         modal.modal("show");
     }
 </script>

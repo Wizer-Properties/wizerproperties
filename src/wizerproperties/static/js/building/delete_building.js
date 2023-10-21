@@ -2,6 +2,8 @@ $(document).ready(function () {
     var buildingId;
     var deleteBuildingAPIUrl;
     var modalId = "#confirmationModal";
+    var actionType = "delete-building";
+
     $(".delete-building").click(function () {
         buildingId = $(this).data("id");
         deleteBuildingAPIUrl = $(this).data("api-url");
@@ -10,11 +12,13 @@ $(document).ready(function () {
         var modalTitle = "Delete Building";
         var modalBody = "Are you sure you want to delete this building?";
         var buttonLabel = "Delete";
-        showModal(modalId, modalTitle, modalBody, buttonLabel);
+        showModal(modalId, modalTitle, modalBody, buttonLabel, actionType);
     });
 
     // Click event for confirm delete button inside the modal
     $("#confirmButton").click(function () {
+        if ($(this).attr("action-type") != "delete-building") return;
+        n;
         // Send AJAX request to delete the building
         $.ajax({
             url: deleteBuildingAPIUrl,

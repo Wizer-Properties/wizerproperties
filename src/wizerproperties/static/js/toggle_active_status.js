@@ -4,6 +4,7 @@ $(document).ready(function () {
     var isChecked;
     var checkboxElement;
     var modalId = "#confirmationModal";
+    var actionType = "toggle-active-status";
 
     // Function to update active_properties_count
     function updateActivePropertiesCount(change) {
@@ -21,11 +22,13 @@ $(document).ready(function () {
         var modalTitle = "Toggle Active Status";
         var modalBody = "Are you sure you want to change the active status?";
         var buttonLabel = "Change";
-        showModal(modalId, modalTitle, modalBody, buttonLabel);
+        showModal(modalId, modalTitle, modalBody, buttonLabel, actionType);
     });
 
     // Click event for confirm change button inside the modal
     $("#confirmButton").click(function () {
+        if ($(this).attr("action-type") != "toggle-active-status") return;
+
         // Call your API endpoint to update the 'is_active' field
         $.ajax({
             url: toggleActiveAPIUrl,
