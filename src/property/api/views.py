@@ -9,6 +9,12 @@ class PropertyViewSet(viewsets.ModelViewSet):
     serializer_class = PropertySerializer
     permission_classes = [PropertyPermission]
     filterset_class = PropertyFilter
+    search_fields = [
+        "building__address",
+        "building__province",
+        "building__district",
+        "building__sub_district",
+    ]
     ordering = ["-created_at"]  # Default ordering
 
     def get_queryset(self):

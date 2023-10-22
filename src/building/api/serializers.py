@@ -27,6 +27,9 @@ class BuildingSerializer(serializers.ModelSerializer):
             "type",
             "total_units_for_sale",
             "media_files",
+            "province",
+            "district",
+            "sub_district",
             "address",
             "project_total_area",
             "total_floors",
@@ -61,6 +64,7 @@ class BuildingSerializer(serializers.ModelSerializer):
         for field_name, field in self.fields.items():
             # These fields are not required while update
             if self.instance is not None and field_name in [
+                "sub_district",
                 "images",
                 "floor_plans",
                 "unit_floor_plans",
@@ -69,10 +73,13 @@ class BuildingSerializer(serializers.ModelSerializer):
             ]:
                 field.required = False
             else:
-                # All fields are required while create
-                field.required = True
-                field.allow_null = False
-                field.allow_blank = False
+                # These fields are not required while create
+                if field_name not in [
+                    "sub_district",
+                ]:
+                    field.required = True
+                    field.allow_null = False
+                    field.allow_blank = False
 
         show_custom_error_message(self.fields)
 
