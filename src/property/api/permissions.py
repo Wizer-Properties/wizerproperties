@@ -4,7 +4,6 @@ from rest_framework import permissions
 class PropertyPermission(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.method in ["POST", "PUT", "PATCH", "DELETE"]:
-            if hasattr(request.user, "developerprofile") or hasattr(request.user, "agentprofile"):
-                return True
-            return False
-        return request.user.is_authenticated
+            return hasattr(request.user, "developerprofile") or hasattr(request.user, "agentprofile")
+
+        return True

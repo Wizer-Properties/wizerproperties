@@ -25,7 +25,6 @@ def create_building(request):
     return render(request, "create_building.html")
 
 
-@login_required
 def get_building(request, id):
     building = get_object_or_404(Building, pk=id)
     context = prepare_building_context(building)

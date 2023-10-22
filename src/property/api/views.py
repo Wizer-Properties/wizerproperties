@@ -1,13 +1,20 @@
 from rest_framework import viewsets
 from .permissions import PropertyPermission
 from .serializers import PropertySerializer
+from .filters import PropertyFilter
 from property.models import Property
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
-    queryset = Property.objects.all()
     serializer_class = PropertySerializer
     permission_classes = [PropertyPermission]
+    filterset_class = PropertyFilter
+    ordering = ["-created_at"]  # Default ordering
+
+    def get_queryset(self):
+        if self.request.method in ["PATCH", "PUT"]:
+            return Property.objects.all()
+        return Property.objects.filter(is_active=True)
 
     def get_serializer_context(self):
         context = super().get_serializer_context()

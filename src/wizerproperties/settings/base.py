@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Third parties libraries
     "rest_framework",
+    "django_filters",
     "widget_tweaks",
     "phonenumber_field",
     # Custom apps
@@ -163,5 +164,10 @@ CONFIRMATION_CODE_EXPIRATION_TIME = 1440
 
 LOGIN_URL = "user:login"
 
-if not DEBUG:
-    REST_FRAMEWORK = {"DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"]}
+REST_FRAMEWORK = {
+    "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+}
+
+if DEBUG:
+    REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"].append("rest_framework.renderers.BrowsableAPIRenderer")

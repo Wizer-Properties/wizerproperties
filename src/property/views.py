@@ -26,7 +26,6 @@ def create_property(request):
     return render(request, "create_property.html", context)
 
 
-@login_required
 def get_property(request, id):
     context = prepare_property_context(request, id)
     return render(request, "get_property.html", context)
