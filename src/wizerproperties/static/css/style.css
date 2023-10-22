@@ -402,6 +402,82 @@ footer{
     text-overflow: ellipsis;
 }
 
+.property-card{
+    border: 1px solid #e3e3ee;
+    border-radius: 5px;
+}
+
+.available-unitssplide-splide .splide__arrow{
+    top: 25% !important;
+    background: #fff !important;
+    opacity: 1;
+    height: 2.6em;
+    width: 2.6em;
+}
+
+.splide__arrow:disabled{
+    display: none !important;
+}
+
+.property-card-img{
+    width: 100%;
+    height: 180px;
+}
+
+.property-card-img img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.property-price-info{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.property-price-info span:first-child{
+    color: #c74444;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.property-price-info span:last-child{
+    color: #212529;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.property-contains{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 15px 0px;
+    gap: 5px;
+}
+
+.property-contains .property-short-info-icon img{
+    width: 20px;
+    opacity: .5;
+}
+
+.property-contains .property-short-info-box{
+    margin: 0 !important;
+}
+
+.property-contains .property-label,
+.property-contains .property-value{
+    font-size: 12px;
+}
+
+.property-expand-btn a{
+    width: 140px;
+    margin: auto;
+    background-color: #ffd350;
+    font-size: 16px !important;
+    text-align: center !important;
+}
+
+
 @media screen and (max-width: 768px) {
     .table-title{
         position: initial !important;

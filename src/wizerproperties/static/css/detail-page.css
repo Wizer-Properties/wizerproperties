@@ -122,7 +122,7 @@
 .section-scripts{
     font-size: 14px;
     color: #726E6E !important;
-    margin-bottom: 25px;
+    margin-bottom: 35px;
 }
 
 .info-list-box{
@@ -144,7 +144,7 @@
 
 .info-list{
     position: relative;
-    margin-bottom: 25px;
+    margin-bottom: 35px;
 }
 
 .info-list::before{
@@ -221,7 +221,7 @@
 }
 
 .facilities-area{
-    margin-bottom: 15px;
+    margin-bottom: 25px;
 }
 
 .contact-info-list-btn a{
@@ -247,6 +247,7 @@
     padding: 15px;
     box-shadow: 1px 2px 13px 5px rgba(0,0,0,.05);
     margin-bottom: 25px;
+    border-radius: 5px;
 }
 
 .developer-company-logo{
@@ -271,6 +272,15 @@
 #available-units .page-link{
     color: #726E6E !important;
     cursor: pointer;
+}
+
+#available-units{
+    margin-bottom: 25px;
+}
+
+.side-box-info{
+    position: sticky;
+    top: 10px;
 }
 
 @media screen and (max-width : 991px) {
@@ -305,6 +315,10 @@
     .contact-info-side-box{
         box-shadow: none;
         border: 1px dashed #ffd350cc;
+    }
+
+    .contact-info-side-box{
+        margin-bottom: 35px;
     }
 }
 
