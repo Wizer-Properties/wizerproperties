@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from property.models import Property, PropertyMedia, CompareProperty
+from building.api.serializers import BuildingMediaSerializer
 from utils.general_func import show_custom_error_message
 
 
@@ -12,14 +13,16 @@ class PropertyMediaSerializer(serializers.ModelSerializer):
 class PropertySerializer(serializers.ModelSerializer):
     media_files = PropertyMediaSerializer(many=True, read_only=True)
     images = serializers.ImageField(allow_empty_file=False, write_only=True)
-    unit_floor_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
+    unit_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
     videos = serializers.FileField(allow_empty_file=False, write_only=True)
+    building_media_files = BuildingMediaSerializer(many=True, read_only=True, source="building.media_files")
 
     class Meta:
         model = Property
         fields = [
             "id",
             "building",
+            "building_media_files",
             "unit_id",
             "title",
             "description",
@@ -33,7 +36,7 @@ class PropertySerializer(serializers.ModelSerializer):
             "is_active",
             "media_files",
             "images",
-            "unit_floor_plans",
+            "unit_plans",
             "videos",
         ]
 
@@ -44,12 +47,12 @@ class PropertySerializer(serializers.ModelSerializer):
 
         self.media_files_data = {
             "image": self.request.FILES.getlist("images"),
-            "unit_floor_plan": self.request.FILES.getlist("unit_floor_plans"),
+            "unit_plan": self.request.FILES.getlist("unit_plans"),
             "video": self.request.FILES.getlist("videos"),
         }
 
         for field_name, field in self.fields.items():
-            if self.instance is not None and field_name in ["images", "unit_floor_plans", "videos"]:
+            if self.instance is not None and field_name in ["images", "unit_plans", "videos"]:
                 field.required = False
             else:
                 field.required = True
@@ -68,7 +71,7 @@ class PropertySerializer(serializers.ModelSerializer):
                 media_files.append(media_file)
 
         # Remove unwanted attributes from validated_data for 'Property' instance
-        skip_attributes = ["is_active", "images", "unit_floor_plans", "videos"]
+        skip_attributes = ["is_active", "images", "unit_plans", "videos"]
         for attr in skip_attributes:
             validated_data.pop(attr, None)
 
@@ -85,7 +88,7 @@ class PropertySerializer(serializers.ModelSerializer):
 
         if (
             "image" not in remaining_file_types
-            or "unit_floor_plan" not in remaining_file_types
+            or "unit_plan" not in remaining_file_types
             or "video" not in remaining_file_types
         ):
             raise serializers.ValidationError(
@@ -103,6 +106,9 @@ class PropertySerializer(serializers.ModelSerializer):
                 instance.media_files.add(media_file)
 
         return super().update(instance, validated_data)
+
+    def get_building_media_files(self, obj):
+        return obj.building.media_files.all()
 
 
 class ComparePropertySerializer(serializers.ModelSerializer):
