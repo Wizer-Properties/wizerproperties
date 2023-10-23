@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from property.models import Property, PropertyMedia
+from property.models import Property, PropertyMedia, CompareProperty
 from utils.general_func import show_custom_error_message
 
 
@@ -103,3 +103,9 @@ class PropertySerializer(serializers.ModelSerializer):
                 instance.media_files.add(media_file)
 
         return super().update(instance, validated_data)
+
+
+class ComparePropertySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CompareProperty
+        fields = ["user", "property"]

@@ -7,3 +7,17 @@ class PropertyPermission(permissions.BasePermission):
             return hasattr(request.user, "developerprofile") or hasattr(request.user, "agentprofile")
 
         return True
+
+    def has_object_permission(self, request, view, obj):
+        if request.method in ["PUT", "PATCH", "DELETE"]:
+            return obj.created_by == request.user
+
+        return True
+
+
+class ComparePropertyPermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return hasattr(request.user, "prospectprofile")
+
+    def has_object_permission(self, request, view, obj):
+        return obj.user == request.user

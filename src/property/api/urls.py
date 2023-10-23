@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import PropertyViewSet
+from .views import PropertyViewSet, ComparePropertyViewSet
 
 
 urlpatterns = [
@@ -15,5 +15,12 @@ urlpatterns = [
         "delete/<int:pk>/",
         PropertyViewSet.as_view({"delete": "destroy"}),
         name="delete",
+    ),
+    path("compare/list/", ComparePropertyViewSet.as_view({"get": "list"}), name="compare_list"),
+    path("compare/create/", ComparePropertyViewSet.as_view({"post": "create"}), name="compare_create"),
+    path(
+        "compare/delete/<int:pk>/",
+        ComparePropertyViewSet.as_view({"delete": "destroy"}),
+        name="compare_delete",
     ),
 ]

@@ -1,8 +1,8 @@
 from rest_framework import viewsets
-from .permissions import PropertyPermission
-from .serializers import PropertySerializer
+from .permissions import PropertyPermission, ComparePropertyPermission
+from .serializers import PropertySerializer, ComparePropertySerializer
 from .filters import PropertyFilter
-from property.models import Property
+from property.models import Property, CompareProperty
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
@@ -30,3 +30,14 @@ class PropertyViewSet(viewsets.ModelViewSet):
             }
         )
         return context
+
+
+class ComparePropertyViewSet(viewsets.ModelViewSet):
+    serializer_class = ComparePropertySerializer
+    permission_classes = [ComparePropertyPermission]
+
+    def get_queryset(self):
+        return CompareProperty.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

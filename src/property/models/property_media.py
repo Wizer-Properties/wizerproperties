@@ -1,0 +1,36 @@
+from django.db import models
+from core.models import TimestampedModel
+from django.core.exceptions import ValidationError
+from utils.general_data import PROPERTY_MEDIA_TYPES, ALLOWED_IMAGE_EXTENSIONS, ALLOWED_VIDEO_EXTENSIONS
+from utils.general_func import validate_media_file_extension
+
+
+class PropertyMedia(TimestampedModel):
+    def upload_to(self, filename):
+        # Handle upload path based on media type (image, video, etc.)
+        if self.type in ["image", "unit_floor_plan"]:
+            return "property/images/{}".format(filename)
+        elif self.type == "video":
+            return "property/videos/{}".format(filename)
+
+    type = models.CharField(max_length=100, null=True, choices=PROPERTY_MEDIA_TYPES)
+    file = models.FileField(null=True, upload_to=upload_to)
+    property = models.ForeignKey("property.Property", on_delete=models.CASCADE, null=True, related_name="media_files")
+
+    def __str__(self):
+        return str(self.id)
+
+    def clean(self):
+        allowed_extensions = None
+        if self.type in [
+            "image",
+            "unit_floor_plan",
+        ]:
+            allowed_extensions = ALLOWED_IMAGE_EXTENSIONS
+        elif self.type == "video":
+            allowed_extensions = ALLOWED_VIDEO_EXTENSIONS
+
+        if allowed_extensions:
+            validate_media_file_extension(self.file, allowed_extensions)
+        else:
+            raise ValidationError("Invalid media type")
