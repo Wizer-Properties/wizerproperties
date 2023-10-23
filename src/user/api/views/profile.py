@@ -1,11 +1,11 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from user.api.serializers import DeveloperProfileSerializer, AgentProfileSerializer, ProspectProfileSerializer
+from user.models import DeveloperProfile, AgentProfile, ProspectProfile
 
 
 class BaseProfileViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
-    http_method_names = ["post"]
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -20,10 +20,19 @@ class BaseProfileViewSet(viewsets.ModelViewSet):
 class DeveloperProfileViewSet(BaseProfileViewSet):
     serializer_class = DeveloperProfileSerializer
 
+    def get_queryset(self):
+        return DeveloperProfile.objects.filter(user=self.request.user)
+
 
 class AgentProfileViewSet(BaseProfileViewSet):
     serializer_class = AgentProfileSerializer
 
+    def get_queryset(self):
+        return AgentProfile.objects.filter(user=self.request.user)
+
 
 class ProspectProfileViewSet(BaseProfileViewSet):
     serializer_class = ProspectProfileSerializer
+
+    def get_queryset(self):
+        return ProspectProfile.objects.filter(user=self.request.user)

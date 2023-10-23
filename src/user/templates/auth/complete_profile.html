@@ -49,13 +49,13 @@
 {% block extend_script %}
 <script type="text/javascript">
     var userType = "{{ request.user.user_type }}"
-    var profileUrl = "";
+    var profileCreateUrl = "";
     if (userType == "developer") {
-        profileUrl = "{% url 'user:api:developer-list' %}"
+        profileCreateUrl = "{% url 'user:api:developer_create' %}"
     } else if (userType == "agent") {
-        profileUrl = "{% url 'user:api:agent-list' %}"
+        profileCreateUrl = "{% url 'user:api:agent_create' %}"
     } else if (userType == "prospect") {
-        profileUrl = "{% url 'user:api:prospect-list' %}"
+        profileCreateUrl = "{% url 'user:api:prospect_create' %}"
     }
 </script>
 <script src="{% static 'js/auth/complete_profile.js' %}?v=1.02"></script>

@@ -1,12 +1,23 @@
-from django.urls import include, path
-from rest_framework.routers import DefaultRouter
+from django.urls import path
 from .views import DeveloperProfileViewSet, AgentProfileViewSet, ProspectProfileViewSet
 
-router = DefaultRouter()
-router.register(r"developers-profile", DeveloperProfileViewSet, basename="developer")
-router.register(r"agents-profile", AgentProfileViewSet, basename="agent")
-router.register(r"prospects-profile", ProspectProfileViewSet, basename="prospect")
-
 urlpatterns = [
-    path("", include(router.urls)),
+    path("developer-create/", DeveloperProfileViewSet.as_view({"post": "create"}), name="developer_create"),
+    path("agent-create/", AgentProfileViewSet.as_view({"post": "create"}), name="agent_create"),
+    path("prospect-create/", ProspectProfileViewSet.as_view({"post": "create"}), name="prospect_create"),
+    path(
+        "developer-update/<int:pk>/",
+        DeveloperProfileViewSet.as_view({"put": "update", "patch": "partial_update"}),
+        name="developer_update",
+    ),
+    path(
+        "agent-update/<int:pk>/",
+        AgentProfileViewSet.as_view({"put": "update", "patch": "partial_update"}),
+        name="agent_update",
+    ),
+    path(
+        "prospect-update/<int:pk>/",
+        ProspectProfileViewSet.as_view({"put": "update", "patch": "partial_update"}),
+        name="prospect_update",
+    ),
 ]

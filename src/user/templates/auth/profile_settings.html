@@ -36,3 +36,17 @@
     </div>
 </section>
 {% endblock %}
+{% block extend_script %}
+<script type="text/javascript">
+    var userType = "{{ request.user.user_type }}"
+    var profileSettingsUrl = "";
+    if (userType == "developer") {
+        profileSettingsUrl = "{% url 'user:api:developer_update' profile.id %}"
+    } else if (userType == "agent") {
+        profileSettingsUrl = "{% url 'user:api:agent_update' profile.id %}"
+    } else if (userType == "prospect") {
+        profileSettingsUrl = "{% url 'user:api:prospect_update' profile.id %}"
+    }
+</script>
+<script src="{% static 'js/auth/profile_settings.js' %}?v=1.00"></script>
+{% endblock extend_script %}

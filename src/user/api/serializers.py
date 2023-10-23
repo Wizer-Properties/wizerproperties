@@ -23,8 +23,10 @@ class BaseProfileSerializer(serializers.ModelSerializer):
             "address": {"required": True, "allow_null": False},
         }
 
-    def __init__(self, instance=None, data=..., **kwargs):
-        super().__init__(instance, data, **kwargs)
+    def __init__(self, instance=None, *args, **kwargs):
+        super().__init__(instance, *args, **kwargs)
+        if self.instance:
+            self.fields["company_logo"].required = False
         show_custom_error_message(self.fields)
 
     def validate(self, data):

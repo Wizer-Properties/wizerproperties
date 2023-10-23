@@ -24,10 +24,10 @@ $(document).ready(function () {
         var formData = new FormData(this);
 
         // Set modified phone number in formData
-        formData.set('phone_number', fullPhoneNumber);
+        formData.set("phone_number", fullPhoneNumber);
 
         // Remove phone_code from formData
-        formData.delete('phone_code');
+        formData.delete("phone_code");
 
         var loginButtonText = $("#loginButtonText");
         var loadingSpinner = $("#loadingSpinner");
@@ -36,11 +36,14 @@ $(document).ready(function () {
         loadingSpinner.show(); // Show the spinner
 
         $.ajax({
-            url: profileCreateUrl, // Replace with your API endpoint
-            type: "POST",
+            url: profileSettingsUrl, // Replace with your API endpoint
+            type: "PUT",
             data: formData,
             processData: false,
             contentType: false,
+            headers: {
+                "X-CSRFToken": csrfToken,
+            },
             success: function (response, status, xhr) {
                 loadingSpinner.hide(); // Hide the spinner
                 loginButtonText.show(); // Show the text
@@ -48,18 +51,18 @@ $(document).ready(function () {
                 $(".error-message").html("");
 
                 var successMessages = "";
-                if (xhr.status == 201) {
+                if (xhr.status == 200) {
                     successMessages +=
-                        "<span class='authSuccessMessage'>Profile completed successfully</span>";
+                        "<span class='authSuccessMessage'>Profile update successfully</span>";
                 }
 
                 // Handle success (e.g., show a success message)
                 $(".success-message").html(successMessages);
 
                 // Redirect to the homepage after 1 second
-                setTimeout(function () {
-                    window.location.href = "/";
-                }, 1000);
+                // setTimeout(function () {
+                //     window.location.href = "/";
+                // }, 1000);
             },
             error: function (xhr, status, error) {
                 loadingSpinner.hide(); // Hide the spinner

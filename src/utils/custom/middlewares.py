@@ -13,9 +13,9 @@ class CustomMiddleware:
             reverse("user:logout"),
             reverse("user:email_verify"),
             reverse("user:forgot_password_verify"),
-            reverse("user:api:developer-list"),
-            reverse("user:api:agent-list"),
-            reverse("user:api:prospect-list"),
+            reverse("user:api:developer_create"),
+            reverse("user:api:agent_create"),
+            reverse("user:api:prospect_create"),
             "/media/",
         ]
 

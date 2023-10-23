@@ -17,9 +17,17 @@ def profile_settings(request):
 
 @login_required
 def developer_or_agent_profile_settings(request):
-    return render(request, "auth/profile/developer_or_agent_profile_settings.html")
+    if request.user.user_type == "developer":
+        profile = request.user.developerprofile
+    elif request.user.user_type == "agent":
+        profile = request.user.agentprofile
+    else:
+        profile = None
+    print(">>>>>>>>>>>>>>>>>>>>>>>>>>.", profile.id)
+    return render(request, "auth/profile/developer_or_agent_profile_settings.html", {"profile": profile})
 
 
 @login_required
 def prospect_profile_settings(request):
-    return render(request, "auth/profile/prospect_profile_settings.html")
+    profile = request.user.prospectprofile
+    return render(request, "auth/profile/prospect_profile_settings.html", {"profile": profile})
