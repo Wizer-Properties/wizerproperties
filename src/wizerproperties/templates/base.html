@@ -138,56 +138,10 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFApEXkq_FxTWGAVwEOEYxCtIxJ3iR9kU&libraries=places&callback=initializeMap">
     </script>
 
+<script src="{% static 'js/g_map.js' %}?v=1.00"></script>
 <script>
     var csrfToken = "{{ csrf_token }}"
 
-
-    function initializeMap() {
-        var options = {
-            componentRestrictions: {
-                country: "th"
-            },
-            types: ['(regions)'],
-            fields : ['address_components']
-        };
-
-        var search_input = document.getElementById("gm-search-input");
-        new google.maps.places.Autocomplete(search_input, options);
-
-        var gac_input = document.querySelectorAll(".pac-input");
-
-        for (let i = 0; i < gac_input.length; i++) {
-            
-            var autocomplete = new google.maps.places.Autocomplete(gac_input[i], options);
-            
-            google.maps.event.addListener(autocomplete, 'place_changed', function(){
-                var address_data = autocomplete.getPlace()?.address_components;
-
-                for (let i = 0; i < address_data.length; i++) {
-                    if(address_data[i]?.types.includes('administrative_area_level_1')){
-                        if($('[label="provice"]')){
-                            $('[label="provice"]').val(address_data[i]?.long_name)
-                        };
-                    }else if(
-                        address_data[i]?.types.includes('administrative_area_level_2') ||
-                        address_data[i]?.types.includes('sublocality_level_1')
-                    ){
-                        if($('[label="district"]')){
-                            $('[label="district"]').val(address_data[i]?.long_name)
-                        };
-                    }else if(
-                        address_data[i]?.types.includes('locality')
-                    ){
-                        if($('[label="sub-district"]')){
-                            $('[label="sub-district"]').val(address_data[i]?.long_name)
-                        };
-                    };
-                };
-            });
-
-
-        };
-    };
 
     // For modal
     function showModal(modalId, modalTitle, modalBody, buttonLabel, actionType) {
