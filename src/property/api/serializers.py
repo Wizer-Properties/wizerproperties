@@ -11,18 +11,16 @@ class PropertyMediaSerializer(serializers.ModelSerializer):
 
 
 class PropertySerializer(serializers.ModelSerializer):
-    media_files = PropertyMediaSerializer(many=True, read_only=True)
     images = serializers.ImageField(allow_empty_file=False, write_only=True)
     unit_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
     videos = serializers.FileField(allow_empty_file=False, write_only=True)
-    building_media_files = BuildingMediaSerializer(many=True, read_only=True, source="building.media_files")
+    media_files = serializers.SerializerMethodField()
 
     class Meta:
         model = Property
         fields = [
             "id",
             "building",
-            "building_media_files",
             "unit_id",
             "title",
             "description",
@@ -44,6 +42,13 @@ class PropertySerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super(PropertySerializer, self).__init__(*args, **kwargs)
         self.request = self.context.get("request")
+
+        # To check the view action (list or retrieve)
+        self.view_action = self.context.get("view").action
+
+        # If the action is not 'retrieve', remove media_files field
+        if self.view_action != "retrieve":
+            self.fields.pop("media_files")
 
         self.media_files_data = {
             "image": self.request.FILES.getlist("images"),
@@ -107,8 +112,21 @@ class PropertySerializer(serializers.ModelSerializer):
 
         return super().update(instance, validated_data)
 
-    def get_building_media_files(self, obj):
-        return obj.building.media_files.all()
+    def get_media_files(self, obj):
+        # We represent media files only the property details to avoid nested serialization
+        if self.view_action == "retrieve":
+            # Get building media files excluding "image" and "video" types
+            building_media_files = obj.building.media_files.exclude(type__in=["image", "video"])
+            building_media_serializer = BuildingMediaSerializer(building_media_files, many=True)
+
+            # Get property media files including all types
+            property_media_files = obj.media_files.all()
+            property_media_serializer = PropertyMediaSerializer(property_media_files, many=True)
+
+            # Combine and return the media files from building and property
+            return building_media_serializer.data + property_media_serializer.data
+        else:
+            return None
 
 
 class ComparePropertySerializer(serializers.ModelSerializer):
