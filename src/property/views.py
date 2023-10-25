@@ -35,3 +35,7 @@ def get_property(request, id):
 def update_property(request, id):
     context = prepare_property_context(request, id)
     return render(request, "update_property.html", context)
+
+
+def search_property(request):
+    return render(request, "search_property.html")
