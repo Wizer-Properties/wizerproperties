@@ -7,14 +7,13 @@ from utils.general_func import show_custom_error_message
 class PropertyMediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyMedia
-        fields = ["id", "type", "file"]
+        fields = ["id", "file"]
 
 
 class PropertySerializer(serializers.ModelSerializer):
     images = serializers.ImageField(allow_empty_file=False, write_only=True)
     unit_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
     videos = serializers.FileField(allow_empty_file=False, write_only=True)
-    media_files = serializers.SerializerMethodField()
 
     class Meta:
         model = Property
@@ -32,7 +31,6 @@ class PropertySerializer(serializers.ModelSerializer):
             "number_of_balcony",
             "number_of_car_parking",
             "is_active",
-            "media_files",
             "images",
             "unit_plans",
             "videos",
@@ -42,13 +40,6 @@ class PropertySerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
         super(PropertySerializer, self).__init__(*args, **kwargs)
         self.request = self.context.get("request")
-
-        # To check the view action (list or retrieve)
-        self.view_action = self.context.get("view").action
-
-        # If the action is not 'retrieve', remove media_files field
-        if self.view_action != "retrieve":
-            self.fields.pop("media_files")
 
         self.media_files_data = {
             "image": self.request.FILES.getlist("images"),
@@ -111,22 +102,6 @@ class PropertySerializer(serializers.ModelSerializer):
                 instance.media_files.add(media_file)
 
         return super().update(instance, validated_data)
-
-    def get_media_files(self, obj):
-        # We represent media files only the property details to avoid nested serialization
-        if self.view_action == "retrieve":
-            # Get building media files excluding "image" and "video" types
-            building_media_files = obj.building.media_files.exclude(type__in=["image", "video"])
-            building_media_serializer = BuildingMediaSerializer(building_media_files, many=True)
-
-            # Get property media files including all types
-            property_media_files = obj.media_files.all()
-            property_media_serializer = PropertyMediaSerializer(property_media_files, many=True)
-
-            # Combine and return the media files from building and property
-            return building_media_serializer.data + property_media_serializer.data
-        else:
-            return None
 
 
 class ComparePropertySerializer(serializers.ModelSerializer):

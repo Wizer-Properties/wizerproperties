@@ -6,7 +6,7 @@ from utils.general_func import show_custom_error_message
 class BuildingMediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = BuildingMedia
-        fields = ["id", "type", "file"]
+        fields = ["id", "file"]
 
 
 class BuildingSerializer(serializers.ModelSerializer):

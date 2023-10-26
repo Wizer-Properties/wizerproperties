@@ -1,6 +1,8 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from .permissions import BuildingPermission
-from .serializers import BuildingSerializer
+from .serializers import BuildingSerializer, BuildingMediaSerializer
 from building.models import Building
 
 
@@ -17,3 +19,17 @@ class BuildingViewSet(viewsets.ModelViewSet):
             }
         )
         return context
+
+    @action(detail=True, methods=["get"])
+    def media_files(self, request, pk=None):
+        building = self.get_object()
+        media_type = request.query_params.get("type")
+        media_files = building.media_files.all()
+
+        if media_type:
+            media_files = media_files.filter(type=media_type)
+            serializer = BuildingMediaSerializer(media_files, many=True)
+        else:
+            return Response({"detail": "Media type is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)

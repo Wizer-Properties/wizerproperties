@@ -1,7 +1,10 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from .permissions import PropertyPermission, ComparePropertyPermission
-from .serializers import PropertySerializer, ComparePropertySerializer
+from .serializers import PropertySerializer, PropertyMediaSerializer, ComparePropertySerializer
 from .filters import PropertyFilter
+from building.api.serializers import BuildingMediaSerializer
 from property.models import Property, CompareProperty
 
 
@@ -30,6 +33,25 @@ class PropertyViewSet(viewsets.ModelViewSet):
             }
         )
         return context
+
+    @action(detail=True, methods=["get"])
+    def media_files(self, request, pk=None):
+        property = self.get_object()
+        media_type = request.query_params.get("type")
+        building_media_files = property.building.media_files.all()
+        property_media_files = property.media_files.all()
+
+        if media_type:
+            if media_type in ["image", "unit_plan", "video"]:
+                media_files = property_media_files.filter(type=media_type)
+                serializer = PropertyMediaSerializer(media_files, many=True)
+            else:
+                media_files = building_media_files.filter(type=media_type)
+                serializer = BuildingMediaSerializer(media_files, many=True)
+        else:
+            return Response({"detail": "Media type is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class ComparePropertyViewSet(viewsets.ModelViewSet):
