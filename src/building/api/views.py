@@ -4,6 +4,9 @@ from rest_framework.response import Response
 from .permissions import BuildingPermission
 from .serializers import BuildingSerializer, BuildingMediaSerializer
 from building.models import Building
+from property.models import Property
+from property.api.serializers import PropertyAvailableUnitsSerializer
+from utils.custom.pagination import CustomPagination
 
 
 class BuildingViewSet(viewsets.ModelViewSet):
@@ -31,5 +34,29 @@ class BuildingViewSet(viewsets.ModelViewSet):
             serializer = BuildingMediaSerializer(media_files, many=True)
         else:
             return Response({"detail": "Media type is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=["get"])
+    def available_units(self, request, pk=None):
+        building = self.get_object()
+
+        properties = Property.objects.filter(building=building, is_active=True)
+
+        property_id = request.query_params.get("property_id")
+        if property_id:
+            properties = properties.exclude(id=property_id)
+
+        bed = request.query_params.get("bed")
+        if bed:
+            properties = properties.filter(number_of_bedroom=bed)
+
+        paginator = CustomPagination()
+        paginated_queryset = paginator.paginate_queryset(properties, request)
+        if paginated_queryset is not None:
+            serializer = PropertyAvailableUnitsSerializer(paginated_queryset, many=True)
+            return paginator.get_paginated_response(serializer.data)
+
+        serializer = PropertyAvailableUnitsSerializer(properties, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)

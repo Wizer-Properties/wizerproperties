@@ -171,6 +171,8 @@ REST_FRAMEWORK = {
         "rest_framework.filters.SearchFilter",
         "rest_framework.filters.OrderingFilter",
     ],
+    "DEFAULT_PAGINATION_CLASS": "utils.custom.pagination.CustomPagination",
+    "PAGE_SIZE": 10,
 }
 
 if DEBUG:

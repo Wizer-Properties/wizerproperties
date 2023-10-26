@@ -113,9 +113,12 @@ class BuildingSerializer(serializers.ModelSerializer):
                 # Update BuildingMedia objects for different media types
                 for media_type, files in media_files_data.items():
                     for file in files:
-                        media_file = BuildingMedia(type=media_type, file=file)
-                        media_file.save()
-                        instance.media_files.add(media_file)
+                        if media_type == "video":
+                            instance.media_files.filter(type=media_type).update(file=file)
+                        else:
+                            media_file = BuildingMedia(type=media_type, file=file)
+                            media_file.save()
+                            instance.media_files.add(media_file)
 
                 # Check if all deleted_images are deletable
                 remaining_file_types = instance.media_files.exclude(id__in=deleted_images).values_list(

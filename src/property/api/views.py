@@ -2,7 +2,11 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .permissions import PropertyPermission, ComparePropertyPermission
-from .serializers import PropertySerializer, PropertyMediaSerializer, ComparePropertySerializer
+from .serializers import (
+    PropertySerializer,
+    PropertyMediaSerializer,
+    ComparePropertySerializer,
+)
 from .filters import PropertyFilter
 from building.api.serializers import BuildingMediaSerializer
 from property.models import Property, CompareProperty
