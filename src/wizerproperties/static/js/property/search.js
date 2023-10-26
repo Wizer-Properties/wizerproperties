@@ -120,9 +120,11 @@ $(document).ready(function(){
                 'X-CSRFToken': csrfToken,
             },
             success: function (data) {
+                console.log(data)
+                var new_data = data?.results
                 var search_dom = ''
-                for (let i = 0; i < data.length; i++) {
-                    search_dom += property_list(data[i])
+                for (let i = 0; i < new_data.length; i++) {
+                    search_dom += property_list(new_data[i])
                 };
 
                 $('#search-result-list').html(search_dom)
