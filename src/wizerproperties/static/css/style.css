@@ -4,6 +4,7 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    outline: none !important;
     font-family: 'Roboto', sans-serif !important;
 }
 
@@ -15,9 +16,42 @@
     font-family: 'Material Symbols Outlined' !important;
 }
 
+.video-js *{
+    font-family: 'VideoJS' !important;
+}
+
 .z-index-3{
     z-index: 3;
 }
+
+.skeleton-box {
+    display: inline-block;
+    height: 1em;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    background-color: #f3edf3;
+}
+
+.skeleton-box::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+
+    background: linear-gradient(117deg, rgba(255, 255, 255, 0.00) 28.36%, rgba(255, 255, 255, 0.68) 50.02%, rgba(255, 255, 255, 0.00) 71.17%);
+    animation: shimmer 1.2s infinite;
+    content: '';
+}
+  
+@keyframes shimmer {
+    100% {
+        transform: translateX(60%);
+    }
+}
+  
 
 body{
     min-height: 100vh;
@@ -476,6 +510,20 @@ footer{
     font-size: 16px !important;
     text-align: center !important;
 }
+
+.section-title{
+    font-size: 20px;
+    color: #484848 !important;
+    margin-bottom: 10px !important;
+}
+
+.section-scripts{
+    font-size: 14px;
+    color: #726E6E !important;
+    margin-bottom: 35px;
+}
+
+
 
 
 @media screen and (max-width: 768px) {

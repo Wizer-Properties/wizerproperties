@@ -8,12 +8,18 @@ function initializeMap() {
     };
 
     var search_input = document.getElementById("gm-search-input");
-    new google.maps.places.Autocomplete(search_input, options);
+    var search_box = new google.maps.places.Autocomplete(search_input, options);
+
+    google.maps.event.addListener(search_box, 'place_changed', function(){
+
+        console.log("hello", search_input.value)
+        window.location.href = '/property/search/?place='+search_input.value
+    })
+
 
     var gac_input = document.querySelectorAll(".pac-input");
 
-    for (let i = 0; i < gac_input.length; i++) {
-        
+    for (let i = 0; i < gac_input.length; i++) {        
         var autocomplete = new google.maps.places.Autocomplete(gac_input[i], options);
         
         google.maps.event.addListener(autocomplete, 'place_changed', function(){

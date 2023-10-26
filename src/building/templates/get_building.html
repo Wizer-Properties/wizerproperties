@@ -4,6 +4,7 @@
 
 {% block extend_head %}
 <title>Building details</title>
+<link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet" />
 <link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
 <link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
 <link rel="stylesheet" href="{% static '/css/detail-page.css' %}" />
@@ -13,37 +14,47 @@
 
 <section id="details-banner">
     <div class="col-xl-7 col-lg-8 col-10 details-banner-bg">
-        <img src="https://www.travelplusstyle.com/wp-content/uploads/2016/01/sonevajani-1880.jpg" alt="bg">
+        <img src="" alt="bg">
     </div>
+
 
     
 
     <div class="container position-relative z-index-3">
         <h1 class="title-perice-area">
-            <span class="title"> Grand Solaire Pattaya </span>
-            <span class="price"> Price : ৳ 12,300,000 </span>
+            <span class="title" label-name="build-title"> 
+                <span class="skeleton-box" style="width: 200px; height: 26px;"></span> 
+            </span>
+            <span class="price"> 
+                Price :
+                <span label-name="build-price">
+                    <span class="skeleton-box" style="width: 140px; height: 26px;"></span> 
+                </span>
+            </span>
         </h1>
         <address>
             <i class="bi bi-geo-alt"></i>
-            Nong Prue, Pattaya, Chon Buri
+            <span label-name="address">
+                <span class="skeleton-box" style="width: 100px; height: 22px;"></span>
+            </span>
         </address>
-        <span class="unit-id">
-            <b>Unit ID : </b> 1122
-        </span>
 
         <nav class="nav-tab-wrapper">
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#nav-imges" aria-selected="true">
+            <div class="nav nav-tabs gallery-btn" id="nav-tab" role="tablist">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#nav-imges" aria-selected="true" type="image">
                     Images
                 </button>
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-unit-floor-plans" aria-selected="false">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-floor-plans" aria-selected="false" type="floor_plan">
+                    Floor Plans
+                 </button>
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-unit-floor-plans" aria-selected="false" type="unit_floor_plan">
                     Unit Floor Plans
                 </button>
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-building-floor-plans" aria-selected="false">
-                    Building Floor Plans
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-master-plans" aria-selected="false" type="master_plan">
+                    Master Plans
                 </button>
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-master-plans" aria-selected="false">
-                    Map Plans
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-video" aria-selected="false" type="video">
+                    Video
                 </button>
                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-map" aria-selected="false">
                     Map
@@ -52,84 +63,111 @@
         </nav>
 
         <div class="tab-content" id="banner-nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-imges">
+            <!-- Images -->
+            <div class="tab-pane fade show active" id="nav-imges" label-name="media-files-image">
                 <div class="details-gallery">
-                    <div class="details-gallery-img-box">
-                        <img src="https://www.travelplusstyle.com/wp-content/uploads/2016/01/sonevajani-1880.jpg" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://publish.purewow.net/wp-content/uploads/sites/2/2019/08/grand-velas.jpeg" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://www.corporatelivewire.com/image_thumb.php?w=800&img=images/blogs/2062/143613773.jpg" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://tranducfurnishings.com/wp-content/uploads/2021/06/Ritz-Carlton-Grand-Lake-Florida-2v22.jpg" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://i.insider.com/5b50aa5001180c3c008b46d2?width=700" alt="bg">
-                    </div>
+                    <!-- this is a dom -->
+                    <!-- <div class="details-gallery-img-box">
+                        <img src="" alt="bg">
+                    </div> -->
                 </div>
             </div>
 
-            <div class="tab-pane fade" id="nav-unit-floor-plans" >
+
+            <!--  Building Floor Plans -->
+            <div class="tab-pane fade" id="nav-floor-plans" label-name="media-files-floor-plan">
                 <div class="details-gallery">
-                    <div class="details-gallery-img-box">
-                        <img src="https://1.bp.blogspot.com/-v57nmGGKNdU/XSYElRq1pII/AAAAAAAAAQ4/t4iPm4rPOeUXm7tLQlx0q_ES2ok1Y87xQCLcBGAs/s16000/3300-sqft-first-floor-plan-2.png" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://www.homeisthehamilton.com/corporate/images/09e48148-a460-4619-9bb8-e991c6409c4c.png" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://www.corporatelivewire.com/image_thumb.php?w=800&img=images/blogs/2062/143613773.jpg" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://tranducfurnishings.com/wp-content/uploads/2021/06/Ritz-Carlton-Grand-Lake-Florida-2v22.jpg" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://i.insider.com/5b50aa5001180c3c008b46d2?width=700" alt="bg">
-                    </div>
+                     <!-- this is a dom -->
+                    <!-- <div class="details-gallery-img-box">
+                        <img src="" alt="bg">
+                    </div> -->
                 </div>
             </div>
-            <div class="tab-pane fade" id="nav-building-floor-plans">
+
+            
+            <!-- Unit Floor Plans -->
+            <div class="tab-pane fade" id="nav-unit-floor-plans" label-name="media-files-unit-floor-plan">
                 <div class="details-gallery">
-                    <div class="details-gallery-img-box">
-                        <img src="https://www.travelplusstyle.com/wp-content/uploads/2016/01/sonevajani-1880.jpg" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://publish.purewow.net/wp-content/uploads/sites/2/2019/08/grand-velas.jpeg" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://www.corporatelivewire.com/image_thumb.php?w=800&img=images/blogs/2062/143613773.jpg" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://tranducfurnishings.com/wp-content/uploads/2021/06/Ritz-Carlton-Grand-Lake-Florida-2v22.jpg" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://i.insider.com/5b50aa5001180c3c008b46d2?width=700" alt="bg">
-                    </div>
+                     <!-- this is a dom -->
+                    <!-- <div class="details-gallery-img-box">
+                        <img src="" alt="bg">
+                    </div> -->
                 </div>
             </div>
-            <div class="tab-pane fade" id="nav-master-plans">.5..</div>
-            <div class="tab-pane fade" id="nav-map">.6..</div>
+
+
+            <!-- Master Map Plans -->
+            <div class="tab-pane fade" id="nav-master-plans" label-name="media-files-master-plan">
+                <div class="details-gallery">
+                    <!-- this is a dom -->
+                   <!-- <div class="details-gallery-img-box">
+                       <img src="" alt="bg">
+                   </div> -->
+               </div>
+            </div>
+
+
+            <!-- Map Plans -->
+            <div class="tab-pane fade" id="nav-video" label-name="media-files-video">
+                <div class="details-gallery-video">
+                    <!-- this is a dom -->
+                    <video
+                        id="my-video"
+                        class="video-js"
+                        controls
+                        preload="auto"
+                        data-setup="{}"
+                  >
+                    <p class="vjs-no-js">
+                        To view this video please enable JavaScript, and consider upgrading to a web browser that
+                    </p>
+                  </video>
+               </div>
+            </div>
+            
+
+            <!-- Map -->
+            <div class="tab-pane fade" id="nav-map">
+                <div id="map"></div>
+            </div>
         </div>
-
-
 
     </div>
 </section>
 
-<!-- <section class="splide">
-    <div class="splide__track">
-          <div class="splide__list">
-                <div class="splide__slide">
-                    <div class="details-page-banner">
-                        <img src="https://www.planetizen.com/files/images/shutterstock_2236644373.jpg" alt="bg">
-                    </div>
-                </div>
-          </div>
+
+<div class="img-gallery-dialog">
+    <div class="img-gallery-dialog-overlay dialog-dismiss"></div>
+    <div class="img-gallery-dialog-container">
+        <div class="splide img-gallery-dialog-slider">
+            <div class="splide__track">
+                  <div class="splide__list">
+
+                        <div class="splide__slide">
+                            <div class="img-gallery-dialog-img">
+                                <img src="https://www.planetizen.com/files/images/shutterstock_2236644373.jpg" alt="bg">
+                            </div>
+                        </div>
+
+                        <div class="splide__slide">
+                            <div class="img-gallery-dialog-img">
+                                <img src="https://tranducfurnishings.com/wp-content/uploads/2021/06/Ritz-Carlton-Grand-Lake-Florida-2v22.jpg" alt="bg">
+                            </div>
+                        </div>
+
+                        <div class="splide__slide">
+                            <div class="img-gallery-dialog-img">
+                                <img src="https://publish.purewow.net/wp-content/uploads/sites/2/2019/08/grand-velas.jpeg" alt="bg">
+                            </div>
+                        </div>
+
+                  </div>
+            </div>
+        </div>
     </div>
-</section> -->
+</div>
+
+
 
 
 <section>
@@ -139,41 +177,52 @@
                 <div class="property-short-info-icon">
                     <img src="{% static '/media/icons/building.svg' %}" alt="building-icon">
                 </div>
-                <span class="property-value"> 1 </span>
+                <span class="property-value" label-name="building_type">
+                    <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                </span>
                 <span class="property-label">Building</span>
             </div>
             <div class="property-short-info-box">
                 <div class="property-short-info-icon">
                     <img src="{% static '/media/icons/unit.svg' %}" alt="unit-icon">
                 </div>
-                <span class="property-value"> 123 </span>
-                <span class="property-label">Unite</span>
+                <span class="property-value" label-name="total_units_for_sale">
+                    <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                </span>
+                <span class="property-label">Unit</span>
             </div>
             <div class="property-short-info-box">
                 <div class="property-short-info-icon">
                     <img src="{% static '/media/icons/plan-size.svg' %}" alt="plan-size-icon">
                 </div>
-                <span class="property-value"> 34 SqM </span>
+                <span class="property-value" label-name="project_total_area">
+                    <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                </span>
                 <span class="property-label">Project Area</span>
             </div>
             <div class="property-short-info-box">
                 <div class="property-short-info-icon">
                     <img src="{% static '/media/icons/stairs.svg' %}" alt="stairs-icon">
                 </div>
-                <span class="property-value"> 32 </span>
+                <span class="property-value" label-name="total_floors">
+                    <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                </span> 
                 <span class="property-label">Floor</span>
             </div>
             <div class="property-short-info-box">
                 <div class="property-short-info-icon">
                     <img src="{% static '/media/icons/build.svg' %}" alt="build-icon">
                 </div>
-                <span class="property-value"> Dec 2024 </span>
+                <span class="property-value" label-name="construction_year">
+                    <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                </span>
                 <span class="property-label">Build</span>
             </div>
 
         </div>
     </div>
 </section>
+
 
 
 
@@ -185,71 +234,54 @@
                 <!-- 1 -->
                 <div class="about-area">
                     <h1 class="section-title">About This Apartment</h1>
-                    <div class="section-scripts">
-                        Balance your life in all dimensions with Nue District R9 , a luxury condominium project connecting all lifestyles in Bangkok's New CBD, whether working, seeing the doctor, traveling, shopping or sipping a cup of coffee as the project provides a complete range of conveniences and is surrounded by shopping malls and a wide array of amenities such as CentralPlaza Grand Rama 9, Terminal 21, The STREET Ratchada, Benjakitti Park, Praram 9 Hospital, Praram 9 MRT, etc. Spanning over 8 rai land plots, a large common area comprises 8 zones with 50 functions such as a luxurious sky lounge, a majestic lobby area, an infinity pool, a children's pool, a rooftop garden, a sky fitness center, a yoga studio, a spa, a steam room, a golf simulator, a photo studio, a recording studio, a salon, a 24-hour security system, etc. Additionally, 1-2 bedroom units have been exceptionally designed with attention to detail to perfectly match the lifestyle of modern people. Find a unique condominium project and great deals today at Nue District R9, a noble place where you belong.
+                    <div class="section-scripts" label-name="building-description">
+                        <span class="skeleton-box" style="height: 200px;"></span>
                     </div>
                 </div>
 
 
 
-                <!-- 2 -->
+                <!-- 4 -->
                 <div class="facilities-area">
                     <h1 class="section-title">Available Facilities</h1>
                     <div class="facilities-list">
-                        <div class="row">
+                        <div class="row" label-name="facilities">
+
                             <div class="col-6 col-md-6 col-lg-4 mb-3">
                                 <div class="facilities-box">
-                                    <div class="facilities-box-icon">
-                                        <i class="material-symbols-outlined"> legend_toggle </i>
-                                    </div>
-                                    <span class="facilities-box-label">River View</span>
+                                    <span class="skeleton-box" style="width: 80%; height: 35px;"></span>
                                 </div>
                             </div>
+
                             <div class="col-6 col-md-6 col-lg-4 mb-3">
                                 <div class="facilities-box">
-                                    <div class="facilities-box-icon">
-                                        <i class="material-symbols-outlined"> sauna </i>
-                                    </div>
-                                    <span class="facilities-box-label">Sauna</span>
+                                    <span class="skeleton-box" style="width: 80%; height: 35px;"></span>
                                 </div>
                             </div>
+
+
                             <div class="col-6 col-md-6 col-lg-4 mb-3">
                                 <div class="facilities-box">
-                                    <div class="facilities-box-icon">
-                                        <i class="material-symbols-outlined"> exercise </i>
-                                    </div>
-                                    <span class="facilities-box-label">Fitness Area</span>
+                                    <span class="skeleton-box" style="width: 80%; height: 35px;"></span>
                                 </div>
                             </div>
+
                             <div class="col-6 col-md-6 col-lg-4 mb-3">
                                 <div class="facilities-box">
-                                    <div class="facilities-box-icon">
-                                        <i class="material-symbols-outlined"> security </i>
-                                    </div>
-                                    <span class="facilities-box-label">Guard House</span>
+                                    <span class="skeleton-box" style="width: 80%; height: 35px;"></span>
                                 </div>
                             </div>
-                            <div class="col-6 col-md-6 col-lg-4 mb-3">
-                                <div class="facilities-box">
-                                    <div class="facilities-box-icon">
-                                        <i class="material-symbols-outlined"> filter_drama </i>
-                                    </div>
-                                    <span class="facilities-box-label">Sky Lounge</span>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-6 col-lg-4 mb-3">
-                                <div class="facilities-box">
-                                    <div class="facilities-box-icon">
-                                        <i class="material-symbols-outlined"> store </i>
-                                    </div>
-                                    <span class="facilities-box-label">Grocery</span>
-                                </div>
-                            </div>
+                            
+
                         </div>
                     </div>
                 </div>
 
             </div>
+
+
+
+
             <div class="col-lg-4">
                 <div class="side-box-info">
                     <div class="contact-info-side-box">
@@ -308,10 +340,6 @@
             </div>
 
 
-
-
-
-
         </div>
     </div>
 </section>
@@ -355,8 +383,8 @@
                     
                                 <div class="p-2">
                                     <div class="property-price-info">
-                                        <span>৳10,700,000</span>
-                                        <span>৳295,000</span>
+                                        <span>฿10,700,000</span>
+                                        <span>฿295,000</span>
                                     </div>
                         
                                     <div class="property-contains">
@@ -407,8 +435,8 @@
                     
                                 <div class="p-2">
                                     <div class="property-price-info">
-                                        <span>৳10,700,000</span>
-                                        <span>৳295,000</span>
+                                        <span>฿10,700,000</span>
+                                        <span>฿295,000</span>
                                     </div>
                         
                                     <div class="property-contains">
@@ -459,8 +487,8 @@
                     
                                 <div class="p-2">
                                     <div class="property-price-info">
-                                        <span>৳10,700,000</span>
-                                        <span>৳295,000</span>
+                                        <span>฿10,700,000</span>
+                                        <span>฿295,000</span>
                                     </div>
                         
                                     <div class="property-contains">
@@ -511,8 +539,8 @@
                     
                                 <div class="p-2">
                                     <div class="property-price-info">
-                                        <span>৳10,700,000</span>
-                                        <span>৳295,000</span>
+                                        <span>฿10,700,000</span>
+                                        <span>฿295,000</span>
                                     </div>
                         
                                     <div class="property-contains">
@@ -563,8 +591,8 @@
                     
                                 <div class="p-2">
                                     <div class="property-price-info">
-                                        <span>৳10,700,000</span>
-                                        <span>৳295,000</span>
+                                        <span>฿10,700,000</span>
+                                        <span>฿295,000</span>
                                     </div>
                         
                                     <div class="property-contains">
@@ -615,8 +643,8 @@
                     
                                 <div class="p-2">
                                     <div class="property-price-info">
-                                        <span>৳10,700,000</span>
-                                        <span>৳295,000</span>
+                                        <span>฿10,700,000</span>
+                                        <span>฿295,000</span>
                                     </div>
                         
                                     <div class="property-contains">
@@ -674,6 +702,15 @@
 {% endblock %}
 
 {% block extend_script %}
+<script>
+    var asset_api_url = '/building/api/details/{{building.id}}/';
+    var gallery_api_url = '/building/api/details/{{building.id}}/media-files/';
+    var ASSET_ID = '{{building.id}}';
+</script>
+
+<script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
 <script src="{% static 'js/libraries/splide.min.js' %}"></script>
 <script src="{% static 'js/detail-page.js' %}"></script>
+
+
 {% endblock extend_script %}

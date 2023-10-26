@@ -4,6 +4,7 @@
 
 {% block extend_head %}
 <title>Property details</title>
+<link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet" />
 <link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
 <link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
 <link rel="stylesheet" href="{% static '/css/detail-page.css' %}" />
@@ -13,37 +14,53 @@
 
 <section id="details-banner">
     <div class="col-xl-7 col-lg-8 col-10 details-banner-bg">
-        <img src="https://www.travelplusstyle.com/wp-content/uploads/2016/01/sonevajani-1880.jpg" alt="bg">
+        <img src="" alt="bg">
     </div>
+
 
     
 
     <div class="container position-relative z-index-3">
         <h1 class="title-perice-area">
-            <span class="title"> Grand Solaire Pattaya </span>
-            <span class="price"> Price : ৳ 12,300,000 </span>
+            <span class="title" label-name="title"> 
+                <span class="skeleton-box" style="width: 200px; height: 26px;"></span> 
+            </span>
+            <span class="price"> 
+                Price :
+                <span label-name="price">
+                    <span class="skeleton-box" style="width: 140px; height: 26px;"></span> 
+                </span>
+            </span>
         </h1>
         <address>
             <i class="bi bi-geo-alt"></i>
-            Nong Prue, Pattaya, Chon Buri
+            <span label-name="address">
+                <span class="skeleton-box" style="width: 100px; height: 22px;"></span>
+            </span>
         </address>
         <span class="unit-id">
-            <b>Unit ID : </b> 1122
+            <b>Unit ID : </b> 
+            <span label-name="unit_id"> 
+                <span class="skeleton-box" style="width: 100px; height: 22px;"></span>
+            </span>
         </span>
 
         <nav class="nav-tab-wrapper">
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#nav-imges" aria-selected="true">
+            <div class="nav nav-tabs gallery-btn" id="nav-tab" role="tablist">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#nav-imges" aria-selected="true" type="image">
                     Images
                 </button>
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-unit-floor-plans" aria-selected="false">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-floor-plans" aria-selected="false" type="floor_plan">
+                    Floor Plans
+                 </button>
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-unit-floor-plans" aria-selected="false" type="unit_floor_plan">
                     Unit Floor Plans
                 </button>
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-building-floor-plans" aria-selected="false">
-                    Building Floor Plans
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-master-plans" aria-selected="false" type="master_plan">
+                    Master Plans
                 </button>
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-master-plans" aria-selected="false">
-                    Map Plans
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-video" aria-selected="false" type="video">
+                    Video
                 </button>
                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-map" aria-selected="false">
                     Map
@@ -53,71 +70,67 @@
 
         <div class="tab-content" id="banner-nav-tabContent">
             <!-- Images -->
-            <div class="tab-pane fade show active" id="nav-imges">
+            <div class="tab-pane fade show active" id="nav-imges" label-name="media-files-image">
                 <div class="details-gallery">
-                    <div class="details-gallery-img-box">
-                        <img src="https://www.travelplusstyle.com/wp-content/uploads/2016/01/sonevajani-1880.jpg" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://publish.purewow.net/wp-content/uploads/sites/2/2019/08/grand-velas.jpeg" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://www.corporatelivewire.com/image_thumb.php?w=800&img=images/blogs/2062/143613773.jpg" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://tranducfurnishings.com/wp-content/uploads/2021/06/Ritz-Carlton-Grand-Lake-Florida-2v22.jpg" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://i.insider.com/5b50aa5001180c3c008b46d2?width=700" alt="bg">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Unit Floor Plans -->
-            <div class="tab-pane fade" id="nav-unit-floor-plans" >
-                <div class="details-gallery">
-                    <div class="details-gallery-img-box">
-                        <img src="https://1.bp.blogspot.com/-v57nmGGKNdU/XSYElRq1pII/AAAAAAAAAQ4/t4iPm4rPOeUXm7tLQlx0q_ES2ok1Y87xQCLcBGAs/s16000/3300-sqft-first-floor-plan-2.png" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://www.homeisthehamilton.com/corporate/images/09e48148-a460-4619-9bb8-e991c6409c4c.png" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://www.corporatelivewire.com/image_thumb.php?w=800&img=images/blogs/2062/143613773.jpg" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://tranducfurnishings.com/wp-content/uploads/2021/06/Ritz-Carlton-Grand-Lake-Florida-2v22.jpg" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://i.insider.com/5b50aa5001180c3c008b46d2?width=700" alt="bg">
-                    </div>
+                    <!-- this is a dom -->
+                    <!-- <div class="details-gallery-img-box">
+                        <img src="" alt="bg">
+                    </div> -->
                 </div>
             </div>
 
 
             <!--  Building Floor Plans -->
-            <div class="tab-pane fade" id="nav-building-floor-plans">
+            <div class="tab-pane fade" id="nav-floor-plans" label-name="media-files-floor-plan">
                 <div class="details-gallery">
-                    <div class="details-gallery-img-box">
-                        <img src="https://www.travelplusstyle.com/wp-content/uploads/2016/01/sonevajani-1880.jpg" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://publish.purewow.net/wp-content/uploads/sites/2/2019/08/grand-velas.jpeg" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://www.corporatelivewire.com/image_thumb.php?w=800&img=images/blogs/2062/143613773.jpg" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://tranducfurnishings.com/wp-content/uploads/2021/06/Ritz-Carlton-Grand-Lake-Florida-2v22.jpg" alt="bg">
-                    </div>
-                    <div class="details-gallery-img-box">
-                        <img src="https://i.insider.com/5b50aa5001180c3c008b46d2?width=700" alt="bg">
-                    </div>
+                     <!-- this is a dom -->
+                    <!-- <div class="details-gallery-img-box">
+                        <img src="" alt="bg">
+                    </div> -->
                 </div>
             </div>
 
+            
+            <!-- Unit Floor Plans -->
+            <div class="tab-pane fade" id="nav-unit-floor-plans" label-name="media-files-unit-floor-plan">
+                <div class="details-gallery">
+                     <!-- this is a dom -->
+                    <!-- <div class="details-gallery-img-box">
+                        <img src="" alt="bg">
+                    </div> -->
+                </div>
+            </div>
+
+
+            <!-- Master Map Plans -->
+            <div class="tab-pane fade" id="nav-master-plans" label-name="media-files-master-plan">
+                <div class="details-gallery">
+                    <!-- this is a dom -->
+                   <!-- <div class="details-gallery-img-box">
+                       <img src="" alt="bg">
+                   </div> -->
+               </div>
+            </div>
+
+
             <!-- Map Plans -->
-            <div class="tab-pane fade" id="nav-master-plans">.5..</div>
+            <div class="tab-pane fade" id="nav-video" label-name="media-files-video">
+                <div class="details-gallery-video">
+                    <!-- this is a dom -->
+                    <video
+                        id="my-video"
+                        class="video-js"
+                        controls
+                        preload="auto"
+                        data-setup="{}"
+                  >
+                    <p class="vjs-no-js">
+                        To view this video please enable JavaScript, and consider upgrading to a web browser that
+                    </p>
+                  </video>
+               </div>
+            </div>
+            
 
             <!-- Map -->
             <div class="tab-pane fade" id="nav-map">
@@ -170,35 +183,45 @@
                 <div class="property-short-info-icon">
                     <img src="{% static '/media/icons/bed.svg' %}" alt="bed-icon">
                 </div>
-                <span class="property-value"> 04 </span>
+                <span class="property-value" label-name="number_of_bedroom">
+                    <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                </span>
                 <span class="property-label">Beds</span>
             </div>
             <div class="property-short-info-box">
                 <div class="property-short-info-icon">
                     <img src="{% static '/media/icons/bath.svg' %}" alt="bath-icon">
                 </div>
-                <span class="property-value"> 04 </span>
+                <span class="property-value" label-name="number_of_bathroom">
+                    <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                </span>
                 <span class="property-label">Baths</span>
             </div>
             <div class="property-short-info-box">
                 <div class="property-short-info-icon">
                     <img src="{% static '/media/icons/plan-size.svg' %}" alt="plan-size-icon">
                 </div>
-                <span class="property-value"> 04 </span>
+                <span class="property-value" label-name="unit_area">
+                    <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                </span>
                 <span class="property-label">Size</span>
             </div>
             <div class="property-short-info-box">
                 <div class="property-short-info-icon">
                     <img src="{% static '/media/icons/stairs.svg' %}" alt="stairs-icon">
                 </div>
-                <span class="property-value"> 04 </span>
+                <span class="property-value" label-name="floor_number">
+                    <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                </span> 
                 <span class="property-label">Floor</span>
             </div>
             <div class="property-short-info-box">
                 <div class="property-short-info-icon">
                     <img src="{% static '/media/icons/building.svg' %}" alt="building-icon">
                 </div>
-                <span class="property-value"> 04 </span>
+                <span class="property-value" label-name="total_floors">
+                    <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                </span>
                 <span class="property-label">Build</span>
             </div>
 
@@ -216,8 +239,8 @@
                 <!-- 1 -->
                 <div class="about-area">
                     <h1 class="section-title">About This Apartment</h1>
-                    <div class="section-scripts">
-                        This property is a 240 SqM apartment with 3 bedrooms and 4 bathrooms that is available for sale. It is part of the Seaview Residence project in Karon, Phuket and was completed in Dec 2014. You can buy this apartment for a base price of ৳73,200,000 (৳305,000/SqM) and it is also available for long term rentals starting from ৳256,000 per month.
+                    <div class="section-scripts" label-name="description">
+                        <span class="skeleton-box" style="height: 200px;"></span>
                     </div>
                 </div>
 
@@ -231,63 +254,85 @@
                             <div class="col-6 col-lg-4">
                                 <div class="info-list-box">
                                     <span class="info-list-label">Bedroom</span>
-                                    <span class="info-list-data">3</span>
+                                    <span class="info-list-data" label-name="number_of_bedroom">
+                                        <span class="skeleton-box" style="width: 60px; height: 20px;"></span>
+                                    </span>
                                 </div>
                             </div>
                             <div class="col-6 col-lg-4">
                                 <div class="info-list-box">
                                     <span class="info-list-label">Bathroom</span>
-                                    <span class="info-list-data">2</span>
+                                    <span class="info-list-data" label-name="number_of_bathroom">
+                                        <span class="skeleton-box" style="width: 60px; height: 20px;"></span>
+                                    </span>
                                 </div>
                             </div>
                             <div class="col-6 col-lg-4">
                                 <div class="info-list-box">
                                     <span class="info-list-label">Balcony</span>
-                                    <span class="info-list-data">2</span>
+                                    <span class="info-list-data" label-name="number_of_balcony">
+                                        <span class="skeleton-box" style="width: 60px; height: 20px;"></span>
+                                    </span>
                                 </div>
                             </div>
                             <div class="col-6 col-lg-4">
                                 <div class="info-list-box">
                                     <span class="info-list-label">Car Park</span>
-                                    <span class="info-list-data">1</span>
+                                    <span class="info-list-data" label-name="number_of_car_parking">
+                                        <span class="skeleton-box" style="width: 60px; height: 20px;"></span>
+                                    </span>
                                 </div>
                             </div>
                             <div class="col-6 col-lg-4">
                                 <div class="info-list-box">
                                     <span class="info-list-label">Floor</span>
-                                    <span class="info-list-data">19</span>
+                                    <span class="info-list-data" label-name="floor_number">
+                                        <span class="skeleton-box" style="width: 60px; height: 20px;"></span>
+                                    </span>
                                 </div>
                             </div>
                             <div class="col-6 col-lg-4">
                                 <div class="info-list-box">
                                     <span class="info-list-label">Price</span>
-                                    <span class="info-list-data">৳ 563,000</span>
+                                    <span class="info-list-data" label-name="price">
+                                        <span class="skeleton-box" style="width: 60px; height: 20px;"></span>
+                                    </span>
                                 </div>
                             </div>
                             <div class="col-6 col-lg-4">
                                 <div class="info-list-box">
                                     <span class="info-list-label">Size</span>
-                                    <span class="info-list-data">26.50 SqM</span>
+                                    <span class="info-list-data" label-name="unit_area">
+                                        <span class="skeleton-box" style="width: 60px; height: 20px;"></span>
+                                    </span>
                                 </div>
                             </div>
                             <div class="col-6 col-lg-4">
                                 <div class="info-list-box">
                                     <span class="info-list-label">Property Type</span>
-                                    <span class="info-list-data">Condo</span>
+                                    <span class="info-list-data" label-name="building_type">
+                                        <span class="skeleton-box" style="width: 60px; height: 20px;"></span>
+                                    </span>
                                 </div>
                             </div>
                             <div class="col-6 col-lg-4">
                                 <div class="info-list-box">
                                     <span class="info-list-label">Date Listed</span>
-                                    <span class="info-list-data">Oct 19, 2021</span>
+                                    <span class="info-list-data" label-name="construction_year">
+                                        <span class="skeleton-box" style="width: 60px; height: 20px;"></span>
+                                    </span>
                                 </div>
                             </div>
-                            <div class="col-6 col-lg-4">
+
+                            <!-- <div class="col-6 col-lg-4">
                                 <div class="info-list-box">
                                     <span class="info-list-label">Furniture</span>
-                                    <span class="info-list-data">Unfurnished</span>
+                                    <span class="info-list-data">
+                                        <span class="skeleton-box" style="width: 60px; height: 20px;"></span>
+                                    </span>
                                 </div>
-                            </div>
+                            </div> -->
+
                         </div>
                     </div>
                 </div>
@@ -310,55 +355,73 @@
                                     <div class="col-xl-6 col-lg-12 col-md-6">
                                         <div class="info-list-box">
                                             <span class="info-list-label">Project Name</span>
-                                            <span class="info-list-data">Life Rama 4 - Asoke</span>
+                                            <span class="info-list-data" label-name="project_name">
+                                                <span class="skeleton-box" style="width: 60px; height: 20px;"></span>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="col-xl-6 col-lg-12 col-md-6">
                                         <div class="info-list-box">
                                             <span class="info-list-label">Floor</span>
-                                            <span class="info-list-data">40</span>
+                                            <span class="info-list-data" label-name="total_floors">
+                                                <span class="skeleton-box" style="width: 60px; height: 20px;"></span>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="col-xl-6 col-lg-12 col-md-6">
                                         <div class="info-list-box">
                                             <span class="info-list-label">Project Area</span>
-                                            <span class="info-list-data">4240</span>
+                                            <span class="info-list-data" label-name="project_total_area">
+                                                <span class="skeleton-box" style="width: 60px; height: 20px;"></span>
+                                            </span>
                                         </div>
                                     </div>
-                                    <div class="col-xl-6 col-lg-12 col-md-6">
+                                    <!-- <div class="col-xl-6 col-lg-12 col-md-6">
                                         <div class="info-list-box">
                                             <span class="info-list-label">Developer</span>
-                                            <span class="info-list-data">AP Group</span>
+                                            <span class="info-list-data">
+                                                <span class="skeleton-box" style="width: 60px; height: 20px;"></span>
+                                            </span>
                                         </div>
-                                    </div>
-                                    <div class="col-xl-6 col-lg-12 col-md-6">
+                                    </div> -->
+                                    <!-- <div class="col-xl-6 col-lg-12 col-md-6">
                                         <div class="info-list-box">
                                             <span class="info-list-label">Building</span>
-                                            <span class="info-list-data">1</span>
+                                            <span class="info-list-data">
+                                                <span class="skeleton-box" style="width: 60px; height: 20px;"></span>
+                                            </span>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="col-xl-6 col-lg-12 col-md-6">
                                         <div class="info-list-box">
                                             <span class="info-list-label">Building Type</span>
-                                            <span class="info-list-data">Condo</span>
+                                            <span class="info-list-data" label-name="building_type">
+                                                <span class="skeleton-box" style="width: 60px; height: 20px;"></span>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="col-xl-6 col-lg-12 col-md-6">
                                         <div class="info-list-box">
                                             <span class="info-list-label">Constrations year</span>
-                                            <span class="info-list-data">2020</span>
+                                            <span class="info-list-data" label-name="construction_year">
+                                                <span class="skeleton-box" style="width: 60px; height: 20px;"></span>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="col-xl-6 col-lg-12 col-md-6">
                                         <div class="info-list-box">
                                             <span class="info-list-label">Units</span>
-                                            <span class="info-list-data">120</span>
+                                            <span class="info-list-data" label-name="total_units_for_sale">
+                                                <span class="skeleton-box" style="width: 60px; height: 20px;"></span>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="col-xl-6 col-lg-12 col-md-6">
                                         <div class="info-list-box">
                                             <span class="info-list-label">Address</span>
-                                            <span class="info-list-data">Khlong Toei, Bangkok</span>
+                                            <span class="info-list-data" label-name="address">
+                                                <span class="skeleton-box" style="width: 60px; height: 20px;"></span>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -373,55 +436,34 @@
                 <div class="facilities-area">
                     <h1 class="section-title">Available Facilities</h1>
                     <div class="facilities-list">
-                        <div class="row">
+                        <div class="row" label-name="facilities">
+
                             <div class="col-6 col-md-6 col-lg-4 mb-3">
                                 <div class="facilities-box">
-                                    <div class="facilities-box-icon">
-                                        <i class="material-symbols-outlined"> legend_toggle </i>
-                                    </div>
-                                    <span class="facilities-box-label">River View</span>
+                                    <span class="skeleton-box" style="width: 80%; height: 35px;"></span>
                                 </div>
                             </div>
+
                             <div class="col-6 col-md-6 col-lg-4 mb-3">
                                 <div class="facilities-box">
-                                    <div class="facilities-box-icon">
-                                        <i class="material-symbols-outlined"> sauna </i>
-                                    </div>
-                                    <span class="facilities-box-label">Sauna</span>
+                                    <span class="skeleton-box" style="width: 80%; height: 35px;"></span>
                                 </div>
                             </div>
+
+
                             <div class="col-6 col-md-6 col-lg-4 mb-3">
                                 <div class="facilities-box">
-                                    <div class="facilities-box-icon">
-                                        <i class="material-symbols-outlined"> exercise </i>
-                                    </div>
-                                    <span class="facilities-box-label">Fitness Area</span>
+                                    <span class="skeleton-box" style="width: 80%; height: 35px;"></span>
                                 </div>
                             </div>
+
                             <div class="col-6 col-md-6 col-lg-4 mb-3">
                                 <div class="facilities-box">
-                                    <div class="facilities-box-icon">
-                                        <i class="material-symbols-outlined"> security </i>
-                                    </div>
-                                    <span class="facilities-box-label">Guard House</span>
+                                    <span class="skeleton-box" style="width: 80%; height: 35px;"></span>
                                 </div>
                             </div>
-                            <div class="col-6 col-md-6 col-lg-4 mb-3">
-                                <div class="facilities-box">
-                                    <div class="facilities-box-icon">
-                                        <i class="material-symbols-outlined"> filter_drama </i>
-                                    </div>
-                                    <span class="facilities-box-label">Sky Lounge</span>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-6 col-lg-4 mb-3">
-                                <div class="facilities-box">
-                                    <div class="facilities-box-icon">
-                                        <i class="material-symbols-outlined"> store </i>
-                                    </div>
-                                    <span class="facilities-box-label">Grocery</span>
-                                </div>
-                            </div>
+                            
+
                         </div>
                     </div>
                 </div>
@@ -532,8 +574,8 @@
                     
                                 <div class="p-2">
                                     <div class="property-price-info">
-                                        <span>৳10,700,000</span>
-                                        <span>৳295,000</span>
+                                        <span>฿10,700,000</span>
+                                        <span>฿295,000</span>
                                     </div>
                         
                                     <div class="property-contains">
@@ -584,8 +626,8 @@
                     
                                 <div class="p-2">
                                     <div class="property-price-info">
-                                        <span>৳10,700,000</span>
-                                        <span>৳295,000</span>
+                                        <span>฿10,700,000</span>
+                                        <span>฿295,000</span>
                                     </div>
                         
                                     <div class="property-contains">
@@ -636,8 +678,8 @@
                     
                                 <div class="p-2">
                                     <div class="property-price-info">
-                                        <span>৳10,700,000</span>
-                                        <span>৳295,000</span>
+                                        <span>฿10,700,000</span>
+                                        <span>฿295,000</span>
                                     </div>
                         
                                     <div class="property-contains">
@@ -688,8 +730,8 @@
                     
                                 <div class="p-2">
                                     <div class="property-price-info">
-                                        <span>৳10,700,000</span>
-                                        <span>৳295,000</span>
+                                        <span>฿10,700,000</span>
+                                        <span>฿295,000</span>
                                     </div>
                         
                                     <div class="property-contains">
@@ -740,8 +782,8 @@
                     
                                 <div class="p-2">
                                     <div class="property-price-info">
-                                        <span>৳10,700,000</span>
-                                        <span>৳295,000</span>
+                                        <span>฿10,700,000</span>
+                                        <span>฿295,000</span>
                                     </div>
                         
                                     <div class="property-contains">
@@ -792,8 +834,8 @@
                     
                                 <div class="p-2">
                                     <div class="property-price-info">
-                                        <span>৳10,700,000</span>
-                                        <span>৳295,000</span>
+                                        <span>฿10,700,000</span>
+                                        <span>฿295,000</span>
                                     </div>
                         
                                     <div class="property-contains">
@@ -852,8 +894,12 @@
 
 {% block extend_script %}
 <script>
-    var asset_api_url = '/property/api/details/1/';
+    var asset_api_url = '/property/api/details/{{property.id}}/';
+    var gallery_api_url = '/property/api/details/{{property.id}}/media-files/';
+    var ASSET_ID = '{{property.id}}';
 </script>
+
+<script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
 <script src="{% static 'js/libraries/splide.min.js' %}"></script>
 <script src="{% static 'js/detail-page.js' %}"></script>
 
