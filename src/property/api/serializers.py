@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from property.models import Property, PropertyMedia, CompareProperty
-from building.api.serializers import BuildingMediaSerializer
+from building.api.serializers import BuildingSerializer
 from utils.general_func import show_custom_error_message
 
 
@@ -11,6 +11,7 @@ class PropertyMediaSerializer(serializers.ModelSerializer):
 
 
 class PropertySerializer(serializers.ModelSerializer):
+    building_info = BuildingSerializer(source="building", read_only=True)
     images = serializers.ImageField(allow_empty_file=False, write_only=True)
     unit_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
     videos = serializers.FileField(allow_empty_file=False, write_only=True)
@@ -34,7 +35,11 @@ class PropertySerializer(serializers.ModelSerializer):
             "images",
             "unit_plans",
             "videos",
+            "building_info",
         ]
+        extra_kwargs = {
+            "building": {"write_only": True},  # Exclude the building field from the response
+        }
 
     # Validate that all fields are required and not blank
     def __init__(self, *args, **kwargs):

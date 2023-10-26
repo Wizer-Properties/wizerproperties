@@ -10,7 +10,6 @@ class BuildingMediaSerializer(serializers.ModelSerializer):
 
 
 class BuildingSerializer(serializers.ModelSerializer):
-    media_files = BuildingMediaSerializer(many=True, read_only=True)
     images = serializers.ImageField(allow_empty_file=False, write_only=True)
     floor_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
     unit_floor_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
@@ -26,7 +25,6 @@ class BuildingSerializer(serializers.ModelSerializer):
             "price",
             "type",
             "total_units_for_sale",
-            "media_files",
             "province",
             "district",
             "sub_district",
@@ -53,14 +51,6 @@ class BuildingSerializer(serializers.ModelSerializer):
         super(BuildingSerializer, self).__init__(*args, **kwargs)
         self.request = self.context.get("request")
 
-        self.media_files_data = {
-            "image": self.request.FILES.getlist("images"),
-            "floor_plan": self.request.FILES.getlist("floor_plans"),
-            "unit_floor_plan": self.request.FILES.getlist("unit_floor_plans"),
-            "master_plan": self.request.FILES.getlist("master_plans"),
-            "video": self.request.FILES.getlist("videos"),
-        }
-
         for field_name, field in self.fields.items():
             # These fields are not required while update
             if self.instance is not None and field_name in [
@@ -83,10 +73,20 @@ class BuildingSerializer(serializers.ModelSerializer):
 
         show_custom_error_message(self.fields)
 
+    def get_media_files(self, request):
+        return {
+            "image": request.FILES.getlist("images"),
+            "floor_plan": request.FILES.getlist("floor_plans"),
+            "unit_floor_plan": request.FILES.getlist("unit_floor_plans"),
+            "master_plan": request.FILES.getlist("master_plans"),
+            "video": request.FILES.getlist("videos"),
+        }
+
     def create(self, validated_data):
+        media_files_data = self.get_media_files(self.request)
         # Create BuildingMedia objects for different media types
         media_files = []
-        for media_type, files in self.media_files_data.items():
+        for media_type, files in media_files_data.items():
             for file in files:
                 media_file = BuildingMedia(type=media_type, file=file)
                 media_file.save()
@@ -122,8 +122,10 @@ class BuildingSerializer(serializers.ModelSerializer):
             # Delete the deletable images
             instance.media_files.filter(id__in=deleted_images).delete()
 
+        media_files_data = self.get_media_files(self.request)
+
         # Update BuildingMedia objects for different media types
-        for media_type, files in self.media_files_data.items():
+        for media_type, files in media_files_data.items():
             for file in files:
                 media_file = BuildingMedia(type=media_type, file=file)
                 media_file.save()
