@@ -523,7 +523,9 @@ footer{
     margin-bottom: 35px;
 }
 
-
+.uploaded-file-view-area{
+    overflow-wrap: anywhere;
+}
 
 
 @media screen and (max-width: 768px) {

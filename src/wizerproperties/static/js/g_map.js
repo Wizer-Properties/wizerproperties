@@ -27,8 +27,8 @@ function initializeMap() {
 
             for (let i = 0; i < address_data.length; i++) {
                 if(address_data[i]?.types.includes('administrative_area_level_1')){
-                    if($('[label="provice"]')){
-                        $('[label="provice"]').val(address_data[i]?.long_name)
+                    if($('[label="province"]')){
+                        $('[label="province"]').val(address_data[i]?.long_name)
                     };
                 }else if(
                     address_data[i]?.types.includes('administrative_area_level_2') ||

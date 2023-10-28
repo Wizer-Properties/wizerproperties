@@ -1,28 +1,7 @@
 $(document).ready(function(){
-    new Splide( '.available-unitssplide-splide', {
-        perPage: 4,
-        gap : 10,
-        pagination: false,
-        perMove: 1,
-        breakpoints: {
-            1200: {
-                perPage: 3,
-            },
-            740: {
-                perPage: 2,
-            },
-            460: {
-                perPage: 1,
-            }
-        }
-    }).mount();
-
-
-
-
     function get_asset_details(){
         $.ajax({
-            url: asset_api_url,
+            url: ASSET_API_URL,
             type: 'GET',
             headers: {
                 'X-CSRFToken': csrfToken,
@@ -71,66 +50,46 @@ $(document).ready(function(){
     get_asset_details();
 
 
+    function facilities_info_tmp(label, icon){
+        return '<div class="col-6 col-md-6 col-lg-4 mb-3">'+
+                    '<div class="facilities-box">'+
+                        '<div class="facilities-box-icon">'+
+                            icon +
+                        '</div>'+
+                        '<span class="facilities-box-label">'+label+'</span>'+
+                    '</div>'+
+                '</div>'
+    };
+
     function facilities_void(building_info){
         var facilities_dom = '';
 
         if(building_info?.have_fitness_area){
-            facilities_dom += ' <div class="col-6 col-md-6 col-lg-4 mb-3">'+
-                                    '<div class="facilities-box">'+
-                                        '<div class="facilities-box-icon">'+
-                                            '<i class="material-symbols-outlined"> exercise </i>'+
-                                        '</div>'+
-                                        '<span class="facilities-box-label">Fitness Area</span>'+
-                                    '</div>'+
-                                '</div>'
+            var _icon = '<i class="material-symbols-outlined"> exercise </i>';
+            facilities_dom += facilities_info_tmp('Fitness Area', _icon)
         };
 
         if(building_info?.have_guard_house){
-            facilities_dom += ' <div class="col-6 col-md-6 col-lg-4 mb-3">'+
-                                    '<div class="facilities-box">'+
-                                        '<div class="facilities-box-icon">'+
-                                            '<i class="material-symbols-outlined"> security </i>'+
-                                        '</div>'+
-                                        '<span class="facilities-box-label">Guard House</span>'+
-                                    '</div>'+
-                                '</div>'
+            var _icon = '<i class="material-symbols-outlined"> security </i>';
+            facilities_dom += facilities_info_tmp('Guard House', _icon)
         };
 
         if(building_info?.have_lake_or_river_view){
-            facilities_dom += ' <div class="col-6 col-md-6 col-lg-4 mb-3">'+
-                                    '<div class="facilities-box">'+
-                                        '<div class="facilities-box-icon">'+
-                                            '<i class="material-symbols-outlined"> legend_toggle </i>'+
-                                        '</div>'+
-                                        '<span class="facilities-box-label">River View</span>'+
-                                    '</div>'+
-                                '</div>'
+            var _icon = '<i class="material-symbols-outlined"> legend_toggle </i>';
+            facilities_dom += facilities_info_tmp('River View', _icon)
         };
 
         if(building_info?.have_sauna){
-            facilities_dom += ' <div class="col-6 col-md-6 col-lg-4 mb-3">'+
-                                    '<div class="facilities-box">'+
-                                        '<div class="facilities-box-icon">'+
-                                            '<i class="material-symbols-outlined"> sauna </i>'+
-                                        '</div>'+
-                                        '<span class="facilities-box-label">Sauna</span>'+
-                                    '</div>'+
-                                '</div>'
+            var _icon = '<i class="material-symbols-outlined"> sauna </i>';
+            facilities_dom += facilities_info_tmp('Sauna', _icon)
         };
 
         if(building_info?.have_sky_lounge){
-            facilities_dom += ' <div class="col-6 col-md-6 col-lg-4 mb-3">'+
-                                    '<div class="facilities-box">'+
-                                        '<div class="facilities-box-icon">'+
-                                            '<i class="material-symbols-outlined"> filter_drama </i>'+
-                                        '</div>'+
-                                        '<span class="facilities-box-label">Sky Lounge</span>'+
-                                    '</div>'+
-                                '</div>'
+            var _icon = '<i class="material-symbols-outlined"> filter_drama </i>';
+            facilities_dom += facilities_info_tmp('Sky Lounge', _icon)
         };
 
         if(facilities_dom == ''){
-            console.log("hel0o")
             facilities_dom += '<p class="no-facilities"> No Facilities added </p>'
         }
 
@@ -158,7 +117,7 @@ $(document).ready(function(){
         if(got_media_file_type.includes(type_name)) return;
 
         $.ajax({
-            url: gallery_api_url+'?type='+type_name,
+            url: GELLERY_API_URL+'?type='+type_name,
             type: 'GET',
             headers: {
                 'X-CSRFToken': csrfToken,
@@ -225,5 +184,187 @@ $(document).ready(function(){
 
 
 
+    // =============================================
+    // =============================================
+    // available unit
+    // =============================================
+    // =============================================
+
+    var available_units_splide = new Splide( '.available-unitssplide-splide', {
+        perPage: 4,
+        gap : 10,
+        pagination: false,
+        perMove: 1,
+        breakpoints: {
+            1200: {
+                perPage: 3,
+            },
+            740: {
+                perPage: 2,
+            },
+            460: {
+                perPage: 1,
+            }
+        }
+    }).mount();
+
+
+    function available_units_tmp(data){
+        return  '<div class="splide__slide">'+
+                    '<div class="property-card">'+
+                        '<div class="property-card-img">'+
+                            '<img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aG91c2UlMjByb29tfGVufDB8fDB8fHww" alt="">'+
+                        '</div>'+
+
+                        '<div class="p-2">'+
+                            '<div class="property-price-info">'+
+                                '<span>฿'+data?.price+'</span>'+
+                                '<span>฿295,000/SpM</span>'+
+                            '</div>'+
+                            '<div class="property-contains">'+
+                                '<div class="property-short-info-box">'+
+                                    '<div class="property-short-info-icon">'+
+                                        '<img src="/static/media/icons/bed.svg" alt="bed-icon">'+
+                                    '</div>'+
+                                    '<span class="property-value"> '+data?.number_of_bedroom+' </span>'+
+                                    '<span class="property-label">Beds</span>'+
+                                '</div>'+
+                                '<div class="property-short-info-box">'+
+                                    '<div class="property-short-info-icon">'+
+                                        '<img src="/static/media/icons/bath.svg" alt="bath-icon">'+
+                                    '</div>'+
+                                    '<span class="property-value"> '+data?.number_of_bathroom+' </span>'+
+                                    '<span class="property-label">Baths</span>'+
+                                '</div>'+
+                                '<div class="property-short-info-box">'+
+                                    '<div class="property-short-info-icon">'+
+                                        '<img src="/static/media/icons/plan-size.svg" alt="plan-size-icon">'+
+                                    '</div>'+
+                                    '<span class="property-value"> '+data?.unit_area+' </span>'+
+                                    '<span class="property-label">Size</span>'+
+                                '</div>'+
+                                '<div class="property-short-info-box">'+
+                                    '<div class="property-short-info-icon">'+
+                                        '<img src="/static/media/icons/stairs.svg" alt="stairs-icon">'+
+                                    '</div>'+
+                                    '<span class="property-value"> '+data?.floor_number+' </span>'+
+                                    '<span class="property-label">Floor</span>'+
+                                '</div>'+
+                            '</div>'+
+                            '<div class="property-expand-btn">'+
+                                '<a href="/property/details/'+data?.id+'/" class="nav-link" >More Details</a>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'+
+                '</div>'
+    }
+
+
+    function available_units_loader(){
+        return  '<div class="splide__slide property-card-loader">'+
+                    '<div class="property-card">'+
+                        '<div class="property-card-img">'+
+                            '<span class="skeleton-box" style="width: 100%; height: 180px;"></span>'+
+                        '</div>'+
+                        '<div class="p-2">'+
+                            '<div class="property-price-info">'+
+                                '<span class="skeleton-box" style="width: 100%; height: 27px;"></span>'+
+                            '</div>'+                
+                            '<div class="property-contains">'+
+                                '<span class="skeleton-box" style="width: 100%; height: 60px;"></span>'+
+                                '<span class="skeleton-box" style="width: 100%; height: 60px;"></span>'+
+                                '<span class="skeleton-box" style="width: 100%; height: 60px;"></span>'+
+                                '<span class="skeleton-box" style="width: 100%; height: 60px;"></span>'+
+                            '</div>'+                
+                            '<div class="property-expand-btn">'+
+                                '<span class="skeleton-box" style="width: 100%; height: 27px;"></span>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'+
+                '</div>'
+    };
+
+
+    function getting_available(parm){
+        $.ajax({
+            url: AVAILABLE_API_URL,
+            type: 'GET',
+            data: { 
+                page_size : parm?.page_size,
+                page : parm?.page
+            },
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            success : function (data) {
+                console.log("==========>", data)
+
+                available_units_splide.remove('.property-card-loader');
+
+                for (let i = 0; i < data?.results.length; i++) {
+                    available_units_splide.add(available_units_tmp(data?.results[i]))
+                };
+
+                if(data?.next){
+                    available_units_splide.add(available_units_loader())
+                };
+            },
+            error: function (error) {
+                console.log("error")
+            }
+        })
+    };
+
+    var got_available_units = false;
+
+    available_units_splide.on( 'move', (e, b, d, a) => {
+        console.log(e, b, d, a)
+
+        getting_available({
+            page : 2,
+            page_size : 1
+        })
+    });
+
+
+    var active_filter = 'all'
+
+    $('.filter-available-units span').click(function(){
+        var filter_value = $(this).attr('label');
+        if(active_filter == filter_value) return;
+        active_filter = filter_value;
+        $('.filter-available-units li').removeClass('active');
+        
+        console.log("===============", $(this).attr('label'))
+        // var parm = {
+        //     page_size : 4
+        // };
+
+        // if(window.innerWidth <= 1200) parm.page_size = 3;
+        // if(window.innerWidth <= 740) parm.page_size = 2;
+        // if(window.innerWidth <= 460) parm.page_size = 1;
+
+        // getting_available(parm);
+
+    });
+
+
+    new Waypoint({
+        element: document.querySelector('.available-unitssplide-splide'),
+        handler: function() {
+            if(got_available_units) return;
+            var parm = {
+                page_size : 4
+            };
+
+            if(window.innerWidth <= 1200) parm.page_size = 3;
+            if(window.innerWidth <= 740) parm.page_size = 2;
+            if(window.innerWidth <= 460) parm.page_size = 1;
+
+            getting_available(parm);
+            got_available_units = true;
+        },
+        offset: '140%'
+    })
 
 });
