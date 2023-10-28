@@ -9,7 +9,7 @@ class Property(TimestampedModel):
     title = models.CharField(max_length=255, null=True)
     description = models.TextField(max_length=3000, null=True)
     price = models.DecimalField(
-        max_digits=10, decimal_places=2, default=0, null=True, validators=[MinValueValidator(0.01)]
+        max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(0.01)]
     )
     floor_number = models.CharField(max_length=255, null=True)
     unit_area = models.FloatField(default=0, null=True, validators=[MinValueValidator(1)])

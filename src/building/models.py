@@ -10,7 +10,7 @@ class Building(TimestampedModel):
     title = models.CharField(max_length=255, null=True)
     description = models.TextField(max_length=3000, null=True)
     price = models.DecimalField(
-        max_digits=10, decimal_places=2, default=0, null=True, validators=[MinValueValidator(1)]
+        max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(1)]
     )
     type = models.CharField(max_length=100, choices=BUILDING_TYPES, null=True)
     total_units_for_sale = models.IntegerField(default=0, null=True, validators=[MinValueValidator(1)])
