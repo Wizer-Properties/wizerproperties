@@ -16,6 +16,7 @@ class PropertySerializer(serializers.ModelSerializer):
     images = serializers.ImageField(allow_empty_file=False, write_only=True)
     unit_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
     videos = serializers.FileField(allow_empty_file=False, write_only=True)
+    default_image = serializers.SerializerMethodField()
 
     class Meta:
         model = Property
@@ -24,6 +25,7 @@ class PropertySerializer(serializers.ModelSerializer):
             "building",
             "unit_id",
             "title",
+            "default_image",
             "description",
             "price",
             "floor_number",
@@ -63,6 +65,15 @@ class PropertySerializer(serializers.ModelSerializer):
             "unit_plan": self.request.FILES.getlist("unit_plans"),
             "video": self.request.FILES.getlist("videos"),
         }
+
+    def get_default_image(self, obj):
+        # Get the default image for the building (if available)
+        image = obj.media_files.filter(type="image").first()
+
+        if image:
+            return image.file.url
+        else:
+            return None
 
     def create(self, validated_data):
         media_files_data = self.get_media_files(self.request)
