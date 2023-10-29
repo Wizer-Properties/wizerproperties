@@ -19,24 +19,56 @@
                 </button>
                 <div class="filter-dropdown-field">
                     <div class="range-area">
-                        <select name="min">
+                        <select name="min_price">
                             <option value="null">Min</option>
-                            <option value="10000000"> ฿ 10000000</option>
-                            <option value="20000000"> ฿ 20000000</option>
-                            <option value="30000000"> ฿ 30000000</option>
-                            <option value="40000000"> ฿ 40000000</option>
-                            <option value="50000000"> ฿ 50000000</option>
+                            <option value="500000"> ฿ 500,000</option>
+                            <option value="1000000"> ฿ 1,000,000</option>
+                            <option value="1500000"> ฿ 1,500,000</option>
+                            <option value="2000000"> ฿ 2,000,000</option>
+                            <option value="2500000"> ฿ 2,500,000</option>
+                            <option value="3000000"> ฿ 3,000,000</option>
                         </select>
                         <i class="bi bi-dash"></i>
-                        <select name="min">
+                        <select name="max_price">
                             <option value="null">Max</option>
-                            <option value="60000000"> ฿ 60000000</option>
-                            <option value="70000000"> ฿ 70000000</option>
-                            <option value="80000000"> ฿ 80000000</option>
-                            <option value="90000000"> ฿ 90000000</option>
+                            <option value="500000"> ฿ 500,000</option>
+                            <option value="1000000"> ฿ 1,000,000</option>
+                            <option value="1500000"> ฿ 1,500,000</option>
+                            <option value="2000000"> ฿ 2,000,000</option>
+                            <option value="2500000"> ฿ 2,500,000</option>
+                            <option value="3000000"> ฿ 3,000,000</option>
+                            <option value="3500000"> ฿ 3,500,000</option>
                         </select>
                     </div>
-                    <span>Clear</span>
+                </div>
+            </div>
+
+            <div class="filter-categories-dropdown">
+                <button class="filter-dropdown-btn">
+                    Unit Area
+                    <i class="bi bi-chevron-down"></i>
+                </button>
+                <div class="filter-dropdown-field">
+                    <div class="range-area">
+                        <select name="min_unit_area">
+                            <option value="null">Min</option>
+                            <option value="100"> 100 SqM</option>
+                            <option value="200"> 200 SqM</option>
+                            <option value="300"> 300 SqM</option>
+                            <option value="400"> 400 SqM</option>
+                            <option value="500"> 500 SqM</option>
+                        </select>
+                        <i class="bi bi-dash"></i>
+                        <select name="max_unit_area">
+                            <option value="null">Min</option>
+                            <option value="100"> 100 SqM</option>
+                            <option value="200"> 200 SqM</option>
+                            <option value="300"> 300 SqM</option>
+                            <option value="400"> 400 SqM</option>
+                            <option value="500"> 500 SqM</option>
+                            <option value="600"> 600 SqM</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
@@ -47,11 +79,11 @@
                 </button>
                 <div class="filter-dropdown-field">
                     <div class="filter-dropdown-buttons">
-                        <button value="sauna" active>Sauna</button>
-                        <button value="1">1</button>
-                        <button value="2">2</button>
-                        <button value="3">3</button>
-                        <button value="4">4</button>
+                        <button name="number_of_bedroom" value="sauna" active>Sauna</button>
+                        <button name="number_of_bedroom" value="1">1</button>
+                        <button name="number_of_bedroom" value="2">2</button>
+                        <button name="number_of_bedroom" value="3">3</button>
+                        <button name="number_of_bedroom" value="4">4</button>
                     </div>
                 </div>
             </div>
@@ -63,11 +95,11 @@
                 </button>
                 <div class="filter-dropdown-field">
                     <div class="filter-dropdown-buttons">
-                        <button value="sauna" active>Sauna</button>
-                        <button value="1">1</button>
-                        <button value="2">2</button>
-                        <button value="3">3</button>
-                        <button value="4">4</button>
+                        <button name="number_of_bathroom" value="sauna" active>Sauna</button>
+                        <button name="number_of_bathroom" value="1">1</button>
+                        <button name="number_of_bathroom" value="2">2</button>
+                        <button name="number_of_bathroom" value="3">3</button>
+                        <button name="number_of_bathroom" value="4">4</button>
                     </div>
                 </div>
             </div>
@@ -78,11 +110,9 @@
                     <i class="bi bi-chevron-down"></i>
                 </button>
                 <div class="filter-dropdown-field">
-                    <div class="filter-dropdown-mtl-buttons">
-                        <button value="sauna" active>Sauna</button>
-                        <button value="sauna">GYM</button>
-                        <button value="sauna">Sky lounge</button>
-                        <button value="sauna">Pool</button>
+                    <div class="filter-dropdown-mtl-buttons" name="property-type">
+                        <button name="building__type" value="condos">Condos</button>
+                        <button name="building__type" value="house">House</button>
                     </div>
                 </div>
             </div>
@@ -94,11 +124,13 @@
                     <i class="bi bi-chevron-down"></i>
                 </button>
                 <div class="filter-dropdown-field">
-                    <div class="filter-dropdown-mtl-buttons">
-                        <button value="sauna" active>Sauna</button>
-                        <button value="sauna">GYM</button>
-                        <button value="sauna">Sky lounge</button>
-                        <button value="sauna">Pool</button>
+                    <div class="filter-dropdown-mtl-buttons" name="features">
+                        <button value="building__have_sauna">Sauna</button>
+                        <button value="building__have_guard_house">Guard house</button>
+                        <button value="building__have_lake_or_river_view">River view</button>
+                        <button value="building__have_fitness_area">GYM</button>
+                        <button value="building__have_sky_lounge">Sky lounge</button>
+                        <button value="building__have_grocery">Grocery</button>
                     </div>
                 </div>
             </div>
@@ -111,7 +143,10 @@
 
         <div class="filter-result mt-3">
             <h1 class="section-title">Property for sale in Khlong Toei, Bangkok</h1>
-            <p class="section-scripts">2,376 Properties available</p>
+            <p class="section-scripts">
+                <span label="available-properties">- -</span>
+                 Properties available
+            </p>
         </div>
     </div>
 </section>
@@ -121,75 +156,35 @@
         <div class="row" id="search-result-list">
 
             <div class="col-lg-6 mb-4">
-                <a href="#" class="search-result-box-wrapper">
+                <div class="search-result-box-wrapper">
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="search-result-box-img">
-                                <img 
-                                    src="https://www.ubm-development.com/magazin/wp-content/uploads/2020/03/kl-main-building-d-Kopie.jpg" 
-                                    alt=""
-                                    loading="lazy"
-                                >
+                                <span class="skeleton-box" style="width: 100%; height: 200px;"></span>
                             </div>
                         </div>
                         <div class="col-sm-8">
                             <div class="search-result-box">
-                                <h1> The Privacy Ratchada - Sutthisan </h1>
+                                <h1> <span class="skeleton-box" style="width: 100%; height: 20px;"></span> </h1>
                                 <div class="location">
-                                    <div class="icon">
-                                        <i class="bi bi-geo-alt"></i>
-                                        Khlong Tan, Khlong Toei, Bangkok
-                                    </div>
+                                    <span class="skeleton-box" style="width: 100%; height: 20px;"></span>
                                 </div>
                                 <p class="sub-title">
-                                    3 Bedroom Condo for sale at The Emporio Place
+                                    <span class="skeleton-box" style="width: 100%; height: 21px;"></span>
                                 </p>
 
                                 <p class="details">
-                                    Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance.
+                                    <span class="skeleton-box" style="width: 100%; height: 40px;"></span>
                                 </p>
-
-                                <div class="property-contains">
-                                    <div class="property-short-info-box">
-                                        <div class="property-short-info-icon">
-                                            <img src="{% static '/media/icons/bed.svg' %}" alt="bed-icon">
-                                        </div>
-                                        <span class="property-value"> 04 </span>
-                                        <span class="property-label">Beds</span>
-                                    </div>
-                                    <div class="property-short-info-box">
-                                        <div class="property-short-info-icon">
-                                            <img src="{% static '/media/icons/bath.svg' %}" alt="bath-icon">
-                                        </div>
-                                        <span class="property-value"> 04 </span>
-                                        <span class="property-label">Baths</span>
-                                    </div>
-                                    <div class="property-short-info-box">
-                                        <div class="property-short-info-icon">
-                                            <img src="{% static '/media/icons/plan-size.svg' %}" alt="plan-size-icon">
-                                        </div>
-                                        <span class="property-value"> 04 </span>
-                                        <span class="property-label">Size</span>
-                                    </div>
-                                    <div class="property-short-info-box">
-                                        <div class="property-short-info-icon">
-                                            <img src="{% static '/media/icons/stairs.svg' %}" alt="stairs-icon">
-                                        </div>
-                                        <span class="property-value"> 04 </span>
-                                        <span class="property-label">Floor</span>
-                                    </div>
-                                </div>
-
-
-                                <div class="property-faciluty">
-                                    <span>Sauna</span>
-                                    <span>GYM</span>
-                                    <span>Sky lounge</span>
+                                <div class="d-flex">
+                                    <span class="skeleton-box me-2" style="width: 40px; height: 30px;"></span>
+                                    <span class="skeleton-box me-2" style="width: 40px; height: 30px;"></span>
+                                    <span class="skeleton-box" style="width: 40px; height: 30px;"></span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </a>
+                </div>
             </div>
 
             

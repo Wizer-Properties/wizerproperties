@@ -32,13 +32,11 @@ $(document).ready(function(){
             $('.filter-dropdown-field').css({
                 left : 0
             })
-            $(this).remove()
+            $('.filter-overlay').remove()
         }, 200);
     };
 
     $(document).on('click', '.filter-overlay', filter_close_dropdown);
-
-
 
 
     function property_list(data){
@@ -47,7 +45,7 @@ $(document).ready(function(){
                         '<div class="row">'+
                             '<div class="col-sm-4">'+
                                 '<div class="search-result-box-img">'+
-                                    '<img src="https://www.ubm-development.com/magazin/wp-content/uploads/2020/03/kl-main-building-d-Kopie.jpg" alt="" loading="lazy">' +
+                                    '<img src="'+data?.default_image+'" alt="'+data?.title+'" loading="lazy">' +
                                 '</div>'+
                             '</div>'+
                             '<div class="col-sm-8">'+
@@ -110,17 +108,19 @@ $(document).ready(function(){
                 '</div>'
     }
 
+    var prams_list = {}
 
     function searching(){
-
         $.ajax({
             url: '/property/api/list/',
             type: 'GET',
+            data : prams_list,
             headers: {
                 'X-CSRFToken': csrfToken,
             },
             success: function (data) {
                 console.log(data)
+                $('[label="available-properties"]').html(data?.count)
                 var new_data = data?.results
                 var search_dom = ''
                 for (let i = 0; i < new_data.length; i++) {
@@ -135,7 +135,38 @@ $(document).ready(function(){
         });
     };
 
-    searching()
+    searching();
 
+
+    $(document).on('change', 'select', function(){
+        filter_close_dropdown();
+        prams_list[$(this).attr('name')] =  $(this).val();
+        searching();
+    });
+
+    $(document).on('click', '.filter-dropdown-buttons button', function(){
+        filter_close_dropdown();
+        prams_list[$(this).attr('name')] =  $(this).val();
+        searching();
+    });
+
+    $(document).on('click', '[name="features"] button', function(){
+        filter_close_dropdown();
+        prams_list[$(this).val()] =  !prams_list[$(this).val()];
+        searching();
+    });
+
+
+    $(document).on('click', '[name="property-type"] button', function(){
+        filter_close_dropdown();
+        prams_list[$(this).attr('name')] =  $(this).val();
+        searching();
+    });
+
+
+    $('.reset-btn').click(function(){
+        prams_list = {};
+        searching()
+    })
 
 });

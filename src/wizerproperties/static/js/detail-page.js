@@ -194,7 +194,7 @@ $(document).ready(function(){
         perPage: 4,
         gap : 10,
         pagination: false,
-        perMove: 1,
+        // perMove: 1,
         breakpoints: {
             1200: {
                 perPage: 3,
@@ -285,28 +285,41 @@ $(document).ready(function(){
     };
 
 
+    var next_page_number = 2;
+    var got_available_units = false;
+    var active_filter = 'all';
+    var max_forward_move = 0
+
     function getting_available(parm){
+        var page_size = 4;
+        if(window.innerWidth <= 1200) page_size = 3;
+        if(window.innerWidth <= 740) page_size = 2;
+        if(window.innerWidth <= 460) page_size = 1;
+        
         $.ajax({
             url: AVAILABLE_API_URL,
             type: 'GET',
             data: { 
-                page_size : parm?.page_size,
-                page : parm?.page
+                page_size : page_size,
+                page : parm?.page,
+                bed : parm?.bed
             },
             headers: {
                 'X-CSRFToken': csrfToken,
             },
             success : function (data) {
-                console.log("==========>", data)
-
-                available_units_splide.remove('.property-card-loader');
-
+                next_page_number = data?.next
+                
                 for (let i = 0; i < data?.results.length; i++) {
                     available_units_splide.add(available_units_tmp(data?.results[i]))
                 };
-
+                
+                available_units_splide.remove('.property-card-loader');
+                
                 if(data?.next){
-                    available_units_splide.add(available_units_loader())
+                    for (let i = 0; i < page_size; i++) {                        
+                        available_units_splide.add(available_units_loader())
+                    }
                 };
             },
             error: function (error) {
@@ -315,37 +328,33 @@ $(document).ready(function(){
         })
     };
 
-    var got_available_units = false;
-
-    available_units_splide.on( 'move', (e, b, d, a) => {
-        console.log(e, b, d, a)
-
-        getting_available({
-            page : 2,
-            page_size : 1
-        })
-    });
-
-
-    var active_filter = 'all'
 
     $('.filter-available-units span').click(function(){
         var filter_value = $(this).attr('label');
         if(active_filter == filter_value) return;
         active_filter = filter_value;
         $('.filter-available-units li').removeClass('active');
+        $(this).parent().addClass('active');
+
+        available_units_splide.remove('.available-unitssplide-splide .splide__slide');
+        available_units_splide.add(available_units_loader())
+        max_forward_move = 0;
+
+        getting_available({
+            bed : active_filter == 'all' ? null : active_filter
+        });
+    });
+
+
+    available_units_splide.on( 'moved', (e) => {
+        if(max_forward_move >= e) return;
+        max_forward_move = e;
+        if(!next_page_number) return;
         
-        console.log("===============", $(this).attr('label'))
-        // var parm = {
-        //     page_size : 4
-        // };
-
-        // if(window.innerWidth <= 1200) parm.page_size = 3;
-        // if(window.innerWidth <= 740) parm.page_size = 2;
-        // if(window.innerWidth <= 460) parm.page_size = 1;
-
-        // getting_available(parm);
-
+        getting_available({
+            page : next_page_number,
+            bed : active_filter == 'all' ? null : active_filter
+        })
     });
 
 
@@ -353,15 +362,8 @@ $(document).ready(function(){
         element: document.querySelector('.available-unitssplide-splide'),
         handler: function() {
             if(got_available_units) return;
-            var parm = {
-                page_size : 4
-            };
 
-            if(window.innerWidth <= 1200) parm.page_size = 3;
-            if(window.innerWidth <= 740) parm.page_size = 2;
-            if(window.innerWidth <= 460) parm.page_size = 1;
-
-            getting_available(parm);
+            getting_available();
             got_available_units = true;
         },
         offset: '140%'
