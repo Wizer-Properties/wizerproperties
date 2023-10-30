@@ -1,3 +1,5 @@
+from django.db.models import OuterRef, Subquery, Value, F, CharField
+from django.db.models.functions import Concat
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -9,7 +11,7 @@ from .serializers import (
 )
 from .filters import PropertyFilter
 from building.api.serializers import BuildingMediaSerializer
-from property.models import Property, CompareProperty
+from property.models import Property, PropertyMedia, CompareProperty
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
@@ -27,7 +29,16 @@ class PropertyViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         if self.request.method in ["PATCH", "PUT"]:
             return Property.objects.all()
-        return Property.objects.filter(is_active=True)
+
+        queryset = Property.objects.filter(is_active=True).annotate(
+            default_image_url=Subquery(
+                PropertyMedia.objects.filter(property=OuterRef("pk"), type="image")
+                .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
+                .values("full_file_url")[:1]
+            )
+        )
+
+        return queryset
 
     def get_serializer_context(self):
         context = super().get_serializer_context()

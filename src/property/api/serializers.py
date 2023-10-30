@@ -1,6 +1,9 @@
 from django.db import transaction
+from django.db.models import OuterRef, Subquery, Value, F, CharField
+from django.db.models.functions import Concat
 from rest_framework import serializers
 from property.models import Property, PropertyMedia, CompareProperty
+from building.models import Building, BuildingMedia
 from building.api.serializers import BuildingSerializer
 from utils.general_func import show_custom_error_message
 
@@ -12,11 +15,11 @@ class PropertyMediaSerializer(serializers.ModelSerializer):
 
 
 class PropertySerializer(serializers.ModelSerializer):
-    building_info = BuildingSerializer(source="building", read_only=True)
+    building_info = serializers.SerializerMethodField()
     images = serializers.ImageField(allow_empty_file=False, write_only=True)
     unit_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
     videos = serializers.FileField(allow_empty_file=False, write_only=True)
-    default_image = serializers.SerializerMethodField()
+    default_image = serializers.URLField(source="default_image_url", read_only=True)
 
     class Meta:
         model = Property
@@ -66,14 +69,20 @@ class PropertySerializer(serializers.ModelSerializer):
             "video": self.request.FILES.getlist("videos"),
         }
 
-    def get_default_image(self, obj):
-        # Get the default image for the building (if available)
-        image = obj.media_files.filter(type="image").first()
-
-        if image:
-            return image.file.url
-        else:
-            return None
+    # 'ModelSerializer' does not directly allow you to modify the queryset while calling it
+    def get_building_info(self, obj):
+        building = (
+            Building.objects.filter(id=obj.building.id)
+            .annotate(
+                default_image_url=Subquery(
+                    BuildingMedia.objects.filter(building=OuterRef("pk"), type="image")
+                    .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
+                    .values("full_file_url")[:1]
+                )
+            )
+            .first()
+        )
+        return BuildingSerializer(building).data
 
     def create(self, validated_data):
         media_files_data = self.get_media_files(self.request)

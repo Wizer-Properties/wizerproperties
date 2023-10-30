@@ -1,18 +1,29 @@
+from django.db.models import OuterRef, Subquery, Value, F, CharField
+from django.db.models.functions import Concat
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .permissions import BuildingPermission
 from .serializers import BuildingSerializer, BuildingMediaSerializer
-from building.models import Building
+from building.models import Building, BuildingMedia
 from property.models import Property
 from property.api.serializers import PropertyAvailableUnitsSerializer
 from utils.custom.pagination import CustomPagination
 
 
 class BuildingViewSet(viewsets.ModelViewSet):
-    queryset = Building.objects.all()
     serializer_class = BuildingSerializer
     permission_classes = [BuildingPermission]
+
+    def get_queryset(self):
+        queryset = Building.objects.annotate(
+            default_image_url=Subquery(
+                BuildingMedia.objects.filter(building=OuterRef("pk"), type="image")
+                .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
+                .values("full_file_url")[:1]
+            )
+        )
+        return queryset
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
