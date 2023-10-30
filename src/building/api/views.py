@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from .permissions import BuildingPermission
 from .serializers import BuildingSerializer, BuildingMediaSerializer
 from building.models import Building, BuildingMedia
-from property.models import Property
+from property.models import Property, PropertyMedia
 from property.api.serializers import PropertyAvailableUnitsSerializer
 from utils.custom.pagination import CustomPagination
 
@@ -52,7 +52,13 @@ class BuildingViewSet(viewsets.ModelViewSet):
     def available_units(self, request, pk=None):
         building = self.get_object()
 
-        properties = Property.objects.filter(building=building, is_active=True)
+        properties = Property.objects.filter(building=building, is_active=True).annotate(
+            default_image_url=Subquery(
+                PropertyMedia.objects.filter(property=OuterRef("pk"), type="image")
+                .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
+                .values("full_file_url")[:1]
+            )
+        )
 
         property_id = request.query_params.get("property_id")
         if property_id:

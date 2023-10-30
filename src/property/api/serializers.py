@@ -163,6 +163,8 @@ class ComparePropertySerializer(serializers.ModelSerializer):
 
 
 class PropertyAvailableUnitsSerializer(serializers.ModelSerializer):
+    default_image = serializers.URLField(source="default_image_url", read_only=True)
+
     class Meta:
         model = Property
         fields = [
@@ -170,6 +172,7 @@ class PropertyAvailableUnitsSerializer(serializers.ModelSerializer):
             "building",
             "unit_id",
             "title",
+            "default_image",
             "description",
             "price",
             "floor_number",
