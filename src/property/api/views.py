@@ -27,7 +27,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
     ordering = ["-created_at"]  # Default ordering
 
     def get_queryset(self):
-        if self.request.method in ["PATCH", "PUT"]:
+        if self.request.method in ["POST", "PATCH", "PUT"]:
             return Property.objects.all()
 
         queryset = Property.objects.filter(is_active=True).annotate(

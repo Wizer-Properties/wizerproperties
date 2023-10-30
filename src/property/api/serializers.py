@@ -62,6 +62,12 @@ class PropertySerializer(serializers.ModelSerializer):
 
         show_custom_error_message(self.fields)
 
+    def get_fields(self):
+        fields = super().get_fields()
+        if self.request and self.request.method in ["POST", "PUT", "PATCH"]:  # Check request method and view
+            fields.pop("default_image", None)  # Remove default_image field during create and update
+        return fields
+
     def get_media_files(self, request):
         return {
             "image": self.request.FILES.getlist("images"),
