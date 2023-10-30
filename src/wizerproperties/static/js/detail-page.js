@@ -132,30 +132,30 @@ $(document).ready(function(){
             },
             success: function (data) {
                 got_media_file_type.push(type_name);
-                got_media_file_data.push(data);
+                got_media_file_data.push(data?.results);
 
                 if(type_name == 'image'){
                     $('[label-name="media-files-image"] .details-gallery')
-                    .html(append_data(data));
-                    $('.details-banner-bg').html('<img src='+data[0]?.file+' alt="bg">')
+                    .html(append_data(data?.results));
+                    $('.details-banner-bg').html('<img src='+data?.results[0]?.file+' alt="bg">')
                 }else if(type_name == 'floor_plan'){
                     $('[label-name="media-files-floor-plan"] .details-gallery')
-                    .html(append_data(data));
+                    .html(append_data(data?.results));
                 }else if(type_name == 'unit_floor_plan'){
                     $('[label-name="media-files-unit-floor-plan"] .details-gallery')
-                    .html(append_data(data));
+                    .html(append_data(data?.results));
                 }else if(type_name == 'master_plan'){
                     $('[label-name="media-files-master-plan"] .details-gallery')
-                    .html(append_data(data));
+                    .html(append_data(data?.results));
                 }else if(type_name == 'video'){
                     var video_file = data[0].file;
 
                     if(video_file.includes('.webm')){
                         $('.details-gallery-video video')
-                        .append('<source src='+data[0].file+' type="video/webm" />')
+                        .append('<source src='+data?.results[0].file+' type="video/webm" />')
                     }else{
                         $('.details-gallery-video video')
-                        .append('<source src='+data[0].file+' type="video/mp4" />')
+                        .append('<source src='+data?.results[0].file+' type="video/mp4" />')
                     }
                 }
             },
@@ -221,13 +221,13 @@ $(document).ready(function(){
         return  '<div class="splide__slide">'+
                     '<div class="property-card">'+
                         '<div class="property-card-img">'+
-                            '<img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aG91c2UlMjByb29tfGVufDB8fDB8fHww" alt="" loading="lazy">'+
+                            '<img src="'+data?.default_image+'" alt="property image" loading="lazy">'+
                         '</div>'+
 
                         '<div class="p-2">'+
                             '<div class="property-price-info">'+
                                 '<span>฿'+data?.price+'</span>'+
-                                '<span>฿295,000/SpM</span>'+
+                                '<span>฿295,000/SqM</span>'+
                             '</div>'+
                             '<div class="property-contains">'+
                                 '<div class="property-short-info-box">'+

@@ -163,10 +163,12 @@
     padding: 7px 12px;
     border-radius: 3px;
     font-size: 14px;
+    text-align: center;
+    display: block;
 }
 
-.filter-dropdown-buttons button[active],
-.filter-dropdown-mtl-buttons button[active]{
+.filter-dropdown-buttons button[active="true"],
+.filter-dropdown-mtl-buttons button[active="true"]{
     background-color: #ffd350;
 }
 
