@@ -2,6 +2,7 @@ from django.db import transaction
 from rest_framework import serializers
 from building.models import Building, BuildingMedia
 from utils.general_func import show_custom_error_message
+from user.api.serializers import DeveloperProfileSerializer, AgentProfileSerializer
 
 
 class BuildingMediaSerializer(serializers.ModelSerializer):
@@ -17,6 +18,7 @@ class BuildingSerializer(serializers.ModelSerializer):
     master_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
     videos = serializers.FileField(allow_empty_file=False, write_only=True)
     default_image = serializers.URLField(source="default_image_url", read_only=True)
+    created_by = serializers.SerializerMethodField()
 
     class Meta:
         model = Building
@@ -42,6 +44,7 @@ class BuildingSerializer(serializers.ModelSerializer):
             "have_grocery",
             "have_fitness_area",
             "is_active",
+            "created_by",
             "images",
             "floor_plans",
             "unit_floor_plans",
@@ -102,7 +105,14 @@ class BuildingSerializer(serializers.ModelSerializer):
                 media_files.append(media_file)
 
         # Remove unwanted attributes from validated_data for 'Building' instance
-        skip_attributes = ["is_active", "images", "floor_plans", "unit_floor_plans", "master_plans", "videos"]
+        skip_attributes = [
+            "is_active",
+            "images",
+            "floor_plans",
+            "unit_floor_plans",
+            "master_plans",
+            "videos",
+        ]
         for attr in skip_attributes:
             validated_data.pop(attr, None)
 
@@ -160,3 +170,17 @@ class BuildingSerializer(serializers.ModelSerializer):
             validated_data.pop("is_active", None)
 
         return super().update(instance, validated_data)
+
+    def get_created_by(self, obj):
+        user = obj.created_by
+        user_type = user.user_type
+
+        if user_type == "developer":
+            profile_data = DeveloperProfileSerializer(user.developerprofile).data
+        elif user_type == "agent":
+            profile_data = AgentProfileSerializer(user.agentprofile).data
+        else:
+            # Handle other user types or return a default profile
+            profile_data = {}
+
+        return profile_data
