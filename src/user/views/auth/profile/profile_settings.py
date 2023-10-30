@@ -23,7 +23,6 @@ def developer_or_agent_profile_settings(request):
         profile = request.user.agentprofile
     else:
         profile = None
-    print(">>>>>>>>>>>>>>>>>>>>>>>>>>.", profile.id)
     return render(request, "auth/profile/developer_or_agent_profile_settings.html", {"profile": profile})
 
 

@@ -14,22 +14,26 @@
     </div>
     <div class="authFormDiv">
         <!-- <span class="authErrorMessage">Message</span> -->
-        <input name="email" type="email" class="authInput" placeholder="Email" value="{{ request.user.email }}" readonly>
+        <input name="email" type="email" class="authInput" placeholder="Email" value="{{ request.user.email }}"
+            readonly>
         <div class="authlabelline authcompleteProfileLabe">Email</div>
     </div>
     <div class="authFormDiv">
         <!-- <span class="authErrorMessage">Message</span> -->
-        <input name="picture" type="file" accept="image/*" class="authInput authFile" required>
+        <input name="picture" type="file" accept="image/*" class="authInput authFile" value="{{ profile.picture.url }}"
+            required>
         <div class="fileName">Profile Picture</div>
     </div>
     <div class="authFormDiv">
         <!-- <span class="authErrorMessage">Message</span> -->
-        <input name="first_name" type="text" class="authInput" placeholder="First Name" required>
+        <input name="first_name" type="text" class="authInput" placeholder="First Name" value="{{ profile.first_name }}"
+            required>
         <div class="authlabelline authcompleteProfileLabe">First Name</div>
     </div>
     <div class="authFormDiv">
         <!-- <span class="authErrorMessage">Message</span> -->
-        <input name="last_name" type="text" class="authInput" placeholder="Last Name" required>
+        <input name="last_name" type="text" class="authInput" placeholder="Last Name" value="{{ profile.last_name }}"
+            required>
         <div class="authlabelline authcompleteProfileLabe">Last Name</div>
     </div>
 
@@ -37,7 +41,8 @@
         <div class="phone_code_area">
             <div class="authFormDiv">
                 <!-- <span class="authErrorMessage">Message</span> -->
-                <select name="phone_code" type="text" id="phone_code" class="authInput authSelectInput" placeholder="Code" required>
+                <select name="phone_code" type="text" id="phone_code" class="authInput authSelectInput"
+                    placeholder="Code" required>
                     <option value="+66">+66</option>
                 </select>
             </div>
@@ -46,7 +51,8 @@
         <div class="phone_number_area">
             <div class="authFormDiv">
                 <!-- <span class="authErrorMessage">Message</span> -->
-                <input name="phone_number" type="tel" class="authInput" placeholder="Phone Number" required>
+                <input name="phone_number" type="tel" class="authInput" placeholder="Phone Number"
+                    value="{{ profile.phone_number }}" required>
                 <div class="authlabelline authcompleteProfileLabe">Phone Number</div>
             </div>
         </div>
@@ -54,16 +60,18 @@
 
     <div class="authFormDiv">
         <!-- <span class="authErrorMessage">Message</span> -->
-        <select name="gender" type="text" id="emailInput" class="authInput authSelectInput" placeholder="Gender" required>
+        <select name="gender" type="text" id="emailInput" class="authInput authSelectInput" placeholder="Gender"
+            required>
             <option value="">........</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
+            <option value="male" {% if profile.gender == 'male' %}selected{% endif %}>Male</option>
+            <option value="female" {% if profile.gender == 'female' %}selected{% endif %}>Female</option>
         </select>
         <div class="authlabelline authcompleteProfileLabe">Gender</div>
     </div>
     <div class="authFormDiv">
         <!-- <span class="authErrorMessage">Message</span> -->
-        <input name="address" type="text" class="authInput" placeholder="Address" required>
+        <input name="address" type="text" class="authInput" placeholder="Address" value="{{ profile.address }}"
+            required>
         <div class="authlabelline authcompleteProfileLabe">Address</div>
     </div>
     <button type="submit" class="authButton completeProfileButton">
