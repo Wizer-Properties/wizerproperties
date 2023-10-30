@@ -8,13 +8,11 @@ def prepare_property_context(request, id=None):
     buildings = Building.objects.filter(created_by=request.user)
     property = get_object_or_404(Property, pk=id) if id else None
     images = property.media_files.filter(type="image") if property else []
-    unit_plans = property.media_files.filter(type="unit_plan") if property else []
     videos = property.media_files.filter(type="video") if property else []
     context = {
         "buildings": buildings,
         "property": property,
         "images": images,
-        "unit_plans": unit_plans,
         "videos": videos,
     }
     return context

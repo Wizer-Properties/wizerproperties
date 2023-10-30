@@ -65,7 +65,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
         property_media_files = property.media_files.all()
 
         if media_type:
-            if media_type in ["image", "unit_plan", "video"]:
+            if media_type in ["image", "video"]:
                 media_files = property_media_files.filter(type=media_type)
                 serializer_class = PropertyMediaSerializer
             else:

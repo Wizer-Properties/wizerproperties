@@ -17,7 +17,6 @@ class PropertyMediaSerializer(serializers.ModelSerializer):
 class PropertySerializer(serializers.ModelSerializer):
     building_info = serializers.SerializerMethodField()
     images = serializers.ImageField(allow_empty_file=False, write_only=True)
-    unit_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
     videos = serializers.FileField(allow_empty_file=False, write_only=True)
     default_image = serializers.URLField(source="default_image_url", read_only=True)
 
@@ -39,7 +38,6 @@ class PropertySerializer(serializers.ModelSerializer):
             "number_of_car_parking",
             "is_active",
             "images",
-            "unit_plans",
             "videos",
             "building_info",
         ]
@@ -53,7 +51,7 @@ class PropertySerializer(serializers.ModelSerializer):
         self.request = self.context.get("request")
 
         for field_name, field in self.fields.items():
-            if self.instance is not None and field_name in ["images", "unit_plans", "videos"]:
+            if self.instance is not None and field_name in ["images", "videos"]:
                 field.required = False
             else:
                 field.required = True
@@ -71,7 +69,6 @@ class PropertySerializer(serializers.ModelSerializer):
     def get_media_files(self, request):
         return {
             "image": self.request.FILES.getlist("images"),
-            "unit_plan": self.request.FILES.getlist("unit_plans"),
             "video": self.request.FILES.getlist("videos"),
         }
 
@@ -105,7 +102,7 @@ class PropertySerializer(serializers.ModelSerializer):
                 media_files.append(media_file)
 
         # Remove unwanted attributes from validated_data for 'Property' instance
-        skip_attributes = ["is_active", "images", "unit_plans", "videos"]
+        skip_attributes = ["is_active", "images", "videos"]
         for attr in skip_attributes:
             validated_data.pop(attr, None)
 
@@ -136,11 +133,7 @@ class PropertySerializer(serializers.ModelSerializer):
                     "type", flat=True
                 )
 
-                if (
-                    "image" not in remaining_file_types
-                    or "unit_plan" not in remaining_file_types
-                    or "video" not in remaining_file_types
-                ):
+                if "image" not in remaining_file_types or "video" not in remaining_file_types:
                     raise serializers.ValidationError(
                         {"media_files": ["At least one image every type of media file must remain with the property."]}
                     )

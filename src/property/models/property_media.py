@@ -8,7 +8,7 @@ from utils.general_func import validate_media_file_extension
 class PropertyMedia(TimestampedModel):
     def upload_to(self, filename):
         # Handle upload path based on media type (image, video, etc.)
-        if self.type in ["image", "unit_plan"]:
+        if self.type == "image":
             return "property/images/{}".format(filename)
         elif self.type == "video":
             return "property/videos/{}".format(filename)
@@ -22,10 +22,7 @@ class PropertyMedia(TimestampedModel):
 
     def clean(self):
         allowed_extensions = None
-        if self.type in [
-            "image",
-            "unit_plan",
-        ]:
+        if self.type == "image":
             allowed_extensions = ALLOWED_IMAGE_EXTENSIONS
         elif self.type == "video":
             allowed_extensions = ALLOWED_VIDEO_EXTENSIONS

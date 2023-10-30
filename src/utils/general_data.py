@@ -16,7 +16,6 @@ BUILDING_MEDIA_TYPES = (
 
 PROPERTY_MEDIA_TYPES = (
     ("image", "Image"),
-    ("unit_plan", "Unit plan"),
     ("video", "Video"),
 )
 
