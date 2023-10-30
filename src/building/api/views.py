@@ -41,11 +41,17 @@ class BuildingViewSet(viewsets.ModelViewSet):
 
         if media_type:
             media_files = media_files.filter(type=media_type)
+
+            paginated_queryset = self.paginate_queryset(media_files)
+            if paginated_queryset is not None:
+                serializer = BuildingMediaSerializer(paginated_queryset, many=True)
+                return self.get_paginated_response(serializer.data)
+
             serializer = BuildingMediaSerializer(media_files, many=True)
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response({"detail": "Media type is required."}, status=status.HTTP_400_BAD_REQUEST)
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=["get"])
     def available_units(self, request, pk=None):

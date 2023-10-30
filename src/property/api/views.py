@@ -49,6 +49,14 @@ class PropertyViewSet(viewsets.ModelViewSet):
         )
         return context
 
+    def _get_paginated_media_files(self, media_files, serializer_class):
+        paginated_queryset = self.paginate_queryset(media_files)
+        if paginated_queryset is not None:
+            serializer = serializer_class(paginated_queryset, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = serializer_class(media_files, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     @action(detail=True, methods=["get"])
     def media_files(self, request, pk=None):
         property = self.get_object()
@@ -59,14 +67,14 @@ class PropertyViewSet(viewsets.ModelViewSet):
         if media_type:
             if media_type in ["image", "unit_plan", "video"]:
                 media_files = property_media_files.filter(type=media_type)
-                serializer = PropertyMediaSerializer(media_files, many=True)
+                serializer_class = PropertyMediaSerializer
             else:
                 media_files = building_media_files.filter(type=media_type)
-                serializer = BuildingMediaSerializer(media_files, many=True)
+                serializer_class = BuildingMediaSerializer
+
+            return self._get_paginated_media_files(media_files, serializer_class)
         else:
             return Response({"detail": "Media type is required."}, status=status.HTTP_400_BAD_REQUEST)
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class ComparePropertyViewSet(viewsets.ModelViewSet):
