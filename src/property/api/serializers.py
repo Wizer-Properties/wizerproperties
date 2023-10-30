@@ -77,18 +77,21 @@ class PropertySerializer(serializers.ModelSerializer):
 
     # 'ModelSerializer' does not directly allow you to modify the queryset while calling it
     def get_building_info(self, obj):
-        building = (
-            Building.objects.filter(id=obj.building.id)
-            .annotate(
-                default_image_url=Subquery(
-                    BuildingMedia.objects.filter(building=OuterRef("pk"), type="image")
-                    .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
-                    .values("full_file_url")[:1]
+        if obj.building:
+            building = (
+                Building.objects.filter(id=obj.building.id)
+                .annotate(
+                    default_image_url=Subquery(
+                        BuildingMedia.objects.filter(building=OuterRef("pk"), type="image")
+                        .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
+                        .values("full_file_url")[:1]
+                    )
                 )
+                .first()
             )
-            .first()
-        )
-        return BuildingSerializer(building).data
+            return BuildingSerializer(building).data
+        else:
+            return None
 
     def create(self, validated_data):
         media_files_data = self.get_media_files(self.request)

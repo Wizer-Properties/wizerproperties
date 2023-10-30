@@ -8,7 +8,6 @@ from .serializers import BuildingSerializer, BuildingMediaSerializer
 from building.models import Building, BuildingMedia
 from property.models import Property, PropertyMedia
 from property.api.serializers import PropertyAvailableUnitsSerializer
-from utils.custom.pagination import CustomPagination
 
 
 class BuildingViewSet(viewsets.ModelViewSet):
@@ -68,11 +67,10 @@ class BuildingViewSet(viewsets.ModelViewSet):
         if bed:
             properties = properties.filter(number_of_bedroom=bed)
 
-        paginator = CustomPagination()
-        paginated_queryset = paginator.paginate_queryset(properties, request)
+        paginated_queryset = self.paginate_queryset(properties)
         if paginated_queryset is not None:
             serializer = PropertyAvailableUnitsSerializer(paginated_queryset, many=True)
-            return paginator.get_paginated_response(serializer.data)
+            return self.get_paginated_response(serializer.data)
 
         serializer = PropertyAvailableUnitsSerializer(properties, many=True)
 
