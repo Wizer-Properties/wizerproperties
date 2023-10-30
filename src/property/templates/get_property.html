@@ -8,6 +8,40 @@
 <link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
 <link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
 <link rel="stylesheet" href="{% static '/css/detail-page.css' %}" />
+<script>
+    // this is related to google map that calling in g_map.js
+    function buildingGeocodeAddress(render_dom, default_lat_lng) {
+        let geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({ 'address': '{{ property.building.address }}' }, function (results, status) {
+            if (status === 'OK') {
+                var myLatLng = results[0].geometry.location;
+                
+                var map = new google.maps.Map(render_dom, {
+                    center: myLatLng,
+                    zoom: 12
+                });
+
+                new google.maps.Marker({
+                    position: myLatLng,
+                    map: map,
+                    title: '{{ property.building.address }}'
+                });
+            } else {
+                var map = new google.maps.Map(render_dom, {
+                    center: default_lat_lng,
+                    zoom: 12
+                });
+
+                new google.maps.Marker({
+                    position: default_lat_lng,
+                    map: map,
+                    title: 'Something is wrong ! This is not the right address !!'
+                });
+            }
+        });
+    }
+</script>
 {% endblock extend_head %}
 
 {% block content %}
@@ -17,7 +51,7 @@
         <img src="" alt="bg">
     </div>
 
-
+    
     
 
     <div class="container position-relative z-index-3">
@@ -345,8 +379,8 @@
                     
                     <div class="row">
                         <div class="col-lg-4">
-                            <div class="building-img-gallery">
-                                <img src="https://img.freepik.com/premium-photo/geometric-facades-residential-building_294094-27.jpg" alt="">
+                            <div class="building-img-gallery" label-name="building_name">
+                                <span class="skeleton-box" style="width: 100%; height: 220px;"></span>
                             </div>
                         </div>
                         <div class="col-lg-8">
@@ -607,8 +641,7 @@
 <script>
     var ASSET_API_URL = '/property/api/details/{{property.id}}/';
     var GELLERY_API_URL = '/property/api/details/{{property.id}}/media-files/';
-    var AVAILABLE_API_URL = '/building/api/details/{{property.building.id}}/available-units/';
-    var ASSET_ID = '{{property.id}}';
+    var AVAILABLE_API_URL = '/building/api/details/{{property.building.id}}/available-units/?property_id={{property.id}}';
 </script>
 
 <script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>

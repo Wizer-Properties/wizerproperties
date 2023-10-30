@@ -34,8 +34,11 @@ $(document).ready(function(){
                 $('[label-name="building_type"]').html(data?.building_info?.type)
                 $('[label-name="construction_year"]').html(data?.building_info?.construction_year)
                 $('[label-name="project_name"]').html(data?.building_info?.title)
+                $('[label-name="project_name"]').html(data?.building_info?.title)
                 $('[label-name="project_total_area"]').html(data?.building_info?.project_total_area)
-                $('[label-name="total_units_for_sale"]').html(data?.building_info?.total_units_for_sale);
+                $('[label-name="total_units_for_sale"]').html(data?.building_info?.total_units_for_sale)
+                $('[label-name="building_name"]')
+                .html('<img src="'+data?.building_info?.default_image+'" alt="building img" loading="lazy"/>')
 
 
                 // Facilities ==============
@@ -87,6 +90,11 @@ $(document).ready(function(){
         if(building_info?.have_sky_lounge){
             var _icon = '<i class="material-symbols-outlined"> filter_drama </i>';
             facilities_dom += facilities_info_tmp('Sky Lounge', _icon)
+        };
+
+        if(building_info?.have_grocery){
+            var _icon = '<i class="material-symbols-outlined"> shopping_cart </i>';
+            facilities_dom += facilities_info_tmp('Grocery', _icon)
         };
 
         if(facilities_dom == ''){
@@ -213,7 +221,7 @@ $(document).ready(function(){
         return  '<div class="splide__slide">'+
                     '<div class="property-card">'+
                         '<div class="property-card-img">'+
-                            '<img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aG91c2UlMjByb29tfGVufDB8fDB8fHww" alt="">'+
+                            '<img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aG91c2UlMjByb29tfGVufDB8fDB8fHww" alt="" loading="lazy">'+
                         '</div>'+
 
                         '<div class="p-2">'+

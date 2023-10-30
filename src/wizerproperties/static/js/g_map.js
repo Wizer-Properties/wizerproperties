@@ -53,21 +53,17 @@ function initializeMap() {
 
 
     // Specify the location for the map
+    
         
-    let render_dom = document.getElementById('map')
-    
-    var myLatLng = { lat: 37.7749, lng: -122.4194 };
-    if(!render_dom) return;
-    
-    var map = new google.maps.Map(render_dom, {
-        center: myLatLng,
-        zoom: 12
-    });
+    let render_dom = document.getElementById('map');
 
-    new google.maps.Marker({
-        position: myLatLng,
-        map: map,
-        title: 'Hello, World!'
-    });
+    if(render_dom){
+        let default_lat_lng = {
+            lat : 13.764898,
+            lng : 100.538283
+        }
+        buildingGeocodeAddress(render_dom, default_lat_lng)
+    };
+    
 
 };
