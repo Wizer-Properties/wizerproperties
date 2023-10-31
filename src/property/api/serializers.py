@@ -154,9 +154,31 @@ class PropertySerializer(serializers.ModelSerializer):
 
 
 class ComparePropertySerializer(serializers.ModelSerializer):
+    property_info = serializers.SerializerMethodField()
+
     class Meta:
         model = CompareProperty
-        fields = ["user", "property"]
+        fields = ["id", "user", "property", "property_info"]
+        extra_kwargs = {
+            "property": {"write_only": True},  # Exclude the property field from the response
+        }
+
+    def get_property_info(self, obj):
+        if obj.property:
+            property = (
+                Property.objects.filter(id=obj.property.id)
+                .annotate(
+                    default_image_url=Subquery(
+                        PropertyMedia.objects.filter(property=OuterRef("pk"), type="image")
+                        .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
+                        .values("full_file_url")[:1]
+                    )
+                )
+                .first()
+            )
+            return PropertySerializer(property).data
+        else:
+            return None
 
 
 class PropertyAvailableUnitsSerializer(serializers.ModelSerializer):
