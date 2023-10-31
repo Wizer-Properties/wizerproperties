@@ -5,6 +5,8 @@ from property.models import Property
 class PropertyFilter(django_filters.FilterSet):
     min_price = django_filters.NumberFilter(field_name="price", lookup_expr="gte")
     max_price = django_filters.NumberFilter(field_name="price", lookup_expr="lte")
+    min_price_per_sqm = django_filters.NumberFilter(field_name="price_per_sqm", lookup_expr="gte")
+    max_price_per_sqm = django_filters.NumberFilter(field_name="price_per_sqm", lookup_expr="lte")
     min_unit_area = django_filters.NumberFilter(field_name="unit_area", lookup_expr="gte")
     max_unit_area = django_filters.NumberFilter(field_name="unit_area", lookup_expr="lte")
 
