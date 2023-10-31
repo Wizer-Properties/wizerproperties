@@ -11,7 +11,7 @@ from utils.general_func import show_custom_error_message
 class PropertyMediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyMedia
-        fields = ["id", "file"]
+        fields = ["id", "file", "type"]
 
 
 class PropertySerializer(serializers.ModelSerializer):

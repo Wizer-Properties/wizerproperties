@@ -8,7 +8,7 @@ from user.api.serializers import DeveloperProfileSerializer, AgentProfileSeriali
 class BuildingMediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = BuildingMedia
-        fields = ["id", "file"]
+        fields = ["id", "file", "type"]
 
 
 class BuildingSerializer(serializers.ModelSerializer):
