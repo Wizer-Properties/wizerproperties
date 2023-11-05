@@ -22,7 +22,7 @@ $(document).ready(function(){
                 $('[label-name="unit_area"]').html(data?.unit_area + ' SqM')
                 $('[label-name="floor_number"]').html(data?.floor_number)
                 $('[label-name="description"]').html(data?.description)
-
+                $('[label-name="price_per_sqm"]').html('฿ '+ data?.price_per_sqm)
 
                 $('[label-name="building-description"]').html(data?.building_info?.description);
                 $('[label-name="build-title"]').html(data?.building_info?.title)
@@ -38,8 +38,12 @@ $(document).ready(function(){
                 $('[label-name="project_total_area"]').html(data?.building_info?.project_total_area)
                 $('[label-name="total_units_for_sale"]').html(data?.building_info?.total_units_for_sale)
                 $('[label-name="building_name"]')
-                .html('<img src="'+data?.building_info?.default_image+'" alt="building img" loading="lazy"/>')
+                .html('<img src="'+data?.building_info?.default_image+'" alt="building img" loading="lazy"/>');
 
+                $('[label-name="company_logo"]')
+                .html('<img src="'+data?.building_info?.created_by?.company_logo+'" alt="building img" loading="lazy"/>')
+                $('[label-name="company_name"').html(data?.building_info?.created_by?.company_name)
+                $('[label-name="company_address"').html(data?.building_info?.created_by?.company_address)
 
                 // Facilities ==============
                 facilities_void(data?.building_info)
@@ -112,7 +116,7 @@ $(document).ready(function(){
         var gallery_dom = ''
         
         for (let i = 0; i < data_list.length; i++) {
-            gallery_dom += '<div class="details-gallery-img-box" index='+i+' >'+
+            gallery_dom += '<div class="details-gallery-img-box" type="'+data_list[i]?.type+'" index='+(i+1)+' >'+
                                 '<img src='+data_list[i]?.file+' alt="bg">'+
                             '</div>'
             if(i == 4) break;
@@ -121,12 +125,35 @@ $(document).ready(function(){
         return gallery_dom;
     };
 
-    function get_gallery_img(type_name){
+
+    function gallery_expand_tmp(img){
+        return  '<div class="splide__slide">'+
+                    '<div class="img-gallery-dialog-img">'+
+                        '<img src="'+img+'" alt="bg">'+
+                    '</div>'+
+                '</div>'
+    }
+
+
+    function gallery_expand_loader(position){
+        return  '<div class="splide__slide '+position+'">'+
+                    '<div class="img-gallery-dialog-loader">'+
+                        '<img src="/static/media/loader.svg" alt="loader">'+
+                    '</div>'+
+                '</div>'
+    }
+
+
+    function get_gallery_img(type_name , page_size){
         if(got_media_file_type.includes(type_name)) return;
 
         $.ajax({
-            url: GELLERY_API_URL+'?type='+type_name,
+            url: GELLERY_API_URL,
             type: 'GET',
+            data : {
+                type : type_name,
+                page_size : page_size || 5
+            },
             headers: {
                 'X-CSRFToken': csrfToken,
             },
@@ -148,14 +175,13 @@ $(document).ready(function(){
                     $('[label-name="media-files-master-plan"] .details-gallery')
                     .html(append_data(data?.results));
                 }else if(type_name == 'video'){
-                    var video_file = data[0].file;
-
+                    var video_file = data?.results[0].file;
                     if(video_file.includes('.webm')){
                         $('.details-gallery-video video')
-                        .append('<source src='+data?.results[0].file+' type="video/webm" />')
+                        .append('<source src='+data?.results[0]?.file+' type="video/webm" />')
                     }else{
                         $('.details-gallery-video video')
-                        .append('<source src='+data?.results[0].file+' type="video/mp4" />')
+                        .append('<source src='+data?.results[0]?.file+' type="video/mp4" />')
                     }
                 }
             },
@@ -165,7 +191,93 @@ $(document).ready(function(){
         });
     };
 
-    get_gallery_img('image');
+
+    var expanded_slider = new Splide( '.img-gallery-dialog-slider', {
+                            pagination: false
+                        }).mount();
+
+    var expand_slider_next = undefined;
+    var expand_slider_previous = undefined;
+    var expanded_splide_type = ''
+    var default_img = 5;
+    if(window.innerWidth < 768) default_img = 1;
+    get_gallery_img('image', default_img);
+
+
+    function expand_gallery_img( page, call_type ){
+        $.ajax({
+            url: GELLERY_API_URL,
+            type: 'GET',
+            data : {
+                type : expanded_splide_type,
+                page_size : 1,
+                page : page
+            },
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            success: function (data) {
+                if(expand_slider_next < data?.next || data?.next == null ){
+                    expand_slider_next = data?.next;
+                };
+                
+                if(expand_slider_previous > data?.previous){
+                    expand_slider_previous = data?.previous;
+                };
+
+                if([undefined].includes(expand_slider_next)){
+                    expand_slider_next = data?.next;
+                }
+
+                if( [undefined].includes(expand_slider_previous)){
+                    expand_slider_previous = data?.previous;
+                };
+
+                if(call_type == 'next'){
+                    expanded_slider.add(gallery_expand_tmp(data?.results[0]?.file));
+                };
+                
+                expanded_slider.remove('.pre_splide');
+
+                if(expand_slider_previous){
+                    expanded_slider.add(gallery_expand_loader('pre_splide'), 0)
+                }
+
+                if(call_type == 'previous'){
+                    var gl_positon = 0
+                    if(data?.previous) gl_positon = 1;
+                    expanded_slider.add(gallery_expand_tmp(data?.results[0]?.file), gl_positon);
+                    if(gl_positon == 1) expanded_slider.go(1);
+                };
+
+                if(call_type == 'first_call'){
+                    expanded_slider.add(gallery_expand_tmp(data?.results[0]?.file));
+                    if(data?.previous) expanded_slider.go(2);
+                };
+
+                expanded_slider.remove('.next_splide')
+
+                if(expand_slider_next){
+                    expanded_slider.add(gallery_expand_loader('next_splide'))
+                }
+            },
+            error: function (error) {
+                console.log("error")
+            }
+        });
+    };
+
+
+    expanded_slider.on('moved', function (e) {
+        if(e == 0 && expand_slider_previous){
+            expand_gallery_img(expand_slider_previous, 'previous')
+        };
+
+        if(expand_slider_next && expanded_slider.length == e+1){
+            expand_gallery_img(expand_slider_next, 'next')
+        };
+    });
+
     
     $('.gallery-btn button').click(function(){
         get_gallery_img($(this).attr('type'));
@@ -176,18 +288,19 @@ $(document).ready(function(){
     $(document).on('click', '.details-gallery-img-box', function(){
         is_gallery_open = !is_gallery_open;
         $('body').attr('img-gallery-open', is_gallery_open);
-
-        if(!is_gallery_open) return;
-
-        new Splide( '.img-gallery-dialog-slider', {
-            pagination: false
-        }).mount();
+        var index_number = $(this).attr('index');
+        expanded_splide_type = $(this).attr('type');
+        expand_gallery_img(index_number, 'first_call')
     });
 
 
     $(document).on('click', '.dialog-dismiss', function(){
         is_gallery_open = false;
         $('body').attr('img-gallery-open', is_gallery_open);
+        expand_slider_next = undefined;
+        expand_slider_previous = undefined;
+        expanded_slider.remove('.splide__slide')
+        expanded_slider.add(gallery_expand_loader('pre_splide'))
     });
 
 

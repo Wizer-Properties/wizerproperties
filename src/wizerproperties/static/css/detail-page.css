@@ -178,6 +178,7 @@
 
 .developer-co-details-info-list .info-list-label{
     width: 35px;
+    min-width: 35px;
     height: 35px;
     background-color: #ffd350;
     display: grid;
@@ -310,6 +311,22 @@ body[img-gallery-open="true"] .img-gallery-dialog{
     background-color: #fff;
     position: relative;
     z-index: 11;
+    padding: 40px 0;
+    border-radius: 10px;
+}
+
+.img-gallery-close-btn{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: #fff;
+    width: 35px;
+    height: 35px;
+    display: grid;
+    place-items: center;
+    color: #484848;
+    border: 1px solid #726E6E;
+    border-radius: 100%;
 }
 
 .img-gallery-dialog-slider{
@@ -361,6 +378,18 @@ body[img-gallery-open="true"] .img-gallery-dialog{
 
 [label-name="building_type"]{
     text-transform: capitalize;
+}
+
+.img-gallery-dialog-loader{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.img-gallery-dialog-loader img{
+    opacity: .3;
 }
 
 @media screen and (max-width : 991px) {
@@ -456,4 +485,7 @@ body[img-gallery-open="true"] .img-gallery-dialog{
 
 @media screen and (max-width : 600px){
 
+    .img-gallery-dialog{
+        padding: 80px 10px;
+    }
 }
