@@ -174,29 +174,19 @@
 <div class="img-gallery-dialog">
     <div class="img-gallery-dialog-overlay dialog-dismiss"></div>
     <div class="img-gallery-dialog-container">
+        <button class="dialog-dismiss img-gallery-close-btn"> <i class="bi bi-x-lg"></i> </button>
         <div class="splide img-gallery-dialog-slider">
             <div class="splide__track">
-                  <div class="splide__list">
+                <div class="splide__list">
 
-                        <div class="splide__slide">
-                            <div class="img-gallery-dialog-img">
-                                <img src="https://www.planetizen.com/files/images/shutterstock_2236644373.jpg" alt="bg">
-                            </div>
+                    <!-- from dom -->
+                    <div class="splide__slide pre_splide">
+                        <div class="img-gallery-dialog-loader">
+                            <img src="{% static '/media/loader.svg' %}" alt="loader">
                         </div>
+                    </div>
 
-                        <div class="splide__slide">
-                            <div class="img-gallery-dialog-img">
-                                <img src="https://tranducfurnishings.com/wp-content/uploads/2021/06/Ritz-Carlton-Grand-Lake-Florida-2v22.jpg" alt="bg">
-                            </div>
-                        </div>
-
-                        <div class="splide__slide">
-                            <div class="img-gallery-dialog-img">
-                                <img src="https://publish.purewow.net/wp-content/uploads/sites/2/2019/08/grand-velas.jpeg" alt="bg">
-                            </div>
-                        </div>
-
-                  </div>
+                </div>
             </div>
         </div>
     </div>
