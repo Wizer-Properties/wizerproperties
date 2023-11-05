@@ -191,7 +191,7 @@ $(document).ready(function(){
     }
 
     var prams_list = {
-        page_size : 12,
+        page_size : 10,
         search : place || ''
     }
 
@@ -204,8 +204,7 @@ $(document).ready(function(){
         
         console.log(next_property)
         if(next_property) search_param.page = next_property;
-        if(!next_property) return;
-        
+        if([null].includes(next_property)) return;
 
         $.ajax({
             url: '/property/api/list/',
@@ -237,20 +236,8 @@ $(document).ready(function(){
                 };
 
                 active_free_scrolling = false;
-                last_property_box = $('.property-single-box').last()
+                last_property_box = $('.property-single-box').last();
 
-                if(last_property_box[0]){
-                    new Waypoint({
-                        element: last_property_box[0],
-                        handler: function() {
-                            if(active_free_scrolling) return;
-                            searching("search");
-                            active_free_scrolling = true;
-                            this.destroy();
-                        },
-                        offset: '125%'
-                    })
-                };
 
                 $('.searching-loader').remove();
             },
@@ -264,7 +251,19 @@ $(document).ready(function(){
 
     searching("search");
 
+    $(window).on('scroll', function() {
+        var targetSection =  $('.property-single-box').last()[0];
+        const elementRect = targetSection.getBoundingClientRect();
 
+        if(active_free_scrolling) return;
+        if (
+            elementRect.top >= 0 && 
+            elementRect.bottom <= window.innerHeight
+        ){
+            active_free_scrolling = true;
+            searching("search");
+        }
+    });
 
 
 
