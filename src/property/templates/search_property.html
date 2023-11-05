@@ -155,7 +155,7 @@
     <div class="container">
         <div class="row" id="search-result-list">
 
-            <div class="col-lg-6 mb-4">
+            <div class="col-lg-6 mb-4 searching-loader">
                 <div class="search-result-box-wrapper">
                     <div class="row">
                         <div class="col-sm-4">
@@ -187,7 +187,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-6 mb-4">
+            <div class="col-lg-6 mb-4 searching-loader">
                 <div class="search-result-box-wrapper">
                     <div class="row">
                         <div class="col-sm-4">
@@ -219,7 +219,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-6 mb-4">
+            <div class="col-lg-6 mb-4 searching-loader">
                 <div class="search-result-box-wrapper">
                     <div class="row">
                         <div class="col-sm-4">
@@ -251,6 +251,37 @@
                 </div>
             </div>
 
+            <div class="col-lg-6 mb-4 searching-loader">
+                <div class="search-result-box-wrapper">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="search-result-box-img">
+                                <span class="skeleton-box" style="width: 100%; height: 200px;"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="search-result-box">
+                                <h1> <span class="skeleton-box" style="width: 100%; height: 20px;"></span> </h1>
+                                <div class="location">
+                                    <span class="skeleton-box" style="width: 100%; height: 20px;"></span>
+                                </div>
+                                <p class="sub-title">
+                                    <span class="skeleton-box" style="width: 100%; height: 21px;"></span>
+                                </p>
+
+                                <p class="details">
+                                    <span class="skeleton-box" style="width: 100%; height: 40px;"></span>
+                                </p>
+                                <div class="d-flex">
+                                    <span class="skeleton-box me-2" style="width: 40px; height: 30px;"></span>
+                                    <span class="skeleton-box me-2" style="width: 40px; height: 30px;"></span>
+                                    <span class="skeleton-box" style="width: 40px; height: 30px;"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
         </div>
     </div>
@@ -260,5 +291,6 @@
 
 
 {% block extend_script %}
+<script src="{% static 'js/libraries/noframework.waypoints.min.js' %}"></script>
 <script src="{% static '/js/property/search.js' %}?v=1.00"></script>
 {% endblock extend_script %}

@@ -5,7 +5,6 @@ $(document).ready(function(){
     $('#gm-search-input').val(place || '');
     $('.search-area').html(place || '');
     
-    console.log("===============", place);
 
 
     $(document).on('click', '.filter-dropdown-btn', function(){
@@ -47,9 +46,85 @@ $(document).ready(function(){
 
     $(document).on('click', '.filter-overlay', filter_close_dropdown);
 
+    function loader_tmp(){
+        return '<div class="col-lg-6 mb-4 searching-loader">'+
+                    '<div class="search-result-box-wrapper">'+
+                        '<div class="row">'+
+                            '<div class="col-sm-4">'+
+                                '<div class="search-result-box-img">'+
+                                    '<span class="skeleton-box" style="width: 100%; height: 200px;"></span>'+
+                                '</div>'+
+                            '</div>'+
+                            '<div class="col-sm-8">'+
+                                '<div class="search-result-box">'+
+                                    '<h1> <span class="skeleton-box" style="width: 100%; height: 20px;"></span> </h1>'+
+                                    '<div class="location">'+
+                                        '<span class="skeleton-box" style="width: 100%; height: 20px;"></span>'+
+                                    '</div>'+
+                                    '<p class="sub-title">'+
+                                        '<span class="skeleton-box" style="width: 100%; height: 21px;"></span>'+
+                                    '</p>'+
 
-    function property_list(data){
-        return  '<div class="col-lg-6 mb-4">'+
+                                    '<p class="details">'+
+                                        '<span class="skeleton-box" style="width: 100%; height: 40px;"></span>'+
+                                    '</p>'+
+                                    '<div class="d-flex">'+
+                                        '<span class="skeleton-box me-2" style="width: 40px; height: 30px;"></span>'+
+                                        '<span class="skeleton-box me-2" style="width: 40px; height: 30px;"></span>'+
+                                        '<span class="skeleton-box" style="width: 40px; height: 30px;"></span>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'+
+                '</div>'
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    function property_facility_tmp(data){
+        var facility_tmp = '';
+
+        if(data?.building_info?.have_fitness_area){
+            facility_tmp += '<span>GYM</span>'
+        };
+
+        if(data?.building_info?.have_grocery){
+            facility_tmp += '<span>Grocery</span>'
+        };
+
+        if(data?.building_info?.have_guard_house){
+            facility_tmp += '<span>Security</span>'
+        };
+
+        if(data?.building_info?.have_lake_or_river_view){
+            facility_tmp += '<span>River View</span>'
+        };
+
+        if(data?.building_info?.have_sauna){
+            facility_tmp += '<span>Sauna</span>'
+        };
+
+        if(data?.building_info?.have_sky_lounge){
+            facility_tmp += '<span>Sky Lounge</span>'
+        };
+        
+        return facility_tmp;
+    }
+
+
+    function property_list_tmp(data){
+        return  '<div class="col-lg-6 mb-4 property-single-box">'+
                     '<a href="/property/details/'+data?.id+'/" class="search-result-box-wrapper">'+
                         '<div class="row">'+
                             '<div class="col-sm-4">'+
@@ -106,9 +181,7 @@ $(document).ready(function(){
                                         '</div>'+
                                     '</div>'+
                                     '<div class="property-faciluty">'+
-                                        '<span>Sauna</span>'+
-                                        '<span>GYM</span>'+
-                                        '<span>Sky lounge</span>'+
+                                        property_facility_tmp(data) +
                                     '</div>'+
                                 '</div>'+
                             '</div>'+
@@ -122,38 +195,84 @@ $(document).ready(function(){
         search : place || ''
     }
 
-    function searching(){
+    var active_free_scrolling = false;
+    var last_property_box; 
+    var next_property = 1;
+
+    function searching(search_type){
+        var search_param = prams_list;
+        
+        console.log(next_property)
+        if(next_property) search_param.page = next_property;
+        if(!next_property) return;
+        
+
         $.ajax({
             url: '/property/api/list/',
             type: 'GET',
-            data : prams_list,
+            data : search_param,
             headers: {
                 'X-CSRFToken': csrfToken,
             },
+            beforeSend: function() {
+                $('#search-result-list').append(
+                    loader_tmp() + loader_tmp() + loader_tmp()
+                );
+            },
             success: function (data) {
-                console.log(data)
-                $('[label="available-properties"]').html(data?.count)
-                var new_data = data?.results
-                var search_dom = ''
+                $('[label="available-properties"]').html(data?.count);
+
+                next_property = data?.next;
+                var new_data = data?.results;
+                var search_dom = '';
+
                 for (let i = 0; i < new_data.length; i++) {
-                    search_dom += property_list(new_data[i])
+                    search_dom += property_list_tmp(new_data[i])
                 };
 
-                $('#search-result-list').html(search_dom)
+                if(search_type == 'filter'){
+                    $('#search-result-list').html(search_dom);
+                }else{
+                    $('#search-result-list').append(search_dom);
+                };
+
+                active_free_scrolling = false;
+                last_property_box = $('.property-single-box').last()
+
+                if(last_property_box[0]){
+                    new Waypoint({
+                        element: last_property_box[0],
+                        handler: function() {
+                            if(active_free_scrolling) return;
+                            searching("search");
+                            active_free_scrolling = true;
+                            this.destroy();
+                        },
+                        offset: '125%'
+                    })
+                };
+
+                $('.searching-loader').remove();
             },
             error: function (error) {
+                active_free_scrolling = false;
+                $('.searching-loader').remove();
                 console.log("error")
             }
         });
     };
 
-    searching();
+    searching("search");
+
+
+
 
 
     $(document).on('change', 'select', function(){
         filter_close_dropdown();
         prams_list[$(this).attr('name')] = $(this).val() == 'null' ? '' : $(this).val();
-        searching();
+        next_property = 1;
+        searching("filter");
 
         var get_parent_label = $(this).parents('[label]')?.attr('label');
         var button_dom = $(this).parents('[label]')?.find('button');
@@ -209,12 +328,17 @@ $(document).ready(function(){
             $(this).parents('.filter-dropdown-buttons').find('button').attr('active', false);
             prams_list[$(this).attr('name')] = '';
             $(this).parents('.filter-dropdown-buttons').find('button[value="null"]').attr('active', true);
-            if(get_val != '') searching();
+            if(get_val != '') {
+                next_property = 1;
+                searching("filter");
+            }
+            
             return;
         };
 
         prams_list[$(this).attr('name')] =  get_val;
-        searching();
+        next_property = 1;
+        searching("filter");
 
         $(this).parents('.filter-dropdown-buttons').find('button').attr('active', false);
         $(this).attr('active', true);
@@ -230,7 +354,8 @@ $(document).ready(function(){
             delete prams_list[$(this).val()];
         };
 
-        searching();
+        next_property = 1;
+        searching("filter");
     });
 
 
@@ -240,12 +365,14 @@ $(document).ready(function(){
 
         if(prams_list[$(this).attr('name')] == $(this).val()){
             prams_list[$(this).attr('name')] = '';
-            searching();
+            next_property = 1;
+            searching("filter");
             return
         };
 
         prams_list[$(this).attr('name')] =  $(this).val();
-        searching();
+        next_property = 1;
+        searching("filter");
         $(this).attr('active', true);
     });
 
@@ -256,7 +383,8 @@ $(document).ready(function(){
                 search : place || ''
             };
 
-            searching()
+            next_property = 1;
+            searching("filter")
 
             $('[label="price"] button.filter-dropdown-btn').html('Any Price <i class="bi bi-chevron-down"></i>');
             $('[label="unit_area"] button.filter-dropdown-btn').html('Any Price <i class="bi bi-chevron-down"></i>');
@@ -287,6 +415,10 @@ $(document).ready(function(){
         } else {
             return number.toString();
         }
-    }
+    };
+
+
+    
+
 
 });
