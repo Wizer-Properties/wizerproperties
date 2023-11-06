@@ -125,6 +125,13 @@ $(document).ready(function(){
 
     function property_list_tmp(data){
         return  '<div class="col-lg-6 mb-4 property-single-box">'+
+                    '<div class="banner-action-button">'+
+                        '<button class="add-to-compare" added="false" index="'+data?.id+'">'+
+                            '<i class="bi bi-arrow-left-right"></i>'+
+                            '<i class="bi bi-check-circle-fill"></i>'+
+                            ' Compare'+
+                        '</button>'+
+                    '</div>'+
                     '<a href="/property/details/'+data?.id+'/" class="search-result-box-wrapper">'+
                         '<div class="row">'+
                             '<div class="col-sm-4">'+
@@ -418,6 +425,24 @@ $(document).ready(function(){
 
 
     
-
+    $(document).on('click', '.add-to-compare', function(){
+        var this_btn = $(this)
+        $.ajax({
+            url: '/property/api/compare/create/',
+            data : {
+                property : $(this).attr('index')
+            },
+            type: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            success : function (data) {
+                this_btn.attr('added', 'true')
+            },
+            error: function (error) {
+                console.log("error")
+            }
+        })
+    });
 
 });

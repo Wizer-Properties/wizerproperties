@@ -1,0 +1,128 @@
+.comparison-container{
+    display: flex;
+    box-shadow: 0 0 5px 0 rgba(0,0,0,.1);
+    padding: 15px;
+    border-radius: 5px;
+    margin: 35px 0;
+}
+
+.comparison-img-icon-box{
+    width: 100%;
+    height: 180px;
+    margin-top: 20px;
+}
+
+.comparison-side-list .comparison-img-icon-box{
+    display: grid;
+    place-items: center;
+}
+
+.comparison-img-icon-box img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.comparison-img-icon-box a{
+    background-color: #ffd350;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
+    color: #fff;
+    border-radius: 100%;
+}
+
+.comparison-side-list{
+    width: 240px;
+    min-width: 240px;
+}
+
+.comparison-slider-area{
+    width: calc(100% - 240px);
+}
+
+.remove-from-comparison{
+    position: absolute;
+    top: 5px;
+    right: 0;
+    background: rgb(255 82 82);
+    color: #fff;
+    width: 25px;
+    height: 25px;
+    display: grid;
+    place-items: center;
+    border-radius: 100%;
+    border: none;
+    font-size: 12px;
+}
+
+.comparison-slider-box{
+    position: relative;
+}
+
+.comparison-list-label li{
+    list-style: none;
+    font-size: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 6px 0px;
+}
+
+.comparison-side-list .comparison-list-label li{
+    color: #212529;
+    font-weight: bold;
+    border-bottom: 1px solid transparent;
+}
+
+.comparison-slider-box .comparison-list-label li{
+    color: #677583;
+    text-align: center;
+    border-bottom: 1px dotted #eee;
+    position: relative;
+}
+
+.comparison-slider-box .comparison-list-label li::before{
+    content: '';
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 0px;
+    height: 5px;
+    background-color: #fff;
+}
+
+.comparison-slider-box .comparison-list-label li:last-child{
+    border: none;
+}
+
+.comparison-slider-box .comparison-list-label li a{
+    color: #006CE3;
+}
+
+@media screen and (max-width: 840px) {
+    .comparison-side-list {
+        width: 200px;
+        min-width: 200px;
+    }
+}
+
+@media screen and (max-width : 600px) {
+    .comparison-side-list{
+        display: none !important;
+    }
+
+    .comparison-slider-area{
+        width: 100%;
+    }
+
+    .comparison-wrapping-box{
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+}

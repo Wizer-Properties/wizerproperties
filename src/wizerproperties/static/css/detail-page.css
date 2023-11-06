@@ -84,6 +84,7 @@
 #banner-nav-tabContent{
     padding: 20px 0;
     min-height: 540px;
+    position: relative;
 }
 
 #map{
@@ -390,6 +391,42 @@ body[img-gallery-open="true"] .img-gallery-dialog{
 
 .img-gallery-dialog-loader img{
     opacity: .3;
+}
+
+.banner-action-button{
+    display: flex;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 9;
+    justify-content: flex-start;
+    padding-top: 30px;
+    padding-left: 10px;
+}
+
+.banner-action-button button{
+    background-color: #fff;
+    border-radius: 5px;
+    font-size: 13px;
+    padding: 5px 10px;
+    border: none;
+}
+
+.add-to-compare .bi-check-circle-fill{
+    color: #4CAF50;
+    display: none;
+}
+
+[added="true"].add-to-compare .bi-check-circle-fill{
+    display: inline;
+}
+
+[added="false"].add-to-compare .bi-arrow-left-right{
+    display: inline;
+}
+
+[added="true"].add-to-compare .bi-arrow-left-right{
+    display: none;
 }
 
 @media screen and (max-width : 991px) {

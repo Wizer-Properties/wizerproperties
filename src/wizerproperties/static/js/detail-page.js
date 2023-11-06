@@ -490,4 +490,27 @@ $(document).ready(function(){
         offset: '140%'
     })
 
+
+    
+    $(document).on('click', '.add-to-compare', function(){
+        var this_btn = $(this)
+
+        $.ajax({
+            url: ADD_COMPARE_API_URL,
+            type: 'POST',
+            data : {
+                property : PROPERTY_ID,
+            },
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            success : function (data) {
+                this_btn.attr('added', 'true')
+            },
+            error: function (error) {
+                console.log("error")
+            }
+        })
+    });
+
 });

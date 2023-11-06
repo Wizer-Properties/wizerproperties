@@ -37,3 +37,8 @@ def update_property(request, id):
 
 def search_property(request):
     return render(request, "search_property.html")
+
+
+@login_required
+def comparison_property(request):
+    return render(request, "comparison.html")

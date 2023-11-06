@@ -4,17 +4,70 @@
 
 {% block extend_head %}
 <title>Comparison</title>
+
+<link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
+<link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
+<link rel="stylesheet" href="{% static '/css/comparison.css' %}?v=1.00" />
 {% endblock extend_head %}
 
 {% block content %}
 
-hello
+<section>
+    <div class="w-100 px-5 comparison-wrapping-box">
+        <div class="comparison-container">
+            <div class="comparison-side-list">
+                <div class="comparison-img-icon-box">
+                    <a href="/property/search/">
+                        <i class="bi bi-plus-lg"></i>
+                    </a>
+                </div>
+                <div class="comparison-list-label">
+                    <li> Title </li>
+                    <li> Price </li>
+                    <li> Project </li>
+                    <li> Location </li>
+                    <li> Unit ID </li>
+                    <li> Construction </li>
+                    <li> Bedrooms </li>
+                    <li> Bathrooms </li>
+                    <li> Balcony </li>
+                    <li> Parking </li>
+                    <li> Area </li>
+                    <li> Floor </li>
+                    <li> River / lake View </li>
+                    <li> Sky Lounge </li>
+                    <li> Gaurd House </li>
+                    <li> Sauna </li>
+                    <li> Grocery </li>
+                    <li> Fitness Area </li>
+                    <li> Details </li>
+                </div>
+            </div>
+
+
+            <section class="splide comparison-slider-area">
+                <div class="splide__track">
+                        <div class="splide__list">
+                            
+                            <!-- call from dom -->
+
+                        </div>
+                </div>
+            </section>
+            
+        </div>
+    </div>
+</section>
 
 {% endblock %}
 
 {% block extend_script %}
 
-<script src="{% static 'js/libraries/splide.min.js' %}"></script>
-
+<script>
+    var COMPARISON_API_URL = '/property/api/compare/list/';
+    var COMPARISON_REMOVE_API_URL = '/property/api/compare/delete/';
+</script>
+<script src="{% static 'js/libraries/splide.min.js' %}?v=1.00"></script>
+<script src="{% static 'js/comparison.js' %}?v=1.00"></script>
 
 {% endblock extend_script %}
