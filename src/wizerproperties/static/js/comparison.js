@@ -124,10 +124,22 @@ $(document).ready(function(){
                     for (let i = 0; i < page_size; i++) {
                         comparison_splide.add(loader_tmp())
                     };
-                }
+                };
+
+                if(cmp_result.length == 0){
+                    $('.comparison-slider-area').html('<p> No data available </p>')
+                    $('.comparison-slider-area').css({
+                        'display' : 'grid',
+                        'place-items' : 'center'
+                    })
+                };
             },
             error: function (error) {
-                console.log("error")
+                $('.comparison-slider-area').html('<p> Some this is wrong </p>')
+                $('.comparison-slider-area').css({
+                    'display' : 'grid',
+                    'place-items' : 'center'
+                })
             }
         });
     };
