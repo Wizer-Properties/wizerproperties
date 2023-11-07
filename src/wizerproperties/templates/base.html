@@ -26,6 +26,7 @@
         {% url 'user:profile_settings' as profile_settings_url %}
         {% url 'building:create' as create_building_url %}
         {% url 'property:create' as create_property_url %}
+        {% url 'property:comparison' as comparison_property_url %}
 
         <header class="wip-header">
             <div class="w-100 px-5">
@@ -69,7 +70,11 @@
                                 <a class="nav-link {% if request.path == profile_settings_url %}active-nav{% endif %}"
                                     href="{{ profile_settings_url }}">Profile settings</a>
 
-                                <a class="nav-link" href="/property/comparison/">Comparison</a>                                
+                                <a 
+                                    class="nav-link {% if request.path == comparison_property_url %}active-nav{% endif %}" 
+                                    href="{{ comparison_property_url }}">
+                                    Comparison
+                                </a>                                
                                 <a class="nav-link" href="{% url 'user:logout' %}">Log out</a>
                             </div>
                         </div>
