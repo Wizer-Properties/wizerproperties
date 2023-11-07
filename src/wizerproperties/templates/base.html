@@ -70,11 +70,13 @@
                                 <a class="nav-link {% if request.path == profile_settings_url %}active-nav{% endif %}"
                                     href="{{ profile_settings_url }}">Profile settings</a>
 
+                                {% if request.user.user_type == "prospect" %}
                                 <a 
                                     class="nav-link {% if request.path == comparison_property_url %}active-nav{% endif %}" 
                                     href="{{ comparison_property_url }}">
                                     Comparison
-                                </a>                                
+                                </a>
+                                {% endif %}                            
                                 <a class="nav-link" href="{% url 'user:logout' %}">Log out</a>
                             </div>
                         </div>

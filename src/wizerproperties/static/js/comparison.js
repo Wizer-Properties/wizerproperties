@@ -127,7 +127,7 @@ $(document).ready(function(){
                 };
 
                 if(cmp_result.length == 0){
-                    $('.comparison-slider-area').html('<p> No data available </p>')
+                    $('.comparison-slider-area').html('<p style="font-size: 20px;"><i class="bi bi-dropbox"></i> &nbsp;  No data available </p>')
                     $('.comparison-slider-area').css({
                         'display' : 'grid',
                         'place-items' : 'center'
@@ -135,7 +135,7 @@ $(document).ready(function(){
                 };
             },
             error: function (error) {
-                $('.comparison-slider-area').html('<p> Some this is wrong </p>')
+                $('.comparison-slider-area').html('<p style="font-size: 20px;"> <i class="bi bi-exclamation-diamond"></i>  &nbsp; Something is wrong </p>')
                 $('.comparison-slider-area').css({
                     'display' : 'grid',
                     'place-items' : 'center'
