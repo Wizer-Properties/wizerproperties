@@ -1,0 +1,70 @@
+#create-schedule{
+    padding: 45px 0;
+}
+
+#create-schedule .container{
+    box-shadow: 0 0 5px 0 rgba(0,0,0,.1);
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.create-schedule-title{
+    text-align: center;
+    font-size: 26px !important;
+}
+
+.date-field-box{
+    border: 1px solid #eee;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.date-field-box span{
+    display: block;
+    text-align: center;
+    color: #484848;
+    font-size: 15px;
+    padding: 2px;
+}
+
+.date-field-box span:first-child,
+.date-field-box span:last-child{
+    font-size: 13px;
+    color: #726E6E;
+}
+
+.date-field-box[selected="true"]{
+    background-color: #ffefc2;
+    border: #FFD350;
+}
+
+.date-picker-splide,
+.time-picker-splide{
+    margin-bottom: 35px;
+}
+
+.time-picker-splide .date-field-box span{
+    font-size: 15px;
+    color: #484848;
+    padding: 10px 5px;
+}
+
+.create-schedule-btn{
+    font-size: 16px;
+    background-color: #FFD350;
+    border: none;
+    padding: 10px 35px;
+    color: #484848;
+    border-radius: 5px;
+    text-transform: uppercase;
+}
+
+.create-schedule-btn:hover{
+    background-color: #ffefc2;
+}
+
+@media screen and (max-width: 991px) {
+    #create-schedule .property-single-box{
+        margin-top: 35px;
+    }
+}

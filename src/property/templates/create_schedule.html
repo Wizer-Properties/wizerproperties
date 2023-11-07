@@ -4,11 +4,114 @@
 
 {% block extend_head %}
 <title>Create Schedule</title>
+<link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
+<link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
+<link rel="stylesheet" href="{% static '/css/search-page.css' %}?v=1.00" />
+<link rel="stylesheet" href="{% static '/css/create-schedule.css' %}?v=1.00" />
 {% endblock extend_head %}
 
 {% block content %}
-hello world
+
+<section id="create-schedule">
+    <div class="container">
+        <h1 class="section-title create-schedule-title"> Create Schedule </h1>
+        <div class="row mt-4">
+            <div class="col-lg-6">
+                <h1 class="section-title"> Pick a date </h1>
+
+                <div class="splide date-picker-splide">
+                    <div class="splide__track">
+                        <div class="splide__list">
+
+                            <!-- from date -->
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <h1 class="section-title"> Pick a time </h1>
+                <div class="splide time-picker-splide">
+                    <div class="splide__track">
+                        <div class="splide__list">
+
+                            <!-- from time -->
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <h1 class="section-title"> Monday 9 Sep, at 10:30 AM </h1>
+                <button class="create-schedule-btn"> Confirm </button>
+            </div>
+
+
+            <div class="col-lg-6 property-single-box">
+                <div class="search-result-box-wrapper">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="search-result-box-img">
+                                <img src="/media/property/images/08a0e1abc8f965a30ae9232190110d47_TuHISeV.jpg" alt="oiuoi" loading="lazy">
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="search-result-box">
+                                <h1> oiuoi </h1>
+                                <div class="location">
+                                    <div class="icon">
+                                        <i class="bi bi-geo-alt"></i>
+                                        Ayutthaya, Phra Nakhon Si Ayutthaya District, Phra Nakhon Si Ayutthaya, Thailand
+                                    </div>
+                                </div>
+                                <p class="sub-title">1 bedroom condos for sale at this is first buidling</p>
+                                <p class="details"> wer </p><div class="property-contains">
+                                    <div class="property-short-info-box">
+                                        <div class="property-short-info-icon">
+                                            <img src="{% static '/media/icons/bed.svg' %}" alt="bed-icon">
+                                        </div>
+                                        <span class="property-value"> 1 </span>
+                                        <span class="property-label">Beds</span>
+                                    </div>
+                                    <div class="property-short-info-box">
+                                        <div class="property-short-info-icon">
+                                            <img src="{% static '/media/icons/bath.svg' %}" alt="bath-icon">
+                                        </div>
+                                        <span class="property-value"> 2 </span>
+                                        <span class="property-label">Baths</span>
+                                    </div>
+                                    <div class="property-short-info-box">
+                                        <div class="property-short-info-icon">
+                                            <img src="{% static '/media/icons/plan-size.svg' %}" alt="plan-size-icon">
+                                        </div>
+                                        <span class="property-value"> 12</span>
+                                        <span class="property-label"> SqM</span>
+                                    </div><div class="property-short-info-box">
+                                        <div class="property-short-info-icon">
+                                            <img src="{% static '/media/icons/stairs.svg' %}" alt="stairs-icon">
+                                        </div>
+                                        <span class="property-value"> 234 </span>
+                                        <span class="property-label">Floor</span>
+                                    </div>
+                                </div>
+                                <div class="property-faciluty">
+                                    <span>Grocery</span>
+                                    <span>River View</span>
+                                    <span>Sauna</span>
+                                    <span>Sky Lounge</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 {% endblock %}
 
 {% block extend_script %}
+<script src="{% static 'js/libraries/splide.min.js' %}?v=1.00"></script>
+<script src="{% static '/js/create-schedule.js' %}?v=1.00"></script>
 {% endblock extend_script %}
