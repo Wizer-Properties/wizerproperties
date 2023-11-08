@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "core",
     "property",
     "user",
+    "schedule",
 ]
 
 MIDDLEWARE = [
