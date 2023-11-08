@@ -1,0 +1,12 @@
+1. To create scheduel:
+	POST: http://127.0.0.1:8000/schedule/
+2. To get schedule list:
+	GET: http://127.0.0.1:8000/schedule/
+3. To retrieve schedule:
+	GET: http://127.0.0.1:8000/schedule/<schedule_id>/
+4. To update schedule:
+	PATCH: http://127.0.0.1:8000/schedule/<schedule_id>/
+5. To accept schedule:
+	PATCH: http://127.0.0.1:8000/schedule/<schedule_id>/accept/
+6. To cancel schedule:
+	PATCH: http://127.0.0.1:8000/schedule/<schedule_id>/cancel/
