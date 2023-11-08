@@ -26,6 +26,7 @@ urlpatterns = [
     path("user/", include(("user.urls", "user"), namespace="user")),
     path("building/", include(("building.urls", "building"), namespace="building")),
     path("property/", include(("property.urls", "property"), namespace="property")),
+    path("schedule/", include(("schedule.api.urls", "schedule"), namespace="schedule")),
 ]
 
 if settings.DEBUG:
