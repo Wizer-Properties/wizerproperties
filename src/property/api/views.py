@@ -1,17 +1,22 @@
 from django.db.models import OuterRef, Subquery, Value, F, CharField
 from django.db.models.functions import Concat
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .permissions import PropertyPermission, ComparePropertyPermission
+from .permissions import (
+    PropertyPermission, 
+    ComparePropertyPermission, 
+    ProspectPropertyFavoritePermission
+)
 from .serializers import (
     PropertySerializer,
     PropertyMediaSerializer,
     ComparePropertySerializer,
+    ProspectFavoritePropertySerializer
 )
 from .filters import PropertyFilter
 from building.api.serializers import BuildingMediaSerializer
-from property.models import Property, PropertyMedia, CompareProperty
+from property.models import Property, PropertyMedia, CompareProperty, ProspectFavoriteProperty
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
@@ -86,3 +91,21 @@ class ComparePropertyViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+class ProspectFavoritePropertyViewSet(viewsets.ModelViewSet):
+    serializer_class = ProspectFavoritePropertySerializer
+    permission_classes = [permissions.IsAuthenticated, ProspectPropertyFavoritePermission]
+    serializer_method_fields = ["POST", "GET", "DELETE"]
+
+    def get_queryset(self):
+        return ProspectFavoriteProperty.objects.select_related(
+            "prospect", "property").filter(prospect=self.request.user.prospectprofile)
+        
+    def get_serializer_context(self):
+        # Get the default context from the parent class
+        context = super(ProspectFavoritePropertyViewSet, self).get_serializer_context()
+
+        # Add custom data to the context
+        context['request'] = self.request
+
+        return context
