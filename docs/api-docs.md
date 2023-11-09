@@ -1,6 +1,6 @@
 ### Scheduel
 - Create
-  - URL [__POST__] `/schedule/`
+  - URL [__POST__] `/schedule/api/`
   ```json
     {
       "visiting_time": "2023-10-19T10:46:00Z",
@@ -21,7 +21,7 @@
    - Expected Status
    - 201
 - List
-  - URL [__GET__] `/schedule/`
+  - URL [__GET__] `/schedule/api/`
   - Response 
     ```json
      {
@@ -43,9 +43,9 @@
   }
      ```
 - Single Schedule
-  - URL [__GET__] `/schedule/<schedule_id>/`
+  - URL [__GET__] `/schedule/api/<schedule_id>/`
 - Update
-  - URL [__PATCH__] `/schedule/<schedule_id>/`
+  - URL [__PATCH__] `/schedule/api/<schedule_id>/`
   ```json
     {
       "visiting_time": "2023-10-19T10:46:00Z",
@@ -66,9 +66,9 @@
    - Expected Status
    - 200
 - Accept
-  - URL [__PATCH__] `/schedule/<schedule_id>/accept/`
+  - URL [__PATCH__] `/schedule/api/<schedule_id>/accept/`
 - Cancel
-  - URL [__PATCH__] `/schedule/<schedule_id>/cancel/`
+  - URL [__PATCH__] `/schedule/api/<schedule_id>/cancel/`
 
 ### Prospect Favorite Property
 - Add

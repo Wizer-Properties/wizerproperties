@@ -8,6 +8,8 @@ class VisitingScheduleSerializer(serializers.ModelSerializer):
     content_type = serializers.CharField(source="content_type.model", read_only=True)
     status = serializers.CharField(source="get_status_display", read_only=True)
     content_type_name = serializers.CharField(write_only=True, required=False)
+    title = serializers.SerializerMethodField()
+    address = serializers.SerializerMethodField()
 
     class Meta:
         model = VisitingSchedule
@@ -17,7 +19,9 @@ class VisitingScheduleSerializer(serializers.ModelSerializer):
             "status",
             "content_type",
             "content_type_name",
-            "object_id"
+            "object_id",
+            "title",
+            "address",
         )
 
     def validate(self, attrs):
@@ -66,3 +70,10 @@ class VisitingScheduleSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(error_messages)
 
         return attrs
+
+
+    def get_title(self, obj):
+        return obj.content_object.title
+
+    def get_address(self, obj):
+        return obj.content_object.address

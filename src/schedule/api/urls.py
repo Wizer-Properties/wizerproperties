@@ -6,5 +6,5 @@ router = DefaultRouter()
 router.register(r"", VisitingScheduleViewSet, basename="schedules")
 
 urlpatterns = [
-    path("", include((router.urls, "schedule"), namespace="schedule")),
+    path("api/", include((router.urls, "schedule"), namespace="schedule")),
 ]
