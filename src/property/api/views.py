@@ -1,4 +1,4 @@
-from django.db.models import OuterRef, Subquery, Value, F, CharField
+from django.db.models import OuterRef, Subquery, Value, F, CharField, When, Case, BooleanField
 from django.db.models.functions import Concat
 from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
@@ -35,12 +35,24 @@ class PropertyViewSet(viewsets.ModelViewSet):
         if self.request.method in ["POST", "PATCH", "PUT"]:
             return Property.objects.all()
 
+        user = self.request.user
+
         queryset = Property.objects.filter(is_active=True).annotate(
+            # Annotate default_image_url with the URL of the first image for each property (if available)
             default_image_url=Subquery(
                 PropertyMedia.objects.filter(property=OuterRef("pk"), type="image")
                 .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
                 .values("full_file_url")[:1]
+            ),
+            # Annotate is_compared based on whether the property is in the user's comparison list
+            is_compared=Case(
+                When(compareproperty__user=user, then=Value(True)),
+                default=Value(False),
+                output_field=BooleanField(),
             )
+            if user.is_authenticated
+            # If the user is not authenticated, set is_compared to False for all properties
+            else Value(False, output_field=BooleanField()),
         )
 
         return queryset

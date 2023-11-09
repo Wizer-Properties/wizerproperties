@@ -19,6 +19,7 @@ class PropertySerializer(serializers.ModelSerializer):
     images = serializers.ImageField(allow_empty_file=False, write_only=True)
     videos = serializers.FileField(allow_empty_file=False, write_only=True)
     default_image = serializers.URLField(source="default_image_url", read_only=True)
+    is_compared = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Property
@@ -38,6 +39,7 @@ class PropertySerializer(serializers.ModelSerializer):
             "number_of_balcony",
             "number_of_car_parking",
             "is_active",
+            "is_compared",
             "images",
             "videos",
             "building_info",
