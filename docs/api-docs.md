@@ -15,7 +15,9 @@
       "visiting_time": "2023-10-19T10:46:00Z",
       "status": "Pending",
       "content_type": "building",
-      "object_id": 1
+      "object_id": 1,
+      "title": "string",
+      "address": "string"
     }
     ```
    - Expected Status
@@ -36,7 +38,9 @@
               "visiting_time": "2023-10-19T10:46:00Z",
               "status": "Pending",
               "content_type": "building",
-              "object_id": 1
+              "object_id": 1,
+              "title": "string",
+              "address": "string"
              }
             ...
     ]
@@ -60,7 +64,9 @@
       "visiting_time": "2023-10-19T10:46:00Z",
       "status": "Pending",
       "content_type": "building",
-      "object_id": 1
+      "object_id": 1,
+      "title": "string",
+      "address": "string"
     }
     ```
    - Expected Status

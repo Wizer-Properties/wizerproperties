@@ -76,4 +76,6 @@ class VisitingScheduleSerializer(serializers.ModelSerializer):
         return obj.content_object.title
 
     def get_address(self, obj):
+        if obj.content_type.model == "property":
+            return obj.content_object.building.address
         return obj.content_object.address
