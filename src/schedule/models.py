@@ -3,15 +3,9 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.core.exceptions import ValidationError
+from django.contrib.contenttypes.fields import GenericRelation
 from core.models import TimestampedModel
 from utils.general_func import send_email
-
-
-class LimitedContentTypeManager(models.Manager):
-    def allowed_types(self):
-        # Define the content types you want to allow
-        allowed_model_names = ["building", "property"]
-        return self.filter(model__in=allowed_model_names)
 
 
 class VisitingSchedule(TimestampedModel):
@@ -37,7 +31,6 @@ class VisitingSchedule(TimestampedModel):
     )
 	object_id = models.PositiveIntegerField(null=True)
 	content_object = GenericForeignKey('content_type', 'object_id')
-	objects = LimitedContentTypeManager()
 
 	def accept_schedule(self):
 		self.status = "accepted"

@@ -54,3 +54,22 @@ def validate_media_file_extension(value, allowed_extensions):
         ext = value.name.split(".")[-1].lower()
         if ext not in allowed_extensions:
             raise ValidationError(f"Unsupported file format. Supported formats: {', '.join(allowed_extensions)}")
+
+
+def rename_dict_key(data_dict: dict, key_list: list) -> dict:
+    """
+    Filters dict data by keys
+
+        Parameters:
+            data_dict (dict) : Dict data
+            key_list (list) : List of keys \
+                (e.g: [["key", "modified_key"], ["key", "modified_key"]])
+
+        Returns:
+            Updated dict data
+    """
+    for key in key_list:
+        if key[0] in data_dict:
+            data_dict[key[1]] = data_dict.pop(key[0])
+
+    return data_dict

@@ -1,15 +1,35 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from django.db.models import Q
 from schedule.models import VisitingSchedule
 from schedule.api.serializers import VisitingScheduleSerializer
 from schedule.api.permissions import VisitingSchedulePermission
+from building.models import Building
+from property.models import Property
 
 
 class VisitingScheduleViewSet(viewsets.ModelViewSet):
-    queryset = VisitingSchedule.objects.all()
     serializer_class = VisitingScheduleSerializer
     permission_classes = [VisitingSchedulePermission]
+    http_method = ["POST", "GET", "PATCH"]
+
+    def get_queryset(self):
+        schedule_qs = None
+
+        if hasattr(self.request.user, "prospectprofile"):  # While a user is prospect
+            schedule_qs = VisitingSchedule.objects.filter(
+                prospect=self.request.user.prospectprofile
+            )
+        else:
+            building_ids = Building.objects.filter(created_by=self.request.user).values_list("id", flat=True)
+            property_ids = Property.objects.filter(created_by=self.request.user).values_list("id", flat=True)
+            schedule_qs = VisitingSchedule.objects.filter(
+                Q(content_type__model='building', object_id__in=building_ids) |
+                Q(content_type__model='property', object_id__in=property_ids)
+            )
+
+        return schedule_qs
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data, context={"request": request})
