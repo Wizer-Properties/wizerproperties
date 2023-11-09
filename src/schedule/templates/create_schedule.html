@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block extend_head %}
+<title>Create Schedule</title>
+<link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
+<link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
+<link rel="stylesheet" href="{% static '/css/search-page.css' %}?v=1.00" />
+<link rel="stylesheet" href="{% static '/css/create-schedule.css' %}?v=1.00" />
+{% endblock extend_head %}
+
+{% block content %}
+
+<section id="create-schedule">
+    <div class="container">
+        <h1 class="section-title create-schedule-title"> Create Schedule </h1>
+
+        <div class="alert_messages"></div>
+
+        <div class="row mt-4">
+            <div class="col-lg-6">
+                <h1 class="section-title"> Pick a date </h1>
+
+                <div class="splide date-picker-splide">
+                    <div class="splide__track">
+                        <div class="splide__list">
+
+                            <!-- from date -->
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <h1 class="section-title"> Pick a time </h1>
+                <div class="splide time-picker-splide">
+                    <div class="splide__track">
+                        <div class="splide__list">
+
+                            <!-- from time -->
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <h1 class="section-title display-time"></h1>
+                <button class="create-schedule-btn d-none"> Confirm </button>
+            </div>
+
+
+            <div class="col-lg-6 property-single-box">
+                <!-- from dom -->
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extend_script %}
+<script src="{% static 'js/libraries/splide.min.js' %}?v=1.00"></script>
+<script src="{% static '/js/create-schedule.js' %}?v=1.00"></script>
+{% endblock extend_script %}

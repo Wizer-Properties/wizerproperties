@@ -42,7 +42,3 @@ def search_property(request):
 @login_required
 def comparison_property(request):
     return render(request, "comparison.html")
-
-@login_required
-def create_schedule(request):
-    return render(request, "create_schedule.html")

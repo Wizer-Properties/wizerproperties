@@ -33,9 +33,9 @@
     color: #726E6E;
 }
 
-.date-field-box[selected="true"]{
+.date-field-box[is_selected="true"]{
     background-color: #ffefc2;
-    border: #FFD350;
+    border-color: #FFD350;
 }
 
 .date-picker-splide,
