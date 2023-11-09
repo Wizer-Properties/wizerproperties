@@ -20,7 +20,7 @@
   - Errors Property
     - `__all__` as a key for non fields errors
     - `{field name}` as a key for fields related errors.
-  - Expect Status
+  - Expected Status
     - 200
 
 - List
@@ -46,7 +46,7 @@
 		]
 	}
      ```
-   - Expect Status
+   - Expected Status
      - 201
 - Remove
   - URL [__DELETE__] `/property/api/prospect-favorite/remove/<int:prospect_property_favorite_object_id>`
