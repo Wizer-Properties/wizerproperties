@@ -86,7 +86,7 @@ class BuildingViewSet(viewsets.ModelViewSet):
 class BuildingReviewViewSet(viewsets.ModelViewSet):
     serializer_class = BuildingReviewSerializer
     permission_classes = [permissions.IsAuthenticated]
-    # serializer_method_fields = ["PUT", "PATCH", "DELETE"]
+    serializer_method_fields = ["POST"]
 
     def get_queryset(self):
         building_id = self.request.GET.get("building_id") or self.request.data.get("building_id")

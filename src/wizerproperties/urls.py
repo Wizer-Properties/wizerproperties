@@ -27,6 +27,7 @@ urlpatterns = [
     path("building/", include(("building.urls", "building"), namespace="building")),
     path("property/", include(("property.urls", "property"), namespace="property")),
     path("schedule/", include(("schedule.urls", "schedule"), namespace="schedule")),
+    path("core/", include(("core.urls", "core"), namespace="core")),
 ]
 
 if settings.DEBUG:
