@@ -18,7 +18,6 @@ class ProspectFavoriteProperty(TimestampedModel):
             prospect=self.prospect,
             property=self.property,
         ).exists()
-        print(is_exists)
         if is_exists:
             raise ValidationError("This Item Is Already in the System")
 

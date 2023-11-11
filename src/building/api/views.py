@@ -1,11 +1,11 @@
 from django.db.models import OuterRef, Subquery, Value, F, CharField
 from django.db.models.functions import Concat
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .permissions import BuildingPermission
-from .serializers import BuildingSerializer, BuildingMediaSerializer
-from building.models import Building, BuildingMedia
+from .serializers import BuildingSerializer, BuildingMediaSerializer, BuildingReviewSerializer
+from building.models import Building, BuildingMedia, BuildingReview
 from property.models import Property, PropertyMedia
 from property.api.serializers import PropertyAvailableUnitsSerializer
 
@@ -81,3 +81,20 @@ class BuildingViewSet(viewsets.ModelViewSet):
         serializer = PropertyAvailableUnitsSerializer(properties, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class BuildingReviewViewSet(viewsets.ModelViewSet):
+    serializer_class = BuildingReviewSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    # serializer_method_fields = ["PUT", "PATCH", "DELETE"]
+
+    def get_queryset(self):
+        building_id = self.request.GET.get("building_id") or self.request.data.get("building_id")
+        if not building_id:
+            return BuildingReview.objects.none()
+        return BuildingReview.objects.filter(building_id=building_id)
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["request"] = self.request
+        return context

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import BuildingViewSet
+from .views import BuildingViewSet, BuildingReviewViewSet
 
 
 urlpatterns = [
@@ -20,4 +20,8 @@ urlpatterns = [
         BuildingViewSet.as_view({"delete": "destroy"}),
         name="delete",
     ),
+    
+    # Review
+    path("review/list/", BuildingReviewViewSet.as_view({"get": "list"}), name="review_list"),
+    path("review/create/", BuildingReviewViewSet.as_view({"post": "create"}), name="review_create"),
 ]

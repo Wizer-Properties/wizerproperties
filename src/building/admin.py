@@ -1,5 +1,4 @@
 from django.contrib import admin
-from .models import Building, BuildingMedia
+from .models import Building, BuildingMedia, BuildingReview
 
-admin.site.register(Building)
-admin.site.register(BuildingMedia)
+admin.site.register([Building, BuildingMedia, BuildingReview])
