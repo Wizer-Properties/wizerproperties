@@ -209,7 +209,7 @@
             </div>
 
 
-            <div class="col-lg-8">
+            <div class="col-12">
                 <div class="table-area">
                     <h1 class="table-title">Property Visit Schedule</h1>
                     <table class="mid-table" id="property-visit-schedule">
@@ -262,6 +262,9 @@
 
 
 {% block extend_script %}
+<script>
+    var user_type = 'dev_agent'
+</script>
 <script src="{% static '/js/libraries/dataTables.min.js' %}?v=1.00"></script>
 <script src="{% static '/js/dashboard.js' %}?v=1.01"></script>
 <script src="{% static 'js/toggle_active_status.js' %}?v=1.02"></script>

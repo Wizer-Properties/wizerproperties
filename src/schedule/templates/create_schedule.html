@@ -14,12 +14,13 @@
 
 <section id="create-schedule">
     <div class="container">
-        <h1 class="section-title create-schedule-title"> Create Schedule </h1>
+        <h1 class="section-title create-schedule-title"> </h1>
 
         <div class="alert_messages"></div>
 
         <div class="row mt-4">
             <div class="col-lg-6">
+                <div label-name="update-date-field"></div>
                 <h1 class="section-title"> Pick a date </h1>
 
                 <div class="splide date-picker-splide">
@@ -60,6 +61,7 @@
 {% endblock %}
 
 {% block extend_script %}
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 <script src="{% static 'js/libraries/splide.min.js' %}?v=1.00"></script>
 <script src="{% static '/js/create-schedule.js' %}?v=1.00"></script>
 {% endblock extend_script %}

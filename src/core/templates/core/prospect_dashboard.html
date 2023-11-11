@@ -90,7 +90,7 @@
     <div class="container">
         <div class="row">
 
-            <div class="col-lg-8">
+            <div class="col-lg-9">
                 <div class="table-area property-visit-schedule-table">
                     <h1 class="table-title">Property Visit Schedule</h1>
                     <table class="mid-table" id="property-visit-schedule">
@@ -113,7 +113,7 @@
             </div>
 
 
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <div class="row">
                     <div class="col-lg-12 col-6">
                         <a href="#" class="mb-4 d-block">
@@ -403,6 +403,9 @@
 
 
 {% block extend_script %}
+<script>
+    var user_type = 'prospect'
+</script>
 <script src="{% static '/js/libraries/dataTables.min.js' %}?v=1.00"></script>
 <script src="{% static '/js/dashboard.js' %}?v=1.01"></script>
 {% endblock extend_script %}

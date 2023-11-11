@@ -150,6 +150,8 @@ $(document).ready(function(){
     var url = new URL(window.location.href);
     var asset_type = url.searchParams.get("type");
     var asset_id = url.searchParams.get("id");
+    var is_edit = url.searchParams.get("edit");
+    var schedule_id = url.searchParams.get("schedule-id");
     
 
     var date_value;
@@ -186,16 +188,23 @@ $(document).ready(function(){
         }
     };
 
+
+
+
     var creating_schedule = false;
 
     $(document).on('click', '.create-schedule-btn', function(){
         if(creating_schedule) return;
-        creating_schedule = true
+        creating_schedule = true;
+
         var visiting_time = date_value?.full_date+'T'+format_time(time_value)+'Z';
 
+        var SCHEDULE_API = is_edit == 'true' ? 
+                            '/schedule/api/'+schedule_id+'/' : '/schedule/api/';
+
         $.ajax({
-            url: '/schedule/api/',
-            type: 'POST',
+            url: SCHEDULE_API,
+            type: is_edit == 'true' ? 'PATCH' : 'POST',
             data : {
                 object_id : asset_id,
                 content_type_name : asset_type,
@@ -209,7 +218,11 @@ $(document).ready(function(){
             },
             success: function (data) {
                 creating_schedule = false;
-                $('.alert_messages').html('<div class="alert alert-success text-center" role="alert"> Successfully Created A Schedule </div>');
+                $('.alert_messages').html(
+                    '<div class="alert alert-success text-center" role="alert"> Successfully '+
+                    (is_edit == 'true' ? 'Update The' : 'Created A') +
+                    ' Schedule </div>'
+                );
 
                 setTimeout(() => {
                     window.location.href = '/'
@@ -219,16 +232,13 @@ $(document).ready(function(){
                 creating_schedule = false
                 $('.alert_messages').html('<div class="alert alert-danger text-center" role="alert"> Something is wrong. Unable to create schedule </div>')
             }
-        });
+        });       
     });
 
-// '/building/api/details/{{building.id}}/';
-//  '/property/api/details/{{property.id}}/';
 
     var ASSET_API_URL = asset_type == 'property' ? 
                         '/property/api/details/'+asset_id+'/' :
                         '/building/api/details/'+asset_id+'/'
-
 
                             
     function property_facility_tmp(data){
@@ -355,4 +365,35 @@ $(document).ready(function(){
     };
 
     get_asset_details();
+
+
+    function get_edit_data(){
+        $.ajax({
+            url: '/schedule/api/'+schedule_id+'/',
+            type: 'GET',
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            success: function (data) {        
+                console.log({
+                    sdf : data?.visiting_time
+                })
+                var now = new Date(data?.visiting_time)
+                var edited_date = dayjs(data?.visiting_time).format('dddd DD MMM, h:mm A (YYYY)');
+                $('[label-name="update-date-field"]').html('<div class="edited_date">Created Schedule : '+edited_date+'</div>')
+
+            },
+            error: function (error) {
+                console.log("error")
+            }
+        });
+    }
+
+    if(is_edit == 'true'){
+        get_edit_data()
+        $('.create-schedule-title').html('Update Schedule')
+        $('.create-schedule-btn').html('Update')
+    }else{
+        $('.create-schedule-title').html('Create Schedule')
+    };
 })
