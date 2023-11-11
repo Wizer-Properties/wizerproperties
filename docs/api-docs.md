@@ -166,4 +166,18 @@
      }
      ```
    - Expected Status
-     - 201 
+     - 201
+
+### Contact Us
+- Create
+  - URL [__POST__] `/core/api/contact/`
+  - Body
+    ```json
+    {
+       "email": "example@yahoo.com",
+       "subject": "Can't balance not transfered",
+       "body": "System has some problem like..."
+    }
+    ```
+  - Expect status
+    - 201
