@@ -1,0 +1,1700 @@
+{
+	"info": {
+		"_postman_id": "73cefb87-7402-45d2-89cb-5036a13ce91d",
+		"name": "WIP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14137927"
+	},
+	"item": [
+		{
+			"name": "Building",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "salmansidddik@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "VTS",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "1231234",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "house",
+									"type": "text"
+								},
+								{
+									"key": "total_units_for_sale",
+									"value": "12",
+									"type": "text"
+								},
+								{
+									"key": "province",
+									"value": "Thiland",
+									"type": "text"
+								},
+								{
+									"key": "district",
+									"value": "Thiland",
+									"type": "text"
+								},
+								{
+									"key": "sub_district",
+									"value": "Thiland",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "baj flasfn klhfkdash",
+									"type": "text"
+								},
+								{
+									"key": "project_total_area",
+									"value": "12314",
+									"type": "text"
+								},
+								{
+									"key": "total_floors",
+									"value": "23",
+									"type": "text"
+								},
+								{
+									"key": "construction_year",
+									"value": "1945",
+									"type": "text"
+								},
+								{
+									"key": "have_lake_or_river_view",
+									"value": "False",
+									"type": "text"
+								},
+								{
+									"key": "have_guard_house",
+									"value": "True",
+									"type": "text"
+								},
+								{
+									"key": "have_sauna",
+									"value": "True",
+									"type": "text"
+								},
+								{
+									"key": "have_sky_lounge",
+									"value": "True",
+									"type": "text"
+								},
+								{
+									"key": "have_grocery",
+									"value": "True",
+									"type": "text"
+								},
+								{
+									"key": "have_fitness_area",
+									"value": "False",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "fsdfaf dmsfbkjsa",
+									"type": "text"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": "/home/kazal/Pictures/icons8-django-480.png"
+								},
+								{
+									"key": "floor_plans",
+									"type": "file",
+									"src": [
+										"/home/kazal/Pictures/icons8-database-80.png",
+										"/home/kazal/Pictures/icons8-django-480.png"
+									]
+								},
+								{
+									"key": "unit_floor_plans",
+									"type": "file",
+									"src": [
+										"/home/kazal/Pictures/icons8-amazon-web-services-480.png",
+										"/home/kazal/Pictures/icons8-css-480.png"
+									]
+								},
+								{
+									"key": "master_plans",
+									"type": "file",
+									"src": "/home/kazal/Pictures/icons8-react-400.png"
+								},
+								{
+									"key": "videos",
+									"type": "file",
+									"src": "/home/kazal/Videos/Screencasts/pd.mp4"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://0.0.0.0:8000/building/api/create/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"building",
+								"api",
+								"create",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0:8000/building/api/list/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"building",
+								"api",
+								"list",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Details",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0:8000/building/api/details/20/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"building",
+								"api",
+								"details",
+								"20",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Media files",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0:8000/building/api/details/21/media-files/?type=image&page_size=1&page=1",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"building",
+								"api",
+								"details",
+								"21",
+								"media-files",
+								""
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "image"
+								},
+								{
+									"key": "page_size",
+									"value": "1"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Available units",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0:8000/building/api/details/21/available-units/?page_size=2",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"building",
+								"api",
+								"details",
+								"21",
+								"available-units",
+								""
+							],
+							"query": [
+								{
+									"key": "page_size",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "salmansidddik@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "VTS27",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "1231234",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "house",
+									"type": "text"
+								},
+								{
+									"key": "total_units_for_sale",
+									"value": "14",
+									"type": "text"
+								},
+								{
+									"key": "province",
+									"value": "Thiland",
+									"type": "text"
+								},
+								{
+									"key": "district",
+									"value": "Thiland",
+									"type": "text"
+								},
+								{
+									"key": "sub_district",
+									"value": "Thiland",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "baj flasfn klhfkdash",
+									"type": "text"
+								},
+								{
+									"key": "project_total_area",
+									"value": "12314",
+									"type": "text"
+								},
+								{
+									"key": "total_floors",
+									"value": "23",
+									"type": "text"
+								},
+								{
+									"key": "construction_year",
+									"value": "1945",
+									"type": "text"
+								},
+								{
+									"key": "have_lake_or_river_view",
+									"value": "False",
+									"type": "text"
+								},
+								{
+									"key": "have_guard_house",
+									"value": "True",
+									"type": "text"
+								},
+								{
+									"key": "have_sauna",
+									"value": "True",
+									"type": "text"
+								},
+								{
+									"key": "have_sky_lounge",
+									"value": "True",
+									"type": "text"
+								},
+								{
+									"key": "have_grocery",
+									"value": "True",
+									"type": "text"
+								},
+								{
+									"key": "have_fitness_area",
+									"value": "False",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "fsdfaf dmsfbkjsa",
+									"type": "text"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": "/home/kazal/Pictures/icons8-css-480.png"
+								},
+								{
+									"key": "floor_plans",
+									"type": "file",
+									"src": "/home/kazal/Pictures/icons8-html-480.png"
+								},
+								{
+									"key": "unit_floor_plans",
+									"type": "file",
+									"src": "/home/kazal/Pictures/icons8-react-16.png"
+								},
+								{
+									"key": "master_plans",
+									"type": "file",
+									"src": "/home/kazal/Pictures/chatgpt_login.png"
+								},
+								{
+									"key": "videos",
+									"type": "file",
+									"src": "/home/kazal/Videos/Screencasts/pd.mp4"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://0.0.0.0:8000/building/api/update/27/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"building",
+								"api",
+								"update",
+								"27",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "salmansidddik@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "is_active",
+									"value": "false",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/building/api/update/26/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"building",
+								"api",
+								"update",
+								"26",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create review",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "building",
+									"value": "22",
+									"type": "text"
+								},
+								{
+									"key": "rating",
+									"value": "4",
+									"type": "text"
+								},
+								{
+									"key": "review_text",
+									"value": "Wonderful window scenario",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://0.0.0.0:8000/building/api/review/create/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"building",
+								"api",
+								"review",
+								"create",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Review list",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://0.0.0.0:8000/building/api/review/list/?building_id=22",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"building",
+								"api",
+								"review",
+								"list",
+								""
+							],
+							"query": [
+								{
+									"key": "building_id",
+									"value": "22"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Property",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "salmansidddik@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "building",
+									"value": "28",
+									"type": "text"
+								},
+								{
+									"key": "unit_id",
+									"value": "13B",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "VTS",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "fsdfaf dmsfbkjsa",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "1231234",
+									"type": "text"
+								},
+								{
+									"key": "floor_number",
+									"value": "baj flasfn klhfkdash",
+									"type": "text"
+								},
+								{
+									"key": "unit_area",
+									"value": "12314",
+									"type": "text"
+								},
+								{
+									"key": "number_of_bedroom",
+									"value": "4",
+									"type": "text"
+								},
+								{
+									"key": "number_of_bathroom",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "number_of_balcony",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "number_of_car_parking",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": [
+										"/home/kazal/Pictures/icons8-database-80.png",
+										"/home/kazal/Pictures/icons8-django-480.png"
+									]
+								},
+								{
+									"key": "unit_plans",
+									"type": "file",
+									"src": "/home/kazal/Pictures/icons8-database-80.png"
+								},
+								{
+									"key": "videos",
+									"type": "file",
+									"src": "/home/kazal/Pictures/icons8-database-80.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://0.0.0.0:8000/property/api/create/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"create",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0:8000/property/api/list/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"list",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Details",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0:8000/property/api/details/5/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"details",
+								"5",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Media files",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0:8000/property/api/details/5/media-files/?type=master_plan&page_size=1&page=1",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"details",
+								"5",
+								"media-files",
+								""
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "master_plan"
+								},
+								{
+									"key": "page_size",
+									"value": "1"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "salmansidddik@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "building",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "unit_id",
+									"value": "13BC",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "VTS",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "fsdfaf dmsfbkjsa",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "1231234",
+									"type": "text"
+								},
+								{
+									"key": "floor_number",
+									"value": "baj flasfn klhfkdash",
+									"type": "text"
+								},
+								{
+									"key": "unit_area",
+									"value": "12314",
+									"type": "text"
+								},
+								{
+									"key": "number_of_bedroom",
+									"value": "4",
+									"type": "text"
+								},
+								{
+									"key": "number_of_bathroom",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "number_of_balcony",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "number_of_car_parking",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": [
+										"/home/kazal/Pictures/icons8-database-80.png",
+										"/home/kazal/Pictures/icons8-django-480.png"
+									],
+									"disabled": true
+								},
+								{
+									"key": "unit_floor_plans",
+									"type": "file",
+									"src": [
+										"/home/kazal/Pictures/icons8-nginx-480.png",
+										"/home/kazal/Pictures/icons8-postgresql-480.png"
+									],
+									"disabled": true
+								},
+								{
+									"key": "videos",
+									"type": "file",
+									"src": [
+										"/home/kazal/Pictures/icons8-js-480.png",
+										"/home/kazal/Pictures/icons8-mysql-480.png"
+									],
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/property/api/update/5/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"update",
+								"5",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "salmansidddik@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "is_active",
+									"value": "true",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/property/api/update/20/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"update",
+								"20",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Compare create",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "property",
+									"value": "21",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/property/api/compare/create/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"compare",
+								"create",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Compare list",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "property",
+									"value": "4",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/property/api/compare/list/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"compare",
+								"list",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Compare delete",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "property",
+									"value": "4",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/property/api/compare/delete/3/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"compare",
+								"delete",
+								"3",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "Create developer",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "phone_number",
+									"value": "+6676321801",
+									"type": "text"
+								},
+								{
+									"key": "company_logo",
+									"type": "file",
+									"src": "/home/kazal/Pictures/icons8-react-400.png"
+								},
+								{
+									"key": "company_name",
+									"value": "bts",
+									"type": "text"
+								},
+								{
+									"key": "company_address",
+									"value": "boaif khasd jfoi",
+									"type": "text"
+								},
+								{
+									"key": "company_details",
+									"value": "bfgd asjhfkhgkhsdafkhsfkhas fklhkahfkjas dhf",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://0.0.0.0:8000/user/api/developer-create/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"user",
+								"api",
+								"developer-create",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update developer",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "salmansidddik@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "phone_number",
+									"value": "+6676321801",
+									"type": "text"
+								},
+								{
+									"key": "company_logo",
+									"type": "file",
+									"src": "/home/kazal/Pictures/icons8-react-400.png"
+								},
+								{
+									"key": "company_name",
+									"value": "bts",
+									"type": "text"
+								},
+								{
+									"key": "company_address",
+									"value": "boaif khasd jfoi",
+									"type": "text"
+								},
+								{
+									"key": "company_details",
+									"value": "bfgd asjhfkhgkhsdafkhsfkhas fklhkahfkjas dhf",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://0.0.0.0:8000/user/api/developer-update/3/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"user",
+								"api",
+								"developer-update",
+								"3",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create agent",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "phone_number",
+									"value": "+6676321801",
+									"type": "text"
+								},
+								{
+									"key": "company_logo",
+									"type": "file",
+									"src": "/home/kazal/Pictures/Screenshot 1.png"
+								},
+								{
+									"key": "company_name",
+									"value": "bts",
+									"type": "text"
+								},
+								{
+									"key": "company_address",
+									"value": "boaif khasd jfoi",
+									"type": "text"
+								},
+								{
+									"key": "company_details",
+									"value": "bfgd asjhfkhgkhsdafkhsfkhas fklhkahfkjas dhf",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://0.0.0.0:8000/user/api/agent-create/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"user",
+								"api",
+								"agent-create",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update agent",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "agentuser1@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "phone_number",
+									"value": "+6622134567",
+									"type": "text"
+								},
+								{
+									"key": "company_logo",
+									"type": "file",
+									"src": "/home/kazal/Pictures/Screenshot 1.png"
+								},
+								{
+									"key": "company_name",
+									"value": "VTS",
+									"type": "text"
+								},
+								{
+									"key": "company_address",
+									"value": "zizac road",
+									"type": "text"
+								},
+								{
+									"key": "company_details",
+									"value": "hdsf kjhbfsdfk;asdf (updated)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://0.0.0.0:8000/user/api/agent-update/1/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"user",
+								"api",
+								"agent-update",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create prospect",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "phone_number",
+									"value": "+6676321801",
+									"type": "text"
+								},
+								{
+									"key": "picture",
+									"type": "file",
+									"src": "/home/kazal/Pictures/icons8-django-480.png"
+								},
+								{
+									"key": "first_name",
+									"value": "bts",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "boaif khasd jfoi",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "male",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "kfhasdkjf hadskjf",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://0.0.0.0:8000/user/api/prospect-create/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"user",
+								"api",
+								"prospect-create",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update prospect",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "phone_number",
+									"value": "+6676321801",
+									"type": "text"
+								},
+								{
+									"key": "picture",
+									"type": "file",
+									"src": "/home/kazal/Pictures/icons8-django-480.png"
+								},
+								{
+									"key": "first_name",
+									"value": "VTS",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "boaif khasd jfoi",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "male",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "kfhasdkjf hadskjf",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://0.0.0.0:8000/user/api/prospect-update/3/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"user",
+								"api",
+								"prospect-update",
+								"3",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contact",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "dasdasd@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "subject",
+							"value": "sadnjka dsasd",
+							"type": "text"
+						},
+						{
+							"key": "body",
+							"value": "fkljhsda kjhkfhdskjfh fksdjf aksjh df fhskafkj f",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://0.0.0.0:8000/core/api/contact/",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8000",
+					"path": [
+						"core",
+						"api",
+						"contact",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

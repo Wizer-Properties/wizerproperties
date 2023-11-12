@@ -1,0 +1,1398 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Wizerproperties
+
+
+paths:
+  /user/api/developer-create/:
+    post:
+      tags:
+        - Profile
+      summary: "Create developer"
+      description: "**User type**: Logged in as a developer."
+      operationId: developer_create
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "phone_number"
+          description: "Phone number format: +6676321801"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "company_logo"
+          in: "formData"
+          type: "file"
+          required: true
+        - name: "company_name"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "company_address"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "company_details"
+          in: "formData"
+          required: true
+          type: "string"
+      responses:
+        201:
+          description: Developer profile created
+          schema:
+            $ref: "#/definitions/DeveloperOrAgentProfileResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /user/api/developer-update/{id}/:
+    put:
+      tags:
+        - Profile
+      summary: "Update developer"
+      description: "**User type**: Logged in as a developer."
+      operationId: developer_update
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "string"
+        - name: "phone_number"
+          description: "Phone number format: +6676321801"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "company_logo"
+          in: "formData"
+          type: "file"
+          required: true
+        - name: "company_name"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "company_address"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "company_details"
+          in: "formData"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: Developer profile updated
+          schema:
+            $ref: "#/definitions/DeveloperOrAgentProfileResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+
+  /user/api/agent-create/:
+    post:
+      tags:
+        - Profile
+      summary: "Create agent"
+      description: "**User type**: Logged in as a agent."
+      operationId: agent_create
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "phone_number"
+          description: "Phone number format: +6676321801"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "company_logo"
+          in: "formData"
+          type: "file"
+          required: true
+        - name: "company_name"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "company_address"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "company_details"
+          in: "formData"
+          required: true
+          type: "string"
+      responses:
+        201:
+          description: Agent profile created
+          schema:
+            $ref: "#/definitions/DeveloperOrAgentProfileResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /user/api/agent-update/{id}/:
+    put:
+      tags:
+        - Profile
+      summary: "Update agent"
+      description: "**User type**: Logged in as a agent."
+      operationId: agent_update
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "string"
+        - name: "phone_number"
+          description: "Phone number format: +6676321801"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "company_logo"
+          in: "formData"
+          type: "file"
+          required: true
+        - name: "company_name"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "company_address"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "company_details"
+          in: "formData"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: Agent profile updated
+          schema:
+            $ref: "#/definitions/DeveloperOrAgentProfileResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /user/api/prospect-create/:
+    post:
+      tags:
+        - Profile
+      summary: "Create prospect"
+      description: "**User type**: Logged in as a prospect."
+      operationId: prospect_create
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "phone_number"
+          description: "Phone number format: +6676321801"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "picture"
+          in: "formData"
+          type: "file"
+          required: true
+        - name: "first_name"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "last_name"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "gender"
+          description: "Choice will be 'male' or 'female'."
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "address"
+          in: "formData"
+          required: true
+          type: "string"
+      responses:
+        201:
+          description: Prospect profile created
+          schema:
+            $ref: "#/definitions/ProspectProfileResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /user/api/prospect-update/{id}/:
+    put:
+      tags:
+        - Profile
+      summary: "Update prospect"
+      description: "**User type**: Logged in as a prospect."
+      operationId: prospect_update
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "string"
+        - name: "phone_number"
+          description: "Phone number format: +6676321801"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "picture"
+          in: "formData"
+          type: "file"
+          required: true
+        - name: "first_name"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "last_name"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "gender"
+          description: "Choice will be 'male' or 'female'."
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "address"
+          in: "formData"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: Prospect profile updated
+          schema:
+            $ref: "#/definitions/ProspectProfileResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /building/api/create/:
+    post:
+      tags:
+        - Building
+      summary: "Create building"
+      description: "**User type**: logged in as developer or agent"
+      operationId: create_building
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "title"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "description"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "price"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "type"
+          description: "Choice will be 'condos' or 'house'."
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "total_units_for_sale"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "province"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "district"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "sub_district"
+          in: "formData"
+          type: "string"
+        - name: "address"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "project_total_area"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "total_floors"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "construction_year"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "have_lake_or_river_view"
+          in: "formData"
+          required: true
+          type: "boolean"
+        - name: "have_guard_house"
+          in: "formData"
+          required: true
+          type: "boolean"
+        - name: "have_sauna"
+          in: "formData"
+          required: true
+          type: "boolean"
+        - name: "have_sky_lounge"
+          in: "formData"
+          required: true
+          type: "boolean"
+        - name: "have_grocery"
+          in: "formData"
+          required: true
+          type: "boolean"
+        - name: "have_fitness_area"
+          in: "formData"
+          required: true
+          type: "boolean"
+        - name: "images"
+          in: "formData"
+          required: true
+          type: "file"
+        - name: "floor_plans"
+          in: "formData"
+          required: true
+          type: "file"
+        - name: "unit_floor_plans"
+          in: "formData"
+          required: true
+          type: "file"
+        - name: "master_plans"
+          in: "formData"
+          required: true
+          type: "file"
+        - name: "videos"
+          in: "formData"
+          required: true
+          type: "file"
+      responses:
+        201:
+          description: Building created
+          schema:
+            $ref: "#/definitions/BuildingResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /building/api/list/:
+    get:
+      tags:
+        - Building
+      summary: "Building list"
+      description: "**User type**: both"
+      operationId: building_list
+      produces:
+        - "application/json"
+      parameters:
+        - name: "page_size"
+          in: "query"
+          type: "string"
+        - name: "page"
+          in: "query"
+          type: "string"
+      responses:
+        200:
+          description: Building list
+          schema:
+            $ref: "#/definitions/BuildingListResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /building/api/details/{id}/:
+    get:
+      tags:
+        - Building
+      summary: "Building details"
+      description: "**User type**: both"
+      operationId: building_details
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          required: true
+          in: "path"
+          type: "string"
+      responses:
+        200:
+          description: Building details
+          schema:
+            $ref: "#/definitions/BuildingDetailsResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /building/api/details/{id}/media-files/:
+    get:
+      tags:
+        - Building
+      summary: "Building media files"
+      description: "**User type**: both"
+      operationId: building_media_files
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          required: true
+          in: "path"
+          type: "string"
+        - name: "type"
+          required: true
+          in: "query"
+          type: "string"
+        - name: "page_size"
+          in: "query"
+          type: "string"
+        - name: "page"
+          in: "query"
+          type: "string"
+      responses:
+        200:
+          description: Building media files
+          schema:
+            $ref: "#/definitions/BuildingMediaFilesResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+
+  /building/api/details/{id}/available-units/:
+    get:
+      tags:
+        - Building
+      summary: "Building available units"
+      description: "**User type**: both"
+      operationId: building_available_units
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          required: true
+          in: "path"
+          type: "string"
+        - name: "page_size"
+          in: "query"
+          type: "string"
+        - name: "page"
+          in: "query"
+          type: "string"
+      responses:
+        200:
+          description: Building available units
+          schema:
+            $ref: "#/definitions/BuildingAvailableUnitsResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+
+  /building/api/update/{id}/:
+    put:
+      tags:
+        - Building
+      summary: "Update building"
+      description: "**User type**: logged in as developer or agent"
+      operationId: update_building
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "id"
+          required: true
+          in: "path"
+          type: "string"
+        - name: "title"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "description"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "price"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "type"
+          description: "Choice will be 'condos' or 'house'."
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "total_units_for_sale"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "province"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "district"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "sub_district"
+          in: "formData"
+          type: "string"
+        - name: "address"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "project_total_area"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "total_floors"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "construction_year"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "have_lake_or_river_view"
+          in: "formData"
+          required: true
+          type: "boolean"
+        - name: "have_guard_house"
+          in: "formData"
+          required: true
+          type: "boolean"
+        - name: "have_sauna"
+          in: "formData"
+          required: true
+          type: "boolean"
+        - name: "have_sky_lounge"
+          in: "formData"
+          required: true
+          type: "boolean"
+        - name: "have_grocery"
+          in: "formData"
+          required: true
+          type: "boolean"
+        - name: "have_fitness_area"
+          in: "formData"
+          required: true
+          type: "boolean"
+        - name: "images"
+          in: "formData"
+          type: "file"
+        - name: "floor_plans"
+          in: "formData"
+          type: "file"
+        - name: "unit_floor_plans"
+          in: "formData"
+          type: "file"
+        - name: "master_plans"
+          in: "formData"
+          type: "file"
+        - name: "videos"
+          in: "formData"
+          type: "file"
+      responses:
+        200:
+          description: Building updated
+          schema:
+            $ref: "#/definitions/BuildingResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+    patch:
+      tags:
+        - Building
+      summary: "Update building active/inactive"
+      description: "**User type**: logged in as developer or agent"
+      operationId: building_actice_or_inactive
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "id"
+          required: true
+          in: "path"
+          type: "string"
+        - name: "is_active"
+          in: "formData"
+          required: true
+          type: "boolean"
+      responses:
+        200:
+          description: Building updated
+          schema:
+            $ref: "#/definitions/BuildingResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /building/api/review/create/:
+    post:
+      tags:
+        - Building
+      summary: "Create building review"
+      description: "**User type**: logged in as prospect"
+      operationId: create_building_review
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "building"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "rating"
+          description: "Range from 1 - 5"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "review_text"
+          in: "formData"
+          required: true
+          type: "string"
+      responses:
+        201:
+          description: Building created
+          schema:
+            $ref: "#/definitions/BuildingReviewResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+
+  /building/api/review/list/:
+    get:
+      tags:
+        - Building
+      summary: "Building review list"
+      description: "**User type**: both"
+      operationId: building_review_list
+      produces:
+        - "application/json"
+      parameters:
+        - name: "building_id"
+          required: true
+          in: "query"
+          type: "string"
+        - name: "page_size"
+          in: "query"
+          type: "string"
+        - name: "page"
+          in: "query"
+          type: "string"
+      responses:
+        200:
+          description: Building review list
+          schema:
+            $ref: "#/definitions/BuildingReviewListResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /core/api/contact/:
+    post:
+      tags:
+        - Contact
+      summary: "Create contact"
+      description: "**User type**: both"
+      operationId: contact
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "email"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "subject"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "body"
+          in: "formData"
+          required: true
+          type: "string"
+      responses:
+        201:
+          description: Contact created
+          schema:
+            $ref: "#/definitions/ContactResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+
+
+definitions:
+  commonSingleErrorResponse:
+    type: "object"
+    properties:
+      detail:
+        type: "string"
+
+  commonValidationError:
+    type: "object"
+    properties:
+      invalid-params:
+        type: "array"
+        items:
+          type: "string"
+
+  DeveloperOrAgentProfileResponse:
+    type: object
+    properties:
+      email:
+        type: "string"
+      phone_number:
+        type: "string"
+      company_logo:
+        type: "string"
+      company_name:
+        type: "string"
+      company_address:
+        type: "string"
+      company_details:
+        type: "string"
+        
+  ProspectProfileResponse:
+    type: object
+    properties:
+      email:
+        type: "string"
+      phone_number:
+        type: "string"
+      picture:
+        type: "string"
+      first_name:
+        type: "string"
+      last_name:
+        type: "string"
+      gender:
+        type: "string"
+      address:
+        type: "string"
+        
+  BuildingResponse:
+    type: object
+    properties:
+      id:
+        type: "number"
+      title:
+        type: "string"
+      description:
+        type: "string"
+      price:
+        type: "number"
+      type:
+        type: "string"
+      total_units_for_sale:
+        type: "number"
+      province:
+        type: "string"
+      district:
+        type: "string"
+      sub_district:
+        type: "string"
+      address:
+        type: "string"
+      project_total_area:
+        type: "number"
+      total_floors:
+        type: "number"
+      construction_year:
+        type: "number"
+      have_lake_or_river_view:
+        type: "boolean"
+      have_guard_house:
+        type: "boolean"
+      have_sauna:
+        type: "boolean"
+      have_sky_lounge:
+        type: "boolean"
+      have_grocery:
+        type: "boolean"
+      is_active:
+        type: "boolean"
+      created_by:
+        type: object
+        properties:
+          email:
+            type: "string"
+          phone_number:
+            type: "string"
+          company_logo:
+            type: "string"
+          company_name:
+            type: "string"
+          company_address:
+            type: "string"
+          company_details:
+            type: "string"
+  
+  BuildingListResponse:
+    type: object
+    properties:
+      count:
+        type: "number"
+      page_size:
+        type: "number"
+      next:
+        type: "number"
+      previous:
+        type: "number"
+      total_page:
+        type: "number"
+      results:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: "number"
+            title:
+              type: "string"
+            default_image:
+              type: "string"
+            description:
+              type: "string"
+            price:
+              type: "number"
+            type:
+              type: "string"
+            total_units_for_sale:
+              type: "number"
+            province:
+              type: "string"
+            district:
+              type: "string"
+            sub_district:
+              type: "string"
+            address:
+              type: "string"
+            project_total_area:
+              type: "number"
+            total_floors:
+              type: "number"
+            construction_year:
+              type: "number"
+            have_lake_or_river_view:
+              type: "boolean"
+            have_guard_house:
+              type: "boolean"
+            have_sauna:
+              type: "boolean"
+            have_sky_lounge:
+              type: "boolean"
+            have_grocery:
+              type: "boolean"
+            is_active:
+              type: "boolean"
+            created_by:
+              type: object
+              properties:
+                email:
+                  type: "string"
+                phone_number:
+                  type: "string"
+                company_logo:
+                  type: "string"
+                company_name:
+                  type: "string"
+                company_address:
+                  type: "string"
+                company_details:
+                  type: "string"
+  
+  BuildingDetailsResponse:
+    type: object
+    properties:
+      id:
+        type: "number"
+      title:
+        type: "string"
+      default_image:
+        type: "string"
+      description:
+        type: "string"
+      price:
+        type: "number"
+      type:
+        type: "string"
+      total_units_for_sale:
+        type: "number"
+      province:
+        type: "string"
+      district:
+        type: "string"
+      sub_district:
+        type: "string"
+      address:
+        type: "string"
+      project_total_area:
+        type: "number"
+      total_floors:
+        type: "number"
+      construction_year:
+        type: "number"
+      have_lake_or_river_view:
+        type: "boolean"
+      have_guard_house:
+        type: "boolean"
+      have_sauna:
+        type: "boolean"
+      have_sky_lounge:
+        type: "boolean"
+      have_grocery:
+        type: "boolean"
+      is_active:
+        type: "boolean"
+      created_by:
+        type: object
+        properties:
+          email:
+            type: "string"
+          phone_number:
+            type: "string"
+          company_logo:
+            type: "string"
+          company_name:
+            type: "string"
+          company_address:
+            type: "string"
+          company_details:
+            type: "string"
+  
+  BuildingMediaFilesResponse:
+    type: object
+    properties:
+      count:
+        type: "number"
+      page_size:
+        type: "number"
+      next:
+        type: "number"
+      previous:
+        type: "number"
+      total_page:
+        type: "number"
+      results:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: "number"
+            file:
+              type: "string"
+            type:
+              type: "string"
+  
+  BuildingAvailableUnitsResponse:
+    type: object
+    properties:
+      count:
+        type: "number"
+      page_size:
+        type: "number"
+      next:
+        type: "number"
+      previous:
+        type: "number"
+      total_page:
+        type: "number"
+      results:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: "number"
+            building:
+              type: "number"
+            unit_id:
+              type: "string"
+            title:
+              type: "string"
+            default_image:
+              type: "string"
+            description:
+              type: "string"
+            price:
+              type: "number"
+            price_per_sqm:
+              type: "number"
+            floor_number:
+              type: "string"
+            unit_area:
+              type: "number"
+            number_of_bedroom:
+              type: "number"
+            number_of_bathroom:
+              type: "number"
+            number_of_balcony:
+              type: "number"
+            number_of_car_parking:
+              type: "number"
+            is_active:
+              type: "boolean"
+  
+  BuildingReviewResponse:
+    type: object
+    properties:
+      id:
+        type: "number"
+      rating:
+        type: "number"
+      review_text:
+        type: "string"
+      reviewer_details:
+        type: object
+        properties:
+          id:
+            type: "number"
+          user_type:
+            type: "string"
+          fullname:
+            type: "string"
+          profile_image:
+            type: "string"
+  
+  BuildingReviewListResponse:
+    type: object
+    properties:
+      count:
+        type: "number"
+      page_size:
+        type: "number"
+      next:
+        type: "number"
+      previous:
+        type: "number"
+      total_page:
+        type: "number"
+      results:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: "number"
+            rating:
+              type: "number"
+            review_text:
+              type: "string"
+            reviewer_details:
+              type: object
+              properties:
+                id:
+                  type: "number"
+                user_type:
+                  type: "string"
+                fullname:
+                  type: "string"
+                profile_image:
+                  type: "string"
+
+  ContactResponse:
+    type: object
+    properties:
+      id:
+        type: "string"
+      email:
+          type: "string"
+      subject:
+          type: "string"
+      body:
+        type: "string"
+
+# Added by API Auto Mocking Plugin
+host: localhost:8000
+
+
+schemes:
+  - https
+  - http
