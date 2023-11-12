@@ -4,6 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.core.exceptions import ValidationError
 from django.contrib.contenttypes.fields import GenericRelation
+from django.conf import settings
 from core.models import TimestampedModel
 from utils.general_func import send_email
 
@@ -35,19 +36,29 @@ class VisitingSchedule(TimestampedModel):
 	def accept_schedule(self):
 		self.status = "accepted"
 		self.save()
+		context = {
+			"visiting_time": self.visiting_time.strftime("%d/%m/%Y %I:%M %p"),
+			"details_page": f"{settings.SITE_HOST}/schedule/api/{self.id}/"
+		}
 		send_email(
 		    subject="Builder has Approved Your Schedule Request",
 		    to_email=self.prospect.user.email,
-		    html_content="email/schedule_accept.html"
+		    html_content="email/schedule_accept.html",
+		    context=context
 		)
 		return True
 
 	def cancel_schedule(self):
 		self.status = "cancelled"
 		self.save()
+		context = {
+			"visiting_time": self.visiting_time.strftime("%d/%m/%Y %I:%M %p"),
+			"details_page": f"{settings.SITE_HOST}/schedule/api/{self.id}/"
+		}
 		send_email(
 		    subject="Builder has Canceled Your Schedule Request",
 		    to_email=self.prospect.user.email,
-		    html_content="email/schedule_cancel.html"
+		    html_content="email/schedule_cancel.html",
+		    context=context
 		)
 		return True
