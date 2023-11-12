@@ -553,6 +553,15 @@ footer{
     border-radius: 3px;
 }
 
+.confirm-modal-close-icon{
+    width: 25px;
+    height: 25px;
+    display: grid;
+    place-items: center;
+    border: none;
+    background: transparent !important;
+}
+
 @media screen and (max-width: 768px) {
     .table-title{
         position: initial !important;

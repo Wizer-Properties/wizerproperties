@@ -102,6 +102,28 @@
 
     </main>
 
+    <!-- Reusable Confirmation Modal -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel"
+    aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalLabel"></h5>
+                    <button type="button" class="close confirm-modal-close-icon" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="confirmationModalBody"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn" id="confirmButton"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {% if user.is_authenticated and user.is_complete_profile %}
     <footer>
         <div class="container">
@@ -153,14 +175,62 @@
 
 
     // For modal
-    function showModal(modalId, modalTitle, modalBody, buttonLabel, actionType) {
-        var modal = $(modalId);
-        modal.find(".modal-title").text(modalTitle);
-        modal.find(".modal-body").text(modalBody);
-        modal.find("#confirmButton").text(buttonLabel);
-        modal.find("#confirmButton").attr("action-type", actionType);
+    function showModal(data) {
+        var modal = $('#confirmationModal');
+        modal.find(".modal-title").text(data?.modalTitle);
+        modal.find(".modal-body").text(data?.modalBody);
+        modal.find("#confirmButton").text(data?.confirmButtonLabel);
         modal.modal("show");
-    }
+        modal.addClass(data?.parentClass)
+
+        $('#confirmButton').css({
+            'background-color' : '#417e41',
+            'display': 'block',
+            'color' : '#fff'
+        });
+
+        if(data?.confirmButtonType == 'success'){
+            $('#confirmButton').css({
+                'background-color' : '#417e41',
+                'display': 'block',
+                'color' : '#fff'
+            })
+        }else if(data?.confirmButtonType == 'danger'){
+            $('#confirmButton').css({
+                'display': 'block',
+                'background-color' : '#e25c5c',
+                'color' : '#fff'
+            })
+        }else if(data?.confirmButtonType == 'hidden'){
+            $('#confirmButton').css({
+                'display': 'none',
+            })
+        };
+
+        if(data?.hide_dismiss_button){
+            $('[data-bs-dismiss]').css({
+                'display': 'none',
+            })
+        }else{
+            $('[data-bs-dismiss]').css({
+                'display': 'block',
+            })
+        }
+    };
+
+    /*
+        var modal_option = {
+            modalTitle : "any", // modal title text
+            modalBody : "any", // modal body text
+            confirmButtonLabel : "any", // action button text
+            parentClass : "any", // adding a class with #confirmationModal
+            confirmButtonType : 'success/danger/hidden', // default is 'success'
+            hide_dismiss_button : 'true/false', // default is false
+        };
+
+        // pop up the modal by calling "showModal"
+        showModal(modal_option);    
+    */ 
 </script>
 
 {% block extend_script %}{% endblock extend_script %}

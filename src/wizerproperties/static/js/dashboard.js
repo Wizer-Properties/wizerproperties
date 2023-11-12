@@ -75,6 +75,7 @@ $(document).ready(function () {
             success: function (data) {
                 var the_results = data?.results;
                 
+                
                 if(the_results.length > 0){
                     for (let i = 0; i < the_results.length; i++) {
                         var url_link = the_results[i]?.content_type == 'building' ?
@@ -85,13 +86,17 @@ $(document).ready(function () {
                                             prospect_schedule_button_tmp(the_results[i], url_link) :
                                             dev_agent_schedule_button_tmp(the_results[i], url_link);
 
+                        var visition_date = new Date(the_results[i]?.visiting_time)
+                        visition_date.setHours(visition_date.getHours() - 7);
+                        var edited_date = dayjs(visition_date).format('dddd DD MMM, h:mm A (YYYY)');
+
                         schedule_table.row.add([
                             the_results[i]?.id,
                             the_results[i]?.title || '',
                             '<div class="address-line">'+(the_results[i]?.address || '')+'</div>',
                             the_results[i]?.status,
                             the_results[i]?.content_type,
-                            the_results[i]?.visiting_time,
+                            edited_date,
                             button_tmp
                         ]).draw(false);
                     }
@@ -106,10 +111,51 @@ $(document).ready(function () {
     display_schedule_list();
 
 
+    var schedule_target_button;
+    var get_schedule_id;
+
     $(document).on('click', '[accept-schedule-id]', function(){
-        var get_schedule_id = $(this).attr('accept-schedule-id');
-        var _this = $(this)
-        
+        var modalTitle = "Accept Schedule";
+        var modalBody = "Are you sure you want to accept this schedule?";
+
+        var modal_option = {
+            modalTitle : modalTitle, // modal title text
+            modalBody : modalBody, // modal body text
+            confirmButtonLabel : "Accept", // action button text
+            parentClass : 'accept-schedule-modal', // adding a class with #confirmationModal
+            confirmButtonType : 'success'
+        };
+
+        showModal(modal_option);
+        get_schedule_id = $(this).attr('accept-schedule-id');
+        schedule_target_button = $(this)
+    });
+
+
+    $(document).on('click', '[cancel-schedule-id]', function(){
+
+        var modalTitle = "Cancel Schedule";
+        var modalBody = "Are you sure you want to cancel this schedule?";
+
+        var modal_option = {
+            modalTitle : modalTitle, // modal title text
+            modalBody : modalBody, // modal body text
+            confirmButtonLabel : "Confirm", // action button text
+            parentClass : 'cancel-schedule-modal', // adding a class with #confirmationModal
+            confirmButtonType : 'danger'
+        };
+
+        showModal(modal_option);
+        get_schedule_id = $(this).attr('cancel-schedule-id');
+        schedule_target_button = $(this)
+
+        // var get_schedule_id = $(this).attr('cancel-schedule-id');
+        // var _this = $(this)
+    });
+
+
+    $(document).on('click', '.accept-schedule-modal #confirmButton', function(){
+        $(this).parents('.accept-schedule-modal').removeClass('accept-schedule-modal');
         $.ajax({
             url: '/schedule/api/'+get_schedule_id+'/accept/',
             type: 'PATCH',
@@ -117,22 +163,34 @@ $(document).ready(function () {
                 'X-CSRFToken': csrfToken,
             },
             success: function (data) {
-                if(_this.parents('.td-edit-delete-see').find('[cancel-schedule-id]').length > 0){
-                    _this.parents('.td-edit-delete-see').find('[cancel-schedule-id]').remove()
-                }
-                _this.remove()
+                remove_accept_cancel_btn();
+
+                var modal_option = {
+                    modalTitle : 'Success Message', // modal title text
+                    modalBody : 'Successfully accept the schedule', // modal body text
+                    confirmButtonType : 'hidden',
+                    hide_dismiss_button : true
+                };
+
+                showModal(modal_option);
+                setTimeout(() => {
+                    $('#confirmationModal').modal("hide");
+                }, 1500);
             },
             error: function (error) {
-                console.log("error")
+                var modal_option = {
+                    modalTitle : 'Error Message', // modal title text
+                    modalBody : error, // modal body text
+                    confirmButtonType : 'hidden',
+                };
+
+                showModal(modal_option);
             }
         });
-    });
+    })
 
-
-    $(document).on('click', '[cancel-schedule-id]', function(){
-        var get_schedule_id = $(this).attr('cancel-schedule-id');
-        var _this = $(this)
-        
+    $(document).on('click', '.cancel-schedule-modal #confirmButton', function(){
+        $(this).parents('.cancel-schedule-modal').removeClass('cancel-schedule-modal');
         $.ajax({
             url: '/schedule/api/'+get_schedule_id+'/cancel/',
             type: 'PATCH',
@@ -140,20 +198,44 @@ $(document).ready(function () {
                 'X-CSRFToken': csrfToken,
             },
             success: function (data) {
-                if( _this.parents('.td-edit-delete-see').find('[accept-schedule-id]').length > 0){
-                    _this.parents('.td-edit-delete-see').find('[accept-schedule-id]').remove()
+                remove_accept_cancel_btn()
+
+                var modal_option = {
+                    modalTitle : 'Success Message', // modal title text
+                    modalBody : 'Successfully cancel the schedule', // modal body text
+                    confirmButtonType : 'hidden',
+                    hide_dismiss_button : true
                 };
-                if( _this.parents('.td-edit-delete-see').find('[edit-schedule-id]').length > 0){
-                    _this.parents('.td-edit-delete-see').find('[edit-schedule-id]').remove()
-                }
-                _this.remove()
+
+                showModal(modal_option);
+                setTimeout(() => {
+                    $('#confirmationModal').modal("hide");
+                }, 1500);
             },
             error: function (error) {
-                console.log("error")
+                var modal_option = {
+                    modalTitle : 'Error Message', // modal title text
+                    modalBody : error, // modal body text
+                    confirmButtonType : 'hidden',
+                };
+
+                showModal(modal_option);
             }
         });
-    });
+    })
 
+
+    function remove_accept_cancel_btn(){
+        schedule_target_button.parents('.td-edit-delete-see').find('[cancel-schedule-id]').remove()
+
+        if( schedule_target_button.parents('.td-edit-delete-see').find('[accept-schedule-id]').length > 0){
+            schedule_target_button.parents('.td-edit-delete-see').find('[accept-schedule-id]').remove()
+        };
+
+        if( schedule_target_button.parents('.td-edit-delete-see').find('[edit-schedule-id]').length > 0){
+            schedule_target_button.parents('.td-edit-delete-see').find('[edit-schedule-id]').remove()
+        };
+    };
 
 
 });

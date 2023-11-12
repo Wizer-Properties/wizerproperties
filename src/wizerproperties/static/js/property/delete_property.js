@@ -1,8 +1,6 @@
 $(document).ready(function () {
     var propertyId;
     var deletePropertyAPIUrl;
-    var modalId = "#confirmationModal";
-    var actionType = "delete-property";
 
     $(".delete-property").click(function () {
         propertyId = $(this).data("id");
@@ -11,13 +9,21 @@ $(document).ready(function () {
         // Show the delete confirmation modal
         var modalTitle = "Delete Property";
         var modalBody = "Are you sure you want to delete this property?";
-        var buttonLabel = "Delete";
-        showModal(modalId, modalTitle, modalBody, buttonLabel, actionType);
+
+        var modal_option = {
+            modalTitle : modalTitle, // modal title text
+            modalBody : modalBody, // modal body text
+            confirmButtonLabel : "Delete", // action button text
+            parentClass : 'delete-property', // adding a class with #confirmationModal
+            confirmButtonType : 'danger'
+        };
+
+        showModal(modal_option);
     });
 
     // Click event for confirm delete button inside the modal
-    $("#confirmButton").click(function () {
-        if ($(this).attr("action-type") != "delete-property") return;
+    $(document).on('click', '.delete-property #confirmButton', function () {
+        $(this).parents('.delete-property').removeClass('delete-property');
 
         // Send AJAX request to delete the property
         $.ajax({
@@ -36,14 +42,21 @@ $(document).ready(function () {
                     .draw(false);
 
                 // Close the modal after the delete button is clicked
-                $(modalId).modal("hide");
+                $('#confirmationModal').modal("hide");
             },
             error: function (error) {
                 // Display error message in modal
                 var errorMessage = error.responseJSON.detail; // Assuming error response has a 'detail' field
-                $("#error-message").html(
-                    "<div class='alert alert-danger'>" + errorMessage + "</div>"
-                );
+                // $("#error-message").html(
+                //     "<div class='alert alert-danger'>" + errorMessage + "</div>"
+                // );
+                
+                var modal_option = {
+                    modalTitle : "Error massage", // modal title text
+                    modalBody : errorMessage, // modal body text
+                    confirmButtonType : 'hidden'
+                };        
+                showModal(modal_option);
             },
         });
     });

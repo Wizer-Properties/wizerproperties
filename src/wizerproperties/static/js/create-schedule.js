@@ -374,12 +374,10 @@ $(document).ready(function(){
             headers: {
                 'X-CSRFToken': csrfToken,
             },
-            success: function (data) {        
-                console.log({
-                    sdf : data?.visiting_time
-                })
+            success: function (data) {
                 var now = new Date(data?.visiting_time)
-                var edited_date = dayjs(data?.visiting_time).format('dddd DD MMM, h:mm A (YYYY)');
+                now.setHours(now.getHours() - 7);
+                var edited_date = dayjs(now).format('dddd DD MMM, h:mm A (YYYY)');
                 $('[label-name="update-date-field"]').html('<div class="edited_date">Created Schedule : '+edited_date+'</div>')
 
             },

@@ -101,7 +101,7 @@
                                 <th>Address</th>
                                 <th>Status</th>
                                 <th>Type</th>
-                                <th>Date</th>
+                                <th style="width: 120px;">Date</th>
                                 <th class="th-see-more">  </th>
                             </tr>
                         </thead>
@@ -406,6 +406,7 @@
 <script>
     var user_type = 'prospect'
 </script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 <script src="{% static '/js/libraries/dataTables.min.js' %}?v=1.00"></script>
 <script src="{% static '/js/dashboard.js' %}?v=1.01"></script>
 {% endblock extend_script %}
