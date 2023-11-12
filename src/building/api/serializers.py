@@ -79,6 +79,11 @@ class BuildingSerializer(serializers.ModelSerializer):
 
         show_custom_error_message(self.fields)
 
+    def validate(self, data):
+        if self.request.method == "PATCH" and not data:
+            raise serializers.ValidationError({"is_active": "This field is required."})
+        return data
+
     def get_fields(self):
         fields = super().get_fields()
         if self.request and self.request.method in ["POST", "PUT", "PATCH"]:  # Check request method
@@ -188,16 +193,16 @@ class BuildingSerializer(serializers.ModelSerializer):
 
 class BuildingReviewSerializer(serializers.ModelSerializer):
     reviewer_details = serializers.SerializerMethodField()
-    
+
     class Meta:
         model = BuildingReview
         fields = ["id", "building", "rating", "review_text", "reviewer_details"]
         extra_kwargs = {
             "rating": {"required": True, "allow_null": False},
             "review_text": {"required": True, "allow_null": False},
-            "building": {"write_only": True, "required": True, "allow_null": False}
+            "building": {"write_only": True, "required": True, "allow_null": False},
         }
-        
+
     def validate(self, attrs):
         instance = BuildingReview(**attrs)
         user = self.context["request"].user
@@ -206,13 +211,13 @@ class BuildingReviewSerializer(serializers.ModelSerializer):
         instance.full_clean()  # Perform full validation before saving
 
         return attrs
-    
+
     def create(self, request, *args, **kwargs):
         instance = super().create(request, *args, **kwargs)
         instance.user = self.context["request"].user
         instance.save()
         return instance
-        
+
     def get_reviewer_details(self, instance):
         if instance.user:
             user_details = {}
@@ -220,11 +225,6 @@ class BuildingReviewSerializer(serializers.ModelSerializer):
                 prospect = instance.user.prospectprofile
                 user_details["fullname"] = f"{prospect.first_name} {prospect.last_name}"
                 user_details["profile_image"] = str(prospect.picture)
-                
-            return {
-                "id": instance.user.id,
-                "user_type": instance.user.user_type,
-                **user_details
-            }
+
+            return {"id": instance.user.id, "user_type": instance.user.user_type, **user_details}
         return {}
-        
