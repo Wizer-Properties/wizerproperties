@@ -44,6 +44,8 @@ $(document).ready(function(){
                 .html('<img src="'+data?.building_info?.created_by?.company_logo+'" alt="building img" loading="lazy"/>')
                 $('[label-name="company_name"').html(data?.building_info?.created_by?.company_name)
                 $('[label-name="company_address"').html(data?.building_info?.created_by?.company_address)
+                $('[label-name="phone_number"]').html('<a href="tel:'+data?.building_info?.created_by?.phone_number+'">'+data?.building_info?.created_by?.phone_number+'</a>')
+                $('[label-name="email"]').html('<a href="mailto:'+data?.building_info?.created_by?.email+'">'+data?.building_info?.created_by?.email+'</a>')
 
                 // Facilities ==============
                 facilities_void(data?.building_info)

@@ -230,9 +230,10 @@
     background-color: #fff !important;
     color: #484848 !important;
     border: 1px solid #d3d3d3 !important;
+    border-radius: 5px;
 }
 
-.contact-info-list-btn a:first-child{
+.contact-info-list-btn a.link{
     background-color: #ffd350 !important;
     border-color: #ffd350 !important;
 }

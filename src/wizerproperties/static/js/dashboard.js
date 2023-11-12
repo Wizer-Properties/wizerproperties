@@ -45,8 +45,8 @@ $(document).ready(function () {
     });
     
 
-    function prospect_schedule_button_tmp (data, url_link){
-        return '<div class="td-edit-delete-see" style="min-width: '+(data?.status == "Pending" ? '255' : '95')+'px;">' +
+    function prospect_schedule_button_tmp (data, url_link, index){
+        return '<div index='+index+' class="td-edit-delete-see" style="width: '+(data?.status == "Pending" ? '255px' : '100%')+'">' +
                     (
                         data?.status == "Pending" ?
                         '<a href="schedule/create_schedule/?type='+data?.content_type+'&id='+data?.object_id+'&edit=true&schedule-id='+data?.id+'"'+
@@ -57,8 +57,8 @@ $(document).ready(function () {
                 '</div'
     };
 
-    function dev_agent_schedule_button_tmp (data, url_link){
-        return '<div class="td-edit-delete-see" style="min-width: '+(data?.status == "Pending" ? '255' : '95')+'px;">' +
+    function dev_agent_schedule_button_tmp (data, url_link, index){
+        return '<div index='+index+' class="td-edit-delete-see" style="width: '+(data?.status == "Pending" ? '255px' : '100%')+'">' +
                     (data?.status == "Pending" ? '<button accept-schedule-id="'+data?.id+'" class="link link-succes-btn"> Accept </button>' : '') +
                     (data?.status == "Pending" ? '<button cancel-schedule-id="'+data?.id+'" class="link delete-building delete-button"> Cancel </button>' : '') +
                     '<a class="link" href="'+url_link+'"> See More </a>' +
@@ -83,8 +83,8 @@ $(document).ready(function () {
                                     '/property/details/'+ the_results[i]?.object_id+'/';
 
                         var button_tmp = user_type == 'prospect' ?
-                                            prospect_schedule_button_tmp(the_results[i], url_link) :
-                                            dev_agent_schedule_button_tmp(the_results[i], url_link);
+                                            prospect_schedule_button_tmp(the_results[i], url_link, i) :
+                                            dev_agent_schedule_button_tmp(the_results[i], url_link, i);
 
                         var visition_date = new Date(the_results[i]?.visiting_time)
                         visition_date.setHours(visition_date.getHours() - 7);
@@ -113,6 +113,7 @@ $(document).ready(function () {
 
     var schedule_target_button;
     var get_schedule_id;
+    var get_row_index;
 
     $(document).on('click', '[accept-schedule-id]', function(){
         var modalTitle = "Accept Schedule";
@@ -129,11 +130,11 @@ $(document).ready(function () {
         showModal(modal_option);
         get_schedule_id = $(this).attr('accept-schedule-id');
         schedule_target_button = $(this)
+        get_row_index = $(this).parents('.td-edit-delete-see').attr('index');
     });
 
 
     $(document).on('click', '[cancel-schedule-id]', function(){
-
         var modalTitle = "Cancel Schedule";
         var modalBody = "Are you sure you want to cancel this schedule?";
 
@@ -147,10 +148,8 @@ $(document).ready(function () {
 
         showModal(modal_option);
         get_schedule_id = $(this).attr('cancel-schedule-id');
-        schedule_target_button = $(this)
-
-        // var get_schedule_id = $(this).attr('cancel-schedule-id');
-        // var _this = $(this)
+        schedule_target_button = $(this);
+        get_row_index = $(this).parents('.td-edit-delete-see').attr('index');
     });
 
 
@@ -176,11 +175,15 @@ $(document).ready(function () {
                 setTimeout(() => {
                     $('#confirmationModal').modal("hide");
                 }, 1500);
+
+                var schedule_table_cell = schedule_table.cell({ row: parseInt(get_row_index), column: 3 });
+                schedule_table_cell.data(data?.status)
             },
             error: function (error) {
+                console.log(error)
                 var modal_option = {
                     modalTitle : 'Error Message', // modal title text
-                    modalBody : error, // modal body text
+                    modalBody : error?.responseJSON?.status, // modal body text
                     confirmButtonType : 'hidden',
                 };
 
@@ -211,11 +214,15 @@ $(document).ready(function () {
                 setTimeout(() => {
                     $('#confirmationModal').modal("hide");
                 }, 1500);
+
+                var schedule_table_cell = schedule_table.cell({ row: parseInt(get_row_index), column: 3 });
+                schedule_table_cell.data(data?.status)
             },
             error: function (error) {
+                console.log(error)
                 var modal_option = {
                     modalTitle : 'Error Message', // modal title text
-                    modalBody : error, // modal body text
+                    modalBody : error?.responseJSON?.status, // modal body text
                     confirmButtonType : 'hidden',
                 };
 
@@ -226,15 +233,10 @@ $(document).ready(function () {
 
 
     function remove_accept_cancel_btn(){
-        schedule_target_button.parents('.td-edit-delete-see').find('[cancel-schedule-id]').remove()
-
-        if( schedule_target_button.parents('.td-edit-delete-see').find('[accept-schedule-id]').length > 0){
-            schedule_target_button.parents('.td-edit-delete-see').find('[accept-schedule-id]').remove()
-        };
-
-        if( schedule_target_button.parents('.td-edit-delete-see').find('[edit-schedule-id]').length > 0){
-            schedule_target_button.parents('.td-edit-delete-see').find('[edit-schedule-id]').remove()
-        };
+        // console.log(schedule_target_button.parents('.td-edit-delete-see').find('[accept-schedule-id]'))
+        schedule_target_button.parents('.td-edit-delete-see').find('button').remove()
+        // schedule_target_button.parents('.td-edit-delete-see').find('[accept-schedule-id]').remove()
+        schedule_target_button.parents('.td-edit-delete-see').find('[edit-schedule-id]').remove()
     };
 
 
