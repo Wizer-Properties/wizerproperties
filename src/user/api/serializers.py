@@ -26,7 +26,10 @@ class BaseProfileSerializer(serializers.ModelSerializer):
     def __init__(self, instance=None, *args, **kwargs):
         super().__init__(instance, *args, **kwargs)
         if self.instance:
-            self.fields["company_logo"].required = False
+            if self.instance.user.user_type in ["developer", "agent"]:
+                self.fields["company_logo"].required = False
+            elif self.instance.user.user_type == "prospect":
+                self.fields["picture"].required = False
         show_custom_error_message(self.fields)
 
     def validate(self, data):
