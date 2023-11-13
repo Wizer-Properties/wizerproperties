@@ -75,7 +75,6 @@ $(document).ready(function () {
             success: function (data) {
                 var the_results = data?.results;
                 
-                
                 if(the_results.length > 0){
                     for (let i = 0; i < the_results.length; i++) {
                         var url_link = the_results[i]?.content_type == 'building' ?
@@ -161,6 +160,14 @@ $(document).ready(function () {
             headers: {
                 'X-CSRFToken': csrfToken,
             },
+            beforeSend: function(){
+                var modal_option = {
+                    confirmButtonLabel : '<img width="20" src="/static/media/loader.svg" alt="loader">',
+                    confirmButtonType : 'success'
+                };
+
+                showModal(modal_option);
+            },
             success: function (data) {
                 remove_accept_cancel_btn();
 
@@ -198,6 +205,14 @@ $(document).ready(function () {
             type: 'PATCH',
             headers: {
                 'X-CSRFToken': csrfToken,
+            },
+            beforeSend: function(){
+                var modal_option = {
+                    confirmButtonLabel : '<img width="20" src="/static/media/loader.svg" alt="loader">',
+                    confirmButtonType : 'danger'
+                };
+
+                showModal(modal_option);
             },
             success: function (data) {
                 remove_accept_cancel_btn()
