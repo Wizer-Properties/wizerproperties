@@ -46,7 +46,7 @@ $(document).ready(function () {
     
 
     function prospect_schedule_button_tmp (data, url_link, index){
-        return '<div index='+index+' class="td-edit-delete-see" style="width: '+(data?.status == "Pending" ? '255px' : '100%')+'">' +
+        return '<div index='+index+' class="td-edit-delete-see">' +
                     (
                         data?.status == "Pending" ?
                         '<a href="schedule/create_schedule/?type='+data?.content_type+'&id='+data?.object_id+'&edit=true&schedule-id='+data?.id+'"'+
@@ -58,7 +58,7 @@ $(document).ready(function () {
     };
 
     function dev_agent_schedule_button_tmp (data, url_link, index){
-        return '<div index='+index+' class="td-edit-delete-see" style="width: '+(data?.status == "Pending" ? '255px' : '100%')+'">' +
+        return '<div index='+index+' class="td-edit-delete-see">' +
                     (data?.status == "Pending" ? '<button accept-schedule-id="'+data?.id+'" class="link link-succes-btn"> Accept </button>' : '') +
                     (data?.status == "Pending" ? '<button cancel-schedule-id="'+data?.id+'" class="link delete-building delete-button"> Cancel </button>' : '') +
                     '<a class="link" href="'+url_link+'"> See More </a>' +
