@@ -2,8 +2,9 @@ from django.db.models import Q, Count
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from building.models import Building
-from property.models import Property
+from building.models import Building, BuildingReview
+from property.models import Property, CompareProperty
+from schedule.models import VisitingSchedule
 
 
 @login_required
@@ -39,4 +40,16 @@ def developer_or_agent_dashboard(request):
 
 @login_required
 def prospect_dashboard(request):
-    return render(request, "core/prospect_dashboard.html")
+    total_comparisons = CompareProperty.objects.filter(user=request.user).count()
+    total_reviews = BuildingReview.objects.filter(user=request.user).count()
+    schedules = VisitingSchedule.objects.filter(prospect=request.user.prospectprofile).order_by("-created_at")
+
+    schedule_counts = schedules.aggregate(total=Count("id"), accepted=Count("id", filter=Q(status="accepted")))
+
+    context = {
+        "total_comparisons": total_comparisons,
+        "total_reviews": total_reviews,
+        "total_schedules": schedule_counts["total"],
+        "total_accepted_schedules": schedule_counts["accepted"],
+    }
+    return render(request, "core/prospect_dashboard.html", context)

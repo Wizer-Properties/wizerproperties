@@ -3,17 +3,17 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-    <title>Prospect</title>
-    <link rel="stylesheet" href="{% static '/css/libraries/dataTables.min.css' %}" />
-    <link rel="stylesheet" href="{% static '/css/auth.css' %}?v=1.00" />
-    <link rel="stylesheet" href="{% static '/css/dashboard.css' %}?v=1.00" />
-    <style>
-        #loginButtonText {
-            margin: 0;
-            padding: 0;
-            font-size: inherit;
-        }
-    </style>
+<title>Prospect</title>
+<link rel="stylesheet" href="{% static '/css/libraries/dataTables.min.css' %}" />
+<link rel="stylesheet" href="{% static '/css/auth.css' %}?v=1.00" />
+<link rel="stylesheet" href="{% static '/css/dashboard.css' %}?v=1.00" />
+<style>
+    #loginButtonText {
+        margin: 0;
+        padding: 0;
+        font-size: inherit;
+    }
+</style>
 {% endblock extend_head %}
 
 {% block content %}
@@ -45,8 +45,8 @@
             <div class="col-lg-3 col-6 dashboard-card">
                 <div class="dashboard-single-card">
                     <div class="single-card-value">
-                        <span>2635</span>
-                        <p>Total Comparisons</p>
+                        <span>{{ total_comparisons }}</span>
+                        <p>Total Comparison (s)</p>
                     </div>
                     <i class="bi bi-layout-text-window-reverse"></i>
                 </div>
@@ -54,8 +54,8 @@
             <div class="col-lg-3 col-6 dashboard-card">
                 <div class="dashboard-single-card">
                     <div class="single-card-value">
-                        <span>4350</span>
-                        <p>Total Reviews</p>
+                        <span>{{ total_reviews }}</span>
+                        <p>Total Review (s)</p>
                     </div>
                     <i class="bi bi-journal-medical"></i>
                 </div>
@@ -64,8 +64,8 @@
             <div class="col-lg-3 col-6 dashboard-card">
                 <div class="dashboard-single-card">
                     <div class="single-card-value">
-                        <span>8823</span>
-                        <p>Total Schedule</p>
+                        <span>{{ total_schedules }}</span>
+                        <p>Total Schedule (s)</p>
                     </div>
                     <i class="bi bi-calendar-week"></i>
                 </div>
@@ -74,8 +74,8 @@
             <div class="col-lg-3 col-6 dashboard-card">
                 <div class="dashboard-single-card">
                     <div class="single-card-value">
-                        <span>7345</span>
-                        <p>Total Accepted Schedule</p>
+                        <span>{{ total_accepted_schedules }}</span>
+                        <p>Total Accepted Schedule (s)</p>
                     </div>
                     <i class="bi bi-calendar-check"></i>
                 </div>
@@ -102,7 +102,7 @@
                                 <th>Status</th>
                                 <th>Type</th>
                                 <th style="width: 120px;">Date</th>
-                                <th class="th-see-more">  </th>
+                                <th class="th-see-more"> </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -126,14 +126,14 @@
                                 <h1 class="expand-box-title">
                                     Comparison List
                                 </h1>
-            
+
                                 <div class="expand-box-cta link">
                                     See more
                                 </div>
                             </div>
                         </a>
                     </div>
-    
+
                     <div class="col-lg-12 col-6">
                         <a href="#" class="mb-4 d-block">
                             <div class="expand-box">
@@ -145,7 +145,7 @@
                                 <h1 class="expand-box-title">
                                     My Reviews
                                 </h1>
-            
+
                                 <div class="expand-box-cta link">
                                     See more
                                 </div>
@@ -154,7 +154,7 @@
                     </div>
                 </div>
             </div>
-            
+
 
 
             <div class="col-12">
@@ -173,7 +173,7 @@
                                 <th>Total Floors</th>
                                 <th>Construction Year</th>
                                 <th>Is Active</th>
-                                <th class="th-see-more">  </th>
+                                <th class="th-see-more"> </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -206,189 +206,186 @@
                                 <td>
                                     <a class="link" href=""> See More </a>
                                 </td>
-                                <tr>
-                                    <td>3</td>
-                                    <td> Title Three </td>
-                                    <td> 60,000 </td>
-                                    <td> Apartments </td>
-                                    <td> 2 </td>
-                                    <td> Address Data, Three </td>
-                                    <td> 6 </td>
-                                    <td> 18 </td>
-                                    <td> 5 </td>
-                                    <td> Yes </td>
-                                    <td>
-                                        <a class="link" href=""> See More </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td> Title Four </td>
-                                    <td> 75,000 </td>
-                                    <td> Houses </td>
-                                    <td> 4 </td>
-                                    <td> Address Data, Four </td>
-                                    <td> 8 </td>
-                                    <td> 25 </td>
-                                    <td> 7 </td>
-                                    <td> No </td>
-                                    <td>
-                                        <a class="link" href=""> See More </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td> Title Five </td>
-                                    <td> 45,000 </td>
-                                    <td> Apartments </td>
-                                    <td> 2 </td>
-                                    <td> Address Data, Five </td>
-                                    <td> 5 </td>
-                                    <td> 15 </td>
-                                    <td> 4 </td>
-                                    <td> Yes </td>
-                                    <td>
-                                        <a class="link" href=""> See More </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>6</td>
-                                    <td> Title Six </td>
-                                    <td> 80,000 </td>
-                                    <td> Houses </td>
-                                    <td> 5 </td>
-                                    <td> Address Data, Six </td>
-                                    <td> 10 </td>
-                                    <td> 30 </td>
-                                    <td> 8 </td>
-                                    <td> Yes </td>
-                                    <td>
-                                        <a class="link" href=""> See More </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>7</td>
-                                    <td> Title Seven </td>
-                                    <td> 55,000 </td>
-                                    <td> Condos </td>
-                                    <td> 2 </td>
-                                    <td> Address Data, Seven </td>
-                                    <td> 6 </td>
-                                    <td> 22 </td>
-                                    <td> 5 </td>
-                                    <td> No </td>
-                                    <td>
-                                        <a class="link" href=""> See More </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>8</td>
-                                    <td> Title Eight </td>
-                                    <td> 70,000 </td>
-                                    <td> Houses </td>
-                                    <td> 4 </td>
-                                    <td> Address Data, Eight </td>
-                                    <td> 9 </td>
-                                    <td> 28 </td>
-                                    <td> 7 </td>
-                                    <td> Yes </td>
-                                    <td>
-                                        <a class="link" href=""> See More </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>9</td>
-                                    <td> Title Nine </td>
-                                    <td> 65,000 </td>
-                                    <td> Apartments </td>
-                                    <td> 3 </td>
-                                    <td> Address Data, Nine </td>
-                                    <td> 7 </td>
-                                    <td> 21 </td>
-                                    <td> 6 </td>
-                                    <td> No </td>
-                                    <td>
-                                        <a class="link" href=""> See More </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>10</td>
-                                    <td> Title Ten </td>
-                                    <td> 90,000 </td>
-                                    <td> Houses </td>
-                                    <td> 6 </td>
-                                    <td> Address Data, Ten </td>
-                                    <td> 12 </td>
-                                    <td> 35 </td>
-                                    <td> 9 </td>
-                                    <td> Yes </td>
-                                    <td>
-                                        <a class="link" href=""> See More </a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>11</td>
-                                    <td> Title Eleven </td>
-                                    <td> 55,000 </td>
-                                    <td> Condos </td>
-                                    <td> 2 </td>
-                                    <td> Address Data, Eleven </td>
-                                    <td> 6 </td>
-                                    <td> 22 </td>
-                                    <td> 5 </td>
-                                    <td> No </td>
-                                    <td>
-                                        <a class="link" href=""> See More </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>12</td>
-                                    <td> Title Twelve </td>
-                                    <td> 72,000 </td>
-                                    <td> Apartments </td>
-                                    <td> 3 </td>
-                                    <td> Address Data, Twelve </td>
-                                    <td> 7 </td>
-                                    <td> 21 </td>
-                                    <td> 6 </td>
-                                    <td> Yes </td>
-                                    <td>
-                                        <a class="link" href=""> See More </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>13</td>
-                                    <td> Title Thirteen </td>
-                                    <td> 68,000 </td>
-                                    <td> Houses </td>
-                                    <td> 4 </td>
-                                    <td> Address Data, Thirteen </td>
-                                    <td> 9 </td>
-                                    <td> 28 </td>
-                                    <td> 7 </td>
-                                    <td> Yes </td>
-                                    <td>
-                                        <a class="link" href=""> See More </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>14</td>
-                                    <td> Title Fourteen </td>
-                                    <td> 45,000 </td>
-                                    <td> Condos </td>
-                                    <td> 2 </td>
-                                    <td> Address Data, Fourteen </td>
-                                    <td> 6 </td>
-                                    <td> 22 </td>
-                                    <td> 5 </td>
-                                    <td> No </td>
-                                    <td>
-                                        <a class="link" href=""> See More </a>
-                                    </td>
-                                </tr>
-                                
-                                
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td> Title Three </td>
+                                <td> 60,000 </td>
+                                <td> Apartments </td>
+                                <td> 2 </td>
+                                <td> Address Data, Three </td>
+                                <td> 6 </td>
+                                <td> 18 </td>
+                                <td> 5 </td>
+                                <td> Yes </td>
+                                <td>
+                                    <a class="link" href=""> See More </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td> Title Four </td>
+                                <td> 75,000 </td>
+                                <td> Houses </td>
+                                <td> 4 </td>
+                                <td> Address Data, Four </td>
+                                <td> 8 </td>
+                                <td> 25 </td>
+                                <td> 7 </td>
+                                <td> No </td>
+                                <td>
+                                    <a class="link" href=""> See More </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td> Title Five </td>
+                                <td> 45,000 </td>
+                                <td> Apartments </td>
+                                <td> 2 </td>
+                                <td> Address Data, Five </td>
+                                <td> 5 </td>
+                                <td> 15 </td>
+                                <td> 4 </td>
+                                <td> Yes </td>
+                                <td>
+                                    <a class="link" href=""> See More </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td> Title Six </td>
+                                <td> 80,000 </td>
+                                <td> Houses </td>
+                                <td> 5 </td>
+                                <td> Address Data, Six </td>
+                                <td> 10 </td>
+                                <td> 30 </td>
+                                <td> 8 </td>
+                                <td> Yes </td>
+                                <td>
+                                    <a class="link" href=""> See More </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td> Title Seven </td>
+                                <td> 55,000 </td>
+                                <td> Condos </td>
+                                <td> 2 </td>
+                                <td> Address Data, Seven </td>
+                                <td> 6 </td>
+                                <td> 22 </td>
+                                <td> 5 </td>
+                                <td> No </td>
+                                <td>
+                                    <a class="link" href=""> See More </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td> Title Eight </td>
+                                <td> 70,000 </td>
+                                <td> Houses </td>
+                                <td> 4 </td>
+                                <td> Address Data, Eight </td>
+                                <td> 9 </td>
+                                <td> 28 </td>
+                                <td> 7 </td>
+                                <td> Yes </td>
+                                <td>
+                                    <a class="link" href=""> See More </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td> Title Nine </td>
+                                <td> 65,000 </td>
+                                <td> Apartments </td>
+                                <td> 3 </td>
+                                <td> Address Data, Nine </td>
+                                <td> 7 </td>
+                                <td> 21 </td>
+                                <td> 6 </td>
+                                <td> No </td>
+                                <td>
+                                    <a class="link" href=""> See More </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td> Title Ten </td>
+                                <td> 90,000 </td>
+                                <td> Houses </td>
+                                <td> 6 </td>
+                                <td> Address Data, Ten </td>
+                                <td> 12 </td>
+                                <td> 35 </td>
+                                <td> 9 </td>
+                                <td> Yes </td>
+                                <td>
+                                    <a class="link" href=""> See More </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td> Title Eleven </td>
+                                <td> 55,000 </td>
+                                <td> Condos </td>
+                                <td> 2 </td>
+                                <td> Address Data, Eleven </td>
+                                <td> 6 </td>
+                                <td> 22 </td>
+                                <td> 5 </td>
+                                <td> No </td>
+                                <td>
+                                    <a class="link" href=""> See More </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td> Title Twelve </td>
+                                <td> 72,000 </td>
+                                <td> Apartments </td>
+                                <td> 3 </td>
+                                <td> Address Data, Twelve </td>
+                                <td> 7 </td>
+                                <td> 21 </td>
+                                <td> 6 </td>
+                                <td> Yes </td>
+                                <td>
+                                    <a class="link" href=""> See More </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>13</td>
+                                <td> Title Thirteen </td>
+                                <td> 68,000 </td>
+                                <td> Houses </td>
+                                <td> 4 </td>
+                                <td> Address Data, Thirteen </td>
+                                <td> 9 </td>
+                                <td> 28 </td>
+                                <td> 7 </td>
+                                <td> Yes </td>
+                                <td>
+                                    <a class="link" href=""> See More </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>14</td>
+                                <td> Title Fourteen </td>
+                                <td> 45,000 </td>
+                                <td> Condos </td>
+                                <td> 2 </td>
+                                <td> Address Data, Fourteen </td>
+                                <td> 6 </td>
+                                <td> 22 </td>
+                                <td> 5 </td>
+                                <td> No </td>
+                                <td>
+                                    <a class="link" href=""> See More </a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
