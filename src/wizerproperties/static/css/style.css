@@ -570,6 +570,10 @@ footer{
     color: #417e41 !important;
 }
 
+.property-visit-schedule-table .link{
+    width: max-content !important;
+}
+
 @media screen and (max-width: 768px) {
     .table-title{
         position: initial !important;
