@@ -177,9 +177,9 @@
     // For modal
     function showModal(data) {
         var modal = $('#confirmationModal');
-        modal.find(".modal-title").text(data?.modalTitle);
-        modal.find(".modal-body").text(data?.modalBody);
-        modal.find("#confirmButton").text(data?.confirmButtonLabel);
+        modal.find(".modal-title").html(data?.modalTitle);
+        modal.find(".modal-body").html(data?.modalBody);
+        modal.find("#confirmButton").html(data?.confirmButtonLabel);
         modal.modal("show");
         modal.addClass(data?.parentClass)
 

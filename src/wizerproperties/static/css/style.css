@@ -562,6 +562,14 @@ footer{
     background: transparent !important;
 }
 
+.error-title{
+    color: #c74444 !important;
+}
+
+.success-title{
+    color: #417e41 !important;
+}
+
 @media screen and (max-width: 768px) {
     .table-title{
         position: initial !important;

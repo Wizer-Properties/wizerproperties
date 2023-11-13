@@ -50,7 +50,7 @@ $(document).ready(function () {
                     (
                         data?.status == "Pending" ?
                         '<a href="schedule/create_schedule/?type='+data?.content_type+'&id='+data?.object_id+'&edit=true&schedule-id='+data?.id+'"'+
-                            'class="link link-succes-btn" edit-schedule-id> Edit </a>' : ''
+                            'class="link link-succes-btn  edit-schedule-id"> Edit </a>' : ''
                     )+
                     (data?.status == "Pending" ? '<button cancel-schedule-id="'+data?.id+'" class="link delete-building delete-button"> Cancel </button>' : '') +
                     '<a class="link" href="'+url_link+'"> See More </a>' +
@@ -165,7 +165,7 @@ $(document).ready(function () {
                 remove_accept_cancel_btn();
 
                 var modal_option = {
-                    modalTitle : 'Success Message', // modal title text
+                    modalTitle : '<div class="success-title">Success Message</div>', // modal title text
                     modalBody : 'Successfully accept the schedule', // modal body text
                     confirmButtonType : 'hidden',
                     hide_dismiss_button : true
@@ -180,10 +180,9 @@ $(document).ready(function () {
                 schedule_table_cell.data(data?.status)
             },
             error: function (error) {
-                console.log(error)
                 var modal_option = {
-                    modalTitle : 'Error Message', // modal title text
-                    modalBody : error?.responseJSON?.status, // modal body text
+                    modalTitle : '<div class="error-title">Error Message</div>', // modal title text
+                    modalBody : error?.responseJSON?.status || error?.statusText, // modal body text
                     confirmButtonType : 'hidden',
                 };
 
@@ -204,7 +203,7 @@ $(document).ready(function () {
                 remove_accept_cancel_btn()
 
                 var modal_option = {
-                    modalTitle : 'Success Message', // modal title text
+                    modalTitle : '<div class="success-title">Success Message</div>', // modal title text
                     modalBody : 'Successfully cancel the schedule', // modal body text
                     confirmButtonType : 'hidden',
                     hide_dismiss_button : true
@@ -219,10 +218,9 @@ $(document).ready(function () {
                 schedule_table_cell.data(data?.status)
             },
             error: function (error) {
-                console.log(error)
                 var modal_option = {
                     modalTitle : 'Error Message', // modal title text
-                    modalBody : error?.responseJSON?.status, // modal body text
+                    modalBody : error?.responseJSON?.status || error?.statusText, // modal body text
                     confirmButtonType : 'hidden',
                 };
 
@@ -233,10 +231,9 @@ $(document).ready(function () {
 
 
     function remove_accept_cancel_btn(){
-        // console.log(schedule_target_button.parents('.td-edit-delete-see').find('[accept-schedule-id]'))
-        schedule_target_button.parents('.td-edit-delete-see').find('button').remove()
-        // schedule_target_button.parents('.td-edit-delete-see').find('[accept-schedule-id]').remove()
-        schedule_target_button.parents('.td-edit-delete-see').find('[edit-schedule-id]').remove()
+        schedule_target_button.parents('.td-edit-delete-see').find('.edit-schedule-id').remove();
+        schedule_target_button.parents('.td-edit-delete-see').find('button').remove();
+        schedule_target_button.parents('.td-edit-delete-see').find('[accept-schedule-id]').remove();
     };
 
 
