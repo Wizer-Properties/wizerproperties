@@ -3,8 +3,9 @@ from django.db.models.functions import Concat
 from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .permissions import BuildingPermission
-from .serializers import BuildingSerializer, BuildingMediaSerializer, BuildingReviewSerializer
+from .permissions import BuildingPermission, BuildingReviewPermission
+from .serializers import BuildingSerializer, BuildingMediaSerializer, \
+    BuildingReviewSerializer
 from building.models import Building, BuildingMedia, BuildingReview
 from property.models import Property, PropertyMedia
 from property.api.serializers import PropertyAvailableUnitsSerializer
@@ -85,7 +86,7 @@ class BuildingViewSet(viewsets.ModelViewSet):
 
 class BuildingReviewViewSet(viewsets.ModelViewSet):
     serializer_class = BuildingReviewSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [BuildingReviewPermission]
     serializer_method_fields = ["POST"]
 
     def get_queryset(self):

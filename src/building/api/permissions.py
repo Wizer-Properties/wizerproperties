@@ -13,3 +13,14 @@ class BuildingPermission(permissions.BasePermission):
             return obj.created_by == request.user
 
         return True
+
+
+class BuildingReviewPermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.method in ["POST"]:
+            if not request.user.is_authenticated:
+                return False
+            
+            return hasattr(request.user, "prospectprofile")
+
+        return True
