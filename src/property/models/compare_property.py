@@ -20,4 +20,4 @@ class CompareProperty(TimestampedModel):
             existing_objects = existing_objects.exclude(id=self.id)  # Exclude the current object for updates
 
         if existing_objects.exists():
-            raise ValidationError("A comparison already exists for this user and property.")
+            raise ValidationError({"property": "A comparison already exists for the property with this user."})

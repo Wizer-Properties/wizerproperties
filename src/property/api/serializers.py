@@ -67,6 +67,7 @@ class PropertySerializer(serializers.ModelSerializer):
         fields = super().get_fields()
         if self.request and self.request.method in ["POST", "PUT", "PATCH"]:  # Check request method and view
             fields.pop("default_image", None)  # Remove default_image field during create and update
+            fields.pop("is_compared", None)  # Remove default_image field during create and update
         return fields
 
     def get_media_files(self, request):
@@ -164,6 +165,15 @@ class ComparePropertySerializer(serializers.ModelSerializer):
         extra_kwargs = {
             "property": {"write_only": True},  # Exclude the property field from the response
         }
+
+    def validate(self, attrs):
+        instance = CompareProperty(**attrs)
+        user = self.context["request"].user
+
+        instance.user = user
+        instance.full_clean()  # Perform full validation before saving
+
+        return attrs
 
     def get_property_info(self, obj):
         if obj.property:

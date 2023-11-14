@@ -24,9 +24,20 @@ urlpatterns = [
         ComparePropertyViewSet.as_view({"delete": "destroy"}),
         name="compare_delete",
     ),
-    
     # Prospect Favorite Property Apis
-    path("prospect-favorite/list/", ProspectFavoritePropertyViewSet.as_view({"get": "list"}), name="prospect_favorite_property_list"),
-    path("prospect-favorite/add/", ProspectFavoritePropertyViewSet.as_view({"post": "create"}), name="add_prospect_favorite_property"),
-    path("prospect-favorite/remove/<int:pk>/", ProspectFavoritePropertyViewSet.as_view({"delete": "destroy"}), name="remove_prospect_favorite_property"),
+    path(
+        "prospect-favorite/list/",
+        ProspectFavoritePropertyViewSet.as_view({"get": "list"}),
+        name="prospect_favorite_property_list",
+    ),
+    path(
+        "prospect-favorite/add/",
+        ProspectFavoritePropertyViewSet.as_view({"post": "create"}),
+        name="add_prospect_favorite_property",
+    ),
+    path(
+        "prospect-favorite/remove/<int:pk>/",
+        ProspectFavoritePropertyViewSet.as_view({"delete": "destroy"}),
+        name="remove_prospect_favorite_property",
+    ),
 ]
