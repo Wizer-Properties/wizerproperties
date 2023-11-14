@@ -623,7 +623,7 @@ paths:
         200:
           description: Building media files
           schema:
-            $ref: "#/definitions/BuildingMediaFilesResponse"
+            $ref: "#/definitions/MediaFilesResponse"
         400:
           description: Required fields are missing
           schema:
@@ -860,6 +860,38 @@ paths:
         504:
           description: Taking more time to get a response
   
+  /building/api/delete/{id}/:
+    delete:
+      tags:
+        - Building
+      summary: "Building delete"
+      description: "**User type**: logged in as developer or agent"
+      operationId: building_delete
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          required: true
+          in: "path"
+          type: "string"
+      responses:
+        204:
+          description: Building delete (No content)
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
   /building/api/review/create/:
     post:
       tags:
@@ -938,6 +970,953 @@ paths:
           description: Building review list
           schema:
             $ref: "#/definitions/BuildingReviewListResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /property/api/create/:
+    post:
+      tags:
+        - Property
+      summary: "Create property"
+      description: "**User type**: logged in as developer or agent"
+      operationId: create_property
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "building"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "unit_id"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "title"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "description"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "price"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "price_per_sqm"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "floor_number"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "unit_area"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "number_of_bedroom"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "number_of_bathroom"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "number_of_balcony"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "number_of_car_parking"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "images"
+          in: "formData"
+          required: true
+          type: "file"
+        - name: "videos"
+          in: "formData"
+          required: true
+          type: "file"
+      responses:
+        201:
+          description: Property created
+          schema:
+            $ref: "#/definitions/PropertyResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /property/api/list/:
+    get:
+      tags:
+        - Property
+      summary: "Building list"
+      description: "**User type**: both"
+      operationId: property_list
+      produces:
+        - "application/json"
+      parameters:
+        - name: "page_size"
+          in: "query"
+          type: "string"
+        - name: "page"
+          in: "query"
+          type: "string"
+        - name: "search"
+          description: "Search by only location related value"
+          in: "query"
+          type: "string"
+        - name: "min_price"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "max_price"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "min_price_per_sqm"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "max_price_per_sqm"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "min_unit_area"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "max_unit_area"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "building__type"
+          description: "Filtered by and choice will be 'condos' or 'house'."
+          in: "query"
+          type: "string"
+        - name: "number_of_bedroom"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "number_of_bathroom"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "number_of_balcony"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "number_of_car_parking"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "building__have_lake_or_river_view"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_guard_house"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_sauna"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_sky_lounge"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_grocery"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_fitness_area"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+      responses:
+        200:
+          description: Property list
+          schema:
+            $ref: "#/definitions/PropertyListResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /property/api/details/{id}/:
+    get:
+      tags:
+        - Property
+      summary: "Property details"
+      description: "**User type**: both"
+      operationId: property_details
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          required: true
+          in: "path"
+          type: "string"
+      responses:
+        200:
+          description: Building details
+          schema:
+            $ref: "#/definitions/PropertyDetailsResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /property/api/details/{id}/media-files/:
+    get:
+      tags:
+        - Property
+      summary: "Property media files"
+      description: "**User type**: both"
+      operationId: property_media_files
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          required: true
+          in: "path"
+          type: "string"
+        - name: "type"
+          required: true
+          in: "query"
+          type: "string"
+        - name: "page_size"
+          in: "query"
+          type: "string"
+        - name: "page"
+          in: "query"
+          type: "string"
+      responses:
+        200:
+          description: Property media files
+          schema:
+            $ref: "#/definitions/MediaFilesResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /property/api/update/{id}/:
+    put:
+      tags:
+        - Property
+      summary: "Update property"
+      description: "**User type**: logged in as developer or agent"
+      operationId: update_property
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "id"
+          required: true
+          in: "path"
+          type: "string"
+        - name: "building"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "unit_id"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "title"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "description"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "price"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "price_per_sqm"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "floor_number"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "unit_area"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "number_of_bedroom"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "number_of_bathroom"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "number_of_balcony"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "number_of_car_parking"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "images"
+          in: "formData"
+          required: true
+          type: "file"
+        - name: "videos"
+          in: "formData"
+          required: true
+          type: "file"
+      responses:
+        200:
+          description: Property updated
+          schema:
+            $ref: "#/definitions/PropertyResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+    patch:
+      tags:
+        - Property
+      summary: "Update property active/inactive"
+      description: "**User type**: logged in as developer or agent"
+      operationId: property_actice_or_inactive
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "id"
+          required: true
+          in: "path"
+          type: "string"
+        - name: "is_active"
+          in: "formData"
+          required: true
+          type: "boolean"
+      responses:
+        200:
+          description: Property updated
+          schema:
+            $ref: "#/definitions/PropertyResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /property/api/delete/{id}/:
+    delete:
+      tags:
+        - Property
+      summary: "Property delete"
+      description: "**User type**: logged in as developer or agent"
+      operationId: property_delete
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          required: true
+          in: "path"
+          type: "string"
+      responses:
+        204:
+          description: Building delete (No content)
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /property/api/compare/create/:
+    post:
+      tags:
+        - Property
+      summary: "Create property comparison"
+      description: "**User type**: logged in as a prospect"
+      operationId: create_property_compare
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "property"
+          in: "formData"
+          required: true
+          type: "number"
+      responses:
+        201:
+          description: Property comparison
+          schema:
+            $ref: "#/definitions/PropertyComparisonResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+          
+  /property/api/compare/list/:
+    get:
+      tags:
+        - Property
+      summary: "Property comparison list"
+      description: "**User type**: logged in as a prospect"
+      operationId: property_compare_list
+      produces:
+        - "application/json"
+      responses:
+        201:
+          description: Property comparison list
+          schema:
+            $ref: "#/definitions/PropertyComparisonListResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /property/api/compare/delete/{id}/:
+    delete:
+      tags:
+        - Property
+      summary: "Delete property comparison"
+      description: "**User type**: logged in as a prospect"
+      operationId: delete_property_comparison
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          required: true
+          in: "path"
+          type: "string"
+      responses:
+        204:
+          description: Delete property compariso (No content)
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /property/api/prospect-favorite/add/:
+    post:
+      tags:
+        - Property
+      summary: "Add favorite property"
+      description: "**User type**: logged in as a prospect"
+      operationId: add_favorite_property
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "property"
+          in: "formData"
+          required: true
+          type: "number"
+      responses:
+        201:
+          description: Favorite property Added
+          schema:
+            $ref: "#/definitions/FavoritePropertyResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /property/api/prospect-favorite/list/:
+    get:
+      tags:
+        - Property
+      summary: "Favorite property list"
+      description: "**User type**: logged in as a prospect"
+      operationId: favorite_property_list
+      produces:
+        - "application/json"
+      responses:
+        201:
+          description: Favorite property list
+          schema:
+            $ref: "#/definitions/FavoritePropertyListResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /property/api/prospect-favorite/remove/{id}/:
+    delete:
+      tags:
+        - Property
+      summary: "Remove favorite property"
+      description: "**User type**: logged in as a prospect"
+      operationId: remove_favorite_property
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          required: true
+          in: "path"
+          type: "string"
+      responses:
+        204:
+          description: Favorite property removed (No content)
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /schedule/api/:
+    post:
+      tags:
+        - Schedule
+      summary: "Create schedule"
+      description: "**User type**: logged in as a prospect"
+      operationId: create_schedule
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "visiting_time"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "content_type_name"
+          description: "property/building"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "object_id"
+          in: "formData"
+          required: true
+          type: "number"
+      responses:
+        201:
+          description: Schedule created
+          schema:
+            $ref: "#/definitions/ScheduleResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+    get:
+      tags:
+        - Schedule
+      summary: "Schedule list"
+      description: "**User type**: logged in as a prospect"
+      operationId: schedule_list
+      produces:
+        - "application/json"
+
+      responses:
+        200:
+          description: Schedule list
+          schema:
+            $ref: "#/definitions/ScheduleListResponse"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /schedule/api/{id}/:
+    get:
+      tags:
+        - Schedule
+      summary: "Schedule details"
+      description: "**User type**: logged in as a prospect"
+      operationId: schedule_details
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "number"
+      responses:
+        200:
+          description: Schedule update
+          schema:
+            $ref: "#/definitions/ScheduleResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+    patch:
+      tags:
+        - Schedule
+      summary: "Schedule update"
+      description: "**User type**: logged in as a prospect"
+      operationId: schedule_update
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "number"
+        - name: "visiting_time"
+          in: "formData"
+          type: "string"
+        - name: "content_type_name"
+          description: "property/building"
+          in: "formData"
+          type: "string"
+        - name: "object_id"
+          in: "formData"
+          type: "number"
+      responses:
+        200:
+          description: Schedule update
+          schema:
+            $ref: "#/definitions/ScheduleResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /schedule/api/{id}/accept/:
+    patch:
+      tags:
+        - Schedule
+      summary: "Schedule accept"
+      description: "**User type**: logged in as a developer/agent"
+      operationId: schedule_accept
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "number"
+      responses:
+        200:
+          description: Schedule accepted
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /schedule/api/{id}/cancel/:
+    patch:
+      tags:
+        - Schedule
+      summary: "Schedule cancel"
+      description: "**User type**: logged in as a developer/agent"
+      operationId: schedule_cancel
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "number"
+      responses:
+        200:
+          description: Schedule canceled
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
         405:
           description: Method not allowed(Method ain't supported by this URL)
           schema:
@@ -1246,31 +2225,6 @@ definitions:
           company_details:
             type: "string"
   
-  BuildingMediaFilesResponse:
-    type: object
-    properties:
-      count:
-        type: "number"
-      page_size:
-        type: "number"
-      next:
-        type: "number"
-      previous:
-        type: "number"
-      total_page:
-        type: "number"
-      results:
-        type: array
-        items:
-          type: object
-          properties:
-            id:
-              type: "number"
-            file:
-              type: "string"
-            type:
-              type: "string"
-  
   BuildingAvailableUnitsResponse:
     type: object
     properties:
@@ -1376,6 +2330,614 @@ definitions:
                   type: "string"
                 profile_image:
                   type: "string"
+  
+  PropertyResponse:
+    type: object
+    properties:
+      id:
+        type: "number"
+      building:
+        type: "number"
+      unit_id:
+        type: "string"
+      title:
+        type: "string"
+      description:
+        type: "string"
+      price:
+        type: "number"
+      price_per_sqm:
+        type: "number"
+      floor_number:
+        type: "string"
+      unit_area:
+        type: "number"
+      number_of_bedroom:
+        type: "number"
+      number_of_bathroom:
+        type: "number"
+      number_of_balcony:
+        type: "number"
+      number_of_car_parking:
+        type: "number"
+      is_active:
+        type: "boolean"
+      building_info:
+        type: object
+        properties:
+          id:
+            type: "number"
+          title:
+            type: "string"
+          description:
+            type: "string"
+          price:
+            type: "number"
+          type:
+            type: "string"
+          total_units_for_sale:
+            type: "number"
+          province:
+            type: "string"
+          district:
+            type: "string"
+          sub_district:
+            type: "string"
+          address:
+            type: "string"
+          project_total_area:
+            type: "number"
+          total_floors:
+            type: "number"
+          construction_year:
+            type: "number"
+          have_lake_or_river_view:
+            type: "boolean"
+          have_guard_house:
+            type: "boolean"
+          have_sauna:
+            type: "boolean"
+          have_sky_lounge:
+            type: "boolean"
+          have_grocery:
+            type: "boolean"
+          is_active:
+            type: "boolean"
+          created_by:
+            type: object
+            properties:
+              email:
+                type: "string"
+              phone_number:
+                type: "string"
+              company_logo:
+                type: "string"
+              company_name:
+                type: "string"
+              company_address:
+                type: "string"
+              company_details:
+                type: "string"
+  
+  PropertyListResponse:
+    type: object
+    properties:
+      count:
+        type: "number"
+      page_size:
+        type: "number"
+      next:
+        type: "number"
+      previous:
+        type: "number"
+      total_page:
+        type: "number"
+      results:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: "number"
+            building:
+              type: "number"
+            unit_id:
+              type: "string"
+            title:
+              type: "string"
+            default_image:
+              type: "string"
+            description:
+              type: "string"
+            price:
+              type: "number"
+            price_per_sqm:
+              type: "number"
+            floor_number:
+              type: "string"
+            unit_area:
+              type: "number"
+            number_of_bedroom:
+              type: "number"
+            number_of_bathroom:
+              type: "number"
+            number_of_balcony:
+              type: "number"
+            number_of_car_parking:
+              type: "number"
+            is_active:
+              type: "boolean"
+            building_info:
+              type: object
+              properties:
+                id:
+                  type: "number"
+                title:
+                  type: "string"
+                default_image:
+                  type: "string"
+                description:
+                  type: "string"
+                price:
+                  type: "number"
+                type:
+                  type: "string"
+                total_units_for_sale:
+                  type: "number"
+                province:
+                  type: "string"
+                district:
+                  type: "string"
+                sub_district:
+                  type: "string"
+                address:
+                  type: "string"
+                project_total_area:
+                  type: "number"
+                total_floors:
+                  type: "number"
+                construction_year:
+                  type: "number"
+                have_lake_or_river_view:
+                  type: "boolean"
+                have_guard_house:
+                  type: "boolean"
+                have_sauna:
+                  type: "boolean"
+                have_sky_lounge:
+                  type: "boolean"
+                have_grocery:
+                  type: "boolean"
+                is_active:
+                  type: "boolean"
+                created_by:
+                  type: object
+                  properties:
+                    email:
+                      type: "string"
+                    phone_number:
+                      type: "string"
+                    company_logo:
+                      type: "string"
+                    company_name:
+                      type: "string"
+                    company_address:
+                      type: "string"
+                    company_details:
+                      type: "string"
+  
+  PropertyDetailsResponse:
+    type: object
+    properties:
+      id:
+        type: "number"
+      building:
+        type: "number"
+      unit_id:
+        type: "string"
+      title:
+        type: "string"
+      default_image:
+        type: "string"
+      description:
+        type: "string"
+      price:
+        type: "number"
+      price_per_sqm:
+        type: "number"
+      floor_number:
+        type: "string"
+      unit_area:
+        type: "number"
+      number_of_bedroom:
+        type: "number"
+      number_of_bathroom:
+        type: "number"
+      number_of_balcony:
+        type: "number"
+      number_of_car_parking:
+        type: "number"
+      is_active:
+        type: "boolean"
+      building_info:
+        type: object
+        properties:
+          id:
+            type: "number"
+          title:
+            type: "string"
+          default_image:
+            type: "string"
+          description:
+            type: "string"
+          price:
+            type: "number"
+          type:
+            type: "string"
+          total_units_for_sale:
+            type: "number"
+          province:
+            type: "string"
+          district:
+            type: "string"
+          sub_district:
+            type: "string"
+          address:
+            type: "string"
+          project_total_area:
+            type: "number"
+          total_floors:
+            type: "number"
+          construction_year:
+            type: "number"
+          have_lake_or_river_view:
+            type: "boolean"
+          have_guard_house:
+            type: "boolean"
+          have_sauna:
+            type: "boolean"
+          have_sky_lounge:
+            type: "boolean"
+          have_grocery:
+            type: "boolean"
+          is_active:
+            type: "boolean"
+          created_by:
+            type: object
+            properties:
+              email:
+                type: "string"
+              phone_number:
+                type: "string"
+              company_logo:
+                type: "string"
+              company_name:
+                type: "string"
+              company_address:
+                type: "string"
+              company_details:
+                type: "string"
+  
+  PropertyComparisonResponse:
+    type: object
+    properties:
+      id:
+        type: "number"
+      user:
+        type: "number"
+      property_info:
+        type: object
+        properties:
+          id:
+            type: "number"
+          building:
+            type: "number"
+          unit_id:
+            type: "string"
+          title:
+            type: "string"
+          default_image:
+            type: "string"
+          description:
+            type: "string"
+          price:
+            type: "number"
+          price_per_sqm:
+            type: "number"
+          floor_number:
+            type: "string"
+          unit_area:
+            type: "number"
+          number_of_bedroom:
+            type: "number"
+          number_of_bathroom:
+            type: "number"
+          number_of_balcony:
+            type: "number"
+          number_of_car_parking:
+            type: "number"
+          is_active:
+            type: "boolean"
+          building_info:
+            type: object
+            properties:
+              id:
+                type: "number"
+              title:
+                type: "string"
+              default_image:
+                type: "string"
+              description:
+                type: "string"
+              price:
+                type: "number"
+              type:
+                type: "string"
+              total_units_for_sale:
+                type: "number"
+              province:
+                type: "string"
+              district:
+                type: "string"
+              sub_district:
+                type: "string"
+              address:
+                type: "string"
+              project_total_area:
+                type: "number"
+              total_floors:
+                type: "number"
+              construction_year:
+                type: "number"
+              have_lake_or_river_view:
+                type: "boolean"
+              have_guard_house:
+                type: "boolean"
+              have_sauna:
+                type: "boolean"
+              have_sky_lounge:
+                type: "boolean"
+              have_grocery:
+                type: "boolean"
+              is_active:
+                type: "boolean"
+              created_by:
+                type: object
+                properties:
+                  email:
+                    type: "string"
+                  phone_number:
+                    type: "string"
+                  company_logo:
+                    type: "string"
+                  company_name:
+                    type: "string"
+                  company_address:
+                    type: "string"
+                  company_details:
+                    type: "string"
+  
+  PropertyComparisonListResponse:
+    type: object
+    properties:
+      count:
+        type: "number"
+      page_size:
+        type: "number"
+      next:
+        type: "number"
+      previous:
+        type: "number"
+      total_page:
+        type: "number"
+      results:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: "number"
+            user:
+              type: "number"
+            property_info:
+              type: object
+              properties:
+                id:
+                  type: "number"
+                building:
+                  type: "number"
+                unit_id:
+                  type: "string"
+                title:
+                  type: "string"
+                default_image:
+                  type: "string"
+                description:
+                  type: "string"
+                price:
+                  type: "number"
+                price_per_sqm:
+                  type: "number"
+                floor_number:
+                  type: "string"
+                unit_area:
+                  type: "number"
+                number_of_bedroom:
+                  type: "number"
+                number_of_bathroom:
+                  type: "number"
+                number_of_balcony:
+                  type: "number"
+                number_of_car_parking:
+                  type: "number"
+                is_active:
+                  type: "boolean"
+                building_info:
+                  type: object
+                  properties:
+                    id:
+                      type: "number"
+                    title:
+                      type: "string"
+                    default_image:
+                      type: "string"
+                    description:
+                      type: "string"
+                    price:
+                      type: "number"
+                    type:
+                      type: "string"
+                    total_units_for_sale:
+                      type: "number"
+                    province:
+                      type: "string"
+                    district:
+                      type: "string"
+                    sub_district:
+                      type: "string"
+                    address:
+                      type: "string"
+                    project_total_area:
+                      type: "number"
+                    total_floors:
+                      type: "number"
+                    construction_year:
+                      type: "number"
+                    have_lake_or_river_view:
+                      type: "boolean"
+                    have_guard_house:
+                      type: "boolean"
+                    have_sauna:
+                      type: "boolean"
+                    have_sky_lounge:
+                      type: "boolean"
+                    have_grocery:
+                      type: "boolean"
+                    is_active:
+                      type: "boolean"
+                    created_by:
+                      type: object
+                      properties:
+                        email:
+                          type: "string"
+                        phone_number:
+                          type: "string"
+                        company_logo:
+                          type: "string"
+                        company_name:
+                          type: "string"
+                        company_address:
+                          type: "string"
+                        company_details:
+                          type: "string"
+  
+  FavoritePropertyResponse:
+    type: object
+    properties:
+      id:
+        type: "number"
+      property_details:
+        type: object
+        properties:
+          id:
+            type: "number"
+          title:
+            type: "string"
+          description:
+            type: "string"
+  
+  FavoritePropertyListResponse:
+    type: object
+    properties:
+      count:
+        type: "number"
+      page_size:
+        type: "number"
+      next:
+        type: "number"
+      previous:
+        type: "number"
+      total_page:
+        type: "number"
+      results:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: "number"
+            property_details:
+              type: object
+              properties:
+                id:
+                  type: "number"
+                title:
+                  type: "string"
+                description:
+                  type: "string"
+  
+  ScheduleResponse:
+    type: object
+    properties:
+      id:
+        type: "number"
+      visiting_time:
+        type: "string"
+      status:
+        type: "string"
+      content_type:
+        type: "string"
+      object_id:
+        type: "number"
+      title:
+        type: "string"
+      address:
+        type: "string"
+  
+  ScheduleListResponse:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: "number"
+        visiting_time:
+          type: "string"
+        status:
+          type: "string"
+        content_type:
+          type: "string"
+        object_id:
+          type: "number"
+        title:
+          type: "string"
+        address:
+          type: "string"
+      
+  MediaFilesResponse:
+    type: object
+    properties:
+      count:
+        type: "number"
+      page_size:
+        type: "number"
+      next:
+        type: "number"
+      previous:
+        type: "number"
+      total_page:
+        type: "number"
+      results:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: "number"
+            file:
+              type: "string"
+            type:
+              type: "string"
 
   ContactResponse:
     type: object
@@ -1388,6 +2950,7 @@ definitions:
           type: "string"
       body:
         type: "string"
+
 
 # Added by API Auto Mocking Plugin
 host: localhost:8000

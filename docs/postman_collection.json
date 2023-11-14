@@ -125,7 +125,10 @@
 								{
 									"key": "images",
 									"type": "file",
-									"src": "/home/kazal/Pictures/icons8-django-480.png"
+									"src": [
+										"/home/kazal/Pictures/icons8-database-80.png",
+										"/home/kazal/Pictures/icons8-django-480.png"
+									]
 								},
 								{
 									"key": "floor_plans",
@@ -139,14 +142,17 @@
 									"key": "unit_floor_plans",
 									"type": "file",
 									"src": [
-										"/home/kazal/Pictures/icons8-amazon-web-services-480.png",
-										"/home/kazal/Pictures/icons8-css-480.png"
+										"/home/kazal/Pictures/icons8-js-480.png",
+										"/home/kazal/Pictures/icons8-mysql-480.png"
 									]
 								},
 								{
 									"key": "master_plans",
 									"type": "file",
-									"src": "/home/kazal/Pictures/icons8-react-400.png"
+									"src": [
+										"/home/kazal/Pictures/icons8-docker-48.png",
+										"/home/kazal/Pictures/icons8-html-480.png"
+									]
 								},
 								{
 									"key": "videos",
@@ -372,7 +378,7 @@
 								},
 								{
 									"key": "address",
-									"value": "baj flasfn klhfkdash",
+									"value": "hghdfas",
 									"type": "text"
 								},
 								{
@@ -382,7 +388,7 @@
 								},
 								{
 									"key": "total_floors",
-									"value": "23",
+									"value": "22",
 									"type": "text"
 								},
 								{
@@ -428,7 +434,7 @@
 								{
 									"key": "images",
 									"type": "file",
-									"src": "/home/kazal/Pictures/icons8-css-480.png"
+									"src": "/home/kazal/Pictures/icons8-database-80.png"
 								},
 								{
 									"key": "floor_plans",
@@ -453,7 +459,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://0.0.0.0:8000/building/api/update/27/",
+							"raw": "http://0.0.0.0:8000/building/api/update/20/",
 							"protocol": "http",
 							"host": [
 								"0",
@@ -466,7 +472,7 @@
 								"building",
 								"api",
 								"update",
-								"27",
+								"20",
 								""
 							]
 						}
@@ -518,6 +524,47 @@
 								"api",
 								"update",
 								"26",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "salmansidddik@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0:8000/building/api/delete/32/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"building",
+								"api",
+								"delete",
+								"32",
 								""
 							]
 						}
@@ -693,6 +740,11 @@
 									"type": "text"
 								},
 								{
+									"key": "price_per_sqm",
+									"value": "3123",
+									"type": "text"
+								},
+								{
 									"key": "floor_number",
 									"value": "baj flasfn klhfkdash",
 									"type": "text"
@@ -726,19 +778,14 @@
 									"key": "images",
 									"type": "file",
 									"src": [
-										"/home/kazal/Pictures/icons8-database-80.png",
-										"/home/kazal/Pictures/icons8-django-480.png"
+										"/home/kazal/Pictures/icons8-docker-48.png",
+										"/home/kazal/Pictures/icons8-html-480.png"
 									]
-								},
-								{
-									"key": "unit_plans",
-									"type": "file",
-									"src": "/home/kazal/Pictures/icons8-database-80.png"
 								},
 								{
 									"key": "videos",
 									"type": "file",
-									"src": "/home/kazal/Pictures/icons8-database-80.png"
+									"src": "/home/kazal/Videos/Screencasts/pd.mp4"
 								}
 							]
 						},
@@ -766,24 +813,12 @@
 					"name": "List",
 					"request": {
 						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "username",
-									"value": "newuser1@gmail.com",
-									"type": "string"
-								},
-								{
-									"key": "password",
-									"value": "wip12345",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://0.0.0.0:8000/property/api/list/",
+							"raw": "http://0.0.0.0:8000/property/api/list/?page_size&page&search=hghdfas",
 							"protocol": "http",
 							"host": [
 								"0",
@@ -797,6 +832,20 @@
 								"api",
 								"list",
 								""
+							],
+							"query": [
+								{
+									"key": "page_size",
+									"value": null
+								},
+								{
+									"key": "page",
+									"value": null
+								},
+								{
+									"key": "search",
+									"value": "hghdfas"
+								}
 							]
 						}
 					},
@@ -811,7 +860,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://0.0.0.0:8000/property/api/details/5/",
+							"raw": "http://0.0.0.0:8000/property/api/details/17/",
 							"protocol": "http",
 							"host": [
 								"0",
@@ -824,7 +873,7 @@
 								"property",
 								"api",
 								"details",
-								"5",
+								"17",
 								""
 							]
 						}
@@ -924,8 +973,13 @@
 									"type": "text"
 								},
 								{
+									"key": "price_per_sqm",
+									"value": "32131",
+									"type": "text"
+								},
+								{
 									"key": "floor_number",
-									"value": "baj flasfn klhfkdash",
+									"value": "ywteywe",
 									"type": "text"
 								},
 								{
@@ -983,7 +1037,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/property/api/update/5/",
+							"raw": "http://127.0.0.1:8000/property/api/update/17/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -996,7 +1050,7 @@
 								"property",
 								"api",
 								"update",
-								"5",
+								"17",
 								""
 							]
 						}
@@ -1048,6 +1102,47 @@
 								"api",
 								"update",
 								"20",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "salmansidddik@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0:8000/property/api/delete/32/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"delete",
+								"32",
 								""
 							]
 						}
@@ -1130,13 +1225,7 @@
 						"header": [],
 						"body": {
 							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "property",
-									"value": "4",
-									"type": "text"
-								}
-							]
+							"formdata": []
 						},
 						"url": {
 							"raw": "http://127.0.0.1:8000/property/api/compare/list/",
@@ -1181,16 +1270,10 @@
 						"header": [],
 						"body": {
 							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "property",
-									"value": "4",
-									"type": "text"
-								}
-							]
+							"formdata": []
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/property/api/compare/delete/3/",
+							"raw": "http://127.0.0.1:8000/property/api/compare/delete/12/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1204,7 +1287,152 @@
 								"api",
 								"compare",
 								"delete",
-								"3",
+								"12",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add favorite property",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "property",
+									"value": "21",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/property/api/prospect-favorite/add/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"prospect-favorite",
+								"add",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Favorite property list",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/property/api/prospect-favorite/list/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"prospect-favorite",
+								"list",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete favorite property",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/property/api/prospect-favorite/remove/1/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"prospect-favorite",
+								"remove",
+								"1",
 								""
 							]
 						}
@@ -1643,6 +1871,268 @@
 								"api",
 								"prospect-update",
 								"3",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Schedule",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "visiting_time",
+									"value": "2023-10-19T10:46:00Z",
+									"type": "text"
+								},
+								{
+									"key": "content_type_name",
+									"value": "property",
+									"type": "text"
+								},
+								{
+									"key": "object_id",
+									"value": "21",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://0.0.0.0:8000/schedule/api/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"schedule",
+								"api",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://0.0.0.0:8000/schedule/api/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"schedule",
+								"api",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Details",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://0.0.0.0:8000/schedule/api/1/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"schedule",
+								"api",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "visiting_time",
+									"value": "2023-10-19T10:45:00Z",
+									"type": "text"
+								},
+								{
+									"key": "content_type_name",
+									"value": "property",
+									"type": "text"
+								},
+								{
+									"key": "object_id",
+									"value": "22",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://0.0.0.0:8000/schedule/api/1/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"schedule",
+								"api",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Accept",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "salmansidddik@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://0.0.0.0:8000/schedule/api/1/accept/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"schedule",
+								"api",
+								"1",
+								"accept",
 								""
 							]
 						}
