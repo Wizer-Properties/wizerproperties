@@ -12,21 +12,20 @@ from property.models import Property
 class VisitingScheduleViewSet(viewsets.ModelViewSet):
     serializer_class = VisitingScheduleSerializer
     permission_classes = [VisitingSchedulePermission]
+    pagination_class = None
     http_method = ["POST", "GET", "PATCH"]
 
     def get_queryset(self):
         schedule_qs = None
 
         if hasattr(self.request.user, "prospectprofile"):  # While a user is prospect
-            schedule_qs = VisitingSchedule.objects.filter(
-                prospect=self.request.user.prospectprofile
-            )
+            schedule_qs = VisitingSchedule.objects.filter(prospect=self.request.user.prospectprofile)
         else:
             building_ids = Building.objects.filter(created_by=self.request.user).values_list("id", flat=True)
             property_ids = Property.objects.filter(created_by=self.request.user).values_list("id", flat=True)
             schedule_qs = VisitingSchedule.objects.filter(
-                Q(content_type__model='building', object_id__in=building_ids) |
-                Q(content_type__model='property', object_id__in=property_ids)
+                Q(content_type__model="building", object_id__in=building_ids)
+                | Q(content_type__model="property", object_id__in=property_ids)
             )
 
         return schedule_qs
