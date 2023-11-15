@@ -38,8 +38,13 @@
 									"type": "text"
 								},
 								{
-									"key": "price",
+									"key": "lowest_price",
 									"value": "1231234",
+									"type": "text"
+								},
+								{
+									"key": "highest_price",
+									"value": "123123434",
 									"type": "text"
 								},
 								{
@@ -126,32 +131,26 @@
 									"key": "images",
 									"type": "file",
 									"src": [
-										"/home/kazal/Pictures/icons8-database-80.png",
-										"/home/kazal/Pictures/icons8-django-480.png"
+										"/home/kazal/Pictures/Screenshot 2.png",
+										"/home/kazal/Pictures/Screenshot 3.png"
 									]
 								},
 								{
 									"key": "floor_plans",
 									"type": "file",
-									"src": [
-										"/home/kazal/Pictures/icons8-database-80.png",
-										"/home/kazal/Pictures/icons8-django-480.png"
-									]
+									"src": "/home/kazal/Pictures/Screenshot 1.png"
 								},
 								{
 									"key": "unit_floor_plans",
 									"type": "file",
-									"src": [
-										"/home/kazal/Pictures/icons8-js-480.png",
-										"/home/kazal/Pictures/icons8-mysql-480.png"
-									]
+									"src": "/home/kazal/Pictures/icons8-python-48.png"
 								},
 								{
 									"key": "master_plans",
 									"type": "file",
 									"src": [
-										"/home/kazal/Pictures/icons8-docker-48.png",
-										"/home/kazal/Pictures/icons8-html-480.png"
+										"/home/kazal/Pictures/icons8-database-80.png",
+										"/home/kazal/Pictures/icons8-django-480.png"
 									]
 								},
 								{
@@ -218,7 +217,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://0.0.0.0:8000/building/api/details/20/",
+							"raw": "http://0.0.0.0:8000/building/api/details/33/",
 							"protocol": "http",
 							"host": [
 								"0",
@@ -231,7 +230,7 @@
 								"building",
 								"api",
 								"details",
-								"20",
+								"33",
 								""
 							]
 						}
@@ -247,7 +246,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://0.0.0.0:8000/building/api/details/21/media-files/?type=image&page_size=1&page=1",
+							"raw": "http://0.0.0.0:8000/building/api/details/33/media-files/?type=image&page_size=1&page=1",
 							"protocol": "http",
 							"host": [
 								"0",
@@ -260,7 +259,7 @@
 								"building",
 								"api",
 								"details",
-								"21",
+								"33",
 								"media-files",
 								""
 							],
@@ -291,7 +290,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://0.0.0.0:8000/building/api/details/21/available-units/?page_size=2",
+							"raw": "http://0.0.0.0:8000/building/api/details/33/available-units/?page_size=2",
 							"protocol": "http",
 							"host": [
 								"0",
@@ -304,7 +303,7 @@
 								"building",
 								"api",
 								"details",
-								"21",
+								"33",
 								"available-units",
 								""
 							],
@@ -347,8 +346,13 @@
 									"type": "text"
 								},
 								{
-									"key": "price",
+									"key": "lowest_price",
 									"value": "1231234",
+									"type": "text"
+								},
+								{
+									"key": "highest_price",
+									"value": "3113123131",
 									"type": "text"
 								},
 								{
@@ -459,7 +463,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://0.0.0.0:8000/building/api/update/20/",
+							"raw": "http://0.0.0.0:8000/building/api/update/33/",
 							"protocol": "http",
 							"host": [
 								"0",
@@ -472,7 +476,7 @@
 								"building",
 								"api",
 								"update",
-								"20",
+								"33",
 								""
 							]
 						}
@@ -510,7 +514,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/building/api/update/26/",
+							"raw": "http://127.0.0.1:8000/building/api/update/33/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -523,7 +527,7 @@
 								"building",
 								"api",
 								"update",
-								"26",
+								"33",
 								""
 							]
 						}

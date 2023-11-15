@@ -27,7 +27,8 @@ class BuildingSerializer(serializers.ModelSerializer):
             "title",
             "default_image",
             "description",
-            "price",
+            "lowest_price",
+            "highest_price",
             "type",
             "total_units_for_sale",
             "province",
@@ -57,6 +58,15 @@ class BuildingSerializer(serializers.ModelSerializer):
         super(BuildingSerializer, self).__init__(*args, **kwargs)
         self.request = self.context.get("request")
 
+        self.skip_attributes = [
+            "is_active",
+            "images",
+            "floor_plans",
+            "unit_floor_plans",
+            "master_plans",
+            "videos",
+        ]
+
         for field_name, field in self.fields.items():
             # These fields are not required while update
             if self.instance is not None and field_name in [
@@ -80,8 +90,26 @@ class BuildingSerializer(serializers.ModelSerializer):
         show_custom_error_message(self.fields)
 
     def validate(self, data):
-        if self.request.method == "PATCH" and not data:
-            raise serializers.ValidationError({"is_active": "This field is required."})
+        error_messages = {}
+
+        if self.request.method == "PATCH" and data.get("is_active") is None:
+            error_messages.update({"is_active": "This field is required."})
+
+        if self.request.method in ["POST", "PUT"]:
+            # Remove unwanted attributes from data for 'Building' instance
+            for attr in self.skip_attributes:
+                data.pop(attr, None)
+
+            instance = Building(**data)
+            instance.created_by = self.request.user
+            try:
+                instance.full_clean()  # Perform full validation before saving
+            except serializers.ValidationError as e:
+                error_messages.update(e.message_dict)
+
+        if error_messages:
+            raise serializers.ValidationError(error_messages)
+
         return data
 
     def get_fields(self):
@@ -109,24 +137,13 @@ class BuildingSerializer(serializers.ModelSerializer):
                 media_file.save()
                 media_files.append(media_file)
 
-        # Remove unwanted attributes from validated_data for 'Building' instance
-        skip_attributes = [
-            "is_active",
-            "images",
-            "floor_plans",
-            "unit_floor_plans",
-            "master_plans",
-            "videos",
-        ]
-        for attr in skip_attributes:
-            validated_data.pop(attr, None)
-
         building = Building.objects.create(**validated_data, created_by=self.request.user)
         building.media_files.set(media_files)
 
         return building
 
     def update(self, instance, validated_data):
+        print(">>>>>>>>>>>>>>>>>>>>>>.", validated_data)
         media_files_data = self.get_media_files(self.request)
         deleted_images = self.request.data.getlist("deleted_images")
 

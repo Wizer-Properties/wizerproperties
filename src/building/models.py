@@ -9,7 +9,10 @@ from core.models import TimestampedModel
 class Building(TimestampedModel):
     title = models.CharField(max_length=255, null=True)
     description = models.TextField(max_length=3000, null=True)
-    price = models.DecimalField(
+    lowest_price = models.DecimalField(
+        max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(1)]
+    )
+    highest_price = models.DecimalField(
         max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(1)]
     )
     type = models.CharField(max_length=100, choices=BUILDING_TYPES, null=True)
@@ -32,6 +35,11 @@ class Building(TimestampedModel):
 
     def __str__(self):
         return str(self.title) if self.title else str(self.id)
+
+    def clean(self):
+        if self.lowest_price is not None and self.highest_price is not None:
+            if self.lowest_price >= self.highest_price:
+                raise ValidationError({"highest_price": "The highest price must be greater than the lowest price."})
 
 
 class BuildingMedia(TimestampedModel):
@@ -69,22 +77,22 @@ class BuildingMedia(TimestampedModel):
 
 class BuildingReview(TimestampedModel):
     RATING_CHOICES = (
-        (1, '1'),
-        (2, '2'),
-        (3, '3'),
-        (4, '4'),
-        (5, '5'),
+        (1, "1"),
+        (2, "2"),
+        (3, "3"),
+        (4, "4"),
+        (5, "5"),
     )
-    
+
     user = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True)
     building = models.ForeignKey(Building, on_delete=models.CASCADE, null=True)
     rating = models.IntegerField(choices=RATING_CHOICES, default=0)
     review_text = models.TextField(blank=True, null=True, max_length=1000)
     is_active = models.BooleanField(default=True)
-    
+
     def clean(self, *args, **kwargs):
         super().clean()
-        
+
         # Duplication check
         is_exists = BuildingReview.objects.filter(
             user=self.user,
@@ -92,5 +100,3 @@ class BuildingReview(TimestampedModel):
         ).exists()
         if is_exists:
             raise ValidationError("This building has been previously reviewed.")
-        
-    
