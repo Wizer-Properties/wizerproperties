@@ -1,11 +1,11 @@
 from django.db.models import OuterRef, Subquery, Value, F, CharField
 from django.db.models.functions import Concat
-from rest_framework import viewsets, status, permissions
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .permissions import BuildingPermission, BuildingReviewPermission
-from .serializers import BuildingSerializer, BuildingMediaSerializer, \
-    BuildingReviewSerializer
+from building.api.permissions import BuildingPermission, BuildingReviewPermission
+from building.api.serializers import BuildingSerializer, BuildingMediaSerializer, BuildingReviewSerializer
+from building.api.filters import BuildingFilter
 from building.models import Building, BuildingMedia, BuildingReview
 from property.models import Property, PropertyMedia
 from property.api.serializers import PropertyAvailableUnitsSerializer
@@ -14,6 +14,8 @@ from property.api.serializers import PropertyAvailableUnitsSerializer
 class BuildingViewSet(viewsets.ModelViewSet):
     serializer_class = BuildingSerializer
     permission_classes = [BuildingPermission]
+    filterset_class = BuildingFilter
+    ordering = ["-created_at"]  # Default ordering
 
     def get_queryset(self):
         queryset = Building.objects.annotate(

@@ -203,6 +203,58 @@
 								"api",
 								"list",
 								""
+							],
+							"query": [
+								{
+									"key": "lowest_price",
+									"value": "1231234",
+									"disabled": true
+								},
+								{
+									"key": "highest_price",
+									"value": "3113123130",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "province",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "have_lake_or_river_view",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "have_guard_house",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "have_sauna",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "have_sky_lounge",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "have_grocery",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "have_fitness_area",
+									"value": "",
+									"disabled": true
+								}
 							]
 						}
 					},

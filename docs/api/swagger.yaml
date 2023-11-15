@@ -413,7 +413,11 @@ paths:
           in: "formData"
           required: true
           type: "string"
-        - name: "price"
+        - name: "lowest_price"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "highest_price"
           in: "formData"
           required: true
           type: "number"
@@ -541,6 +545,46 @@ paths:
         - name: "page"
           in: "query"
           type: "string"
+        - name: "lowest_price"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "highest_price"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "type"
+          description: "Filtered by and choice will be 'condos' or 'house'."
+          in: "query"
+          type: "string"
+        - name: "province"
+          description: "Filtered by"
+          in: "query"
+          type: "string"
+        - name: "have_lake_or_river_view"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_guard_house"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_sauna"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_sky_lounge"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_grocery"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_fitness_area"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
       responses:
         200:
           description: Building list
@@ -2044,7 +2088,9 @@ definitions:
         type: "string"
       description:
         type: "string"
-      price:
+      lowest_price:
+        type: "number"
+      highest_price:
         type: "number"
       type:
         type: "string"
@@ -2118,7 +2164,9 @@ definitions:
               type: "string"
             description:
               type: "string"
-            price:
+            lowest_price:
+              type: "number"
+            highest_price:
               type: "number"
             type:
               type: "string"
@@ -2177,7 +2225,9 @@ definitions:
         type: "string"
       description:
         type: "string"
-      price:
+      lowest_price:
+        type: "number"
+      highest_price:
         type: "number"
       type:
         type: "string"
@@ -2371,7 +2421,9 @@ definitions:
             type: "string"
           description:
             type: "string"
-          price:
+          lowest_price:
+            type: "number"
+          highest_price:
             type: "number"
           type:
             type: "string"
@@ -2478,7 +2530,9 @@ definitions:
                   type: "string"
                 description:
                   type: "string"
-                price:
+                lowest_price:
+                  type: "number"
+                highest_price:
                   type: "number"
                 type:
                   type: "string"
@@ -2570,7 +2624,9 @@ definitions:
             type: "string"
           description:
             type: "string"
-          price:
+          lowest_price:
+            type: "number"
+          highest_price:
             type: "number"
           type:
             type: "string"
@@ -2669,7 +2725,9 @@ definitions:
                 type: "string"
               description:
                 type: "string"
-              price:
+              lowest_price:
+                type: "number"
+              highest_price:
                 type: "number"
               type:
                 type: "string"
@@ -2783,7 +2841,9 @@ definitions:
                       type: "string"
                     description:
                       type: "string"
-                    price:
+                    lowest_price:
+                      type: "number"
+                    highest_price:
                       type: "number"
                     type:
                       type: "string"
