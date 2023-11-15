@@ -2519,6 +2519,10 @@ definitions:
               type: "number"
             is_active:
               type: "boolean"
+            is_compared:
+              type: "boolean"
+            is_favorited:
+              type: "boolean"
             building_info:
               type: object
               properties:
@@ -2612,6 +2616,10 @@ definitions:
       number_of_car_parking:
         type: "number"
       is_active:
+        type: "boolean"
+      is_compared:
+        type: "boolean"
+      is_favorited:
         type: "boolean"
       building_info:
         type: object

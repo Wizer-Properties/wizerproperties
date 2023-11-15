@@ -20,6 +20,7 @@ class PropertySerializer(serializers.ModelSerializer):
     videos = serializers.FileField(allow_empty_file=False, write_only=True)
     default_image = serializers.URLField(source="default_image_url", read_only=True)
     is_compared = serializers.BooleanField(read_only=True)
+    is_favorited = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Property
@@ -40,6 +41,7 @@ class PropertySerializer(serializers.ModelSerializer):
             "number_of_car_parking",
             "is_active",
             "is_compared",
+            "is_favorited",
             "images",
             "videos",
             "building_info",
@@ -67,7 +69,8 @@ class PropertySerializer(serializers.ModelSerializer):
         fields = super().get_fields()
         if self.request and self.request.method in ["POST", "PUT", "PATCH"]:  # Check request method and view
             fields.pop("default_image", None)  # Remove default_image field during create and update
-            fields.pop("is_compared", None)  # Remove default_image field during create and update
+            fields.pop("is_compared", None)  # Remove is_compared field during create and update
+            fields.pop("is_favorited", None)  # Remove is_favorited field during create and update
         return fields
 
     def get_media_files(self, request):
@@ -187,6 +190,11 @@ class ComparePropertySerializer(serializers.ModelSerializer):
                     ),
                     is_compared=Case(
                         When(compareproperty__user=obj.user, then=Value(True)),
+                        default=Value(False),
+                        output_field=BooleanField(),
+                    ),
+                    is_favorited=Case(
+                        When(prospectfavoriteproperty__prospect=obj.user.prospectprofile, then=Value(True)),
                         default=Value(False),
                         output_field=BooleanField(),
                     ),
