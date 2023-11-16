@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block extend_head %}
+<title>Favorite List</title>
+<link rel="stylesheet" href="{% static '/css/search-page.css' %}?v=1.00" />
+<link rel="stylesheet" href="{% static '/css/favorite-list.css' %}?v=1.00" />
+{% endblock extend_head %}
+
+
+
+
+
+{% block content %}
+
+<section>
+    <div class="container">
+        <div class="favorite-list-area">
+            <h1 class="favorite-list-title"> Favorite List </h1>
+            <div class="row" id="favorite-list"></div>
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}
+
+
+
+
+{% block extend_script %}
+<script src="{% static '/js/property/compair-favorite.js' %}?v=1.00"></script>
+<script src="{% static 'js/favorite-list.js' %}?v=1.00"></script>
+{% endblock extend_script %}

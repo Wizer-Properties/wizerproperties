@@ -27,6 +27,7 @@
         {% url 'building:create' as create_building_url %}
         {% url 'property:create' as create_property_url %}
         {% url 'property:comparison' as comparison_property_url %}
+        {% url 'property:favorite_list' as favorite_list_property_url %}
 
         <header class="wip-header">
             <div class="w-100 px-5">
@@ -75,6 +76,12 @@
                                     class="nav-link {% if request.path == comparison_property_url %}active-nav{% endif %}" 
                                     href="{{ comparison_property_url }}">
                                     Comparison
+                                </a>
+
+                                <a 
+                                    class="nav-link {% if request.path == favorite_list_property_url %}active-nav{% endif %}" 
+                                    href="{{ favorite_list_property_url }}">
+                                    Favorite List
                                 </a>
                                 {% endif %}                            
                                 <a class="nav-link" href="{% url 'user:logout' %}">Log out</a>

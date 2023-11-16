@@ -1,5 +1,5 @@
 from django.urls import include, path
-from .views import create_property, get_property, update_property, search_property, comparison_property
+from .views import create_property, get_property, update_property, search_property, comparison_property, favorite_list
 
 urlpatterns = [
     path("create/", create_property, name="create"),
@@ -7,5 +7,6 @@ urlpatterns = [
     path("update/<int:id>/", update_property, name="update"),
     path("search/", search_property, name="search"),
     path("comparison/", comparison_property, name="comparison"),
+    path("favorite-list/", favorite_list, name="favorite_list"),
     path("api/", include(("property.api.urls", "property"), namespace="api")),
 ]

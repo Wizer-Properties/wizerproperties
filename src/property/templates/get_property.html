@@ -109,6 +109,12 @@
                     <i class="bi bi-check-circle-fill"></i>
                     Compare
                 </button>
+
+                <button class="add-to-favorite" added="false">
+                    <i class="bi bi-heart-fill"></i>
+                    <i class="bi bi-heart"></i>
+                    Favorite
+                </button>
             </div>
             <!-- Images -->
             <div class="tab-pane fade show active" id="nav-imges" label-name="media-files-image">
@@ -649,6 +655,10 @@
 
     </div>
 </section>
+
+
+{% include 'review-box.html' %}
+
 
 
 {% endblock %}

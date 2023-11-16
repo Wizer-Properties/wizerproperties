@@ -153,7 +153,7 @@ $(document).ready(function(){
             url: GELLERY_API_URL,
             type: 'GET',
             data : {
-                type : type_name,
+                media_type : type_name,
                 page_size : page_size || 5
             },
             headers: {
@@ -211,7 +211,7 @@ $(document).ready(function(){
             url: GELLERY_API_URL,
             type: 'GET',
             data : {
-                type : expanded_splide_type,
+                media_type : expanded_splide_type,
                 page_size : 1,
                 page : page
             },

@@ -1,0 +1,20 @@
+.favorite-list-area{
+    box-shadow: 0 0 5px 0 rgba(0,0,0,.1);
+    padding: 15px;
+    border-radius: 5px;
+    margin: 35px 0;
+}
+
+.favorite-list-title{
+    font-size: 20px;
+    color: #212529;
+}
+
+#favorite-list{
+    margin-top: 35px;
+}
+
+.property-single-box,
+.search-result-box-wrapper{
+    height: 100%;
+}

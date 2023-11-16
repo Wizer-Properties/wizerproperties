@@ -42,6 +42,7 @@ $(document).ready(function () {
         ordering: false,
         lengthChange: false,
         info: false,
+        pageLength : 5
     });
     
 

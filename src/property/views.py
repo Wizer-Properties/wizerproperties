@@ -42,3 +42,8 @@ def search_property(request):
 @login_required
 def comparison_property(request):
     return render(request, "comparison.html")
+
+
+@login_required
+def favorite_list(request):
+    return render(request, "favorite-list.html")

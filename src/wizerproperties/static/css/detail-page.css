@@ -418,16 +418,70 @@ body[img-gallery-open="true"] .img-gallery-dialog{
     display: none;
 }
 
-[added="true"].add-to-compare .bi-check-circle-fill{
-    display: inline;
-}
-
-[added="false"].add-to-compare .bi-arrow-left-right{
-    display: inline;
-}
-
-[added="true"].add-to-compare .bi-arrow-left-right{
+.add-to-favorite .bi-heart-fill{
+    color: #e31b23;
     display: none;
+}
+
+[added="true"].add-to-compare .bi-check-circle-fill,
+[added="true"].add-to-favorite .bi-heart-fill{
+    display: inline;
+}
+
+[added="false"].add-to-compare .bi-arrow-left-right,
+[added="false"].add-to-favorite .bi-heart{
+    display: inline;
+}
+
+[added="true"].add-to-compare .bi-arrow-left-right,
+[added="true"].add-to-favorite .bi-heart{
+    display: none;
+}
+
+#review{
+    margin-bottom: 35px;
+}
+
+.review-writing-area{
+    padding: 15px;
+    border: 1px dashed #ffd350cc;
+    border-radius: 5px;
+}
+
+.show-rating span{
+    font-size: 28px;
+    color: #484848;
+    font-weight: bold;
+}
+
+[label-name="rating"]{
+    position: relative;
+    top: -3px;
+}
+
+[label-name="rating"] i{
+    color: #ffd350;
+}
+
+.give-rating{
+    display: flex;
+    justify-content: center;
+    margin-top: 35px;
+    font-size: 24px;
+}
+
+.give-review{
+    font-size: 15px;
+    width: 100%;
+    display: block;
+    border: 1px solid #b4b4b4;
+    border-radius: 5px;
+    margin-top: 25px;
+    padding: 8px;
+}
+
+.add-to-favorite{
+    margin-left: 5px;
 }
 
 @media screen and (max-width : 991px) {

@@ -79,17 +79,6 @@ $(document).ready(function(){
                     '</div>'+
                 '</div>'
     }
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     function property_facility_tmp(data){
@@ -126,10 +115,16 @@ $(document).ready(function(){
     function property_list_tmp(data){
         return  '<div class="col-lg-6 mb-4 property-single-box">'+
                     '<div class="banner-action-button">'+
-                        '<button class="add-to-compare" added="false" index="'+data?.id+'">'+
+                        '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
                             '<i class="bi bi-arrow-left-right"></i>'+
                             '<i class="bi bi-check-circle-fill"></i>'+
                             ' Compare'+
+                        '</button>'+
+
+                        '<button class="add-to-favorite" added="'+data?.is_compared+'" index="'+data?.id+'">'+
+                            '<i class="bi bi-heart-fill"></i>'+
+                            '<i class="bi bi-heart"></i>'+
+                            ' Favorite'+
                         '</button>'+
                     '</div>'+
                     '<a href="/property/details/'+data?.id+'/" class="search-result-box-wrapper">'+
@@ -209,7 +204,6 @@ $(document).ready(function(){
     function searching(search_type){
         var search_param = prams_list;
         
-        console.log(next_property)
         if(next_property) search_param.page = next_property;
         if([null].includes(next_property)) return;
 
@@ -422,27 +416,5 @@ $(document).ready(function(){
             return number.toString();
         }
     };
-
-
-    
-    $(document).on('click', '.add-to-compare', function(){
-        var this_btn = $(this)
-        $.ajax({
-            url: '/property/api/compare/create/',
-            data : {
-                property : $(this).attr('index')
-            },
-            type: 'POST',
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            success : function (data) {
-                this_btn.attr('added', 'true')
-            },
-            error: function (error) {
-                console.log("error")
-            }
-        })
-    });
 
 });
