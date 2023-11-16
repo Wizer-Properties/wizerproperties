@@ -231,11 +231,11 @@ class PropertyAvailableUnitsSerializer(serializers.ModelSerializer):
 
 
 class ProspectFavoritePropertySerializer(serializers.ModelSerializer):
-    property_details = serializers.SerializerMethodField()
+    property_info = serializers.SerializerMethodField()
 
     class Meta:
         model = ProspectFavoriteProperty
-        fields = ["id", "property", "property_details"]
+        fields = ["id", "prospect", "property", "property_info"]
         extra_kwargs = {"property": {"required": False, "allow_null": False, "write_only": True}}
 
     def validate(self, attrs):
@@ -253,11 +253,29 @@ class ProspectFavoritePropertySerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-    def get_property_details(self, instance):
-        if instance.property:
-            return {
-                "id": instance.property.id,
-                "title": instance.property.title,
-                "description": instance.property.description,
-            }
-        return {}
+    def get_property_info(self, obj):
+        if obj.property:
+            property = (
+                Property.objects.filter(id=obj.property.id)
+                .annotate(
+                    default_image_url=Subquery(
+                        PropertyMedia.objects.filter(property=OuterRef("pk"), type="image")
+                        .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
+                        .values("full_file_url")[:1]
+                    ),
+                    is_compared=Case(
+                        When(compareproperty__user__prospectprofile=obj.prospect, then=Value(True)),
+                        default=Value(False),
+                        output_field=BooleanField(),
+                    ),
+                    is_favorited=Case(
+                        When(prospectfavoriteproperty__prospect=obj.prospect, then=Value(True)),
+                        default=Value(False),
+                        output_field=BooleanField(),
+                    ),
+                )
+                .first()
+            )
+            return PropertySerializer(property).data
+        else:
+            return None

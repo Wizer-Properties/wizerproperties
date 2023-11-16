@@ -2904,15 +2904,101 @@ definitions:
     properties:
       id:
         type: "number"
-      property_details:
+      prospect:
+        type: "number"
+      property_info:
         type: object
         properties:
           id:
             type: "number"
+          building:
+            type: "number"
+          unit_id:
+            type: "string"
           title:
+            type: "string"
+          default_image:
             type: "string"
           description:
             type: "string"
+          price:
+            type: "number"
+          price_per_sqm:
+            type: "number"
+          floor_number:
+            type: "string"
+          unit_area:
+            type: "number"
+          number_of_bedroom:
+            type: "number"
+          number_of_bathroom:
+            type: "number"
+          number_of_balcony:
+            type: "number"
+          number_of_car_parking:
+            type: "number"
+          is_active:
+            type: "boolean"
+          building_info:
+            type: object
+            properties:
+              id:
+                type: "number"
+              title:
+                type: "string"
+              default_image:
+                type: "string"
+              description:
+                type: "string"
+              lowest_price:
+                type: "number"
+              highest_price:
+                type: "number"
+              type:
+                type: "string"
+              total_units_for_sale:
+                type: "number"
+              province:
+                type: "string"
+              district:
+                type: "string"
+              sub_district:
+                type: "string"
+              address:
+                type: "string"
+              project_total_area:
+                type: "number"
+              total_floors:
+                type: "number"
+              construction_year:
+                type: "number"
+              have_lake_or_river_view:
+                type: "boolean"
+              have_guard_house:
+                type: "boolean"
+              have_sauna:
+                type: "boolean"
+              have_sky_lounge:
+                type: "boolean"
+              have_grocery:
+                type: "boolean"
+              is_active:
+                type: "boolean"
+              created_by:
+                type: object
+                properties:
+                  email:
+                    type: "string"
+                  phone_number:
+                    type: "string"
+                  company_logo:
+                    type: "string"
+                  company_name:
+                    type: "string"
+                  company_address:
+                    type: "string"
+                  company_details:
+                    type: "string"
   
   FavoritePropertyListResponse:
     type: object
@@ -2934,15 +3020,101 @@ definitions:
           properties:
             id:
               type: "number"
-            property_details:
+            prospect:
+              type: "number"
+            property_info:
               type: object
               properties:
                 id:
                   type: "number"
+                building:
+                  type: "number"
+                unit_id:
+                  type: "string"
                 title:
+                  type: "string"
+                default_image:
                   type: "string"
                 description:
                   type: "string"
+                price:
+                  type: "number"
+                price_per_sqm:
+                  type: "number"
+                floor_number:
+                  type: "string"
+                unit_area:
+                  type: "number"
+                number_of_bedroom:
+                  type: "number"
+                number_of_bathroom:
+                  type: "number"
+                number_of_balcony:
+                  type: "number"
+                number_of_car_parking:
+                  type: "number"
+                is_active:
+                  type: "boolean"
+                building_info:
+                  type: object
+                  properties:
+                    id:
+                      type: "number"
+                    title:
+                      type: "string"
+                    default_image:
+                      type: "string"
+                    description:
+                      type: "string"
+                    lowest_price:
+                      type: "number"
+                    highest_price:
+                      type: "number"
+                    type:
+                      type: "string"
+                    total_units_for_sale:
+                      type: "number"
+                    province:
+                      type: "string"
+                    district:
+                      type: "string"
+                    sub_district:
+                      type: "string"
+                    address:
+                      type: "string"
+                    project_total_area:
+                      type: "number"
+                    total_floors:
+                      type: "number"
+                    construction_year:
+                      type: "number"
+                    have_lake_or_river_view:
+                      type: "boolean"
+                    have_guard_house:
+                      type: "boolean"
+                    have_sauna:
+                      type: "boolean"
+                    have_sky_lounge:
+                      type: "boolean"
+                    have_grocery:
+                      type: "boolean"
+                    is_active:
+                      type: "boolean"
+                    created_by:
+                      type: object
+                      properties:
+                        email:
+                          type: "string"
+                        phone_number:
+                          type: "string"
+                        company_logo:
+                          type: "string"
+                        company_name:
+                          type: "string"
+                        company_address:
+                          type: "string"
+                        company_details:
+                          type: "string"
   
   ScheduleResponse:
     type: object
