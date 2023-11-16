@@ -82,7 +82,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["get"])
     def media_files(self, request, pk=None):
         property = self.get_object()
-        media_type = request.query_params.get("type")
+        media_type = request.query_params.get("media_type")
         building_media_files = property.building.media_files.all()
         property_media_files = property.media_files.all()
 

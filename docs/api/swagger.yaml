@@ -653,7 +653,7 @@ paths:
           required: true
           in: "path"
           type: "string"
-        - name: "type"
+        - name: "media_type"
           required: true
           in: "query"
           type: "string"
@@ -1281,7 +1281,7 @@ paths:
           required: true
           in: "path"
           type: "string"
-        - name: "type"
+        - name: "media_type"
           required: true
           in: "query"
           type: "string"

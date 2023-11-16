@@ -39,7 +39,7 @@ class BuildingViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["get"])
     def media_files(self, request, pk=None):
         building = self.get_object()
-        media_type = request.query_params.get("type")
+        media_type = request.query_params.get("media_type")
         media_files = building.media_files.all()
 
         if media_type:

@@ -143,7 +143,6 @@ class BuildingSerializer(serializers.ModelSerializer):
         return building
 
     def update(self, instance, validated_data):
-        print(">>>>>>>>>>>>>>>>>>>>>>.", validated_data)
         media_files_data = self.get_media_files(self.request)
         deleted_images = self.request.data.getlist("deleted_images")
 

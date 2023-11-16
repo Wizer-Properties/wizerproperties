@@ -298,7 +298,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://0.0.0.0:8000/building/api/details/33/media-files/?type=image&page_size=1&page=1",
+							"raw": "http://0.0.0.0:8000/building/api/details/33/media-files/?media_type=master_plan&page_size=1&page=1",
 							"protocol": "http",
 							"host": [
 								"0",
@@ -317,8 +317,8 @@
 							],
 							"query": [
 								{
-									"key": "type",
-									"value": "image"
+									"key": "media_type",
+									"value": "master_plan"
 								},
 								{
 									"key": "page_size",
@@ -874,7 +874,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://0.0.0.0:8000/property/api/list/?page_size&page&search=hghdfas",
+							"raw": "http://0.0.0.0:8000/property/api/list/",
 							"protocol": "http",
 							"host": [
 								"0",
@@ -892,15 +892,18 @@
 							"query": [
 								{
 									"key": "page_size",
-									"value": null
+									"value": null,
+									"disabled": true
 								},
 								{
 									"key": "page",
-									"value": null
+									"value": null,
+									"disabled": true
 								},
 								{
 									"key": "search",
-									"value": "hghdfas"
+									"value": "hghdfas",
+									"disabled": true
 								}
 							]
 						}
@@ -945,7 +948,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://0.0.0.0:8000/property/api/details/5/media-files/?type=master_plan&page_size=1&page=1",
+							"raw": "http://0.0.0.0:8000/property/api/details/5/media-files/?media_type=master_plan&page_size=1&page=1",
 							"protocol": "http",
 							"host": [
 								"0",
@@ -964,7 +967,7 @@
 							],
 							"query": [
 								{
-									"key": "type",
+									"key": "media_type",
 									"value": "master_plan"
 								},
 								{
