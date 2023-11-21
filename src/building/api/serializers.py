@@ -20,6 +20,7 @@ class BuildingSerializer(serializers.ModelSerializer):
     default_image = serializers.URLField(source="default_image_url", read_only=True)
     created_by = serializers.SerializerMethodField()
     is_reviewed = serializers.BooleanField(read_only=True)
+    average_rating = serializers.FloatField(read_only=True)
 
     class Meta:
         model = Building
@@ -47,6 +48,7 @@ class BuildingSerializer(serializers.ModelSerializer):
             "have_fitness_area",
             "is_active",
             "is_reviewed",
+            "average_rating",
             "created_by",
             "images",
             "floor_plans",

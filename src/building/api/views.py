@@ -1,4 +1,4 @@
-from django.db.models import OuterRef, Subquery, Value, F, CharField, When, Case, BooleanField
+from django.db.models import OuterRef, Subquery, Value, F, CharField, When, Case, BooleanField, Avg
 from django.db.models.functions import Concat
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -39,6 +39,7 @@ class BuildingViewSet(viewsets.ModelViewSet):
                 if user.is_authenticated and hasattr(user, "prospectprofile")
                 # If the user is not authenticated and prospect, set is_reviewed to False for all building
                 else Value(False, output_field=BooleanField()),
+                average_rating=Avg("buildingreview__rating"),
             )
         return queryset
 
