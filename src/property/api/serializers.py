@@ -89,7 +89,12 @@ class PropertySerializer(serializers.ModelSerializer):
                         BuildingMedia.objects.filter(building=OuterRef("pk"), type="image")
                         .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
                         .values("full_file_url")[:1]
-                    )
+                    ),
+                    is_reviewed=Case(
+                        When(buildingreview__user=self.request.user, then=Value(True)),
+                        default=Value(False),
+                        output_field=BooleanField(),
+                    ),
                 )
                 .first()
             )

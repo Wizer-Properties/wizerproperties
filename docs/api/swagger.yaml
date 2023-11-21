@@ -2586,6 +2586,8 @@ definitions:
                   type: "boolean"
                 is_active:
                   type: "boolean"
+                is_reviewed:
+                  type: "boolean"
                 created_by:
                   type: object
                   properties:
@@ -2683,6 +2685,8 @@ definitions:
           have_grocery:
             type: "boolean"
           is_active:
+            type: "boolean"
+          is_reviewed:
             type: "boolean"
           created_by:
             type: object
