@@ -2214,6 +2214,10 @@ definitions:
               type: "boolean"
             is_reviewed:
               type: "boolean"
+            average_rating:
+              type: "number"
+            total_reviews:
+              type: "number"
             created_by:
               type: object
               properties:
@@ -2277,6 +2281,10 @@ definitions:
         type: "boolean"
       is_reviewed:
         type: "boolean"
+      average_rating:
+        type: "number"
+      total_reviews:
+        type: "number"
       created_by:
         type: object
         properties:
@@ -2588,6 +2596,10 @@ definitions:
                   type: "boolean"
                 is_reviewed:
                   type: "boolean"
+                average_rating:
+                  type: "number"
+                total_reviews:
+                  type: "number"
                 created_by:
                   type: object
                   properties:
@@ -2688,6 +2700,10 @@ definitions:
             type: "boolean"
           is_reviewed:
             type: "boolean"
+          average_rating:
+            type: "number"
+          total_reviews:
+            type: "number"
           created_by:
             type: object
             properties:

@@ -21,6 +21,7 @@ class BuildingSerializer(serializers.ModelSerializer):
     created_by = serializers.SerializerMethodField()
     is_reviewed = serializers.BooleanField(read_only=True)
     average_rating = serializers.FloatField(read_only=True)
+    total_reviews = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Building
@@ -49,6 +50,7 @@ class BuildingSerializer(serializers.ModelSerializer):
             "is_active",
             "is_reviewed",
             "average_rating",
+            "total_reviews",
             "created_by",
             "images",
             "floor_plans",

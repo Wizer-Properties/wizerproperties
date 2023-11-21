@@ -1,5 +1,5 @@
 from django.db import transaction
-from django.db.models import OuterRef, Subquery, Value, F, CharField, When, Case, BooleanField, Avg
+from django.db.models import OuterRef, Subquery, Value, F, CharField, When, Case, BooleanField, Avg, Count
 from django.db.models.functions import Concat
 from rest_framework import serializers
 from property.models import Property, PropertyMedia, CompareProperty, ProspectFavoriteProperty
@@ -98,6 +98,7 @@ class PropertySerializer(serializers.ModelSerializer):
                     if self.request
                     else Value(None, output_field=CharField()),
                     average_rating=Avg("buildingreview__rating"),
+                    total_reviews=Count("buildingreview"),
                 )
                 .first()
             )
