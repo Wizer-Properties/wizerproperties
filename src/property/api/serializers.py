@@ -19,8 +19,8 @@ class PropertySerializer(serializers.ModelSerializer):
     images = serializers.ImageField(allow_empty_file=False, write_only=True)
     videos = serializers.FileField(allow_empty_file=False, write_only=True)
     default_image = serializers.URLField(source="default_image_url", read_only=True)
-    compare_id = serializers.IntegerField(read_only=True)
-    favorite_id = serializers.IntegerField(read_only=True)
+    is_compared = serializers.BooleanField(read_only=True)
+    is_favorited = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Property
@@ -40,8 +40,8 @@ class PropertySerializer(serializers.ModelSerializer):
             "number_of_balcony",
             "number_of_car_parking",
             "is_active",
-            "compare_id",
-            "favorite_id",
+            "is_compared",
+            "is_favorited",
             "images",
             "videos",
             "building_info",
@@ -69,8 +69,8 @@ class PropertySerializer(serializers.ModelSerializer):
         fields = super().get_fields()
         if self.request and self.request.method in ["POST", "PUT", "PATCH"]:  # Check request method and view
             fields.pop("default_image", None)  # Remove default_image field during create and update
-            fields.pop("compare_id", None)  # Remove compare_id field during create and update
-            fields.pop("favorite_id", None)  # Remove favorite_id field during create and update
+            fields.pop("is_compared", None)  # Remove is_compared field during create and update
+            fields.pop("is_favorited", None)  # Remove is_favorited field during create and update
         return fields
 
     def get_media_files(self, request):
@@ -188,13 +188,15 @@ class ComparePropertySerializer(serializers.ModelSerializer):
                         .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
                         .values("full_file_url")[:1]
                     ),
-                    compare_id=Subquery(
-                        CompareProperty.objects.filter(user=obj.user, property=obj.property).values("id")[:1]
+                    is_compared=Case(
+                        When(compareproperty__user=obj.user, then=Value(True)),
+                        default=Value(False),
+                        output_field=BooleanField(),
                     ),
-                    favorite_id=Subquery(
-                        ProspectFavoriteProperty.objects.filter(
-                            prospect=obj.user.prospectprofile, property=obj.property
-                        ).values("id")[:1]
+                    is_favorited=Case(
+                        When(prospectfavoriteproperty__prospect=obj.user.prospectprofile, then=Value(True)),
+                        default=Value(False),
+                        output_field=BooleanField(),
                     ),
                 )
                 .first()
@@ -261,15 +263,15 @@ class ProspectFavoritePropertySerializer(serializers.ModelSerializer):
                         .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
                         .values("full_file_url")[:1]
                     ),
-                    compare_id=Subquery(
-                        CompareProperty.objects.filter(
-                            user__prospectprofile=obj.prospect, property=obj.property
-                        ).values("id")[:1]
+                    is_compared=Case(
+                        When(compareproperty__user__prospectprofile=obj.prospect, then=Value(True)),
+                        default=Value(False),
+                        output_field=BooleanField(),
                     ),
-                    favorite_id=Subquery(
-                        ProspectFavoriteProperty.objects.filter(prospect=obj.prospect, property=obj.property).values(
-                            "id"
-                        )[:1]
+                    is_favorited=Case(
+                        When(prospectfavoriteproperty__prospect=obj.prospect, then=Value(True)),
+                        default=Value(False),
+                        output_field=BooleanField(),
                     ),
                 )
                 .first()

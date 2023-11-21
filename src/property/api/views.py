@@ -40,19 +40,23 @@ class PropertyViewSet(viewsets.ModelViewSet):
                 .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
                 .values("full_file_url")[:1]
             ),
-            # Annotate compare_id based on whether the property is in the user's comparison list
-            compare_id=Subquery(CompareProperty.objects.filter(property=OuterRef("pk"), user=user).values("id")[:1])
-            if user.is_authenticated
-            # If the user is not authenticated, set compare_id to null for all properties
-            else Value(False, output_field=BooleanField()),
-            # Annotate favorite_id based on whether the property is in the user's favorite list
-            favorite_id=Subquery(
-                ProspectFavoriteProperty.objects.filter(property=OuterRef("pk"), prospect=user.prospectprofile).values(
-                    "id"
-                )[:1]
+            # Annotate is_compared based on whether the property is in the user's comparison list
+            is_compared=Case(
+                When(compareproperty__user=user, then=Value(True)),
+                default=Value(False),
+                output_field=BooleanField(),
             )
-            if user.is_authenticated
-            # If the user is not authenticated, set favorite_id to null for all properties
+            if user.is_authenticated and hasattr(user, "prospectprofile")
+            # If the user is not authenticated, set is_compared to False for all properties
+            else Value(False, output_field=BooleanField()),
+            # Annotate is_favorited based on whether the property is in the user's favorite list
+            is_favorited=Case(
+                When(prospectfavoriteproperty__prospect=user.prospectprofile, then=Value(True)),
+                default=Value(False),
+                output_field=BooleanField(),
+            )
+            if user.is_authenticated and hasattr(user, "prospectprofile")
+            # If the user is not authenticated, set is_favorited to False for all properties
             else Value(False, output_field=BooleanField()),
         )
 
@@ -114,6 +118,21 @@ class ComparePropertyViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+    
+    def perform_destroy(self, serializer):
+        # Get the property from the request data
+        property = self.request.data.get("property")
+
+        if property is None:
+            return Response({"property": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Try to get and delete the CompareProperty instance based on user and property
+        try:
+            compare_property = CompareProperty.objects.get(user=self.request.user, property=property)
+            compare_property.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except CompareProperty.DoesNotExist:
+            return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
 
 
 class ProspectFavoritePropertyViewSet(viewsets.ModelViewSet):
@@ -134,3 +153,18 @@ class ProspectFavoritePropertyViewSet(viewsets.ModelViewSet):
         context["request"] = self.request
 
         return context
+
+    def perform_destroy(self, serializer):
+        # Get the property from the request data
+        property = self.request.data.get("property")
+
+        if property is None:
+            return Response({"property": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Try to get and delete the CompareProperty instance based on prospect and property
+        try:
+            compare_property = ProspectFavoriteProperty.objects.get(prospect=self.request.user.prospectprofile, property=property)
+            compare_property.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except CompareProperty.DoesNotExist:
+            return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)

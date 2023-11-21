@@ -1574,7 +1574,7 @@ paths:
         504:
           description: Taking more time to get a response
   
-  /property/api/compare/delete/{id}/:
+  /property/api/compare/delete/:
     delete:
       tags:
         - Property
@@ -1583,14 +1583,21 @@ paths:
       operationId: delete_property_comparison
       produces:
         - "application/json"
+      consumes:
+        - "multipart/form-data"
       parameters:
-        - name: "id"
+        - name: "property"
+          description: as id
           required: true
-          in: "path"
-          type: "string"
+          in: "formData"
+          type: "number"
       responses:
         204:
           description: Delete property compariso (No content)
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
         405:
           description: Method not allowed(Method ain't supported by this URL)
           schema:
@@ -1687,7 +1694,7 @@ paths:
         504:
           description: Taking more time to get a response
   
-  /property/api/prospect-favorite/remove/{id}/:
+  /property/api/prospect-favorite/remove/:
     delete:
       tags:
         - Property
@@ -1696,14 +1703,21 @@ paths:
       operationId: remove_favorite_property
       produces:
         - "application/json"
+      consumes:
+        - "multipart/form-data"
       parameters:
-        - name: "id"
+        - name: "property"
+          description: as id
           required: true
-          in: "path"
-          type: "string"
+          in: "formData"
+          type: "number"
       responses:
         204:
           description: Favorite property removed (No content)
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
         405:
           description: Method not allowed(Method ain't supported by this URL)
           schema:
@@ -2519,10 +2533,10 @@ definitions:
               type: "number"
             is_active:
               type: "boolean"
-            compare_id:
-              type: "number"
-            favorite_id:
-              type: "number"
+            is_compared:
+              type: "boolean"
+            is_favorited:
+              type: "boolean"
             building_info:
               type: object
               properties:
@@ -2617,9 +2631,9 @@ definitions:
         type: "number"
       is_active:
         type: "boolean"
-      compare_id:
-        type: "number"
-      favorite_id:
+      is_compared:
+        type: "boolean"
+      is_favorited:
         type: "boolean"
       building_info:
         type: object

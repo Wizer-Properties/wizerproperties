@@ -1329,10 +1329,16 @@
 						"header": [],
 						"body": {
 							"mode": "formdata",
-							"formdata": []
+							"formdata": [
+								{
+									"key": "property",
+									"value": "20",
+									"type": "text"
+								}
+							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/property/api/compare/delete/12/",
+							"raw": "http://127.0.0.1:8000/property/api/compare/delete/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1346,7 +1352,6 @@
 								"api",
 								"compare",
 								"delete",
-								"12",
 								""
 							]
 						}
@@ -1474,10 +1479,16 @@
 						"header": [],
 						"body": {
 							"mode": "formdata",
-							"formdata": []
+							"formdata": [
+								{
+									"key": "property",
+									"value": "21",
+									"type": "text"
+								}
+							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/property/api/prospect-favorite/remove/1/",
+							"raw": "http://127.0.0.1:8000/property/api/prospect-favorite/remove/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1491,7 +1502,6 @@
 								"api",
 								"prospect-favorite",
 								"remove",
-								"1",
 								""
 							]
 						}
