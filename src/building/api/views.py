@@ -37,7 +37,7 @@ class BuildingViewSet(viewsets.ModelViewSet):
                     output_field=BooleanField(),
                 )
                 if user.is_authenticated and hasattr(user, "prospectprofile")
-                # If the user is not authenticated and prospect, set is_compared to False for all properties
+                # If the user is not authenticated and prospect, set is_reviewed to False for all building
                 else Value(False, output_field=BooleanField()),
             )
         return queryset

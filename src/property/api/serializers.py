@@ -91,10 +91,12 @@ class PropertySerializer(serializers.ModelSerializer):
                         .values("full_file_url")[:1]
                     ),
                     is_reviewed=Case(
-                        When(buildingreview__user=self.request.user, then=Value(True)),
-                        default=Value(False),
+                        When(buildingreview__user=self.request.user, then=True),
+                        default=False,
                         output_field=BooleanField(),
-                    ),
+                    )
+                    if self.request
+                    else Value(None, output_field=CharField()),
                 )
                 .first()
             )
