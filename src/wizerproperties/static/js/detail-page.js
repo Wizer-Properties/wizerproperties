@@ -1,4 +1,6 @@
 $(document).ready(function(){
+    var building_id = null;
+
     function get_asset_details(){
         $.ajax({
             url: ASSET_API_URL,
@@ -12,8 +14,17 @@ $(document).ready(function(){
                     data = {
                         building_info : data
                     }
-                }
+                };
+
+                building_id = data?.building_info?.id;
+                get_review_list(data?.building_info?.id); // get review data
+                
                 // property info
+                $('.add-to-compare').attr('added', data?.is_compared);
+                $('.add-to-favorite').attr('added', data?.is_favorited);
+                $('.add-to-compare').attr('index', data?.id);
+                $('.add-to-favorite').attr('index', data?.id);
+
                 $('[label-name="title"]').html(data?.title)
                 $('[label-name="unit_id"]').html(data?.unit_id)
                 $('[label-name="price"]').html('฿ '+ Math.floor(data?.price))
@@ -48,7 +59,8 @@ $(document).ready(function(){
                 $('[label-name="email"]').html('<a href="mailto:'+data?.building_info?.created_by?.email+'">'+data?.building_info?.created_by?.email+'</a>')
 
                 // Facilities ==============
-                facilities_void(data?.building_info)
+                facilities_void(data?.building_info);
+                $('.review-writing-area').html(review_tmp(data))
             },
             error: function (error) {
                 console.log("error")
@@ -57,7 +69,6 @@ $(document).ready(function(){
     };
 
     get_asset_details();
-
 
     function facilities_info_tmp(label, icon){
         return '<div class="col-6 col-md-6 col-lg-4 mb-3">'+
@@ -493,26 +504,139 @@ $(document).ready(function(){
     })
 
 
+    var rating_num = 0;
+    var rating_next = 1;
+
+    function rating_generator(rated){
+        var results = '';
+
+        for (let i = 0; i < rated; i++) {
+            rating_num = i + 1;
+            results += '<i index="'+rating_num+'" class="bi bi-star-fill"></i>';
+        };
+
+        for (let i = 0; i < (5-rated); i++) {
+            var index_num = rating_num + i + 1 ;
+            results += '<i index="'+index_num+'" class="bi bi-star"></i>';
+        };
+        return results;
+    };
     
-    $(document).on('click', '.add-to-compare', function(){
-        var this_btn = $(this)
+
+    $(document).on('mouseenter mouseleave touchstart', '.give-rating [index]', function(){
+        var rateing_index = parseInt($(this).attr('index'));
+        $('.give-rating').html(rating_generator(rateing_index))
+    });
+
+
+    function review_tmp(data){
+        return  '<div class="show-rating">'+
+                    '<span> 5 out of '+data?.building_info?.average_rating+' </span>'+
+                    '<span label-name="rating">'+
+                        rating_generator(data?.building_info?.average_rating || 0)+
+                    '</span>'+
+                    '<p>Based on <b>'+data?.building_info?.total_reviews+' Review</b></p>'+
+                '</div>'+
+                (
+                    !data?.building_info?.is_reviewed ?
+                    ('<div class="review-submit-area">'+
+                        '<div class="give-rating">'+
+                            '<i index="1" class="bi bi-star"></i>'+
+                            '<i index="2" class="bi bi-star"></i>'+
+                            '<i index="3" class="bi bi-star"></i>'+
+                            '<i index="4" class="bi bi-star"></i>'+
+                            '<i index="5" class="bi bi-star"></i>'+
+                        '</div>'+
+                        '<textarea placeholder="Type here ..." class="give-review" rows="7"></textarea>'+
+                        '<div class="d-flex justify-content-center">'+
+                            '<button class="link review-submit-btn"> Submit </button>'+
+                        '</div>'+
+                    '</div>') : ''
+                )
+    };
+
+
+    $(document).on('click', '.review-submit-btn', function(){
+        var review_text = $('.give-review').val();
+
+        if(review_text.trim() == '' && rating_num == 0){
+            console.log("no access")
+            return;
+        };
 
         $.ajax({
-            url: ADD_COMPARE_API_URL,
+            url: '/building/api/review/create/',
             type: 'POST',
-            data : {
-                property : PROPERTY_ID,
+            data: { 
+                building : building_id,
+                review_text : review_text,
+                rating : rating_num
             },
             headers: {
                 'X-CSRFToken': csrfToken,
             },
             success : function (data) {
-                this_btn.attr('added', 'true')
+                console.log("data", data);
+                
+                $('.review-submit-area').remove();
+                $('.view-the-reviews').prepend(show_review_tmp(data));
+            },
+            error: function (error) {
+                console.log("error")
+            }
+        });
+    });
+
+
+    function show_review_tmp(data){
+        var created_at = new Date(data?.created_at)
+        var created_date = dayjs(created_at).format('h:mm A, DD MMM (YYYY)');
+
+        return  '<div class="view-the-reviews-box">'+
+                    '<div class="d-flex align-items-center mb-1">'+
+                        '<span class="given-reviews-rate">'+
+                            rating_generator(data?.rating) +
+                        '</span>'+
+                        '<span class="given-reviews-person"> '+
+                            '<b>'+data?.reviewer_details?.fullname+'</b>, '+
+                            created_date +
+                        '</span>'+
+                    '</div>'+
+                    '<p class="reviews-content">'+
+                        data?.review_text +
+                    '</p>'+
+                '</div>'
+    };
+
+
+    function get_review_list(building_id){
+        $.ajax({
+            url: '/building/api/review/list/',
+            type: 'GET',
+            data : {
+                building_id : building_id,
+                page_size : 5,
+                page : rating_next
+            },
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            success : function (data) {
+                rating_next = data?.next;
+                var review_dom = '';
+                for (let i = 0; i < data?.results.length; i++) {
+                    review_dom += show_review_tmp(data?.results[i])
+                };
+
+                $('.view-the-reviews').append(review_dom);
+                if(!data?.next){
+                    $('.load-more-reviews').remove();
+                };
             },
             error: function (error) {
                 console.log("error")
             }
         })
-    });
+    };
 
 });

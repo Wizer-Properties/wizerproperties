@@ -449,9 +449,15 @@ body[img-gallery-open="true"] .img-gallery-dialog{
 }
 
 .show-rating span{
-    font-size: 28px;
+    font-size: 18px;
     color: #484848;
     font-weight: bold;
+}
+
+.show-rating p{
+    color: #9A959E;
+    margin: 0;
+    font-size: 15px;
 }
 
 [label-name="rating"]{
@@ -463,11 +469,16 @@ body[img-gallery-open="true"] .img-gallery-dialog{
     color: #ffd350;
 }
 
+.review-submit-area{
+    margin-top: 25px;
+}
+
 .give-rating{
     display: flex;
     justify-content: center;
-    margin-top: 35px;
-    font-size: 24px;
+    font-size: 32px;
+    gap: 5px;
+    color: #ffd350;
 }
 
 .give-review{
@@ -476,12 +487,49 @@ body[img-gallery-open="true"] .img-gallery-dialog{
     display: block;
     border: 1px solid #b4b4b4;
     border-radius: 5px;
-    margin-top: 25px;
+    margin: 15px 0;
     padding: 8px;
 }
 
 .add-to-favorite{
     margin-left: 5px;
+}
+
+.review-submit-btn{
+    border: none;
+    font-size: 17px !important;
+    padding: 8px 40px !important;
+}
+
+.given-reviews-rate{
+    display: flex;
+    font-size: 16px;
+    color: #ffd350;
+    margin-right: 5px;
+}
+
+.given-reviews-person{
+    font-size: 14px;
+}
+
+.reviews-content{
+    font-size: 14px;
+    margin: 0;
+    color: #9A959E;
+}
+
+.view-the-reviews-box{
+    margin-top: 25px;
+}
+
+.load-more-reviews{
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.load-more-reviews button{
+    border: none;
 }
 
 @media screen and (max-width : 991px) {

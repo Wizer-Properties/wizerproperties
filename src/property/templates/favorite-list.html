@@ -30,6 +30,9 @@
 
 
 {% block extend_script %}
+<script>
+    var favorite_removable = true;
+</script>
 <script src="{% static '/js/property/compair-favorite.js' %}?v=1.00"></script>
 <script src="{% static 'js/favorite-list.js' %}?v=1.00"></script>
 {% endblock extend_script %}

@@ -23,7 +23,10 @@ $(document).ready(function(){
     $(document).on('click', '.add-to-compare[added="true"]', function(){
         var this_btn = $(this)
         $.ajax({
-            url: '/property/api/compare/delete/'+$(this).attr('index')+'/',
+            url: '/property/api/compare/delete/',
+            data: {
+                property : this_btn.attr('index')
+            },
             type: 'DELETE',
             headers: {
                 'X-CSRFToken': csrfToken,
@@ -63,7 +66,7 @@ $(document).ready(function(){
     $(document).on('click', '.add-to-favorite[added="true"]', function(){
         var this_btn = $(this)
         $.ajax({
-            url: '/property/api/prospect-favorite/remove/'+$(this).attr('index')+'/',
+            url: '/property/api/prospect-favorite/remove/',
             data : {
                 property : $(this).attr('index')
             },
@@ -72,7 +75,11 @@ $(document).ready(function(){
                 'X-CSRFToken': csrfToken,
             },
             success : function (data) {
-                this_btn.attr('added', 'false')
+                this_btn.attr('added', 'false');
+
+                if(favorite_removable){
+                    this_btn.parents('.property-single-box').remove();
+                };
             },
             error: function (error) {
                 console.log("error")

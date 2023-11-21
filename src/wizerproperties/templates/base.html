@@ -21,7 +21,7 @@
 
 <body>
     <main>
-        {% if user.is_authenticated and user.is_complete_profile %}
+        
 
         {% url 'user:profile_settings' as profile_settings_url %}
         {% url 'building:create' as create_building_url %}
@@ -38,19 +38,24 @@
                                 <img src="{% static 'media/logo.png' %}" alt="logo">
                             </a>
                         </div>
-                        <a class="nav-link {% if request.path == '/' %}active-nav{% endif %}"
-                            href="/">Dashboard</a>
-                        {% if request.user.user_type == "developer" or request.user.user_type == "agent" %}
-                        <a class="nav-link {% if request.path == create_building_url %}active-nav{% endif %}"
-                            href="{{ create_building_url }}">Building</a>
-                        <a class="nav-link {% if request.path == create_property_url %}active-nav{% endif %}"
-                            href="{{ create_property_url }}">Property</a>
+                        {% if user.is_authenticated and user.is_complete_profile %}
+                            <a class="nav-link {% if request.path == '/' %}active-nav{% endif %}"
+                                href="/">Dashboard</a>
+                            {% if request.user.user_type == "developer" or request.user.user_type == "agent" %}
+                            <a class="nav-link {% if request.path == create_building_url %}active-nav{% endif %}"
+                                href="{{ create_building_url }}">Building</a>
+                            <a class="nav-link {% if request.path == create_property_url %}active-nav{% endif %}"
+                                href="{{ create_property_url }}">Property</a>
+                            {% endif %}
                         {% endif %}
+                        
                         <div class="search-box">
                             <i class="bi bi-search"></i>
                             <input id="gm-search-input" type="text" placeholder="Search by location" />
                         </div>
                     </div>
+
+                    {% if user.is_authenticated and user.is_complete_profile %}
 
                     <div class="navigation-right-side">
                         <div class="profile-dropdown">
@@ -94,13 +99,16 @@
                             <span></span>
                         </div>
                     </div>
+
+                    {% endif %}
+
                 </div>
             </div>
 
             <div class="side-nav-overflow"></div>
             <div class="side-nav"></div>
         </header>
-        {% endif %}
+        
 
 
 
@@ -131,7 +139,6 @@
         </div>
     </div>
 
-    {% if user.is_authenticated and user.is_complete_profile %}
     <footer>
         <div class="container">
             <div class="footer-content-area">
@@ -160,7 +167,6 @@
             </p>
         </div>
     </footer>
-    {% endif %}
 </body>
 
 

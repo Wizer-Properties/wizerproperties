@@ -121,7 +121,7 @@ $(document).ready(function(){
                             ' Compare'+
                         '</button>'+
 
-                        '<button class="add-to-favorite" added="'+data?.is_compared+'" index="'+data?.id+'">'+
+                        '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'">'+
                             '<i class="bi bi-heart-fill"></i>'+
                             '<i class="bi bi-heart"></i>'+
                             ' Favorite'+

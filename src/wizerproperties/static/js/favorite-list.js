@@ -66,13 +66,13 @@ $(document).ready(function(){
 
         return  '<div class="col-sm-6 col-lg-4 col-xl-3 mb-4 property-single-box">'+
                     '<div class="banner-action-button">'+
-                        '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+value?.id+'">'+
+                        '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+value?.property_info?.id+'">'+
                             '<i class="bi bi-arrow-left-right"></i>'+
                             '<i class="bi bi-check-circle-fill"></i>'+
                             ' Compare'+
                         '</button>'+
 
-                        '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+value?.id+'">'+
+                        '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+value?.property_info?.id+'">'+
                             '<i class="bi bi-heart-fill"></i>'+
                             '<i class="bi bi-heart"></i>'+
                             ' Favorite'+

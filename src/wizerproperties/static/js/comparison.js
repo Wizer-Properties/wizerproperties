@@ -55,7 +55,7 @@ $(document).ready(function(){
 
     function comparison_tmp(data){
         return  '<div class="splide__slide comparison-slider-box">'+
-                    '<button class="remove-from-comparison" index="'+data?.id+'" >'+
+                    '<button class="remove-from-comparison" index="'+data?.property_info?.id+'" >'+
                         '<i class="bi bi-x-lg"></i>'+
                     '</button>'+
                     '<div class="comparison-img-icon-box">'+
@@ -158,7 +158,10 @@ $(document).ready(function(){
     $(document).on('click', '.remove-from-comparison', function(){
         var get_id = $(this).attr('index')
         $.ajax({
-            url: COMPARISON_REMOVE_API_URL+get_id+'/',
+            url: COMPARISON_REMOVE_API_URL,
+            data : {
+                property : get_id,
+            },
             type: 'DELETE',
             headers: {
                 'X-CSRFToken': csrfToken,
