@@ -19,6 +19,7 @@ class BuildingSerializer(serializers.ModelSerializer):
     videos = serializers.FileField(allow_empty_file=False, write_only=True)
     default_image = serializers.URLField(source="default_image_url", read_only=True)
     created_by = serializers.SerializerMethodField()
+    is_reviewed = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Building
@@ -45,6 +46,7 @@ class BuildingSerializer(serializers.ModelSerializer):
             "have_grocery",
             "have_fitness_area",
             "is_active",
+            "is_reviewed",
             "created_by",
             "images",
             "floor_plans",
@@ -212,7 +214,7 @@ class BuildingReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BuildingReview
-        fields = ["id", "building", "rating", "review_text", "reviewer_details"]
+        fields = ["id", "building", "rating", "review_text", "reviewer_details", "created_at"]
         extra_kwargs = {
             "rating": {"required": True, "allow_null": False},
             "review_text": {"required": True, "allow_null": False},

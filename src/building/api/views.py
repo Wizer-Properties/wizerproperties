@@ -1,4 +1,4 @@
-from django.db.models import OuterRef, Subquery, Value, F, CharField
+from django.db.models import OuterRef, Subquery, Value, F, CharField, When, Case, BooleanField
 from django.db.models.functions import Concat
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -18,6 +18,8 @@ class BuildingViewSet(viewsets.ModelViewSet):
     ordering = ["-created_at"]  # Default ordering
 
     def get_queryset(self):
+        user = self.request.user
+
         queryset = Building.objects.annotate(
             default_image_url=Subquery(
                 BuildingMedia.objects.filter(building=OuterRef("pk"), type="image")
@@ -25,6 +27,19 @@ class BuildingViewSet(viewsets.ModelViewSet):
                 .values("full_file_url")[:1]
             )
         )
+
+        if self.request.method == "GET":
+            queryset = queryset.annotate(
+                # Annotate is_reviewed based on whether the building is in the user's review list
+                is_reviewed=Case(
+                    When(buildingreview__user=user, then=Value(True)),
+                    default=Value(False),
+                    output_field=BooleanField(),
+                )
+                if user.is_authenticated and hasattr(user, "prospectprofile")
+                # If the user is not authenticated and prospect, set is_compared to False for all properties
+                else Value(False, output_field=BooleanField()),
+            )
         return queryset
 
     def get_serializer_context(self):
