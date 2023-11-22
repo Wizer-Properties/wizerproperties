@@ -48,7 +48,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
             )
             if user.is_authenticated and hasattr(user, "prospectprofile")
             # If the user is not authenticated, set is_compared to False for all properties
-            else Value(False, output_field=BooleanField()),
+            else Value(None, output_field=CharField()),
             # Annotate is_favorited based on whether the property is in the user's favorite list
             is_favorited=Case(
                 When(prospectfavoriteproperty__prospect=user.prospectprofile, then=Value(True)),
@@ -57,7 +57,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
             )
             if user.is_authenticated and hasattr(user, "prospectprofile")
             # If the user is not authenticated, set is_favorited to False for all properties
-            else Value(False, output_field=BooleanField()),
+            else Value(None, output_field=CharField()),
         )
 
         return queryset
