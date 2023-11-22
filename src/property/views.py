@@ -5,7 +5,7 @@ from .models import Property
 
 
 def prepare_property_context(request, id=None):
-    buildings = Building.objects.filter(created_by=request.user)
+    buildings = Building.objects.filter(is_active=True)
     property = get_object_or_404(Property, pk=id) if id else None
     images = property.media_files.filter(type="image") if property else []
     videos = property.media_files.filter(type="video") if property else []

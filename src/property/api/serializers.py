@@ -95,7 +95,7 @@ class PropertySerializer(serializers.ModelSerializer):
                         default=False,
                         output_field=BooleanField(),
                     )
-                    if self.request
+                    if self.request and self.request.user.is_authenticated and hasattr(self.request.user, "prospectprofile")
                     else Value(None, output_field=CharField()),
                     average_rating=Avg("buildingreview__rating"),
                     total_reviews=Count("buildingreview"),
