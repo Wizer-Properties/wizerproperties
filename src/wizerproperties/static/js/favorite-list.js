@@ -184,11 +184,25 @@ $(document).ready(function(){
                 last_property_box = $('.property-single-box').last();
 
                 $('.searching-loader').remove();
+
+                if(new_data?.length == 0){
+                    $('#favorite-list').html('<p style="font-size: 20px; text-align:center;"><i class="bi bi-dropbox"></i> &nbsp;  No data available </p>')
+                    $('#favorite-list').css({
+                        'display' : 'grid',
+                        'place-items' : 'center',
+                        'min-height' : '400px'
+                    })
+                };
             },
             error: function (error) {
                 active_free_scrolling = false;
                 $('.searching-loader').remove();
-                console.log("error")
+                $('#favorite-list').html('<p style="font-size: 20px; text-align:center;"> <i class="bi bi-exclamation-diamond"></i>  &nbsp; Something is wrong </p>')
+                $('#favorite-list').css({
+                    'display' : 'grid',
+                    'place-items' : 'center',
+                    'min-height' : '400px'
+                })
             }
         });
     };

@@ -169,6 +169,13 @@
     </footer>
 </body>
 
+<script>
+    {% if request.user.is_authenticated %}
+        var user_type = '{{request.user.user_type}}'
+    {% else %}
+        var user_type = false
+    {% endif %}
+</script>
 
 <script src="{% static 'js/libraries/jquery.min.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>

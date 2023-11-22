@@ -25,6 +25,11 @@ $(document).ready(function(){
                 $('.add-to-compare').attr('index', data?.id);
                 $('.add-to-favorite').attr('index', data?.id);
 
+                if( ['agent', 'developer'].includes(user_type)){
+                    $('.add-to-compare').remove();
+                    $('.add-to-favorite').remove();
+                };
+
                 $('[label-name="title"]').html(data?.title)
                 $('[label-name="unit_id"]').html(data?.unit_id)
                 $('[label-name="price"]').html('฿ '+ Math.floor(data?.price))
@@ -531,14 +536,14 @@ $(document).ready(function(){
 
     function review_tmp(data){
         return  '<div class="show-rating">'+
-                    '<span> 5 out of '+data?.building_info?.average_rating+' </span>'+
+                    '<span> 5 out of '+(data?.building_info?.average_rating || 0)+' </span>'+
                     '<span label-name="rating">'+
                         rating_generator(data?.building_info?.average_rating || 0)+
                     '</span>'+
                     '<p>Based on <b>'+data?.building_info?.total_reviews+' Review</b></p>'+
                 '</div>'+
                 (
-                    !data?.building_info?.is_reviewed ?
+                    (!data?.building_info?.is_reviewed && user_type == 'prospect') ?
                     ('<div class="review-submit-area">'+
                         '<div class="give-rating">'+
                             '<i index="1" class="bi bi-star"></i>'+
@@ -551,18 +556,32 @@ $(document).ready(function(){
                         '<div class="d-flex justify-content-center">'+
                             '<button class="link review-submit-btn"> Submit </button>'+
                         '</div>'+
+                        '<div class="review-warrning-text"></div>'+
                     '</div>') : ''
                 )
     };
 
 
-    $(document).on('click', '.review-submit-btn', function(){
-        var review_text = $('.give-review').val();
 
-        if(review_text.trim() == '' && rating_num == 0){
-            console.log("no access")
+    var sending_review = false;
+    $(document).on('click', '.review-submit-btn', function(){
+        if(sending_review) return;
+        $('.review-warrning-text').html('');
+        var review_text = $('.give-review').val();
+        var _this = $(this);
+        var get_html = $(this).html();
+
+        if(rating_num == 0){
+            $('.review-warrning-text').append('<p> Give rating </p>');
             return;
         };
+
+        if(review_text.trim() == ''){
+            $('.review-warrning-text').append('<p> Review text is empty </p>');
+            return;
+        };
+
+        sending_review = true;
 
         $.ajax({
             url: '/building/api/review/create/',
@@ -575,14 +594,17 @@ $(document).ready(function(){
             headers: {
                 'X-CSRFToken': csrfToken,
             },
-            success : function (data) {
-                console.log("data", data);
-                
+            beforeSend : function (){
+                var loader_file = '<img src="/static/media/loader.svg" alt="loading...">';
+                _this.html(loader_file);
+            },
+            success : function (data) {                
                 $('.review-submit-area').remove();
                 $('.view-the-reviews').prepend(show_review_tmp(data));
             },
             error: function (error) {
                 console.log("error")
+                _this.html(get_html)
             }
         });
     });
@@ -631,6 +653,8 @@ $(document).ready(function(){
                 $('.view-the-reviews').append(review_dom);
                 if(!data?.next){
                     $('.load-more-reviews').remove();
+                }else{
+                    $('.load-more-reviews').html('<button class="link"> Load More </button>')
                 };
             },
             error: function (error) {

@@ -397,12 +397,12 @@ body[img-gallery-open="true"] .img-gallery-dialog{
 .banner-action-button{
     display: flex;
     position: absolute;
-    left: 0;
-    top: 0;
+    left: -8px;
+    top: 10px;
     z-index: 9;
     justify-content: flex-start;
-    padding-top: 30px;
-    padding-left: 10px;
+    padding: 10px;
+    flex-wrap: wrap;
 }
 
 .banner-action-button button{
@@ -411,6 +411,16 @@ body[img-gallery-open="true"] .img-gallery-dialog{
     font-size: 13px;
     padding: 5px 10px;
     border: none;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    min-width: 80px;
+    gap: 3px;
+    align-items: center;
+}
+
+.banner-action-button button img{
+    width: 17px;
 }
 
 .add-to-compare .bi-check-circle-fill{
@@ -499,6 +509,11 @@ body[img-gallery-open="true"] .img-gallery-dialog{
     border: none;
     font-size: 17px !important;
     padding: 8px 40px !important;
+    min-width: 133px;
+}
+
+.review-submit-btn img{
+    width: 25px;
 }
 
 .given-reviews-rate{
@@ -530,6 +545,13 @@ body[img-gallery-open="true"] .img-gallery-dialog{
 
 .load-more-reviews button{
     border: none;
+}
+
+.review-warrning-text p{
+    font-size: 14px;
+    margin: 0;
+    margin-top: 5px;
+    color: red;
 }
 
 @media screen and (max-width : 991px) {

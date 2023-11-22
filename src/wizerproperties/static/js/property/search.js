@@ -113,19 +113,27 @@ $(document).ready(function(){
 
 
     function property_list_tmp(data){
-        return  '<div class="col-lg-6 mb-4 property-single-box">'+
-                    '<div class="banner-action-button">'+
-                        '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
-                            '<i class="bi bi-arrow-left-right"></i>'+
-                            '<i class="bi bi-check-circle-fill"></i>'+
-                            ' Compare'+
-                        '</button>'+
+        if( ['agent', 'developer'].includes(user_type) ){
+            $('.add-to-compare').remove();
+            $('.add-to-favorite').remove();
+        };
 
-                        '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'">'+
-                            '<i class="bi bi-heart-fill"></i>'+
-                            '<i class="bi bi-heart"></i>'+
-                            ' Favorite'+
-                        '</button>'+
+        return  '<div class="col-lg-6 mb-4 property-single-box">'+
+                    '<div class="banner-action-button col-4">'+
+                        (
+                            !['agent', 'developer'].includes(user_type) ?
+                            '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
+                                '<i class="bi bi-arrow-left-right"></i>'+
+                                '<i class="bi bi-check-circle-fill"></i>'+
+                                ' Compare'+
+                            '</button>'+
+
+                            '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'">'+
+                                '<i class="bi bi-heart-fill"></i>'+
+                                '<i class="bi bi-heart"></i>'+
+                                ' Favorite'+
+                            '</button>' : ''
+                        ) +
                     '</div>'+
                     '<a href="/property/details/'+data?.id+'/" class="search-result-box-wrapper">'+
                         '<div class="row">'+
