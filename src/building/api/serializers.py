@@ -120,8 +120,12 @@ class BuildingSerializer(serializers.ModelSerializer):
 
     def get_fields(self):
         fields = super().get_fields()
+        # Remove unwanted fields during create and update
         if self.request and self.request.method in ["POST", "PUT", "PATCH"]:  # Check request method
-            fields.pop("default_image", None)  # Remove default_image field during create and update
+            fields.pop("default_image", None)
+            fields.pop("is_reviewed", None)
+            fields.pop("average_rating", None)
+            fields.pop("total_reviews", None)
         return fields
 
     def get_media_files(self, request):
