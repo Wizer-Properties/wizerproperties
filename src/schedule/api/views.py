@@ -14,6 +14,7 @@ class VisitingScheduleViewSet(viewsets.ModelViewSet):
     permission_classes = [VisitingSchedulePermission]
     pagination_class = None
     http_method = ["POST", "GET", "PATCH"]
+    ordering = ["-created_at"]  # Default ordering
 
     def get_queryset(self):
         schedule_qs = None
