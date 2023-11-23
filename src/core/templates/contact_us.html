@@ -3,7 +3,7 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Comparison</title>
+<title>Contact</title>
 <link rel="stylesheet" href="{% static '/css/contact.css' %}?v=1.00" />
 {% endblock extend_head %}
 
@@ -11,7 +11,64 @@
 
 
 <section>
-    contact page
+    <div class="container">
+
+        <div class="row position-relative contact-us-row">
+            <div class="col-md-4 contact-us-area contact-us-info">
+                <h1> Contact Info </h1>
+
+                <div class="contact-info-in-details">
+                    <i class="bi bi-geo-alt"></i>
+                    <span>
+                        Ayutthaya, Phra Nakhon Si Ayutthaya District, Thailand
+                    </span>
+                </div>
+
+                <div class="contact-info-in-details">
+                    <i class="bi bi-envelope-at"></i>
+                    <span>
+                        jhon@doe.com
+                    </span>
+                </div>
+
+                <div class="contact-info-in-details">
+                    <i class="bi bi-telephone"></i>
+                    <span>
+                        +60 xxxxxxxx
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-9 ms-auto contact-us-area">
+                <div class="col-md-10 ms-auto">
+                    <h1> Send a message </h1>
+
+                    <div class="contact-form">
+                        <div class="row">
+                            <div class="col-12">
+                                <label> Email Address </label>
+                                <input type="email" name="" placeholder="E.g. jhon@doe.com">
+                            </div>
+    
+                            <div class="col-12">
+                                <label> Subject </label>
+                                <input type="text" name="" placeholder="E.g. This is for...">
+                            </div>
+    
+                            <div class="col-12">
+                                <label> Write Your Message Here </label>
+                                <textarea name="" rows="5" placeholder="E.g. Hello..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="submit-button">
+                            <button class="link"> Submit </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </section>
 
 
