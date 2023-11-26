@@ -1,4 +1,4 @@
-from django.db.models import OuterRef, Subquery, Value, F, CharField, When, Case, BooleanField
+from django.db.models import OuterRef, Subquery, Value, F, CharField, Exists, BooleanField
 from django.db.models.functions import Concat
 from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
@@ -41,23 +41,15 @@ class PropertyViewSet(viewsets.ModelViewSet):
                 .values("full_file_url")[:1]
             ),
             # Annotate is_compared based on whether the property is in the user's comparison list
-            is_compared=Case(
-                When(compareproperty__user=user, then=Value(True)),
-                default=Value(False),
-                output_field=BooleanField(),
-            )
+            is_compared=Exists(CompareProperty.objects.filter(user=user, property=OuterRef("pk")))
             if user.is_authenticated and hasattr(user, "prospectprofile")
-            # If the user is not authenticated, set is_compared to False for all properties
-            else Value(None, output_field=CharField()),
+            else Value(None, output_field=BooleanField()),
             # Annotate is_favorited based on whether the property is in the user's favorite list
-            is_favorited=Case(
-                When(prospectfavoriteproperty__prospect=user.prospectprofile, then=Value(True)),
-                default=Value(False),
-                output_field=BooleanField(),
+            is_favorited=Exists(
+                ProspectFavoriteProperty.objects.filter(prospect=user.prospectprofile, property=OuterRef("pk"))
             )
             if user.is_authenticated and hasattr(user, "prospectprofile")
-            # If the user is not authenticated, set is_favorited to False for all properties
-            else Value(None, output_field=CharField()),
+            else Value(None, output_field=BooleanField()),
         )
 
         return queryset
@@ -118,7 +110,7 @@ class ComparePropertyViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-    
+
     def perform_destroy(self, serializer):
         # Get the property from the request data
         property = self.request.data.get("property")
@@ -163,7 +155,9 @@ class ProspectFavoritePropertyViewSet(viewsets.ModelViewSet):
 
         # Try to get and delete the CompareProperty instance based on prospect and property
         try:
-            compare_property = ProspectFavoriteProperty.objects.get(prospect=self.request.user.prospectprofile, property=property)
+            compare_property = ProspectFavoriteProperty.objects.get(
+                prospect=self.request.user.prospectprofile, property=property
+            )
             compare_property.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except CompareProperty.DoesNotExist:
