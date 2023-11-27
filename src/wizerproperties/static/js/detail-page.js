@@ -33,6 +33,10 @@ $(document).ready(function(){
                 $('[label-name="title"]').html(data?.title)
                 $('[label-name="unit_id"]').html(data?.unit_id)
                 $('[label-name="price"]').html('฿ '+ Math.floor(data?.price))
+                $('[label-name="build-max-min-price"]').html(
+                    '฿ '+Math.floor(data?.building_info?.lowest_price) +' - '+ 
+                    Math.floor(data?.building_info?.highest_price)
+                )
                 $('[label-name="number_of_bedroom"]').html(data?.number_of_bedroom)
                 $('[label-name="number_of_bathroom"]').html(data?.number_of_bathroom)
                 $('[label-name="unit_area"]').html(data?.unit_area + ' SqM')
@@ -62,6 +66,7 @@ $(document).ready(function(){
                 $('[label-name="company_address"').html(data?.building_info?.created_by?.company_address)
                 $('[label-name="phone_number"]').html('<a href="tel:'+data?.building_info?.created_by?.phone_number+'">'+data?.building_info?.created_by?.phone_number+'</a>')
                 $('[label-name="email"]').html('<a href="mailto:'+data?.building_info?.created_by?.email+'">'+data?.building_info?.created_by?.email+'</a>')
+                $('[label-name="building_details_button"]').html('<a href="/building/details/'+data?.building_info?.id+'/" class="link"> View Building </a>')
 
                 // Facilities ==============
                 facilities_void(data?.building_info);

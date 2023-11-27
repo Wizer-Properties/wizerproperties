@@ -7,6 +7,9 @@
     display: flex;
     justify-content: space-between;
     font-size: 22px;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
 }
 
 #details-banner address,
@@ -118,6 +121,10 @@
     font-weight: bold;
 }
 
+.property-info-area{
+    margin-bottom: 35px;
+}
+
 .info-list-box{
     border-bottom: 1px dashed #e8e9ea;
     padding: 5px 0;
@@ -137,7 +144,7 @@
 
 .info-list{
     position: relative;
-    margin-bottom: 35px;
+    margin-bottom: 15px;
 }
 
 .info-list::before{
@@ -156,8 +163,11 @@
     margin-bottom: 10px;
 }
 
-.building-details{
-    margin-bottom: 25px;
+.building-details,
+.facilities-area,
+#available-units,
+#review{
+    margin-bottom: 45px;
 }
 
 .building-img-gallery img{
@@ -214,10 +224,6 @@
     font-size: 15px;
 }
 
-.facilities-area{
-    margin-bottom: 25px;
-}
-
 .contact-info-list-btn a{
     display: flex;
     font-size: 15px;
@@ -267,10 +273,6 @@
 #available-units .page-link{
     color: #726E6E !important;
     cursor: pointer;
-}
-
-#available-units{
-    margin-bottom: 35px;
 }
 
 .side-box-info{
@@ -448,10 +450,6 @@ body[img-gallery-open="true"] .img-gallery-dialog{
     display: none;
 }
 
-#review{
-    margin-bottom: 35px;
-}
-
 .review-writing-area{
     padding: 15px;
     border: 1px dashed #ffd350cc;
@@ -594,7 +592,7 @@ body[img-gallery-open="true"] .img-gallery-dialog{
     }
 
     .contact-info-side-box{
-        margin-bottom: 35px;
+        margin-bottom: 45px;
     }
 
     .side-box-info{
@@ -616,6 +614,7 @@ body[img-gallery-open="true"] .img-gallery-dialog{
 
     .title-perice-area{
         flex-direction: column;
+        gap: 0;
     }
 
     .title-perice-area .price{
