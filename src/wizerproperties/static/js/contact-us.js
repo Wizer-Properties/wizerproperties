@@ -7,6 +7,10 @@ $(document).ready(function(){
         var get_body = $('[name="body"]').val();
         var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+        if($('.alert').length > 0){
+            $('.alert').remove()
+        };
+
         $('.warrning-text').html('');
         if(
             get_email.trim() == '' ||
@@ -33,7 +37,7 @@ $(document).ready(function(){
             body : get_body
         };
 
-        sending_message(data, $(this))
+        sending_message(data, $(this));
     });
 
 
@@ -51,13 +55,14 @@ $(document).ready(function(){
             },
             success : function (data) {
                 submit_btn_dom.html('Submit');
-                $('.contact-form').prepend('<div class="alert alert-success" role="alert"> Your message succsesfully sent. </div>');
+                $('.contact-form').prepend('<div class="alert alert-success" role="alert"> Your message successfully sent. </div>');
                 $('[name="email"]').val('');
                 $('[name="subject"]').val('');
                 $('[name="body"]').val('');
             },
             error: function (error) {
                 submit_btn_dom.html('Submit');
+                $('.contact-form').prepend('<div class="alert alert-danger" role="alert"> Message could not be sent. Something is wrong. </div>');
             }
         });
     }
