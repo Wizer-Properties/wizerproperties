@@ -2,4 +2,12 @@ from django.contrib import admin
 
 from core.models import Contact
 
-admin.site.register(Contact)
+
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = [
+        "email",
+        "subject",
+        "body",
+    ]
+

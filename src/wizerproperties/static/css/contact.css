@@ -70,6 +70,23 @@
     border: none;
     font-size: 16px !important;
     padding: 10px 45px;
+    min-width: 140px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.warrning-text p{
+    color: #ff6969;
+    font-size: 14px;
+    margin: 0;
+    margin-top: 5px;
+}
+
+.submit-button button img{
+    width: 18px;
+    display: block;
+    margin-right: 5px;
 }
 
 @media screen and (max-width : 768px) {
