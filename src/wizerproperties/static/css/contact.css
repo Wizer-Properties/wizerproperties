@@ -97,6 +97,13 @@
     font-size: 15px !important;
 }
 
+.contact-us-section{
+    min-height: calc(100vh - 180px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 @media screen and (max-width : 768px) {
     .contact-us-area{
         padding-top: 50px;
