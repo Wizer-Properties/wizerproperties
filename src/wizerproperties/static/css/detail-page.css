@@ -97,7 +97,7 @@
 .property-short-info{
     display: flex;
     justify-content: center;
-    padding: 25px;
+    padding: 25px 0px 60px 0;
 }
 
 .property-short-info-box{
@@ -119,10 +119,6 @@
 .property-label{
     font-size: 15px;
     font-weight: bold;
-}
-
-.property-info-area{
-    margin-bottom: 35px;
 }
 
 .info-list-box{
@@ -166,8 +162,9 @@
 .building-details,
 .facilities-area,
 #available-units,
+.property-info-area,
 #review{
-    margin-bottom: 45px;
+    margin-bottom: 60px;
 }
 
 .building-img-gallery img{
@@ -592,7 +589,7 @@ body[img-gallery-open="true"] .img-gallery-dialog{
     }
 
     .contact-info-side-box{
-        margin-bottom: 45px;
+        margin-bottom: 60px;
     }
 
     .side-box-info{

@@ -118,7 +118,7 @@ $(document).ready(function(){
             $('.add-to-favorite').remove();
         };
 
-        return  '<div class="col-lg-6 mb-4 property-single-box">'+
+        return  '<div class="col-lg-6 mb-5 property-single-box">'+
                     '<div class="banner-action-button col-4">'+
                         (
                             !['agent', 'developer'].includes(user_type) ?
