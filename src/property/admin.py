@@ -1,7 +1,38 @@
 from django.contrib import admin
 from .models import Property, PropertyMedia, CompareProperty, ProspectFavoriteProperty
 
-admin.site.register(Property)
-admin.site.register(PropertyMedia)
-admin.site.register(CompareProperty)
-admin.site.register(ProspectFavoriteProperty)
+
+@admin.register(Property)
+class PropertyAdmin(admin.ModelAdmin):
+    list_display = [
+        "id",
+        "building",
+        "unit_id",
+        "title",
+        "price",
+        "price_per_sqm",
+        "floor_number",
+        "unit_area",
+        "number_of_bedroom",
+        "number_of_bathroom",
+        "number_of_balcony",
+        "number_of_car_parking",
+        "is_active",
+        "created_by",
+        "created_at",
+    ]
+
+
+@admin.register(PropertyMedia)
+class PropertyMediaAdmin(admin.ModelAdmin):
+    list_display = ["id", "type", "property", "created_at"]
+
+
+@admin.register(CompareProperty)
+class ComparePropertyAdmin(admin.ModelAdmin):
+    list_display = ["id", "user", "property", "created_at"]
+
+
+@admin.register(ProspectFavoriteProperty)
+class ProspectFavoritePropertyAdmin(admin.ModelAdmin):
+    list_display = ["id", "prospect", "property", "created_at"]
