@@ -40,7 +40,7 @@
                         </div>
                         {% if user.is_authenticated and user.is_complete_profile %}
                             <a class="nav-link {% if request.path == '/' %}active-nav{% endif %}"
-                                href="/">Dashboard</a>
+                                href="/dashboard">Dashboard</a>
                             {% if request.user.user_type == "developer" or request.user.user_type == "agent" %}
                             <a class="nav-link {% if request.path == create_building_url %}active-nav{% endif %}"
                                 href="{{ create_building_url }}">Building</a>
@@ -100,6 +100,13 @@
                         </div>
                     </div>
 
+                    {% endif %}
+
+                    {% if not user.is_authenticated %}
+                        <div class="d-flex">
+                            <a class="nav-link sign-up-btn" href="/user/get-started/">Sign Up</a>
+                            <a class="nav-link active-nav" href="/user/login/">Log In</a>
+                        </div>
                     {% endif %}
 
                 </div>

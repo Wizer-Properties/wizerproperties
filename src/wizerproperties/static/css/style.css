@@ -574,6 +574,10 @@ footer{
     width: max-content !important;
 }
 
+.splide__arrow{
+    background-color: #fff !important;
+}
+
 @media screen and (max-width: 768px) {
     .table-title{
         position: initial !important;

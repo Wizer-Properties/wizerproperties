@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block extend_head %}
+<title> Home </title>
+<link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
+<link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
+<link rel="stylesheet" href="{% static '/css/search-page.css' %}?v=1.00" />
+<link rel="stylesheet" href="{% static '/css/favorite-list.css' %}?v=1.00" />
+<link rel="stylesheet" href="{% static '/css/home.css' %}?v=1.00" />
+{% endblock extend_head %}
+
+{% block content %}
+<section class="banner">
+    <h1 class="banner-title"> Find a home in a neighborhood you love. </h1>
+    <img src="{% static '/media/background/banner.png' %}" alt="banner">
+</section>
+
+
+<section id="new-properties">
+    <div class="container">
+        <h1 class="slider-title">New properties for sale</h1>
+
+
+        <div class="splide new-properties-slider">
+            <div class="splide__track">
+                  <div class="splide__list">
+                  </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="popular-properties">
+    <div class="container">
+        <h1 class="slider-title">Popular properties for sale</h1>
+
+
+        <div class="splide popular-properties-slider">
+            <div class="splide__track">
+                  <div class="splide__list">
+                  </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<section id="contact-card">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 contact-cart-info-position">
+                <div class="contact-cart-info">
+                    <h1>Expert Agents</h1>
+                    <h1>Provide Expert Results</h1>
+                    <p>
+                        Movoto uses OJO's select agent network which consists of best-in-class real estate agents.
+                    </p>
+
+                    <div class="py-2"></div>
+
+                    <div class="d-flex justify-content-center">
+                        <a href="/contact/">Connect with an Agent Today</a>
+                    </div>
+
+                    <span>
+                        No obligation, no fuss. Just expert advice
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="contact-card-img">
+                    <img src="{% static '/media/background/dealing.png' %}" alt="dealing">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="popular-buildings">
+    <div class="container">
+        <h1 class="slider-title"> Popular Building </h1>
+
+
+        <div class="splide popular-buildings-slider">
+            <div class="splide__track">
+                  <div class="splide__list">
+                  </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="popular-city">
+    <div class="container">
+        <div class="popular-cities-gallery">
+            <div class="popular-cities-gallery-card">
+                <img src="{% static '/media/demo_img/a0.jpg' %}" alt="">
+                <a href="/property/search/?place=Any">
+                    <span>Location One</span>
+                </a>
+            </div>
+            <div class="popular-cities-gallery-card">
+                <img src="{% static '/media/demo_img/a1.jpg' %}" alt="">
+                <a href="/property/search/?place=Any">
+                    <span>Location Two</span>
+                </a>
+            </div>
+            <div class="popular-cities-gallery-card">
+                <img src="{% static '/media/demo_img/a2.jpg' %}" alt="">
+                <a href="/property/search/?place=Any">
+                    <span>Location Three</span>
+                </a>
+            </div>
+            <div class="popular-cities-gallery-card">
+                <img src="{% static '/media/demo_img/a3.jpg' %}" alt="">
+                <a href="/property/search/?place=Any">
+                    <span>Location Four</span>
+                </a>
+            </div>
+            <div class="popular-cities-gallery-card">
+                <img src="{% static '/media/demo_img/a4.jpg' %}" alt="">
+                <a href="/property/search/?place=Any">
+                    <span>Location Five</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}
+
+{% block extend_script %}
+<script src="{% static '/js/libraries/splide.min.js' %}"></script>
+<script src="{% static '/js/home.js' %}?v=1.00"></script>
+{% endblock extend_script %}

@@ -18,11 +18,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from core.views import dashboard, contact_page
+from core.views import dashboard, contact_page, home_page
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('', dashboard, name='dashboard'),
+    path('', home_page, name='home'),
+    path('dashboard/', dashboard, name='dashboard'),
     path('contact/', contact_page, name='contact'),
     path("user/", include(("user.urls", "user"), namespace="user")),
     path("building/", include(("building.urls", "building"), namespace="building")),
