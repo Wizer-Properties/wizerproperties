@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.core.exceptions import ValidationError
 from django.contrib.contenttypes.fields import GenericRelation
 from django.conf import settings
+from django.urls import reverse
 from core.models import TimestampedModel
 from utils.general_func import send_email
 
@@ -36,9 +37,16 @@ class VisitingSchedule(TimestampedModel):
 	def accept_schedule(self):
 		self.status = "accepted"
 		self.save()
+
+		# detail page
+		if self.content_type.model == "property":
+			detail_page = f"{settings.SITE_HOST}{reverse('property:get', kwargs={'id': self.object_id})}"
+		else:
+			detail_page = f"{settings.SITE_HOST}{reverse('building:get', kwargs={'id': self.object_id})}"
+  
 		context = {
 			"visiting_time": self.visiting_time.strftime("%d/%m/%Y %I:%M %p"),
-			"details_page": f"{settings.SITE_HOST}/schedule/api/{self.id}/"
+			"details_page": detail_page
 		}
 		send_email(
 		    subject="Builder has Approved Your Schedule Request",
@@ -51,9 +59,16 @@ class VisitingSchedule(TimestampedModel):
 	def cancel_schedule(self):
 		self.status = "cancelled"
 		self.save()
+  
+  		# detail page
+		if self.content_type.model == "property":
+			detail_page = f"{settings.SITE_HOST}{reverse('property:get', kwargs={'id': self.object_id})}"
+		else:
+			detail_page = f"{settings.SITE_HOST}{reverse('building:get', kwargs={'id': self.object_id})}"
+   
 		context = {
 			"visiting_time": self.visiting_time.strftime("%d/%m/%Y %I:%M %p"),
-			"details_page": f"{settings.SITE_HOST}/schedule/api/{self.id}/"
+			"details_page": detail_page
 		}
 		send_email(
 		    subject="Builder has Canceled Your Schedule Request",
