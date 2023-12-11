@@ -96,7 +96,7 @@ $(document).ready(function(){
             facility_tmp += '<span>Security</span>'
         };
 
-        if(data?.building_info?.have_lake_or_river_view){
+        if(data?.building_info?.have_river_view){
             facility_tmp += '<span>River View</span>'
         };
 
@@ -367,7 +367,7 @@ $(document).ready(function(){
     });
 
 
-    $(document).on('click', '[name="property-type"] button', function(){
+    $(document).on('click', '[name="property-type"] button, [name="property-quota"] button, [name="property-furnishing"] button', function(){
         filter_close_dropdown();
         $(this).parents('.filter-dropdown-mtl-buttons').find('button').attr('active', false);
 

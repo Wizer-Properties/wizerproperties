@@ -74,7 +74,7 @@ $(document).ready(function(){
                         '<li> '+data?.property_info?.number_of_car_parking+' </li>'+
                         '<li> '+data?.property_info?.unit_area+' </li>'+
                         '<li> '+data?.property_info?.floor_number+' </li>'+
-                        '<li> '+ facilities_tmp(data?.property_info?.building_info?.have_lake_or_river_view) +' </li>'+
+                        '<li> '+ facilities_tmp(data?.property_info?.building_info?.have_river_view) +' </li>'+
                         '<li> '+ facilities_tmp(data?.property_info?.building_info?.have_sky_lounge) +' </li>'+
                         '<li> '+ facilities_tmp(data?.property_info?.building_info?.have_guard_house) +' </li>'+
                         '<li> '+ facilities_tmp(data?.property_info?.building_info?.have_sauna) +' </li>'+

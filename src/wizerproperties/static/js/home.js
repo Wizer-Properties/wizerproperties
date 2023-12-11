@@ -16,7 +16,7 @@ $(document).ready(function(){
         "project_total_area": 123.0,
         "total_floors": 123,
         "construction_year": 1999,
-        "have_lake_or_river_view": true,
+        "have_river_view": true,
         "have_guard_house": false,
         "have_sauna": true,
         "have_sky_lounge": true,

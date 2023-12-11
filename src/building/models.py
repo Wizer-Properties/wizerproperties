@@ -1,7 +1,14 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
-from utils.general_data import BUILDING_TYPES, BUILDING_MEDIA_TYPES, ALLOWED_IMAGE_EXTENSIONS, ALLOWED_VIDEO_EXTENSIONS
+from utils.general_data import (
+    BUILDING_TYPES,
+    QUOTA_TYPES,
+    FURNISHING_TYPES,
+    BUILDING_MEDIA_TYPES,
+    ALLOWED_IMAGE_EXTENSIONS,
+    ALLOWED_VIDEO_EXTENSIONS,
+)
 from utils.general_func import validate_media_file_extension
 from core.models import TimestampedModel
 
@@ -24,7 +31,17 @@ class Building(TimestampedModel):
     project_total_area = models.FloatField(default=0, null=True, validators=[MinValueValidator(1)])
     total_floors = models.IntegerField(default=0, null=True, validators=[MinValueValidator(1)])
     construction_year = models.IntegerField(default=1930, null=True, validators=[MinValueValidator(1930)])
-    have_lake_or_river_view = models.BooleanField(default=False)
+    quota = models.CharField(max_length=100, choices=QUOTA_TYPES, null=True)
+    furnishing = models.CharField(max_length=100, choices=FURNISHING_TYPES, null=True)
+    have_freehold = models.BooleanField(default=False)
+    have_leasehold = models.BooleanField(default=False)
+    have_river_view = models.BooleanField(default=False)
+    have_unblocked_view = models.BooleanField(default=False)
+    have_city_view = models.BooleanField(default=False)
+    have_sea_view = models.BooleanField(default=False)
+    have_mountain_view = models.BooleanField(default=False)
+    have_infinity_pool = models.BooleanField(default=False)
+    have_pets_allowed = models.BooleanField(default=False)
     have_guard_house = models.BooleanField(default=False)
     have_sauna = models.BooleanField(default=False)
     have_sky_lounge = models.BooleanField(default=False)

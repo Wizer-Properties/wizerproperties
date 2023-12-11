@@ -426,6 +426,16 @@ paths:
           in: "formData"
           required: true
           type: "string"
+        - name: "quota"
+          description: "Choice will be 'thai' or 'foreign'."
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "furnishing"
+          description: "Choice will be 'partly' or 'fully'."
+          in: "formData"
+          required: true
+          type: "string"
         - name: "total_units_for_sale"
           in: "formData"
           required: true
@@ -457,29 +467,47 @@ paths:
           in: "formData"
           required: true
           type: "number"
-        - name: "have_lake_or_river_view"
+        - name: "have_freehold"
           in: "formData"
-          required: true
+          type: "boolean"
+        - name: "have_leasehold"
+          in: "formData"
+          type: "boolean"
+        - name: "have_river_view"
+          in: "formData"
+          type: "boolean"
+        - name: "have_unblocked_view"
+          in: "formData"
+          type: "boolean"
+        - name: "have_city_view"
+          in: "formData"
+          type: "boolean"
+        - name: "have_sea_view"
+          in: "formData"
+          type: "boolean"
+        - name: "have_mountain_view"
+          in: "formData"
+          type: "boolean"
+        - name: "have_infinity_pool"
+          in: "formData"
+          type: "boolean"
+        - name: "have_pets_allowed"
+          in: "formData"
           type: "boolean"
         - name: "have_guard_house"
           in: "formData"
-          required: true
           type: "boolean"
         - name: "have_sauna"
           in: "formData"
-          required: true
           type: "boolean"
         - name: "have_sky_lounge"
           in: "formData"
-          required: true
           type: "boolean"
         - name: "have_grocery"
           in: "formData"
-          required: true
           type: "boolean"
         - name: "have_fitness_area"
           in: "formData"
-          required: true
           type: "boolean"
         - name: "images"
           in: "formData"
@@ -557,11 +585,53 @@ paths:
           description: "Filtered by and choice will be 'condos' or 'house'."
           in: "query"
           type: "string"
+        - name: "quota"
+          description: "Choice will be 'thai' or 'foreign'."
+          in: "query"
+          required: true
+          type: "string"
+        - name: "furnishing"
+          description: "Choice will be 'partly' or 'fully'."
+          in: "query"
+          required: true
+          type: "string"
         - name: "province"
           description: "Filtered by"
           in: "query"
           type: "string"
-        - name: "have_lake_or_river_view"
+        - name: "have_freehold"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_leasehold"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_river_view"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_unblocked_view"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_city_view"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_sea_view"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_mountain_view"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_infinity_pool"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_pets_allowed"
           description: "Filtered by"
           in: "query"
           type: "boolean"
@@ -751,12 +821,26 @@ paths:
           in: "formData"
           required: true
           type: "string"
-        - name: "price"
+        - name: "lowest_price"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "highest_price"
           in: "formData"
           required: true
           type: "number"
         - name: "type"
           description: "Choice will be 'condos' or 'house'."
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "quota"
+          description: "Choice will be 'thai' or 'foreign'."
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "furnishing"
+          description: "Choice will be 'partly' or 'fully'."
           in: "formData"
           required: true
           type: "string"
@@ -791,29 +875,47 @@ paths:
           in: "formData"
           required: true
           type: "number"
-        - name: "have_lake_or_river_view"
+        - name: "have_freehold"
           in: "formData"
-          required: true
+          type: "boolean"
+        - name: "have_leasehold"
+          in: "formData"
+          type: "boolean"
+        - name: "have_river_view"
+          in: "formData"
+          type: "boolean"
+        - name: "have_unblocked_view"
+          in: "formData"
+          type: "boolean"
+        - name: "have_city_view"
+          in: "formData"
+          type: "boolean"
+        - name: "have_sea_view"
+          in: "formData"
+          type: "boolean"
+        - name: "have_mountain_view"
+          in: "formData"
+          type: "boolean"
+        - name: "have_infinity_pool"
+          in: "formData"
+          type: "boolean"
+        - name: "have_pets_allowed"
+          in: "formData"
           type: "boolean"
         - name: "have_guard_house"
           in: "formData"
-          required: true
           type: "boolean"
         - name: "have_sauna"
           in: "formData"
-          required: true
           type: "boolean"
         - name: "have_sky_lounge"
           in: "formData"
-          required: true
           type: "boolean"
         - name: "have_grocery"
           in: "formData"
-          required: true
           type: "boolean"
         - name: "have_fitness_area"
           in: "formData"
-          required: true
           type: "boolean"
         - name: "images"
           in: "formData"
@@ -1173,6 +1275,14 @@ paths:
           description: "Filtered by and choice will be 'condos' or 'house'."
           in: "query"
           type: "string"
+        - name: "building__quota"
+          description: "Filtered by and choice will be 'thai' or 'foreign'."
+          in: "query"
+          type: "string"
+        - name: "building__furnishing"
+          description: "Filtered by and choice will be 'partly' or 'fully'."
+          in: "query"
+          type: "string"
         - name: "number_of_bedroom"
           description: "Filtered by"
           in: "query"
@@ -1189,7 +1299,39 @@ paths:
           description: "Filtered by"
           in: "query"
           type: "number"
-        - name: "building__have_lake_or_river_view"
+        - name: "building__have_freehold"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_leasehold"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_river_view"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_unblocked_view"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_city_view"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_sea_view"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_mountain_view"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_infinity_pool"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_pets_allowed"
           description: "Filtered by"
           in: "query"
           type: "boolean"
@@ -2124,7 +2266,7 @@ definitions:
         type: "number"
       construction_year:
         type: "number"
-      have_lake_or_river_view:
+      have_river_view:
         type: "boolean"
       have_guard_house:
         type: "boolean"
@@ -2184,6 +2326,10 @@ definitions:
               type: "number"
             type:
               type: "string"
+            quota:
+              type: "string"
+            furnishing:
+              type: "string"
             total_units_for_sale:
               type: "number"
             province:
@@ -2200,7 +2346,23 @@ definitions:
               type: "number"
             construction_year:
               type: "number"
-            have_lake_or_river_view:
+            have_freehold:
+              type: "boolean"
+            have_leasehold:
+              type: "boolean"
+            have_river_view:
+              type: "boolean"
+            have_unblocked_view:
+              type: "boolean"
+            have_city_view:
+              type: "boolean"
+            have_sea_view:
+              type: "boolean"
+            have_mountain_view:
+              type: "boolean"
+            have_infinity_pool:
+              type: "boolean"
+            have_pets_allowed:
               type: "boolean"
             have_guard_house:
               type: "boolean"
@@ -2251,6 +2413,10 @@ definitions:
         type: "number"
       type:
         type: "string"
+      quota:
+        type: "string"
+      furnishing:
+        type: "string"
       total_units_for_sale:
         type: "number"
       province:
@@ -2267,7 +2433,23 @@ definitions:
         type: "number"
       construction_year:
         type: "number"
-      have_lake_or_river_view:
+      have_freehold:
+        type: "boolean"
+      have_leasehold:
+        type: "boolean"
+      have_river_view:
+        type: "boolean"
+      have_unblocked_view:
+        type: "boolean"
+      have_city_view:
+        type: "boolean"
+      have_sea_view:
+        type: "boolean"
+      have_mountain_view:
+        type: "boolean"
+      have_infinity_pool:
+        type: "boolean"
+      have_pets_allowed:
         type: "boolean"
       have_guard_house:
         type: "boolean"
@@ -2453,6 +2635,10 @@ definitions:
             type: "number"
           type:
             type: "string"
+          quota:
+            type: "string"
+          furnishing:
+            type: "string"
           total_units_for_sale:
             type: "number"
           province:
@@ -2469,7 +2655,23 @@ definitions:
             type: "number"
           construction_year:
             type: "number"
-          have_lake_or_river_view:
+          have_freehold:
+            type: "boolean"
+          have_leasehold:
+            type: "boolean"
+          have_river_view:
+            type: "boolean"
+          have_unblocked_view:
+            type: "boolean"
+          have_city_view:
+            type: "boolean"
+          have_sea_view:
+            type: "boolean"
+          have_mountain_view:
+            type: "boolean"
+          have_infinity_pool:
+            type: "boolean"
+          have_pets_allowed:
             type: "boolean"
           have_guard_house:
             type: "boolean"
@@ -2566,6 +2768,10 @@ definitions:
                   type: "number"
                 type:
                   type: "string"
+                quota:
+                  type: "string"
+                furnishing:
+                  type: "string"
                 total_units_for_sale:
                   type: "number"
                 province:
@@ -2582,7 +2788,23 @@ definitions:
                   type: "number"
                 construction_year:
                   type: "number"
-                have_lake_or_river_view:
+                have_freehold:
+                  type: "boolean"
+                have_leasehold:
+                  type: "boolean"
+                have_river_view:
+                  type: "boolean"
+                have_unblocked_view:
+                  type: "boolean"
+                have_city_view:
+                  type: "boolean"
+                have_sea_view:
+                  type: "boolean"
+                have_mountain_view:
+                  type: "boolean"
+                have_infinity_pool:
+                  type: "boolean"
+                have_pets_allowed:
                   type: "boolean"
                 have_guard_house:
                   type: "boolean"
@@ -2670,6 +2892,10 @@ definitions:
             type: "number"
           type:
             type: "string"
+          quota:
+            type: "string"
+          furnishing:
+            type: "string"
           total_units_for_sale:
             type: "number"
           province:
@@ -2686,7 +2912,23 @@ definitions:
             type: "number"
           construction_year:
             type: "number"
-          have_lake_or_river_view:
+          have_freehold:
+            type: "boolean"
+          have_leasehold:
+            type: "boolean"
+          have_river_view:
+            type: "boolean"
+          have_unblocked_view:
+            type: "boolean"
+          have_city_view:
+            type: "boolean"
+          have_sea_view:
+            type: "boolean"
+          have_mountain_view:
+            type: "boolean"
+          have_infinity_pool:
+            type: "boolean"
+          have_pets_allowed:
             type: "boolean"
           have_guard_house:
             type: "boolean"
@@ -2777,6 +3019,10 @@ definitions:
                 type: "number"
               type:
                 type: "string"
+              quota:
+                type: "string"
+              furnishing:
+                type: "string"
               total_units_for_sale:
                 type: "number"
               province:
@@ -2793,7 +3039,23 @@ definitions:
                 type: "number"
               construction_year:
                 type: "number"
-              have_lake_or_river_view:
+              have_freehold:
+                type: "boolean"
+              have_leasehold:
+                type: "boolean"
+              have_river_view:
+                type: "boolean"
+              have_unblocked_view:
+                type: "boolean"
+              have_city_view:
+                type: "boolean"
+              have_sea_view:
+                type: "boolean"
+              have_mountain_view:
+                type: "boolean"
+              have_infinity_pool:
+                type: "boolean"
+              have_pets_allowed:
                 type: "boolean"
               have_guard_house:
                 type: "boolean"
@@ -2893,6 +3155,10 @@ definitions:
                       type: "number"
                     type:
                       type: "string"
+                    quota:
+                      type: "string"
+                    furnishing:
+                      type: "string"
                     total_units_for_sale:
                       type: "number"
                     province:
@@ -2909,7 +3175,23 @@ definitions:
                       type: "number"
                     construction_year:
                       type: "number"
-                    have_lake_or_river_view:
+                    have_freehold:
+                      type: "boolean"
+                    have_leasehold:
+                      type: "boolean"
+                    have_river_view:
+                      type: "boolean"
+                    have_unblocked_view:
+                      type: "boolean"
+                    have_city_view:
+                      type: "boolean"
+                    have_sea_view:
+                      type: "boolean"
+                    have_mountain_view:
+                      type: "boolean"
+                    have_infinity_pool:
+                      type: "boolean"
+                    have_pets_allowed:
                       type: "boolean"
                     have_guard_house:
                       type: "boolean"
@@ -2994,6 +3276,10 @@ definitions:
                 type: "number"
               type:
                 type: "string"
+              quota:
+                type: "string"
+              furnishing:
+                type: "string"
               total_units_for_sale:
                 type: "number"
               province:
@@ -3010,7 +3296,23 @@ definitions:
                 type: "number"
               construction_year:
                 type: "number"
-              have_lake_or_river_view:
+              have_freehold:
+                type: "boolean"
+              have_leasehold:
+                type: "boolean"
+              have_river_view:
+                type: "boolean"
+              have_unblocked_view:
+                type: "boolean"
+              have_city_view:
+                type: "boolean"
+              have_sea_view:
+                type: "boolean"
+              have_mountain_view:
+                type: "boolean"
+              have_infinity_pool:
+                type: "boolean"
+              have_pets_allowed:
                 type: "boolean"
               have_guard_house:
                 type: "boolean"
@@ -3110,6 +3412,10 @@ definitions:
                       type: "number"
                     type:
                       type: "string"
+                    quota:
+                      type: "string"
+                    furnishing:
+                      type: "string"
                     total_units_for_sale:
                       type: "number"
                     province:
@@ -3126,7 +3432,23 @@ definitions:
                       type: "number"
                     construction_year:
                       type: "number"
-                    have_lake_or_river_view:
+                    have_freehold:
+                      type: "boolean"
+                    have_leasehold:
+                      type: "boolean"
+                    have_river_view:
+                      type: "boolean"
+                    have_unblocked_view:
+                      type: "boolean"
+                    have_city_view:
+                      type: "boolean"
+                    have_sea_view:
+                      type: "boolean"
+                    have_mountain_view:
+                      type: "boolean"
+                    have_infinity_pool:
+                      type: "boolean"
+                    have_pets_allowed:
                       type: "boolean"
                     have_guard_house:
                       type: "boolean"

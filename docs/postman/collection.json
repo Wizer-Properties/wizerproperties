@@ -53,6 +53,16 @@
 									"type": "text"
 								},
 								{
+									"key": "quota",
+									"value": "thai",
+									"type": "text"
+								},
+								{
+									"key": "furnishing",
+									"value": "fully",
+									"type": "text"
+								},
+								{
 									"key": "total_units_for_sale",
 									"value": "12",
 									"type": "text"
@@ -93,7 +103,47 @@
 									"type": "text"
 								},
 								{
-									"key": "have_lake_or_river_view",
+									"key": "have_freehold",
+									"value": "False",
+									"type": "text"
+								},
+								{
+									"key": "have_leasehold",
+									"value": "False",
+									"type": "text"
+								},
+								{
+									"key": "have_river_view",
+									"value": "False",
+									"type": "text"
+								},
+								{
+									"key": "have_unblocked_view",
+									"value": "False",
+									"type": "text"
+								},
+								{
+									"key": "have_city_view",
+									"value": "False",
+									"type": "text"
+								},
+								{
+									"key": "have_sea_view",
+									"value": "False",
+									"type": "text"
+								},
+								{
+									"key": "have_mountain_view",
+									"value": "False",
+									"type": "text"
+								},
+								{
+									"key": "have_infinity_pool",
+									"value": "False",
+									"type": "text"
+								},
+								{
+									"key": "have_pets_allowed",
 									"value": "False",
 									"type": "text"
 								},
@@ -221,12 +271,62 @@
 									"disabled": true
 								},
 								{
+									"key": "quota",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "furnishing",
+									"value": "",
+									"disabled": true
+								},
+								{
 									"key": "province",
 									"value": "",
 									"disabled": true
 								},
 								{
-									"key": "have_lake_or_river_view",
+									"key": "have_freehold",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "have_leasehold",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "have_river_view",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "have_unblocked_view",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "have_city_view",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "have_sea_view",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "have_mountain_view",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "have_infinity_pool",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "have_pets_allowed",
 									"value": "",
 									"disabled": true
 								},
@@ -413,6 +513,16 @@
 									"type": "text"
 								},
 								{
+									"key": "quota",
+									"value": "thai",
+									"type": "text"
+								},
+								{
+									"key": "furnishing",
+									"value": "fully",
+									"type": "text"
+								},
+								{
 									"key": "total_units_for_sale",
 									"value": "14",
 									"type": "text"
@@ -453,8 +563,48 @@
 									"type": "text"
 								},
 								{
-									"key": "have_lake_or_river_view",
+									"key": "have_freehold",
 									"value": "False",
+									"type": "text"
+								},
+								{
+									"key": "have_leasehold",
+									"value": "False",
+									"type": "text"
+								},
+								{
+									"key": "have_river_view",
+									"value": "False",
+									"type": "text"
+								},
+								{
+									"key": "have_unblocked_view",
+									"value": "True",
+									"type": "text"
+								},
+								{
+									"key": "have_city_view",
+									"value": "True",
+									"type": "text"
+								},
+								{
+									"key": "have_sea_view",
+									"value": "True",
+									"type": "text"
+								},
+								{
+									"key": "have_mountain_view",
+									"value": "True",
+									"type": "text"
+								},
+								{
+									"key": "have_infinity_pool",
+									"value": "True",
+									"type": "text"
+								},
+								{
+									"key": "have_pets_allowed",
+									"value": "True",
 									"type": "text"
 								},
 								{

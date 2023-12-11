@@ -6,6 +6,10 @@ UNIQUE_PROFILE_EMAIL_MESSAGE = "Profile with this email already exists."
 
 BUILDING_TYPES = (("condos", "Condos"), ("house", "House"))
 
+QUOTA_TYPES = (("thai", "Thai"), ("foreign", "Foreign"))
+
+FURNISHING_TYPES = (("partly", "Partly"), ("fully", "Fully"))
+
 BUILDING_MEDIA_TYPES = (
     ("image", "Image"),
     ("floor_plan", "Floor plan"),

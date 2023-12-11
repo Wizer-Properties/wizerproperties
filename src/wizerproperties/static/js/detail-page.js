@@ -104,7 +104,7 @@ $(document).ready(function(){
             facilities_dom += facilities_info_tmp('Guard House', _icon)
         };
 
-        if(building_info?.have_lake_or_river_view){
+        if(building_info?.have_river_view){
             var _icon = '<i class="material-symbols-outlined"> legend_toggle </i>';
             facilities_dom += facilities_info_tmp('River View', _icon)
         };

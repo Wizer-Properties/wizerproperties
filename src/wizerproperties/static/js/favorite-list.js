@@ -45,7 +45,7 @@ $(document).ready(function(){
             facility_tmp += '<span>Security</span>'
         };
 
-        if(data?.building_info?.have_lake_or_river_view){
+        if(data?.building_info?.have_river_view){
             facility_tmp += '<span>River View</span>'
         };
 
