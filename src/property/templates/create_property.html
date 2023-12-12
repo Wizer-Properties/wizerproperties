@@ -119,6 +119,32 @@
                                     required>
                                 <div class="authlabelline authcompleteProfileLabe">Car Park</div>
                             </div>
+
+                            <div class="authFormDiv">
+                                <!-- <span class="authErrorMessage">Message</span> -->
+                                <input name="balcony_direction" type="text" class="authInput" placeholder="Balcony Direction"
+                                    required>
+                                <div class="authlabelline authcompleteProfileLabe">Balcony Direction</div>
+                            </div>
+
+                            <div class="authFormDiv">
+                                <!-- <span class="authErrorMessage">Message</span> -->
+                                <input name="main_door_direction" type="text" class="authInput" placeholder="Main Door Direction"
+                                    required>
+                                <div class="authlabelline authcompleteProfileLabe">Main Door Direction</div>
+                            </div>
+
+                            <div class="authFormDiv">
+                                <!-- <span class="authErrorMessage">Message</span> -->
+                                <select name="unit_position" type="text" class="authInput authSelectInput"
+                                    placeholder="Select Unit Position" required>
+                                    <option value="">........</option>
+                                    <option value="left_corner">Left Corner</option>
+                                    <option value="right_corner">Right Corner</option>
+                                    <option value="center">Center</option>
+                                </select>
+                                <div class="authlabelline authcompleteProfileLabe">Unit Position</div>
+                            </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="authFormDiv textarea">
@@ -127,6 +153,79 @@
                                     placeholder="Description" required></textarea>
                                 <div class="authlabelline authcompleteProfileLabe">Description</div>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input name="have_access_to_BTS_or_MRT" class="form-check-input" type="checkbox" id="access_to_BTS_or_MRT">
+                                        <label class="form-check-label" for="access_to_BTS_or_MRT">
+                                            Have Access to BTS/MRT
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input name="have_access_to_ARL" class="form-check-input" type="checkbox" id="access_to_ARL">
+                                        <label class="form-check-label" for="access_to_ARL">
+                                            Have Access to ARL
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input name="have_tenant_occupied" class="form-check-input" type="checkbox"
+                                        id="have_tenant_occupied">
+                                        <label class="form-check-label" for="have_tenant_occupied">
+                                            Have Tenant Occupied
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="authFormDiv">
+                                        <!-- <span class="authErrorMessage">Message</span> -->
+                                        <input name="tenant_occupied_validity" type="date" class="authInput" placeholder="Main Door Direction">
+                                        <div class="authlabelline authcompleteProfileLabe">Tenant Occupied Validity</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input name="have_vacant" class="form-check-input" type="checkbox" id="vacant">
+                                        <label class="form-check-label" for="vacant">
+                                            Have Vacant
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input name="have_owner_occupied" class="form-check-input" type="checkbox" id="owner_occupied">
+                                        <label class="form-check-label" for="owner_occupied">
+                                            Have Owner Occupied
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input name="have_bathtub" class="form-check-input" type="checkbox" id="bathtub">
+                                        <label class="form-check-label" for="bathtub">
+                                            Have Bathtub
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input name="have_duplex" class="form-check-input" type="checkbox" id="duplex">
+                                        <label class="form-check-label" for="duplex">
+                                            Have Duplex
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 

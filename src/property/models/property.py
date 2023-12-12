@@ -1,6 +1,9 @@
+from django.utils import timezone
 from django.db import models
 from core.models import TimestampedModel
+from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
+from utils.general_data import UNIT_POSITION_TYPES
 
 
 class Property(TimestampedModel):
@@ -20,6 +23,17 @@ class Property(TimestampedModel):
     number_of_bathroom = models.IntegerField(default=0, null=True, validators=[MinValueValidator(1)])
     number_of_balcony = models.IntegerField(default=0, null=True, validators=[MinValueValidator(1)])
     number_of_car_parking = models.IntegerField(default=0, null=True, validators=[MinValueValidator(1)])
+    balcony_direction = models.CharField(max_length=255, null=True)
+    main_door_direction = models.CharField(max_length=255, null=True)
+    unit_position = models.CharField(max_length=100, choices=UNIT_POSITION_TYPES, null=True)
+    have_access_to_BTS_or_MRT = models.BooleanField(default=False)
+    have_access_to_ARL = models.BooleanField(default=False)
+    have_tenant_occupied = models.BooleanField(default=False)
+    tenant_occupied_validity = models.DateField(blank=True, null=True)
+    have_vacant = models.BooleanField(default=False)
+    have_owner_occupied = models.BooleanField(default=False)
+    have_bathtub = models.BooleanField(default=False)
+    have_duplex = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     created_by = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True)
 
@@ -28,3 +42,7 @@ class Property(TimestampedModel):
 
     def __str__(self):
         return str(self.title) if self.title else str(self.id)
+
+    def clean(self):
+        if self.tenant_occupied_validity and self.tenant_occupied_validity < timezone.now().date():
+            raise ValidationError({"tenant_occupied_validity": "Date must be greater than or equal to today."})

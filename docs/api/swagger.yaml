@@ -1191,6 +1191,43 @@ paths:
           in: "formData"
           required: true
           type: "number"
+        - name: "balcony_direction"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "main_door_direction"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "unit_position"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "have_access_to_BTS_or_MRT"
+          in: "formData"
+          type: "boolean"
+        - name: "have_access_to_ARL"
+          in: "formData"
+          type: "boolean"
+        - name: "have_tenant_occupied"
+          in: "formData"
+          type: "boolean"
+        - name: "tenant_occupied_validity"
+          description: "If have_tenant_occupied Yes the required true"
+          in: "formData"
+          type: "string"
+        - name: "have_vacant"
+          in: "formData"
+          type: "boolean"
+        - name: "have_owner_occupied"
+          in: "formData"
+          type: "boolean"
+        - name: "have_bathtub"
+          in: "formData"
+          type: "boolean"
+        - name: "have_duplex"
+          in: "formData"
+          type: "boolean"
         - name: "images"
           in: "formData"
           required: true
@@ -1299,6 +1336,46 @@ paths:
           description: "Filtered by"
           in: "query"
           type: "number"
+        - name: "balcony_direction"
+          description: "Filtered by"
+          in: "query"
+          type: "string"
+        - name: "main_door_direction"
+          description: "Filtered by"
+          in: "query"
+          type: "string"
+        - name: "unit_position"
+          description: "Filtered by"
+          in: "query"
+          type: "string"
+        - name: "have_access_to_BTS_or_MRT"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_access_to_ARL"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_tenant_occupied"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_vacant"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_owner_occupied"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_bathtub"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_duplex"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
         - name: "building__have_freehold"
           description: "Filtered by"
           in: "query"
@@ -1521,6 +1598,43 @@ paths:
           in: "formData"
           required: true
           type: "number"
+        - name: "balcony_direction"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "main_door_direction"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "unit_position"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "have_access_to_BTS_or_MRT"
+          in: "formData"
+          type: "boolean"
+        - name: "have_access_to_ARL"
+          in: "formData"
+          type: "boolean"
+        - name: "have_tenant_occupied"
+          in: "formData"
+          type: "boolean"
+        - name: "tenant_occupied_validity"
+          description: "If have_tenant_occupied Yes the required true"
+          in: "formData"
+          type: "string"
+        - name: "have_vacant"
+          in: "formData"
+          type: "boolean"
+        - name: "have_owner_occupied"
+          in: "formData"
+          type: "boolean"
+        - name: "have_bathtub"
+          in: "formData"
+          type: "boolean"
+        - name: "have_duplex"
+          in: "formData"
+          type: "boolean"
         - name: "images"
           in: "formData"
           required: true
@@ -2529,6 +2643,8 @@ definitions:
               type: "number"
             number_of_car_parking:
               type: "number"
+            balcony_direction:
+              type: "string"
             is_active:
               type: "boolean"
   
@@ -2618,6 +2734,28 @@ definitions:
         type: "number"
       number_of_car_parking:
         type: "number"
+      balcony_direction:
+        type: "string"
+      main_door_direction:
+        type: "string"
+      unit_position:
+        type: "string"
+      have_access_to_BTS_or_MRT:
+        type: "boolean"
+      have_access_to_ARL:
+        type: "boolean"
+      have_tenant_occupied:
+        type: "boolean"
+      tenant_occupied_validity:
+        type: "string"
+      have_vacant:
+        type: "boolean"
+      have_owner_occupied:
+        type: "boolean"
+      have_bathtub:
+        type: "boolean"
+      have_duplex:
+        type: "boolean"
       is_active:
         type: "boolean"
       building_info:
@@ -2745,6 +2883,28 @@ definitions:
               type: "number"
             number_of_car_parking:
               type: "number"
+            balcony_direction:
+              type: "string"
+            main_door_direction:
+              type: "string"
+            unit_position:
+              type: "string"
+            have_access_to_BTS_or_MRT:
+              type: "boolean"
+            have_access_to_ARL:
+              type: "boolean"
+            have_tenant_occupied:
+              type: "boolean"
+            tenant_occupied_validity:
+              type: "string"
+            have_vacant:
+              type: "boolean"
+            have_owner_occupied:
+              type: "boolean"
+            have_bathtub:
+              type: "boolean"
+            have_duplex:
+              type: "boolean"
             is_active:
               type: "boolean"
             is_compared:
@@ -2869,6 +3029,28 @@ definitions:
         type: "number"
       number_of_car_parking:
         type: "number"
+      balcony_direction:
+        type: "string"
+      main_door_direction:
+        type: "string"
+      unit_position:
+        type: "string"
+      have_access_to_BTS_or_MRT:
+        type: "boolean"
+      have_access_to_ARL:
+        type: "boolean"
+      have_tenant_occupied:
+        type: "boolean"
+      tenant_occupied_validity:
+        type: "string"
+      have_vacant:
+        type: "boolean"
+      have_owner_occupied:
+        type: "boolean"
+      have_bathtub:
+        type: "boolean"
+      have_duplex:
+        type: "boolean"
       is_active:
         type: "boolean"
       is_compared:
@@ -3000,6 +3182,28 @@ definitions:
             type: "number"
           number_of_car_parking:
             type: "number"
+          balcony_direction:
+            type: "string"
+          main_door_direction:
+            type: "string"
+          unit_position:
+            type: "string"
+          have_access_to_BTS_or_MRT:
+            type: "boolean"
+          have_access_to_ARL:
+            type: "boolean"
+          have_tenant_occupied:
+            type: "boolean"
+          tenant_occupied_validity:
+            type: "string"
+          have_vacant:
+            type: "boolean"
+          have_owner_occupied:
+            type: "boolean"
+          have_bathtub:
+            type: "boolean"
+          have_duplex:
+            type: "boolean"
           is_active:
             type: "boolean"
           building_info:
@@ -3136,6 +3340,28 @@ definitions:
                   type: "number"
                 number_of_car_parking:
                   type: "number"
+                balcony_direction:
+                  type: "string"
+                main_door_direction:
+                  type: "string"
+                unit_position:
+                  type: "string"
+                have_access_to_BTS_or_MRT:
+                  type: "boolean"
+                have_access_to_ARL:
+                  type: "boolean"
+                have_tenant_occupied:
+                  type: "boolean"
+                tenant_occupied_validity:
+                  type: "string"
+                have_vacant:
+                  type: "boolean"
+                have_owner_occupied:
+                  type: "boolean"
+                have_bathtub:
+                  type: "boolean"
+                have_duplex:
+                  type: "boolean"
                 is_active:
                   type: "boolean"
                 building_info:
@@ -3257,6 +3483,28 @@ definitions:
             type: "number"
           number_of_car_parking:
             type: "number"
+          balcony_direction:
+            type: "string"
+          main_door_direction:
+            type: "string"
+          unit_position:
+            type: "string"
+          have_access_to_BTS_or_MRT:
+            type: "boolean"
+          have_access_to_ARL:
+            type: "boolean"
+          have_tenant_occupied:
+            type: "boolean"
+          tenant_occupied_validity:
+            type: "string"
+          have_vacant:
+            type: "boolean"
+          have_owner_occupied:
+            type: "boolean"
+          have_bathtub:
+            type: "boolean"
+          have_duplex:
+            type: "boolean"
           is_active:
             type: "boolean"
           building_info:
@@ -3393,6 +3641,28 @@ definitions:
                   type: "number"
                 number_of_car_parking:
                   type: "number"
+                balcony_direction:
+                  type: "string"
+                main_door_direction:
+                  type: "string"
+                unit_position:
+                  type: "string"
+                have_access_to_BTS_or_MRT:
+                  type: "boolean"
+                have_access_to_ARL:
+                  type: "boolean"
+                have_tenant_occupied:
+                  type: "boolean"
+                tenant_occupied_validity:
+                  type: "string"
+                have_vacant:
+                  type: "boolean"
+                have_owner_occupied:
+                  type: "boolean"
+                have_bathtub:
+                  type: "boolean"
+                have_duplex:
+                  type: "boolean"
                 is_active:
                   type: "boolean"
                 building_info:

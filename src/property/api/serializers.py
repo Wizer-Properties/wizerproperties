@@ -39,6 +39,17 @@ class PropertySerializer(serializers.ModelSerializer):
             "number_of_bathroom",
             "number_of_balcony",
             "number_of_car_parking",
+            "balcony_direction",
+            "main_door_direction",
+            "unit_position",
+            "have_access_to_BTS_or_MRT",
+            "have_access_to_ARL",
+            "have_tenant_occupied",
+            "tenant_occupied_validity",
+            "have_vacant",
+            "have_owner_occupied",
+            "have_bathtub",
+            "have_duplex",
             "is_active",
             "is_compared",
             "is_favorited",
@@ -56,14 +67,27 @@ class PropertySerializer(serializers.ModelSerializer):
         self.request = self.context.get("request")
 
         for field_name, field in self.fields.items():
-            if self.instance is not None and field_name in ["images", "videos"]:
-                field.required = False
-            else:
-                field.required = True
-                field.allow_null = False
-                field.allow_blank = False
+            if "tenant_occupied_validity" not in field_name:
+                if self.instance is not None and field_name in ["images", "videos"]:
+                    field.required = False
+                else:
+                    field.required = True
+                    field.allow_null = False
+                    field.allow_blank = False
 
         show_custom_error_message(self.fields)
+
+    def validate(self, data):
+        """
+        Validate the serializer fields.
+        """
+        have_tenant_occupied = data.get("have_tenant_occupied", False)
+        tenant_occupied_validity = data.get("tenant_occupied_validity", None)
+
+        if have_tenant_occupied and not tenant_occupied_validity:
+            raise serializers.ValidationError({"tenant_occupied_validity": ["Tenant Occupied Validity is required."]})
+
+        return data
 
     def get_fields(self):
         fields = super().get_fields()
@@ -95,7 +119,9 @@ class PropertySerializer(serializers.ModelSerializer):
                         default=False,
                         output_field=BooleanField(),
                     )
-                    if self.request and self.request.user.is_authenticated and hasattr(self.request.user, "prospectprofile")
+                    if self.request
+                    and self.request.user.is_authenticated
+                    and hasattr(self.request.user, "prospectprofile")
                     else Value(None, output_field=CharField()),
                     average_rating=Avg("buildingreview__rating"),
                     total_reviews=Count("buildingreview"),

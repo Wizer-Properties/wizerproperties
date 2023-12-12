@@ -10,6 +10,8 @@ QUOTA_TYPES = (("thai", "Thai"), ("foreign", "Foreign"))
 
 FURNISHING_TYPES = (("partly", "Partly"), ("fully", "Fully"))
 
+UNIT_POSITION_TYPES = (("left_corner", "Left Corner"), ("right_corner", "Right Corner"), ("center", "Center"))
+
 BUILDING_MEDIA_TYPES = (
     ("image", "Image"),
     ("floor_plan", "Floor plan"),
@@ -18,10 +20,7 @@ BUILDING_MEDIA_TYPES = (
     ("video", "Video"),
 )
 
-PROPERTY_MEDIA_TYPES = (
-    ("image", "Image"),
-    ("video", "Video"),
-)
+PROPERTY_MEDIA_TYPES = (("image", "Image"), ("video", "Video"))
 
 ALLOWED_IMAGE_EXTENSIONS = [
     "jpg",
