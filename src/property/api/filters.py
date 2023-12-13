@@ -1,4 +1,6 @@
 import django_filters
+from django.contrib.gis.db.models.functions import Distance
+from django.contrib.gis.geos import Point
 from property.models import Property
 
 
@@ -9,6 +11,7 @@ class PropertyFilter(django_filters.FilterSet):
     max_price_per_sqm = django_filters.NumberFilter(field_name="price_per_sqm", lookup_expr="lte")
     min_unit_area = django_filters.NumberFilter(field_name="unit_area", lookup_expr="gte")
     max_unit_area = django_filters.NumberFilter(field_name="unit_area", lookup_expr="lte")
+    nearby = django_filters.NumberFilter(method="filter_nearby", label="Nearby (miles)")
 
     class Meta:
         model = Property
@@ -45,3 +48,16 @@ class PropertyFilter(django_filters.FilterSet):
             "building__have_grocery",
             "building__have_fitness_area",
         ]
+
+    def filter_nearby(self, queryset, name, value):
+        if self.request and "lat" in self.request.query_params and "long" in self.request.query_params:
+            lat = float(self.request.query_params.get("lat"))
+            long = float(self.request.query_params.get("long"))
+            point = Point(long, lat, srid=32647)  # Asian 1985 or UTM Zone 47N coordinate system
+
+            return (
+                queryset.filter(building__latitude__isnull=False, building__longitude__isnull=False)
+                .annotate(nearby=Distance(Point("building__longitude", "building__latitude", srid=32647), point))
+                .filter(nearby__lte=value)
+            )
+        return queryset

@@ -28,6 +28,8 @@ class Building(TimestampedModel):
     district = models.CharField(max_length=500, null=True)
     sub_district = models.CharField(max_length=500, null=True)
     address = models.CharField(max_length=500, null=True)
+    latitude = models.FloatField(null=True)
+    longitude = models.FloatField(null=True)
     project_total_area = models.FloatField(default=0, null=True, validators=[MinValueValidator(1)])
     total_floors = models.IntegerField(default=0, null=True, validators=[MinValueValidator(1)])
     construction_year = models.IntegerField(default=1930, null=True, validators=[MinValueValidator(1930)])

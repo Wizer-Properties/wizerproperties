@@ -38,6 +38,8 @@ class BuildingSerializer(serializers.ModelSerializer):
             "district",
             "sub_district",
             "address",
+            "latitude",
+            "longitude",
             "project_total_area",
             "total_floors",
             "construction_year",
