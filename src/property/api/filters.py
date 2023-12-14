@@ -31,6 +31,7 @@ class PropertyFilter(django_filters.FilterSet):
             "have_owner_occupied",
             "have_bathtub",
             "have_duplex",
+            "newly_created",
             "building__quota",
             "building__furnishing",
             "building__have_freehold",

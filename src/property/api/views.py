@@ -90,6 +90,21 @@ class PropertyViewSet(viewsets.ModelViewSet):
         else:
             return Response({"detail": "Media type is required."}, status=status.HTTP_400_BAD_REQUEST)
 
+    @action(detail=False, methods=["get"])
+    def newly_created(self, request):
+        """
+        Retrieve a list of newly created properties with pagination.
+        """
+        queryset = self.get_queryset().filter(newly_created=True)
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class ComparePropertyViewSet(viewsets.ModelViewSet):
     serializer_class = ComparePropertySerializer

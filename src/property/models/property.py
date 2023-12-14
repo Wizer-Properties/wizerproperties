@@ -34,6 +34,7 @@ class Property(TimestampedModel):
     have_owner_occupied = models.BooleanField(default=False)
     have_bathtub = models.BooleanField(default=False)
     have_duplex = models.BooleanField(default=False)
+    newly_created = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     created_by = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True)
 

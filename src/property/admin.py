@@ -28,6 +28,7 @@ class PropertyAdmin(admin.ModelAdmin):
         "have_owner_occupied",
         "have_bathtub",
         "have_duplex",
+        "newly_created",
         "is_active",
         "created_by",
         "created_at",
