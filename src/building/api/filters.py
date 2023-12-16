@@ -27,4 +27,5 @@ class BuildingFilter(django_filters.FilterSet):
             "have_sky_lounge",
             "have_grocery",
             "have_fitness_area",
+            "popular",
         ]

@@ -49,6 +49,7 @@ class PropertyFilter(django_filters.FilterSet):
             "building__have_sky_lounge",
             "building__have_grocery",
             "building__have_fitness_area",
+            "building__popular",
         ]
 
     def filter_nearby(self, queryset, name, value):

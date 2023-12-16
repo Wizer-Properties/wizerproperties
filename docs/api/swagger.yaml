@@ -663,6 +663,128 @@ paths:
           description: "Filtered by"
           in: "query"
           type: "boolean"
+        - name: "popular"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+      responses:
+        200:
+          description: Building list
+          schema:
+            $ref: "#/definitions/BuildingListResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /building/api/list/popular/:
+    get:
+      tags:
+        - Building
+      summary: "Popular building list"
+      description: "**User type**: both"
+      operationId: Popular
+      produces:
+        - "application/json"
+      parameters:
+        - name: "page_size"
+          in: "query"
+          type: "string"
+        - name: "page"
+          in: "query"
+          type: "string"
+        - name: "lowest_price"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "highest_price"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "type"
+          description: "Filtered by and choice will be 'condos' or 'house'."
+          in: "query"
+          type: "string"
+        - name: "quota"
+          description: "Choice will be 'thai' or 'foreign'."
+          in: "query"
+          required: true
+          type: "string"
+        - name: "furnishing"
+          description: "Choice will be 'partly' or 'fully'."
+          in: "query"
+          required: true
+          type: "string"
+        - name: "province"
+          description: "Filtered by"
+          in: "query"
+          type: "string"
+        - name: "have_freehold"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_leasehold"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_river_view"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_unblocked_view"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_city_view"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_sea_view"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_mountain_view"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_infinity_pool"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_pets_allowed"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_guard_house"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_sauna"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_sky_lounge"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_grocery"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_fitness_area"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
       responses:
         200:
           description: Building list
@@ -1468,6 +1590,10 @@ paths:
           description: "Filtered by"
           in: "query"
           type: "boolean"
+        - name: "building__popular"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
       responses:
         200:
           description: Property list
@@ -1676,6 +1802,10 @@ paths:
           description: "Filtered by"
           in: "query"
           type: "boolean"
+        - name: "building__popular"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
       responses:
         200:
           description: Property list
@@ -1881,6 +2011,10 @@ paths:
           in: "query"
           type: "boolean"
         - name: "building__have_fitness_area"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__popular"
           description: "Filtered by"
           in: "query"
           type: "boolean"

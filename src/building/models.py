@@ -49,6 +49,7 @@ class Building(TimestampedModel):
     have_sky_lounge = models.BooleanField(default=False)
     have_grocery = models.BooleanField(default=False)
     have_fitness_area = models.BooleanField(default=False)
+    popular = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     created_by = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True)
 

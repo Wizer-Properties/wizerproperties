@@ -36,6 +36,7 @@ class BuildingAdmin(admin.ModelAdmin):
         "have_sky_lounge",
         "have_grocery",
         "have_fitness_area",
+        "popular",
         "is_active",
         "created_by",
         "created_at",
