@@ -51,6 +51,7 @@ class PropertySerializer(serializers.ModelSerializer):
             "have_bathtub",
             "have_duplex",
             "newly_created",
+            "popular",
             "is_active",
             "is_compared",
             "is_favorited",
@@ -274,6 +275,7 @@ class PropertyAvailableUnitsSerializer(serializers.ModelSerializer):
             "have_bathtub",
             "have_duplex",
             "newly_created",
+            "popular",
             "is_active",
         ]
 

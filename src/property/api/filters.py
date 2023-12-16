@@ -32,6 +32,7 @@ class PropertyFilter(django_filters.FilterSet):
             "have_bathtub",
             "have_duplex",
             "newly_created",
+            "popular",
             "building__quota",
             "building__furnishing",
             "building__have_freehold",
