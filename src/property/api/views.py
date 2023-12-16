@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db.models import OuterRef, Subquery, Value, F, CharField, Exists, BooleanField
 from django.db.models.functions import Concat
 from rest_framework import viewsets, status, permissions
@@ -111,6 +112,22 @@ class PropertyViewSet(viewsets.ModelViewSet):
         Retrieve a list of popular properties with pagination.
         """
         queryset = self.get_queryset().filter(popular=True)
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    @action(detail=False, methods=["get"])
+    def discount(self, request):
+        """
+        Retrieve a list of discount properties with pagination.
+        """
+        today = timezone.now().date()
+        queryset = self.get_queryset().filter(discount_period__gte=today)
         page = self.paginate_queryset(queryset)
 
         if page is not None:

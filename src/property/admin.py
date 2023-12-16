@@ -30,6 +30,7 @@ class PropertyAdmin(admin.ModelAdmin):
         "have_duplex",
         "newly_created",
         "popular",
+        "discount_period",
         "is_active",
         "created_by",
         "created_at",

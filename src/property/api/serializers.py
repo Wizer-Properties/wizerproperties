@@ -52,6 +52,7 @@ class PropertySerializer(serializers.ModelSerializer):
             "have_duplex",
             "newly_created",
             "popular",
+            "discount_period",
             "is_active",
             "is_compared",
             "is_favorited",
@@ -69,7 +70,7 @@ class PropertySerializer(serializers.ModelSerializer):
         self.request = self.context.get("request")
 
         for field_name, field in self.fields.items():
-            if "tenant_occupied_validity" not in field_name:
+            if field_name not in ["tenant_occupied_validity", "discount_period"]:
                 if self.instance is not None and field_name in ["images", "videos"]:
                     field.required = False
                 else:
@@ -276,6 +277,7 @@ class PropertyAvailableUnitsSerializer(serializers.ModelSerializer):
             "have_duplex",
             "newly_created",
             "popular",
+            "discount_period",
             "is_active",
         ]
 

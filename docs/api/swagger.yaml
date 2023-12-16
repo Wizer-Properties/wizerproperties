@@ -569,7 +569,7 @@ paths:
     get:
       tags:
         - Building
-      summary: "Building list"
+      summary: "Buildings list"
       description: "**User type**: both"
       operationId: building_list
       produces:
@@ -669,7 +669,7 @@ paths:
           type: "boolean"
       responses:
         200:
-          description: Building list
+          description: Buildings list
           schema:
             $ref: "#/definitions/BuildingListResponse"
         405:
@@ -691,7 +691,7 @@ paths:
     get:
       tags:
         - Building
-      summary: "Popular building list"
+      summary: "Popular buildings list"
       description: "**User type**: both"
       operationId: Popular
       produces:
@@ -787,7 +787,7 @@ paths:
           type: "boolean"
       responses:
         200:
-          description: Building list
+          description: Buildings list
           schema:
             $ref: "#/definitions/BuildingListResponse"
         405:
@@ -1406,7 +1406,7 @@ paths:
     get:
       tags:
         - Property
-      summary: "Property list"
+      summary: "Properties list"
       description: "**User type**: both"
       operationId: property_list
       produces:
@@ -1596,7 +1596,7 @@ paths:
           type: "boolean"
       responses:
         200:
-          description: Property list
+          description: Properties list
           schema:
             $ref: "#/definitions/PropertyListResponse"
         405:
@@ -1618,7 +1618,7 @@ paths:
     get:
       tags:
         - Property
-      summary: "Newly created property list"
+      summary: "Newly created properties list"
       description: "**User type**: both"
       operationId: newly_created
       produces:
@@ -1808,7 +1808,7 @@ paths:
           type: "boolean"
       responses:
         200:
-          description: Property list
+          description: Properties list
           schema:
             $ref: "#/definitions/PropertyListResponse"
         405:
@@ -1830,7 +1830,7 @@ paths:
     get:
       tags:
         - Property
-      summary: "Popular property list"
+      summary: "Popular properties list"
       description: "**User type**: both"
       operationId: popular
       produces:
@@ -2020,7 +2020,219 @@ paths:
           type: "boolean"
       responses:
         200:
-          description: Property list
+          description: Properties list
+          schema:
+            $ref: "#/definitions/PropertyListResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /property/api/list/discount/:
+    get:
+      tags:
+        - Property
+      summary: "Discount properties list"
+      description: "**User type**: both"
+      operationId: discount
+      produces:
+        - "application/json"
+      parameters:
+        - name: "page_size"
+          in: "query"
+          type: "string"
+        - name: "page"
+          in: "query"
+          type: "string"
+        - name: "search"
+          description: "Search by only location related value"
+          in: "query"
+          type: "string"
+        - name: "min_price"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "max_price"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "min_price_per_sqm"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "max_price_per_sqm"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "min_unit_area"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "max_unit_area"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "building__type"
+          description: "Filtered by and choice will be 'condos' or 'house'."
+          in: "query"
+          type: "string"
+        - name: "building__quota"
+          description: "Filtered by and choice will be 'thai' or 'foreign'."
+          in: "query"
+          type: "string"
+        - name: "building__furnishing"
+          description: "Filtered by and choice will be 'partly' or 'fully'."
+          in: "query"
+          type: "string"
+        - name: "lat"
+          description: "Filtered by latitude"
+          in: "query"
+          type: "number"
+        - name: "long"
+          description: "Filtered by longitude"
+          in: "query"
+          type: "number"
+        - name: "nearby"
+          description: "Filtered by nearby (miles)"
+          in: "query"
+          type: "number"
+        - name: "number_of_bedroom"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "number_of_bathroom"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "number_of_balcony"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "number_of_car_parking"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "balcony_direction"
+          description: "Filtered by"
+          in: "query"
+          type: "string"
+        - name: "main_door_direction"
+          description: "Filtered by"
+          in: "query"
+          type: "string"
+        - name: "unit_position"
+          description: "Filtered by"
+          in: "query"
+          type: "string"
+        - name: "have_access_to_BTS_or_MRT"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_access_to_ARL"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_tenant_occupied"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_vacant"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_owner_occupied"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_bathtub"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_duplex"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "newly_created"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "popular"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_freehold"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_leasehold"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_river_view"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_unblocked_view"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_city_view"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_sea_view"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_mountain_view"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_infinity_pool"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_pets_allowed"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_guard_house"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_sauna"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_sky_lounge"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_grocery"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__have_fitness_area"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "building__popular"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+      responses:
+        200:
+          description: Properties list
           schema:
             $ref: "#/definitions/PropertyListResponse"
         405:
@@ -2503,14 +2715,14 @@ paths:
     get:
       tags:
         - Property
-      summary: "Favorite property list"
+      summary: "Favorite properties list"
       description: "**User type**: logged in as a prospect"
       operationId: favorite_property_list
       produces:
         - "application/json"
       responses:
         201:
-          description: Favorite property list
+          description: Favorite properties list
           schema:
             $ref: "#/definitions/FavoritePropertyListResponse"
         400:
@@ -2980,6 +3192,10 @@ definitions:
         type: "boolean"
       have_grocery:
         type: "boolean"
+      have_fitness_area:
+        type: "boolean"
+      popular:
+        type: "boolean"
       is_active:
         type: "boolean"
       created_by:
@@ -3080,6 +3296,10 @@ definitions:
               type: "boolean"
             have_grocery:
               type: "boolean"
+            have_fitness_area:
+              type: "boolean"
+            popular:
+              type: "boolean"
             is_active:
               type: "boolean"
             is_reviewed:
@@ -3170,6 +3390,10 @@ definitions:
       have_sky_lounge:
         type: "boolean"
       have_grocery:
+        type: "boolean"
+      have_fitness_area:
+        type: "boolean"
+      popular:
         type: "boolean"
       is_active:
         type: "boolean"
@@ -3358,6 +3582,8 @@ definitions:
         type: "boolean"
       popular:
         type: "boolean"
+      discount_period:
+        type: "string"
       is_active:
         type: "boolean"
       building_info:
@@ -3424,6 +3650,10 @@ definitions:
           have_sky_lounge:
             type: "boolean"
           have_grocery:
+            type: "boolean"
+          have_fitness_area:
+            type: "boolean"
+          popular:
             type: "boolean"
           is_active:
             type: "boolean"
@@ -3515,6 +3745,8 @@ definitions:
               type: "boolean"
             popular:
               type: "boolean"
+            discount_period:
+              type: "string"
             is_active:
               type: "boolean"
             is_compared:
@@ -3587,6 +3819,10 @@ definitions:
                 have_sky_lounge:
                   type: "boolean"
                 have_grocery:
+                  type: "boolean"
+                have_fitness_area:
+                  type: "boolean"
+                popular:
                   type: "boolean"
                 is_active:
                   type: "boolean"
@@ -3669,6 +3905,8 @@ definitions:
         type: "boolean"
       popular:
         type: "boolean"
+      discount_period:
+        type: "string"
       is_active:
         type: "boolean"
       is_compared:
@@ -3741,6 +3979,10 @@ definitions:
           have_sky_lounge:
             type: "boolean"
           have_grocery:
+            type: "boolean"
+          have_fitness_area:
+            type: "boolean"
+          popular:
             type: "boolean"
           is_active:
             type: "boolean"
@@ -3830,6 +4072,8 @@ definitions:
             type: "boolean"
           popular:
             type: "boolean"
+          discount_period:
+            type: "string"
           is_active:
             type: "boolean"
           building_info:
@@ -3898,6 +4142,10 @@ definitions:
               have_sky_lounge:
                 type: "boolean"
               have_grocery:
+                type: "boolean"
+              have_fitness_area:
+                type: "boolean"
+              popular:
                 type: "boolean"
               is_active:
                 type: "boolean"
@@ -3996,6 +4244,8 @@ definitions:
                   type: "boolean"
                 popular:
                   type: "boolean"
+                discount_period:
+                  type: "string"
                 is_active:
                   type: "boolean"
                 building_info:
@@ -4064,6 +4314,10 @@ definitions:
                     have_sky_lounge:
                       type: "boolean"
                     have_grocery:
+                      type: "boolean"
+                    have_fitness_area:
+                      type: "boolean"
+                    popular:
                       type: "boolean"
                     is_active:
                       type: "boolean"
@@ -4147,6 +4401,8 @@ definitions:
             type: "boolean"
           popular:
             type: "boolean"
+          discount_period:
+            type: "string"
           is_active:
             type: "boolean"
           building_info:
@@ -4215,6 +4471,10 @@ definitions:
               have_sky_lounge:
                 type: "boolean"
               have_grocery:
+                type: "boolean"
+              have_fitness_area:
+                type: "boolean"
+              popular:
                 type: "boolean"
               is_active:
                 type: "boolean"
@@ -4313,6 +4573,8 @@ definitions:
                   type: "boolean"
                 popular:
                   type: "boolean"
+                discount_period:
+                  type: "string"
                 is_active:
                   type: "boolean"
                 building_info:
@@ -4381,6 +4643,10 @@ definitions:
                     have_sky_lounge:
                       type: "boolean"
                     have_grocery:
+                      type: "boolean"
+                    have_fitness_area:
+                      type: "boolean"
+                    popular:
                       type: "boolean"
                     is_active:
                       type: "boolean"
