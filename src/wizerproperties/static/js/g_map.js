@@ -3,7 +3,6 @@ function initializeMap() {
         componentRestrictions: {
             country: "th"
         },
-        types: ['(regions)'],
         fields : ['address_components']
     };
 

@@ -18,6 +18,29 @@
 </section>
 
 
+
+{% if not request.user.is_authenticated %}
+<section>
+    <div class="container">
+        <div class="sign-in-note-box">
+            <div class="sign-in-side-note">
+                <h1>
+                    <i class="bi bi-envelope-paper-heart pe-2"></i>
+                    Sign in to streamline your search.
+                </h1>
+                <p>
+                    Save properties, create alerts and keep track of the enquiries you send to agents.
+                </p>
+            </div>
+
+            <a href="/user/login/"> Sign in or create an account </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+
+
 <section id="new-properties">
     <div class="container">
         <h1 class="slider-title">New properties for sale</h1>

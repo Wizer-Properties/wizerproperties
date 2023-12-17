@@ -119,7 +119,7 @@ $(document).ready(function(){
                                         '<img src="/static/media/icons/plan-size.svg" alt="plan-size-icon">'+
                                     '</div>'+
                                     '<span class="property-value"> '+ data?.unit_area+ '</span>'+
-                                    '<span class="property-label"> SqM</span>'+
+                                    '<span class="property-label"> sqm</span>'+
                                 '</div>'+
                                 '<div class="property-short-info-box">'+
                                     '<div class="property-short-info-icon">'+

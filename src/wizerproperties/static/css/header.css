@@ -29,6 +29,10 @@ header{
     width: 70%;
 }
 
+.header .nav-link{
+    white-space: nowrap;
+}
+
 .nav-link{
     display: block;
     margin-right: 10px;
@@ -82,7 +86,7 @@ header{
     border-radius: 5px;
     position: relative;
     max-width: 500px;
-    width: 50%;
+    width: 100%;
 }
 
 .search-box .bi-search{

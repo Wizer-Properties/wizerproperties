@@ -62,8 +62,8 @@ $(document).ready(function(){
                         '<img src="'+data?.property_info?.default_image+'" alt="property img">'+
                     '</div>'+
                     '<div class="comparison-list-label">'+
-                        '<li> '+data?.property_info?.title+' </li>'+
-                        '<li>฿ '+data?.property_info?.price+' </li>'+
+                        '<li>฿ '+ formatBalance(data?.property_info?.price || 0) +' </li>'+
+                        '<li>฿ '+ formatBalance(data?.property_info?.price_per_sqm || 0) +' </li>'+
                         '<li> <a href="/building/details/'+data?.property_info?.building_info?.id+'/">'+data?.property_info?.building_info?.title+'</a> </li>'+
                         '<li> '+data?.property_info?.building_info?.address+' </li>'+
                         '<li> <a href="/property/details/'+data?.property_info?.id+'/">'+data?.property_info?.unit_id+'</a> </li>'+

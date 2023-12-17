@@ -20,14 +20,14 @@
         <div class="col-lg-8 login-form-box">
             <div class="logo">
                 <a href="/">
-                    <img src="static/media/logo.png" alt="">
+                    <img src=" {% static 'media/logo.png' %}" alt="">
                 </a>
             </div>
 
             <!--- Login Form Start --->
 
             <div class="authArea">
-                <p>Login to Your Account</p>
+                <p>Login To Your Account</p>
                 <div class="authForm">
                     <div>
                         <span class="authSuccessMessage"></span>
@@ -61,11 +61,11 @@
 
         </div>
         <div class="col-lg-4 login-des-box">
-            <div class="authTextArea">
-                <p class="authTextAreaTitle">New Here ?</p>
-                <p class="authTextAreaDescription">Sing up and enjoy a great amount of new features</p>
+            <div class="authTextArea pb-4">
+                <p class="authTextAreaTitle">New Here?</p>
+                <p class="authTextAreaDescription">Sign up and enjoy a great amount of new features</p>
                 <a type="button" class="authSignUpButton" href="{% url 'user:signup' %}">Sign Up</a>
-                <a class="authTextForget" href="{% url 'user:forgot_password' %}">Forget Password ?</a>
+                <a class="authTextForget" href="{% url 'user:forgot_password' %}">Forget Password?</a>
             </div>    
         </div>
     </div>

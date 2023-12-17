@@ -39,7 +39,7 @@
                             </a>
                         </div>
                         {% if user.is_authenticated and user.is_complete_profile %}
-                            <a class="nav-link {% if request.path == '/' %}active-nav{% endif %}"
+                            <a class="nav-link {% if request.path == '/dashboard/' %}active-nav{% endif %}"
                                 href="/dashboard">Dashboard</a>
                             {% if request.user.user_type == "developer" or request.user.user_type == "agent" %}
                             <a class="nav-link {% if request.path == create_building_url %}active-nav{% endif %}"
@@ -47,6 +47,18 @@
                             <a class="nav-link {% if request.path == create_property_url %}active-nav{% endif %}"
                                 href="{{ create_property_url }}">Property</a>
                             {% endif %}
+
+                            {% if request.user.user_type == "prospect" %}
+                            <a class="nav-link {% if request.path == comparison_property_url %}active-nav{% endif %}" 
+                                href="{{ comparison_property_url }}">
+                                Comparison
+                            </a>
+                            
+                            <a class="nav-link {% if request.path == favorite_list_property_url %}active-nav{% endif %}" 
+                                href="{{ favorite_list_property_url }}">
+                                Favorite List
+                            </a>
+                            {% endif %} 
                         {% endif %}
                         
                         <div class="search-box">
@@ -243,6 +255,14 @@
                 'display': 'block',
             })
         }
+    };
+
+
+    function formatBalance(number) {
+        var parts = String(number).split('.');
+        var integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        var formattedNumber = parts.length > 1 ? integerPart+'.'+parts[1] : integerPart;
+        return formattedNumber;
     };
 
     /*

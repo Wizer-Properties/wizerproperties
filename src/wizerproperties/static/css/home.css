@@ -224,6 +224,38 @@
     font-weight: bold;
 }
 
+.sign-in-note-box{
+    background-color: #E4F1EE;
+    display: flex;
+    padding: 20px;
+    border-radius: 10px;
+    justify-content: space-between;
+    margin-bottom: 55px;
+    align-items: center;
+}
+
+.sign-in-note-box h1{
+    font-size: 22px;
+}
+
+.sign-in-note-box p{
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #726E6E;
+}
+
+.sign-in-note-box a{
+    display: block;
+    border: 1px solid #ffd350;
+    background-color: #fff;
+    font-size: 16px;
+    padding: 8px 15px;
+    color: #002A2D;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
 @media screen and (max-width: 991px) {
     .banner-title{
         font-size: 34px !important;
@@ -233,6 +265,15 @@
         padding: 10px !important;
         padding-left: 50px !important;
         font-size: 16px !important;
+    }
+
+    .sign-in-note-box{
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .sign-in-note-box p{
+        margin-bottom: 15px;
     }
 }
 
