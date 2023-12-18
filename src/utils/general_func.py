@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -73,3 +74,11 @@ def rename_dict_key(data_dict: dict, key_list: list) -> dict:
             data_dict[key[1]] = data_dict.pop(key[0])
 
     return data_dict
+
+
+def validate_date_format(value):
+    try:
+        # Try to parse the value as a date in the expected format
+        timezone.datetime.strptime(value, "%m/%d/%Y")
+    except ValueError:
+        raise ValidationError("Invalid date format. Use mm/dd/yyyy.")
