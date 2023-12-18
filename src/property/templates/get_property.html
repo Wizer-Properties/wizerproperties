@@ -47,38 +47,7 @@
 {% block content %}
 
 <section id="details-banner">
-    <div class="col-xl-7 col-lg-8 col-10 details-banner-bg">
-        <img src="" alt="bg">
-    </div>
-
-    
-    
-
     <div class="container position-relative z-index-3">
-        <h1 class="title-perice-area">
-            <span class="title" label-name="title"> 
-                <span class="skeleton-box" style="width: 200px; height: 26px;"></span> 
-            </span>
-            <span class="price"> 
-                Price :
-                <span label-name="price">
-                    <span class="skeleton-box" style="width: 140px; height: 26px;"></span> 
-                </span>
-            </span>
-        </h1>
-        <address>
-            <i class="bi bi-geo-alt"></i>
-            <span label-name="address">
-                <span class="skeleton-box" style="width: 100px; height: 22px;"></span>
-            </span>
-        </address>
-        <span class="unit-id">
-            <b>Unit ID : </b> 
-            <span label-name="unit_id"> 
-                <span class="skeleton-box" style="width: 100px; height: 22px;"></span>
-            </span>
-        </span>
-
         <nav class="nav-tab-wrapper">
             <div class="nav nav-tabs gallery-btn" id="nav-tab" role="tablist">
                 <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#nav-imges" aria-selected="true" type="image">
@@ -214,64 +183,90 @@
 
 
 <section>
-    <div class="cotainer">
-        <div class="property-short-info">
-            <div class="property-short-info-box">
-                <div class="property-short-info-icon">
-                    <img src="{% static '/media/icons/bed.svg' %}" alt="bed-icon">
-                </div>
-                <span class="property-value" label-name="number_of_bedroom">
-                    <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
-                </span>
-                <span class="property-label">Beds</span>
-            </div>
-            <div class="property-short-info-box">
-                <div class="property-short-info-icon">
-                    <img src="{% static '/media/icons/bath.svg' %}" alt="bath-icon">
-                </div>
-                <span class="property-value" label-name="number_of_bathroom">
-                    <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
-                </span>
-                <span class="property-label">Baths</span>
-            </div>
-            <div class="property-short-info-box">
-                <div class="property-short-info-icon">
-                    <img src="{% static '/media/icons/plan-size.svg' %}" alt="plan-size-icon">
-                </div>
-                <span class="property-value" label-name="unit_area">
-                    <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
-                </span>
-                <span class="property-label">Size</span>
-            </div>
-            <div class="property-short-info-box">
-                <div class="property-short-info-icon">
-                    <img src="{% static '/media/icons/stairs.svg' %}" alt="stairs-icon">
-                </div>
-                <span class="property-value" label-name="floor_number">
-                    <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
-                </span> 
-                <span class="property-label">Floor</span>
-            </div>
-            <div class="property-short-info-box">
-                <div class="property-short-info-icon">
-                    <img src="{% static '/media/icons/building.svg' %}" alt="building-icon">
-                </div>
-                <span class="property-value" label-name="total_floors">
-                    <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
-                </span>
-                <span class="property-label">Build</span>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-
-
-<section>
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
+
+                <!-- address price info -->
+
+                <div class="property-address-price-info">
+                    <h1 class="title-perice-area">
+                        <span class="title" label-name="title"> 
+                            <span class="skeleton-box" style="width: 200px; height: 26px;"></span> 
+                        </span>
+                        <span class="price"> 
+                            Price :
+                            <span label-name="price">
+                                <span class="skeleton-box" style="width: 140px; height: 26px;"></span> 
+                            </span>
+                        </span>
+                    </h1>
+                    <address>
+                        <i class="bi bi-geo-alt"></i>
+                        <span label-name="address">
+                            <span class="skeleton-box" style="width: 100px; height: 22px;"></span>
+                        </span>
+                    </address>
+                    <span class="unit-id">
+                        <b>Unit ID : </b> 
+                        <span label-name="unit_id"> 
+                            <span class="skeleton-box" style="width: 100px; height: 22px;"></span>
+                        </span>
+                    </span>
+                </div>
+
+
+                <!-- property short info -->
+
+                <div class="property-short-info">
+                    <div class="property-short-info-box">
+                        <div class="property-short-info-icon">
+                            <img src="{% static '/media/icons/bed.svg' %}" alt="bed-icon">
+                        </div>
+                        <span class="property-value" label-name="number_of_bedroom">
+                            <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                        </span>
+                        <span class="property-label">Beds</span>
+                    </div>
+                    <div class="property-short-info-box">
+                        <div class="property-short-info-icon">
+                            <img src="{% static '/media/icons/bath.svg' %}" alt="bath-icon">
+                        </div>
+                        <span class="property-value" label-name="number_of_bathroom">
+                            <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                        </span>
+                        <span class="property-label">Baths</span>
+                    </div>
+                    <div class="property-short-info-box">
+                        <div class="property-short-info-icon">
+                            <img src="{% static '/media/icons/plan-size.svg' %}" alt="plan-size-icon">
+                        </div>
+                        <span class="property-value" label-name="unit_area">
+                            <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                        </span>
+                        <span class="property-label">Size</span>
+                    </div>
+                    <div class="property-short-info-box">
+                        <div class="property-short-info-icon">
+                            <img src="{% static '/media/icons/stairs.svg' %}" alt="stairs-icon">
+                        </div>
+                        <span class="property-value" label-name="floor_number">
+                            <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                        </span> 
+                        <span class="property-label">Floor</span>
+                    </div>
+                    <div class="property-short-info-box">
+                        <div class="property-short-info-icon">
+                            <img src="{% static '/media/icons/building.svg' %}" alt="building-icon">
+                        </div>
+                        <span class="property-value" label-name="total_floors">
+                            <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                        </span>
+                        <span class="property-label">Build</span>
+                    </div>
+                </div>
+                
+
 
                 <!-- 1 -->
                 <div class="about-area">

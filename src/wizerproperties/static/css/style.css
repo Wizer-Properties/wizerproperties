@@ -424,7 +424,7 @@ footer{
 }
 
 .nav-tabs .nav-link.active{
-    background-color: #fff !important;
+    background-color: #ffd350 !important;
 }
 
 .success-message,
@@ -592,10 +592,6 @@ footer{
     .uploaded-file-view-img {
         width: 95px;
         height: 70px;
-    }
-
-    .nav-tabs .nav-link.active {
-        background-color: #ffd350 !important;
     }
 
     #details-banner{

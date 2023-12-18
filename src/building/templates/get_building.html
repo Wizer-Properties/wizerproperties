@@ -48,32 +48,7 @@
 {% block content %}
 
 <section id="details-banner">
-    <div class="col-xl-7 col-lg-8 col-10 details-banner-bg">
-        <img src="" alt="bg">
-    </div>
-
-
-    
-
     <div class="container position-relative z-index-3">
-        <h1 class="title-perice-area">
-            <span class="title" label-name="build-title"> 
-                <span class="skeleton-box" style="width: 200px; height: 26px;"></span> 
-            </span>
-            <span class="price"> 
-                Price :
-                <span label-name="build-max-min-price">
-                    <span class="skeleton-box" style="width: 140px; height: 26px;"></span> 
-                </span>
-            </span>
-        </h1>
-        <address>
-            <i class="bi bi-geo-alt"></i>
-            <span label-name="address">
-                <span class="skeleton-box" style="width: 100px; height: 22px;"></span>
-            </span>
-        </address>
-
         <nav class="nav-tab-wrapper">
             <div class="nav nav-tabs gallery-btn" id="nav-tab" role="tablist">
                 <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#nav-imges" aria-selected="true" type="image">
@@ -194,67 +169,91 @@
 
 
 
-
-<section>
-    <div class="cotainer">
-        <div class="property-short-info">
-            <div class="property-short-info-box">
-                <div class="property-short-info-icon">
-                    <img src="{% static '/media/icons/building.svg' %}" alt="building-icon">
-                </div>
-                <span class="property-value" label-name="building_type">
-                    <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
-                </span>
-                <span class="property-label">Building</span>
-            </div>
-            <div class="property-short-info-box">
-                <div class="property-short-info-icon">
-                    <img src="{% static '/media/icons/unit.svg' %}" alt="unit-icon">
-                </div>
-                <span class="property-value" label-name="total_units_for_sale">
-                    <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
-                </span>
-                <span class="property-label">Unit</span>
-            </div>
-            <div class="property-short-info-box">
-                <div class="property-short-info-icon">
-                    <img src="{% static '/media/icons/plan-size.svg' %}" alt="plan-size-icon">
-                </div>
-                <span class="property-value" label-name="project_total_area">
-                    <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
-                </span>
-                <span class="property-label">Project Area</span>
-            </div>
-            <div class="property-short-info-box">
-                <div class="property-short-info-icon">
-                    <img src="{% static '/media/icons/stairs.svg' %}" alt="stairs-icon">
-                </div>
-                <span class="property-value" label-name="total_floors">
-                    <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
-                </span> 
-                <span class="property-label">Floor</span>
-            </div>
-            <div class="property-short-info-box">
-                <div class="property-short-info-icon">
-                    <img src="{% static '/media/icons/build.svg' %}" alt="build-icon">
-                </div>
-                <span class="property-value" label-name="construction_year">
-                    <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
-                </span>
-                <span class="property-label">Build</span>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-
-
-
 <section>
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
+
+                <!-- address price info -->
+                <div class="property-address-price-info">
+                    <h1 class="title-perice-area">
+                        <span class="title" label-name="build-title"> 
+                            <span class="skeleton-box" style="width: 200px; height: 26px;"></span> 
+                        </span>
+                        <span class="price"> 
+                            Price :
+                            <span label-name="build-max-min-price">
+                                <span class="skeleton-box" style="width: 140px; height: 26px;"></span> 
+                            </span>
+                        </span>
+                    </h1>
+                    <address>
+                        <i class="bi bi-geo-alt"></i>
+                        <span label-name="address">
+                            <span class="skeleton-box" style="width: 100px; height: 22px;"></span>
+                        </span>
+                    </address>
+                </div>
+
+                <!-- property short info -->
+                <div class="property-short-info">
+                    <div class="property-short-info-box">
+                        <span class="property-label">Building</span>
+                        <div class="d-flex align-items-center">
+                            <div class="property-short-info-icon">
+                                <img src="{% static '/media/icons/building.svg' %}" alt="building-icon">
+                            </div>
+                            <span class="property-value" label-name="building_type">
+                                <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="property-short-info-box">
+                        <span class="property-label">Unit</span>
+                        <div class="d-flex align-items-center">
+                            <div class="property-short-info-icon">
+                                <img src="{% static '/media/icons/unit.svg' %}" alt="unit-icon">
+                            </div>
+                            <span class="property-value" label-name="total_units_for_sale">
+                                <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="property-short-info-box">
+                        <span class="property-label">Project Area</span>
+                        <div class="d-flex align-items-center">
+                            <div class="property-short-info-icon">
+                                <img src="{% static '/media/icons/plan-size.svg' %}" alt="plan-size-icon">
+                            </div>
+                            <span class="property-value" label-name="project_total_area">
+                                <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="property-short-info-box">
+                        <span class="property-label">Floor</span>
+                        <div class="d-flex align-items-center">
+                            <div class="property-short-info-icon">
+                                <img src="{% static '/media/icons/stairs.svg' %}" alt="stairs-icon">
+                            </div>
+                            <span class="property-value" label-name="total_floors">
+                                <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                            </span> 
+                        </div>
+                    </div>
+                    <div class="property-short-info-box">
+                        <span class="property-label">Build</span>
+                        <div class="d-flex align-items-center">
+                            <div class="property-short-info-icon">
+                                <img src="{% static '/media/icons/build.svg' %}" alt="build-icon">
+                            </div>
+                            <span class="property-value" label-name="construction_year">
+                                <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                            </span>
+                        </div>
+                    </div>
+        
+                </div>
 
                 <!-- 1 -->
                 <div class="about-area">

@@ -224,9 +224,9 @@
                                 </div>
 
                                 {% if property.have_tenant_occupied %}
-                                <div class="col-6">
+                                <div class="col-6 date_picker_box_wrapper">
                                     <div class="authFormDiv">
-                                        <input name="tenant_occupied_validity" type="text" class="authInput date_picker_box" value="{{property.tenant_occupied_validity | date:'m/d/Y' }}" required>
+                                        <input name="tenant_occupied_validity" type="date" class="authInput date_picker_box" value="{{property.tenant_occupied_validity | date:'m/d/Y' }}" required>
                                         <div class="authlabelline authcompleteProfileLabe">State i.e until Oct 2024</div>
                                     </div>
                                 </div>
