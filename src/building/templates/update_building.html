@@ -5,6 +5,12 @@
 {% block extend_head %}
 <title>Update building</title>
 <link rel="stylesheet" href="{% static '/css/auth.css' %}" />
+<style>
+    [label-name="latitude"],
+    [label-name="longitude"]{
+        display: none;
+    }
+</style>
 {% endblock extend_head %}
 
 {% block content %}
@@ -155,22 +161,9 @@
                                 <div class="authlabelline authcompleteProfileLabe">Sub-District</div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="latitude" label="latitude" type="text" class="authInput" placeholder="Latitude"
-                                value="{{ building.latitude }}">
-                                <div class="authlabelline authcompleteProfileLabe">Latitude</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="longitude" label="longitude" type="text" class="authInput" placeholder="Longitude"
-                                value="{{ building.longitude }}">
-                                <div class="authlabelline authcompleteProfileLabe">Longitude</div>
-                            </div>
-                        </div>
+
+                        <input name="latitude" label="latitude" label-name="latitude" type="text" class="authInput" placeholder="Latitude" value="{{ building.latitude }}">
+                        <input name="longitude" label="longitude" label-name="longitude" type="text" class="authInput" placeholder="Longitude" value="{{ building.longitude }}">
                     </div>
 
                     <div class="row">
@@ -196,6 +189,23 @@
                         <div class="col-lg-6">
 
                             <div class="row">
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input name="have_access_to_BTS_or_MRT" class="form-check-input" type="checkbox" id="access_to_BTS_or_MRT">
+                                        <label class="form-check-label" for="access_to_BTS_or_MRT">
+                                            Have Access to BTS/MRT
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input name="have_access_to_ARL" class="form-check-input" type="checkbox" id="access_to_ARL">
+                                        <label class="form-check-label" for="access_to_ARL">
+                                            Have Access to ARL
+                                        </label>
+                                    </div>
+                                </div>
+
                                 <div class="col-6">
                                     <div class="form-check">
                                         <input name="have_freehold" class="form-check-input" type="checkbox"
@@ -288,19 +298,10 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="form-check">
-                                        <input name="have_guard_house" class="form-check-input" type="checkbox"
-                                            id="guard_house" {% if building.have_guard_house %}checked{% endif %}>
-                                        <label class="form-check-label" for="guard_house">
-                                            Have Guard House
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
                                         <input name="have_sky_lounge" class="form-check-input" type="checkbox"
                                             id="sky_lounge" {% if building.have_sky_lounge %}checked{% endif %}>
                                         <label class="form-check-label" for="sky_lounge">
-                                            Have Sky Lounge
+                                            Have Rooftop Pool
                                         </label>
                                     </div>
                                 </div>

@@ -24,6 +24,10 @@
     z-index: 3;
 }
 
+.datepicker-dropdown{
+    z-index: 9999 !important;
+}
+
 .skeleton-box {
     display: inline-block;
     height: 1em;
@@ -468,6 +472,7 @@ footer{
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    flex-wrap: wrap;
 }
 
 .property-price-info span:first-child{

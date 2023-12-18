@@ -32,10 +32,10 @@ $(document).ready(function(){
 
                 $('[label-name="title"]').html(data?.title)
                 $('[label-name="unit_id"]').html(data?.unit_id)
-                $('[label-name="price"]').html('฿ '+ Math.floor(data?.price))
+                $('[label-name="price"]').html('฿ '+ formatBalance(Math.floor(data?.price) || 0))
                 $('[label-name="build-max-min-price"]').html(
-                    '฿ '+Math.floor(data?.building_info?.lowest_price) +' - '+ 
-                    Math.floor(data?.building_info?.highest_price)
+                    '฿ '+formatBalance(Math.floor(data?.building_info?.lowest_price) || 0) +' - '+ 
+                    formatBalance(Math.floor(data?.building_info?.highest_price) || 0)
                 )
                 $('[label-name="number_of_bedroom"]').html(data?.number_of_bedroom)
                 $('[label-name="number_of_bathroom"]').html(data?.number_of_bathroom)
@@ -362,8 +362,8 @@ $(document).ready(function(){
 
                         '<div class="p-2">'+
                             '<div class="property-price-info">'+
-                                '<span>฿'+data?.price+'</span>'+
-                                '<span>฿295,000/SqM</span>'+
+                                '<span>฿ '+ formatBalance(data?.price || 0)+'</span>'+
+                                '<span>฿ '+ formatBalance(data?.price_per_sqm || 0) +'/sqm</span>'+
                             '</div>'+
                             '<div class="property-contains">'+
                                 '<div class="property-short-info-box">'+

@@ -3,7 +3,7 @@ function initializeMap() {
         componentRestrictions: {
             country: "th"
         },
-        fields : ['address_components']
+        fields : ["address_components", "geometry"]
     };
 
     var search_input = document.getElementById("gm-search-input");
@@ -22,6 +22,7 @@ function initializeMap() {
         var autocomplete = new google.maps.places.Autocomplete(gac_input[i], options);
         
         google.maps.event.addListener(autocomplete, 'place_changed', function(){
+            var _place = autocomplete.getPlace();
             var address_data = autocomplete.getPlace()?.address_components;
 
             for (let i = 0; i < address_data.length; i++) {
@@ -44,6 +45,14 @@ function initializeMap() {
                     };
                 };
             };
+
+            if (_place.geometry) {
+                var latitude = _place.geometry.location.lat();
+                var longitude = _place.geometry.location.lng();
+    
+                $('[label-name="latitude"]').val(latitude);
+                $('[label-name="longitude"]').val(longitude);
+            }
         });
 
 

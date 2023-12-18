@@ -80,4 +80,23 @@ $(document).ready(function () {
             },
         });
     });
+
+    $(document).on('change', '#have_tenant_occupied', function(){
+        var is_checked = $(this).is(":checked");
+        
+        if(is_checked){
+            $('.property-options-area').append(
+                '<div class="col-6 date_picker_box_wrapper">'+
+                    '<div class="authFormDiv">'+
+                        '<input name="tenant_occupied_validity" type="text" class="authInput date_picker_box">'+
+                        '<div class="authlabelline authcompleteProfileLabe">State i.e until Oct 2024</div>'+
+                    '</div>'+
+                '</div>'
+            );
+
+            $('.date_picker_box').datepicker('setStartDate', new Date());
+        }else{
+            $('.date_picker_box_wrapper').remove()
+        }
+    })
 });

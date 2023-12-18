@@ -5,6 +5,12 @@
 {% block extend_head %}
 <title>Create building</title>
 <link rel="stylesheet" href="{% static '/css/auth.css' %}" />
+<style>
+    [label-name="latitude"],
+    [label-name="longitude"]{
+        display: none;
+    }
+</style>
 {% endblock extend_head %}
 
 {% block content %}
@@ -134,20 +140,8 @@
                                 <div class="authlabelline authcompleteProfileLabe">Sub-District</div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="latitude" label="latitude" type="number" class="authInput" placeholder="Latitude" required>
-                                <div class="authlabelline authcompleteProfileLabe">Latitude</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="longitude" label="longitude" type="number" class="authInput" placeholder="Longitude" required>
-                                <div class="authlabelline authcompleteProfileLabe">Longitude</div>
-                            </div>
-                        </div>
+                        <input name="latitude" label="latitude" label-name="latitude" type="text" class="authInput" placeholder="Latitude" >
+                        <input name="longitude" label="longitude" label-name="longitude" type="text" class="authInput" placeholder="Longitude" >
                     </div>
 
                     <div class="row">
@@ -173,6 +167,22 @@
                         <div class="col-lg-6">
 
                             <div class="row">
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input name="have_access_to_BTS_or_MRT" class="form-check-input" type="checkbox" id="access_to_BTS_or_MRT">
+                                        <label class="form-check-label" for="access_to_BTS_or_MRT">
+                                            Have Access to BTS/MRT
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input name="have_access_to_ARL" class="form-check-input" type="checkbox" id="access_to_ARL">
+                                        <label class="form-check-label" for="access_to_ARL">
+                                            Have Access to ARL
+                                        </label>
+                                    </div>
+                                </div>
                                 <div class="col-6">
                                     <div class="form-check">
                                         <input name="have_freehold" class="form-check-input" type="checkbox" id="freehold">
