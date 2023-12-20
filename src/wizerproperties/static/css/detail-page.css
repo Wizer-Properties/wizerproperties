@@ -82,10 +82,14 @@
     border-bottom: 1px solid #eee;
     margin-bottom: 60px;
     padding: 20px 0;
+    flex-wrap: wrap;
+    gap: 15px 0;
 }
 
 .property-short-info-icon{
     margin-right: 10px;
+    position: relative;
+    top: -2px;
 }
 
 .property-short-info-icon img{
@@ -99,10 +103,11 @@
 }
 
 .property-label{
-    font-size: 14px;
+    font-size: 12px;
     display: block;
     text-transform: uppercase;
     letter-spacing: 1px;
+    color: #9a959e;
 }
 
 .info-list-box{
@@ -545,7 +550,7 @@ body[img-gallery-open="true"] .img-gallery-dialog{
 }
 
 .property-short-info-box{
-    margin-right: 30px;
+    margin-right: 40px;
 }
 
 .property-short-info-box:last-child{

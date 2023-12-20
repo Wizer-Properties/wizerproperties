@@ -219,50 +219,65 @@
                 <!-- property short info -->
 
                 <div class="property-short-info">
+
                     <div class="property-short-info-box">
-                        <div class="property-short-info-icon">
-                            <img src="{% static '/media/icons/bed.svg' %}" alt="bed-icon">
-                        </div>
-                        <span class="property-value" label-name="number_of_bedroom">
-                            <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
-                        </span>
                         <span class="property-label">Beds</span>
-                    </div>
-                    <div class="property-short-info-box">
-                        <div class="property-short-info-icon">
-                            <img src="{% static '/media/icons/bath.svg' %}" alt="bath-icon">
+                        <div class="d-flex align-items-center">
+                            <div class="property-short-info-icon">
+                                <img src="{% static '/media/icons/bed.svg' %}" alt="bed-icon">
+                            </div>
+                            <span class="property-value" label-name="number_of_bedroom">
+                                <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                            </span>
                         </div>
-                        <span class="property-value" label-name="number_of_bathroom">
-                            <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
-                        </span>
+                    </div>
+
+                    <div class="property-short-info-box">
                         <span class="property-label">Baths</span>
-                    </div>
-                    <div class="property-short-info-box">
-                        <div class="property-short-info-icon">
-                            <img src="{% static '/media/icons/plan-size.svg' %}" alt="plan-size-icon">
+                        <div class="d-flex align-items-center">
+                            <div class="property-short-info-icon">
+                                <img src="{% static '/media/icons/bath.svg' %}" alt="bath-icon">
+                            </div>
+                            <span class="property-value" label-name="number_of_bathroom">
+                                <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                            </span>
                         </div>
-                        <span class="property-value" label-name="unit_area">
-                            <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
-                        </span>
+                    </div>
+
+                    <div class="property-short-info-box">
                         <span class="property-label">Size</span>
-                    </div>
-                    <div class="property-short-info-box">
-                        <div class="property-short-info-icon">
-                            <img src="{% static '/media/icons/stairs.svg' %}" alt="stairs-icon">
+                        <div class="d-flex align-items-center">
+                            <div class="property-short-info-icon">
+                                <img src="{% static '/media/icons/plan-size.svg' %}" alt="plan-icon">
+                            </div>
+                            <span class="property-value" label-name="unit_area">
+                                <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                            </span>
                         </div>
-                        <span class="property-value" label-name="floor_number">
-                            <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
-                        </span> 
+                    </div>
+
+                    <div class="property-short-info-box">
                         <span class="property-label">Floor</span>
-                    </div>
-                    <div class="property-short-info-box">
-                        <div class="property-short-info-icon">
-                            <img src="{% static '/media/icons/building.svg' %}" alt="building-icon">
+                        <div class="d-flex align-items-center">
+                            <div class="property-short-info-icon">
+                                <img src="{% static '/media/icons/stairs.svg' %}" alt="stairs-icon">
+                            </div>
+                            <span class="property-value" label-name="floor_number">
+                                <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                            </span>
                         </div>
-                        <span class="property-value" label-name="total_floors">
-                            <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
-                        </span>
+                    </div>
+
+                    <div class="property-short-info-box">
                         <span class="property-label">Build</span>
+                        <div class="d-flex align-items-center">
+                            <div class="property-short-info-icon">
+                                <img src="{% static '/media/icons/building.svg' %}" alt="building-icon">
+                            </div>
+                            <span class="property-value" label-name="total_floors">
+                                <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
+                            </span>
+                        </div>
                     </div>
                 </div>
                 
@@ -279,7 +294,7 @@
 
 
                 <!-- 2 -->
-                <div class="property-info-area">
+                <div class="property-info-area" style="display: none;">
                     <h1 class="section-title">Property Info</h1>
                     <div class="info-list">
                         <div class="row">
