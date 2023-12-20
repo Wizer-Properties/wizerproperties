@@ -4,7 +4,6 @@ from core.models import TimestampedModel
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from utils.general_data import UNIT_POSITION_TYPES
-from utils.general_func import validate_date_format
 
 
 class Property(TimestampedModel):
@@ -30,14 +29,14 @@ class Property(TimestampedModel):
     have_access_to_BTS_or_MRT = models.BooleanField(default=False)
     have_access_to_ARL = models.BooleanField(default=False)
     have_tenant_occupied = models.BooleanField(default=False)
-    tenant_occupied_validity = models.DateField(blank=True, null=True, validators=[validate_date_format])
+    tenant_occupied_validity = models.DateField(blank=True, null=True)
     have_vacant = models.BooleanField(default=False)
     have_owner_occupied = models.BooleanField(default=False)
     have_bathtub = models.BooleanField(default=False)
     have_duplex = models.BooleanField(default=False)
     newly_created = models.BooleanField(default=False)
     popular = models.BooleanField(default=False)
-    discount_period = models.DateField(blank=True, null=True, validators=[validate_date_format])
+    discount_period = models.DateField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
     created_by = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True)
 
