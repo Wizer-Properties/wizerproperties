@@ -58,11 +58,22 @@
 .search-result-box .property-short-info-box{
     padding-right: 20px !important;
     color: #726E6E;
+    display: flex;
+}
+
+.search-result-box .property-short-info-icon img{
+    width: 16px !important;
+    opacity: .8 !important;
+}
+
+.search-result-box .property-value {
+    font-size: 14px !important;
+    position: relative !important;
+    top: 4px !important;
 }
 
 .search-result-box .property-short-info-icon{
-    display: flex;
-    justify-content: center;
+    margin-right: 7px ;
 }
 
 .property-faciluty{
@@ -245,6 +256,82 @@
     display: none;
 }
 
+.buillding-agency-info{
+    display: flex;
+    align-items: center;
+}
+
+.property-card-footer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.buillding-agency-logo img{
+    height: 30px;
+}
+
+.buillding-agency-logo{
+    max-width: 110px;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+.buillding-agency-tel{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+.buillding-agency-tel a,
+.buillding-agency-tel span{
+    font-size: 13px;
+    color: #484848;
+}
+
+.buillding-agency-tel a{
+    font-weight: 500;
+}
+
+.search-result-box{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.building-agency-action-btn{
+    display: flex;
+    align-items: center;
+    color: #484848 !important;
+    font-weight: 500;
+    font-size: 14px;
+    background-color: transparent;
+    border: none !important;
+}
+
+.buillding-agency-tel .bi{
+    display: none;
+    font-size: 16px;
+}
+
+.splide__pagination{
+    bottom: 20px !important;
+}
+
+
+@media screen and (max-width : 1200px){
+    .building-agency-action-btn span{
+        display: none;
+    }
+
+    .building-agency-action-btn .bi{
+        font-size: 16px;
+    }
+}
+
+
 @media screen and (max-width : 768px){
     #search-result .banner-action-button{
         width: 130px;
@@ -253,6 +340,14 @@
         flex-direction: column;
     }
 
+
+    .buillding-agency-tel .bi{
+        display: inline-block;
+    }
+
+    .buillding-agency-tel span{
+        display: none;
+    }
 }
 
 
@@ -267,5 +362,17 @@
         width: calc(100% - 44px);
         left: 50%;
         transform: translateX(-50%);
-    }    
+    }
+
+    .property-card-footer{
+        margin-top: 20px;
+    }
+
+    .building-agency-action-btn span{
+        display: inline-block;
+    }
+
+    ._contact{
+        display: none !important;
+    }
 }

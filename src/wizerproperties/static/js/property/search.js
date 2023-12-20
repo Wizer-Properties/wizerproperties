@@ -5,7 +5,18 @@ $(document).ready(function(){
     $('#gm-search-input').val(place || '');
     $('.search-area').html(place || '');
     
-
+    // new Splide( '.search-result-box-img-splid' ).mount({
+    //     perPage: 2,
+    // });
+    new Splide( '.search-result-box-img-splid', {
+        perPage: 2,
+        gap: 5,
+        breakpoints: {
+            768: {
+                perPage: 1,
+            },
+        }
+    }).mount()
 
     $(document).on('click', '.filter-dropdown-btn', function(){
         var target_area = 
@@ -275,7 +286,6 @@ $(document).ready(function(){
     });
 
 
-
     $(document).on('change', 'select', function(){
         filter_close_dropdown();
         prams_list[$(this).attr('name')] = $(this).val() == 'null' ? '' : $(this).val();
@@ -316,7 +326,6 @@ $(document).ready(function(){
             button_dom.html(min_val+' - '+max_val+' <i class="bi bi-chevron-down"></i>')
         };
     });
-
 
 
     $(document).on('click', '.filter-dropdown-buttons button', function(){

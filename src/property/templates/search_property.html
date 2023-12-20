@@ -4,6 +4,8 @@
 
 {% block extend_head %}
 <title>Search property</title>
+<link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
+<link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
 <link rel="stylesheet" href="{% static '/css/search-page.css' %}?v=1.00" />
 {% endblock extend_head %}
 
@@ -178,136 +180,156 @@
 
 <section id="search-result">
     <div class="container">
-        <div class="row" id="search-result-list">
-
-            <div class="col-lg-6 mb-4 searching-loader">
-                <div class="search-result-box-wrapper">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="search-result-box-img">
-                                <span class="skeleton-box" style="width: 100%; height: 200px;"></span>
-                            </div>
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="row" id="search-result-list">
+        
+                    <div class="col-12 mb-5 property-single-box">
+                        <div class="banner-action-button col-4">
+        
                         </div>
-                        <div class="col-sm-8">
-                            <div class="search-result-box">
-                                <h1> <span class="skeleton-box" style="width: 100%; height: 20px;"></span> </h1>
-                                <div class="location">
-                                    <span class="skeleton-box" style="width: 100%; height: 20px;"></span>
+                        <div class="search-result-box-wrapper">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="splide search-result-box-img-splid">
+                                        <div class="splide__track">
+                                            <div class="splide__list">
+                                                <div class="splide__slide search-result-box-img">
+                                                    <img src="/media/property/images/08a0e1abc8f965a30ae9232190110d47_TuHISeV.jpg" alt="Lorem Ipsum is simply dummy text of the printing and typesetting industry" loading="lazy">
+                                                </div>
+                                                <div class="splide__slide search-result-box-img">
+                                                    <img src="/media/property/images/08a0e1abc8f965a30ae9232190110d47_TuHISeV.jpg" alt="Lorem Ipsum is simply dummy text of the printing and typesetting industry" loading="lazy">
+                                                </div>
+                                                <div class="splide__slide search-result-box-img">
+                                                    <img src="/media/property/images/08a0e1abc8f965a30ae9232190110d47_TuHISeV.jpg" alt="Lorem Ipsum is simply dummy text of the printing and typesetting industry" loading="lazy">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <p class="sub-title">
-                                    <span class="skeleton-box" style="width: 100%; height: 21px;"></span>
-                                </p>
+                                <div class="col-sm-7">
+                                    <div class="search-result-box">
+                                        <div>
+                                            <h1> Lorem Ipsum is simply dummy text of the printing and typesetting industry </h1>
+                                            
+                                            <div class="property-contains">
+                                                <div class="property-short-info-box">
+                                                    <div class="property-short-info-icon">
+                                                        <img src="/static/media/icons/bed.svg" alt="bed-icon">
+                                                    </div>
+                                                    <span class="property-value"> 1 </span>
+                                                </div>
+                                                <div class="property-short-info-box">
+                                                    <div class="property-short-info-icon">
+                                                        <img src="/static/media/icons/bath.svg" alt="bath-icon">
+                                                    </div>
+                                                    <span class="property-value"> 2 </span>
+                                                </div>
+                                                <div class="property-short-info-box">
+                                                    <div class="property-short-info-icon">
+                                                        <img src="/static/media/icons/plan-size.svg" alt="plan-size-icon">
+                                                    </div>
+                                                    <span class="property-value"> 12</span>
+                                                </div>
+                                                <div class="property-short-info-box">
+                                                    <div class="property-short-info-icon">
+                                                        <img src="/static/media/icons/stairs.svg" alt="stairs-icon">
+                                                    </div>
+                                                    <span class="property-value"> 234 </span>
+                                                </div>
+                                            </div>
+    
+                                            <p class="details"> 
+                                                Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32. The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham. 
+                                            </p>
 
-                                <p class="details">
-                                    <span class="skeleton-box" style="width: 100%; height: 40px;"></span>
-                                </p>
-                                <div class="d-flex">
-                                    <span class="skeleton-box me-2" style="width: 40px; height: 30px;"></span>
-                                    <span class="skeleton-box me-2" style="width: 40px; height: 30px;"></span>
-                                    <span class="skeleton-box" style="width: 40px; height: 30px;"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                                            <div class="property-faciluty mt-2">
+                                                <span>Grocery</span>
+                                                <span>River View</span>
+                                                <span>Sauna</span>
+                                                <span>Sky Lounge</span>
+                                            </div>
+                                        </div>
 
-            <div class="col-lg-6 mb-4 searching-loader">
-                <div class="search-result-box-wrapper">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="search-result-box-img">
-                                <span class="skeleton-box" style="width: 100%; height: 200px;"></span>
-                            </div>
-                        </div>
-                        <div class="col-sm-8">
-                            <div class="search-result-box">
-                                <h1> <span class="skeleton-box" style="width: 100%; height: 20px;"></span> </h1>
-                                <div class="location">
-                                    <span class="skeleton-box" style="width: 100%; height: 20px;"></span>
-                                </div>
-                                <p class="sub-title">
-                                    <span class="skeleton-box" style="width: 100%; height: 21px;"></span>
-                                </p>
+                                        <div class="property-card-footer">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="buillding-agency-info me-4">
+                                                    <div class="buillding-agency-logo">
+                                                        <img src="https://logos-world.net/wp-content/uploads/2020/04/Huawei-Logo.png" alt="">
+                                                    </div>
+                                                    <div class="buillding-agency-tel">
+                                                        <a href="#">
+                                                            <i class="bi bi-telephone"></i>
+                                                            <span>222444333</span>
+                                                        </a>
+                                                        <span>Local Call rate</span>
+                                                    </div>
+                                                </div>
+    
+                                                <a href="#" class="building-agency-action-btn me-4">
+                                                    <i class="bi bi-envelope pe-2"></i>
+                                                    <span class="_contact"> Contact </span>
+                                                </a>
+                                            </div>
 
-                                <p class="details">
-                                    <span class="skeleton-box" style="width: 100%; height: 40px;"></span>
-                                </p>
-                                <div class="d-flex">
-                                    <span class="skeleton-box me-2" style="width: 40px; height: 30px;"></span>
-                                    <span class="skeleton-box me-2" style="width: 40px; height: 30px;"></span>
-                                    <span class="skeleton-box" style="width: 40px; height: 30px;"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <button class="building-agency-action-btn me-2">
+                                                    <i class="bi bi-heart-fill pe-2"></i>
+                                                    <span> Save </span>
+                                                </button>
 
-            <div class="col-lg-6 mb-4 searching-loader">
-                <div class="search-result-box-wrapper">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="search-result-box-img">
-                                <span class="skeleton-box" style="width: 100%; height: 200px;"></span>
-                            </div>
-                        </div>
-                        <div class="col-sm-8">
-                            <div class="search-result-box">
-                                <h1> <span class="skeleton-box" style="width: 100%; height: 20px;"></span> </h1>
-                                <div class="location">
-                                    <span class="skeleton-box" style="width: 100%; height: 20px;"></span>
-                                </div>
-                                <p class="sub-title">
-                                    <span class="skeleton-box" style="width: 100%; height: 21px;"></span>
-                                </p>
+                                                <button class="building-agency-action-btn">
+                                                    <i class="bi bi-arrow-left-right pe-2"></i>
+                                                    <span> Compare </span>
+                                                </button>
+                                            </div>
+                                        </div>
 
-                                <p class="details">
-                                    <span class="skeleton-box" style="width: 100%; height: 40px;"></span>
-                                </p>
-                                <div class="d-flex">
-                                    <span class="skeleton-box me-2" style="width: 40px; height: 30px;"></span>
-                                    <span class="skeleton-box me-2" style="width: 40px; height: 30px;"></span>
-                                    <span class="skeleton-box" style="width: 40px; height: 30px;"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-6 mb-4 searching-loader">
-                <div class="search-result-box-wrapper">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="search-result-box-img">
-                                <span class="skeleton-box" style="width: 100%; height: 200px;"></span>
-                            </div>
-                        </div>
-                        <div class="col-sm-8">
-                            <div class="search-result-box">
-                                <h1> <span class="skeleton-box" style="width: 100%; height: 20px;"></span> </h1>
-                                <div class="location">
-                                    <span class="skeleton-box" style="width: 100%; height: 20px;"></span>
-                                </div>
-                                <p class="sub-title">
-                                    <span class="skeleton-box" style="width: 100%; height: 21px;"></span>
-                                </p>
-
-                                <p class="details">
-                                    <span class="skeleton-box" style="width: 100%; height: 40px;"></span>
-                                </p>
-                                <div class="d-flex">
-                                    <span class="skeleton-box me-2" style="width: 40px; height: 30px;"></span>
-                                    <span class="skeleton-box me-2" style="width: 40px; height: 30px;"></span>
-                                    <span class="skeleton-box" style="width: 40px; height: 30px;"></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+        
+                    <!-- <div class="col-lg-6 mb-4 searching-loader">
+                        <div class="search-result-box-wrapper">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="search-result-box-img">
+                                        <span class="skeleton-box" style="width: 100%; height: 200px;"></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="search-result-box">
+                                        <h1> <span class="skeleton-box" style="width: 100%; height: 20px;"></span> </h1>
+                                        <div class="location">
+                                            <span class="skeleton-box" style="width: 100%; height: 20px;"></span>
+                                        </div>
+                                        <p class="sub-title">
+                                            <span class="skeleton-box" style="width: 100%; height: 21px;"></span>
+                                        </p>
+        
+                                        <p class="details">
+                                            <span class="skeleton-box" style="width: 100%; height: 40px;"></span>
+                                        </p>
+                                        <div class="d-flex">
+                                            <span class="skeleton-box me-2" style="width: 40px; height: 30px;"></span>
+                                            <span class="skeleton-box me-2" style="width: 40px; height: 30px;"></span>
+                                            <span class="skeleton-box" style="width: 40px; height: 30px;"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+        
                 </div>
             </div>
 
+
+            <div class="col-lg-3">
+                
+            </div>
         </div>
     </div>
     <div id="search-freescroll"></div>
@@ -317,6 +339,7 @@
 
 
 {% block extend_script %}
+<script src="{% static 'js/libraries/splide.min.js' %}"></script>
 <script src="{% static 'js/libraries/noframework.waypoints.min.js' %}"></script>
 <script src="{% static '/js/property/search.js' %}?v=1.00"></script>
 <script src="{% static '/js/property/compair-favorite.js' %}?v=1.00"></script>
