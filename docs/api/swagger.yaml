@@ -663,10 +663,6 @@ paths:
           description: "Filtered by"
           in: "query"
           type: "boolean"
-        - name: "popular"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
       responses:
         200:
           description: Buildings list
@@ -1590,10 +1586,6 @@ paths:
           description: "Filtered by"
           in: "query"
           type: "boolean"
-        - name: "building__popular"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
       responses:
         200:
           description: Properties list
@@ -1742,10 +1734,6 @@ paths:
           description: "Filtered by"
           in: "query"
           type: "boolean"
-        - name: "popular"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
         - name: "building__have_freehold"
           description: "Filtered by"
           in: "query"
@@ -1799,10 +1787,6 @@ paths:
           in: "query"
           type: "boolean"
         - name: "building__have_fitness_area"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__popular"
           description: "Filtered by"
           in: "query"
           type: "boolean"
@@ -1954,10 +1938,6 @@ paths:
           description: "Filtered by"
           in: "query"
           type: "boolean"
-        - name: "popular"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
         - name: "building__have_freehold"
           description: "Filtered by"
           in: "query"
@@ -2011,10 +1991,6 @@ paths:
           in: "query"
           type: "boolean"
         - name: "building__have_fitness_area"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__popular"
           description: "Filtered by"
           in: "query"
           type: "boolean"
@@ -2166,10 +2142,6 @@ paths:
           description: "Filtered by"
           in: "query"
           type: "boolean"
-        - name: "popular"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
         - name: "building__have_freehold"
           description: "Filtered by"
           in: "query"
@@ -2223,10 +2195,6 @@ paths:
           in: "query"
           type: "boolean"
         - name: "building__have_fitness_area"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__popular"
           description: "Filtered by"
           in: "query"
           type: "boolean"
@@ -3194,8 +3162,6 @@ definitions:
         type: "boolean"
       have_fitness_area:
         type: "boolean"
-      popular:
-        type: "boolean"
       is_active:
         type: "boolean"
       created_by:
@@ -3298,8 +3264,6 @@ definitions:
               type: "boolean"
             have_fitness_area:
               type: "boolean"
-            popular:
-              type: "boolean"
             is_active:
               type: "boolean"
             is_reviewed:
@@ -3392,8 +3356,6 @@ definitions:
       have_grocery:
         type: "boolean"
       have_fitness_area:
-        type: "boolean"
-      popular:
         type: "boolean"
       is_active:
         type: "boolean"
@@ -3580,8 +3542,6 @@ definitions:
         type: "boolean"
       newly_created:
         type: "boolean"
-      popular:
-        type: "boolean"
       discount_period:
         type: "string"
       is_active:
@@ -3653,8 +3613,6 @@ definitions:
             type: "boolean"
           have_fitness_area:
             type: "boolean"
-          popular:
-            type: "boolean"
           is_active:
             type: "boolean"
           created_by:
@@ -3701,6 +3659,10 @@ definitions:
               type: "string"
             default_image:
               type: "string"
+            image_media_files:
+              type: "array"
+              items:
+                type: "string"
             description:
               type: "string"
             price:
@@ -3742,8 +3704,6 @@ definitions:
             have_duplex:
               type: "boolean"
             newly_created:
-              type: "boolean"
-            popular:
               type: "boolean"
             discount_period:
               type: "string"
@@ -3822,8 +3782,6 @@ definitions:
                   type: "boolean"
                 have_fitness_area:
                   type: "boolean"
-                popular:
-                  type: "boolean"
                 is_active:
                   type: "boolean"
                 is_reviewed:
@@ -3861,6 +3819,10 @@ definitions:
         type: "string"
       default_image:
         type: "string"
+      image_media_files:
+        type: "array"
+        items:
+          type: "string"
       description:
         type: "string"
       price:
@@ -3902,8 +3864,6 @@ definitions:
       have_duplex:
         type: "boolean"
       newly_created:
-        type: "boolean"
-      popular:
         type: "boolean"
       discount_period:
         type: "string"
@@ -3982,8 +3942,6 @@ definitions:
             type: "boolean"
           have_fitness_area:
             type: "boolean"
-          popular:
-            type: "boolean"
           is_active:
             type: "boolean"
           is_reviewed:
@@ -4028,6 +3986,10 @@ definitions:
             type: "string"
           default_image:
             type: "string"
+          image_media_files:
+            type: "array"
+            items:
+              type: "string"
           description:
             type: "string"
           price:
@@ -4069,8 +4031,6 @@ definitions:
           have_duplex:
             type: "boolean"
           newly_created:
-            type: "boolean"
-          popular:
             type: "boolean"
           discount_period:
             type: "string"
@@ -4144,8 +4104,6 @@ definitions:
               have_grocery:
                 type: "boolean"
               have_fitness_area:
-                type: "boolean"
-              popular:
                 type: "boolean"
               is_active:
                 type: "boolean"
@@ -4200,6 +4158,10 @@ definitions:
                   type: "string"
                 default_image:
                   type: "string"
+                image_media_files:
+                  type: "array"
+                  items:
+                    type: "string"
                 description:
                   type: "string"
                 price:
@@ -4241,8 +4203,6 @@ definitions:
                 have_duplex:
                   type: "boolean"
                 newly_created:
-                  type: "boolean"
-                popular:
                   type: "boolean"
                 discount_period:
                   type: "string"
@@ -4317,8 +4277,6 @@ definitions:
                       type: "boolean"
                     have_fitness_area:
                       type: "boolean"
-                    popular:
-                      type: "boolean"
                     is_active:
                       type: "boolean"
                     created_by:
@@ -4357,6 +4315,10 @@ definitions:
             type: "string"
           default_image:
             type: "string"
+          image_media_files:
+            type: "array"
+            items:
+              type: "string"
           description:
             type: "string"
           price:
@@ -4398,8 +4360,6 @@ definitions:
           have_duplex:
             type: "boolean"
           newly_created:
-            type: "boolean"
-          popular:
             type: "boolean"
           discount_period:
             type: "string"
@@ -4474,8 +4434,6 @@ definitions:
                 type: "boolean"
               have_fitness_area:
                 type: "boolean"
-              popular:
-                type: "boolean"
               is_active:
                 type: "boolean"
               created_by:
@@ -4529,6 +4487,10 @@ definitions:
                   type: "string"
                 default_image:
                   type: "string"
+                image_media_files:
+                  type: "array"
+                  items:
+                    type: "string"
                 description:
                   type: "string"
                 price:
@@ -4570,8 +4532,6 @@ definitions:
                 have_duplex:
                   type: "boolean"
                 newly_created:
-                  type: "boolean"
-                popular:
                   type: "boolean"
                 discount_period:
                   type: "string"
@@ -4645,8 +4605,6 @@ definitions:
                     have_grocery:
                       type: "boolean"
                     have_fitness_area:
-                      type: "boolean"
-                    popular:
                       type: "boolean"
                     is_active:
                       type: "boolean"

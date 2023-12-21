@@ -49,7 +49,6 @@ class Building(TimestampedModel):
     have_sky_lounge = models.BooleanField(default=False)
     have_grocery = models.BooleanField(default=False)
     have_fitness_area = models.BooleanField(default=False)
-    popular = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     created_by = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True)
 
@@ -120,3 +119,16 @@ class BuildingReview(TimestampedModel):
         ).exists()
         if is_exists:
             raise ValidationError("This building has been previously reviewed.")
+
+
+class PopularBuilding(TimestampedModel):
+    building = models.ForeignKey(Building, null=True, on_delete=models.SET_NULL)
+
+    def clean(self):
+        # Check if there is already an object with the same building
+        existing_objects = self.__class__.objects.filter(building=self.building)
+        if self.id:
+            existing_objects = existing_objects.exclude(id=self.id)  # Exclude the current object for updates
+
+        if existing_objects.exists():
+            raise ValidationError({"property": "The building have already in popular list."})

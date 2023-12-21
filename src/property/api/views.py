@@ -111,7 +111,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
         """
         Retrieve a list of popular properties with pagination.
         """
-        queryset = self.get_queryset().filter(popular=True)
+        queryset = self.get_queryset().filter(popularproperty__isnull=False)
         page = self.paginate_queryset(queryset)
 
         if page is not None:
@@ -120,7 +120,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
     @action(detail=False, methods=["get"])
     def discount(self, request):
         """

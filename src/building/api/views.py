@@ -107,7 +107,7 @@ class BuildingViewSet(viewsets.ModelViewSet):
         """
         Retrieve a list of popular buildings with pagination.
         """
-        queryset = self.get_queryset().filter(popular=True)
+        queryset = self.get_queryset().filter(popularbuilding__isnull=False)
         page = self.paginate_queryset(queryset)
 
         if page is not None:

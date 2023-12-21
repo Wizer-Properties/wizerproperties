@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Building, BuildingMedia, BuildingReview
+from .models import Building, BuildingMedia, BuildingReview, PopularBuilding
 
 
 @admin.register(Building)
@@ -36,7 +36,6 @@ class BuildingAdmin(admin.ModelAdmin):
         "have_sky_lounge",
         "have_grocery",
         "have_fitness_area",
-        "popular",
         "is_active",
         "created_by",
         "created_at",
@@ -51,3 +50,8 @@ class BuildingMediaAdmin(admin.ModelAdmin):
 @admin.register(BuildingReview)
 class BuildingReviewAdmin(admin.ModelAdmin):
     list_display = ["id", "user", "building", "rating", "review_text", "is_active", "created_at"]
+
+
+@admin.register(PopularBuilding)
+class PopularBuildingAdmin(admin.ModelAdmin):
+    list_display = ["id", "building", "created_at"]

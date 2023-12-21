@@ -59,7 +59,6 @@ class BuildingSerializer(serializers.ModelSerializer):
             "have_sky_lounge",
             "have_grocery",
             "have_fitness_area",
-            "popular",
             "is_active",
             "is_reviewed",
             "average_rating",

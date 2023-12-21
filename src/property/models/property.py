@@ -35,7 +35,6 @@ class Property(TimestampedModel):
     have_bathtub = models.BooleanField(default=False)
     have_duplex = models.BooleanField(default=False)
     newly_created = models.BooleanField(default=False)
-    popular = models.BooleanField(default=False)
     discount_period = models.DateField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
     created_by = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True)
