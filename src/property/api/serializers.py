@@ -1,3 +1,4 @@
+from urllib.parse import urlsplit
 from django.db import transaction
 from django.db.models import OuterRef, Subquery, Value, F, CharField, When, Case, BooleanField, Avg, Count
 from django.db.models.functions import Concat
@@ -15,6 +16,7 @@ class PropertyMediaSerializer(serializers.ModelSerializer):
 
 
 class PropertySerializer(serializers.ModelSerializer):
+    image_media_files = PropertyMediaSerializer(source="media_files", many=True, read_only=True)
     building_info = serializers.SerializerMethodField()
     images = serializers.ImageField(allow_empty_file=False, write_only=True)
     videos = serializers.FileField(allow_empty_file=False, write_only=True)
@@ -30,6 +32,7 @@ class PropertySerializer(serializers.ModelSerializer):
             "unit_id",
             "title",
             "default_image",
+            "image_media_files",
             "description",
             "price",
             "price_per_sqm",
@@ -92,12 +95,22 @@ class PropertySerializer(serializers.ModelSerializer):
 
         return data
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        # Filter type 'image'
+        representation["image_media_files"] = [media for media in representation["image_media_files"] if media["type"] == "image"]
+        # Return only the 'file' field
+        representation["image_media_files"] = [urlsplit(media["file"]).path for media in representation["image_media_files"]]
+        return representation
+
     def get_fields(self):
         fields = super().get_fields()
         if self.request and self.request.method in ["POST", "PUT", "PATCH"]:  # Check request method and view
-            fields.pop("default_image", None)  # Remove default_image field during create and update
-            fields.pop("is_compared", None)  # Remove is_compared field during create and update
-            fields.pop("is_favorited", None)  # Remove is_favorited field during create and update
+            # Remove these fields during create and update
+            fields.pop("image_media_files", None)
+            fields.pop("default_image", None)
+            fields.pop("is_compared", None)
+            fields.pop("is_favorited", None)
         return fields
 
     def get_media_files(self, request):
