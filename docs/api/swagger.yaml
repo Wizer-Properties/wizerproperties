@@ -1522,10 +1522,6 @@ paths:
           description: "Filtered by"
           in: "query"
           type: "boolean"
-        - name: "newly_created"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
         - name: "popular"
           description: "Filtered by"
           in: "query"
@@ -1730,10 +1726,6 @@ paths:
           description: "Filtered by"
           in: "query"
           type: "boolean"
-        - name: "newly_created"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
         - name: "building__have_freehold"
           description: "Filtered by"
           in: "query"
@@ -1934,10 +1926,6 @@ paths:
           description: "Filtered by"
           in: "query"
           type: "boolean"
-        - name: "newly_created"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
         - name: "building__have_freehold"
           description: "Filtered by"
           in: "query"
@@ -2135,10 +2123,6 @@ paths:
           in: "query"
           type: "boolean"
         - name: "have_duplex"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "newly_created"
           description: "Filtered by"
           in: "query"
           type: "boolean"
@@ -3540,8 +3524,6 @@ definitions:
         type: "boolean"
       have_duplex:
         type: "boolean"
-      newly_created:
-        type: "boolean"
       discount_period:
         type: "string"
       is_active:
@@ -3703,8 +3685,6 @@ definitions:
               type: "boolean"
             have_duplex:
               type: "boolean"
-            newly_created:
-              type: "boolean"
             discount_period:
               type: "string"
             is_active:
@@ -3862,8 +3842,6 @@ definitions:
       have_bathtub:
         type: "boolean"
       have_duplex:
-        type: "boolean"
-      newly_created:
         type: "boolean"
       discount_period:
         type: "string"
@@ -4029,8 +4007,6 @@ definitions:
           have_bathtub:
             type: "boolean"
           have_duplex:
-            type: "boolean"
-          newly_created:
             type: "boolean"
           discount_period:
             type: "string"
@@ -4202,8 +4178,6 @@ definitions:
                   type: "boolean"
                 have_duplex:
                   type: "boolean"
-                newly_created:
-                  type: "boolean"
                 discount_period:
                   type: "string"
                 is_active:
@@ -4358,8 +4332,6 @@ definitions:
           have_bathtub:
             type: "boolean"
           have_duplex:
-            type: "boolean"
-          newly_created:
             type: "boolean"
           discount_period:
             type: "string"
@@ -4530,8 +4502,6 @@ definitions:
                 have_bathtub:
                   type: "boolean"
                 have_duplex:
-                  type: "boolean"
-                newly_created:
                   type: "boolean"
                 discount_period:
                   type: "string"

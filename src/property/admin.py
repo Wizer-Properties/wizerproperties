@@ -1,5 +1,12 @@
 from django.contrib import admin
-from .models import Property, PropertyMedia, CompareProperty, ProspectFavoriteProperty, PopularProperty
+from .models import (
+    Property,
+    PropertyMedia,
+    CompareProperty,
+    ProspectFavoriteProperty,
+    PopularProperty,
+    NewlyCreatedProperty,
+)
 
 
 @admin.register(Property)
@@ -28,7 +35,6 @@ class PropertyAdmin(admin.ModelAdmin):
         "have_owner_occupied",
         "have_bathtub",
         "have_duplex",
-        "newly_created",
         "discount_period",
         "is_active",
         "created_by",
@@ -53,4 +59,9 @@ class ProspectFavoritePropertyAdmin(admin.ModelAdmin):
 
 @admin.register(PopularProperty)
 class PopularPropertyAdmin(admin.ModelAdmin):
+    list_display = ["id", "property", "created_at"]
+
+
+@admin.register(NewlyCreatedProperty)
+class NewlyCreatedPropertyAdmin(admin.ModelAdmin):
     list_display = ["id", "property", "created_at"]

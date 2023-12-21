@@ -96,7 +96,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
         """
         Retrieve a list of newly created properties with pagination.
         """
-        queryset = self.get_queryset().filter(newly_created=True)
+        queryset = self.get_queryset().filter(newlycreatedproperty__isnull=False)
         page = self.paginate_queryset(queryset)
 
         if page is not None:

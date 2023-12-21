@@ -53,7 +53,6 @@ class PropertySerializer(serializers.ModelSerializer):
             "have_owner_occupied",
             "have_bathtub",
             "have_duplex",
-            "newly_created",
             "discount_period",
             "is_active",
             "is_compared",
@@ -291,7 +290,6 @@ class PropertyAvailableUnitsSerializer(serializers.ModelSerializer):
             "have_owner_occupied",
             "have_bathtub",
             "have_duplex",
-            "newly_created",
             "discount_period",
             "is_active",
         ]

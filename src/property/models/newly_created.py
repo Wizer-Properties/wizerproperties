@@ -5,11 +5,11 @@ from core.models import TimestampedModel
 from property.models import Property
 
 
-class PopularProperty(TimestampedModel):
+class NewlyCreatedProperty(TimestampedModel):
     property = models.ForeignKey(Property, null=True, on_delete=models.SET_NULL)
 
     class Meta:
-        verbose_name_plural = "Popular properties"
+        verbose_name_plural = "Newly created properties"
 
     def clean(self):
         # Check if there is already an object with the same property
@@ -18,4 +18,4 @@ class PopularProperty(TimestampedModel):
             existing_objects = existing_objects.exclude(id=self.id)  # Exclude the current object for updates
 
         if existing_objects.exists():
-            raise ValidationError({"property": "The property have already in popular list."})
+            raise ValidationError({"property": "The property have already in newly created list."})
