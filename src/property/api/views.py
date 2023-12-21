@@ -127,7 +127,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
         Retrieve a list of discount properties with pagination.
         """
         today = timezone.now().date()
-        queryset = self.get_queryset().filter(discount_period__gte=today)
+        queryset = self.get_queryset().filter(discountproperty__period__gte=today)
         page = self.paginate_queryset(queryset)
 
         if page is not None:

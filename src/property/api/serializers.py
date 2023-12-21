@@ -23,6 +23,7 @@ class PropertySerializer(serializers.ModelSerializer):
     default_image = serializers.URLField(source="default_image_url", read_only=True)
     is_compared = serializers.BooleanField(read_only=True)
     is_favorited = serializers.BooleanField(read_only=True)
+    discount_period = serializers.DateField(source="discountproperty_set.first.period", read_only=True)
 
     class Meta:
         model = Property
@@ -261,6 +262,7 @@ class ComparePropertySerializer(serializers.ModelSerializer):
 
 class PropertyAvailableUnitsSerializer(serializers.ModelSerializer):
     default_image = serializers.URLField(source="default_image_url", read_only=True)
+    discount_period = serializers.DateField(source="discountproperty_set.first.period", read_only=True)
 
     class Meta:
         model = Property

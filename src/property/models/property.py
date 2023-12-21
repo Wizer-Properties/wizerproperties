@@ -34,7 +34,6 @@ class Property(TimestampedModel):
     have_owner_occupied = models.BooleanField(default=False)
     have_bathtub = models.BooleanField(default=False)
     have_duplex = models.BooleanField(default=False)
-    discount_period = models.DateField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
     created_by = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True)
 
@@ -45,12 +44,7 @@ class Property(TimestampedModel):
         return str(self.title) if self.title else str(self.id)
 
     def clean(self):
-        error_messages = {}
-
         if self.tenant_occupied_validity and self.tenant_occupied_validity < timezone.now().date():
-            error_messages.update({"tenant_occupied_validity": "Date must be greater than or equal to today."})
-        if self.discount_period and self.discount_period < timezone.now().date():
-            error_messages.update({"discount_period": "Date must be greater than or equal to today."})
-
-        if error_messages:
-            raise ValidationError(error_messages)
+            raise ValidationError(
+                {"tenant_occupied_validity": "Tenant occupied validity date must be greater than or equal to today."}
+            )
