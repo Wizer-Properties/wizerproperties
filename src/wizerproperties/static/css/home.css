@@ -256,6 +256,15 @@
     font-weight: bold;
 }
 
+.property-contains .property-short-info-box{
+    flex-direction: column !important;
+    align-items: center;
+}
+
+.search-result-box .property-short-info-icon{
+    margin: 0 !important;
+}
+
 @media screen and (max-width: 991px) {
     .banner-title{
         font-size: 34px !important;

@@ -5,18 +5,6 @@ $(document).ready(function(){
     $('#gm-search-input').val(place || '');
     $('.search-area').html(place || '');
     
-    // new Splide( '.search-result-box-img-splid' ).mount({
-    //     perPage: 2,
-    // });
-    new Splide( '.search-result-box-img-splid', {
-        perPage: 2,
-        gap: 5,
-        breakpoints: {
-            768: {
-                perPage: 1,
-            },
-        }
-    }).mount()
 
     $(document).on('click', '.filter-dropdown-btn', function(){
         var target_area = 
@@ -55,10 +43,11 @@ $(document).ready(function(){
         }, 200);
     };
 
+
     $(document).on('click', '.filter-overlay', filter_close_dropdown);
 
     function loader_tmp(){
-        return '<div class="col-lg-6 mb-4 searching-loader">'+
+        return '<div class="col-lg-12 mb-4 searching-loader">'+
                     '<div class="search-result-box-wrapper">'+
                         '<div class="row">'+
                             '<div class="col-sm-4">'+
@@ -89,7 +78,7 @@ $(document).ready(function(){
                         '</div>'+
                     '</div>'+
                 '</div>'
-    }
+    };
     
     
     function property_facility_tmp(data){
@@ -120,7 +109,7 @@ $(document).ready(function(){
         };
         
         return facility_tmp;
-    }
+    };
 
 
     function property_list_tmp(data){
@@ -129,85 +118,110 @@ $(document).ready(function(){
             $('.add-to-favorite').remove();
         };
 
-        return  '<div class="col-lg-6 mb-5 property-single-box">'+
-                    '<div class="banner-action-button col-4">'+
-                        (
-                            !['agent', 'developer'].includes(user_type) ?
-                            '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
-                                '<i class="bi bi-arrow-left-right"></i>'+
-                                '<i class="bi bi-check-circle-fill"></i>'+
-                                ' Compare'+
-                            '</button>'+
-
-                            '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'">'+
-                                '<i class="bi bi-heart-fill"></i>'+
-                                '<i class="bi bi-heart"></i>'+
-                                ' Favorite'+
-                            '</button>' : ''
-                        ) +
-                    '</div>'+
-                    '<a href="/property/details/'+data?.id+'/" class="search-result-box-wrapper">'+
+        return  '<div class="col-12 mb-4 property-single-box">'+
+                    '<div class="search-result-box-wrapper">'+
                         '<div class="row">'+
-                            '<div class="col-sm-4">'+
-                                '<div class="search-result-box-img">'+
-                                    '<img src="'+data?.default_image+'" alt="'+data?.title+'" loading="lazy">' +
+                            '<div class="col-sm-5">'+
+                                '<div class="splide search-result-box-img-splid">'+
+                                    '<div class="splide__track">'+
+                                        '<div class="splide__list">'+
+                                            '<div class="splide__slide search-result-box-img">'+
+                                                '<img src="/static/media/demo_img/p1.png" alt="Lorem Ipsum is simply dummy text of the printing and typesetting industry" loading="lazy">'+
+                                            '</div>'+
+                                            '<div class="splide__slide search-result-box-img">'+
+                                                '<img src="/static/media/demo_img/p2.png" alt="Lorem Ipsum is simply dummy text of the printing and typesetting industry" loading="lazy">'+
+                                            '</div>'+
+                                            '<div class="splide__slide search-result-box-img">'+
+                                                '<img src="/static/media/demo_img/p2.png" alt="Lorem Ipsum is simply dummy text of the printing and typesetting industry" loading="lazy">'+
+                                            '</div>'+
+                                        ' </div>'+
+                                    '</div>'+
                                 '</div>'+
                             '</div>'+
-                            '<div class="col-sm-8">'+
+                            '<div class="col-sm-7">'+
                                 '<div class="search-result-box">'+
-                                    '<h1> '+data?.title+' </h1>'+
-                                    '<div class="location">'+
-                                        '<div class="icon">'+
-                                            '<i class="bi bi-geo-alt"></i>'+
-                                            data?.building_info?.address+
+                                    '<a href="/property/details/'+data?.id+'/" class="d-block">'+
+                                        '<h1> '+data?.title+' </h1>'+
+                                        
+                                        '<div class="property-contains">'+
+                                           ' <div class="property-short-info-box">'+
+                                                '<div class="property-short-info-icon">'+
+                                                    '<img src="/static/media/icons/bed.svg" alt="bed-icon">'+
+                                                '</div>'+
+                                                '<span class="property-value"> '+ data?.number_of_bedroom +' </span>'+
+                                            '</div>'+
+                                            '<div class="property-short-info-box">'+
+                                                '<div class="property-short-info-icon">'+
+                                                    '<img src="/static/media/icons/bath.svg" alt="bath-icon">'+
+                                                '</div>'+
+                                                '<span class="property-value">'+ data?.number_of_bathroom +'</span>'+
+                                            '</div>'+
+                                            '<div class="property-short-info-box">'+
+                                                '<div class="property-short-info-icon">'+
+                                                    '<img src="/static/media/icons/plan-size.svg" alt="plan-size-icon">'+
+                                                '</div>'+
+                                                '<span class="property-value">'+ data?.unit_area +'</span>'+
+                                            '</div>'+
+                                            '<div class="property-short-info-box">'+
+                                                '<div class="property-short-info-icon">'+
+                                                    '<img src="/static/media/icons/stairs.svg" alt="stairs-icon">'+
+                                                '</div>'+
+                                                '<span class="property-value">'+ data?.floor_number +'</span>'+
+                                            '</div>'+
                                         '</div>'+
-                                    '</div>'+
-                                    '<p class="sub-title">'+
-                                    data?.number_of_bedroom+
-                                    ' bedroom ' +
-                                    data?.building_info?.type+
-                                    ' for sale at ' +
-                                    data?.building_info?.title+
-                                    '</p>'+
-                                    '<p class="details"> '+ data?.description+' </p>'+
 
-                                    '<div class="property-contains">'+
-                                        '<div class="property-short-info-box">'+
-                                            '<div class="property-short-info-icon">'+
-                                                '<img src="/static/media/icons/bed.svg" alt="bed-icon">'+
-                                            '</div>'+
-                                            '<span class="property-value"> '+ data?.number_of_bedroom+' </span>'+
-                                            '<span class="property-label">Beds</span>'+
+                                        '<p class="details"> '+
+                                            'Contrary to d'+
+                                        '</p>'+
+
+                                        '<div class="property-faciluty mt-2">'+
+                                            property_facility_tmp(data)+
                                         '</div>'+
-                                        '<div class="property-short-info-box">'+
-                                            '<div class="property-short-info-icon">'+
-                                                '<img src="/static/media/icons/bath.svg" alt="bath-icon">'+
+                                    '</a>'+
+
+                                   '<div class="property-card-footer">'+
+                                        '<div class="d-flex justify-content-between align-items-center">'+
+                                           '<div class="buillding-agency-info me-4">'+
+                                               '<div class="buillding-agency-logo">'+
+                                                   '<img src="'+ data?.building_info?.created_by?.company_logo +'" alt="company logo">'+
+                                               '</div>'+
+                                               '<div class="buillding-agency-tel">'+
+                                                   '<a href="tel:'+ data?.building_info?.created_by?.phone_number +'">'+
+                                                        '<i class="bi bi-telephone"></i>'+
+                                                       '<span>'+ data?.building_info?.created_by?.phone_number +'</span>'+
+                                                   '</a>'+
+                                                    '<span>Local Call rate</span>'+
+                                                '</div>'+
                                             '</div>'+
-                                            '<span class="property-value"> '+ data?.number_of_bathroom +' </span>'+
-                                            '<span class="property-label">Baths</span>'+
+
+                                            '<a href="/schedule/create_schedule/?type=property&id='+data?.id+'" class="building-agency-action-btn me-4">'+
+                                                '<i class="bi bi-envelope pe-2"></i>'+
+                                                '<span class="_contact"> Contact </span>'+
+                                            '</a>'+
                                         '</div>'+
-                                        '<div class="property-short-info-box">'+
-                                            '<div class="property-short-info-icon">'+
-                                                '<img src="/static/media/icons/plan-size.svg" alt="plan-size-icon">'+
-                                            '</div>'+
-                                            '<span class="property-value"> '+ data?.unit_area+ '</span>'+
-                                            '<span class="property-label"> SqM</span>'+
-                                        '</div>'+
-                                        '<div class="property-short-info-box">'+
-                                            '<div class="property-short-info-icon">'+
-                                                '<img src="/static/media/icons/stairs.svg" alt="stairs-icon">'+
-                                            '</div>'+
-                                            '<span class="property-value"> '+ data?.floor_number+' </span>'+
-                                            '<span class="property-label">Floor</span>'+
-                                        '</div>'+
-                                    '</div>'+
-                                    '<div class="property-faciluty">'+
-                                        property_facility_tmp(data) +
+
+                                        (
+                                            !['agent', 'developer'].includes(user_type) ?
+                                            '<div class="d-flex justify-content-between align-items-center">'+
+                                                '<button class="building-agency-action-btn me-2 add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'">'+
+                                                '<i class="bi bi-heart-fill pe-2"></i>'+
+                                                '<i class="bi bi-heart pe-2"></i>'+
+                                                    '<span> Save </span>'+
+                                                '</button>'+
+    
+                                                '<button class="building-agency-action-btn add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
+                                                '<i class="bi bi-arrow-left-right pe-2"></i>'+
+                                                '<i class="bi bi-check-circle-fill pe-2"></i>'+
+                                                    '<span> Compare </span>'+
+                                                '</button>'+
+                                            '</div>' : ''
+                                        )+
+
                                     '</div>'+
                                 '</div>'+
                             '</div>'+
                         '</div>'+
-                    '</a>'+
+                    '</div>'+
                 '</div>'
     }
 
@@ -248,17 +262,17 @@ $(document).ready(function(){
                 for (let i = 0; i < new_data.length; i++) {
                     search_dom += property_list_tmp(new_data[i])
                 };
-
+                
                 if(search_type == 'filter'){
                     $('#search-result-list').html(search_dom);
                 }else{
                     $('#search-result-list').append(search_dom);
                 };
+                
+                installing_splide();
 
                 active_free_scrolling = false;
                 last_property_box = $('.property-single-box').last();
-
-
                 $('.searching-loader').remove();
             },
             error: function (error) {
@@ -434,4 +448,20 @@ $(document).ready(function(){
         }
     };
 
+
+    function installing_splide(){
+        var elms = $('.search-result-box-img-splid');
+
+        for ( var i = 0; i < elms.length; i++ ) {
+            new Splide( elms[ i ], {
+                perPage: 2,
+                gap: 5,
+                breakpoints: {
+                    768: {
+                        perPage: 1,
+                    },
+                }
+            }).mount();
+        };
+    };
 });

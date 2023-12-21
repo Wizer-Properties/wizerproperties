@@ -14,6 +14,24 @@
 <section class="filter-box">
     <div class="container">
         <div class="filter-categories">
+            
+            <div class="filter-categories-dropdown">
+                <button class="filter-dropdown-btn">
+                    Area
+                    <i class="bi bi-chevron-down"></i>
+                </button>
+                <div class="filter-dropdown-field">
+                    <div class="filter-dropdown-mtl-buttons" name="property-type">
+                        <button name="nearby" value="0">+ 0 mile</button>
+                        <button name="nearby" value="2">+ 2 miles</button>
+                        <button name="nearby" value="5">+ 5 miles</button>
+                        <button name="nearby" value="10">+ 10 miles</button>
+                        <button name="nearby" value="15">+ 15 miles</button>
+                        <button name="nearby" value="20">+ 20 miles</button>
+                    </div>
+                </div>
+            </div>
+
             <div class="filter-categories-dropdown" label="price">
                 <button class="filter-dropdown-btn">
                     Any Price 
@@ -184,10 +202,7 @@
             <div class="col-lg-9">
                 <div class="row" id="search-result-list">
         
-                    <div class="col-12 mb-5 property-single-box">
-                        <div class="banner-action-button col-4">
-        
-                        </div>
+                    <!-- <div class="col-12 mb-5 property-single-box">
                         <div class="search-result-box-wrapper">
                             <div class="row">
                                 <div class="col-sm-5">
@@ -195,13 +210,13 @@
                                         <div class="splide__track">
                                             <div class="splide__list">
                                                 <div class="splide__slide search-result-box-img">
-                                                    <img src="/media/property/images/08a0e1abc8f965a30ae9232190110d47_TuHISeV.jpg" alt="Lorem Ipsum is simply dummy text of the printing and typesetting industry" loading="lazy">
+                                                    <img src="/static/media/demo_img/p1.png" alt="Lorem Ipsum is simply dummy text of the printing and typesetting industry" loading="lazy">
                                                 </div>
                                                 <div class="splide__slide search-result-box-img">
-                                                    <img src="/media/property/images/08a0e1abc8f965a30ae9232190110d47_TuHISeV.jpg" alt="Lorem Ipsum is simply dummy text of the printing and typesetting industry" loading="lazy">
+                                                    <img src="/static/media/demo_img/p2.png" alt="Lorem Ipsum is simply dummy text of the printing and typesetting industry" loading="lazy">
                                                 </div>
                                                 <div class="splide__slide search-result-box-img">
-                                                    <img src="/media/property/images/08a0e1abc8f965a30ae9232190110d47_TuHISeV.jpg" alt="Lorem Ipsum is simply dummy text of the printing and typesetting industry" loading="lazy">
+                                                    <img src="/static/media/demo_img/p2.png" alt="Lorem Ipsum is simply dummy text of the printing and typesetting industry" loading="lazy">
                                                 </div>
                                             </div>
                                         </div>
@@ -209,7 +224,7 @@
                                 </div>
                                 <div class="col-sm-7">
                                     <div class="search-result-box">
-                                        <div>
+                                        <a href="#" class="d-block">
                                             <h1> Lorem Ipsum is simply dummy text of the printing and typesetting industry </h1>
                                             
                                             <div class="property-contains">
@@ -249,7 +264,7 @@
                                                 <span>Sauna</span>
                                                 <span>Sky Lounge</span>
                                             </div>
-                                        </div>
+                                        </a>
 
                                         <div class="property-card-footer">
                                             <div class="d-flex justify-content-between align-items-center">
@@ -273,12 +288,12 @@
                                             </div>
 
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <button class="building-agency-action-btn me-2">
+                                                <button class="building-agency-action-btn me-2 add-to-favorite">
                                                     <i class="bi bi-heart-fill pe-2"></i>
                                                     <span> Save </span>
                                                 </button>
 
-                                                <button class="building-agency-action-btn">
+                                                <button class="building-agency-action-btn add-to-compare">
                                                     <i class="bi bi-arrow-left-right pe-2"></i>
                                                     <span> Compare </span>
                                                 </button>
@@ -289,9 +304,9 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
         
-                    <!-- <div class="col-lg-6 mb-4 searching-loader">
+                    <div class="col-lg-12 mb-5 searching-loader">
                         <div class="search-result-box-wrapper">
                             <div class="row">
                                 <div class="col-sm-4">
@@ -321,14 +336,14 @@
                                 </div>
                             </div>
                         </div>
-                    </div> -->
+                    </div>
         
                 </div>
             </div>
 
 
             <div class="col-lg-3">
-                
+                <div id="search-map" style="width: 100%; height: 300px;"></div>
             </div>
         </div>
     </div>
