@@ -35,6 +35,8 @@ class Building(TimestampedModel):
     construction_year = models.IntegerField(default=1930, null=True, validators=[MinValueValidator(1930)])
     quota = models.CharField(max_length=100, choices=QUOTA_TYPES, null=True)
     furnishing = models.CharField(max_length=100, choices=FURNISHING_TYPES, null=True)
+    have_access_to_BTS_or_MRT = models.BooleanField(default=False)
+    have_access_to_ARL = models.BooleanField(default=False)
     have_freehold = models.BooleanField(default=False)
     have_leasehold = models.BooleanField(default=False)
     have_river_view = models.BooleanField(default=False)

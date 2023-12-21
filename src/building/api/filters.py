@@ -13,6 +13,8 @@ class BuildingFilter(django_filters.FilterSet):
             "quota",
             "furnishing",
             "province",
+            "have_access_to_BTS_or_MRT",
+            "have_access_to_ARL",
             "have_freehold",
             "have_leasehold",
             "have_river_view",

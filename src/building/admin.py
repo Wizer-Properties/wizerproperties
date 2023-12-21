@@ -23,6 +23,8 @@ class BuildingAdmin(admin.ModelAdmin):
         "quota",
         "furnishing",
         "have_river_view",
+        "have_access_to_BTS_or_MRT",
+        "have_access_to_ARL",
         "have_freehold",
         "have_leasehold",
         "have_unblocked_view",

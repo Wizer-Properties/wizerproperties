@@ -28,8 +28,6 @@ class PropertyAdmin(admin.ModelAdmin):
         "balcony_direction",
         "main_door_direction",
         "unit_position",
-        "have_access_to_BTS_or_MRT",
-        "have_access_to_ARL",
         "have_tenant_occupied",
         "tenant_occupied_validity",
         "have_vacant",

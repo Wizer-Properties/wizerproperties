@@ -26,8 +26,6 @@ class Property(TimestampedModel):
     balcony_direction = models.CharField(max_length=255, null=True)
     main_door_direction = models.CharField(max_length=255, null=True)
     unit_position = models.CharField(max_length=100, choices=UNIT_POSITION_TYPES, null=True)
-    have_access_to_BTS_or_MRT = models.BooleanField(default=False)
-    have_access_to_ARL = models.BooleanField(default=False)
     have_tenant_occupied = models.BooleanField(default=False)
     tenant_occupied_validity = models.DateField(blank=True, null=True)
     have_vacant = models.BooleanField(default=False)

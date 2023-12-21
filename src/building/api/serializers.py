@@ -45,6 +45,8 @@ class BuildingSerializer(serializers.ModelSerializer):
             "construction_year",
             "quota",
             "furnishing",
+            "have_access_to_BTS_or_MRT",
+            "have_access_to_ARL",
             "have_freehold",
             "have_leasehold",
             "have_river_view",
