@@ -112,6 +112,19 @@ $(document).ready(function(){
     };
 
 
+    function property_image_tmp(data){
+        var image_tmp = '';
+
+        for (let i = 0; i < data.length; i++) {
+            image_tmp += '<div class="splide__slide search-result-box-img">'+
+                            '<img src="'+data[i]+'" alt="image" loading="lazy">'+
+                         '</div>'
+        };
+
+        return image_tmp;
+    };
+
+
     function property_list_tmp(data){
         if( ['agent', 'developer'].includes(user_type) ){
             $('.add-to-compare').remove();
@@ -125,16 +138,8 @@ $(document).ready(function(){
                                 '<div class="splide search-result-box-img-splid">'+
                                     '<div class="splide__track">'+
                                         '<div class="splide__list">'+
-                                            '<div class="splide__slide search-result-box-img">'+
-                                                '<img src="/static/media/demo_img/p1.png" alt="Lorem Ipsum is simply dummy text of the printing and typesetting industry" loading="lazy">'+
-                                            '</div>'+
-                                            '<div class="splide__slide search-result-box-img">'+
-                                                '<img src="/static/media/demo_img/p2.png" alt="Lorem Ipsum is simply dummy text of the printing and typesetting industry" loading="lazy">'+
-                                            '</div>'+
-                                            '<div class="splide__slide search-result-box-img">'+
-                                                '<img src="/static/media/demo_img/p2.png" alt="Lorem Ipsum is simply dummy text of the printing and typesetting industry" loading="lazy">'+
-                                            '</div>'+
-                                        ' </div>'+
+                                            property_image_tmp(data?.image_media_files)+
+                                        '</div>'+
                                     '</div>'+
                                 '</div>'+
                             '</div>'+
@@ -226,7 +231,7 @@ $(document).ready(function(){
     }
 
     var prams_list = {
-        page_size : 10,
+        page_size : 5,
         search : place || ''
     }
 
@@ -235,7 +240,29 @@ $(document).ready(function(){
     var next_property = 1;
 
     function searching(search_type){
+        // search_page_map = null;
+        // console.log(search_page_map)
+        // new google.maps.Circle({
+        //     strokeColor: "#FF0000",
+        //     strokeOpacity: 0.8,
+        //     strokeWeight: 2,
+        //     fillColor: "#FF0000",
+        //     fillOpacity: 0.35,
+        //     map: search_page_map,
+        //     center: search_page_map.getCenter(),
+        //     radius: 30 * 1609.34, // Adjust the radius as needed
+        // });
+
         var search_param = prams_list;
+        var get_url = new URL(window.location.href);
+        var get_params = new URLSearchParams(get_url.search);
+        var p_latitude = get_params.get('latitude');
+        var p_longitude = get_params.get('longitude');
+
+        if(p_latitude && p_longitude){
+            search_param.lat = p_latitude;
+            search_param.long = p_longitude;
+        };
         
         if(next_property) search_param.page = next_property;
         if([null].includes(next_property)) return;
@@ -454,8 +481,9 @@ $(document).ready(function(){
 
         for ( var i = 0; i < elms.length; i++ ) {
             new Splide( elms[ i ], {
-                perPage: 2,
                 gap: 5,
+                perPage: 2,
+                pagination : false,
                 breakpoints: {
                     768: {
                         perPage: 1,

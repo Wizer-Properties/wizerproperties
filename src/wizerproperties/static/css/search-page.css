@@ -326,6 +326,11 @@
     margin: 0 10px;
 }
 
+.area-filter-buttons{
+    display: grid;
+    grid-template-columns: 120px 120px;
+}
+
 
 @media screen and (max-width : 1200px){
     .building-agency-action-btn span{
