@@ -3,6 +3,7 @@
 #popular-properties,
 #contact-card,
 #popular-buildings,
+#discount-properties,
 #popular-city{
     margin-bottom: 55px;
 }
@@ -263,6 +264,44 @@
 
 .search-result-box .property-short-info-icon{
     margin: 0 !important;
+}
+
+.search-result-box{
+    min-height: 183px;
+    justify-content: initial;
+}
+
+.property-discount.link{
+    display: block;
+    padding: 5px 15px;
+    background-color: #eb6e6e !important;
+    color: #fff !important;
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.discount_period .banner-action-button{
+    top: 50px !important;
+}
+
+@media screen and (max-width: 1400px){
+    .discount_period .banner-action-button{
+        top: 75px !important;
+    }
+}
+
+@media screen and (max-width: 1200px){
+    
+    .property-discount.link{
+        font-size: 14px;
+    }
+    
+    .discount_period .banner-action-button{
+        top: 50px !important;
+    }
 }
 
 @media screen and (max-width: 991px) {
