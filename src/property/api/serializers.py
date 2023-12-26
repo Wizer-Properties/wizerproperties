@@ -95,13 +95,14 @@ class PropertySerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         # Filter type 'image'
-        representation["image_media_files"] = [
-            media for media in representation["image_media_files"] if media["type"] == "image"
-        ]
-        # Return only the 'file' field
-        representation["image_media_files"] = [
-            urlsplit(media["file"]).path for media in representation["image_media_files"]
-        ]
+        if self.request.method == "GET":
+            representation["image_media_files"] = [
+                media for media in representation["image_media_files"] if media["type"] == "image"
+            ]
+            # Return only the 'file' field
+            representation["image_media_files"] = [
+                urlsplit(media["file"]).path for media in representation["image_media_files"]
+            ]
         return representation
 
     def get_fields(self):

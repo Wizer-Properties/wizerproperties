@@ -1,6 +1,5 @@
 import django_filters
-from django.contrib.gis.db.models.functions import Distance
-from django.contrib.gis.geos import Point
+from geopy.distance import geodesic
 from property.models import Property
 
 
@@ -50,14 +49,25 @@ class PropertyFilter(django_filters.FilterSet):
         ]
 
     def filter_nearby(self, queryset, name, value):
+        """
+        N.B >>>
+            We have decided to iterate through the objects in a loop and get results.
+            However, if the number of properties increases, find a better solution to optimize performance
+            and reduce the processing time within a nearby distance.
+        """
+
         if self.request and "lat" in self.request.query_params and "long" in self.request.query_params:
             lat = float(self.request.query_params.get("lat"))
             long = float(self.request.query_params.get("long"))
-            point = Point(long, lat, srid=32647)  # Asian 1985 or UTM Zone 47N coordinate system
 
-            return (
-                queryset.filter(building__latitude__isnull=False, building__longitude__isnull=False)
-                .annotate(nearby=Distance(Point("building__longitude", "building__latitude", srid=32647), point))
-                .filter(nearby__lte=value)
-            )
+            # Filter properties within the specified distance
+            properties_within_given_distance = [
+                property.id
+                for property in queryset.filter(building__latitude__isnull=False, building__longitude__isnull=False)
+                # Calculate and get properties within the specified distance by geodesic (geopy package)
+                if geodesic((lat, long), (property.building.latitude, property.building.longitude)).miles <= value
+            ]
+
+            return queryset.filter(id__in=properties_within_given_distance)
+
         return queryset
