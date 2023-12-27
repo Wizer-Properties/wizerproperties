@@ -343,3 +343,31 @@ class ProspectFavoritePropertySerializer(serializers.ModelSerializer):
             return PropertySerializer(property).data
         else:
             return None
+
+
+# Serializer for handling popular, newly added, and discounted properties.
+# This serializer is designed to retrieve a list of properties with various attributes.
+class GeneralPropertySerializer(serializers.ModelSerializer):
+    building_address = serializers.CharField(source="building.address", read_only=True)
+    default_image = serializers.URLField(source="default_image_url", read_only=True)
+    is_compared = serializers.BooleanField(read_only=True)
+    is_favorited = serializers.BooleanField(read_only=True)
+    discount_period = serializers.DateField(source="discountproperty_set.first.period", read_only=True)
+
+    class Meta:
+        model = Property
+        fields = [
+            "id",
+            "building_address",
+            "title",
+            "default_image",
+            "description",
+            "floor_number",
+            "number_of_bedroom",
+            "number_of_bathroom",
+            "number_of_balcony",
+            "number_of_car_parking",
+            "discount_period",
+            "is_compared",
+            "is_favorited",
+        ]

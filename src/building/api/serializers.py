@@ -268,3 +268,39 @@ class BuildingReviewSerializer(serializers.ModelSerializer):
 
             return {"id": instance.user.id, "user_type": instance.user.user_type, **user_details}
         return {}
+
+
+# Serializer for handling popular buildings.
+# This serializer is designed to retrieve a list of buildings with various attributes.
+class GeneralBuildingSerializer(serializers.ModelSerializer):
+    default_image = serializers.URLField(source="default_image_url", read_only=True)
+
+    class Meta:
+        model = Building
+        fields = [
+            "id",
+            "title",
+            "default_image",
+            "description",
+            "type",
+            "total_units_for_sale",
+            "address",
+            "project_total_area",
+            "total_floors",
+            "have_access_to_BTS_or_MRT",
+            "have_access_to_ARL",
+            "have_freehold",
+            "have_leasehold",
+            "have_river_view",
+            "have_unblocked_view",
+            "have_city_view",
+            "have_sea_view",
+            "have_mountain_view",
+            "have_infinity_pool",
+            "have_pets_allowed",
+            "have_guard_house",
+            "have_sauna",
+            "have_sky_lounge",
+            "have_grocery",
+            "have_fitness_area",
+        ]

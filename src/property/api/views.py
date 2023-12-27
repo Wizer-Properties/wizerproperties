@@ -10,6 +10,7 @@ from .serializers import (
     PropertyMediaSerializer,
     ComparePropertySerializer,
     ProspectFavoritePropertySerializer,
+    GeneralPropertySerializer,
 )
 from .filters import PropertyFilter
 from building.api.serializers import BuildingMediaSerializer
@@ -100,10 +101,10 @@ class PropertyViewSet(viewsets.ModelViewSet):
         page = self.paginate_queryset(queryset)
 
         if page is not None:
-            serializer = self.get_serializer(page, many=True)
+            serializer = GeneralPropertySerializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(queryset, many=True)
+        serializer = GeneralPropertySerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=["get"])
@@ -115,10 +116,10 @@ class PropertyViewSet(viewsets.ModelViewSet):
         page = self.paginate_queryset(queryset)
 
         if page is not None:
-            serializer = self.get_serializer(page, many=True)
+            serializer = GeneralPropertySerializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(queryset, many=True)
+        serializer = GeneralPropertySerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=["get"])
@@ -131,10 +132,10 @@ class PropertyViewSet(viewsets.ModelViewSet):
         page = self.paginate_queryset(queryset)
 
         if page is not None:
-            serializer = self.get_serializer(page, many=True)
+            serializer = GeneralPropertySerializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(queryset, many=True)
+        serializer = GeneralPropertySerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
