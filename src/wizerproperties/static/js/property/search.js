@@ -240,19 +240,6 @@ $(document).ready(function(){
     var next_property = 1;
 
     function searching(search_type){
-        // search_page_map = null;
-        // console.log(search_page_map)
-        // new google.maps.Circle({
-        //     strokeColor: "#FF0000",
-        //     strokeOpacity: 0.8,
-        //     strokeWeight: 2,
-        //     fillColor: "#FF0000",
-        //     fillOpacity: 0.35,
-        //     map: search_page_map,
-        //     center: search_page_map.getCenter(),
-        //     radius: 30 * 1609.34, // Adjust the radius as needed
-        // });
-
         var search_param = prams_list;
         var get_url = new URL(window.location.href);
         var get_params = new URLSearchParams(get_url.search);
@@ -267,6 +254,14 @@ $(document).ready(function(){
         if(next_property) search_param.page = next_property;
         if([null].includes(next_property)) return;
 
+        // removing search filter for nearby
+        if(
+            search_param?.hasOwnProperty("nearby") &&
+            search_param?.hasOwnProperty("search")
+        ){
+            delete search_param.search;
+        };
+        
         $.ajax({
             url: '/property/api/list/',
             type: 'GET',
