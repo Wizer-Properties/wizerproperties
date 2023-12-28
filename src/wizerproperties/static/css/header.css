@@ -159,7 +159,7 @@ header{
     z-index: 7;
 }
 
-@media screen and (max-width: 940px) {
+@media screen and (max-width: 1080px) {
     .mobile-menu{
         display: flex;
     }
