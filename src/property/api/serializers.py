@@ -95,7 +95,7 @@ class PropertySerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         # Filter type 'image'
-        if self.request.method == "GET":
+        if self.request and self.request.method == "GET":
             representation["image_media_files"] = [
                 media for media in representation["image_media_files"] if media["type"] == "image"
             ]
