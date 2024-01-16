@@ -94,6 +94,7 @@ $(document).ready(function(){
     function facilities_void(building_info){
         var facilities_dom = '';
 
+        console.log("?????????????, " , building_info)
         if(building_info?.have_fitness_area){
             var _icon = '<i class="material-symbols-outlined"> exercise </i>';
             facilities_dom += facilities_info_tmp('Fitness Area', _icon)
@@ -122,6 +123,57 @@ $(document).ready(function(){
         if(building_info?.have_grocery){
             var _icon = '<i class="material-symbols-outlined"> shopping_cart </i>';
             facilities_dom += facilities_info_tmp('Grocery', _icon)
+        };
+
+
+        if(building_info?.have_city_view){
+            var _icon = '<i class="material-symbols-outlined"> location_city </i>';
+            facilities_dom += facilities_info_tmp('City View', _icon)
+        };
+
+        if(building_info?.have_freehold){
+            var _icon = '<i class="material-symbols-outlined"> real_estate_agent </i>';
+            facilities_dom += facilities_info_tmp('Freehold Land', _icon)
+        };
+
+        if(building_info?.have_infinity_pool){
+            var _icon = '<i class="material-symbols-outlined"> pool </i>';
+            facilities_dom += facilities_info_tmp('Infinity Pool', _icon)
+        };
+
+        if(building_info?.have_leasehold){
+            var _icon = '<i class="material-symbols-outlined"> real_estate_agent </i>';
+            facilities_dom += facilities_info_tmp('Leasehold Land', _icon)
+        };
+
+        if(building_info?.have_mountain_view){
+            var _icon = '<i class="material-symbols-outlined"> filter_hdr </i>';
+            facilities_dom += facilities_info_tmp('Mountain View', _icon)
+        };
+
+        if(building_info?.have_pets_allowed){
+            var _icon = '<i class="material-symbols-outlined"> pets </i>';
+            facilities_dom += facilities_info_tmp('Pets Allowed', _icon)
+        };
+
+        if(building_info?.have_sea_view){
+            var _icon = '<i class="material-symbols-outlined"> sailing </i>';
+            facilities_dom += facilities_info_tmp('Sea View', _icon)
+        };
+
+        if(building_info?.have_unblocked_view){
+            var _icon = '<i class="material-symbols-outlined"> all_inclusive </i>';
+            facilities_dom += facilities_info_tmp('Unblocked View', _icon)
+        };
+
+        if(building_info?.have_access_to_BTS_or_MRT){
+            var _icon = '<i class="material-symbols-outlined"> train </i>';
+            facilities_dom += facilities_info_tmp('Access To BTS Or MRT', _icon)
+        };
+
+        if(building_info?.have_access_to_ARL){
+            var _icon = '<i class="material-symbols-outlined"> train </i>';
+            facilities_dom += facilities_info_tmp('Access To ARL', _icon)
         };
 
         if(facilities_dom == ''){

@@ -129,9 +129,11 @@ $(document).ready(function(){
                 this_btn.html(get_html);
                 favorite_req = false;
 
-                if(favorite_removable){
-                    this_btn.parents('.property-single-box').remove();
-                };
+                try {
+                    if(favorite_removable){
+                        this_btn.parents('.property-single-box').remove();
+                    };
+                } catch {}
             },
             error: function (error) {
                 console.log("error")

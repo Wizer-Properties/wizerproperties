@@ -84,28 +84,36 @@ $(document).ready(function(){
     function property_facility_tmp(data){
         var facility_tmp = '';
 
-        if(data?.building_info?.have_fitness_area){
-            facility_tmp += '<span>GYM</span>'
+        if(data?.building_info?.have_freehold){
+            facility_tmp += '<span>Freehold</span>'
         };
 
-        if(data?.building_info?.have_grocery){
-            facility_tmp += '<span>Grocery</span>'
+        if(data?.building_info?.have_leasehold){
+            facility_tmp += '<span>Leasehold</span>'
         };
 
-        if(data?.building_info?.have_guard_house){
-            facility_tmp += '<span>Security</span>'
+        if(data?.building_info?.have_unblocked_view){
+            facility_tmp += '<span>Unblocked View</span>'
         };
 
-        if(data?.building_info?.have_river_view){
-            facility_tmp += '<span>River View</span>'
+        if(data?.building_info?.have_access_to_BTS_or_MRT){
+            facility_tmp += '<span>BTS Or MRT</span>'
         };
 
-        if(data?.building_info?.have_sauna){
-            facility_tmp += '<span>Sauna</span>'
+        if(data?.building_info?.have_access_to_ARL){
+            facility_tmp += '<span>ARL</span>'
         };
 
-        if(data?.building_info?.have_sky_lounge){
-            facility_tmp += '<span>Sky Lounge</span>'
+        if(data?.building_info?.quota){
+            facility_tmp += '<span> '+data?.building_info?.quota+' Quota </span>'
+        };
+
+        if(data?.building_info?.furnishing){
+            facility_tmp += '<span> '+data?.building_info?.furnishing+' Furnished </span>'
+        };
+
+        if(data?.building_info?.construction_year){
+            facility_tmp += '<span> Year Built '+data?.building_info?.construction_year+'</span>'
         };
         
         return facility_tmp;
@@ -132,7 +140,7 @@ $(document).ready(function(){
         };
 
         return  '<div class="col-12 mb-4 property-single-box">'+
-                    '<div class="search-result-box-wrapper">'+
+                    '<div class="search-result-box-wrapper p-0">'+
                         '<div class="row">'+
                             '<div class="col-sm-5">'+
                                 '<div class="splide search-result-box-img-splid">'+
@@ -142,9 +150,13 @@ $(document).ready(function(){
                                         '</div>'+
                                     '</div>'+
                                 '</div>'+
+                                '<div class="search-box-price">'+
+                                    '฿ '+ 
+                                    formatBalance(Math.floor(data?.price) || 0)+
+                                '</div>'+
                             '</div>'+
                             '<div class="col-sm-7">'+
-                                '<div class="search-result-box">'+
+                                '<div class="search-result-box p-3">'+
                                     '<a href="/property/details/'+data?.id+'/" class="d-block">'+
                                         '<h1> '+data?.title+' </h1>'+
                                         
@@ -165,7 +177,7 @@ $(document).ready(function(){
                                                 '<div class="property-short-info-icon">'+
                                                     '<img src="/static/media/icons/plan-size.svg" alt="plan-size-icon">'+
                                                 '</div>'+
-                                                '<span class="property-value">'+ data?.unit_area +'</span>'+
+                                                '<span class="property-value">'+ data?.unit_area +' sqm </span>'+
                                             '</div>'+
                                             '<div class="property-short-info-box">'+
                                                 '<div class="property-short-info-icon">'+

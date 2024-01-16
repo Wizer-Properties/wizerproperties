@@ -33,28 +33,36 @@ $(document).ready(function(){
     function property_facility_tmp(data){
         var facility_tmp = '';
 
-        if(data?.building_info?.have_fitness_area){
-            facility_tmp += '<span>GYM</span>'
+        if(data?.building_info?.have_freehold){
+            facility_tmp += '<span>Freehold</span>'
         };
 
-        if(data?.building_info?.have_grocery){
-            facility_tmp += '<span>Grocery</span>'
+        if(data?.building_info?.have_leasehold){
+            facility_tmp += '<span>Leasehold</span>'
         };
 
-        if(data?.building_info?.have_guard_house){
-            facility_tmp += '<span>Security</span>'
+        if(data?.building_info?.have_unblocked_view){
+            facility_tmp += '<span>Unblocked View</span>'
         };
 
-        if(data?.building_info?.have_river_view){
-            facility_tmp += '<span>River View</span>'
+        if(data?.building_info?.have_access_to_BTS_or_MRT){
+            facility_tmp += '<span>BTS Or MRT</span>'
         };
 
-        if(data?.building_info?.have_sauna){
-            facility_tmp += '<span>Sauna</span>'
+        if(data?.building_info?.have_access_to_ARL){
+            facility_tmp += '<span>ARL</span>'
         };
 
-        if(data?.building_info?.have_sky_lounge){
-            facility_tmp += '<span>Sky Lounge</span>'
+        if(data?.building_info?.quota){
+            facility_tmp += '<span> '+data?.building_info?.quota+' Quota </span>'
+        };
+
+        if(data?.building_info?.furnishing){
+            facility_tmp += '<span> '+data?.building_info?.furnishing+' Furnished </span>'
+        };
+
+        if(data?.building_info?.construction_year){
+            facility_tmp += '<span> Year Built '+data?.building_info?.construction_year+'</span>'
         };
         
         return facility_tmp;
@@ -82,7 +90,7 @@ $(document).ready(function(){
                         '<div class="search-result-box-img">'+
                             '<img src="'+data?.default_image+'" alt="'+data?.title+'" loading="lazy">' +
                         '</div>'+
-                        '<div class="search-result-box">'+
+                        '<div class="search-result-box mt-2">'+
                             '<h1> '+data?.title+' </h1>'+
                             '<div class="location">'+
                                 '<div class="icon">'+

@@ -72,6 +72,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     padding: 6px 0px;
+    text-transform: capitalize;
 }
 
 .comparison-side-list .comparison-list-label li{
@@ -103,6 +104,7 @@
 
 .comparison-slider-box .comparison-list-label li a{
     color: #006CE3;
+    text-transform: initial !important;
 }
 
 @media screen and (max-width: 840px) {

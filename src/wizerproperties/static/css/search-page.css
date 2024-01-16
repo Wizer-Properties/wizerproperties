@@ -85,9 +85,10 @@
 .property-faciluty span{
     color: #726E6E;
     background-color: #ffd350;
-    font-size: 12px;
+    font-size: 13px;
     padding: 3px 7px;
     border-radius: 4px;
+    text-transform: capitalize;
 }
 
 .search-result-box-wrapper{
@@ -95,6 +96,17 @@
     display: block;
     padding: 10px;
     border-radius: 5px;
+}
+
+.search-box-price{
+    text-align: center;
+    background-color: #ffd350;
+    color: #726E6E;
+    font-size: 17px;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    font-weight: 500;
 }
 
 .filter-categories{
@@ -364,7 +376,12 @@
 
 @media screen and (max-width : 575px) {
     .search-result-box-img{
-        margin-bottom: 15px;
+        margin-bottom: 5px;
+        padding: 10px 1rem 0;
+    }
+
+    .search-box-price{
+        margin: 0 1rem;
     }
 
     #search-result .banner-action-button{
