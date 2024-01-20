@@ -348,6 +348,7 @@ class ProspectFavoritePropertySerializer(serializers.ModelSerializer):
 # Serializer for handling popular, newly added, and discounted properties.
 # This serializer is designed to retrieve a list of properties with various attributes.
 class GeneralPropertySerializer(serializers.ModelSerializer):
+    building_type = serializers.CharField(source="building.type", read_only=True)
     building_address = serializers.CharField(source="building.address", read_only=True)
     default_image = serializers.URLField(source="default_image_url", read_only=True)
     is_compared = serializers.BooleanField(read_only=True)
@@ -358,6 +359,7 @@ class GeneralPropertySerializer(serializers.ModelSerializer):
         model = Property
         fields = [
             "id",
+            "building_type",
             "building_address",
             "title",
             "default_image",

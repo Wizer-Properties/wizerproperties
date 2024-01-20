@@ -3826,6 +3826,8 @@ definitions:
           properties:
             id:
               type: "number"
+            building_type:
+              type: "string"
             building_address:
               type: "string"
             title:
