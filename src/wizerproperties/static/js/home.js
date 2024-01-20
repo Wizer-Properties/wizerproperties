@@ -1,19 +1,14 @@
 $(document).ready(function(){
     
-    function countdown(endDate) {
-        var endDateTime = new Date(endDate + "T23:59:59");
-        var now = new Date();
-        var timeDifference = endDateTime - now;
-        
-        if (timeDifference <= 0) {
-            return { days: 0, hours: 0, minutes: 0 };
-        };
-
-        var days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-
-        return days+' days, '+hours+' hours, '+minutes+' minutes';
+    function countdown(endDate, id) {
+        var flipper_dom = '<div'+ 
+                            ' class="flipper _'+id+'" '+
+                            ' data-datetime="'+endDate+' 23:59:59" '+
+                            ' data-template="ddd|HH|ii|ss"'+
+                            ' data-labels="Days|Hours|Minutes|Seconds" '+
+                            ' data-reverse="true">'+
+                          '</div>';
+        return flipper_dom;
     };
     
 
@@ -44,15 +39,15 @@ $(document).ready(function(){
                             '<div class="location">'+
                                 '<div class="icon">'+
                                     '<i class="bi bi-geo-alt"></i>'+
-                                    data?.building_info?.address+
+                                    data?.building_address+
                                 '</div>'+
                             '</div>'+
                             '<p class="sub-title">'+
                             data?.number_of_bedroom+
                             ' bedroom ' +
-                            data?.building_info?.type+
+                            data?.building_type+
                             ' for sale at ' +
-                            data?.building_info?.title+
+                            data?.title+
                             '</p>'+
                             '<p class="details"> '+ data?.description+' </p>'+
 
@@ -110,7 +105,7 @@ $(document).ready(function(){
                         ) +
                     '</div>'+
                     '<a href="/property/details/'+data?.id+'/" class="search-result-box-wrapper">'+
-                        '<div class="property-discount link" discount-time="'+data?.discount_period+'">'+countdown(data?.discount_period)+'</div>'+
+                        '<div class="property-discount link">'+countdown(data?.discount_period, data?.id)+'</div>'+
                         '<div class="search-result-box-img">'+
                             '<img src="'+data?.default_image+'" alt="'+data?.title+'" loading="lazy">' +
                         '</div>'+
@@ -119,15 +114,15 @@ $(document).ready(function(){
                             '<div class="location">'+
                                 '<div class="icon">'+
                                     '<i class="bi bi-geo-alt"></i>'+
-                                    data?.building_info?.address+
+                                    data?.building_address+
                                 '</div>'+
                             '</div>'+
                             '<p class="sub-title">'+
                             data?.number_of_bedroom+
                             ' bedroom ' +
-                            data?.building_info?.type+
+                            data?.building_type+
                             ' for sale at ' +
-                            data?.building_info?.title+
+                            data?.title+
                             '</p>'+
                             '<p class="details"> '+ data?.description+' </p>'+
 
@@ -536,6 +531,10 @@ $(document).ready(function(){
                 
                 for (let i = 0; i < data?.results.length; i++) {
                     discount_properties_slider.add(discount_property_list_tmp(data?.results[i]))
+
+                    jQuery(function ($) {
+                        $('.flipper'+'._'+data?.results[i]?.id).flipper('init');
+                    });
                 };
 
                 discount_properties_slider.remove('.discount-properties-slider .list_loader');
@@ -564,13 +563,13 @@ $(document).ready(function(){
 
       
 
-    setInterval(() => {
-        var property_discount_el = $('.property-discount');
+    // setInterval(() => {
+    //     var property_discount_el = $('.property-discount');
 
-        for (let i = 0; i < property_discount_el.length; i++) {
-            property_discount_el[i].innerHTML = countdown(property_discount_el[i].getAttribute('discount-time'))
-        }
+    //     for (let i = 0; i < property_discount_el.length; i++) {
+    //         property_discount_el[i].innerHTML = countdown(property_discount_el[i].getAttribute('discount-time'))
+    //     }
         
-    }, 1000);
+    // }, 1000);
       
 })

@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="{% static '/css/search-page.css' %}?v=1.00" />
 <link rel="stylesheet" href="{% static '/css/favorite-list.css' %}?v=1.00" />
 <link rel="stylesheet" href="{% static '/css/home.css' %}?v=1.00" />
+<link rel="stylesheet" href="{% static '/css/libraries/flip-countdown.css' %}" />
 {% endblock extend_head %}
 
 {% block content %}
@@ -133,6 +134,19 @@
 </section>
 
 
+<!-- <div class="container p-relative">
+    <div 
+        class="flipper" 
+        data-datetime="2024-03-02 00:00:00" 
+        data-template="ddd|HH|ii|ss"
+        data-labels="Days|Hours|Minutes|Seconds" 
+        data-reverse="true"
+    >
+    </div>
+
+</div>
+</div> -->
+
 
 
 <section id="popular-city">
@@ -176,7 +190,13 @@
 {% endblock %}
 
 {% block extend_script %}
+<script src="{% static '/js/libraries/flip-countdown.js' %}"></script>
 <script src="{% static '/js/libraries/splide.min.js' %}"></script>
 <script src="{% static '/js/home.js' %}?v=1.00"></script>
 <script src="{% static '/js/property/compair-favorite.js' %}?v=1.00"></script>
+<!-- <script>
+    jQuery(function ($) {
+        $('.flipper').flipper('init');
+    });
+</script> -->
 {% endblock extend_script %}

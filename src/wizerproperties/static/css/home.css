@@ -272,37 +272,17 @@
 }
 
 .property-discount.link{
-    display: block;
-    padding: 5px 15px;
-    background-color: #eb6e6e !important;
-    color: #fff !important;
-    width: 100%;
-    margin-bottom: 10px;
-    text-align: center;
-    font-size: 16px;
-    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    background-color: #fff !important;
+    margin-bottom: 5px;
 }
 
 .discount_period .banner-action-button{
-    top: 50px !important;
+    top: 60px !important;
 }
 
-@media screen and (max-width: 1400px){
-    .discount_period .banner-action-button{
-        top: 75px !important;
-    }
-}
 
-@media screen and (max-width: 1200px){
-    
-    .property-discount.link{
-        font-size: 14px;
-    }
-    
-    .discount_period .banner-action-button{
-        top: 50px !important;
-    }
-}
 
 @media screen and (max-width: 991px) {
     .banner-title{
@@ -391,4 +371,7 @@
         top: 300px !important;
     }
     
+    .discount_period .banner-action-button{
+        top: 70px !important;
+    }
 }
