@@ -1808,7 +1808,7 @@ paths:
         200:
           description: Properties list
           schema:
-            $ref: "#/definitions/PropertyListResponse"
+            $ref: "#/definitions/GeneralPropertyListResponse"
         405:
           description: Method not allowed(Method ain't supported by this URL)
           schema:
@@ -2008,7 +2008,7 @@ paths:
         200:
           description: Properties list
           schema:
-            $ref: "#/definitions/PropertyListResponse"
+            $ref: "#/definitions/GeneralPropertyListResponse"
         405:
           description: Method not allowed(Method ain't supported by this URL)
           schema:
@@ -2208,7 +2208,7 @@ paths:
         200:
           description: Properties list
           schema:
-            $ref: "#/definitions/PropertyListResponse"
+            $ref: "#/definitions/GeneralPropertyListResponse"
         405:
           description: Method not allowed(Method ain't supported by this URL)
           schema:
@@ -3805,6 +3805,49 @@ definitions:
                       type: "string"
                     company_details:
                       type: "string"
+  
+  GeneralPropertyListResponse:
+    type: object
+    properties:
+      count:
+        type: "number"
+      page_size:
+        type: "number"
+      next:
+        type: "number"
+      previous:
+        type: "number"
+      total_page:
+        type: "number"
+      results:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: "number"
+            building_address:
+              type: "string"
+            title:
+              type: "string"
+            default_image:
+              type: "string"
+            description:
+              type: "string"
+            floor_number:
+              type: "string"
+            unit_area:
+              type: "number"
+            number_of_bedroom:
+              type: "number"
+            number_of_bathroom:
+              type: "number"
+            discount_period:
+              type: "string"
+            is_compared:
+              type: "boolean"
+            is_favorited:
+              type: "boolean"
   
   PropertyDetailsResponse:
     type: object
