@@ -84,11 +84,28 @@ class PropertySerializer(serializers.ModelSerializer):
         """
         Validate the serializer fields.
         """
+        error_messages = {}
+
         have_tenant_occupied = data.get("have_tenant_occupied", False)
         tenant_occupied_validity = data.get("tenant_occupied_validity", None)
 
         if have_tenant_occupied and not tenant_occupied_validity:
-            raise serializers.ValidationError({"tenant_occupied_validity": ["Tenant Occupied Validity is required."]})
+            error_messages.update({"tenant_occupied_validity": ["Tenant Occupied Validity is required."]})
+
+        if self.request.method in ["POST", "PUT"]:
+            # Remove unwanted attributes from data for 'Property' instance
+            for attr in ["is_active", "images", "videos"]:
+                data.pop(attr, None)
+
+            instance = Property(**data)
+            instance.created_by = self.request.user
+            try:
+                instance.full_clean()  # Perform full validation before saving
+            except serializers.ValidationError as e:
+                error_messages.update(e.message_dict)
+
+        if error_messages:
+            raise serializers.ValidationError(error_messages)
 
         return data
 
