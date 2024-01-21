@@ -5,6 +5,7 @@
 {% block extend_head %}
 <title>Update property</title>
 <link rel="stylesheet" href="{% static '/css/auth.css' %}" />
+<link rel="stylesheet" href="{% static '/css/libraries/bootstrap-datepicker3.css' %}" />
 {% endblock extend_head %}
 
 {% block content %}
@@ -223,10 +224,23 @@
                                 </div>
 
                                 {% if property.have_tenant_occupied %}
-                                <div class="col-6 date_picker_box_wrapper">
+                                <div class="col-12 date_picker_box_wrapper">
                                     <div class="authFormDiv">
-                                        <input name="tenant_occupied_validity" type="date" class="authInput date_picker_box" value="{{property.tenant_occupied_validity | date:'Y-m-d' }}" required>
+                                        <input 
+                                            type="text" 
+                                            class="authInput date_picker_box" 
+                                            placeholder="mm-dd-yyyy"
+                                            value="{{property.tenant_occupied_validity | date:'m-d-Y' }}"
+                                            required
+                                        >
                                         <div class="authlabelline authcompleteProfileLabe">State i.e until Oct 2024</div>
+                                        <input 
+                                            type="date" 
+                                            name="tenant_occupied_validity"
+                                            class="authInput hidden_date_picker_box" 
+                                            value="{{property.tenant_occupied_validity | date:'Y-m-d' }}"
+                                            required
+                                        >
                                     </div>
                                 </div>
                                 {% endif %}
@@ -294,8 +308,34 @@
 
 {% endblock %}
 {% block extend_script %}
-<script type="text/javascript">
+<script src="{% static 'js/libraries/bootstrap-datepicker3.js' %}?v=1.00"></script>
+<script>
     var updatePropertyAPIUrl = "{% url 'property:api:update' property.id %}"
+
+    function init_datepacker(){
+        $('.date_picker_box')
+        .datepicker({
+            format : 'mm-dd-yyyy',
+            disableTouchKeyboard : true,
+            autoclose : true,
+            startDate: '0d'
+        })
+        .on('changeDate', function(e) {
+            var get_parent = $(this).parents('.date_picker_box_wrapper');
+            if(get_parent?.length == 0) return;
+            var get_date_split = $(this).val()?.split("-");
+            var format_date = get_date_split[2]+'-'+get_date_split[0]+'-'+get_date_split[1]
+            get_parent.find('.hidden_date_picker_box').val(format_date)
+        })
+        .on('clearDate', function(e) {
+            var get_parent = $(this).parents('.date_picker_box_wrapper');
+            if(get_parent?.length == 0) return;
+            get_parent.find('.hidden_date_picker_box').val('0000-00-00')
+        });
+    }
+    {% if property.have_tenant_occupied %}
+    init_datepacker()
+    {% endif %}
 </script>
 <script src="{% static 'js/property/update_property.js' %}?v=1.00"></script>
 {% endblock extend_script %}

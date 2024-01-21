@@ -583,6 +583,10 @@ footer{
     background-color: #fff !important;
 }
 
+.hidden_date_picker_box{
+    display: none;
+}
+
 @media screen and (max-width: 768px) {
     .table-title{
         position: initial !important;

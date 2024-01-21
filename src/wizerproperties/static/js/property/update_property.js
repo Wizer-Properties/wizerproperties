@@ -86,13 +86,16 @@ $(document).ready(function () {
         
         if(is_checked){
             $('.property-options-area').append(
-                '<div class="col-6 date_picker_box_wrapper">'+
+                '<div class="col-12 date_picker_box_wrapper">'+
                     '<div class="authFormDiv">'+
-                        '<input name="tenant_occupied_validity" type="date" class="authInput date_picker_box">'+
+                        '<input type="text" class="authInput date_picker_box" placeholder="mm-dd-yyyy">'+
                         '<div class="authlabelline authcompleteProfileLabe">State i.e until Oct 2024</div>'+
+                        '<input type="date" name="tenant_occupied_validity" required class="authInput hidden_date_picker_box">'+
                     '</div>'+
                 '</div>'
             );
+
+            init_datepacker()
         }else{
             $('.date_picker_box_wrapper').remove()
         }
