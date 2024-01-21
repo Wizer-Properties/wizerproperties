@@ -64,6 +64,8 @@ $(document).ready(function(){
                         '<li> <span class="skeleton-box" style="width: 100%; height: 12px;"></span> </li>'+
                         '<li> <span class="skeleton-box" style="width: 100%; height: 12px;"></span> </li>'+
                         '<li> <span class="skeleton-box" style="width: 100%; height: 12px;"></span> </li>'+
+                        '<li> <span class="skeleton-box" style="width: 100%; height: 12px;"></span> </li>'+
+                        '<li> <span class="skeleton-box" style="width: 100%; height: 12px;"></span> </li>'+
 
                     '</div>'+
                 '</div>'
@@ -84,6 +86,8 @@ $(document).ready(function(){
                         '<li> '+data?.property_info?.building_info?.address+' </li>'+
                         '<li> <a href="/property/details/'+data?.property_info?.id+'/">'+data?.property_info?.unit_id+'</a> </li>'+
                         '<li> '+data?.property_info?.building_info?.construction_year+' </li>'+
+                        '<li> <button class="link border-0 open-3D-dialog"> 3D view </button> </li>'+
+                        '<li> <a href="/property/details/'+data?.property_info?.id+'/" class="link">Open</a> </li>'+
                         '<li> '+data?.property_info?.number_of_bedroom+' </li>'+
                         '<li> '+data?.property_info?.number_of_bathroom+' </li>'+
                         '<li> '+ facilities_tmp(data?.property_info?.have_bathtub) +' </li>'+
@@ -212,6 +216,15 @@ $(document).ready(function(){
                 console.log("error")
             }
         });
+    });
+
+
+    $(document).on('click', '.open-3D-dialog', function(){
+        $('#_3d_view_dialog').modal("show");
+    })
+
+    $(document).on('click', '.close_3d_view_dialog', function(){
+        $('#_3d_view_dialog').modal("hide");
     })
 
 

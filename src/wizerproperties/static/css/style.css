@@ -587,6 +587,23 @@ footer{
     display: none;
 }
 
+#_3d_view_dialog .modal-content{
+    height: calc(100vh - 60px);
+    position: relative;
+}
+
+.close_3d_view_dialog{
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #212529;
+    color: #212529;
+    top: 10px;
+    right: 10px;
+    padding: 3px 7px;
+    border-radius: 3px;
+    z-index: 99;
+}
+
 @media screen and (max-width: 768px) {
     .table-title{
         position: initial !important;

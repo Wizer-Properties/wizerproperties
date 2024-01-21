@@ -28,6 +28,8 @@
                     <li> Location </li>
                     <li> Unit ID </li>
                     <li> Completion Date </li>
+                    <li style="min-height: 44px;"> Virtual Tour </li>
+                    <li style="min-height: 44px;"> Drone view </li>
                     <li> Bedrooms </li>
                     <li> Bathrooms </li>
                     <li> Bathtub </li>
@@ -75,6 +77,18 @@
         </div>
     </div>
 </section>
+
+
+<div class="modal fade" id="_3d_view_dialog" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document"> 
+        <div class="modal-content">
+            <button class="close_3d_view_dialog">
+                <i class="bi bi-x-lg"></i>
+            </button>
+            <iframe width="100%" height="100%" src="https://my.matterport.com/show/?m=tHeZn1V85YQ" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
 
