@@ -86,8 +86,8 @@ $(document).ready(function(){
                         '<li> '+data?.property_info?.building_info?.address+' </li>'+
                         '<li> <a href="/property/details/'+data?.property_info?.id+'/">'+data?.property_info?.unit_id+'</a> </li>'+
                         '<li> '+data?.property_info?.building_info?.construction_year+' </li>'+
-                        '<li> <button class="link border-0 open-3D-dialog"> 3D view </button> </li>'+
-                        '<li> <a href="/property/details/'+data?.property_info?.id+'/" class="link">Open</a> </li>'+
+                        '<li> <button class="link border-0 open-3D-model"> 3D View </button> </li>'+
+                        '<li> <button class="link border-0 open-drone-view"> Open </button> </li>'+
                         '<li> '+data?.property_info?.number_of_bedroom+' </li>'+
                         '<li> '+data?.property_info?.number_of_bathroom+' </li>'+
                         '<li> '+ facilities_tmp(data?.property_info?.have_bathtub) +' </li>'+
@@ -219,13 +219,33 @@ $(document).ready(function(){
     });
 
 
-    $(document).on('click', '.open-3D-dialog', function(){
+    $(document).on('click', '.open-3D-model', function(){
+        var _iframe = '<iframe width="100%" height="100%" src="https://my.matterport.com/show/?m=tHeZn1V85YQ" frameborder="0" allowfullscreen=""></iframe>'
+        $('#_3d_view_dialog ._3d_model_display').html(_iframe);
         $('#_3d_view_dialog').modal("show");
-    })
+    });
+
+    $(document).on('click', '.open-drone-view', function(){
+        var _video = '<source src="/static/media/demo_img/3D_House.mp4" type="video/mp4" />';
+        $('#_3d_drone_view ._3d_model_display video').append(_video);
+        $('#_3d_drone_view').modal("show");
+    });
 
     $(document).on('click', '.close_3d_view_dialog', function(){
         $('#_3d_view_dialog').modal("hide");
-    })
+        $('#_3d_view_dialog ._3d_model_display').html('');
+    });
+
+    $(document).on('click', '.close_3d_drone_view', function(){
+        $('#_3d_drone_view').modal("hide");
+
+        $(this).parents('#_3d_drone_view').find('video')[0].pause()
+        $(this).parents('#_3d_drone_view').find('video').html(
+            '<p class="vjs-no-js">'+
+                'To view this video please enable JavaScript, and consider upgrading to a web browser that'+
+            '</p>'
+        );
+    });
 
 
 });
