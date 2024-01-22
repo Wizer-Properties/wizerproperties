@@ -223,7 +223,7 @@ $(document).ready(function(){
                                                 '<button class="building-agency-action-btn me-2 add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'">'+
                                                 '<i class="bi bi-heart-fill pe-2"></i>'+
                                                 '<i class="bi bi-heart pe-2"></i>'+
-                                                    '<span> Save </span>'+
+                                                    '<span> Favorite </span>'+
                                                 '</button>'+
     
                                                 '<button class="building-agency-action-btn add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
@@ -455,6 +455,7 @@ $(document).ready(function(){
             $('[label="unit_area"] button.filter-dropdown-btn').html('Any Price <i class="bi bi-chevron-down"></i>');
             $('[label="Beds"] button.filter-dropdown-btn').html('Beds <i class="bi bi-chevron-down"></i>');
             $('[label="Baths"] button.filter-dropdown-btn').html('Baths <i class="bi bi-chevron-down"></i>');
+            $('[label="Area"] button.filter-dropdown-btn').html('Area <i class="bi bi-chevron-down"></i>');
             $('.filter-dropdown-buttons button').attr('active', false);
             $('.filter-dropdown-buttons [value="null"]').attr('active', true);
             $('.filter-dropdown-mtl-buttons button').attr('active', false);

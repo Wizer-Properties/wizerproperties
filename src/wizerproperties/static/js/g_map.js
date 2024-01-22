@@ -108,68 +108,76 @@ async function initializeMap() {
         search_render_dom &&
         window.innerWidth > 991
     ){
-        var get_url = new URL(window.location.href);
-        var get_params = new URLSearchParams(get_url.search);
-        var p_latitude = get_params.get('latitude');
-        var p_longitude = get_params.get('longitude');
-        var p_place_id = get_params.get('place_id');
-        var p_fature_type = get_params.get('fature_type');
-        var center_option = {lat: 13.7563309, lng: 100.5017651 }
         
-        if(p_latitude && p_longitude){
-            center_option.lat = Number(p_latitude);
-            center_option.lng = Number(p_longitude);
-        };
-        
-        if(p_fature_type == 'locality') {
-            const { Map } = await google.maps.importLibrary("maps");
-            search_page_map = new Map(search_render_dom, {
-                zoom: 9,
-                center: center_option,
-                mapId: "a3efe1c035bad51b",
-                zoomControl: false,
-                mapTypeControl: false, 
-                fullscreenControl: false,
-            });
-    
-            featureLayer = search_page_map.getFeatureLayer("LOCALITY");
-            
-            const featureStyleOptions = {
-                strokeColor: "#810FCB",
-                strokeOpacity: 1.0,
-                strokeWeight: 3.0,
-                fillColor: "#810FCB",
-                fillOpacity: 0.5,
-            };
-          
-            featureLayer.style = (options) => {
-                if (options.feature.placeId == p_place_id) {
-                    return featureStyleOptions;
-                }
-            };
+        async function init_map_circle (){
+            var get_url = new URL(window.location.href);
+            var get_params = new URLSearchParams(get_url.search);
+            var p_latitude = get_params.get('latitude');
+            var p_longitude = get_params.get('longitude');
+            var p_place_id = get_params.get('place_id');
+            var p_fature_type = get_params.get('fature_type');
+            var center_option = {lat: 13.7563309, lng: 100.5017651 }
 
-            console.log(search_page_map)
-        } else {
-            search_page_map = new google.maps.Map(search_render_dom, {
-                zoom: 9,
-                center: center_option,
-                mapTypeId: "terrain",
-                zoomControl: false,
-                mapTypeControl: false, 
-                fullscreenControl: false,
-            });
+            if(p_latitude && p_longitude){
+                center_option.lat = Number(p_latitude);
+                center_option.lng = Number(p_longitude);
+            };
             
-            search_page_map_circle = new google.maps.Circle({
-                strokeColor: "#FF0000",
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                fillColor: "#FF0000",
-                fillOpacity: 0.35,
-                map : search_page_map ,
-                center: center_option,
-                radius: 20 * 1609.34,
-            });
-        };        
+            if(p_fature_type == 'locality') {
+                const { Map } = await google.maps.importLibrary("maps");
+                search_page_map = new Map(search_render_dom, {
+                    zoom: 9,
+                    center: center_option,
+                    mapId: "a3efe1c035bad51b",
+                    zoomControl: false,
+                    mapTypeControl: false, 
+                    fullscreenControl: false,
+                });
+        
+                featureLayer = search_page_map.getFeatureLayer("LOCALITY");
+                
+                const featureStyleOptions = {
+                    strokeColor: "#810FCB",
+                    strokeOpacity: 1.0,
+                    strokeWeight: 3.0,
+                    fillColor: "#810FCB",
+                    fillOpacity: 0.5,
+                };
+              
+                featureLayer.style = (options) => {
+                    if (options.feature.placeId == p_place_id) {
+                        return featureStyleOptions;
+                    }
+                };
+            } else {
+                search_page_map = new google.maps.Map(search_render_dom, {
+                    zoom: 9,
+                    center: center_option,
+                    mapTypeId: "terrain",
+                    zoomControl: false,
+                    mapTypeControl: false, 
+                    fullscreenControl: false,
+                });
+                
+                search_page_map_circle = new google.maps.Circle({
+                    strokeColor: "#FF0000",
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: "#FF0000",
+                    fillOpacity: 0.35,
+                    map : search_page_map ,
+                    center: center_option,
+                    radius: 20 * 1609.34,
+                });
+            };
+        };
+
+        init_map_circle();
+
+        $(document).on('click', '.reset-btn', async function(){
+            init_map_circle();
+        });
+        
     };
 
     $(document).on('click', '.area-filter-buttons button', function(){
@@ -209,5 +217,9 @@ async function initializeMap() {
                 radius: 20 * 1609.34,
             });
         }
-    })
+    });
+
+
+
+
 };
