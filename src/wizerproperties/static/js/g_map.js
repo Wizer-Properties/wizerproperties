@@ -81,15 +81,13 @@ async function initializeMap() {
                 $('[label-name="longitude"]').val(longitude);
             }
         });
-
-
     };
 
 
 
     // Specify the location for the map
     
-        
+
     let render_dom = document.getElementById('map');
 
     if(render_dom){
@@ -122,6 +120,28 @@ async function initializeMap() {
                 center_option.lat = Number(p_latitude);
                 center_option.lng = Number(p_longitude);
             };
+
+            function circle_shape_void () {
+                search_page_map = new google.maps.Map(search_render_dom, {
+                    zoom: 9,
+                    center: center_option,
+                    mapTypeId: "terrain",
+                    zoomControl: false,
+                    mapTypeControl: false, 
+                    fullscreenControl: false,
+                });
+                
+                search_page_map_circle = new google.maps.Circle({
+                    strokeColor: "#FF0000",
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: "#FF0000",
+                    fillOpacity: 0.35,
+                    map : search_page_map ,
+                    center: center_option,
+                    radius: 20 * 1609.34,
+                });
+            };
             
             if(p_fature_type == 'locality') {
                 const { Map } = await google.maps.importLibrary("maps");
@@ -150,25 +170,7 @@ async function initializeMap() {
                     }
                 };
             } else {
-                search_page_map = new google.maps.Map(search_render_dom, {
-                    zoom: 9,
-                    center: center_option,
-                    mapTypeId: "terrain",
-                    zoomControl: false,
-                    mapTypeControl: false, 
-                    fullscreenControl: false,
-                });
-                
-                search_page_map_circle = new google.maps.Circle({
-                    strokeColor: "#FF0000",
-                    strokeOpacity: 0.8,
-                    strokeWeight: 2,
-                    fillColor: "#FF0000",
-                    fillOpacity: 0.35,
-                    map : search_page_map ,
-                    center: center_option,
-                    radius: 20 * 1609.34,
-                });
+                circle_shape_void()
             };
         };
 
@@ -176,6 +178,7 @@ async function initializeMap() {
 
         $(document).on('click', '.reset-btn', async function(){
             init_map_circle();
+            search_page_map_circle = null;
         });
         
     };
@@ -214,7 +217,7 @@ async function initializeMap() {
                 fillOpacity: 0.35,
                 map : search_page_map ,
                 center: center_option,
-                radius: 20 * 1609.34,
+                radius:  Number($(this).val()) * 1609.34,
             });
         }
     });
