@@ -355,7 +355,6 @@ $(document).ready(function(){
                     }
                 };
 
-                console.log(data)
                 $('.property-single-box').html(asset_tmp(data))
             },
             error: function (error) {

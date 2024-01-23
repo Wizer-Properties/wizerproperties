@@ -150,7 +150,6 @@ $(document).ready(function(){
                 };
             },
             success: function (data) {
-                console.log(data)
                 var cmp_result = data?.results;
                 next_page = data?.next;
 

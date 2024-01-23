@@ -146,7 +146,7 @@ $(document).ready(function(){
 
     $(document).on('click', '.add-to-favorite , .add-to-compare', function(){
         if( [undefined, null, 'null', 'undefined'].includes( $(this).attr('added')) ){
-            window.location.href = '/';
+            window.location.href = '/user/login/';
         };
     });
 

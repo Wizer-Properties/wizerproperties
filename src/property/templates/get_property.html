@@ -72,6 +72,7 @@
         </nav>
 
         <div class="tab-content" id="banner-nav-tabContent">
+            {% if not user.is_authenticated or request.user.user_type == "prospect"  %}
             <div class="banner-action-button">
                 <button class="add-to-compare" added="false">
                     <i class="bi bi-arrow-left-right"></i>
@@ -85,6 +86,8 @@
                     Favorite
                 </button>
             </div>
+            {% endif %} 
+
             <!-- Images -->
             <div class="tab-pane fade show active" id="nav-imges" label-name="media-files-image">
                 <div class="details-gallery">

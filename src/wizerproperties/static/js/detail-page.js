@@ -94,7 +94,6 @@ $(document).ready(function(){
     function facilities_void(building_info){
         var facilities_dom = '';
 
-        console.log("?????????????, " , building_info)
         if(building_info?.have_fitness_area){
             var _icon = '<i class="material-symbols-outlined"> exercise </i>';
             facilities_dom += facilities_info_tmp('Fitness Area', _icon)
