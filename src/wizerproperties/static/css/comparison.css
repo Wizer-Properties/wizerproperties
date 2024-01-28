@@ -107,6 +107,11 @@
     text-transform: initial !important;
 }
 
+.comparison-videos{
+    width: 100%;
+    height: 100%;
+}
+
 @media screen and (max-width: 840px) {
     .comparison-side-list {
         width: 200px;

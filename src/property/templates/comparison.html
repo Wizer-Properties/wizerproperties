@@ -22,44 +22,38 @@
                     </a>
                 </div>
                 <div class="comparison-list-label">
+                    <li> Project Name </li>
                     <li> Price </li>
                     <li> Price Per Sqm </li>
-                    <li> Project </li>
-                    <li> Location </li>
-                    <li> Unit ID </li>
-                    <li> Completion Date </li>
-                    <li style="min-height: 44px;"> Virtual Tour </li>
-                    <li style="min-height: 44px;"> Drone view </li>
+                    <li> Built Up Area </li>
+                    <li> Land Area </li>
                     <li> Bedrooms </li>
                     <li> Bathrooms </li>
-                    <li> Bathtub </li>
-                    <li> Balcony </li>
                     <li> Parking </li>
-                    <li> Area </li>
-                    <li> Floor </li>
-                    <li> Duplex </li>
-                    <li> Vacant </li>
-                    <li> Tenant Occupied </li>
-                    <li> Owner Occupied </li>
-                    <li> River / lake View </li>
-                    <li> Rooftop Pool </li>
-                    <li> Gaurd House </li>
-                    <li> Sauna </li>
-                    <li> Grocery </li>
-                    <li> Fitness Area </li>
                     <li> Freehold </li>
                     <li> Leasehold </li>
+                    <li> Completion Date </li>
                     <li> Quota </li>
-                    <li> Furnished </li>
                     <li> Access to BTS/MRT </li>
                     <li> Access to ARL </li>
-                    <li> Pets allowed </li>
-                    <li> Unblocked View </li>
+                    <li> Furnished </li>
+                    <li> Tenant Occupied </li>
+                    <li> Owner Occupied </li>
+                    <li> Duplex </li>
+                    <li> Pet Friendly </li>
+                    <li> Balcony </li>
+                    <li> Bathtubs </li>
                     <li> City View </li>
                     <li> Sea View </li>
                     <li> Mountain View </li>
-                    
-                    <li> Details </li>
+                    <li> Rooftop Pool </li>
+                    <li> Infinity Pool </li>
+                    <li> Gym </li> 
+                    <li> Sky Lounge </li>
+                    <li style="height: 43px;"> Details </li>
+
+                    <li style="height: 240px;"> Virtual Tour </li>
+                    <li style="height: 240px;"> Ariel View </li>
                 </div>
             </div>
 
@@ -79,45 +73,6 @@
 </section>
 
 
-<div class="modal fade _3d_model_dialog" id="_3d_view_dialog" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document"> 
-        <div class="modal-content">
-            <button class="_3d_model_close close_3d_view_dialog">
-                <i class="bi bi-x-lg"></i>
-            </button>
-
-            <div class="_3d_model_display">
-                
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="modal fade _3d_model_dialog" id="_3d_drone_view" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document"> 
-        <div class="modal-content">
-            <button class="_3d_model_close close_3d_drone_view">
-                <i class="bi bi-x-lg"></i>
-            </button>
-
-            <div class="_3d_model_display">
-                <video
-                        id="_3d_model_display_video"
-                        class="video-js"
-                        controls
-                        preload="auto"
-                        data-setup="{}"
-                  >
-                    <p class="vjs-no-js">
-                        To view this video please enable JavaScript, and consider upgrading to a web browser that
-                    </p>
-                  </video>
-            </div>
-        </div>
-    </div>
-</div>
-
 {% endblock %}
 
 {% block extend_script %}
@@ -126,7 +81,7 @@
     var COMPARISON_API_URL = '/property/api/compare/list/';
     var COMPARISON_REMOVE_API_URL = '/property/api/compare/delete/';
 </script>
-<script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
+<!-- <script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script> -->
 <script src="{% static 'js/libraries/splide.min.js' %}?v=1.00"></script>
 <script src="{% static 'js/comparison.js' %}?v=1.00"></script>
 

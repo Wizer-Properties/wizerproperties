@@ -1,12 +1,11 @@
 .search-result-box-img{
-    height: 200px;
+    height: 375px;
 }
 
 .search-result-box-img img{
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 5px;
 }
 
 .search-result-box h1{
@@ -96,16 +95,23 @@
     display: block;
     padding: 10px;
     border-radius: 5px;
+    overflow: hidden;
+}
+
+.box-featured-title{
+    background-color: #375ad5;
+    padding: 5px 20px;
+    color: #fff;
+    font-size: 14px;
+    text-transform: uppercase;
 }
 
 .search-box-price{
-    text-align: center;
     background-color: #ffd350;
     color: #726E6E;
     font-size: 17px;
-    padding: 10px;
+    padding: 10px 15px;
     margin-top: 5px;
-    border-radius: 5px;
     font-weight: 500;
 }
 
@@ -277,6 +283,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .buillding-agency-logo img{
@@ -343,6 +351,62 @@
     grid-template-columns: 120px 120px;
 }
 
+.property-card-modal-btns{
+    display: flex;
+    margin: 10px 0;
+    gap: 10px;
+}
+
+
+.property-card-modal-btns button{
+    background: #375ad5 !important;
+    color: #fff !important;
+    padding: 10px 20px;
+}
+
+.property-card-modal-btns button:hover{
+    background: #3759d5ce !important;
+}
+
+.property-card-down-area{
+    display: flex;
+    flex-direction: column;
+}
+
+.suggested-properties{
+    margin-bottom: 20px;
+}
+
+.suggested-properties h1{
+    font-size: 16px;
+    font-weight: bolder;
+}
+
+.suggested-properties li{
+    list-style: none;
+    margin-bottom: 5px;
+    padding-left: 10px;
+}
+
+.suggested-properties li a{
+    font-size: 15px;
+    color: #726E6E !important;
+    font-weight: 500;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.suggested-properties li a:hover{
+    opacity: .8;
+}
+
+.suggested-properties-area{
+    margin-top: 35px;
+}
+
 
 @media screen and (max-width : 1200px){
     .building-agency-action-btn span{
@@ -354,6 +418,12 @@
     }
 }
 
+@media screen and (max-width : 991px){
+    .suggested-properties-area,
+    #search-map{
+        display: none;
+    }
+}
 
 @media screen and (max-width : 768px){
     #search-result .banner-action-button{
@@ -370,6 +440,10 @@
 
     .buillding-agency-tel span{
         display: none;
+    }
+
+    .search-result-box-img{
+        height: 300px;
     }
 }
 
@@ -398,5 +472,9 @@
 
     ._contact{
         display: none !important;
+    }
+
+    .search-result-box-img{
+        height: 240px;
     }
 }

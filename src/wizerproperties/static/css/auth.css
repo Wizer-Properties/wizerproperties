@@ -1,10 +1,10 @@
 .login-form-box{
-    background-image: linear-gradient(315deg, #103692 0%, #375ad5 54%);
+    background-image: linear-gradient(315deg, #140733 0%, #103bd4 54%);
     min-height: 100vh;
     color: white;
 }
 .login-des-box{
-    background-color: #ffd13b;
+    background-color: #fff120;
 }
 .logo{
     text-align: center;

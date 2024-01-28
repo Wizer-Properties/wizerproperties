@@ -50,12 +50,12 @@ $(document).ready(function(){
         return '<div class="col-lg-12 mb-4 searching-loader">'+
                     '<div class="search-result-box-wrapper">'+
                         '<div class="row">'+
-                            '<div class="col-sm-4">'+
+                            '<div class="col-md-6">'+
                                 '<div class="search-result-box-img">'+
-                                    '<span class="skeleton-box" style="width: 100%; height: 200px;"></span>'+
+                                    '<span class="skeleton-box" style="width: 100%; height: 240px;"></span>'+
                                 '</div>'+
                             '</div>'+
-                            '<div class="col-sm-8">'+
+                            '<div class="col-md-6">'+
                                 '<div class="search-result-box">'+
                                     '<h1> <span class="skeleton-box" style="width: 100%; height: 20px;"></span> </h1>'+
                                     '<div class="location">'+
@@ -91,9 +91,13 @@ $(document).ready(function(){
         if(data?.building_info?.have_leasehold){
             facility_tmp += '<span>Leasehold</span>'
         };
+        
+        if(data?.building_info?.construction_year){
+            facility_tmp += '<span> Year Built '+data?.building_info?.construction_year+'</span>'
+        };
 
-        if(data?.building_info?.have_unblocked_view){
-            facility_tmp += '<span>Unblocked View</span>'
+        if(data?.building_info?.quota){
+            facility_tmp += '<span> '+data?.building_info?.quota+' Quota </span>'
         };
 
         if(data?.building_info?.have_access_to_BTS_or_MRT){
@@ -104,18 +108,42 @@ $(document).ready(function(){
             facility_tmp += '<span>ARL</span>'
         };
 
-        if(data?.building_info?.quota){
-            facility_tmp += '<span> '+data?.building_info?.quota+' Quota </span>'
-        };
-
-        if(data?.building_info?.furnishing){
-            facility_tmp += '<span> '+data?.building_info?.furnishing+' Furnished </span>'
-        };
-
-        if(data?.building_info?.construction_year){
-            facility_tmp += '<span> Year Built '+data?.building_info?.construction_year+'</span>'
+        if(data?.building_info?.have_pets_allowed){
+            facility_tmp += '<span> Pet Friendly </span>'
         };
         
+        if(data?.building_info?.have_city_view){
+            facility_tmp += '<span>City View</span>'
+        };
+
+        if(data?.building_info?.have_sea_view){
+            facility_tmp += '<span>Sea View</span>'
+        };
+
+        if(data?.building_info?.have_mountain_view){
+            facility_tmp += '<span>Mountain View</span>'
+        };
+
+        if(data?.building_info?.have_infinity_pool){
+            facility_tmp += '<span>Infinity Pool</span>'
+        };
+
+        if(data?.building_info?.have_fitness_area){
+            facility_tmp += '<span>Gym</span>'
+        };
+
+        if(data?.building_info?.have_sky_lounge){
+            facility_tmp += '<span>Sky Lounge</span>'
+        };
+
+        if(data?.building_info?.have_unblocked_view){
+            facility_tmp += '<span>Unblocked View</span>'
+        };
+
+        if(data?.building_info?.have_unblocked_view){
+            facility_tmp += '<span>Unblocked View</span>'
+        };
+
         return facility_tmp;
     };
 
@@ -141,8 +169,9 @@ $(document).ready(function(){
 
         return  '<div class="col-12 mb-4 property-single-box">'+
                     '<div class="search-result-box-wrapper p-0">'+
+                        '<div class="box-featured-title"> Featured Property </div>'+
                         '<div class="row">'+
-                            '<div class="col-sm-5">'+
+                            '<div class="col-md-6">'+
                                 '<div class="splide search-result-box-img-splid">'+
                                     '<div class="splide__track">'+
                                         '<div class="splide__list">'+
@@ -155,85 +184,92 @@ $(document).ready(function(){
                                     formatBalance(Math.floor(data?.price) || 0)+
                                 '</div>'+
                             '</div>'+
-                            '<div class="col-sm-7">'+
+                            '<div class="col-md-6">'+
                                 '<div class="search-result-box p-3">'+
-                                    '<a href="/property/details/'+data?.id+'/" class="d-block">'+
-                                        '<h1> '+data?.title+' </h1>'+
-                                        
-                                        '<div class="property-contains">'+
-                                           ' <div class="property-short-info-box">'+
-                                                '<div class="property-short-info-icon">'+
-                                                    '<img src="/static/media/icons/bed.svg" alt="bed-icon">'+
+                                    '<div>'+
+                                        '<a href="/property/details/'+data?.id+'/" class="d-block">'+
+                                            '<h1> '+data?.title+' </h1>'+
+                                            
+                                            '<div class="property-contains">'+
+                                            ' <div class="property-short-info-box">'+
+                                                    '<div class="property-short-info-icon">'+
+                                                        '<img src="/static/media/icons/bed.svg" alt="bed-icon">'+
+                                                    '</div>'+
+                                                    '<span class="property-value"> '+ data?.number_of_bedroom +' </span>'+
                                                 '</div>'+
-                                                '<span class="property-value"> '+ data?.number_of_bedroom +' </span>'+
-                                            '</div>'+
-                                            '<div class="property-short-info-box">'+
-                                                '<div class="property-short-info-icon">'+
-                                                    '<img src="/static/media/icons/bath.svg" alt="bath-icon">'+
+                                                '<div class="property-short-info-box">'+
+                                                    '<div class="property-short-info-icon">'+
+                                                        '<img src="/static/media/icons/bath.svg" alt="bath-icon">'+
+                                                    '</div>'+
+                                                    '<span class="property-value">'+ data?.number_of_bathroom +'</span>'+
                                                 '</div>'+
-                                                '<span class="property-value">'+ data?.number_of_bathroom +'</span>'+
-                                            '</div>'+
-                                            '<div class="property-short-info-box">'+
-                                                '<div class="property-short-info-icon">'+
-                                                    '<img src="/static/media/icons/plan-size.svg" alt="plan-size-icon">'+
+                                                '<div class="property-short-info-box">'+
+                                                    '<div class="property-short-info-icon">'+
+                                                        '<img src="/static/media/icons/plan-size.svg" alt="plan-size-icon">'+
+                                                    '</div>'+
+                                                    '<span class="property-value">'+ data?.unit_area +' sqm </span>'+
                                                 '</div>'+
-                                                '<span class="property-value">'+ data?.unit_area +' sqm </span>'+
-                                            '</div>'+
-                                            '<div class="property-short-info-box">'+
-                                                '<div class="property-short-info-icon">'+
-                                                    '<img src="/static/media/icons/stairs.svg" alt="stairs-icon">'+
+                                                '<div class="property-short-info-box">'+
+                                                    '<div class="property-short-info-icon">'+
+                                                        '<img src="/static/media/icons/stairs.svg" alt="stairs-icon">'+
+                                                    '</div>'+
+                                                    '<span class="property-value">'+ data?.floor_number +'</span>'+
                                                 '</div>'+
-                                                '<span class="property-value">'+ data?.floor_number +'</span>'+
                                             '</div>'+
+
+                                            '<p class="details"> '+ data?.description +'</p>'+
+
+                                            '<div class="property-faciluty mt-2">'+
+                                                property_facility_tmp(data)+
+                                            '</div>'+
+                                        '</a>'+
+                                    '</div>'+
+
+                                    '<div class="property-card-down-area">'+
+                                        '<div class="property-card-modal-btns">'+
+                                            '<button class="link border-0 open-3D-model"> 3D Walkthrough </button>'+
+                                            '<button class="link border-0 open-drone-view"> Ariel View </button>'+
                                         '</div>'+
 
-                                        '<p class="details"> '+
-                                            'Contrary to d'+
-                                        '</p>'+
-
-                                        '<div class="property-faciluty mt-2">'+
-                                            property_facility_tmp(data)+
-                                        '</div>'+
-                                    '</a>'+
-
-                                   '<div class="property-card-footer">'+
-                                        '<div class="d-flex justify-content-between align-items-center">'+
-                                           '<div class="buillding-agency-info me-4">'+
-                                               '<div class="buillding-agency-logo">'+
-                                                   '<img src="'+ data?.building_info?.created_by?.company_logo +'" alt="company logo">'+
-                                               '</div>'+
-                                               '<div class="buillding-agency-tel">'+
-                                                   '<a href="tel:'+ data?.building_info?.created_by?.phone_number +'">'+
-                                                        '<i class="bi bi-telephone"></i>'+
-                                                       '<span>'+ data?.building_info?.created_by?.phone_number +'</span>'+
-                                                   '</a>'+
-                                                    '<span>Local Call rate</span>'+
-                                                '</div>'+
-                                            '</div>'+
-
-                                            '<a href="/schedule/create_schedule/?type=property&id='+data?.id+'" class="building-agency-action-btn me-4">'+
-                                                '<i class="bi bi-envelope pe-2"></i>'+
-                                                '<span class="_contact"> Contact </span>'+
-                                            '</a>'+
-                                        '</div>'+
-
-                                        (
-                                            !['agent', 'developer'].includes(user_type) ?
+                                    '<div class="property-card-footer">'+
                                             '<div class="d-flex justify-content-between align-items-center">'+
-                                                '<button class="building-agency-action-btn me-2 add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'">'+
-                                                '<i class="bi bi-heart-fill pe-2"></i>'+
-                                                '<i class="bi bi-heart pe-2"></i>'+
-                                                    '<span> Favorite </span>'+
-                                                '</button>'+
-    
-                                                '<button class="building-agency-action-btn add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
-                                                '<i class="bi bi-arrow-left-right pe-2"></i>'+
-                                                '<i class="bi bi-check-circle-fill pe-2"></i>'+
-                                                    '<span> Compare </span>'+
-                                                '</button>'+
-                                            '</div>' : ''
-                                        )+
+                                            '<div class="buillding-agency-info me-4">'+
+                                                '<div class="buillding-agency-logo">'+
+                                                    '<img src="'+ data?.building_info?.created_by?.company_logo +'" alt="company logo">'+
+                                                '</div>'+
+                                                '<div class="buillding-agency-tel">'+
+                                                    '<a href="tel:'+ data?.building_info?.created_by?.phone_number +'">'+
+                                                            '<i class="bi bi-telephone"></i>'+
+                                                        '<span>'+ data?.building_info?.created_by?.phone_number +'</span>'+
+                                                    '</a>'+
+                                                        '<span>Local Call rate</span>'+
+                                                    '</div>'+
+                                                '</div>'+
 
+                                                '<a href="/schedule/create_schedule/?type=property&id='+data?.id+'" class="building-agency-action-btn me-4">'+
+                                                    '<i class="bi bi-envelope pe-2"></i>'+
+                                                    '<span class="_contact"> Contact </span>'+
+                                                '</a>'+
+                                            '</div>'+
+
+                                            (
+                                                !['agent', 'developer'].includes(user_type) ?
+                                                '<div class="d-flex justify-content-between align-items-center gap-2">'+
+                                                    '<button class="building-agency-action-btn me-2 add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'">'+
+                                                    '<i class="bi bi-heart-fill pe-2"></i>'+
+                                                    '<i class="bi bi-heart pe-2"></i>'+
+                                                        '<span> Favorite </span>'+
+                                                    '</button>'+
+        
+                                                    '<button class="building-agency-action-btn add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
+                                                    '<i class="bi bi-arrow-left-right pe-2"></i>'+
+                                                    '<i class="bi bi-check-circle-fill pe-2"></i>'+
+                                                        '<span> Compare </span>'+
+                                                    '</button>'+
+                                                '</div>' : ''
+                                            )+
+
+                                        '</div>'+
                                     '</div>'+
                                 '</div>'+
                             '</div>'+
@@ -500,4 +536,147 @@ $(document).ready(function(){
             }).mount();
         };
     };
+
+
+    $(document).on('click', '.open-3D-model', function(){
+        var _iframe = '<iframe width="100%" height="100%" src="https://my.matterport.com/show/?m=tHeZn1V85YQ" frameborder="0" allowfullscreen=""></iframe>'
+        $('#_3d_view_dialog ._3d_model_display').html(_iframe);
+        $('#_3d_view_dialog').modal("show");
+    });
+
+    $(document).on('click', '.open-drone-view', function(){
+        var _video = '<source src="/static/media/demo_img/3D_House.mp4" type="video/mp4" />';
+        $('#_3d_drone_view ._3d_model_display video').append(_video);
+        $('#_3d_drone_view').modal("show");
+    });
+
+    $(document).on('click', '.close_3d_view_dialog', function(){
+        $('#_3d_view_dialog').modal("hide");
+        $('#_3d_view_dialog ._3d_model_display').html('');
+    });
+
+    $(document).on('click', '.close_3d_drone_view', function(){
+        $('#_3d_drone_view').modal("hide");
+
+        $(this).parents('#_3d_drone_view').find('video')[0].pause()
+        $(this).parents('#_3d_drone_view').find('video').html(
+            '<p class="vjs-no-js">'+
+                'To view this video please enable JavaScript, and consider upgrading to a web browser that'+
+            '</p>'
+        );
+    });
+
+
+
+
+
+    function get_popular_properties_list(){
+        $.ajax({
+            url: '/property/api/list/popular/',
+            type: 'GET',
+            data : {
+                page_size : 5,
+            },
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            success: function (data) {
+                var gatheing_dom = '';
+                if(data?.results.length === 0){
+                    $('[sugested-type="popular-properties"]').remove();
+                    return;
+                }
+
+                $('[sugested-type="popular-properties"] .skeleton-box').remove();
+                for (let i = 0; i < data?.results.length; i++) {
+                    var data_result = data?.results[i];
+                    gatheing_dom += '<li> <a href="/property/details/'+data_result?.id+'/"> '+
+                                        data_result?.number_of_bathroom +
+                                        ' bedroom houses for sale in '+
+                                        data_result?.building_address +
+                                    '</li>';
+                };
+                $('[sugested-type="popular-properties"]').append(gatheing_dom);
+            },
+            error : function () {
+                $('[sugested-type="popular-properties"]').remove();
+            }
+        });
+    };
+
+    function get_discount_properties_list(){
+        $.ajax({
+            url: '/property/api/list/discount/',
+            type: 'GET',
+            data : {
+                page_size : 5,
+            },
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            success: function (data) {
+                var gatheing_dom = '';
+                if(data?.results.length == 0){
+                    $('[sugested-type="discount-properties"]').remove();
+                };
+
+                $('[sugested-type="discount-properties"] .skeleton-box').remove();
+                for (let i = 0; i < data?.results.length; i++) {
+                    var data_result = data?.results[i];
+                    gatheing_dom += '<li> <a href="/property/details/'+data_result?.id+'/"> '+
+                                        data_result?.number_of_bathroom +
+                                        ' bedroom houses for sale in '+
+                                        data_result?.building_address +
+                                    '</li>';
+                };
+                $('[sugested-type="discount-properties"]').append(gatheing_dom);
+            },
+            error : function () {
+                $('[sugested-type="discount-properties"]').remove();
+            }
+        });
+    };
+
+
+    function get_newly_properties_list(){
+        $.ajax({
+            url: '/property/api/list/newly-created/',
+            type: 'GET',
+            data : {
+                page_size : 5,
+            },
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            success: function (data) {
+                var gatheing_dom = '';
+                if(data?.results.length == 0){
+                    $('[sugested-type="new-properties"]').remove();
+                }
+                $('[sugested-type="new-properties"] .skeleton-box').remove();
+                for (let i = 0; i < data?.results.length; i++) {
+                    var data_result = data?.results[i];
+                    gatheing_dom += '<li> <a href="/property/details/'+data_result?.id+'/"> '+
+                                        data_result?.number_of_bathroom +
+                                        ' bedroom houses for sale in '+
+                                        data_result?.building_address +
+                                    '</li>';
+                };
+                $('[sugested-type="new-properties"]').append(gatheing_dom);
+            },
+            error : function () {
+                $('[sugested-type="new-properties"]').remove();
+            }
+        });
+    };
+
+
+    if(window.innerWidth >= 991){
+        get_popular_properties_list()
+        get_discount_properties_list()
+        get_newly_properties_list()
+    }
+
+
+
 });

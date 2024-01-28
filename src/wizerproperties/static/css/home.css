@@ -374,4 +374,8 @@
     .discount_period .banner-action-button{
         top: 70px !important;
     }
+
+    .search-result-box-img{
+        padding: 0 !important;
+    }
 }
