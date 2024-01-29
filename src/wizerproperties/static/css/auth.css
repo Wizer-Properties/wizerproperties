@@ -251,15 +251,19 @@
     .login-form-box {
         height: auto;
     }
-    .authTextArea {
-        margin-top: 20px;
-    }
+
     .completeProfileButton {
         width: 70%;
     }
 
     .authArea{
         width: 400px;
+    }
+}
+
+@media screen and (max-width: 991px){
+    .authTextArea {
+        margin-top: 20px;
     }
 }
 

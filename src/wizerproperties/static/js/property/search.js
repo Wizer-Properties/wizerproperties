@@ -671,11 +671,45 @@ $(document).ready(function(){
     };
 
 
+    function get_popular_building_list(){
+        $.ajax({
+            url: '/building/api/list/popular/',
+            type: 'GET',
+            data : {
+                page_size : 5,
+            },
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            success: function (data) {
+                var gatheing_dom = '';
+                if(data?.results.length == 0){
+                    $('[sugested-type="popular-buildings"]').remove();
+                }
+                $('[sugested-type="popular-buildings"] .skeleton-box').remove();
+                for (let i = 0; i < data?.results.length; i++) {
+                    var data_result = data?.results[i];
+                    gatheing_dom += '<li> <a href="/building/details/'+data_result?.id+'/"> '+
+                                        data_result?.total_units_for_sale +
+                                        ' units for sale at this building in '+
+                                        data_result?.address +
+                                    '</li>';
+                };
+                $('[sugested-type="popular-buildings"]').append(gatheing_dom);
+            },
+            error : function () {
+                $('[sugested-type="popular-buildings"]').remove();
+            }
+        });
+    };
+
+
     if(window.innerWidth >= 991){
         get_popular_properties_list()
         get_discount_properties_list()
         get_newly_properties_list()
-    }
+        get_popular_building_list()
+    };
 
 
 
