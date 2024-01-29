@@ -282,6 +282,9 @@
     top: 60px !important;
 }
 
+.banner-action-button{
+    left: 2px;
+}
 
 
 @media screen and (max-width: 991px) {

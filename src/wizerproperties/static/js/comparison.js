@@ -65,7 +65,7 @@ $(document).ready(function(){
                 '</div>'
     };
 
-    function comparison_tmp(data){
+    function comparison_tmp(data, video_id){
         return  '<div class="splide__slide comparison-slider-box">'+
                     '<button class="remove-from-comparison" index="'+data?.property_info?.id+'" >'+
                         '<i class="bi bi-x-lg"></i>'+
@@ -108,7 +108,7 @@ $(document).ready(function(){
                         '<li style="height: 240px;"> <iframe width="100%" height="100%" src="https://my.matterport.com/show/?m=tHeZn1V85YQ" frameborder="0" allowfullscreen=""></iframe> </li>' +
 
                         '<li style="height: 240px;">'+
-                            '<video class="video-js comparison-videos" controls preload="auto" data-setup="{}">'+
+                            '<video class="video-js comparison-videos" id="'+video_id+'" controls preload="auto" data-setup="{}">'+
                                 '<source src="/static/media/demo_img/3D_House.mp4" type="video/mp4" />'+
                                 '<p class="vjs-no-js">'+
                                     'To view this video please enable JavaScript, and consider upgrading to a web browser that'+
@@ -125,7 +125,9 @@ $(document).ready(function(){
     if(window.innerWidth <= 1040)  page_size = 2;
     if(window.innerWidth <= 860)  page_size = 1;
     var next_page;
-    var max_forward_move = 0
+    var max_forward_move = 0;
+    var comparison_video_id = 0;
+
 
     function get_comparison_list(){
         $.ajax({
@@ -148,8 +150,11 @@ $(document).ready(function(){
                 next_page = data?.next;
 
                 for (let i = 0; i < cmp_result.length; i++) {
-                    comparison_splide.add(comparison_tmp(cmp_result[i]))
-                };
+                    comparison_video_id++;
+                    var video_id = 'comparison_videos_'+comparison_video_id;
+                    comparison_splide.add(comparison_tmp(cmp_result[i], video_id))
+                    videojs(video_id);
+                }; 
 
                 comparison_splide.remove('.comparison-loader');
 
@@ -166,6 +171,7 @@ $(document).ready(function(){
                         'place-items' : 'center'
                     })
                 };
+
             },
             error: function (error) {
                 $('.comparison-slider-area').html('<p style="font-size: 20px;"> <i class="bi bi-exclamation-diamond"></i>  &nbsp; Something is wrong </p>')
@@ -181,6 +187,12 @@ $(document).ready(function(){
 
 
     comparison_splide.on('moved', function (e){
+        if( $('video').length > 0 ){
+            for (let i = 0; i < $('video').length; i++) {
+                $('video')[i]?.pause()
+            };
+        };
+
         if(max_forward_move >= e) return;
         max_forward_move = e;
         if(!next_page) return;
