@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+:root{
+    --th-gradient-bg: linear-gradient(315deg, #140733 0%, #103bd4 54%);
+    --th-bg-color : #103bd4;
+}
+
 *{
     padding: 0;
     margin: 0;
@@ -176,7 +181,7 @@ table.dataTable.no-footer{
 }
 
 footer{
-    background-color: #375ad5;
+    background-image: var(--th-gradient-bg);
     padding-top: 25px;
     padding-bottom: 10px;
 }

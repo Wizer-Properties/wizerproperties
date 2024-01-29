@@ -61,9 +61,15 @@ $(document).ready(function(){
                         '<li> <span class="skeleton-box" style="width: 100%; height: 12px;"></span> </li>'+
                         '<li> <span class="skeleton-box" style="width: 100%; height: 240px;"></span> </li>'+
                         '<li> <span class="skeleton-box" style="width: 100%; height: 240px;"></span> </li>'+
+                        '<li> <span class="skeleton-box" style="width: 100%; height: 240px;"></span> </li>'+
+                        '<li> <span class="skeleton-box" style="width: 100%; height: 240px;"></span> </li>'+
                     '</div>'+
                 '</div>'
     };
+
+    function label_name(name = ''){
+        return '<span class="comparison-label-name"> '+name+': &nbsp </span>'
+    }
 
     function comparison_tmp(data, video_id){
         return  '<div class="splide__slide comparison-slider-box">'+
@@ -74,40 +80,54 @@ $(document).ready(function(){
                         '<img src="'+data?.property_info?.default_image+'" alt="property img">'+
                     '</div>'+
                     '<div class="comparison-list-label">'+
-                    '<li> <a href="/building/details/'+data?.property_info?.building_info?.id+'/">'+data?.property_info?.building_info?.title+'</a> </li>'+
-                        '<li>฿ '+ formatBalance(data?.property_info?.price || 0) +' </li>'+
-                        '<li>฿ '+ formatBalance(data?.property_info?.price_per_sqm || 0) +' </li>'+
-                        '<li> '+ 'Built Up Area' +' </li>'+
-                        '<li> '+data?.property_info?.unit_area+' </li>'+
-                        '<li> '+data?.property_info?.number_of_bedroom+' </li>'+
-                        '<li> '+data?.property_info?.number_of_bathroom+' </li>'+
-                        '<li> '+data?.property_info?.number_of_car_parking+' </li>'+
-                        '<li> '+ facilities_tmp(data?.property_info?.building_info?.have_freehold) +' </li>'+
-                        '<li> '+ facilities_tmp(data?.property_info?.building_info?.have_leasehold) +' </li>'+
-                        '<li> '+data?.property_info?.building_info?.construction_year+' </li>'+
-                        '<li> '+ data?.property_info?.building_info?.quota +' </li>'+
-                        '<li> '+ facilities_tmp(data?.property_info?.building_info?.have_access_to_BTS_or_MRT) +' </li>'+
-                        '<li> '+ facilities_tmp(data?.property_info?.building_info?.have_access_to_ARL) +' </li>'+
-                        '<li> '+ data?.property_info?.building_info?.furnishing +' </li>'+
-                        '<li> '+ facilities_tmp(data?.property_info?.have_tenant_occupied) +' </li>'+
-                        '<li> '+ facilities_tmp(data?.property_info?.have_owner_occupied) +' </li>'+
-                        '<li> '+ facilities_tmp(data?.property_info?.have_duplex) +' </li>'+
-                        '<li> '+ facilities_tmp(data?.property_info?.building_info?.have_pets_allowed) +' </li>'+
-                        '<li> '+ 'Balcony' +' </li>'+
-                        '<li> '+ 'Bathtubs' +' </li>'+
-                        '<li> '+ facilities_tmp(data?.property_info?.building_info?.have_city_view) +' </li>'+
-                        '<li> '+ facilities_tmp(data?.property_info?.building_info?.have_sea_view) +' </li>'+
-                        '<li> '+ facilities_tmp(data?.property_info?.building_info?.have_mountain_view) +' </li>'+
-                        '<li> '+ 'Rooftop Pool' +' </li>'+
-                        '<li> '+ 'Infinity Pool' +' </li>'+
-                        '<li> '+ facilities_tmp(data?.property_info?.building_info?.have_fitness_area) +' </li>'+
-                        '<li> '+ facilities_tmp(data?.property_info?.building_info?.have_sky_lounge) +' </li>'+
+                    '<li> '+label_name('Project Name')+' <a href="/building/details/'+data?.property_info?.building_info?.id+'/">'+data?.property_info?.building_info?.title+'</a> </li>'+
+                        '<li> '+label_name('Price')+' ฿ '+ formatBalance(data?.property_info?.price || 0) +' </li>'+
+                        '<li> '+label_name('Price Per Sqm')+' ฿ '+ formatBalance(data?.property_info?.price_per_sqm || 0) +' </li>'+
+                        '<li> '+label_name('Built Up Area') + 'Built Up Area' +' </li>'+
+                        '<li> '+label_name('Land Area') +data?.property_info?.unit_area+' </li>'+
+                        '<li> '+label_name('Bedrooms') +data?.property_info?.number_of_bedroom+' </li>'+
+                        '<li> '+label_name('Bathrooms') +data?.property_info?.number_of_bathroom+' </li>'+
+                        '<li> '+label_name('Parking') +data?.property_info?.number_of_car_parking+' </li>'+
+                        '<li> '+label_name('Freehold') + facilities_tmp(data?.property_info?.building_info?.have_freehold) +' </li>'+
+                        '<li> '+label_name('Leasehold') + facilities_tmp(data?.property_info?.building_info?.have_leasehold) +' </li>'+
+                        '<li> '+label_name('Completion Date') +data?.property_info?.building_info?.construction_year+' </li>'+
+                        '<li> '+label_name('Quota') + data?.property_info?.building_info?.quota +' </li>'+
+                        '<li> '+label_name('Access to BTS/MRT') + facilities_tmp(data?.property_info?.building_info?.have_access_to_BTS_or_MRT) +' </li>'+
+                        '<li> '+label_name('Access to ARL') + facilities_tmp(data?.property_info?.building_info?.have_access_to_ARL) +' </li>'+
+                        '<li> '+label_name('Furnished') + data?.property_info?.building_info?.furnishing +' </li>'+
+                        '<li> '+label_name('Tenant Occupied') + facilities_tmp(data?.property_info?.have_tenant_occupied) +' </li>'+
+                        '<li> '+label_name('Owner Occupied') + facilities_tmp(data?.property_info?.have_owner_occupied) +' </li>'+
+                        '<li> '+label_name('Duplex') + facilities_tmp(data?.property_info?.have_duplex) +' </li>'+
+                        '<li> '+label_name('Pet Friendly') + facilities_tmp(data?.property_info?.building_info?.have_pets_allowed) +' </li>'+
+                        '<li> '+label_name('Balcony') + data?.property_info?.number_of_balcony +' </li>'+
+                        '<li> '+label_name('Bathtubs') + facilities_tmp(data?.property_info?.have_bathtub) +' </li>'+
+                        '<li> '+label_name('City View') + facilities_tmp(data?.property_info?.building_info?.have_city_view) +' </li>'+
+                        '<li> '+label_name('Sea View') + facilities_tmp(data?.property_info?.building_info?.have_sea_view) +' </li>'+
+                        '<li> '+label_name('Mountain View') + facilities_tmp(data?.property_info?.building_info?.have_mountain_view) +' </li>'+
+                        '<li> '+label_name('Rooftop Pool') + 'Rooftop Pool' +' </li>'+
+                        '<li> '+label_name('Infinity Pool') + facilities_tmp(data?.property_info?.building_info?.have_infinity_pool) +' </li>'+
+                        '<li> '+label_name('Gym') + facilities_tmp(data?.property_info?.building_info?.have_fitness_area) +' </li>'+
+                        '<li> '+label_name('Sky Lounge') + facilities_tmp(data?.property_info?.building_info?.have_sky_lounge) +' </li>'+
 
-                        '<li> <a href="/property/details/'+data?.property_info?.id+'/" class="link">Details</a> </li>'+
+                        '<li class="text-center"> <a href="/property/details/'+data?.property_info?.id+'/" class="link">Details</a> </li>'+
 
-                        '<li style="height: 240px;"> <iframe width="100%" height="100%" src="https://my.matterport.com/show/?m=tHeZn1V85YQ" frameborder="0" allowfullscreen=""></iframe> </li>' +
+                        '<li style="height: 240px;"> '+
+                            label_name('Ground Floor') +
+                            '<iframe width="100%" height="100%" src="https://my.matterport.com/show/?m=moVqYt3mBcw" frameborder="0" allowfullscreen=""></iframe>'+
+                        '</li>' +
+
+                        '<li style="height: 240px;"> '+
+                            label_name('Typical Units') +
+                            '<iframe width="100%" height="100%" src="https://my.matterport.com/show/?m=tHeZn1V85YQ" frameborder="0" allowfullscreen=""></iframe>'+
+                        '</li>' +
+
+                        '<li style="height: 240px;"> '+
+                            label_name('GRR Units') +
+                            '<iframe width="100%" height="100%" src="https://my.matterport.com/show/?m=bzfeYAc35Gh" frameborder="0" allowfullscreen=""></iframe>'+
+                        '</li>' +
 
                         '<li style="height: 240px;">'+
+                            label_name('Ariel View') +
                             '<video class="video-js comparison-videos" id="'+video_id+'" controls preload="auto" data-setup="{}">'+
                                 '<source src="/static/media/demo_img/3D_House.mp4" type="video/mp4" />'+
                                 '<p class="vjs-no-js">'+

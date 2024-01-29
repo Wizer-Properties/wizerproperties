@@ -99,7 +99,7 @@
 }
 
 .box-featured-title{
-    background-color: #375ad5;
+    background-image: var(--th-gradient-bg);
     padding: 5px 20px;
     color: #fff;
     font-size: 14px;
@@ -107,7 +107,7 @@
 }
 
 .search-box-price{
-    background-color: #375ad5;
+    background-image: var(--th-gradient-bg);
     color: #fff;
     font-size: 20px;
     padding: 10px 15px;
@@ -357,15 +357,14 @@
     gap: 10px;
 }
 
-
 .property-card-modal-btns button{
-    background: #375ad5 !important;
+    background: var(--th-bg-color) !important;
     color: #fff !important;
     padding: 10px 20px;
 }
 
 .property-card-modal-btns button:hover{
-    background: #3759d5ce !important;
+    opacity: .9;
 }
 
 .property-card-down-area{

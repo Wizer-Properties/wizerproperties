@@ -112,6 +112,10 @@
     height: 100%;
 }
 
+.comparison-label-name{
+    display: none;
+}
+
 @media screen and (max-width: 840px) {
     .comparison-side-list {
         width: 200px;
@@ -131,5 +135,17 @@
     .comparison-wrapping-box{
         padding-left: 10px !important;
         padding-right: 10px !important;
+    }
+
+    .comparison-label-name{
+        display: inline-block;
+        font-weight: 600;
+        color: #212529;
+        min-width: 150px;
+    }
+
+    .comparison-slider-box 
+    .comparison-list-label li{
+        text-align: start;
     }
 }
