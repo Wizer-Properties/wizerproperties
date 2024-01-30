@@ -50,12 +50,12 @@ $(document).ready(function(){
         return '<div class="col-lg-12 mb-4 searching-loader">'+
                     '<div class="search-result-box-wrapper">'+
                         '<div class="row">'+
-                            '<div class="col-md-6">'+
+                            '<div class="col-lg-5 col-xl-7">'+
                                 '<div class="search-result-box-img">'+
                                     '<span class="skeleton-box" style="width: 100%; height: 240px;"></span>'+
                                 '</div>'+
                             '</div>'+
-                            '<div class="col-md-6">'+
+                            '<div class="col-lg-7 col-xl-5">'+
                                 '<div class="search-result-box">'+
                                     '<h1> <span class="skeleton-box" style="width: 100%; height: 20px;"></span> </h1>'+
                                     '<div class="location">'+
@@ -169,9 +169,8 @@ $(document).ready(function(){
 
         return  '<div class="col-12 mb-4 property-single-box">'+
                     '<div class="search-result-box-wrapper p-0">'+
-                        '<div class="box-featured-title"> Featured Property </div>'+
                         '<div class="row">'+
-                            '<div class="col-md-6">'+
+                            '<div class="col-lg-5 col-xl-7 p-0">'+
                                 '<div class="splide search-result-box-img-splid">'+
                                     '<div class="splide__track">'+
                                         '<div class="splide__list">'+
@@ -184,7 +183,7 @@ $(document).ready(function(){
                                     formatBalance(Math.floor(data?.price) || 0)+
                                 '</div>'+
                             '</div>'+
-                            '<div class="col-md-6">'+
+                            '<div class="col-lg-7 col-xl-5 p-0">'+
                                 '<div class="search-result-box p-3">'+
                                     '<div>'+
                                         '<a href="/property/details/'+data?.id+'/" class="d-block">'+
