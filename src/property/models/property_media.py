@@ -10,7 +10,7 @@ class PropertyMedia(TimestampedModel):
         # Handle upload path based on media type (image, video, etc.)
         if self.type == "image":
             return "property/images/{}".format(filename)
-        elif self.type == "video":
+        elif self.type in ["video", "interior_virtual_tour"]:
             return "property/videos/{}".format(filename)
 
     type = models.CharField(max_length=100, null=True, choices=PROPERTY_MEDIA_TYPES)
@@ -24,7 +24,7 @@ class PropertyMedia(TimestampedModel):
         allowed_extensions = None
         if self.type == "image":
             allowed_extensions = ALLOWED_IMAGE_EXTENSIONS
-        elif self.type == "video":
+        elif self.type in ["video", "interior_virtual_tour"]:
             allowed_extensions = ALLOWED_VIDEO_EXTENSIONS
 
         if allowed_extensions:

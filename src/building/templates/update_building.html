@@ -184,28 +184,37 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="authFormDiv">
+                                <!-- <span class="authErrorMessage">Message</span> -->
+                                <input name="have_access_to_BTS_or_MRT" type="text" class="authInput"
+                                    placeholder="Have Access to BTS/MRT" value="{{ building.have_access_to_BTS_or_MRT }}" required>
+                                <div class="authlabelline authcompleteProfileLabe">Have Access to BTS/MRT</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="authFormDiv">
+                                <!-- <span class="authErrorMessage">Message</span> -->
+                                <input name="have_access_to_ARL" type="text" class="authInput" placeholder="Have Access to ARL"
+                                    value="{{ building.have_access_to_ARL }}" required>
+                                <div class="authlabelline authcompleteProfileLabe">Have Access to ARL</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="authFormDiv">
+                                <!-- <span class="authErrorMessage">Message</span> -->
+                                <input name="view" type="text" class="authInput" placeholder="View"
+                                    value="{{ building.view }}" required>
+                                <div class="authlabelline authcompleteProfileLabe">View</div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="row">
                         <div class="col-lg-6">
 
                             <div class="row">
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_access_to_BTS_or_MRT" class="form-check-input" type="checkbox" id="access_to_BTS_or_MRT">
-                                        <label class="form-check-label" for="access_to_BTS_or_MRT">
-                                            Have Access to BTS/MRT
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_access_to_ARL" class="form-check-input" type="checkbox" id="access_to_ARL">
-                                        <label class="form-check-label" for="access_to_ARL">
-                                            Have Access to ARL
-                                        </label>
-                                    </div>
-                                </div>
-
                                 <div class="col-6">
                                     <div class="form-check">
                                         <input name="have_freehold" class="form-check-input" type="checkbox"
@@ -221,51 +230,6 @@
                                             id="leasehold" {% if building.have_leasehold %}checked{% endif %}>
                                         <label class="form-check-label" for="leasehold">
                                             Have Leasehold
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_river_view" class="form-check-input" type="checkbox"
-                                            id="river_view" {% if building.have_river_view %}checked{% endif %}>
-                                        <label class="form-check-label" for="river_view">
-                                            Have River View
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_unblocked_view" class="form-check-input" type="checkbox"
-                                            id="unblocked_view" {% if building.have_unblocked_view %}checked{% endif %}>
-                                        <label class="form-check-label" for="unblocked_view">
-                                            Have Unblocked View
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_city_view" class="form-check-input" type="checkbox"
-                                            id="city_view" {% if building.have_city_view %}checked{% endif %}>
-                                        <label class="form-check-label" for="city_view">
-                                            Have City View
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_sea_view" class="form-check-input" type="checkbox"
-                                            id="sea_view" {% if building.have_sea_view %}checked{% endif %}>
-                                        <label class="form-check-label" for="sea_view">
-                                            Have Sea View
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_mountain_view" class="form-check-input" type="checkbox"
-                                            id="mountain_view" {% if building.have_mountain_view %}checked{% endif %}>
-                                        <label class="form-check-label" for="mountain_view">
-                                            Have Mountain View
                                         </label>
                                     </div>
                                 </div>
@@ -448,6 +412,59 @@
                                     {% for video in videos %}
                                     {% if video.file %}
                                     <a href="{{ video.file.url }}" alt="Building Video">{{ video.file.url }}</a>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="uploaded-file-with-view">
+                                <div class="authFormDiv">
+                                    <!-- <span class="authErrorMessage">Message</span> -->
+                                    <input name="facilities_virtual_tours" type="file" accept="video/*" class="authInput authFile">
+                                    <div class="fileName"> Upload Facilities Virtual Tour </div>
+                                </div>
+
+                                <div class="uploaded-file-view-area">
+                                    {% for facilities_virtual_tour in facilities_virtual_tours %}
+                                    {% if facilities_virtual_tour.file %}
+                                    <a href="{{ facilities_virtual_tour.file.url }}" alt="Building facilities virtual tour">{{ facilities_virtual_tour.file.url }}</a>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="uploaded-file-with-view">
+                                <div class="authFormDiv">
+                                    <!-- <span class="authErrorMessage">Message</span> -->
+                                    <input name="location_virtual_tours" type="file" accept="video/*" class="authInput authFile">
+                                    <div class="fileName"> Upload Location Virtual Tour </div>
+                                </div>
+
+                                <div class="uploaded-file-view-area">
+                                    {% for location_virtual_tour in location_virtual_tours %}
+                                    {% if location_virtual_tour.file %}
+                                    <a href="{{ location_virtual_tour.file.url }}" alt="Building location virtual tour">{{ location_virtual_tour.file.url }}</a>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="uploaded-file-with-view">
+                                <div class="authFormDiv">
+                                    <!-- <span class="authErrorMessage">Message</span> -->
+                                    <input name="aerial_drone_videos" type="file" accept="video/*" class="authInput authFile">
+                                    <div class="fileName"> Upload Aerial Drone Video </div>
+                                </div>
+
+                                <div class="uploaded-file-view-area">
+                                    {% for aerial_drone_video in aerial_drone_videos %}
+                                    {% if aerial_drone_video.file %}
+                                    <a href="{{ aerial_drone_video.file.url }}" alt="Building aerial drone video">{{ aerial_drone_video.file.url }}</a>
                                     {% endif %}
                                     {% endfor %}
                                 </div>

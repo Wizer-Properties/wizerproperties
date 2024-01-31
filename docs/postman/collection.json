@@ -113,31 +113,6 @@
 									"type": "text"
 								},
 								{
-									"key": "have_river_view",
-									"value": "False",
-									"type": "text"
-								},
-								{
-									"key": "have_unblocked_view",
-									"value": "False",
-									"type": "text"
-								},
-								{
-									"key": "have_city_view",
-									"value": "False",
-									"type": "text"
-								},
-								{
-									"key": "have_sea_view",
-									"value": "False",
-									"type": "text"
-								},
-								{
-									"key": "have_mountain_view",
-									"value": "False",
-									"type": "text"
-								},
-								{
 									"key": "have_infinity_pool",
 									"value": "False",
 									"type": "text"
@@ -292,31 +267,6 @@
 								},
 								{
 									"key": "have_leasehold",
-									"value": "",
-									"disabled": true
-								},
-								{
-									"key": "have_river_view",
-									"value": "",
-									"disabled": true
-								},
-								{
-									"key": "have_unblocked_view",
-									"value": "",
-									"disabled": true
-								},
-								{
-									"key": "have_city_view",
-									"value": "",
-									"disabled": true
-								},
-								{
-									"key": "have_sea_view",
-									"value": "",
-									"disabled": true
-								},
-								{
-									"key": "have_mountain_view",
 									"value": "",
 									"disabled": true
 								},
@@ -570,31 +520,6 @@
 								{
 									"key": "have_leasehold",
 									"value": "False",
-									"type": "text"
-								},
-								{
-									"key": "have_river_view",
-									"value": "False",
-									"type": "text"
-								},
-								{
-									"key": "have_unblocked_view",
-									"value": "True",
-									"type": "text"
-								},
-								{
-									"key": "have_city_view",
-									"value": "True",
-									"type": "text"
-								},
-								{
-									"key": "have_sea_view",
-									"value": "True",
-									"type": "text"
-								},
-								{
-									"key": "have_mountain_view",
-									"value": "True",
 									"type": "text"
 								},
 								{

@@ -477,29 +477,17 @@ paths:
           type: "number"
         - name: "have_access_to_BTS_or_MRT"
           in: "formData"
-          type: "boolean"
+          type: "string"
         - name: "have_access_to_ARL"
           in: "formData"
-          type: "boolean"
+          type: "string"
+        - name: "view"
+          in: "formData"
+          type: "string"
         - name: "have_freehold"
           in: "formData"
           type: "boolean"
         - name: "have_leasehold"
-          in: "formData"
-          type: "boolean"
-        - name: "have_river_view"
-          in: "formData"
-          type: "boolean"
-        - name: "have_unblocked_view"
-          in: "formData"
-          type: "boolean"
-        - name: "have_city_view"
-          in: "formData"
-          type: "boolean"
-        - name: "have_sea_view"
-          in: "formData"
-          type: "boolean"
-        - name: "have_mountain_view"
           in: "formData"
           type: "boolean"
         - name: "have_infinity_pool"
@@ -540,6 +528,18 @@ paths:
           required: true
           type: "file"
         - name: "videos"
+          in: "formData"
+          required: true
+          type: "file"
+        - name: "facilities_virtual_tours"
+          in: "formData"
+          required: true
+          type: "file"
+        - name: "location_virtual_tours"
+          in: "formData"
+          required: true
+          type: "file"
+        - name: "aerial_drone_videos"
           in: "formData"
           required: true
           type: "file"
@@ -613,39 +613,11 @@ paths:
           description: "Filtered by"
           in: "query"
           type: "string"
-        - name: "have_access_to_BTS_or_MRT"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_access_to_ARL"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
         - name: "have_freehold"
           description: "Filtered by"
           in: "query"
           type: "boolean"
         - name: "have_leasehold"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_river_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_unblocked_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_city_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_sea_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_mountain_view"
           description: "Filtered by"
           in: "query"
           type: "boolean"
@@ -739,39 +711,11 @@ paths:
           description: "Filtered by"
           in: "query"
           type: "string"
-        - name: "have_access_to_BTS_or_MRT"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_access_to_ARL"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
         - name: "have_freehold"
           description: "Filtered by"
           in: "query"
           type: "boolean"
         - name: "have_leasehold"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_river_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_unblocked_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_city_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_sea_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_mountain_view"
           description: "Filtered by"
           in: "query"
           type: "boolean"
@@ -1033,29 +977,17 @@ paths:
           type: "number"
         - name: "have_access_to_BTS_or_MRT"
           in: "formData"
-          type: "boolean"
+          type: "string"
         - name: "have_access_to_ARL"
           in: "formData"
-          type: "boolean"
+          type: "string"
+        - name: "view"
+          in: "formData"
+          type: "string"
         - name: "have_freehold"
           in: "formData"
           type: "boolean"
         - name: "have_leasehold"
-          in: "formData"
-          type: "boolean"
-        - name: "have_river_view"
-          in: "formData"
-          type: "boolean"
-        - name: "have_unblocked_view"
-          in: "formData"
-          type: "boolean"
-        - name: "have_city_view"
-          in: "formData"
-          type: "boolean"
-        - name: "have_sea_view"
-          in: "formData"
-          type: "boolean"
-        - name: "have_mountain_view"
           in: "formData"
           type: "boolean"
         - name: "have_infinity_pool"
@@ -1092,6 +1024,15 @@ paths:
           in: "formData"
           type: "file"
         - name: "videos"
+          in: "formData"
+          type: "file"
+        - name: "facilities_virtual_tours"
+          in: "formData"
+          type: "file"
+        - name: "location_virtual_tours"
+          in: "formData"
+          type: "file"
+        - name: "aerial_drone_videos"
           in: "formData"
           type: "file"
       responses:
@@ -1392,6 +1333,10 @@ paths:
           in: "formData"
           required: true
           type: "file"
+        - name: "interior_virtual_tours"
+          in: "formData"
+          required: true
+          type: "file"
       responses:
         201:
           description: Property created
@@ -1516,14 +1461,6 @@ paths:
           description: "Filtered by"
           in: "query"
           type: "string"
-        - name: "building__have_access_to_BTS_or_MRT"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_access_to_ARL"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
         - name: "have_tenant_occupied"
           description: "Filtered by"
           in: "query"
@@ -1553,26 +1490,6 @@ paths:
           in: "query"
           type: "boolean"
         - name: "building__have_leasehold"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_river_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_unblocked_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_city_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_sea_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_mountain_view"
           description: "Filtered by"
           in: "query"
           type: "boolean"
@@ -1720,14 +1637,6 @@ paths:
           description: "Filtered by"
           in: "query"
           type: "string"
-        - name: "building__have_access_to_BTS_or_MRT"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_access_to_ARL"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
         - name: "have_tenant_occupied"
           description: "Filtered by"
           in: "query"
@@ -1753,26 +1662,6 @@ paths:
           in: "query"
           type: "boolean"
         - name: "building__have_leasehold"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_river_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_unblocked_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_city_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_sea_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_mountain_view"
           description: "Filtered by"
           in: "query"
           type: "boolean"
@@ -1940,39 +1829,11 @@ paths:
           description: "Filtered by"
           in: "query"
           type: "boolean"
-        - name: "building__have_access_to_BTS_or_MRT"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_access_to_ARL"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
         - name: "building__have_freehold"
           description: "Filtered by"
           in: "query"
           type: "boolean"
         - name: "building__have_leasehold"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_river_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_unblocked_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_city_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_sea_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_mountain_view"
           description: "Filtered by"
           in: "query"
           type: "boolean"
@@ -2140,39 +2001,11 @@ paths:
           description: "Filtered by"
           in: "query"
           type: "boolean"
-        - name: "building__have_access_to_BTS_or_MRT"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_access_to_ARL"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
         - name: "building__have_freehold"
           description: "Filtered by"
           in: "query"
           type: "boolean"
         - name: "building__have_leasehold"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_river_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_unblocked_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_city_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_sea_view"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "building__have_mountain_view"
           description: "Filtered by"
           in: "query"
           type: "boolean"
@@ -2406,6 +2239,10 @@ paths:
           required: true
           type: "file"
         - name: "videos"
+          in: "formData"
+          required: true
+          type: "file"
+        - name: "interior_virtual_tours"
           in: "formData"
           required: true
           type: "file"
@@ -3150,8 +2987,6 @@ definitions:
         type: "number"
       construction_year:
         type: "number"
-      have_river_view:
-        type: "boolean"
       have_guard_house:
         type: "boolean"
       have_sauna:
@@ -3237,22 +3072,14 @@ definitions:
             construction_year:
               type: "number"
             have_access_to_BTS_or_MRT:
-              type: "boolean"
+              type: "string"
             have_access_to_ARL:
-              type: "boolean"
+              type: "string"
+            view:
+              type: "string"
             have_freehold:
               type: "boolean"
             have_leasehold:
-              type: "boolean"
-            have_river_view:
-              type: "boolean"
-            have_unblocked_view:
-              type: "boolean"
-            have_city_view:
-              type: "boolean"
-            have_sea_view:
-              type: "boolean"
-            have_mountain_view:
               type: "boolean"
             have_infinity_pool:
               type: "boolean"
@@ -3334,22 +3161,14 @@ definitions:
       construction_year:
         type: "number"
       have_access_to_BTS_or_MRT:
-        type: "boolean"
+        type: "string"
       have_access_to_ARL:
-        type: "boolean"
+        type: "string"
+      view:
+        type: "string"
       have_freehold:
         type: "boolean"
       have_leasehold:
-        type: "boolean"
-      have_river_view:
-        type: "boolean"
-      have_unblocked_view:
-        type: "boolean"
-      have_city_view:
-        type: "boolean"
-      have_sea_view:
-        type: "boolean"
-      have_mountain_view:
         type: "boolean"
       have_infinity_pool:
         type: "boolean"
@@ -3591,16 +3410,6 @@ definitions:
             type: "boolean"
           have_leasehold:
             type: "boolean"
-          have_river_view:
-            type: "boolean"
-          have_unblocked_view:
-            type: "boolean"
-          have_city_view:
-            type: "boolean"
-          have_sea_view:
-            type: "boolean"
-          have_mountain_view:
-            type: "boolean"
           have_infinity_pool:
             type: "boolean"
           have_pets_allowed:
@@ -3751,22 +3560,14 @@ definitions:
                 construction_year:
                   type: "number"
                 have_access_to_BTS_or_MRT:
-                  type: "boolean"
+                  type: "string"
                 have_access_to_ARL:
-                  type: "boolean"
+                  type: "string"
+                view:
+                  type: "string"
                 have_freehold:
                   type: "boolean"
                 have_leasehold:
-                  type: "boolean"
-                have_river_view:
-                  type: "boolean"
-                have_unblocked_view:
-                  type: "boolean"
-                have_city_view:
-                  type: "boolean"
-                have_sea_view:
-                  type: "boolean"
-                have_mountain_view:
                   type: "boolean"
                 have_infinity_pool:
                   type: "boolean"
@@ -3954,22 +3755,14 @@ definitions:
           construction_year:
             type: "number"
           have_access_to_BTS_or_MRT:
-            type: "boolean"
+            type: "string"
           have_access_to_ARL:
-            type: "boolean"
+            type: "string"
+          view:
+            type: "string"
           have_freehold:
             type: "boolean"
           have_leasehold:
-            type: "boolean"
-          have_river_view:
-            type: "boolean"
-          have_unblocked_view:
-            type: "boolean"
-          have_city_view:
-            type: "boolean"
-          have_sea_view:
-            type: "boolean"
-          have_mountain_view:
             type: "boolean"
           have_infinity_pool:
             type: "boolean"
@@ -4115,22 +3908,14 @@ definitions:
               construction_year:
                 type: "number"
               have_access_to_BTS_or_MRT:
-                type: "boolean"
+                type: "string"
               have_access_to_ARL:
-                type: "boolean"
+                type: "string"
+              view:
+                type: "string"
               have_freehold:
                 type: "boolean"
               have_leasehold:
-                type: "boolean"
-              have_river_view:
-                type: "boolean"
-              have_unblocked_view:
-                type: "boolean"
-              have_city_view:
-                type: "boolean"
-              have_sea_view:
-                type: "boolean"
-              have_mountain_view:
                 type: "boolean"
               have_infinity_pool:
                 type: "boolean"
@@ -4285,22 +4070,14 @@ definitions:
                     construction_year:
                       type: "number"
                     have_access_to_BTS_or_MRT:
-                      type: "boolean"
+                      type: "string"
                     have_access_to_ARL:
-                      type: "boolean"
+                      type: "string"
+                    view:
+                      type: "string"
                     have_freehold:
                       type: "boolean"
                     have_leasehold:
-                      type: "boolean"
-                    have_river_view:
-                      type: "boolean"
-                    have_unblocked_view:
-                      type: "boolean"
-                    have_city_view:
-                      type: "boolean"
-                    have_sea_view:
-                      type: "boolean"
-                    have_mountain_view:
                       type: "boolean"
                     have_infinity_pool:
                       type: "boolean"
@@ -4440,22 +4217,14 @@ definitions:
               construction_year:
                 type: "number"
               have_access_to_BTS_or_MRT:
-                type: "boolean"
+                type: "string"
               have_access_to_ARL:
-                type: "boolean"
+                type: "string"
+              view:
+                type: "string"
               have_freehold:
                 type: "boolean"
               have_leasehold:
-                type: "boolean"
-              have_river_view:
-                type: "boolean"
-              have_unblocked_view:
-                type: "boolean"
-              have_city_view:
-                type: "boolean"
-              have_sea_view:
-                type: "boolean"
-              have_mountain_view:
                 type: "boolean"
               have_infinity_pool:
                 type: "boolean"
@@ -4610,22 +4379,14 @@ definitions:
                     construction_year:
                       type: "number"
                     have_access_to_BTS_or_MRT:
-                      type: "boolean"
+                      type: "string"
                     have_access_to_ARL:
-                      type: "boolean"
+                      type: "string"
+                    view:
+                      type: "string"
                     have_freehold:
                       type: "boolean"
                     have_leasehold:
-                      type: "boolean"
-                    have_river_view:
-                      type: "boolean"
-                    have_unblocked_view:
-                      type: "boolean"
-                    have_city_view:
-                      type: "boolean"
-                    have_sea_view:
-                      type: "boolean"
-                    have_mountain_view:
                       type: "boolean"
                     have_infinity_pool:
                       type: "boolean"

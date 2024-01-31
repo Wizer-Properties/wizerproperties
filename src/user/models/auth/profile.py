@@ -3,7 +3,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 from core.models import TimestampedModel
 from utils.general_data import GENDER
 from .user import User
-from utils.general_data import UNIQUE_PROFILE_EMAIL_MESSAGE
 
 
 class Profile(TimestampedModel):

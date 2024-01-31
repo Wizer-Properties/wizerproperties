@@ -8,10 +8,12 @@ def prepare_property_context(request, id=None):
     property = get_object_or_404(Property, pk=id) if id else None
     images = property.media_files.filter(type="image") if property else []
     videos = property.media_files.filter(type="video") if property else []
+    interior_virtual_tours = property.media_files.filter(type="interior_virtual_tour") if property else []
     context = {
         "property": property,
         "images": images,
         "videos": videos,
+        "interior_virtual_tours": interior_virtual_tours,
     }
     return context
 

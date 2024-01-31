@@ -35,15 +35,11 @@ class Building(TimestampedModel):
     construction_year = models.IntegerField(default=1930, null=True, validators=[MinValueValidator(1930)])
     quota = models.CharField(max_length=100, choices=QUOTA_TYPES, null=True)
     furnishing = models.CharField(max_length=100, choices=FURNISHING_TYPES, null=True)
-    have_access_to_BTS_or_MRT = models.BooleanField(default=False)
-    have_access_to_ARL = models.BooleanField(default=False)
+    have_access_to_BTS_or_MRT = models.CharField(max_length=500, null=True)
+    have_access_to_ARL = models.CharField(max_length=500, null=True)
+    view = models.CharField(max_length=500, null=True)
     have_freehold = models.BooleanField(default=False)
     have_leasehold = models.BooleanField(default=False)
-    have_river_view = models.BooleanField(default=False)
-    have_unblocked_view = models.BooleanField(default=False)
-    have_city_view = models.BooleanField(default=False)
-    have_sea_view = models.BooleanField(default=False)
-    have_mountain_view = models.BooleanField(default=False)
     have_infinity_pool = models.BooleanField(default=False)
     have_pets_allowed = models.BooleanField(default=False)
     have_guard_house = models.BooleanField(default=False)
@@ -68,7 +64,7 @@ class BuildingMedia(TimestampedModel):
         # Handle upload path based on media type (image, video, etc.)
         if self.type in ["image", "floor_plan", "unit_floor_plan", "master_plan"]:
             return "building/images/{}".format(filename)
-        elif self.type == "video":
+        elif self.type in ["video", "facilities_virtual_tour", "location_virtual_tour", "aerial_drone_video"]:
             return "building/videos/{}".format(filename)
 
     type = models.CharField(max_length=100, null=True, choices=BUILDING_MEDIA_TYPES)
@@ -80,14 +76,9 @@ class BuildingMedia(TimestampedModel):
 
     def clean(self):
         allowed_extensions = None
-        if self.type in [
-            "image",
-            "floor_plan",
-            "unit_floor_plan",
-            "master_plan",
-        ]:
+        if self.type in ["image", "floor_plan", "unit_floor_plan", "master_plan"]:
             allowed_extensions = ALLOWED_IMAGE_EXTENSIONS
-        elif self.type == "video":
+        elif self.type in ["video", "facilities_virtual_tour", "location_virtual_tour", "aerial_drone_video"]:
             allowed_extensions = ALLOWED_VIDEO_EXTENSIONS
 
         if allowed_extensions:

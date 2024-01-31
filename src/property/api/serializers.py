@@ -20,6 +20,7 @@ class PropertySerializer(serializers.ModelSerializer):
     building_info = serializers.SerializerMethodField()
     images = serializers.ImageField(allow_empty_file=False, write_only=True)
     videos = serializers.FileField(allow_empty_file=False, write_only=True)
+    interior_virtual_tours = serializers.FileField(allow_empty_file=False, write_only=True)
     default_image = serializers.URLField(source="default_image_url", read_only=True)
     is_compared = serializers.BooleanField(read_only=True)
     is_favorited = serializers.BooleanField(read_only=True)
@@ -58,6 +59,7 @@ class PropertySerializer(serializers.ModelSerializer):
             "is_favorited",
             "images",
             "videos",
+            "interior_virtual_tours",
             "building_info",
         ]
         extra_kwargs = {
@@ -71,7 +73,7 @@ class PropertySerializer(serializers.ModelSerializer):
 
         for field_name, field in self.fields.items():
             if field_name not in ["tenant_occupied_validity", "discount_period"]:
-                if self.instance is not None and field_name in ["images", "videos"]:
+                if self.instance is not None and field_name in ["images", "videos", "interior_virtual_tours"]:
                     field.required = False
                 else:
                     field.required = True
@@ -94,7 +96,7 @@ class PropertySerializer(serializers.ModelSerializer):
 
         if self.request.method in ["POST", "PUT"]:
             # Remove unwanted attributes from data for 'Property' instance
-            for attr in ["is_active", "images", "videos"]:
+            for attr in ["is_active", "images", "videos", "interior_virtual_tours"]:
                 data.pop(attr, None)
 
             instance = Property(**data)
@@ -136,6 +138,7 @@ class PropertySerializer(serializers.ModelSerializer):
         return {
             "image": self.request.FILES.getlist("images"),
             "video": self.request.FILES.getlist("videos"),
+            "interior_virtual_tour": self.request.FILES.getlist("interior_virtual_tours"),
         }
 
     # 'ModelSerializer' does not directly allow you to modify the queryset while calling it
@@ -179,8 +182,7 @@ class PropertySerializer(serializers.ModelSerializer):
                 media_files.append(media_file)
 
         # Remove unwanted attributes from validated_data for 'Property' instance
-        skip_attributes = ["is_active", "images", "videos"]
-        for attr in skip_attributes:
+        for attr in ["is_active", "images", "videos", "interior_virtual_tours"]:
             validated_data.pop(attr, None)
 
         property = Property.objects.create(**validated_data, created_by=self.request.user)
@@ -198,7 +200,7 @@ class PropertySerializer(serializers.ModelSerializer):
                 # Update PropertyMedia objects for different media types
                 for media_type, files in media_files_data.items():
                     for file in files:
-                        if media_type == "video":
+                        if media_type in ["video", "interior_virtual_tour"]:
                             instance.media_files.filter(type=media_type).update(file=file)
                         else:
                             media_file = PropertyMedia(type=media_type, file=file)
@@ -210,7 +212,11 @@ class PropertySerializer(serializers.ModelSerializer):
                     "type", flat=True
                 )
 
-                if "image" not in remaining_file_types or "video" not in remaining_file_types:
+                if (
+                    "image" not in remaining_file_types
+                    or "video" not in remaining_file_types
+                    or "interior_virtual_tour" not in remaining_file_types
+                ):
                     raise serializers.ValidationError(
                         {"media_files": ["At least one image every type of media file must remain with the property."]}
                     )

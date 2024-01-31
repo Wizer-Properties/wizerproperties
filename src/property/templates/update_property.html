@@ -291,6 +291,24 @@
                             </div>
                         </div>
 
+                        <div class="col-lg-6">
+                            <div class="uploaded-file-with-view">
+                                <div class="authFormDiv">
+                                    <!-- <span class="authErrorMessage">Message</span> -->
+                                    <input name="interior_virtual_tours" type="file" accept="video/*" class="authInput authFile">
+                                    <div class="fileName">Upload Interior Virtual Tour</div>
+                                </div>
+
+                                <div class="uploaded-file-view-area">
+                                    {% for interior_virtual_tour in interior_virtual_tours %}
+                                    {% if interior_virtual_tour.file %}
+                                    <a href="{{ interior_virtual_tour.file.url }}" alt="Property interior virtual tour">{{ interior_virtual_tour.file.url }}</a>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
 
