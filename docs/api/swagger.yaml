@@ -3470,7 +3470,7 @@ definitions:
               type: "string"
             default_image:
               type: "string"
-            image_media_files:
+            all_media_files:
               type: "array"
               items:
                 type: "string"
@@ -3527,6 +3527,10 @@ definitions:
                   type: "string"
                 default_image:
                   type: "string"
+                all_media_files:
+                  type: "array"
+                  items:
+                    type: "string"
                 description:
                   type: "string"
                 lowest_price:
@@ -3665,7 +3669,7 @@ definitions:
         type: "string"
       default_image:
         type: "string"
-      image_media_files:
+      all_media_files:
         type: "array"
         items:
           type: "string"
@@ -3722,6 +3726,10 @@ definitions:
             type: "string"
           default_image:
             type: "string"
+          all_media_files:
+              type: "array"
+              items:
+                type: "string"
           description:
             type: "string"
           lowest_price:
@@ -3822,7 +3830,7 @@ definitions:
             type: "string"
           default_image:
             type: "string"
-          image_media_files:
+          all_media_files:
             type: "array"
             items:
               type: "string"
@@ -3875,6 +3883,10 @@ definitions:
                 type: "string"
               default_image:
                 type: "string"
+              all_media_files:
+                type: "array"
+                items:
+                  type: "string"
               description:
                 type: "string"
               lowest_price:
@@ -3984,7 +3996,7 @@ definitions:
                   type: "string"
                 default_image:
                   type: "string"
-                image_media_files:
+                all_media_files:
                   type: "array"
                   items:
                     type: "string"
@@ -4037,6 +4049,10 @@ definitions:
                       type: "string"
                     default_image:
                       type: "string"
+                    all_media_files:
+                      type: "array"
+                      items:
+                        type: "string"
                     description:
                       type: "string"
                     lowest_price:
@@ -4131,7 +4147,7 @@ definitions:
             type: "string"
           default_image:
             type: "string"
-          image_media_files:
+          all_media_files:
             type: "array"
             items:
               type: "string"
@@ -4184,6 +4200,10 @@ definitions:
                 type: "string"
               default_image:
                 type: "string"
+              all_media_files:
+                type: "array"
+                items:
+                  type: "string"
               description:
                 type: "string"
               lowest_price:
@@ -4293,7 +4313,7 @@ definitions:
                   type: "string"
                 default_image:
                   type: "string"
-                image_media_files:
+                all_media_files:
                   type: "array"
                   items:
                     type: "string"
@@ -4346,6 +4366,10 @@ definitions:
                       type: "string"
                     default_image:
                       type: "string"
+                    all_media_files:
+                      type: "array"
+                      items:
+                        type: "string"
                     description:
                       type: "string"
                     lowest_price:

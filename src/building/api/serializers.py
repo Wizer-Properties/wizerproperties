@@ -1,3 +1,4 @@
+from urllib.parse import urlsplit
 from django.db import transaction
 from rest_framework import serializers
 from building.models import Building, BuildingMedia, BuildingReview
@@ -12,6 +13,7 @@ class BuildingMediaSerializer(serializers.ModelSerializer):
 
 
 class BuildingSerializer(serializers.ModelSerializer):
+    all_media_files = BuildingMediaSerializer(source="media_files", many=True, read_only=True)
     images = serializers.ImageField(allow_empty_file=False, write_only=True)
     floor_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
     unit_floor_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
@@ -32,6 +34,7 @@ class BuildingSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "default_image",
+            "all_media_files",
             "description",
             "lowest_price",
             "highest_price",
@@ -139,6 +142,21 @@ class BuildingSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(error_messages)
 
         return data
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        # Filter type 'image'
+        if self.request and self.request.method == "GET":
+            representation["all_media_files"] = [
+                media
+                for media in representation["all_media_files"]
+                if media["type"] in ["image", "floor_plan", "unit_floor_plan", "master_plan"]
+            ]
+            # Return only the 'file' field
+            representation["all_media_files"] = [
+                urlsplit(media["file"]).path for media in representation["all_media_files"]
+            ]
+        return representation
 
     def get_fields(self):
         fields = super().get_fields()
