@@ -116,6 +116,11 @@
     display: none;
 }
 
+.no-video-data{
+    display: inline-block !important;
+    margin-top: 100px;
+}
+
 @media screen and (max-width: 840px) {
     .comparison-side-list {
         width: 200px;

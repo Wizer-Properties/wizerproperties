@@ -102,7 +102,7 @@
     background: var(--th-bg-color);
     color: #fff;
     font-size: 20px;
-    padding: 10px 15px;
+    padding: 10px 25px;
     font-weight: 500;
     min-height: 68px;
 }
@@ -398,17 +398,6 @@
     margin-top: 35px;
 }
 
-@media screen and (max-width : 1440px){
-    .search-result-box-img{
-        height: 370px;
-    }
-}
-
-@media screen and (max-width : 1320px){
-    .search-result-box-img{
-        height: 400px;
-    }
-}
 
 
 @media screen and (max-width : 1200px){
@@ -421,7 +410,7 @@
     }
 
     .search-result-box-img{
-        height: 320px;
+        height: 300px;
     }
 }
 

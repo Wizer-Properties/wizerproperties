@@ -101,27 +101,19 @@ $(document).ready(function(){
         };
 
         if(data?.building_info?.have_access_to_BTS_or_MRT){
-            facility_tmp += '<span>BTS Or MRT</span>'
+            facility_tmp += '<span>'+data?.building_info?.have_access_to_BTS_or_MRT+'</span>'
         };
 
         if(data?.building_info?.have_access_to_ARL){
-            facility_tmp += '<span>ARL</span>'
+            facility_tmp += '<span>'+data?.building_info?.have_access_to_ARL+'</span>'
         };
 
         if(data?.building_info?.have_pets_allowed){
             facility_tmp += '<span> Pet Friendly </span>'
         };
         
-        if(data?.building_info?.have_city_view){
-            facility_tmp += '<span>City View</span>'
-        };
-
-        if(data?.building_info?.have_sea_view){
-            facility_tmp += '<span>Sea View</span>'
-        };
-
-        if(data?.building_info?.have_mountain_view){
-            facility_tmp += '<span>Mountain View</span>'
+        if(data?.building_info?.view){
+            facility_tmp += '<span>'+data?.building_info?.view+'</span>'
         };
 
         if(data?.building_info?.have_infinity_pool){
@@ -136,22 +128,13 @@ $(document).ready(function(){
             facility_tmp += '<span>Sky Lounge</span>'
         };
 
-        if(data?.building_info?.have_unblocked_view){
-            facility_tmp += '<span>Unblocked View</span>'
-        };
-
-        if(data?.building_info?.have_unblocked_view){
-            facility_tmp += '<span>Unblocked View</span>'
-        };
-
         return facility_tmp;
     };
 
 
     function property_image_tmp(data){
         var image_tmp = '';
-
-        for (let i = 0; i < data.length; i++) {
+        for (let i = 0; i < data?.length; i++) {
             image_tmp += '<div class="splide__slide search-result-box-img">'+
                             '<img src="'+data[i]+'" alt="image" loading="lazy">'+
                          '</div>'
@@ -167,6 +150,8 @@ $(document).ready(function(){
             $('.add-to-favorite').remove();
         };
 
+        var aerial_drone_video = _.find(data.building_info.all_media_files, { 'type': 'aerial_drone_video' });
+
         return  '<div class="col-12 mb-4 property-single-box">'+
                     '<div class="search-result-box-wrapper p-0">'+
                         '<div class="row">'+
@@ -174,7 +159,7 @@ $(document).ready(function(){
                                 '<div class="splide search-result-box-img-splid">'+
                                     '<div class="splide__track">'+
                                         '<div class="splide__list">'+
-                                            property_image_tmp(data?.image_media_files)+
+                                            property_image_tmp(data?.all_media_files)+
                                         '</div>'+
                                     '</div>'+
                                 '</div>'+
@@ -226,8 +211,14 @@ $(document).ready(function(){
 
                                     '<div class="property-card-down-area">'+
                                         '<div class="property-card-modal-btns">'+
-                                            '<button class="link border-0 open-3D-model"> 3D Walkthrough </button>'+
-                                            '<button class="link border-0 open-drone-view"> Ariel View </button>'+
+                                            ( 
+                                                ![null, ''].includes(data?.interior_view) ?
+                                               '<button class="link border-0 open-3D-model" data-src="'+data?.interior_view+'" > Interior View </button>' : ''
+                                            )+
+                                            (
+                                                aerial_drone_video?.file ?
+                                               '<button class="link border-0 open-drone-view" data-src="'+aerial_drone_video?.file+'" > Ariel View </button>' : ''
+                                            )+
                                         '</div>'+
 
                                     '<div class="property-card-footer">'+
@@ -538,13 +529,15 @@ $(document).ready(function(){
 
 
     $(document).on('click', '.open-3D-model', function(){
-        var _iframe = '<iframe width="100%" height="100%" src="https://my.matterport.com/show/?m=tHeZn1V85YQ" frameborder="0" allowfullscreen=""></iframe>'
+        var _iframe = '<iframe width="100%" height="100%" src="'+$(this).attr('data-src')+'" frameborder="0" allowfullscreen=""></iframe>'
         $('#_3d_view_dialog ._3d_model_display').html(_iframe);
         $('#_3d_view_dialog').modal("show");
     });
 
     $(document).on('click', '.open-drone-view', function(){
-        var _video = '<source src="/static/media/demo_img/3D_House.mp4" type="video/mp4" />';
+        var _player = videojs($('#_3d_drone_view video')[0]);
+        _player.reset();
+        var _video = '<source src="'+$(this).attr('data-src')+'" type="video/mp4" />';
         $('#_3d_drone_view ._3d_model_display video').append(_video);
         $('#_3d_drone_view').modal("show");
     });
@@ -555,8 +548,11 @@ $(document).ready(function(){
     });
 
     $(document).on('click', '.close_3d_drone_view', function(){
-        $('#_3d_drone_view').modal("hide");
+        var _player = videojs($('#_3d_drone_view video')[0]);
+        _player.pause();
+        _player.reset();
 
+        $('#_3d_drone_view').modal("hide");
         $(this).parents('#_3d_drone_view').find('video')[0].pause()
         $(this).parents('#_3d_drone_view').find('video').html(
             '<p class="vjs-no-js">'+
