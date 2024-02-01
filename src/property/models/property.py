@@ -19,6 +19,7 @@ class Property(TimestampedModel):
     )
     floor_number = models.CharField(max_length=255, null=True)
     unit_area = models.FloatField(default=0, null=True, validators=[MinValueValidator(1)])
+    interior_view = models.URLField(max_length=2000, blank=True, null=True)
     number_of_bedroom = models.IntegerField(default=0, null=True, validators=[MinValueValidator(1)])
     number_of_bathroom = models.IntegerField(default=0, null=True, validators=[MinValueValidator(1)])
     number_of_balcony = models.IntegerField(default=0, null=True, validators=[MinValueValidator(1)])

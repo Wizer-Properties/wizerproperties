@@ -38,6 +38,8 @@ class Building(TimestampedModel):
     have_access_to_BTS_or_MRT = models.CharField(max_length=500, null=True)
     have_access_to_ARL = models.CharField(max_length=500, null=True)
     view = models.CharField(max_length=500, null=True)
+    facility_view = models.URLField(max_length=2000, blank=True, null=True)
+    location_view = models.URLField(max_length=2000, blank=True, null=True)
     have_freehold = models.BooleanField(default=False)
     have_leasehold = models.BooleanField(default=False)
     have_infinity_pool = models.BooleanField(default=False)

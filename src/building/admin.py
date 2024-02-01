@@ -25,6 +25,8 @@ class BuildingAdmin(admin.ModelAdmin):
         "have_access_to_BTS_or_MRT",
         "have_access_to_ARL",
         "view",
+        "facility_view",
+        "location_view",
         "have_freehold",
         "have_leasehold",
         "have_infinity_pool",

@@ -21,6 +21,7 @@ class PropertyAdmin(admin.ModelAdmin):
         "price_per_sqm",
         "floor_number",
         "unit_area",
+        "interior_view",
         "number_of_bedroom",
         "number_of_bathroom",
         "number_of_balcony",
