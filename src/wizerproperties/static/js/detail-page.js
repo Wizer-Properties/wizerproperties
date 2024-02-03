@@ -1,6 +1,15 @@
 $(document).ready(function(){
     var building_id = null;
 
+    function iframe_void(data){
+        if(data){
+            return '<iframe width="100%" height="100%" src="'+data+'" frameborder="0" allowfullscreen=""></iframe>'
+        }else{
+            return '<span class="no-video-data"> No 3D view ! </span>'
+        }
+    };
+
+
     function get_asset_details(){
         $.ajax({
             url: ASSET_API_URL,
@@ -68,6 +77,10 @@ $(document).ready(function(){
                 $('[label-name="email"]').html('<a href="mailto:'+data?.building_info?.created_by?.email+'">'+data?.building_info?.created_by?.email+'</a>')
                 $('[label-name="building_details_button"]').html('<a href="/building/details/'+data?.building_info?.id+'/" class="link"> View Building </a>')
 
+                $('[label-name="interior-view"] .details-gallery-3D-view').html( iframe_void(data?.interior_view))
+                $('[label-name="facilities-view"] .details-gallery-3D-view').html( iframe_void(data?.building_info?.facility_view))
+                $('[label-name="location-video"] .details-gallery-3D-view').html( iframe_void(data?.building_info?.location_view))
+
                 // Facilities ==============
                 facilities_void(data?.building_info);
                 $('.review-writing-area').html(review_tmp(data))
@@ -77,6 +90,7 @@ $(document).ready(function(){
             }
         });
     };
+
 
     get_asset_details();
 
@@ -124,10 +138,12 @@ $(document).ready(function(){
             facilities_dom += facilities_info_tmp('Grocery', _icon)
         };
 
-
-        if(building_info?.have_city_view){
+        if(
+            building_info?.view &&
+            building_info?.view !== ''
+        ){
             var _icon = '<i class="material-symbols-outlined"> location_city </i>';
-            facilities_dom += facilities_info_tmp('City View', _icon)
+            facilities_dom += facilities_info_tmp(building_info?.view , _icon)
         };
 
         if(building_info?.have_freehold){
@@ -145,34 +161,25 @@ $(document).ready(function(){
             facilities_dom += facilities_info_tmp('Leasehold Land', _icon)
         };
 
-        if(building_info?.have_mountain_view){
-            var _icon = '<i class="material-symbols-outlined"> filter_hdr </i>';
-            facilities_dom += facilities_info_tmp('Mountain View', _icon)
-        };
-
         if(building_info?.have_pets_allowed){
             var _icon = '<i class="material-symbols-outlined"> pets </i>';
-            facilities_dom += facilities_info_tmp('Pets Allowed', _icon)
+            facilities_dom += facilities_info_tmp('Pet Friendly', _icon)
         };
 
-        if(building_info?.have_sea_view){
-            var _icon = '<i class="material-symbols-outlined"> sailing </i>';
-            facilities_dom += facilities_info_tmp('Sea View', _icon)
-        };
-
-        if(building_info?.have_unblocked_view){
-            var _icon = '<i class="material-symbols-outlined"> all_inclusive </i>';
-            facilities_dom += facilities_info_tmp('Unblocked View', _icon)
-        };
-
-        if(building_info?.have_access_to_BTS_or_MRT){
+        if(
+            building_info?.have_access_to_BTS_or_MRT &&
+            building_info?.have_access_to_BTS_or_MRT != ''
+        ){
             var _icon = '<i class="material-symbols-outlined"> train </i>';
-            facilities_dom += facilities_info_tmp('Access To BTS Or MRT', _icon)
+            facilities_dom += facilities_info_tmp(building_info?.have_access_to_BTS_or_MRT, _icon)
         };
 
-        if(building_info?.have_access_to_ARL){
+        if(
+            building_info?.have_access_to_ARL &&
+            building_info?.have_access_to_ARL != ''
+        ){
             var _icon = '<i class="material-symbols-outlined"> train </i>';
-            facilities_dom += facilities_info_tmp('Access To ARL', _icon)
+            facilities_dom += facilities_info_tmp(building_info?.have_access_to_ARL, _icon)
         };
 
         if(facilities_dom == ''){
@@ -250,10 +257,18 @@ $(document).ready(function(){
                 }else if(type_name == 'video'){
                     var video_file = data?.results[0].file;
                     if(video_file.includes('.webm')){
-                        $('.details-gallery-video video')
+                        $('[label-name="media-files-video"] video')
                         .append('<source src='+data?.results[0]?.file+' type="video/webm" />')
                     }else{
-                        $('.details-gallery-video video')
+                        $('[label-name="media-files-video"] video')
+                        .append('<source src='+data?.results[0]?.file+' type="video/mp4" />')
+                    }
+                }else if(type_name == 'aerial_drone_video'){
+                    if(data?.results[0]?.file.includes('.webm')){
+                        $('[label-name="areal-view"] video')
+                        .append('<source src='+data?.results[0]?.file+' type="video/webm" />')
+                    }else if(data?.results[0]?.file.includes('.mp4')){
+                        $('[label-name="areal-view"] video')
                         .append('<source src='+data?.results[0]?.file+' type="video/mp4" />')
                     }
                 }
@@ -353,6 +368,7 @@ $(document).ready(function(){
 
     
     $('.gallery-btn button').click(function(){
+        if(!$(this).attr('type')) return;
         get_gallery_img($(this).attr('type'));
     })
     

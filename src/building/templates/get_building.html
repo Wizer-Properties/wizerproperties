@@ -66,6 +66,15 @@
                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-video" aria-selected="false" type="video">
                     Video
                 </button>
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-facilities-view" aria-selected="false">
+                    Facilities View
+                </button>
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-location-video" aria-selected="false">
+                    Location View
+                </button>
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-areal-view" aria-selected="false" type="aerial_drone_video">
+                    Areal View
+                </button>
                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-map" aria-selected="false">
                     Map
                 </button>
@@ -114,6 +123,39 @@
                        <img src="" alt="bg">
                    </div> -->
                </div>
+            </div>
+
+
+            <!-- facilities Map Plans -->
+            <div class="tab-pane fade" id="nav-facilities-view" label-name="facilities-view">
+                <div class="details-gallery-3D-view">
+                    
+                </div>
+            </div>
+
+
+            <!-- location Map Plans -->
+            <div class="tab-pane fade" id="nav-location-video" label-name="location-video">
+                <div class="details-gallery-3D-view">
+                </div>
+            </div>
+
+
+            <!-- areal Plans -->
+            <div class="tab-pane fade" id="nav-areal-view" label-name="areal-view">
+                <div class="details-gallery-video">
+                    <video
+                        id="my-video"
+                        class="video-js"
+                        controls
+                        preload="auto"
+                        data-setup="{}"
+                    >
+                    <p class="vjs-no-js">
+                        To view this video please enable JavaScript, and consider upgrading to a web browser that
+                    </p>
+                    </video>
+                </div>
             </div>
 
 
@@ -384,7 +426,7 @@
 
 <section id="available-units">
     <div class="container">
-        <h1 class="section-title">Available Units at Rhythm Sukhumvit 36-38</h1>
+        <h1 class="section-title">Available Units</h1>
 
         <nav>
             <ul class="pagination filter-available-units">
@@ -451,6 +493,7 @@
 {% endblock %}
 
 {% block extend_script %}
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 <script>
     var ASSET_API_URL = '/building/api/details/{{building.id}}/';
     var GELLERY_API_URL = '/building/api/details/{{building.id}}/media-files/';
