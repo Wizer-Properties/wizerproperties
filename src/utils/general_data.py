@@ -18,12 +18,10 @@ BUILDING_MEDIA_TYPES = (
     ("unit_floor_plan", "Unit floor plan"),
     ("master_plan", "Master plan"),
     ("video", "Video"),
-    ("facilities_virtual_tour", "Facilities virtual tour"),
-    ("location_virtual_tour", "Location virtual tour"),
     ("aerial_drone_video", "Aerial drone video"),
 )
 
-PROPERTY_MEDIA_TYPES = (("image", "Image"), ("video", "Video"), ("interior_virtual_tour", "Interior virtual tour"))
+PROPERTY_MEDIA_TYPES = (("image", "Image"), ("video", "Video"))
 
 ALLOWED_IMAGE_EXTENSIONS = [
     "jpg",

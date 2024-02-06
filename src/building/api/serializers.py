@@ -19,8 +19,6 @@ class BuildingSerializer(serializers.ModelSerializer):
     unit_floor_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
     master_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
     videos = serializers.FileField(allow_empty_file=False, write_only=True)
-    facilities_virtual_tours = serializers.FileField(allow_empty_file=False, write_only=True)
-    location_virtual_tours = serializers.FileField(allow_empty_file=False, write_only=True)
     aerial_drone_videos = serializers.FileField(allow_empty_file=False, write_only=True)
     default_image = serializers.URLField(source="default_image_url", read_only=True)
     created_by = serializers.SerializerMethodField()
@@ -75,8 +73,6 @@ class BuildingSerializer(serializers.ModelSerializer):
             "unit_floor_plans",
             "master_plans",
             "videos",
-            "facilities_virtual_tours",
-            "location_virtual_tours",
             "aerial_drone_videos",
         ]
 
@@ -92,8 +88,6 @@ class BuildingSerializer(serializers.ModelSerializer):
             "unit_floor_plans",
             "master_plans",
             "videos",
-            "facilities_virtual_tours",
-            "location_virtual_tours",
             "aerial_drone_videos",
         ]
 
@@ -106,8 +100,6 @@ class BuildingSerializer(serializers.ModelSerializer):
                 "unit_floor_plans",
                 "master_plans",
                 "videos",
-                "facilities_virtual_tours",
-                "location_virtual_tours",
                 "aerial_drone_videos",
             ]:
                 field.required = False
@@ -177,8 +169,6 @@ class BuildingSerializer(serializers.ModelSerializer):
             "unit_floor_plan": request.FILES.getlist("unit_floor_plans"),
             "master_plan": request.FILES.getlist("master_plans"),
             "video": request.FILES.getlist("videos"),
-            "facilities_virtual_tour": request.FILES.getlist("facilities_virtual_tours"),
-            "location_virtual_tour": request.FILES.getlist("location_virtual_tours"),
             "aerial_drone_video": request.FILES.getlist("aerial_drone_videos"),
         }
 
@@ -209,8 +199,6 @@ class BuildingSerializer(serializers.ModelSerializer):
                     for file in files:
                         if media_type in [
                             "video",
-                            "facilities_virtual_tour",
-                            "location_virtual_tour",
                             "aerial_drone_video",
                         ]:
                             instance.media_files.filter(type=media_type).update(file=file)
@@ -230,8 +218,6 @@ class BuildingSerializer(serializers.ModelSerializer):
                     or "unit_floor_plan" not in remaining_file_types
                     or "master_plan" not in remaining_file_types
                     or "video" not in remaining_file_types
-                    or "facilities_virtual_tour" not in remaining_file_types
-                    or "location_virtual_tour" not in remaining_file_types
                     or "aerial_drone_video" not in remaining_file_types
                 ):
                     raise serializers.ValidationError(

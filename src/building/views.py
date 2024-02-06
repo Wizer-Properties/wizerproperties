@@ -9,8 +9,6 @@ def prepare_building_context(building):
     unit_floor_plans = building.media_files.filter(type="unit_floor_plan")
     master_plans = building.media_files.filter(type="master_plan")
     videos = building.media_files.filter(type="video")
-    facilities_virtual_tours = building.media_files.filter(type="facilities_virtual_tour")
-    location_virtual_tours = building.media_files.filter(type="location_virtual_tour")
     aerial_drone_videos = building.media_files.filter(type="aerial_drone_video")
     context = {
         "building": building,
@@ -19,8 +17,6 @@ def prepare_building_context(building):
         "unit_floor_plans": unit_floor_plans,
         "master_plans": master_plans,
         "videos": videos,
-        "facilities_virtual_tours": facilities_virtual_tours,
-        "location_virtual_tours": location_virtual_tours,
         "aerial_drone_videos": aerial_drone_videos,
     }
     return context

@@ -438,41 +438,6 @@
                             <div class="uploaded-file-with-view">
                                 <div class="authFormDiv">
                                     <!-- <span class="authErrorMessage">Message</span> -->
-                                    <input name="facilities_virtual_tours" type="file" accept="video/*" class="authInput authFile">
-                                    <div class="fileName"> Upload Facilities Virtual Tour </div>
-                                </div>
-
-                                <div class="uploaded-file-view-area">
-                                    {% for facilities_virtual_tour in facilities_virtual_tours %}
-                                    {% if facilities_virtual_tour.file %}
-                                    <a href="{{ facilities_virtual_tour.file.url }}" alt="Building facilities virtual tour">{{ facilities_virtual_tour.file.url }}</a>
-                                    {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="uploaded-file-with-view">
-                                <div class="authFormDiv">
-                                    <!-- <span class="authErrorMessage">Message</span> -->
-                                    <input name="location_virtual_tours" type="file" accept="video/*" class="authInput authFile">
-                                    <div class="fileName"> Upload Location Virtual Tour </div>
-                                </div>
-
-                                <div class="uploaded-file-view-area">
-                                    {% for location_virtual_tour in location_virtual_tours %}
-                                    {% if location_virtual_tour.file %}
-                                    <a href="{{ location_virtual_tour.file.url }}" alt="Building location virtual tour">{{ location_virtual_tour.file.url }}</a>
-                                    {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="uploaded-file-with-view">
-                                <div class="authFormDiv">
-                                    <!-- <span class="authErrorMessage">Message</span> -->
                                     <input name="aerial_drone_videos" type="file" accept="video/*" class="authInput authFile">
                                     <div class="fileName"> Upload Aerial Drone Video </div>
                                 </div>

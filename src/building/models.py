@@ -66,7 +66,7 @@ class BuildingMedia(TimestampedModel):
         # Handle upload path based on media type (image, video, etc.)
         if self.type in ["image", "floor_plan", "unit_floor_plan", "master_plan"]:
             return "building/images/{}".format(filename)
-        elif self.type in ["video", "facilities_virtual_tour", "location_virtual_tour", "aerial_drone_video"]:
+        elif self.type in ["video", "aerial_drone_video"]:
             return "building/videos/{}".format(filename)
 
     type = models.CharField(max_length=100, null=True, choices=BUILDING_MEDIA_TYPES)
@@ -80,7 +80,7 @@ class BuildingMedia(TimestampedModel):
         allowed_extensions = None
         if self.type in ["image", "floor_plan", "unit_floor_plan", "master_plan"]:
             allowed_extensions = ALLOWED_IMAGE_EXTENSIONS
-        elif self.type in ["video", "facilities_virtual_tour", "location_virtual_tour", "aerial_drone_video"]:
+        elif self.type in ["video", "aerial_drone_video"]:
             allowed_extensions = ALLOWED_VIDEO_EXTENSIONS
 
         if allowed_extensions:
