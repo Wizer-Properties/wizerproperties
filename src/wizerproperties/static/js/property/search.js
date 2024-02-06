@@ -101,11 +101,11 @@ $(document).ready(function(){
         };
 
         if(data?.building_info?.have_access_to_BTS_or_MRT){
-            facility_tmp += '<span>'+data?.building_info?.have_access_to_BTS_or_MRT+'</span>'
+            facility_tmp += '<span> BTS Or MRT : '+data?.building_info?.have_access_to_BTS_or_MRT+'</span>'
         };
 
         if(data?.building_info?.have_access_to_ARL){
-            facility_tmp += '<span>'+data?.building_info?.have_access_to_ARL+'</span>'
+            facility_tmp += '<span> ART : '+data?.building_info?.have_access_to_ARL+'</span>'
         };
 
         if(data?.building_info?.have_pets_allowed){

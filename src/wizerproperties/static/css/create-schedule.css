@@ -63,8 +63,31 @@
     background-color: #ffefc2;
 }
 
+.search-result-box{
+    justify-content: initial !important;
+}
+
+.search-result-box-img {
+    height: 240px !important;
+    padding: 0 !important;
+}
+
+.property-short-info-box{
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.property-short-info-box:last-child{
+    margin: 0;
+}
+
 @media screen and (max-width: 991px) {
     #create-schedule .property-single-box{
         margin-top: 35px;
+    }
+
+    .search-result-box-img {
+        height: 180px !important;
     }
 }

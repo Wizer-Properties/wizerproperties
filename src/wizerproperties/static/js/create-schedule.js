@@ -225,7 +225,7 @@ $(document).ready(function(){
                 );
 
                 setTimeout(() => {
-                    window.location.href = '/'
+                    window.location.href = '/dashboard/'
                 }, 1500);
             },
             error: function (error) {

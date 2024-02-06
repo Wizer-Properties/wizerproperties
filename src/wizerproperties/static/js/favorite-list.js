@@ -30,6 +30,7 @@ $(document).ready(function(){
     };
     
     
+
     function property_facility_tmp(data){
         var facility_tmp = '';
 
@@ -40,31 +41,43 @@ $(document).ready(function(){
         if(data?.building_info?.have_leasehold){
             facility_tmp += '<span>Leasehold</span>'
         };
-
-        if(data?.building_info?.have_unblocked_view){
-            facility_tmp += '<span>Unblocked View</span>'
-        };
-
-        if(data?.building_info?.have_access_to_BTS_or_MRT){
-            facility_tmp += '<span>BTS Or MRT</span>'
-        };
-
-        if(data?.building_info?.have_access_to_ARL){
-            facility_tmp += '<span>ARL</span>'
+        
+        if(data?.building_info?.construction_year){
+            facility_tmp += '<span> Year Built '+data?.building_info?.construction_year+'</span>'
         };
 
         if(data?.building_info?.quota){
             facility_tmp += '<span> '+data?.building_info?.quota+' Quota </span>'
         };
 
-        if(data?.building_info?.furnishing){
-            facility_tmp += '<span> '+data?.building_info?.furnishing+' Furnished </span>'
+        if(data?.building_info?.have_access_to_BTS_or_MRT){
+            facility_tmp += '<span> BTS Or MRT : '+data?.building_info?.have_access_to_BTS_or_MRT+'</span>'
         };
 
-        if(data?.building_info?.construction_year){
-            facility_tmp += '<span> Year Built '+data?.building_info?.construction_year+'</span>'
+        if(data?.building_info?.have_access_to_ARL){
+            facility_tmp += '<span> ART : '+data?.building_info?.have_access_to_ARL+'</span>'
+        };
+
+        if(data?.building_info?.have_pets_allowed){
+            facility_tmp += '<span> Pet Friendly </span>'
         };
         
+        if(data?.building_info?.view){
+            facility_tmp += '<span>'+data?.building_info?.view+'</span>'
+        };
+
+        if(data?.building_info?.have_infinity_pool){
+            facility_tmp += '<span>Infinity Pool</span>'
+        };
+
+        if(data?.building_info?.have_fitness_area){
+            facility_tmp += '<span>Gym</span>'
+        };
+
+        if(data?.building_info?.have_sky_lounge){
+            facility_tmp += '<span>Sky Lounge</span>'
+        };
+
         return facility_tmp;
     };
 
