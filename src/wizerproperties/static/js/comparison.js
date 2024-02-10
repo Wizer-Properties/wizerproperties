@@ -1,12 +1,9 @@
 $(document).ready(function(){
     var comparison_splide = new Splide( '.comparison-slider-area' , {
-        perPage: 4,
+        perPage: 3,
         gap : '15px',
         pagination : false,
         breakpoints: {
-            1400: {
-                perPage: 3
-            },
             1040: {
                 perPage: 2
             },
@@ -154,8 +151,7 @@ $(document).ready(function(){
     };
 
 
-    var page_size = 4;
-    if(window.innerWidth <= 1400)  page_size = 3;
+    var page_size = 3;
     if(window.innerWidth <= 1040)  page_size = 2;
     if(window.innerWidth <= 860)  page_size = 1;
     var next_page;
