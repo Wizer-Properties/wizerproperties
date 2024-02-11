@@ -43,7 +43,7 @@ $(document).ready(function () {
             },
             complete: function(){
                 sent_request = false;
-                $('[button-name="forgot-password"]').html('Log In')
+                $('[button-name="forgot-password"]').html('Submit')
             }
         });
     });
