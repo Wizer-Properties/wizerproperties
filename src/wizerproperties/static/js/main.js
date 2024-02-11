@@ -48,7 +48,7 @@ $(document).ready(function(){
     var password_view = $('[box-type="password"]');
     if(password_view.length != 0){
         $('[box-type="password"]')
-        .append('<button class="password-view"><i class="bi bi-eye-fill"></i></button>')
+        .append('<span class="password-view"><i class="bi bi-eye-fill"></i></span>')
     };
 
     $(document).on('click', '.password-view', function(){
@@ -61,5 +61,8 @@ $(document).ready(function(){
             get_input.attr('type', 'password')
         };
     })
+
+
+    var get_auth_sdf = $('.auth-form-row')
   
 })

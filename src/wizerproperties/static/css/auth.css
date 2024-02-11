@@ -285,7 +285,8 @@
     margin-bottom: 20px;
 }
 
-.auth-input-wrapper input{
+.auth-input-wrapper input,
+.auth-input-wrapper select{
     display: block;
     border: 1px solid #d8d3e0;
     padding: 10px 15px;
@@ -371,6 +372,10 @@
 #loadingSpinner{
     width: 20px !important;
     height: 20px !important;
+}
+
+.password-view{
+    cursor: pointer;
 }
 
 @media screen and (max-width: 1400px){
