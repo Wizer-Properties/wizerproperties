@@ -1,13 +1,27 @@
 $(document).ready(function () {
-    $(".authButton").click(function () {
-        var email = $("#email").val();
-        var password = $("#password").val();
 
-        var loginButtonText = $('#loginButtonText');
-        var loadingSpinner = $('#loadingSpinner');
+    var sent_request = false;
+    var loader_dom = '<div id="loadingSpinner" class="spinner-border" role="status">'+
+                        '<span class="sr-only">Loading...</span>' +
+                      '</div>'
 
-        loginButtonText.hide(); // Hide the text
-        loadingSpinner.show() // Show the spinner
+    $('[button-name="log-in"]').click(function () {
+        if(sent_request) return;
+        var email = $('[name="email"]').val();
+        var password = $('[name="password"]').val();
+        $('.auth-response-messages').html('');
+
+        if(
+            email.trim() == '' ||
+            password.trim() == ''
+        ){
+            var msg_dom = '<div class="alert alert-danger p-2" role="alert">Fill up with email and password</div>'
+            $('.auth-response-messages').html(msg_dom);
+            return;
+        };
+
+        $(this).html(loader_dom);
+        sent_request = true;
 
         $.ajax({
             type: "POST",
@@ -20,28 +34,25 @@ $(document).ready(function () {
                 "X-CSRFToken": csrfToken,
             },
             success: function (response) {
-                loadingSpinner.hide(); // Hide the spinner
-                loginButtonText.show(); // Show the text
+                var msg_dom = '<div class="alert alert-success p-2" role="alert">'+ response.message +'</div>'
+                $('.auth-response-messages').html(msg_dom)
 
-                $(".authErrorMessage").text("");
-                $(".authSuccessMessage").text(response.message);
-
-                // Redirect to the homepage after 1 second
                 setTimeout(function () {
                     window.location.href = "/";
                 }, 1000);
             },
             error: function (error) {
-                loadingSpinner.hide(); // Hide the spinner
-                loginButtonText.show(); // Show the text
-
                 msg = "Something went wrong!";
                 if (error.status == 401) {
                     msg = error.responseJSON.message;
                 }
-                $(".authSuccessMessage").text("");
-                $(".authErrorMessage").text(msg);
+                var msg_dom = '<div class="alert alert-danger p-2" role="alert">'+ msg +'</div>'
+                $('.auth-response-messages').html(msg_dom)
             },
+            complete: function(){
+                sent_request = false;
+                $('[button-name="log-in"]').html('Log In')
+            }
         });
     });
 });

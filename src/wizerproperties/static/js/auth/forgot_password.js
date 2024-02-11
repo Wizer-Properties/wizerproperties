@@ -1,12 +1,22 @@
 $(document).ready(function () {
-    $(".authButton").click(function () {
-        var email = $("#email").val();
+    var sent_request = false;
+    var loader_dom = '<div id="loadingSpinner" class="spinner-border" role="status">'+
+                        '<span class="sr-only">Loading...</span>' +
+                    '</div>'
 
-        var forgotPasswordButtonText = $("#forgotPasswordButtonText");
-        var loadingSpinner = $("#loadingSpinner");
+    $('[button-name="forgot-password"]').click(function () {
+        if(sent_request) return;
+        var email = $('[name="email"]').val();
+        $('.auth-response-messages').html('');
 
-        forgotPasswordButtonText.hide(); // Hide the text
-        loadingSpinner.show(); // Show the spinner
+        if(email.trim() == ''){
+            var msg_dom = '<div class="alert alert-danger p-2" role="alert">Fill up with email.</div>'
+            $('.auth-response-messages').html(msg_dom);
+            return;
+        };
+
+        $(this).html(loader_dom);
+        sent_request = true;
 
         $.ajax({
             type: "POST",
@@ -18,22 +28,25 @@ $(document).ready(function () {
                 "X-CSRFToken": csrfToken,
             },
             success: function (response) {
-                loadingSpinner.hide(); // Hide the spinner
-                forgotPasswordButtonText.show(); // Show the text
+                var msg_dom = '<div class="alert alert-success p-2" role="alert"> Successfully done. </div>'
+                $('.auth-response-messages').html(msg_dom)
 
                 window.location.href = forgot_password_verify_url;
             },
             error: function (error) {
-                loadingSpinner.hide(); // Hide the spinner
-                forgotPasswordButtonText.show(); // Show the text
-
                 msg = error.responseJSON.message;
                 if (error.status == 401) {
                     msg = error.responseJSON.message;
                 }
-                $(".authSuccessMessage").text("");
-                $(".authErrorMessage").text(msg);
+                var msg_dom = '<div class="alert alert-danger p-2" role="alert">'+ msg +'</div>'
+                $('.auth-response-messages').html(msg_dom)
             },
+            complete: function(){
+                sent_request = false;
+                $('[button-name="forgot-password"]').html('Log In')
+            }
         });
     });
+
+
 });

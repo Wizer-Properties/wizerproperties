@@ -93,15 +93,14 @@
     border: 2px solid #fff;
 }
 .authIconDiv {
-    margin: 30px auto 0 auto;
-    position: relative;
-    width: 100%;
-    padding-left: 8px;
+    display: flex;
+    margin-top: 20px;
+    gap: 20px;
+    justify-content: center;
 }
 .authIcon {
-    font-size: 30px;
-    padding: 0px 20px;
-    color: white;
+    font-size: 22px;
+    color: #103bd4;
 }
 .authIcon:hover {
     color: #ffd350;
@@ -239,6 +238,140 @@
     width: calc(100% - 110px);
 }
 
+/* =========================== */
+.auth-body{
+    background-image: url('/static/media/background/login-bg.webp');
+    width: 100vw;
+    min-height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    display: grid;
+    place-items: center;
+    padding: 30px 0;
+}
+
+.auth-body::before{
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #00000012;
+    backdrop-filter: blur(2px);
+}
+
+.auth-form-container{
+    width: 880px;
+    position: relative;
+    z-index: 999;
+}
+
+.auth-form-row{
+    background-color: #fff;
+    overflow: hidden;
+    border-radius: 5px;
+    align-items: center;
+}
+
+.auth-form-firt-row{
+    background-color: #f7f1ff;
+}
+
+.auth-input-wrapper{
+    margin-bottom: 20px;
+}
+
+.auth-input-wrapper input{
+    display: block;
+    border: 1px solid #d8d3e0;
+    padding: 10px 15px;
+    width: 100%;
+    border-radius: 3px;
+}
+
+.auth-input-wrapper label{
+    color: #212529;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.auth-form-btn{
+    display: block;
+    width: 100%;
+    padding: 8px 10px;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    background-image: var(--th-gradient-bg);
+}
+
+.password-view{
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    z-index: 9;
+    background-color: transparent;
+    border: none;
+    font-size: 22px;
+}
+
+[box-type="password"]{
+    position: relative;
+}
+
+[box-type="password"] input{
+    padding-right: 30px;
+}
+
+.auth-form-container .logo{
+    width: 160px;
+    margin: auto;
+    margin-bottom: 25px;
+}
+
+.auth-form-container .logo img {
+    width: 100%;
+}
+
+.auth-section-title{
+    font-size: 16px;
+    text-align: center;
+}
+
+.auth-optional-img img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.auth-response-messages *{
+    font-size: 14px;
+}
+
+.extra-auth-link {
+    margin-top: 25px;
+}
+
+.extra-auth-link p{
+    margin: 0 !important;
+    margin-bottom: 5px !important;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.extra-auth-link p:last-child{
+    margin: 0 !important;
+}
+
+#loadingSpinner{
+    width: 20px !important;
+    height: 20px !important;
+}
 
 @media screen and (max-width: 1400px){
     .completeProfileButton {
@@ -265,8 +398,22 @@
     .authTextArea {
         margin-top: 20px;
     }
+
+    .auth-form-container{
+        width: 90%;
+    }
 }
 
+@media screen and (max-width: 575px){
+    .auth-optional-section{
+        display: none;
+    }
+
+    .auth-form-firt-row{
+        background-color: #fff;
+        padding-bottom: 0px !important;
+    }
+}
 
 @media screen and (max-width: 620px){
     .authArea{

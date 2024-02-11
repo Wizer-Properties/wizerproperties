@@ -44,4 +44,22 @@ $(document).ready(function(){
         $(this).parent().find('.fileName').html(files[0]?.name || "Upload File")
     });
 
+
+    var password_view = $('[box-type="password"]');
+    if(password_view.length != 0){
+        $('[box-type="password"]')
+        .append('<button class="password-view"><i class="bi bi-eye-fill"></i></button>')
+    };
+
+    $(document).on('click', '.password-view', function(){
+        var get_input = $(this).parents('[box-type="password"]').find('input');
+        if(get_input.attr('type') == 'password'){
+            $(this).html('<i class="bi bi-eye-slash-fill"></i>')
+            get_input.attr('type', 'text')
+        }else{
+            $(this).html('<i class="bi bi-eye-fill"></i>')
+            get_input.attr('type', 'password')
+        };
+    })
+  
 })

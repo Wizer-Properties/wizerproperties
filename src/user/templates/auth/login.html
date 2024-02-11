@@ -5,71 +5,61 @@
 {% block extend_head %}
 <title>Login</title>
 <link rel="stylesheet" href="{% static '/css/auth.css' %}" />
-<style>
-    #loginButtonText {
-        margin: 0;
-        padding: 0;
-        font-size: inherit;
-    }
-</style>
 {% endblock extend_head %} 
 
 {% block content %}
-<div class="container-fluid">
-    <div class="row how-it-work-row">
-        <div class="col-lg-8 col-xl-9 login-form-box">
-            <div class="logo">
+
+
+<div class="auth-body">
+    <div class="auth-form-container">
+        <div class="row auth-form-row">
+            <div class="col-sm-6 px-3 py-5 auth-form-firt-row">
                 <a href="/">
-                    <img src=" {% static 'media/logo.png' %}" alt="">
+                    <div class="logo">
+                        <img src=" {% static 'media/logo.png' %}" alt="logo">
+                    </div>
                 </a>
+
+                <h1 class="auth-section-title"> Log in to <b>Wizer Properties</b> </h1>
+                <div class="auth-optional-section">
+                    <div class="auth-optional-img">
+                        <img src=" {% static 'media/background/log-in-desktop-img.webp' %}" alt="img">
+                    </div>
+
+                    <div class="authIconDiv">
+                        <a href="#"><i class="fa-brands fa-facebook authIcon"></i></a>
+                        <a href="#"><i class="fa-brands fa-youtube authIcon"></i></a>
+                        <a href="#"><i class="fa-brands fa-instagram authIcon"></i></a>
+                    </div>
+                </div>
             </div>
-
-            <!--- Login Form Start --->
-
-            <div class="authArea">
-                <p>Login To Your Account</p>
-                <div class="authForm">
-                    <div>
-                        <span class="authSuccessMessage"></span>
-                        <span class="authErrorMessage"></span>
-                    </div>
-                    <div class="authFormDiv">   
-                        <!-- <span class="authErrorMessage">Message</span> -->
-                        <input type="text" id="email" class="authInput" placeholder="Email" required>
-                        <div class="authlabelline">Email</div>
-                    </div>
-                    <div class="authFormDiv">    
-                        <!-- <span class="authErrorMessage">Message</span>  -->   
-                        <input type="password" id="password" required class="authInput" placeholder="Password">
-                        <div class="authlabelline">Password</div>
-                    </div>
-                    <button type="button" class="authButton">
-                        <span id="loginButtonText">Login</span>
-                        <div id="loadingSpinner" class="spinner-border" role="status" style="display: none;">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </button>
+            <div class="col-sm-6 px-3 py-5">
+                <div class="auth-input-wrapper">
+                    <label>User email</label>
+                    <input type="text" name="email" placeholder="Your email">
                 </div>
-                <div class="authIconDiv">
-                    <a href="#"><i class="fa-brands fa-facebook authIcon"></i></a>
-                    <a href="#"><i class="fa-brands fa-youtube authIcon"></i></a>
-                    <a href="#"><i class="fa-brands fa-instagram authIcon"></i></a>
+
+                <div class="auth-input-wrapper">
+                    <label>Password</label>
+                    <div box-type="password">
+                        <input type="password" name="password" placeholder="Password">
+                    </div>
                 </div>
-            </div>    
 
-            <!--- Login Form End --->
+                <div class="auth-response-messages"></div>
+                <button type="submit" class="auth-form-btn" button-name="log-in">
+                    Log In
+                </button>
 
-        </div>
-        <div class="col-lg-4 col-xl-3 login-des-box">
-            <div class="authTextArea pb-4">
-                <p class="authTextAreaTitle">New Here?</p>
-                <p class="authTextAreaDescription">Sign up and enjoy great new features</p>
-                <a type="button" class="authSignUpButton" href="{% url 'user:signup' %}">Sign Up</a>
-                <a class="authTextForget" href="{% url 'user:forgot_password' %}">Forgot Password?</a>
-            </div>    
+                <div class="extra-auth-link">
+                    <p> New Here? <a href="{% url 'user:signup' %}">Sign Up</a> </p>
+                    <p> <a href="{% url 'user:forgot_password' %}">Forgot Password?</a> </p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
 {% endblock %}
 
 {% block extend_script %}
