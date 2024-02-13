@@ -14,11 +14,11 @@
     <div class="auth-form-container">
         <div class="row auth-form-row">
             <div class="col-sm-6 px-3 py-5 auth-form-firt-row">
-                <a href="/">
-                    <div class="logo">
+                <div class="logo">
+                    <a href="/">
                         <img src=" {% static 'media/logo.png' %}" alt="logo">
-                    </div>
-                </a>
+                    </a>
+                </div>
 
                 <h1 class="auth-section-title"> Log in to <b>Wizer Properties</b> </h1>
                 <div class="auth-optional-section">
@@ -34,26 +34,30 @@
                 </div>
             </div>
             <div class="col-sm-6 px-3 py-5">
-                <div class="auth-input-wrapper">
-                    <label>User email</label>
-                    <input type="text" name="email" placeholder="Your email">
-                </div>
-
-                <div class="auth-input-wrapper">
-                    <label>Password</label>
-                    <div box-type="password">
-                        <input type="password" name="password" placeholder="Password">
+                <div class="auth-form-area">
+                    <div class="w-100">
+                        <div class="auth-input-wrapper">
+                            <label>User email</label>
+                            <input type="text" name="email" placeholder="Your email" autofocus>
+                        </div>
+        
+                        <div class="auth-input-wrapper">
+                            <label>Password</label>
+                            <div box-type="password">
+                                <input type="password" name="password" placeholder="Password">
+                            </div>
+                        </div>
+        
+                        <div class="auth-response-messages"></div>
+                        <button type="submit" class="auth-form-btn" button-name="log-in">
+                            Log In
+                        </button>
+        
+                        <div class="extra-auth-link">
+                            <p> New Here? <a href="{% url 'user:signup' %}">Sign Up</a> </p>
+                            <p> <a href="{% url 'user:forgot_password' %}">Forgot Password?</a> </p>
+                        </div>
                     </div>
-                </div>
-
-                <div class="auth-response-messages"></div>
-                <button type="submit" class="auth-form-btn" button-name="log-in">
-                    Log In
-                </button>
-
-                <div class="extra-auth-link">
-                    <p> New Here? <a href="{% url 'user:signup' %}">Sign Up</a> </p>
-                    <p> <a href="{% url 'user:forgot_password' %}">Forgot Password?</a> </p>
                 </div>
             </div>
         </div>

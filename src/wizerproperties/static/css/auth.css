@@ -11,7 +11,7 @@
     margin-top: 6%;
 }
 .logo a img{
-    width: 100px;
+    width: 140px;
 }
 .login-form-box p{
     text-align: center;
@@ -274,7 +274,6 @@
     background-color: #fff;
     overflow: hidden;
     border-radius: 5px;
-    align-items: center;
 }
 
 .auth-form-firt-row{
@@ -304,7 +303,8 @@
     display: block;
     width: 100%;
     padding: 8px 10px;
-    color: #fff;
+    color: #fff !important;
+    text-align: center;
     border: none;
     border-radius: 3px;
     background-image: var(--th-gradient-bg);
@@ -376,6 +376,20 @@
 
 .password-view{
     cursor: pointer;
+}
+
+.auth-form-area{
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.auth-notes{
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 30px;
+    line-height: 30px;
 }
 
 @media screen and (max-width: 1400px){

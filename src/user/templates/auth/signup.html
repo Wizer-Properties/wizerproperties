@@ -9,122 +9,16 @@
 {% endblock extend_head %}
 
 {% block content %}
-<div class="container-fluid" style="display: none;">
-    <div class="row how-it-work-row">
-        <div class="col-lg-8 col-xl-9 login-form-box">
-            <div class="logo">
-                <a href="/">
-                    <img src="static/media/logo.png" alt="" />
-                </a>
-            </div>
-
-            <!--- Login Form Start --->
-
-            <div class="authArea">
-
-                <p>Create a New Account</p>
-
-                <div class="authForm">
-                    <div>
-                        <!-- {% if messages %}
-                  {% for message in messages %}
-                    <span class="authSuccessMessage">{{ message }}</span>
-                  {% endfor %}
-                {% endif %} -->
-
-                        {% if system_error %}
-                        <span class="authErrorMessage">{{ system_error }}</span>
-                        {% endif %}
-
-                    </div>
-                    <form id="signupForm" method="post">
-                        {% csrf_token %}
-
-                        <div class="authFormDiv">
-                            {% if signup_form.user_type.errors %}
-                            {% for error in signup_form.user_type.errors %}
-                            <span class="authErrorMessage">{{error}}</span>
-                            {% endfor %}
-                            {% endif %}
-
-                            {% render_field signup_form.user_type id="emailInput" class="authInput authSelectInput" %}
-                            <div class="authlabelline">User Type</div>
-                        </div>
-
-
-                        <div class="authFormDiv">
-                            {% if signup_form.email.errors %}
-                            {% for error in signup_form.email.errors %}
-                            <span class="authErrorMessage">{{error}}</span>
-                            {% endfor %}
-                            {% endif %}
-
-                            {% render_field signup_form.email id="emailInput" class="authInput" placeholder="Email" %}
-                            <div class="authlabelline">Email</div>
-                        </div>
-
-                        <div class="authFormDiv">
-                            {% if signup_form.password1.errors %}
-                            {% for error in signup_form.password1.errors %}
-                            <span class="authErrorMessage">{{error}}</span>
-                            {% endfor %}
-                            {% endif %}
-
-                            {% render_field signup_form.password1 class="authInput" placeholder="Password" %}
-                            <div class="authlabelline">Password</div>
-                        </div>
-
-                        <div class="authFormDiv">
-                            {% if signup_form.password2.errors %}
-                            {% for error in signup_form.password2.errors %}
-                            <span class="authErrorMessage">{{error}}</span>
-                            {% endfor %}
-                            {% endif %}
-
-                            {% render_field signup_form.password2 class="authInput" placeholder="Confirm Password" %}
-                            <div class="authlabelline">Confirm Password</div>
-                        </div>
-
-                        <button type="submit" class="authButton signupButton">
-                            <span id="loginButtonText">Signup</span>
-                            <div id="loadingSpinner" class="spinner-border" role="status" style="display: none;">
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                        </button>
-                    </form>
-                </div>
-
-                <div class="authIconDiv">
-                    <a href="#"><i class="fa-brands fa-facebook authIcon"></i></a>
-                    <a href="#"><i class="fa-brands fa-youtube authIcon"></i></a>
-                    <a href="#"><i class="fa-brands fa-instagram authIcon"></i></a>
-                </div>
-            </div>
-
-            <!--- Login Form End --->
-        </div>
-        <div class="col-lg-4 col-xl-3 login-des-box">
-            <div class="authTextArea">
-                <p class="authTextAreaTitle">Already Have Account ?</p>
-                <p class="authTextAreaDescription">
-                    Login and enjoy a great amount of new features
-                </p>
-                <a type="button" class="authSignUpButton" href="{% url 'user:login' %}">Login</a>
-                <a class="authTextForget" href="{% url 'user:forgot_password' %}">Forget Password ?</a>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="auth-body">
     <div class="auth-form-container">
         <div class="row auth-form-row">
             <div class="col-sm-6 px-3 py-5 auth-form-firt-row">
-                <a href="/">
-                    <div class="logo">
+                <div class="logo">
+                    <a href="/">
                         <img src=" {% static 'media/logo.png' %}" alt="logo">
-                    </div>
-                </a>
+                    </a>
+                </div>
 
                 <h1 class="auth-section-title"> Sign up to <b>Wizer Properties</b> </h1>
                 <div class="auth-optional-section">
@@ -139,76 +33,81 @@
                     </div>
                 </div>
             </div>
-            <form class="col-sm-6 px-3 py-5" method="post">
-                {% csrf_token %}
-
-                <div class="auth-input-wrapper">
-                    <label>User email</label>
-                    {% render_field signup_form.user_type %}
-                </div>
-
-                <div class="auth-input-wrapper">
-                    <label>User email</label>
-                    {% render_field signup_form.email placeholder="Email" %}
-                </div>
-
-                <div class="auth-input-wrapper">
-                    <label>Password</label>
-                    <div box-type="password">
-                        {% render_field signup_form.password1 placeholder="Password" %}
+            <div class="col-sm-6 px-3 py-5">
+                <form class="auth-form-area" method="post">
+                    <div class="w-100">
+                        {% csrf_token %}
+                        <div class="auth-input-wrapper">
+                            <label>User email</label>
+                            {% render_field signup_form.email placeholder="Email" %}
+                        </div>
+                        
+                        <div class="auth-input-wrapper">
+                            <label>User type</label>
+                            {% render_field signup_form.user_type %}
+                        </div>
+        
+                        <div class="auth-input-wrapper">
+                            <label>Password</label>
+                            <div box-type="password">
+                                {% render_field signup_form.password1 placeholder="Password" %}
+                            </div>
+                        </div>
+        
+                        <div class="auth-input-wrapper">
+                            <label>Confirm Password</label>
+                            <div box-type="password">
+                                {% render_field signup_form.password2 placeholder="Confirm Password" %}
+                            </div>
+                        </div>
+        
+                        <div class="auth-response-messages">
+                            {% if signup_form.user_type.errors %}
+                            {% for error in signup_form.user_type.errors %}
+                            <div class="alert alert-danger p-2" role="alert">
+                                {{error}}
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+        
+                            {% if signup_form.email.errors %}
+                            {% for error in signup_form.email.errors %}
+                            <div class="alert alert-danger p-2" role="alert">
+                                {{error}}
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+        
+                            {% if signup_form.password1.errors %}
+                            {% for error in signup_form.password1.errors %}
+                            <div class="alert alert-danger p-2" role="alert">
+                                {{error}}
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+        
+        
+                            {% if signup_form.password2.errors %}
+                            {% for error in signup_form.password2.errors %}
+                            <div class="alert alert-danger p-2" role="alert">
+                                {{error}}
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+        
+                        <button type="submit" class="auth-form-btn" button-name="sign-up">
+                            Sign up
+                        </button>
+        
+                        <div class="extra-auth-link">
+                            <p> Already have an account? <a  href="{% url 'user:login' %}">Log in</a> </p>
+                            <p> <a href="{% url 'user:forgot_password' %}">Forgot Password?</a> </p>
+                        </div>
                     </div>
-                </div>
+                </form>
 
-                <div class="auth-input-wrapper">
-                    <label>Confirm Password</label>
-                    <div box-type="password">
-                        {% render_field signup_form.password2 placeholder="Confirm Password" %}
-                    </div>
-                </div>
-
-                <div class="auth-response-messages">
-                    {% if signup_form.user_type.errors %}
-                    {% for error in signup_form.user_type.errors %}
-                    <div class="alert alert-danger p-2" role="alert">
-                        {{error}}
-                    </div>
-                    {% endfor %}
-                    {% endif %}
-
-                    {% if signup_form.email.errors %}
-                    {% for error in signup_form.email.errors %}
-                    <div class="alert alert-danger p-2" role="alert">
-                        {{error}}
-                    </div>
-                    {% endfor %}
-                    {% endif %}
-
-                    {% if signup_form.password1.errors %}
-                    {% for error in signup_form.password1.errors %}
-                    <div class="alert alert-danger p-2" role="alert">
-                        {{error}}
-                    </div>
-                    {% endfor %}
-                    {% endif %}
-
-
-                    {% if signup_form.password2.errors %}
-                    {% for error in signup_form.password2.errors %}
-                    <div class="alert alert-danger p-2" role="alert">
-                        {{error}}
-                    </div>
-                    {% endfor %}
-                    {% endif %}
-                </div>
-
-                <button type="submit" class="auth-form-btn" button-name="sign-up">
-                    Sign up
-                </button>
-
-                <div class="extra-auth-link">
-                    <p> Already have an account? <a  href="{% url 'user:login' %}">Log in</a> </p>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
