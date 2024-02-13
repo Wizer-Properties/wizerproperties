@@ -36,6 +36,10 @@ header{
     font-weight: 600;
 }
 
+.header button.nav-link{
+    border: none !important;
+}
+
 .nav-link{
     display: block;
     margin-right: 10px;

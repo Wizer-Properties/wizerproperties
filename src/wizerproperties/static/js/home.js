@@ -571,5 +571,10 @@ $(document).ready(function(){
     //     }
         
     // }, 1000);
+
+
+    $(document).on('click', '[log-modal-btn]', function(){
+        $('body').attr('log-modal', $(this).attr('log-modal-btn'))
+    });
       
 })
