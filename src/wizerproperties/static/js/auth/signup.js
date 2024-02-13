@@ -1,11 +1,12 @@
 $(document).ready(function () {
-    var loginButtonText = $("#loginButtonText");
-    var loadingSpinner = $("#loadingSpinner");
+    var loader_dom = '<div id="loadingSpinner" class="spinner-border" role="status">'+
+                        '<span class="sr-only">Loading...</span>' +
+                    '</div>'
 
     // Show loader when form submit
-    $("#signupForm").submit(function () {
-        loginButtonText.hide(); // Hide the text
-        loadingSpinner.show(); // Show the spinner
+    $("#create-profile-form").submit(function () {
+        $('.auth-response-messages').html('');
+        $('[button-name="sign-up"]').html(loader_dom)
     });
 
 });

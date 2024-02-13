@@ -6,7 +6,6 @@ $(document).ready(function () {
                       '</div>'
 
     $('[button-name="log-in"]').click(function () {
-        console.log("=========")
         if(sent_request) return;
         var email = $('[name="email"]').val();
         var password = $('[name="password"]').val();

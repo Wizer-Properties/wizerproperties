@@ -1,3 +1,7 @@
+body{
+    overflow-x: hidden;
+}
+
 .login-form-box{
     background-image: linear-gradient(315deg, #140733 0%, #103bd4 54%);
     min-height: 100vh;
@@ -285,12 +289,14 @@
 }
 
 .auth-input-wrapper input,
-.auth-input-wrapper select{
+.auth-input-wrapper select,
+.auth-input-wrapper textarea{
     display: block;
     border: 1px solid #d8d3e0;
     padding: 10px 15px;
     width: 100%;
     border-radius: 3px;
+    resize: none;
 }
 
 .auth-input-wrapper label{

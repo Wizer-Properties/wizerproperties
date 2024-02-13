@@ -13,34 +13,44 @@
 {% endblock extend_head %}
 
 {% block content %}
-<div class="container-fluid">
-    <div class="row how-it-work-row">
-        <div class="col-lg-8 order-lg-2 login-form-box">
-            <div class="logo completeProfileLogo">
-                <a href="/">
-                    <img src="{% static 'media/logo.png' %}" alt="logo">
-                </a>
-            </div>
 
-            <div class="authArea resend">
-                <div class="authForm">
-                    <div>
-                        <span class="authSuccessMessage"></span>
-                        <span class="authErrorMessage"></span>
+
+<div class="auth-body">
+    <div class="auth-form-container">
+        <div class="row auth-form-row">
+            <div class="col-sm-6 px-3 py-5 auth-form-firt-row">
+                <div class="logo">
+                    <a href="/">
+                        <img src=" {% static 'media/logo.png' %}" alt="logo">
+                    </a>
+                </div>
+
+                <h1 class="auth-section-title"> Verify Your Account </h1>
+                <div class="auth-optional-section">
+                    <div class="auth-optional-img">
+                        <img src=" {% static 'media/background/log-in-desktop-img.webp' %}" alt="img">
                     </div>
-                    <div>
-                        <p>We send a verification link to your email ({{ email}}). Check
-                            your email and verify your account. If you haven't received it yet, you can resend.</p>
+
+                    <div class="authIconDiv">
+                        <a href="#"><i class="fa-brands fa-facebook authIcon"></i></a>
+                        <a href="#"><i class="fa-brands fa-youtube authIcon"></i></a>
+                        <a href="#"><i class="fa-brands fa-instagram authIcon"></i></a>
                     </div>
-                    <button type="button" class="authButton resend">Resend</button>
                 </div>
             </div>
+            <div class="col-sm-6 px-3 py-5">
+                <div class="auth-form-area">
+                    <div class="w-100">
+                        <h1 class="auth-notes">
+                            We send a verification link to your email ({{ email}}). 
+                            Check your email and verify your account. If you haven't received it yet, you can resend.
+                        </h1>
 
-        </div>
-        <div class="col-lg-4 order-lg-1 login-des-box">
-            <div class="authTextArea">
-                <p class="authTextAreaTitle">Verify Your Account</p>
-                <a type="button" class="authSignUpButton" href="{% url 'user:logout' %}">Logout</a>
+                        <div class="extra-auth-link mt-5">
+                            <p class="text-center"> <a  href="{% url 'user:logout' %}">Logout</a> </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -19,36 +19,53 @@
 {% endblock extend_head %}
 
 {% block content %}
-<div class="container-fluid">
-    <div class="row how-it-work-row">
-        <div class="col-lg-8 order-lg-2 login-form-box">
-            <div class="logo completeProfileLogo">
-                <a href="/">
-                    <img src="{% static 'media/logo.png' %}" alt="logo">
-                </a>
+
+<div class="auth-body">
+    <div class="auth-form-container">
+        <div class="row auth-form-row">
+            <div class="col-sm-6 px-3 py-5 auth-form-firt-row">
+                <div class="logo">
+                    <a href="/">
+                        <img src=" {% static 'media/logo.png' %}" alt="logo">
+                    </a>
+                </div>
+
+                <h1 class="auth-section-title"> 
+                    Complete Your Profile <br>
+                    Ensure you fill out the form with correct information.
+                </h1>
+                <div class="auth-optional-section">
+                    <div class="auth-optional-img">
+                        <img src=" {% static 'media/background/log-in-desktop-img.webp' %}" alt="img">
+                    </div>
+
+                    <div class="authIconDiv">
+                        <a href="#"><i class="fa-brands fa-facebook authIcon"></i></a>
+                        <a href="#"><i class="fa-brands fa-youtube authIcon"></i></a>
+                        <a href="#"><i class="fa-brands fa-instagram authIcon"></i></a>
+                    </div>
+                </div>
             </div>
-
-            <div class="authArea completeProfileArea">
-                <p>Complete Your Profile</p>
-                <form id="profile-form" method="post">
-                    {% csrf_token %}
-                    {% block profile %}
-                    {% endblock %}
-                </form>
-
-            </div>
-
-        </div>
-        <div class="col-lg-4 order-lg-1 login-des-box">
-            <div class="authTextArea">
-                <p class="authTextAreaTitle">Complete Your Account</p>
-                <p class="authTextAreaDescription">Ensure you fill out the form with correct information.</p>
-                <a type="button" class="authSignUpButton" href="{% url 'user:logout' %}">Logout</a>
-                <a class="authTextForget" href="#">Forget Password ?</a>
+            <div class="col-sm-6 px-3 py-5">
+                <div class="auth-form-area">
+                    <div class="w-100">
+                        <form id="complete-profile-form" method="post">
+                            {% csrf_token %}
+                            {% block profile %}
+                            {% endblock %}
+                        </form>
+    
+                        <div class="extra-auth-link">
+                            <p> <a href="{% url 'user:forgot_password' %}">Forgot Password?</a> </p>
+                            <p> <a  href="{% url 'user:logout' %}">Logout</a> </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 {% endblock %}
 {% block extend_script %}
 <script type="text/javascript">
