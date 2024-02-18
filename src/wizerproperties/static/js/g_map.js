@@ -7,7 +7,7 @@ async function initializeMap() {
         componentRestrictions: {
             country: "th"
         },
-        fields : ["address_components", "geometry", "place_id"]
+        fields : ["address_components", "geometry", "place_id", "types"]
     };
 
     var search_input = document.getElementById("gm-search-input");
@@ -15,28 +15,32 @@ async function initializeMap() {
 
     google.maps.event.addListener(search_box, 'place_changed', function(){
         var place = search_box.getPlace();
-        var address_data = place?.address_components;
-        var place_id;
-        var fature_type;
-
-        if([undefined, 'undefined'].includes(address_data)) return;
-
-        for (let i = 0; i < address_data.length; i++){
-            if(address_data[i]?.types.includes('locality')){
-                place_id = place?.place_id;
+        var place_id = place?.place_id;
+        var fature_type = place?.feature_type;
+        
+        if(['', null, undefined].includes(fature_type)){
+            if( place?.types.includes("administrative_area_level_1") ){
+                fature_type = "administrative_area_level_1";
+            }else if( place?.types.includes("locality") ){
                 fature_type = "locality";
-                break;
+            }else if( place?.types.includes("postal_code") ){
+                // fature_type = "postal_code";
+                fature_type = "circle";
             }else{
-                place_id = 'none';
                 fature_type = "circle";
             }
-        }
+        };
 
         if (place.geometry) {
             var latitude = place.geometry.location.lat();
             var longitude = place.geometry.location.lng();
-            window.location.href = '/property/search/?place='+search_input.value+'&latitude='+latitude+'&longitude='+longitude+'&place_id='+place_id+'&fature_type='+fature_type;
-            return;
+            window.location.href = '/property/search/'+
+                                    '?place='+search_input.value+
+                                     '&latitude='+latitude+
+                                    '&longitude='+longitude+
+                                    '&place_id='+place_id+
+                                    '&fature_type='+fature_type;
+            return
         };
 
         window.location.href = '/property/search/?place='+search_input.value
@@ -139,22 +143,40 @@ async function initializeMap() {
                     fillOpacity: 0.35,
                     map : search_page_map ,
                     center: center_option,
-                    radius: 20 * 1609.34,
+                    radius: 15 * 1609.34,
                 });
             };
             
-            if(p_fature_type == 'locality') {
+            if(p_fature_type != 'circle') {
                 const { Map } = await google.maps.importLibrary("maps");
+
+                function MAPFEATURETYPE(){
+                    if(
+                        ["ADMINISTRATIVE_AREA_LEVEL_1", "administrative_area_level_1"].includes(p_fature_type)
+                    ) return google.maps.FeatureType.ADMINISTRATIVE_AREA_LEVEL_1;
+                    if(p_fature_type == "locality") return google.maps.FeatureType.LOCALITY;
+                    if(p_fature_type == "postal_code") return google.maps.FeatureType.POSTAL_CODE;
+                }
+
+                function MAPID(){
+                    if(
+                        ["ADMINISTRATIVE_AREA_LEVEL_1", "administrative_area_level_1"].includes(p_fature_type)
+                    ) return "7ba16be0c9375fa7";
+                    if(p_fature_type == "locality") return "a3efe1c035bad51b";
+                    if(p_fature_type == "postal_code") return "a3efe1c035bad51b";
+                }
+
                 search_page_map = new Map(search_render_dom, {
                     zoom: 9,
                     center: center_option,
-                    mapId: "a3efe1c035bad51b",
+                    mapId: MAPID(),
                     zoomControl: false,
                     mapTypeControl: false, 
                     fullscreenControl: false,
                 });
         
-                featureLayer = search_page_map.getFeatureLayer("LOCALITY");
+                featureLayer = search_page_map.getFeatureLayer(MAPFEATURETYPE());
+
                 
                 const featureStyleOptions = {
                     strokeColor: "#810FCB",

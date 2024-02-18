@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{% static 'css/libraries/fontawesome-all.min.css' %}" />
 
     {% block extend_head %}{% endblock extend_head %}
+    <link rel="stylesheet" href="{% static '/css/auth.css' %}" />
     <link rel="stylesheet" href="{% static 'css/header.css' %}?v=1.00" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.00" />
     <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet">
@@ -135,6 +136,42 @@
 
 
     </main>
+
+
+    <!-- log in modal -->
+    <div class="log-in-modal">
+        <div class="log-in-modal-overlay" log-modal-btn="close"></div>
+        <div class="log-in-modal-body">
+            <div class="log-in-modal-header">
+                <div class="logo">
+                    <img src="{% static 'media/logo.png' %}" alt="logo">
+                </div>
+                <button class="log-in-close-btn" log-modal-btn="close">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            <div class="log-in-modal-form">
+                <h1 class="auth-section-title py-3"> Log in to <b>Wizer Properties</b> </h1>
+                <div class="auth-input-wrapper">
+                    <label>User email</label>
+                    <input type="text" name="email" placeholder="Your email">
+                </div>
+
+                <div class="auth-input-wrapper">
+                    <label>Password</label>
+                    <div box-type="password">
+                        <input type="password" name="password" placeholder="Password">
+                    </div>
+                </div>
+
+                <div class="auth-response-messages"></div>
+                <button type="submit" class="auth-form-btn" button-name="log-in">
+                    Log In
+                </button>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Reusable Confirmation Modal -->
     <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel"
@@ -279,7 +316,10 @@
         showModal(modal_option);    
     */ 
 </script>
-
+<script>
+    var login_url = "{% url 'user:login' %}"
+</script>
+<script src="{% static 'js/auth/login.js' %}?v=1.01"></script>
 {% block extend_script %}{% endblock extend_script %}
 
 </html>

@@ -64,5 +64,9 @@ $(document).ready(function(){
 
 
     var get_auth_sdf = $('.auth-form-row')
+
+    $(document).on('click', '[log-modal-btn]', function(){
+        $('body').attr('log-modal', $(this).attr('log-modal-btn'))
+    });
   
 })

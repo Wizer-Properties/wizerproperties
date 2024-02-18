@@ -620,6 +620,83 @@ footer{
     width: 100%;
 }
 
+.log-in-modal{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    right: 0;
+    z-index: 999999;
+    background-color: #0b278a52;
+    justify-content: flex-end;
+    backdrop-filter: blur(2px);
+    display: none;
+}
+
+[log-modal="open"] .log-in-modal{
+    display: flex !important;
+}
+
+[log-modal="open"]{
+    overflow: hidden !important;
+}
+
+.log-in-modal-overlay{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.log-in-modal-body{
+    height: 100vh;
+    overflow-y: auto;
+    width: 400px;
+    background-color: #fff;
+    position: relative;
+    z-index: 9;
+}
+
+.log-in-modal-header{
+    display: flex;
+    justify-content: center;
+    position: relative;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.log-in-modal-header .logo img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.log-in-modal-header .logo{
+    width: 120px;
+    margin: auto !important;
+}
+
+.log-in-close-btn{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 30px;
+    border: none;
+    background-color: transparent;
+    font-size: 22px;
+}
+
+.log-in-modal-form{
+    padding: 10px 30px;
+}
+
+
 @media screen and (max-width: 768px) {
     .table-title{
         position: initial !important;
@@ -635,6 +712,14 @@ footer{
         padding: 25px 0;
     }
 }
+
+
+@media screen and (max-width: 560px) {
+    .log-in-modal-body{
+        width: 100%;
+    }
+}
+
 
 
 @media screen and (max-width: 420px) {

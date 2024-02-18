@@ -347,8 +347,8 @@ $(document).ready(function(){
 
     $(window).on('scroll', function() {
         var targetSection =  $('.property-single-box').last()[0];
-        const elementRect = targetSection.getBoundingClientRect();
-
+        const elementRect = targetSection?.getBoundingClientRect();
+        if(!elementRect) return;
         if(active_free_scrolling) return;
         if (
             elementRect.top >= 0 && 
