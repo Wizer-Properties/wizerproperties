@@ -24,8 +24,7 @@ async function initializeMap() {
             }else if( place?.types.includes("locality") ){
                 fature_type = "locality";
             }else if( place?.types.includes("postal_code") ){
-                // fature_type = "postal_code";
-                fature_type = "circle";
+                fature_type = "postal_code";
             }else{
                 fature_type = "circle";
             }
@@ -158,18 +157,18 @@ async function initializeMap() {
                     if(p_fature_type == "postal_code") return google.maps.FeatureType.POSTAL_CODE;
                 }
 
-                function MAPID(){
-                    if(
-                        ["ADMINISTRATIVE_AREA_LEVEL_1", "administrative_area_level_1"].includes(p_fature_type)
-                    ) return "7ba16be0c9375fa7";
-                    if(p_fature_type == "locality") return "a3efe1c035bad51b";
-                    if(p_fature_type == "postal_code") return "a3efe1c035bad51b";
-                }
+                // function MAPID(){
+                //     if(
+                //         ["ADMINISTRATIVE_AREA_LEVEL_1", "administrative_area_level_1"].includes(p_fature_type)
+                //     ) return "7ba16be0c9375fa7";
+                //     if(p_fature_type == "locality") return "a3efe1c035bad51b";
+                //     if(p_fature_type == "postal_code") return "a3efe1c035bad51b";
+                // }
 
                 search_page_map = new Map(search_render_dom, {
                     zoom: 9,
                     center: center_option,
-                    mapId: MAPID(),
+                    mapId: 'b0addd8cbd8a8fc6',
                     zoomControl: false,
                     mapTypeControl: false, 
                     fullscreenControl: false,
