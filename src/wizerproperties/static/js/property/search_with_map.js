@@ -6,6 +6,8 @@ $(document).ready(function(){
     $('#gm-search-input').val(place || '');
     $('.search-area').html(place || '');
     var markers = [];
+    var markerIcon = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
+    var markerSelectedAreaIcon = "http://maps.gstatic.com/mapfiles/ms2/micons/rangerstation.png";
 
     function clearMarkers() {
         markers.forEach(function(marker) {
@@ -16,7 +18,7 @@ $(document).ready(function(){
 
     function resetMarkerIcons() {
         markers.forEach((marker) => {
-          marker.setIcon("http://maps.google.com/mapfiles/ms/icons/red-dot.png"); // Reset icon of all markers
+          marker.setIcon(markerIcon); // Reset icon of all markers
         });
     }
     
@@ -170,15 +172,16 @@ $(document).ready(function(){
     }
 
     $(document).on("click", ".nearby-single-item", function(){
+        var this_ = $(this)
+
         resetMarkerIcons()
-        getDetailProperty($(this).data("property-id"))
-        getRelatedProperties($(this).data("property-id"))
+        getDetailProperty(this_.data("property-id"))
+        getRelatedProperties(this_.data("property-id"))
 
         // Select marker
         markers.forEach(function(marker) {
-            console.log(marker)
-            if (marker.id === "marker_id_" + $(this).data("property-id")) {
-                marker.setIcon("http://maps.gstatic.com/mapfiles/ms2/micons/rangerstation.png");
+            if (marker.id == "marker_id_" + this_.data("property-id")) {
+                marker.setIcon(markerSelectedAreaIcon);
             }
         });
     })
@@ -228,12 +231,12 @@ $(document).ready(function(){
                         position: {lat: item.building_info.latitude, lng: item.building_info.longitude },
                         map: search_page_map,
                         icon: {
-                          url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                          url: markerIcon,
                           labelOrigin: new google.maps.Point(75, 32),
                           size: new google.maps.Size(32,32),
                           anchor: new google.maps.Point(16,32),
-                          id: "marker_id_" + item.id
-                        }
+                        },
+                        id: "marker_id_" + item.id
                     });
 
                     markers.push(marker)
@@ -241,7 +244,7 @@ $(document).ready(function(){
                     marker.addListener('click', function() {
                         resetMarkerIcons()
 
-                        marker.setIcon("http://maps.gstatic.com/mapfiles/ms2/micons/rangerstation.png")
+                        marker.setIcon(markerSelectedAreaIcon)
 
                         $(".property-search-map-detail-modal").css({
                             "display": "block"
