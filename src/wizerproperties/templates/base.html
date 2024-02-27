@@ -77,8 +77,6 @@
                                 <img src="{{ request.user.developerprofile.company_logo.url }}" alt="Company Logo">
                                 {% elif request.user.user_type == "agent" %}
                                 <img src="{{ request.user.agentprofile.company_logo.url }}" alt="Company Logo">
-                                {% elif request.user.user_type == "prospect" %}
-                                <img src="{{ request.user.prospectprofile.picture.url }}" alt="Profile Picture">
                                 {% else %}
                                 <img src="{% static 'media/default-avatar.jpg' %}" alt="">
                                 {% endif %}

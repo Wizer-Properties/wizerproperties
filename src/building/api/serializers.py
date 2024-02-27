@@ -11,6 +11,18 @@ class BuildingMediaSerializer(serializers.ModelSerializer):
         model = BuildingMedia
         fields = ["id", "file", "type"]
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        # Use urlsplit to get the path component
+        file_path = representation.get("file", "")
+        url_parts = urlsplit(file_path)
+        modified_file_path = url_parts.path
+
+        representation["file"] = modified_file_path
+
+        return representation
+
 
 class BuildingSerializer(serializers.ModelSerializer):
     all_media_files = BuildingMediaSerializer(source="media_files", many=True, read_only=True)
@@ -136,21 +148,6 @@ class BuildingSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(error_messages)
 
         return data
-
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        # Filter type 'image'
-        if self.request and self.request.method == "GET":
-            representation["all_media_files"] = [
-                media
-                for media in representation["all_media_files"]
-                if media["type"] in ["image", "floor_plan", "unit_floor_plan", "master_plan"]
-            ]
-            # Return only the 'file' field
-            representation["all_media_files"] = [
-                urlsplit(media["file"]).path for media in representation["all_media_files"]
-            ]
-        return representation
 
     def get_fields(self):
         fields = super().get_fields()
@@ -289,7 +286,6 @@ class BuildingReviewSerializer(serializers.ModelSerializer):
             if instance.user.prospectprofile:
                 prospect = instance.user.prospectprofile
                 user_details["fullname"] = f"{prospect.first_name} {prospect.last_name}"
-                user_details["profile_image"] = str(prospect.picture)
 
             return {"id": instance.user.id, "user_type": instance.user.user_type, **user_details}
         return {}

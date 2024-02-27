@@ -33,6 +33,5 @@ class AgentProfile(Profile):
 class ProspectProfile(Profile):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    picture = models.ImageField(max_length=1000, null=True, upload_to="prospect_profile_picture/")
     gender = models.CharField(max_length=50, choices=GENDER, null=True)
     address = models.CharField(max_length=2000, null=True)

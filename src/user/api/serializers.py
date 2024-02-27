@@ -16,7 +16,6 @@ class BaseProfileSerializer(serializers.ModelSerializer):
             "company_name": {"required": True, "allow_null": False},
             "company_address": {"required": True, "allow_null": False},
             "company_details": {"required": True, "allow_null": False},
-            "picture": {"required": True, "allow_null": False},
             "first_name": {"required": True, "allow_null": False},
             "last_name": {"required": True, "allow_null": False},
             "gender": {"required": True, "allow_null": False},
@@ -28,8 +27,6 @@ class BaseProfileSerializer(serializers.ModelSerializer):
         if self.instance:
             if self.instance.user.user_type in ["developer", "agent"]:
                 self.fields["company_logo"].required = False
-            elif self.instance.user.user_type == "prospect":
-                self.fields["picture"].required = False
         show_custom_error_message(self.fields)
 
     def validate(self, data):
@@ -75,4 +72,4 @@ class AgentProfileSerializer(BaseProfileSerializer):
 class ProspectProfileSerializer(BaseProfileSerializer):
     class Meta(BaseProfileSerializer.Meta):
         model = ProspectProfile
-        fields = BaseProfileSerializer.Meta.fields + ["picture", "first_name", "last_name", "gender", "address"]
+        fields = BaseProfileSerializer.Meta.fields + ["first_name", "last_name", "gender", "address"]

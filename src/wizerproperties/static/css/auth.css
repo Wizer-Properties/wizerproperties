@@ -265,7 +265,6 @@ body{
     top: 0;
     left: 0;
     background-color: #00000012;
-    backdrop-filter: blur(2px);
 }
 
 .auth-form-container{

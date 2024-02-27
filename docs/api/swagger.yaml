@@ -274,10 +274,6 @@ paths:
           in: "formData"
           required: true
           type: "string"
-        - name: "picture"
-          in: "formData"
-          type: "file"
-          required: true
         - name: "first_name"
           in: "formData"
           required: true
@@ -344,10 +340,6 @@ paths:
           in: "formData"
           required: true
           type: "string"
-        - name: "picture"
-          in: "formData"
-          type: "file"
-          required: true
         - name: "first_name"
           in: "formData"
           required: true
@@ -2964,8 +2956,6 @@ definitions:
       email:
         type: "string"
       phone_number:
-        type: "string"
-      picture:
         type: "string"
       first_name:
         type: "string"
