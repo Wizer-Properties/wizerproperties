@@ -470,11 +470,11 @@ paths:
         - name: "have_access_to_BTS_or_MRT"
           in: "formData"
           required: true
-          type: "string"
+          type: "number"
         - name: "have_access_to_ARL"
           in: "formData"
           required: true
-          type: "string"
+          type: "number"
         - name: "view"
           in: "formData"
           required: true
@@ -979,11 +979,11 @@ paths:
         - name: "have_access_to_BTS_or_MRT"
           in: "formData"
           required: true
-          type: "string"
+          type: "number"
         - name: "have_access_to_ARL"
           in: "formData"
           required: true
-          type: "string"
+          type: "number"
         - name: "view"
           in: "formData"
           required: true
@@ -3086,9 +3086,9 @@ definitions:
             construction_year:
               type: "number"
             have_access_to_BTS_or_MRT:
-              type: "string"
+              type: "number"
             have_access_to_ARL:
-              type: "string"
+              type: "number"
             view:
               type: "string"
             have_freehold:
@@ -3175,9 +3175,9 @@ definitions:
       construction_year:
         type: "number"
       have_access_to_BTS_or_MRT:
-        type: "string"
+        type: "number"
       have_access_to_ARL:
-        type: "string"
+        type: "number"
       view:
         type: "string"
       have_freehold:
@@ -3584,9 +3584,9 @@ definitions:
                 construction_year:
                   type: "number"
                 have_access_to_BTS_or_MRT:
-                  type: "string"
+                  type: "number"
                 have_access_to_ARL:
-                  type: "string"
+                  type: "number"
                 view:
                   type: "string"
                 have_freehold:
@@ -3787,9 +3787,9 @@ definitions:
           construction_year:
             type: "number"
           have_access_to_BTS_or_MRT:
-            type: "string"
+            type: "number"
           have_access_to_ARL:
-            type: "string"
+            type: "number"
           view:
             type: "string"
           have_freehold:
@@ -3946,9 +3946,9 @@ definitions:
               construction_year:
                 type: "number"
               have_access_to_BTS_or_MRT:
-                type: "string"
+                type: "number"
               have_access_to_ARL:
-                type: "string"
+                type: "number"
               view:
                 type: "string"
               have_freehold:
@@ -4114,9 +4114,9 @@ definitions:
                     construction_year:
                       type: "number"
                     have_access_to_BTS_or_MRT:
-                      type: "string"
+                      type: "number"
                     have_access_to_ARL:
-                      type: "string"
+                      type: "number"
                     view:
                       type: "string"
                     have_freehold:
@@ -4267,9 +4267,9 @@ definitions:
               construction_year:
                 type: "number"
               have_access_to_BTS_or_MRT:
-                type: "string"
+                type: "number"
               have_access_to_ARL:
-                type: "string"
+                type: "number"
               view:
                 type: "string"
               have_freehold:
@@ -4435,9 +4435,9 @@ definitions:
                     construction_year:
                       type: "number"
                     have_access_to_BTS_or_MRT:
-                      type: "string"
+                      type: "number"
                     have_access_to_ARL:
-                      type: "string"
+                      type: "number"
                     view:
                       type: "string"
                     have_freehold:

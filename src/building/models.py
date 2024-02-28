@@ -35,8 +35,12 @@ class Building(TimestampedModel):
     construction_year = models.IntegerField(default=1930, null=True, validators=[MinValueValidator(1930)])
     quota = models.CharField(max_length=100, choices=QUOTA_TYPES, null=True)
     furnishing = models.CharField(max_length=100, choices=FURNISHING_TYPES, null=True)
-    have_access_to_BTS_or_MRT = models.CharField(max_length=500, null=True)
-    have_access_to_ARL = models.CharField(max_length=500, null=True)
+    have_access_to_BTS_or_MRT = models.DecimalField(
+        max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(1)]
+    )
+    have_access_to_ARL = models.DecimalField(
+        max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(1)]
+    )
     view = models.CharField(max_length=500, null=True)
     facility_view = models.URLField(max_length=2000, blank=True, null=True)
     location_view = models.URLField(max_length=2000, blank=True, null=True)
