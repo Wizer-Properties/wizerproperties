@@ -14,7 +14,9 @@ from .serializers import (
 )
 from .filters import PropertyFilter
 from building.api.serializers import BuildingMediaSerializer
+from building.models import Building
 from property.models import Property, PropertyMedia, CompareProperty, ProspectFavoriteProperty
+from openai import OpenAI
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
@@ -43,15 +45,17 @@ class PropertyViewSet(viewsets.ModelViewSet):
                 .values("full_file_url")[:1]
             ),
             # Annotate is_compared based on whether the property is in the user's comparison list
-            is_compared=Exists(CompareProperty.objects.filter(user=user, property=OuterRef("pk")))
-            if user.is_authenticated and hasattr(user, "prospectprofile")
-            else Value(None, output_field=BooleanField()),
+            is_compared=(
+                Exists(CompareProperty.objects.filter(user=user, property=OuterRef("pk")))
+                if user.is_authenticated and hasattr(user, "prospectprofile")
+                else Value(None, output_field=BooleanField())
+            ),
             # Annotate is_favorited based on whether the property is in the user's favorite list
-            is_favorited=Exists(
-                ProspectFavoriteProperty.objects.filter(prospect=user.prospectprofile, property=OuterRef("pk"))
-            )
-            if user.is_authenticated and hasattr(user, "prospectprofile")
-            else Value(None, output_field=BooleanField()),
+            is_favorited=(
+                Exists(ProspectFavoriteProperty.objects.filter(prospect=user.prospectprofile, property=OuterRef("pk")))
+                if user.is_authenticated and hasattr(user, "prospectprofile")
+                else Value(None, output_field=BooleanField())
+            ),
         )
 
         return queryset
@@ -137,6 +141,45 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
         serializer = GeneralPropertySerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=["post"])
+    def generate_description(self, request):
+        """
+        Return an automated professional property description with ChatGPT
+        """
+        property_info = request.data
+
+        building_info = {}
+
+        building_id = request.data.get("building_id")
+        if building_id:
+            building = Building.objects.filter(id=building_id).first()
+            if building:
+                building_info.update(
+                    {
+                        "address": building.address,
+                        "project_total_area": building.project_total_area,
+                        "total_floors": building.total_floors,
+                        "construction_year": building.construction_year,
+                        "have_access_to_BTS_or_MRT": building.have_access_to_BTS_or_MRT,
+                        "have_access_to_ARL": building.have_access_to_ARL,
+                    }
+                )
+
+        content = f"building_info: \n{building_info} \n\n property_info: \n{property_info} \n\n \
+                    Give me a professional description of the property depending on above the building_info and property_info. In one building, \
+                    there are many properties, meaning this property_info is within the premises of this building_info."
+
+        print(content)
+        client = OpenAI()
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "user", "content": content},
+            ],
+        )
+
+        return Response({"generated_description": response.choices[0].message.content}, status=status.HTTP_200_OK)
 
 
 class ComparePropertyViewSet(viewsets.ModelViewSet):

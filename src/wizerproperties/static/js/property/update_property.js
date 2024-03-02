@@ -81,7 +81,7 @@ $(document).ready(function () {
         });
     });
 
-    $(document).on('change', '#have_tenant_occupied', function(){
+    $(document).on('change', '#tenant_occupied', function(){
         var is_checked = $(this).is(":checked");
         
         if(is_checked){

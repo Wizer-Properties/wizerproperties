@@ -156,6 +156,12 @@
                             </div>
                         </div>
                         <div class="col-lg-6">
+                            <button type="button" id="generate-description" style="margin-bottom: 20px;">
+                                <span id="generatePropertyDescription">Generate Description</span>
+                                <div id="descriptionLoadingSpinner" class="spinner-border" role="status" style="display: none;">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </button>
                             <div class="authFormDiv textarea">
                                 <!-- <span class="authErrorMessage">Message</span> -->
                                 <textarea name="description" type="text" class="authInput profileCompanyDeatils"
@@ -212,8 +218,8 @@
                                 <div class="col-6">
                                     <div class="form-check">
                                         <input name="have_tenant_occupied" class="form-check-input" type="checkbox"
-                                        id="have_tenant_occupied">
-                                        <label class="form-check-label" for="have_tenant_occupied">
+                                        id="tenant_occupied">
+                                        <label class="form-check-label" for="tenant_occupied">
                                             Have Tenant Occupied
                                         </label>
                                     </div>
@@ -275,6 +281,7 @@
 <script src="{% static 'js/libraries/bootstrap-datepicker3.js' %}?v=1.00"></script>
 <script type="text/javascript">
     var createPropertyAPIUrl = "{% url 'property:api:create' %}"
+    var generatePropertyDescriptionAPIUrl = "{% url 'property:api:generate_description' %}"
 
     function init_datepacker(){
         $('.date_picker_box')
@@ -298,5 +305,5 @@
         });
     }
 </script>
-<script src="{% static 'js/property/create_property.js' %}?v=1.00"></script>
+<script src="{% static 'js/property/create_property.js' %}?v=1.01"></script>
 {% endblock extend_script %}

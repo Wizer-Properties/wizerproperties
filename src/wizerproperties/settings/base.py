@@ -178,3 +178,7 @@ REST_FRAMEWORK = {
 
 if DEBUG:
     REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"].append("rest_framework.renderers.BrowsableAPIRenderer")
+
+# For ChatGPT
+OPENAI_API_KEY = config("OPENAI_API_KEY", "")
+os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY

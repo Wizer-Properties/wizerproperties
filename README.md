@@ -73,3 +73,7 @@ sudo docker compose up
 ```bash
 poetry add <package name>@<version>
 ```
+
+### Integrate CHATGPT-3.5
+* For integrating ChatGPT API, first of all have to generate new API key from `platform.openai.com`.
+* Then assign generated API key to `OPENAI_API_KEY` in `.env` file.
