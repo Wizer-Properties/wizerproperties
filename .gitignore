@@ -31,3 +31,7 @@ node_modules/
 
 src/wizerproperties/media/
 static_root/
+
+# Deployment
+nginx/
+certbot/

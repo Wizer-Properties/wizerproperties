@@ -4,7 +4,7 @@ services:
   web:
     build:
       context: .
-    command: bash -c "gunicorn wizerproperties.wsgi:application --bind 0.0.0.0:8000 --reload --timeout 120 --workers 3"
+    command: poetry run python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
     volumes:
@@ -26,24 +26,6 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB_HOST=${POSTGRES_HOST}
-  
-  nginx:
-    restart: always
-    image: nginx:alpine
-    ports:
-        - 80:80
-        - 443:443
-    volumes:
-        - ./nginx/conf/:/etc/nginx/conf.d/:ro
-        - ./certbot/www/:/var/www/certbot/:ro
-        - ./certbot/conf/:/etc/nginx/ssl/:ro
-
-  certbot:
-      image: certbot/certbot
-      volumes: 
-          - ./certbot/www/:/var/www/certbot/:rw
-          - ./certbot/conf/:/etc/letsencrypt/:rw
-
 
 volumes:
   postgres_data:

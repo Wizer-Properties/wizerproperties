@@ -77,3 +77,17 @@ poetry add <package name>@<version>
 ### Integrate CHATGPT-3.5
 * For integrating ChatGPT API, first of all have to generate new API key from `platform.openai.com`.
 * Then assign generated API key to `OPENAI_API_KEY` in `.env` file.
+
+
+## For deployment in production
+```
+Create a default.conf in src/nginx/conf/ folder and write configuration step by step 
+```
+### Get new certificate
+```
+sudo docker compose run --rm certbot certonly --webroot --webroot-path /var/www/certbot/ -d wizerproperties.com -d www.wizerproperties.com
+``` 
+### For renew certificate
+```
+sudo docker compose run --rm certbot renew
+```
