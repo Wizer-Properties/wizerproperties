@@ -17,7 +17,7 @@ Create a .env file in project src directory following demo.env file.
 #### Build
 
 ```sh
-sudo docker compose build --no-cache
+sudo docker compose -f docker-compose-dev.yml build
 ```
 
 ##### Case-Insensitive Field Configuration in Postgresql
@@ -57,13 +57,13 @@ https://docs.djangoproject.com/en/4.2/ref/contrib/postgres/operations/#managing-
 ##### Migrate
 
 ```sh
-sudo docker compose run --rm web python manage.py migrate
+sudo docker compose -f docker-compose-dev.yml run --rm web python manage.py migrate
 ```
 
 ##### Up
 
 ```sh
-sudo docker compose up
+sudo docker compose -f docker-compose-dev.yml up
 ```
 
 ### Install Packages Via Poetry
@@ -79,7 +79,7 @@ poetry add <package name>@<version>
 * Then assign generated API key to `OPENAI_API_KEY` in `.env` file.
 
 
-## For deployment in production
+## For deployment in live server (production)
 ```
 Create a default.conf in src/nginx/conf/ folder and write configuration step by step 
 ```
