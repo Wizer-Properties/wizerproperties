@@ -9,6 +9,8 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+      - static_files:/app/wizerproperties/static_root/
+      - media_files:/app/wizerproperties/media/
     depends_on:
       - db
     environment:
@@ -31,19 +33,25 @@ services:
     restart: always
     image: nginx:alpine
     ports:
-        - 80:80
-        - 443:443
+      - 80:80
+      - 443:443
     volumes:
-        - ./nginx/conf/:/etc/nginx/conf.d/:ro
-        - ./certbot/www/:/var/www/certbot/:ro
-        - ./certbot/conf/:/etc/nginx/ssl/:ro
+      - ./nginx/conf/:/etc/nginx/conf.d/:ro
+      - ./certbot/www/:/var/www/certbot/:ro
+      - ./certbot/conf/:/etc/nginx/ssl/:ro
+      - static_files:/app/wizerproperties/static_root/
+      - media_files:/app/wizerproperties/media/
+    depends_on:
+      - web
 
   certbot:
       image: certbot/certbot
       volumes: 
-          - ./certbot/www/:/var/www/certbot/:rw
-          - ./certbot/conf/:/etc/letsencrypt/:rw
+        - ./certbot/www/:/var/www/certbot/:rw
+        - ./certbot/conf/:/etc/letsencrypt/:rw
 
 
 volumes:
   postgres_data:
+  static_files:
+  media_files:
