@@ -5,6 +5,9 @@ from .views import BuildingViewSet, BuildingReviewViewSet
 urlpatterns = [
     path("list/", BuildingViewSet.as_view({"get": "list"}), name="list"),
     path("list/popular/", BuildingViewSet.as_view({"get": "popular"}), name="popular"),
+    path(
+        "generate-description/", BuildingViewSet.as_view({"post": "generate_description"}), name="generate_description"
+    ),
     path("details/<int:pk>/", BuildingViewSet.as_view({"get": "retrieve"}), name="details"),
     path("details/<int:pk>/media-files/", BuildingViewSet.as_view({"get": "media_files"}), name="media_files"),
     path(
