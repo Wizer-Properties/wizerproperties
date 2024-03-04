@@ -3,6 +3,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.template.loader import render_to_string
+from openai import OpenAI
 
 
 def send_email(subject, to_email, html_content, text_content="", context={}):
@@ -82,3 +83,17 @@ def validate_date_format(value):
         timezone.datetime.strptime(value, "%m/%d/%Y")
     except ValueError:
         raise ValidationError("Invalid date format. Use mm/dd/yyyy.")
+
+
+def get_chatgpt_response(content):
+    """
+    Return generated message response using ChatGPT based on the provided 'content'.
+    """
+    client = OpenAI()
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "user", "content": content},
+        ],
+    )
+    return response.choices[0].message.content

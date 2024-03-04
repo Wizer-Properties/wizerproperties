@@ -21,7 +21,7 @@ $(document).ready(function () {
     });
 
     // Get an automated professional description with ChatGPT
-    $("#generate-description").click(function () {
+    $("#generate-property-description").click(function () {
         var building_id = $("select[name='building']").val();
         var title = $("input[name='title']").val();
         var price = $("input[name='price']").val();
@@ -42,8 +42,7 @@ $(document).ready(function () {
         var have_owner_occupied = $("#owner_occupied").prop("checked");
         var have_bathtub = $("#bathtub").prop("checked");
         var have_duplex = $("#duplex").prop("checked");
-        var have_pets_allowed = $("#duplex").prop("checked");
-        var have_tenant_occupied = $("#tenant_occupied").prop("checked");
+        var have_pets_allowed = $("#pets_allowed").prop("checked");
 
         // Check for empty input values
         var required_fields = [building_id, title, price, price_per_sqm, unit_id, floor_number, unit_area, interior_view, 
@@ -86,14 +85,13 @@ $(document).ready(function () {
             "have_bathtub": have_bathtub,
             "have_duplex": have_duplex,
             "have_pets_allowed": have_pets_allowed,
-            "have_tenant_occupied": have_tenant_occupied
         };
 
         generatePropertyDescription.hide(); // Hide the text
         loadingSpinner.show(); // Show the spinner
 
         $.ajax({
-            url: generatePropertyDescriptionAPIUrl, // Replace with your API endpoint
+            url: generatePropertyDescriptionAPIUrl,
             type: "POST",
             data: property_data,
             headers: {
@@ -103,7 +101,7 @@ $(document).ready(function () {
                 loadingSpinner.hide(); // Hide the spinner
                 generatePropertyDescription.show(); // Show the text
                 $(".error-message").html("");
-                $(".profileCompanyDeatils").val(response.generated_description);
+                $(".profileCompanyDeatils").val(response.generated_property_description);
             },
             error: function (error) {
                 loadingSpinner.hide(); // Hide the spinner

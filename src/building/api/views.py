@@ -14,6 +14,7 @@ from building.api.filters import BuildingFilter
 from building.models import Building, BuildingMedia, BuildingReview
 from property.models import Property, PropertyMedia
 from property.api.serializers import PropertyAvailableUnitsSerializer
+from utils.general_func import get_chatgpt_response
 
 
 class BuildingViewSet(viewsets.ModelViewSet):
@@ -36,14 +37,16 @@ class BuildingViewSet(viewsets.ModelViewSet):
         if self.request.method == "GET":
             queryset = queryset.annotate(
                 # Annotate is_reviewed based on whether the building is in the user's review list
-                is_reviewed=Case(
-                    When(buildingreview__user=user, then=Value(True)),
-                    default=Value(False),
-                    output_field=BooleanField(),
-                )
-                if user.is_authenticated and hasattr(user, "prospectprofile")
-                # If the user is not authenticated and prospect, set is_reviewed to False for all building
-                else Value(False, output_field=BooleanField()),
+                is_reviewed=(
+                    Case(
+                        When(buildingreview__user=user, then=Value(True)),
+                        default=Value(False),
+                        output_field=BooleanField(),
+                    )
+                    if user.is_authenticated and hasattr(user, "prospectprofile")
+                    # If the user is not authenticated and prospect, set is_reviewed to False for all building
+                    else Value(False, output_field=BooleanField())
+                ),
                 average_rating=Avg("buildingreview__rating"),
                 total_reviews=Count("buildingreview"),
             )
@@ -121,6 +124,20 @@ class BuildingViewSet(viewsets.ModelViewSet):
 
         serializer = GeneralBuildingSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=["post"])
+    def generate_description(self, request):
+        """
+        Return an automated professional building description with ChatGPT
+        """
+        building_info = request.data
+
+        content = f"building_info: {building_info} \n\n \
+            Give me a professional description of the building depending on above the building_info."
+
+        generated_building_description = get_chatgpt_response(content)
+
+        return Response({"generated_building_description": generated_building_description}, status=status.HTTP_200_OK)
 
 
 class BuildingReviewViewSet(viewsets.ModelViewSet):

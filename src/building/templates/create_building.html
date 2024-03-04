@@ -279,6 +279,12 @@
                         </div>
 
                         <div class="col-lg-6">
+                            <button type="button" id="generate-building-description" style="margin-bottom: 20px;">
+                                <span id="generateBuildingDescription">Generate Description</span>
+                                <div id="descriptionLoadingSpinner" class="spinner-border" role="status" style="display: none;">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </button>
                             <div class="authFormDiv textarea">
                                 <!-- <span class="authErrorMessage">Message</span> -->
                                 <textarea name="description" type="text" class="authInput profileCompanyDeatils"
@@ -403,6 +409,7 @@
 {% block extend_script %}
 <script type="text/javascript">
     var createBuildingAPIUrl = "{% url 'building:api:create' %}"
+    var generateBuildingDescriptionAPIUrl = "{% url 'building:api:generate_description' %}"
 </script>
-<script src="{% static 'js/building/create_building.js' %}?v=1.00"></script>
+<script src="{% static 'js/building/create_building.js' %}?v=1.01"></script>
 {% endblock extend_script %}

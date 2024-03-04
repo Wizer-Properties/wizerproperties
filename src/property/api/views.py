@@ -16,7 +16,7 @@ from .filters import PropertyFilter
 from building.api.serializers import BuildingMediaSerializer
 from building.models import Building
 from property.models import Property, PropertyMedia, CompareProperty, ProspectFavoriteProperty
-from openai import OpenAI
+from utils.general_func import get_chatgpt_response
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
@@ -166,20 +166,13 @@ class PropertyViewSet(viewsets.ModelViewSet):
                     }
                 )
 
-        content = f"building_info: \n{building_info} \n\n property_info: \n{property_info} \n\n \
+        content = f"building_info: {building_info} \n\n property_info: {property_info} \n\n \
                     Give me a professional description of the property depending on above the building_info and property_info. In one building, \
                     there are many properties, meaning this property_info is within the premises of this building_info."
 
-        print(content)
-        client = OpenAI()
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "user", "content": content},
-            ],
-        )
+        generated_property_description = get_chatgpt_response(content)
 
-        return Response({"generated_description": response.choices[0].message.content}, status=status.HTTP_200_OK)
+        return Response({"generated_property_description": generated_property_description}, status=status.HTTP_200_OK)
 
 
 class ComparePropertyViewSet(viewsets.ModelViewSet):
