@@ -55,7 +55,7 @@ $(document).ready(function () {
             if (required_fields[i] === "") {
                 $(".error-message").html(
                     "<span class='authErrorMessage'>" +
-                        "To generate description please fill in all required fields without description, image and video field." +
+                        "To generate description please fill in all required fields without description and media field." +
                     "</span>"
                 );
                 return; // Stop execution if any input is empty

@@ -25,47 +25,81 @@ class BuildingMediaSerializer(serializers.ModelSerializer):
 
 
 class BuildingSerializer(serializers.ModelSerializer):
-    all_media_files = BuildingMediaSerializer(source="media_files", many=True, read_only=True)
-    images = serializers.ImageField(allow_empty_file=False, write_only=True)
-    floor_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
-    unit_floor_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
-    master_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
-    videos = serializers.FileField(allow_empty_file=False, write_only=True)
-    aerial_drone_videos = serializers.FileField(allow_empty_file=False, write_only=True)
-    default_image = serializers.URLField(source="default_image_url", read_only=True)
-    created_by = serializers.SerializerMethodField()
-    is_reviewed = serializers.BooleanField(read_only=True)
-    average_rating = serializers.FloatField(read_only=True)
-    total_reviews = serializers.IntegerField(read_only=True)
-
     class Meta:
         model = Building
         fields = [
             "id",
             "title",
-            "default_image",
-            "all_media_files",
             "description",
-            "lowest_price",
-            "highest_price",
             "type",
             "total_units_for_sale",
+            "address",
+            "project_total_area",
+            "total_floors",
+            "facility_view",
+            "location_view",
+        ]
+
+
+class BuildingDetailsSerializer(BuildingSerializer):
+    default_images = serializers.SerializerMethodField()
+
+    class Meta(BuildingSerializer.Meta):
+        fields = BuildingSerializer.Meta.fields + [
+            "lowest_price",
+            "highest_price",
+            "latitude",
+            "longitude",
+            "construction_year",
+            "default_images",
+        ]
+
+    def get_default_images(self, obj):
+        images = obj.media_files.filter(type="image")
+        return BuildingMediaSerializer(images, many=True).data
+
+
+# Serializer for handling popular buildings.
+# This serializer is designed to retrieve a list of buildings with various attributes.
+class BuildingVariousFeatureSerializer(BuildingSerializer):
+    default_image = serializers.URLField(source="default_image_url", read_only=True)
+
+    class Meta(BuildingSerializer.Meta):
+        fields = BuildingSerializer.Meta.fields + [
+            "default_image",
+            "have_access_to_BTS_or_MRT",
+            "have_access_to_ARL",
+            "view",
+            "have_freehold",
+            "have_leasehold",
+            "have_infinity_pool",
+            "have_pets_allowed",
+            "have_guard_house",
+            "have_sauna",
+            "have_sky_lounge",
+            "have_grocery",
+            "have_fitness_area",
+        ]
+
+
+class BuildingListSerializer(BuildingSerializer):
+    created_by = serializers.CharField(source="created_by.username", read_only=True)
+
+    class Meta(BuildingSerializer.Meta):
+        fields = BuildingSerializer.Meta.fields + [
+            "lowest_price",
+            "highest_price",
+            "latitude",
+            "longitude",
             "province",
             "district",
             "sub_district",
-            "address",
-            "latitude",
-            "longitude",
-            "project_total_area",
-            "total_floors",
             "construction_year",
             "quota",
             "furnishing",
             "have_access_to_BTS_or_MRT",
             "have_access_to_ARL",
             "view",
-            "facility_view",
-            "location_view",
             "have_freehold",
             "have_leasehold",
             "have_infinity_pool",
@@ -76,10 +110,20 @@ class BuildingSerializer(serializers.ModelSerializer):
             "have_grocery",
             "have_fitness_area",
             "is_active",
-            "is_reviewed",
-            "average_rating",
-            "total_reviews",
             "created_by",
+        ]
+
+
+class BuildingCreateAndUpdateSerializer(BuildingListSerializer):
+    images = serializers.ImageField(allow_empty_file=False, write_only=True)
+    floor_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
+    unit_floor_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
+    master_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
+    videos = serializers.FileField(allow_empty_file=False, write_only=True)
+    aerial_drone_videos = serializers.FileField(allow_empty_file=False, write_only=True)
+
+    class Meta(BuildingListSerializer.Meta):
+        fields = BuildingListSerializer.Meta.fields + [
             "images",
             "floor_plans",
             "unit_floor_plans",
@@ -90,7 +134,7 @@ class BuildingSerializer(serializers.ModelSerializer):
 
     # Validate that all fields are required and not blank
     def __init__(self, *args, **kwargs):
-        super(BuildingSerializer, self).__init__(*args, **kwargs)
+        super(BuildingCreateAndUpdateSerializer, self).__init__(*args, **kwargs)
         self.request = self.context.get("request")
 
         self.skip_attributes = [
@@ -148,16 +192,6 @@ class BuildingSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(error_messages)
 
         return data
-
-    def get_fields(self):
-        fields = super().get_fields()
-        # Remove unwanted fields during create and update
-        if self.request and self.request.method in ["POST", "PUT", "PATCH"]:  # Check request method
-            fields.pop("default_image", None)
-            fields.pop("is_reviewed", None)
-            fields.pop("average_rating", None)
-            fields.pop("total_reviews", None)
-        return fields
 
     def get_media_files(self, request):
         return {
@@ -238,20 +272,6 @@ class BuildingSerializer(serializers.ModelSerializer):
 
         return super().update(instance, validated_data)
 
-    def get_created_by(self, obj):
-        user = obj.created_by
-        user_type = user.user_type
-
-        if user_type == "developer":
-            profile_data = DeveloperProfileSerializer(user.developerprofile).data
-        elif user_type == "agent":
-            profile_data = AgentProfileSerializer(user.agentprofile).data
-        else:
-            # Handle other user types or return a default profile
-            profile_data = {}
-
-        return profile_data
-
 
 class BuildingReviewSerializer(serializers.ModelSerializer):
     reviewer_details = serializers.SerializerMethodField()
@@ -289,37 +309,3 @@ class BuildingReviewSerializer(serializers.ModelSerializer):
 
             return {"id": instance.user.id, "user_type": instance.user.user_type, **user_details}
         return {}
-
-
-# Serializer for handling popular buildings.
-# This serializer is designed to retrieve a list of buildings with various attributes.
-class GeneralBuildingSerializer(serializers.ModelSerializer):
-    default_image = serializers.URLField(source="default_image_url", read_only=True)
-
-    class Meta:
-        model = Building
-        fields = [
-            "id",
-            "title",
-            "default_image",
-            "description",
-            "type",
-            "total_units_for_sale",
-            "address",
-            "project_total_area",
-            "total_floors",
-            "have_access_to_BTS_or_MRT",
-            "have_access_to_ARL",
-            "view",
-            "facility_view",
-            "location_view",
-            "have_freehold",
-            "have_leasehold",
-            "have_infinity_pool",
-            "have_pets_allowed",
-            "have_guard_house",
-            "have_sauna",
-            "have_sky_lounge",
-            "have_grocery",
-            "have_fitness_area",
-        ]

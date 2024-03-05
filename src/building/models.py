@@ -17,29 +17,29 @@ class Building(TimestampedModel):
     title = models.CharField(max_length=255, null=True)
     description = models.TextField(max_length=3000, null=True)
     lowest_price = models.DecimalField(
-        max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(1)]
+        max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(0)]
     )
     highest_price = models.DecimalField(
-        max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(1)]
+        max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(0)]
     )
     type = models.CharField(max_length=100, choices=BUILDING_TYPES, null=True)
-    total_units_for_sale = models.IntegerField(default=0, null=True, validators=[MinValueValidator(1)])
+    total_units_for_sale = models.IntegerField(default=0, null=True, validators=[MinValueValidator(0)])
     province = models.CharField(max_length=500, null=True)
     district = models.CharField(max_length=500, null=True)
     sub_district = models.CharField(max_length=500, null=True)
     address = models.CharField(max_length=500, null=True)
     latitude = models.FloatField(null=True)
     longitude = models.FloatField(null=True)
-    project_total_area = models.FloatField(default=0, null=True, validators=[MinValueValidator(1)])
-    total_floors = models.IntegerField(default=0, null=True, validators=[MinValueValidator(1)])
+    project_total_area = models.FloatField(default=0, null=True, validators=[MinValueValidator(0)])
+    total_floors = models.IntegerField(default=0, null=True, validators=[MinValueValidator(0)])
     construction_year = models.IntegerField(default=1930, null=True, validators=[MinValueValidator(1930)])
     quota = models.CharField(max_length=100, choices=QUOTA_TYPES, null=True)
     furnishing = models.CharField(max_length=100, choices=FURNISHING_TYPES, null=True)
     have_access_to_BTS_or_MRT = models.DecimalField(
-        max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(1)]
+        max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(0)]
     )
     have_access_to_ARL = models.DecimalField(
-        max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(1)]
+        max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(0)]
     )
     view = models.CharField(max_length=500, null=True)
     facility_view = models.URLField(max_length=2000, blank=True, null=True)
@@ -102,8 +102,8 @@ class BuildingReview(TimestampedModel):
         (5, "5"),
     )
 
-    user = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True)
-    building = models.ForeignKey(Building, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True, related_name="building_reviews")
+    building = models.ForeignKey(Building, on_delete=models.CASCADE, null=True, related_name="reviews")
     rating = models.IntegerField(choices=RATING_CHOICES, default=0)
     review_text = models.TextField(blank=True, null=True, max_length=1000)
     is_active = models.BooleanField(default=True)
@@ -121,7 +121,7 @@ class BuildingReview(TimestampedModel):
 
 
 class PopularBuilding(TimestampedModel):
-    building = models.ForeignKey(Building, null=True, on_delete=models.SET_NULL)
+    building = models.ForeignKey(Building, null=True, on_delete=models.SET_NULL, related_name="populars")
 
     def clean(self):
         # Check if there is already an object with the same building

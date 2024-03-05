@@ -5,7 +5,7 @@ from django.db.models.functions import Concat
 from rest_framework import serializers
 from property.models import Property, PropertyMedia, CompareProperty, ProspectFavoriteProperty
 from building.models import Building, BuildingMedia
-from building.api.serializers import BuildingSerializer
+from building.api.serializers import BuildingVariousFeatureSerializer
 from utils.general_func import show_custom_error_message
 
 
@@ -164,7 +164,7 @@ class PropertySerializer(serializers.ModelSerializer):
                 )
                 .first()
             )
-            return BuildingSerializer(building).data
+            return BuildingVariousFeatureSerializer(building).data
         else:
             return None
 

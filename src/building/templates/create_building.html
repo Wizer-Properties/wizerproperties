@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="{% static '/css/auth.css' %}" />
 <style>
     [label-name="latitude"],
-    [label-name="longitude"]{
+    [label-name="longitude"] {
         display: none;
     }
 </style>
@@ -41,14 +41,16 @@
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="lowest_price" type="number" class="authInput" placeholder="Lowest Price" required>
+                                <input name="lowest_price" type="number" step="0.1" min="0" class="authInput"
+                                    placeholder="Lowest Price" required>
                                 <div class="authlabelline authcompleteProfileLabe">Lowest Price</div>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="highest_price" type="number" class="authInput" placeholder="Highest Price" required>
+                                <input name="highest_price" type="number" step="0.1" min="0" class="authInput"
+                                    placeholder="Highest Price" required>
                                 <div class="authlabelline authcompleteProfileLabe">Highest Price</div>
                             </div>
                         </div>
@@ -94,7 +96,7 @@
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="total_units_for_sale" type="number" class="authInput"
+                                <input name="total_units_for_sale" type="number" min="0" class="authInput"
                                     placeholder="Total Units For Sale" required>
                                 <div class="authlabelline authcompleteProfileLabe">Total Units For Sale</div>
                             </div>
@@ -120,7 +122,8 @@
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="province" label="province" type="text" class="authInput" placeholder="Province" required>
+                                <input name="province" label="province" type="text" class="authInput"
+                                    placeholder="Province" required>
                                 <div class="authlabelline authcompleteProfileLabe">Province</div>
                             </div>
                         </div>
@@ -128,7 +131,8 @@
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="district" label="district" type="text" class="authInput" placeholder="District" required>
+                                <input name="district" label="district" type="text" class="authInput"
+                                    placeholder="District" required>
                                 <div class="authlabelline authcompleteProfileLabe">District</div>
                             </div>
                         </div>
@@ -136,19 +140,22 @@
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="sub_district" label="sub-district" type="text" class="authInput" placeholder="Sub-District" required>
+                                <input name="sub_district" label="sub-district" type="text" class="authInput"
+                                    placeholder="Sub-District" required>
                                 <div class="authlabelline authcompleteProfileLabe">Sub-District</div>
                             </div>
                         </div>
-                        <input name="latitude" label="latitude" label-name="latitude" type="text" class="authInput" placeholder="Latitude" >
-                        <input name="longitude" label="longitude" label-name="longitude" type="text" class="authInput" placeholder="Longitude" >
+                        <input name="latitude" label="latitude" label-name="latitude" type="text" class="authInput"
+                            placeholder="Latitude">
+                        <input name="longitude" label="longitude" label-name="longitude" type="text" class="authInput"
+                            placeholder="Longitude">
                     </div>
 
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="project_total_area" type="number" class="authInput"
+                                <input name="project_total_area" type="number" step="0.1" min="0" class="authInput"
                                     placeholder="Project Total Area (sqm)" required>
                                 <div class="authlabelline authcompleteProfileLabe">Project Total Area (sqm)</div>
                             </div>
@@ -156,8 +163,8 @@
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="total_floors" type="number" class="authInput" placeholder="Total Floor"
-                                    required>
+                                <input name="total_floors" type="number" min="0" class="authInput"
+                                    placeholder="Total Floor" required>
                                 <div class="authlabelline authcompleteProfileLabe">Total Floor</div>
                             </div>
                         </div>
@@ -166,24 +173,23 @@
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="have_access_to_BTS_or_MRT" type="number" class="authInput"
-                                    placeholder="Have Access to BTS/MRT" required>
+                                <input name="have_access_to_BTS_or_MRT" type="number" step="0.1" min="0"
+                                    class="authInput" placeholder="Have Access to BTS/MRT" required>
                                 <div class="authlabelline authcompleteProfileLabe">Have Access to BTS/MRT (Mile)</div>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="have_access_to_ARL" type="number" class="authInput" placeholder="Have Access to ARL"
-                                    required>
+                                <input name="have_access_to_ARL" type="number" class="authInput" step="0.1" min="0"
+                                    placeholder="Have Access to ARL" required>
                                 <div class="authlabelline authcompleteProfileLabe">Have Access to ARL (Mile)</div>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="view" type="text" class="authInput" placeholder="View"
-                                    required>
+                                <input name="view" type="text" class="authInput" placeholder="View" required>
                                 <div class="authlabelline authcompleteProfileLabe">View</div>
                             </div>
                         </div>
@@ -209,7 +215,8 @@
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-check">
-                                        <input name="have_freehold" class="form-check-input" type="checkbox" id="freehold">
+                                        <input name="have_freehold" class="form-check-input" type="checkbox"
+                                            id="freehold">
                                         <label class="form-check-label" for="freehold">
                                             Have Freehold
                                         </label>
@@ -217,7 +224,8 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="form-check">
-                                        <input name="have_leasehold" class="form-check-input" type="checkbox" id="leasehold">
+                                        <input name="have_leasehold" class="form-check-input" type="checkbox"
+                                            id="leasehold">
                                         <label class="form-check-label" for="leasehold">
                                             Have Leasehold
                                         </label>
@@ -225,7 +233,8 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="form-check">
-                                        <input name="have_infinity_pool" class="form-check-input" type="checkbox" id="infinity_pool">
+                                        <input name="have_infinity_pool" class="form-check-input" type="checkbox"
+                                            id="infinity_pool">
                                         <label class="form-check-label" for="infinity_pool">
                                             Have Infinity Pool
                                         </label>
@@ -233,7 +242,8 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="form-check">
-                                        <input name="have_pets_allowed" class="form-check-input" type="checkbox" id="pets_allowed">
+                                        <input name="have_pets_allowed" class="form-check-input" type="checkbox"
+                                            id="pets_allowed">
                                         <label class="form-check-label" for="pets_allowed">
                                             Have Pets Allowed
                                         </label>
@@ -281,7 +291,8 @@
                         <div class="col-lg-6">
                             <button type="button" id="generate-building-description" style="margin-bottom: 20px;">
                                 <span id="generateBuildingDescription">Generate Description</span>
-                                <div id="descriptionLoadingSpinner" class="spinner-border" role="status" style="display: none;">
+                                <div id="descriptionLoadingSpinner" class="spinner-border" role="status"
+                                    style="display: none;">
                                     <span class="sr-only">Loading...</span>
                                 </div>
                             </button>
@@ -380,8 +391,8 @@
                             <div class="uploaded-file-with-view">
                                 <div class="authFormDiv">
                                     <!-- <span class="authErrorMessage">Message</span> -->
-                                    <input name="aerial_drone_videos" type="file" accept="video/*" class="authInput authFile"
-                                        required>
+                                    <input name="aerial_drone_videos" type="file" accept="video/*"
+                                        class="authInput authFile" required>
                                     <div class="fileName"> Upload Aerial Drone Video </div>
                                 </div>
 
@@ -411,5 +422,5 @@
     var createBuildingAPIUrl = "{% url 'building:api:create' %}"
     var generateBuildingDescriptionAPIUrl = "{% url 'building:api:generate_description' %}"
 </script>
-<script src="{% static 'js/building/create_building.js' %}?v=1.01"></script>
+<script src="{% static 'js/building/create_building.js' %}?v=1.02"></script>
 {% endblock extend_script %}

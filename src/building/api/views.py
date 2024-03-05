@@ -6,9 +6,12 @@ from rest_framework.response import Response
 from building.api.permissions import BuildingPermission, BuildingReviewPermission
 from building.api.serializers import (
     BuildingSerializer,
+    BuildingListSerializer,
+    BuildingDetailsSerializer,
+    BuildingCreateAndUpdateSerializer,
     BuildingMediaSerializer,
     BuildingReviewSerializer,
-    GeneralBuildingSerializer,
+    BuildingVariousFeatureSerializer,
 )
 from building.api.filters import BuildingFilter
 from building.models import Building, BuildingMedia, BuildingReview
@@ -18,39 +21,37 @@ from utils.general_func import get_chatgpt_response
 
 
 class BuildingViewSet(viewsets.ModelViewSet):
+    queryset = Building.objects.select_related("created_by").prefetch_related("media_files", "populars")
     serializer_class = BuildingSerializer
     permission_classes = [BuildingPermission]
     filterset_class = BuildingFilter
     ordering = ["-created_at"]  # Default ordering
 
     def get_queryset(self):
-        user = self.request.user
+        queryset = self.queryset
 
-        queryset = Building.objects.annotate(
-            default_image_url=Subquery(
-                BuildingMedia.objects.filter(building=OuterRef("pk"), type="image")
-                .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
-                .values("full_file_url")[:1]
-            )
-        )
-
-        if self.request.method == "GET":
+        if self.action in ["popular"]:
             queryset = queryset.annotate(
-                # Annotate is_reviewed based on whether the building is in the user's review list
-                is_reviewed=(
-                    Case(
-                        When(buildingreview__user=user, then=Value(True)),
-                        default=Value(False),
-                        output_field=BooleanField(),
-                    )
-                    if user.is_authenticated and hasattr(user, "prospectprofile")
-                    # If the user is not authenticated and prospect, set is_reviewed to False for all building
-                    else Value(False, output_field=BooleanField())
-                ),
-                average_rating=Avg("buildingreview__rating"),
-                total_reviews=Count("buildingreview"),
+                default_image_url=Subquery(
+                    BuildingMedia.objects.filter(building=OuterRef("pk"), type="image")
+                    .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
+                    .values("full_file_url")[:1]
+                )
             )
+
         return queryset
+
+    def get_serializer_class(self):
+        serializer = self.serializer_class
+
+        if self.action == "list":  # For list
+            serializer = BuildingListSerializer
+        elif self.action == "retrieve":  # For details
+            serializer = BuildingDetailsSerializer
+        elif self.action in ["create", "update", "partial_update"]:  # For create/update
+            serializer = BuildingCreateAndUpdateSerializer
+
+        return serializer  # Return default serializer class
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -115,14 +116,14 @@ class BuildingViewSet(viewsets.ModelViewSet):
         """
         Retrieve a list of popular buildings with pagination.
         """
-        queryset = self.get_queryset().filter(popularbuilding__isnull=False)
+        queryset = self.get_queryset().filter(populars__isnull=False)
         page = self.paginate_queryset(queryset)
 
         if page is not None:
-            serializer = GeneralBuildingSerializer(page, many=True)
+            serializer = BuildingVariousFeatureSerializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = GeneralBuildingSerializer(queryset, many=True)
+        serializer = BuildingVariousFeatureSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=["post"])
