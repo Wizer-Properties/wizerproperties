@@ -85,47 +85,47 @@ $(document).ready(function(){
         var facility_tmp = '';
 
         if(data?.building_info?.have_freehold){
-            facility_tmp += '<span>Freehold</span>'
+            facility_tmp += '<span> <i class="bi bi-geo-alt"></i> Freehold</span>'
         };
 
         if(data?.building_info?.have_leasehold){
-            facility_tmp += '<span>Leasehold</span>'
+            facility_tmp += '<span> <i class="bi bi-geo-alt"></i> Leasehold</span>'
         };
         
         if(data?.building_info?.construction_year){
-            facility_tmp += '<span> Year Built '+data?.building_info?.construction_year+'</span>'
+            facility_tmp += '<span> <i class="bi bi-geo-alt"></i>  Year Built '+data?.building_info?.construction_year+'</span>'
         };
 
         if(data?.building_info?.quota){
-            facility_tmp += '<span> '+data?.building_info?.quota+' Quota </span>'
+            facility_tmp += '<span> <i class="bi bi-geo-alt"></i>  '+data?.building_info?.quota+' Quota </span>'
         };
 
         if(data?.building_info?.have_access_to_BTS_or_MRT){
-            facility_tmp += '<span> BTS Or MRT : '+data?.building_info?.have_access_to_BTS_or_MRT+'</span>'
+            facility_tmp += '<span> <i class="bi bi-geo-alt"></i>  BTS Or MRT : '+data?.building_info?.have_access_to_BTS_or_MRT+'</span>'
         };
 
         if(data?.building_info?.have_access_to_ARL){
-            facility_tmp += '<span> ART : '+data?.building_info?.have_access_to_ARL+'</span>'
+            facility_tmp += '<span> <i class="bi bi-geo-alt"></i>  ART : '+data?.building_info?.have_access_to_ARL+'</span>'
         };
 
         if(data?.building_info?.have_pets_allowed){
-            facility_tmp += '<span> Pet Friendly </span>'
+            facility_tmp += '<span> <i class="bi bi-geo-alt"></i>  Pet Friendly </span>'
         };
         
         if(data?.building_info?.view){
-            facility_tmp += '<span>'+data?.building_info?.view+'</span>'
+            facility_tmp += '<span> <i class="bi bi-geo-alt"></i> '+data?.building_info?.view+'</span>'
         };
 
         if(data?.building_info?.have_infinity_pool){
-            facility_tmp += '<span>Infinity Pool</span>'
+            facility_tmp += '<span> <i class="bi bi-geo-alt"></i> Infinity Pool</span>'
         };
 
         if(data?.building_info?.have_fitness_area){
-            facility_tmp += '<span>Gym</span>'
+            facility_tmp += '<span> <i class="bi bi-geo-alt"></i> Gym</span>'
         };
 
         if(data?.building_info?.have_sky_lounge){
-            facility_tmp += '<span>Sky Lounge</span>'
+            facility_tmp += '<span> <i class="bi bi-geo-alt"></i> Sky Lounge</span>'
         };
 
         return facility_tmp;
@@ -154,7 +154,7 @@ $(document).ready(function(){
 
         return  '<div class="col-12 mb-4 property-single-box">'+
                     '<div class="search-result-box-wrapper p-0">'+
-                        '<div class="row">'+
+                        '<div class="row m-0">'+
                             '<div class="col-lg-5 col-xl-7 p-0">'+
                                 '<div class="splide search-result-box-img-splid">'+
                                     '<div class="splide__track">'+
@@ -203,7 +203,7 @@ $(document).ready(function(){
 
                                             '<p class="details"> '+ data?.description +'</p>'+
 
-                                            '<div class="property-faciluty mt-2">'+
+                                            '<div class="property-faciluties-list mt-3">'+
                                                 property_facility_tmp(data)+
                                             '</div>'+
                                         '</a>'+

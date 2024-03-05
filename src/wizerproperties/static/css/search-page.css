@@ -47,6 +47,7 @@
     font-size: 13px;
     color: #726E6E;
     margin: 0;
+    margin-top: 10px;
 }
 
 .search-result-box .property-contains{
@@ -81,6 +82,24 @@
     flex-wrap: wrap;
 }
 
+.property-faciluties-list{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+}
+
+.property-faciluties-list span{
+    font-size: 14px;
+    color: #484848;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.property-faciluties-list span .bi{
+    font-size: 10px;
+}
+
 .property-faciluty span{
     color: #726E6E;
     background-color: #ffd350;
@@ -99,8 +118,8 @@
 }
 
 .search-box-price{
-    background: var(--th-bg-color);
-    color: #fff;
+    background: #F4F4F5;
+    color: #484848;
     font-size: 20px;
     padding: 10px 25px;
     font-weight: 500;
@@ -346,17 +365,22 @@
 .property-card-modal-btns{
     display: flex;
     margin: 10px 0;
+    margin-bottom: 20px;
     gap: 10px;
 }
 
 .property-card-modal-btns button{
     background: var(--th-bg-color) !important;
     color: #fff !important;
-    padding: 10px 20px;
+    padding: 8px 25px;
+    font-size: 13px;
+    box-shadow: 2px 3px 7px 2px rgb(0 0 0 / 20%);
+    transition:  box-shadow .3s;
 }
 
 .property-card-modal-btns button:hover{
     opacity: .9;
+    box-shadow : none;
 }
 
 .property-card-down-area{
@@ -447,11 +471,6 @@
 @media screen and (max-width : 575px) {
     .search-result-box-img{
         margin-bottom: 5px;
-        padding: 10px 1rem 0;
-    }
-
-    .search-box-price{
-        margin: 0 1rem;
     }
 
     #search-result .banner-action-button{
@@ -477,6 +496,5 @@
     .search-box-price{
         min-height: auto;
         font-size: 18px;
-        padding: 15px 12px;
     }
 }
