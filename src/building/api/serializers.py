@@ -55,7 +55,14 @@ class BuildingDetailsSerializer(BuildingSerializer):
         ]
 
     def get_default_images(self, obj):
+        request = self.context.get("request")
         images = obj.media_files.filter(type="image")
+
+        # Determine the number of default_images to return in the list based on the provided default_images_number parameter.
+        default_images_number = request.GET.get("default_images_number")
+        if default_images_number:
+            images = images[: int(default_images_number)]
+
         return BuildingMediaSerializer(images, many=True).data
 
 
@@ -67,8 +74,8 @@ class BuildingVariousFeatureSerializer(BuildingSerializer):
     class Meta(BuildingSerializer.Meta):
         fields = BuildingSerializer.Meta.fields + [
             "default_image",
-            "have_access_to_BTS_or_MRT",
-            "have_access_to_ARL",
+            "distance_from_location_to_BTS_or_MRT",
+            "distance_from_location_to_ARL",
             "view",
             "have_freehold",
             "have_leasehold",
@@ -97,8 +104,8 @@ class BuildingListSerializer(BuildingSerializer):
             "construction_year",
             "quota",
             "furnishing",
-            "have_access_to_BTS_or_MRT",
-            "have_access_to_ARL",
+            "distance_from_location_to_BTS_or_MRT",
+            "distance_from_location_to_ARL",
             "view",
             "have_freehold",
             "have_leasehold",

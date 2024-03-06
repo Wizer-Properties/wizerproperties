@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="{% static '/css/auth.css' %}" />
 <style>
     [label-name="latitude"],
-    [label-name="longitude"]{
+    [label-name="longitude"] {
         display: none;
     }
 </style>
@@ -138,32 +138,34 @@
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="province" label="province" type="text" class="authInput" placeholder="Province"
-                                    value="{{ building.province }}" required>
+                                <input name="province" label="province" type="text" class="authInput"
+                                    placeholder="Province" value="{{ building.province }}" required>
                                 <div class="authlabelline authcompleteProfileLabe">Province</div>
                             </div>
                         </div>
-                        
+
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="district" label="district" type="text" class="authInput" placeholder="District"
-                                value="{{ building.district }}" required>
+                                <input name="district" label="district" type="text" class="authInput"
+                                    placeholder="District" value="{{ building.district }}" required>
                                 <div class="authlabelline authcompleteProfileLabe">District</div>
                             </div>
                         </div>
-                        
+
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="sub_district" label="sub-district" type="text" class="authInput" placeholder="Sub-District"
-                                value="{{ building.sub_district }}">
+                                <input name="sub_district" label="sub-district" type="text" class="authInput"
+                                    placeholder="Sub-District" value="{{ building.sub_district }}">
                                 <div class="authlabelline authcompleteProfileLabe">Sub-District</div>
                             </div>
                         </div>
 
-                        <input name="latitude" label="latitude" label-name="latitude" type="text" class="authInput" placeholder="Latitude" value="{{ building.latitude }}">
-                        <input name="longitude" label="longitude" label-name="longitude" type="text" class="authInput" placeholder="Longitude" value="{{ building.longitude }}">
+                        <input name="latitude" label="latitude" label-name="latitude" type="text" class="authInput"
+                            placeholder="Latitude" value="{{ building.latitude }}">
+                        <input name="longitude" label="longitude" label-name="longitude" type="text" class="authInput"
+                            placeholder="Longitude" value="{{ building.longitude }}">
                     </div>
 
                     <div class="row">
@@ -188,17 +190,21 @@
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="have_access_to_BTS_or_MRT" type="number" class="authInput"
-                                    placeholder="Have Access to BTS/MRT" value="{{ building.have_access_to_BTS_or_MRT }}" required>
-                                <div class="authlabelline authcompleteProfileLabe">Have Access to BTS/MRT (Mile)</div>
+                                <input name="distance_from_location_to_BTS_or_MRT" type="number" class="authInput"
+                                    placeholder="Distance From Location to BTS/MRT"
+                                    value="{{ building.distance_from_location_to_BTS_or_MRT }}" required>
+                                <div class="authlabelline authcompleteProfileLabe">Distance From Location to BTS/MRT
+                                    (Mile)</div>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="have_access_to_ARL" type="number" class="authInput" placeholder="Have Access to ARL"
-                                    value="{{ building.have_access_to_ARL }}" required>
-                                <div class="authlabelline authcompleteProfileLabe">Have Access to ARL (Mile)</div>
+                                <input name="distance_from_location_to_ARL" type="number" class="authInput"
+                                    placeholder="Distance From Location to ARL"
+                                    value="{{ building.distance_from_location_to_ARL }}" required>
+                                <div class="authlabelline authcompleteProfileLabe">Distance From Location to ARL (Mile)
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -438,14 +444,17 @@
                             <div class="uploaded-file-with-view">
                                 <div class="authFormDiv">
                                     <!-- <span class="authErrorMessage">Message</span> -->
-                                    <input name="aerial_drone_videos" type="file" accept="video/*" class="authInput authFile">
+                                    <input name="aerial_drone_videos" type="file" accept="video/*"
+                                        class="authInput authFile">
                                     <div class="fileName"> Upload Aerial Drone Video </div>
                                 </div>
 
                                 <div class="uploaded-file-view-area">
                                     {% for aerial_drone_video in aerial_drone_videos %}
                                     {% if aerial_drone_video.file %}
-                                    <a href="{{ aerial_drone_video.file.url }}" alt="Building aerial drone video">{{ aerial_drone_video.file.url }}</a>
+                                    <a href="{{ aerial_drone_video.file.url }}" alt="Building aerial drone video">
+                                        {{ aerial_drone_video.file.url }}
+                                    </a>
                                     {% endif %}
                                     {% endfor %}
                                 </div>

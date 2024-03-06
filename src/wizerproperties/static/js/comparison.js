@@ -89,8 +89,8 @@ $(document).ready(function(){
                         '<li> '+label_name('Leasehold') + facilities_tmp(data?.property_info?.building_info?.have_leasehold) +' </li>'+
                         '<li> '+label_name('Completion Date') +data?.property_info?.building_info?.construction_year+' </li>'+
                         '<li> '+label_name('Quota') + data?.property_info?.building_info?.quota +' </li>'+
-                        '<li> '+label_name('Access to BTS/MRT') + data?.property_info?.building_info?.have_access_to_BTS_or_MRT +' </li>'+
-                        '<li> '+label_name('Access to ARL') + data?.property_info?.building_info?.have_access_to_ARL +' </li>'+
+                        '<li> '+label_name('Access to BTS/MRT') + data?.property_info?.building_info?.distance_from_location_to_BTS_or_MRT +' </li>'+
+                        '<li> '+label_name('Access to ARL') + data?.property_info?.building_info?.distance_from_location_to_ARL +' </li>'+
                         '<li> '+label_name('Furnished') + data?.property_info?.building_info?.furnishing +' </li>'+
                         '<li> '+label_name('Tenant Occupied') + facilities_tmp(data?.property_info?.have_tenant_occupied) +' </li>'+
                         '<li> '+label_name('Owner Occupied') + facilities_tmp(data?.property_info?.have_owner_occupied) +' </li>'+

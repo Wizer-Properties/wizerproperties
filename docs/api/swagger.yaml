@@ -384,6 +384,422 @@ paths:
           description: Service Unavailable(Server is down for maintenance or overloaded)
         504:
           description: Taking more time to get a response
+
+  /building/api/list/:
+    get:
+      tags:
+        - Building
+      summary: "Buildings list"
+      description: "**User type**: both"
+      operationId: building_list
+      produces:
+        - "application/json"
+      parameters:
+        - name: "page_size"
+          in: "query"
+          type: "number"
+        - name: "page"
+          in: "query"
+          type: "number"
+        - name: "lowest_price"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "highest_price"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "type"
+          description: "Filtered by and choice will be 'condos' or 'house'."
+          in: "query"
+          type: "string"
+        - name: "quota"
+          description: "Choice will be 'thai' or 'foreign'."
+          in: "query"
+          type: "string"
+        - name: "furnishing"
+          description: "Choice will be 'partly' or 'fully'."
+          in: "query"
+          type: "string"
+        - name: "have_freehold"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_leasehold"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_infinity_pool"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_pets_allowed"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_guard_house"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_sauna"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_sky_lounge"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_grocery"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_fitness_area"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+      responses:
+        200:
+          description: Buildings list
+          schema:
+            $ref: "#/definitions/BuildingListResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /building/api/list/popular/:
+    get:
+      tags:
+        - Building
+      summary: "Popular buildings list"
+      description: "**User type**: both"
+      operationId: Popular
+      produces:
+        - "application/json"
+      parameters:
+        - name: "page_size"
+          in: "query"
+          type: "number"
+        - name: "page"
+          in: "query"
+          type: "number"
+        - name: "lowest_price"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "highest_price"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "type"
+          description: "Filtered by and choice will be 'condos' or 'house'."
+          in: "query"
+          type: "string"
+        - name: "quota"
+          description: "Choice will be 'thai' or 'foreign'."
+          in: "query"
+          type: "string"
+        - name: "furnishing"
+          description: "Choice will be 'partly' or 'fully'."
+          in: "query"
+          type: "string"
+        - name: "have_freehold"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_leasehold"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_infinity_pool"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_pets_allowed"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_guard_house"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_sauna"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_sky_lounge"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_grocery"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+        - name: "have_fitness_area"
+          description: "Filtered by"
+          in: "query"
+          type: "boolean"
+      responses:
+        200:
+          description: Popular Buildings list
+          schema:
+            $ref: "#/definitions/BuildingVariousFeatureListResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /building/api/details/{building_id}/:
+    get:
+      tags:
+        - Building
+      summary: "Building details"
+      description: "**User type**: both"
+      operationId: building_details
+      produces:
+        - "application/json"
+      parameters:
+        - name: "building_id"
+          required: true
+          in: "path"
+          type: "number"
+        - name: "default_images_number"
+          description: "Determine the number of default_images to return in the list based on the provided default_images_number parameter."
+          in: "query"
+          type: "string"
+      responses:
+        200:
+          description: Building details
+          schema:
+            $ref: "#/definitions/BuildingDetailsResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /building/api/details/{building_id}/media-files/:
+    get:
+      tags:
+        - Building
+      summary: "Building media files"
+      description: "**User type**: both"
+      operationId: building_media_files
+      produces:
+        - "application/json"
+      parameters:
+        - name: "building_id"
+          required: true
+          in: "path"
+          type: "number"
+        - name: "media_type"
+          required: true
+          in: "query"
+          type: "string"
+        - name: "page_size"
+          in: "query"
+          type: "number"
+        - name: "page"
+          in: "query"
+          type: "number"
+      responses:
+        200:
+          description: Building media files
+          schema:
+            $ref: "#/definitions/MediaFilesResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /building/api/details/{building_id}/developer-info/:
+    get:
+      tags:
+        - Building
+      summary: "Building developer info"
+      description: "**User type**: both"
+      operationId: building_developer_info
+      produces:
+        - "application/json"
+      parameters:
+        - name: "building_id"
+          required: true
+          in: "path"
+          type: "number"
+      responses:
+        200:
+          description: Building developer info
+          schema:
+            $ref: "#/definitions/BuildingDeveloperInfoResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /building/api/details/{building_id}/available-facilities/:
+    get:
+      tags:
+        - Building
+      summary: "Building available facilities"
+      description: "**User type**: both"
+      operationId: building_available_facilities
+      produces:
+        - "application/json"
+      parameters:
+        - name: "building_id"
+          required: true
+          in: "path"
+          type: "string"
+      responses:
+        200:
+          description: Building available facilities
+          schema:
+            $ref: "#/definitions/BuildingAvailableFacilitiesResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+
+  /building/api/details/{building_id}/available-units/:
+    get:
+      tags:
+        - Building
+      summary: "Building available units"
+      description: "**User type**: both"
+      operationId: building_available_units
+      produces:
+        - "application/json"
+      parameters:
+        - name: "building_id"
+          required: true
+          in: "path"
+          type: "number"
+        - name: "bed"
+          description: "Return available units list with a number of bedrooms based on the provided bed parameter."
+          in: "query"
+          type: "number"
+        - name: "page_size"
+          in: "query"
+          type: "number"
+        - name: "page"
+          in: "query"
+          type: "number"
+      responses:
+        200:
+          description: Building available units
+          schema:
+            $ref: "#/definitions/BuildingAvailableUnitsResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /building/api/generate-description/:
+    post:
+      tags:
+        - Building
+      summary: "Generate building description"
+      description: "**User type**: logged in as developer or agent"
+      operationId: generate_building_description
+      produces:
+        - "application/json"
+ 
+      responses:
+        201:
+          description: Generate building description
+          schema:
+            $ref: "#/definitions/BuildingGeneratedDescriptionResponse"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
   
   /building/api/create/:
     post:
@@ -467,11 +883,11 @@ paths:
           in: "formData"
           required: true
           type: "number"
-        - name: "have_access_to_BTS_or_MRT"
+        - name: "distance_from_location_to_BTS_or_MRT"
           in: "formData"
           required: true
           type: "number"
-        - name: "have_access_to_ARL"
+        - name: "distance_from_location_to_ARL"
           in: "formData"
           required: true
           type: "number"
@@ -480,9 +896,11 @@ paths:
           required: true
           type: "string"
         - name: "facility_view"
+          description: "Its a URL field for video"
           in: "formData"
           type: "string"
         - name: "location_view"
+          description: "Its a URL field for video"
           in: "formData"
           type: "string"
         - name: "have_freehold"
@@ -532,14 +950,6 @@ paths:
           in: "formData"
           required: true
           type: "file"
-        - name: "facilities_virtual_tours"
-          in: "formData"
-          required: true
-          type: "file"
-        - name: "location_virtual_tours"
-          in: "formData"
-          required: true
-          type: "file"
         - name: "aerial_drone_videos"
           in: "formData"
           required: true
@@ -548,7 +958,7 @@ paths:
         201:
           description: Building created
           schema:
-            $ref: "#/definitions/BuildingResponse"
+            $ref: "#/definitions/BuildingCreateOrUpdateResponse"
         400:
           description: Required fields are missing
           schema:
@@ -571,326 +981,8 @@ paths:
           description: Service Unavailable(Server is down for maintenance or overloaded)
         504:
           description: Taking more time to get a response
-  
-  /building/api/list/:
-    get:
-      tags:
-        - Building
-      summary: "Buildings list"
-      description: "**User type**: both"
-      operationId: building_list
-      produces:
-        - "application/json"
-      parameters:
-        - name: "page_size"
-          in: "query"
-          type: "string"
-        - name: "page"
-          in: "query"
-          type: "string"
-        - name: "lowest_price"
-          description: "Filtered by"
-          in: "query"
-          type: "number"
-        - name: "highest_price"
-          description: "Filtered by"
-          in: "query"
-          type: "number"
-        - name: "type"
-          description: "Filtered by and choice will be 'condos' or 'house'."
-          in: "query"
-          type: "string"
-        - name: "quota"
-          description: "Choice will be 'thai' or 'foreign'."
-          in: "query"
-          required: true
-          type: "string"
-        - name: "furnishing"
-          description: "Choice will be 'partly' or 'fully'."
-          in: "query"
-          required: true
-          type: "string"
-        - name: "province"
-          description: "Filtered by"
-          in: "query"
-          type: "string"
-        - name: "have_freehold"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_leasehold"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_infinity_pool"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_pets_allowed"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_guard_house"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_sauna"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_sky_lounge"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_grocery"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_fitness_area"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-      responses:
-        200:
-          description: Buildings list
-          schema:
-            $ref: "#/definitions/BuildingListResponse"
-        405:
-          description: Method not allowed(Method ain't supported by this URL)
-          schema:
-            $ref: "#/definitions/commonSingleErrorResponse"
-        500:
-          description: Internal Server Error(Something has gone wrong on the website's server)
-        501:
-          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
-        502:
-          description: Bad Gateway(Received an invalid response from the upstream server)
-        503:
-          description: Service Unavailable(Server is down for maintenance or overloaded)
-        504:
-          description: Taking more time to get a response
-  
-  /building/api/list/popular/:
-    get:
-      tags:
-        - Building
-      summary: "Popular buildings list"
-      description: "**User type**: both"
-      operationId: Popular
-      produces:
-        - "application/json"
-      parameters:
-        - name: "page_size"
-          in: "query"
-          type: "string"
-        - name: "page"
-          in: "query"
-          type: "string"
-        - name: "lowest_price"
-          description: "Filtered by"
-          in: "query"
-          type: "number"
-        - name: "highest_price"
-          description: "Filtered by"
-          in: "query"
-          type: "number"
-        - name: "type"
-          description: "Filtered by and choice will be 'condos' or 'house'."
-          in: "query"
-          type: "string"
-        - name: "quota"
-          description: "Choice will be 'thai' or 'foreign'."
-          in: "query"
-          required: true
-          type: "string"
-        - name: "furnishing"
-          description: "Choice will be 'partly' or 'fully'."
-          in: "query"
-          required: true
-          type: "string"
-        - name: "province"
-          description: "Filtered by"
-          in: "query"
-          type: "string"
-        - name: "have_freehold"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_leasehold"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_infinity_pool"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_pets_allowed"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_guard_house"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_sauna"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_sky_lounge"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_grocery"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_fitness_area"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-      responses:
-        200:
-          description: Buildings list
-          schema:
-            $ref: "#/definitions/BuildingListResponse"
-        405:
-          description: Method not allowed(Method ain't supported by this URL)
-          schema:
-            $ref: "#/definitions/commonSingleErrorResponse"
-        500:
-          description: Internal Server Error(Something has gone wrong on the website's server)
-        501:
-          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
-        502:
-          description: Bad Gateway(Received an invalid response from the upstream server)
-        503:
-          description: Service Unavailable(Server is down for maintenance or overloaded)
-        504:
-          description: Taking more time to get a response
-  
-  /building/api/details/{id}/:
-    get:
-      tags:
-        - Building
-      summary: "Building details"
-      description: "**User type**: both"
-      operationId: building_details
-      produces:
-        - "application/json"
-      parameters:
-        - name: "id"
-          required: true
-          in: "path"
-          type: "string"
-      responses:
-        200:
-          description: Building details
-          schema:
-            $ref: "#/definitions/BuildingDetailsResponse"
-        405:
-          description: Method not allowed(Method ain't supported by this URL)
-          schema:
-            $ref: "#/definitions/commonSingleErrorResponse"
-        500:
-          description: Internal Server Error(Something has gone wrong on the website's server)
-        501:
-          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
-        502:
-          description: Bad Gateway(Received an invalid response from the upstream server)
-        503:
-          description: Service Unavailable(Server is down for maintenance or overloaded)
-        504:
-          description: Taking more time to get a response
-  
-  /building/api/details/{id}/media-files/:
-    get:
-      tags:
-        - Building
-      summary: "Building media files"
-      description: "**User type**: both"
-      operationId: building_media_files
-      produces:
-        - "application/json"
-      parameters:
-        - name: "id"
-          required: true
-          in: "path"
-          type: "string"
-        - name: "media_type"
-          required: true
-          in: "query"
-          type: "string"
-        - name: "page_size"
-          in: "query"
-          type: "string"
-        - name: "page"
-          in: "query"
-          type: "string"
-      responses:
-        200:
-          description: Building media files
-          schema:
-            $ref: "#/definitions/MediaFilesResponse"
-        400:
-          description: Required fields are missing
-          schema:
-            $ref: "#/definitions/commonSingleErrorResponse"
-        405:
-          description: Method not allowed(Method ain't supported by this URL)
-          schema:
-            $ref: "#/definitions/commonSingleErrorResponse"
-        500:
-          description: Internal Server Error(Something has gone wrong on the website's server)
-        501:
-          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
-        502:
-          description: Bad Gateway(Received an invalid response from the upstream server)
-        503:
-          description: Service Unavailable(Server is down for maintenance or overloaded)
-        504:
-          description: Taking more time to get a response
 
-  /building/api/details/{id}/available-units/:
-    get:
-      tags:
-        - Building
-      summary: "Building available units"
-      description: "**User type**: both"
-      operationId: building_available_units
-      produces:
-        - "application/json"
-      parameters:
-        - name: "id"
-          required: true
-          in: "path"
-          type: "string"
-        - name: "page_size"
-          in: "query"
-          type: "string"
-        - name: "page"
-          in: "query"
-          type: "string"
-      responses:
-        200:
-          description: Building available units
-          schema:
-            $ref: "#/definitions/BuildingAvailableUnitsResponse"
-        405:
-          description: Method not allowed(Method ain't supported by this URL)
-          schema:
-            $ref: "#/definitions/commonSingleErrorResponse"
-        500:
-          description: Internal Server Error(Something has gone wrong on the website's server)
-        501:
-          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
-        502:
-          description: Bad Gateway(Received an invalid response from the upstream server)
-        503:
-          description: Service Unavailable(Server is down for maintenance or overloaded)
-        504:
-          description: Taking more time to get a response
-
-  /building/api/update/{id}/:
+  /building/api/update/{building_id}/:
     put:
       tags:
         - Building
@@ -902,10 +994,10 @@ paths:
       consumes:
         - "multipart/form-data"
       parameters:
-        - name: "id"
+        - name: "building_id"
           required: true
           in: "path"
-          type: "string"
+          type: "number"
         - name: "title"
           in: "formData"
           required: true
@@ -976,11 +1068,11 @@ paths:
           in: "formData"
           required: true
           type: "number"
-        - name: "have_access_to_BTS_or_MRT"
+        - name: "distance_from_location_to_BTS_or_MRT"
           in: "formData"
           required: true
           type: "number"
-        - name: "have_access_to_ARL"
+        - name: "distance_from_location_to_ARL"
           in: "formData"
           required: true
           type: "number"
@@ -1036,12 +1128,6 @@ paths:
         - name: "videos"
           in: "formData"
           type: "file"
-        - name: "facilities_virtual_tours"
-          in: "formData"
-          type: "file"
-        - name: "location_virtual_tours"
-          in: "formData"
-          type: "file"
         - name: "aerial_drone_videos"
           in: "formData"
           type: "file"
@@ -1049,7 +1135,7 @@ paths:
         200:
           description: Building updated
           schema:
-            $ref: "#/definitions/BuildingResponse"
+            $ref: "#/definitions/BuildingCreateOrUpdateResponse"
         400:
           description: Required fields are missing
           schema:
@@ -1083,10 +1169,10 @@ paths:
       consumes:
         - "multipart/form-data"
       parameters:
-        - name: "id"
+        - name: "building_id"
           required: true
           in: "path"
-          type: "string"
+          type: "number"
         - name: "is_active"
           in: "formData"
           required: true
@@ -1095,7 +1181,7 @@ paths:
         200:
           description: Building updated
           schema:
-            $ref: "#/definitions/BuildingResponse"
+            $ref: "#/definitions/BuildingCreateOrUpdateResponse"
         400:
           description: Required fields are missing
           schema:
@@ -1119,7 +1205,7 @@ paths:
         504:
           description: Taking more time to get a response
   
-  /building/api/delete/{id}/:
+  /building/api/delete/{building_id}/:
     delete:
       tags:
         - Building
@@ -1129,10 +1215,10 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - name: "id"
+        - name: "building_id"
           required: true
           in: "path"
-          type: "string"
+          type: "number"
       responses:
         204:
           description: Building delete (No content)
@@ -1151,10 +1237,50 @@ paths:
         504:
           description: Taking more time to get a response
   
+  /building/api/review/list/:
+    get:
+      tags:
+        - Building Review
+      summary: "Building review list"
+      description: "**User type**: both"
+      operationId: building_review_list
+      produces:
+        - "application/json"
+      parameters:
+        - name: "building_id"
+          required: true
+          in: "query"
+          type: "number"
+        - name: "page_size"
+          in: "query"
+          type: "number"
+        - name: "page"
+          in: "query"
+          type: "number"
+      responses:
+        200:
+          description: Building review list
+          schema:
+            $ref: "#/definitions/BuildingReviewListResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+
   /building/api/review/create/:
     post:
       tags:
-        - Building
+        - Building Review
       summary: "Create building review"
       description: "**User type**: logged in as prospect"
       operationId: create_building_review
@@ -1180,7 +1306,7 @@ paths:
         201:
           description: Building created
           schema:
-            $ref: "#/definitions/BuildingReviewResponse"
+            $ref: "#/definitions/BuildingReviewCreateResponse"
         400:
           description: Required fields are missing
           schema:
@@ -1189,46 +1315,6 @@ paths:
           description: permission denied
           schema:
             $ref: "#/definitions/commonSingleErrorResponse"
-        405:
-          description: Method not allowed(Method ain't supported by this URL)
-          schema:
-            $ref: "#/definitions/commonSingleErrorResponse"
-        500:
-          description: Internal Server Error(Something has gone wrong on the website's server)
-        501:
-          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
-        502:
-          description: Bad Gateway(Received an invalid response from the upstream server)
-        503:
-          description: Service Unavailable(Server is down for maintenance or overloaded)
-        504:
-          description: Taking more time to get a response
-
-  /building/api/review/list/:
-    get:
-      tags:
-        - Building
-      summary: "Building review list"
-      description: "**User type**: both"
-      operationId: building_review_list
-      produces:
-        - "application/json"
-      parameters:
-        - name: "building_id"
-          required: true
-          in: "query"
-          type: "string"
-        - name: "page_size"
-          in: "query"
-          type: "string"
-        - name: "page"
-          in: "query"
-          type: "string"
-      responses:
-        200:
-          description: Building review list
-          schema:
-            $ref: "#/definitions/BuildingReviewListResponse"
         405:
           description: Method not allowed(Method ain't supported by this URL)
           schema:
@@ -2966,7 +3052,7 @@ definitions:
       address:
         type: "string"
         
-  BuildingResponse:
+  BuildingCreateOrUpdateResponse:
     type: object
     properties:
       id:
@@ -2975,13 +3061,27 @@ definitions:
         type: "string"
       description:
         type: "string"
+      type:
+        type: "string"
+      total_units_for_sale:
+        type: "number"
+      address:
+        type: "string"
+      project_total_area:
+        type: "number"
+      total_floors:
+        type: "number"
+      facility_view:
+        type: "string"
+      location_view:
+        type: "string"
       lowest_price:
         type: "number"
       highest_price:
         type: "number"
-      type:
-        type: "string"
-      total_units_for_sale:
+      latitude:
+        type: "number"
+      longitude:
         type: "number"
       province:
         type: "string"
@@ -2989,194 +3089,15 @@ definitions:
         type: "string"
       sub_district:
         type: "string"
-      address:
-        type: "string"
-      latitude:
-        type: "number"
-      longitude:
-        type: "number"
-      project_total_area:
-        type: "number"
-      total_floors:
-        type: "number"
       construction_year:
         type: "number"
-      have_guard_house:
-        type: "boolean"
-      have_sauna:
-        type: "boolean"
-      have_sky_lounge:
-        type: "boolean"
-      have_grocery:
-        type: "boolean"
-      have_fitness_area:
-        type: "boolean"
-      is_active:
-        type: "boolean"
-      created_by:
-        type: object
-        properties:
-          email:
-            type: "string"
-          phone_number:
-            type: "string"
-          company_logo:
-            type: "string"
-          company_name:
-            type: "string"
-          company_address:
-            type: "string"
-          company_details:
-            type: "string"
-  
-  BuildingListResponse:
-    type: object
-    properties:
-      count:
-        type: "number"
-      page_size:
-        type: "number"
-      next:
-        type: "number"
-      previous:
-        type: "number"
-      total_page:
-        type: "number"
-      results:
-        type: array
-        items:
-          type: object
-          properties:
-            id:
-              type: "number"
-            title:
-              type: "string"
-            default_image:
-              type: "string"
-            description:
-              type: "string"
-            lowest_price:
-              type: "number"
-            highest_price:
-              type: "number"
-            type:
-              type: "string"
-            quota:
-              type: "string"
-            furnishing:
-              type: "string"
-            total_units_for_sale:
-              type: "number"
-            province:
-              type: "string"
-            district:
-              type: "string"
-            sub_district:
-              type: "string"
-            address:
-              type: "string"
-            latitude:
-              type: "number"
-            longitude:
-              type: "number"
-            project_total_area:
-              type: "number"
-            total_floors:
-              type: "number"
-            construction_year:
-              type: "number"
-            have_access_to_BTS_or_MRT:
-              type: "number"
-            have_access_to_ARL:
-              type: "number"
-            view:
-              type: "string"
-            have_freehold:
-              type: "boolean"
-            have_leasehold:
-              type: "boolean"
-            have_infinity_pool:
-              type: "boolean"
-            have_pets_allowed:
-              type: "boolean"
-            have_guard_house:
-              type: "boolean"
-            have_sauna:
-              type: "boolean"
-            have_sky_lounge:
-              type: "boolean"
-            have_grocery:
-              type: "boolean"
-            have_fitness_area:
-              type: "boolean"
-            is_active:
-              type: "boolean"
-            is_reviewed:
-              type: "boolean"
-            average_rating:
-              type: "number"
-            total_reviews:
-              type: "number"
-            created_by:
-              type: object
-              properties:
-                email:
-                  type: "string"
-                phone_number:
-                  type: "string"
-                company_logo:
-                  type: "string"
-                company_name:
-                  type: "string"
-                company_address:
-                  type: "string"
-                company_details:
-                  type: "string"
-  
-  BuildingDetailsResponse:
-    type: object
-    properties:
-      id:
-        type: "number"
-      title:
-        type: "string"
-      default_image:
-        type: "string"
-      description:
-        type: "string"
-      lowest_price:
-        type: "number"
-      highest_price:
-        type: "number"
-      type:
-        type: "string"
       quota:
         type: "string"
       furnishing:
         type: "string"
-      total_units_for_sale:
+      distance_from_location_to_BTS_or_MRT:
         type: "number"
-      province:
-        type: "string"
-      district:
-        type: "string"
-      sub_district:
-        type: "string"
-      address:
-        type: "string"
-      latitude:
-        type: "number"
-      longitude:
-        type: "number"
-      project_total_area:
-        type: "number"
-      total_floors:
-        type: "number"
-      construction_year:
-        type: "number"
-      have_access_to_BTS_or_MRT:
-        type: "number"
-      have_access_to_ARL:
+      distance_from_location_to_ARL:
         type: "number"
       view:
         type: "string"
@@ -3200,27 +3121,228 @@ definitions:
         type: "boolean"
       is_active:
         type: "boolean"
-      is_reviewed:
-        type: "boolean"
-      average_rating:
-        type: "number"
-      total_reviews:
-        type: "number"
       created_by:
-        type: object
-        properties:
-          email:
-            type: "string"
-          phone_number:
-            type: "string"
-          company_logo:
-            type: "string"
-          company_name:
-            type: "string"
-          company_address:
-            type: "string"
-          company_details:
-            type: "string"
+        type: "string"
+  
+  BuildingListResponse:
+    type: object
+    properties:
+      count:
+        type: "number"
+      page_size:
+        type: "number"
+      next:
+        type: "number"
+      previous:
+        type: "number"
+      total_page:
+        type: "number"
+      results:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: "number"
+            title:
+              type: "string"
+            description:
+              type: "string"
+            type:
+              type: "string"
+            total_units_for_sale:
+              type: "number"
+            address:
+              type: "string"
+            project_total_area:
+              type: "number"
+            total_floors:
+              type: "number"
+            facility_view:
+              type: "string"
+            location_view:
+              type: "string"
+            lowest_price:
+              type: "number"
+            highest_price:
+              type: "number"
+            latitude:
+              type: "number"
+            longitude:
+              type: "number"
+            province:
+              type: "string"
+            district:
+              type: "string"
+            sub_district:
+              type: "string"
+            construction_year:
+              type: "number"
+            quota:
+              type: "string"
+            furnishing:
+              type: "string"
+            distance_from_location_to_BTS_or_MRT:
+              type: "number"
+            distance_from_location_to_ARL:
+              type: "number"
+            view:
+              type: "string"
+            have_freehold:
+              type: "boolean"
+            have_leasehold:
+              type: "boolean"
+            have_infinity_pool:
+              type: "boolean"
+            have_pets_allowed:
+              type: "boolean"
+            have_guard_house:
+              type: "boolean"
+            have_sauna:
+              type: "boolean"
+            have_sky_lounge:
+              type: "boolean"
+            have_grocery:
+              type: "boolean"
+            have_fitness_area:
+              type: "boolean"
+            is_active:
+              type: "boolean"
+            created_by:
+              type: "string"
+              
+  BuildingVariousFeatureListResponse:
+    type: object
+    properties:
+      count:
+        type: "number"
+      page_size:
+        type: "number"
+      next:
+        type: "number"
+      previous:
+        type: "number"
+      total_page:
+        type: "number"
+      results:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: "number"
+            title:
+              type: "string"
+            description:
+              type: "string"
+            type:
+              type: "string"
+            total_units_for_sale:
+              type: "number"
+            address:
+              type: "string"
+            project_total_area:
+              type: "number"
+            total_floors:
+              type: "number"
+            facility_view:
+              type: "string"
+            location_view:
+              type: "string"
+            default_image:
+              type: "string"
+            distance_from_location_to_BTS_or_MRT:
+              type: "number"
+            distance_from_location_to_ARL:
+              type: "number"
+            view:
+              type: "string"
+            have_freehold:
+              type: "boolean"
+            have_leasehold:
+              type: "boolean"
+            have_infinity_pool:
+              type: "boolean"
+            have_pets_allowed:
+              type: "boolean"
+            have_guard_house:
+              type: "boolean"
+            have_sauna:
+              type: "boolean"
+            have_sky_lounge:
+              type: "boolean"
+            have_grocery:
+              type: "boolean"
+            have_fitness_area:
+              type: "boolean"
+  
+  BuildingDetailsResponse:
+    type: object
+    properties:
+      id:
+        type: "number"
+      title:
+        type: "string"
+      description:
+        type: "string"
+      type:
+        type: "string"
+      total_units_for_sale:
+        type: "number"
+      address:
+        type: "string"
+      project_total_area:
+        type: "number"
+      total_floors:
+        type: "number"
+      facility_view:
+        type: "string"
+      location_view:
+        type: "string"
+      lowest_price:
+        type: "number"
+      highest_price:
+        type: "number"
+      latitude:
+        type: "number"
+      longitude:
+        type: "number"
+      construction_year:
+        type: "number"
+      default_images:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: "number"
+            file:
+              type: "string"
+            type:
+              type: "string"
+  
+  BuildingDeveloperInfoResponse:
+    type: object
+    properties:
+      name:
+        type: "string"
+      email:
+        type: "string"
+      phone_number:
+        type: "string"
+      company_logo:
+        type: "string"
+      company_name:
+        type: "string"
+      company_address:
+        type: "string"
+      company_details:
+        type: "string"
+  
+  BuildingAvailableFacilitiesResponse:
+    type: array
+    items:
+      type: "string"
   
   BuildingAvailableUnitsResponse:
     type: object
@@ -3242,10 +3364,6 @@ definitions:
           properties:
             id:
               type: "number"
-            building:
-              type: "number"
-            unit_id:
-              type: "string"
             title:
               type: "string"
             default_image:
@@ -3260,41 +3378,16 @@ definitions:
               type: "string"
             unit_area:
               type: "number"
-            interior_view:
-              type: "string"
             number_of_bedroom:
               type: "number"
             number_of_bathroom:
               type: "number"
-            number_of_balcony:
-              type: "number"
-            number_of_car_parking:
-              type: "number"
-            balcony_direction:
-              type: "string"
-            is_active:
-              type: "boolean"
   
-  BuildingReviewResponse:
+  BuildingGeneratedDescriptionResponse:
     type: object
     properties:
-      id:
-        type: "number"
-      rating:
-        type: "number"
-      review_text:
+      generated_building_description:
         type: "string"
-      reviewer_details:
-        type: object
-        properties:
-          id:
-            type: "number"
-          user_type:
-            type: "string"
-          fullname:
-            type: "string"
-          profile_image:
-            type: "string"
   
   BuildingReviewListResponse:
     type: object
@@ -3329,9 +3422,30 @@ definitions:
                   type: "string"
                 fullname:
                   type: "string"
-                profile_image:
-                  type: "string"
-  
+            created_at:
+              type: "string"
+            
+  BuildingReviewCreateResponse:
+    type: object
+    properties:
+      id:
+        type: "number"
+      rating:
+        type: "number"
+      review_text:
+        type: "string"
+      reviewer_details:
+        type: object
+        properties:
+          id:
+            type: "number"
+          user_type:
+            type: "string"
+          fullname:
+            type: "string"
+      created_at:
+        type: "string"
+
   PropertyResponse:
     type: object
     properties:
@@ -3583,9 +3697,9 @@ definitions:
                   type: "number"
                 construction_year:
                   type: "number"
-                have_access_to_BTS_or_MRT:
+                distance_from_location_to_BTS_or_MRT:
                   type: "number"
-                have_access_to_ARL:
+                distance_from_location_to_ARL:
                   type: "number"
                 view:
                   type: "string"
@@ -3786,9 +3900,9 @@ definitions:
             type: "number"
           construction_year:
             type: "number"
-          have_access_to_BTS_or_MRT:
+          distance_from_location_to_BTS_or_MRT:
             type: "number"
-          have_access_to_ARL:
+          distance_from_location_to_ARL:
             type: "number"
           view:
             type: "string"
@@ -3945,9 +4059,9 @@ definitions:
                 type: "number"
               construction_year:
                 type: "number"
-              have_access_to_BTS_or_MRT:
+              distance_from_location_to_BTS_or_MRT:
                 type: "number"
-              have_access_to_ARL:
+              distance_from_location_to_ARL:
                 type: "number"
               view:
                 type: "string"
@@ -4113,9 +4227,9 @@ definitions:
                       type: "number"
                     construction_year:
                       type: "number"
-                    have_access_to_BTS_or_MRT:
+                    distance_from_location_to_BTS_or_MRT:
                       type: "number"
-                    have_access_to_ARL:
+                    distance_from_location_to_ARL:
                       type: "number"
                     view:
                       type: "string"
@@ -4266,9 +4380,9 @@ definitions:
                 type: "number"
               construction_year:
                 type: "number"
-              have_access_to_BTS_or_MRT:
+              distance_from_location_to_BTS_or_MRT:
                 type: "number"
-              have_access_to_ARL:
+              distance_from_location_to_ARL:
                 type: "number"
               view:
                 type: "string"
@@ -4434,9 +4548,9 @@ definitions:
                       type: "number"
                     construction_year:
                       type: "number"
-                    have_access_to_BTS_or_MRT:
+                    distance_from_location_to_BTS_or_MRT:
                       type: "number"
-                    have_access_to_ARL:
+                    distance_from_location_to_ARL:
                       type: "number"
                     view:
                       type: "string"

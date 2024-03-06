@@ -150,15 +150,17 @@ class PropertySerializer(serializers.ModelSerializer):
                         .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
                         .values("full_file_url")[:1]
                     ),
-                    is_reviewed=Case(
-                        When(buildingreview__user=self.request.user, then=True),
-                        default=False,
-                        output_field=BooleanField(),
-                    )
-                    if self.request
-                    and self.request.user.is_authenticated
-                    and hasattr(self.request.user, "prospectprofile")
-                    else Value(None, output_field=CharField()),
+                    is_reviewed=(
+                        Case(
+                            When(buildingreview__user=self.request.user, then=True),
+                            default=False,
+                            output_field=BooleanField(),
+                        )
+                        if self.request
+                        and self.request.user.is_authenticated
+                        and hasattr(self.request.user, "prospectprofile")
+                        else Value(None, output_field=CharField())
+                    ),
                     average_rating=Avg("buildingreview__rating"),
                     total_reviews=Count("buildingreview"),
                 )
@@ -210,10 +212,7 @@ class PropertySerializer(serializers.ModelSerializer):
                     "type", flat=True
                 )
 
-                if (
-                    "image" not in remaining_file_types
-                    or "video" not in remaining_file_types
-                ):
+                if "image" not in remaining_file_types or "video" not in remaining_file_types:
                     raise serializers.ValidationError(
                         {"media_files": ["At least one image every type of media file must remain with the property."]}
                     )
@@ -279,16 +278,13 @@ class ComparePropertySerializer(serializers.ModelSerializer):
             return None
 
 
-class PropertyAvailableUnitsSerializer(serializers.ModelSerializer):
+class PropertyAvailableUnitsForBuildingSerializer(serializers.ModelSerializer):
     default_image = serializers.URLField(source="default_image_url", read_only=True)
-    discount_period = serializers.DateField(source="discountproperty_set.first.period", read_only=True)
 
     class Meta:
         model = Property
         fields = [
             "id",
-            "building",
-            "unit_id",
             "title",
             "default_image",
             "description",
@@ -296,9 +292,19 @@ class PropertyAvailableUnitsSerializer(serializers.ModelSerializer):
             "price_per_sqm",
             "floor_number",
             "unit_area",
-            "interior_view",
             "number_of_bedroom",
             "number_of_bathroom",
+        ]
+
+
+class PropertyAvailableUnitsSerializer(PropertyAvailableUnitsForBuildingSerializer):
+    discount_period = serializers.DateField(source="discountproperty_set.first.period", read_only=True)
+
+    class Meta(PropertyAvailableUnitsForBuildingSerializer.Meta):
+        fields = PropertyAvailableUnitsForBuildingSerializer.Meta.fields + [
+            "building",
+            "unit_id",
+            "interior_view",
             "number_of_balcony",
             "number_of_car_parking",
             "balcony_direction",

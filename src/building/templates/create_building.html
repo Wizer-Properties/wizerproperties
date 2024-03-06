@@ -173,17 +173,19 @@
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="have_access_to_BTS_or_MRT" type="number" step="0.1" min="0"
-                                    class="authInput" placeholder="Have Access to BTS/MRT" required>
-                                <div class="authlabelline authcompleteProfileLabe">Have Access to BTS/MRT (Mile)</div>
+                                <input name="distance_from_location_to_BTS_or_MRT" type="number" step="0.1" min="0"
+                                    class="authInput" placeholder="Distance From Location to BTS/MRT" required>
+                                <div class="authlabelline authcompleteProfileLabe">Distance From Location to BTS/MRT
+                                    (Mile)</div>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="have_access_to_ARL" type="number" class="authInput" step="0.1" min="0"
-                                    placeholder="Have Access to ARL" required>
-                                <div class="authlabelline authcompleteProfileLabe">Have Access to ARL (Mile)</div>
+                                <input name="distance_from_location_to_ARL" type="number" class="authInput" step="0.1"
+                                    min="0" placeholder="Distance From Location to ARL" required>
+                                <div class="authlabelline authcompleteProfileLabe">Distance From Location to ARL (Mile)
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -422,5 +424,5 @@
     var createBuildingAPIUrl = "{% url 'building:api:create' %}"
     var generateBuildingDescriptionAPIUrl = "{% url 'building:api:generate_description' %}"
 </script>
-<script src="{% static 'js/building/create_building.js' %}?v=1.02"></script>
+<script src="{% static 'js/building/create_building.js' %}?v=1.03"></script>
 {% endblock extend_script %}

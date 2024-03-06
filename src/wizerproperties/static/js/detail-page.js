@@ -167,19 +167,19 @@ $(document).ready(function(){
         };
 
         if(
-            building_info?.have_access_to_BTS_or_MRT &&
-            building_info?.have_access_to_BTS_or_MRT != ''
+            building_info?.distance_from_location_to_BTS_or_MRT &&
+            building_info?.distance_from_location_to_BTS_or_MRT != ''
         ){
             var _icon = '<i class="material-symbols-outlined"> train </i>';
-            facilities_dom += facilities_info_tmp(building_info?.have_access_to_BTS_or_MRT, _icon)
+            facilities_dom += facilities_info_tmp(building_info?.distance_from_location_to_BTS_or_MRT, _icon)
         };
 
         if(
-            building_info?.have_access_to_ARL &&
-            building_info?.have_access_to_ARL != ''
+            building_info?.distance_from_location_to_ARL &&
+            building_info?.distance_from_location_to_ARL != ''
         ){
             var _icon = '<i class="material-symbols-outlined"> train </i>';
-            facilities_dom += facilities_info_tmp(building_info?.have_access_to_ARL, _icon)
+            facilities_dom += facilities_info_tmp(building_info?.distance_from_location_to_ARL, _icon)
         };
 
         if(facilities_dom == ''){

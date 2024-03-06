@@ -16,7 +16,8 @@ from building.api.serializers import (
 from building.api.filters import BuildingFilter
 from building.models import Building, BuildingMedia, BuildingReview
 from property.models import Property, PropertyMedia
-from property.api.serializers import PropertyAvailableUnitsSerializer
+from property.api.serializers import PropertyAvailableUnitsForBuildingSerializer
+from user.api.serializers import AgentProfileSerializer, DeveloperProfileSerializer
 from utils.general_func import get_chatgpt_response
 
 
@@ -83,6 +84,35 @@ class BuildingViewSet(viewsets.ModelViewSet):
             return Response({"detail": "Media type is required."}, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=True, methods=["get"])
+    def developer_info(self, request, pk=None):
+        building = self.get_object()
+
+        user = building.created_by  # Get the user who created the building
+
+        # Check if the user is an agent or developer
+        if hasattr(user, "agentprofile"):
+            profile_data = AgentProfileSerializer(user.agentprofile).data
+        elif hasattr(user, "developerprofile"):
+            profile_data = DeveloperProfileSerializer(user.developerprofile).data
+        else:
+            profile_data = {}
+
+        return Response(profile_data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=["get"])
+    def available_facilities(self, request, pk=None):
+        building = self.get_object()
+
+        # Create a list of facility names where the value is True (available)
+        available_facilities = [
+            key.split("_", 1)[1].replace("_", " ").title()
+            for key, value in building.__dict__.items()
+            if key.startswith("have_") and value
+        ]
+
+        return Response(available_facilities, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=["get"])
     def available_units(self, request, pk=None):
         building = self.get_object()
 
@@ -98,16 +128,17 @@ class BuildingViewSet(viewsets.ModelViewSet):
         if property_id:
             properties = properties.exclude(id=property_id)
 
+        # Return available units list with a number of bedrooms based on the provided bed parameter.
         bed = request.query_params.get("bed")
         if bed:
             properties = properties.filter(number_of_bedroom=bed)
 
         paginated_queryset = self.paginate_queryset(properties)
         if paginated_queryset is not None:
-            serializer = PropertyAvailableUnitsSerializer(paginated_queryset, many=True)
+            serializer = PropertyAvailableUnitsForBuildingSerializer(paginated_queryset, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = PropertyAvailableUnitsSerializer(properties, many=True)
+        serializer = PropertyAvailableUnitsForBuildingSerializer(properties, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -138,7 +169,9 @@ class BuildingViewSet(viewsets.ModelViewSet):
 
         generated_building_description = get_chatgpt_response(content)
 
-        return Response({"generated_building_description": generated_building_description}, status=status.HTTP_200_OK)
+        return Response(
+            {"generated_building_description": generated_building_description}, status=status.HTTP_201_CREATED
+        )
 
 
 class BuildingReviewViewSet(viewsets.ModelViewSet):

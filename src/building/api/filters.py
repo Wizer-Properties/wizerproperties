@@ -12,7 +12,6 @@ class BuildingFilter(django_filters.FilterSet):
             "type",
             "quota",
             "furnishing",
-            "province",
             "have_freehold",
             "have_leasehold",
             "have_infinity_pool",

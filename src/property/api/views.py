@@ -161,8 +161,8 @@ class PropertyViewSet(viewsets.ModelViewSet):
                         "project_total_area": building.project_total_area,
                         "total_floors": building.total_floors,
                         "construction_year": building.construction_year,
-                        "have_access_to_BTS_or_MRT": building.have_access_to_BTS_or_MRT,
-                        "have_access_to_ARL": building.have_access_to_ARL,
+                        "distance_from_location_to_BTS_or_MRT": building.distance_from_location_to_BTS_or_MRT,
+                        "distance_from_location_to_ARL": building.distance_from_location_to_ARL,
                     }
                 )
 

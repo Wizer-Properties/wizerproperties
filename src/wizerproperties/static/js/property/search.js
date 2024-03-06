@@ -100,12 +100,12 @@ $(document).ready(function(){
             facility_tmp += '<span> <i class="bi bi-geo-alt"></i>  '+data?.building_info?.quota+' Quota </span>'
         };
 
-        if(data?.building_info?.have_access_to_BTS_or_MRT){
-            facility_tmp += '<span> <i class="bi bi-geo-alt"></i>  BTS Or MRT : '+data?.building_info?.have_access_to_BTS_or_MRT+'</span>'
+        if(data?.building_info?.distance_from_location_to_BTS_or_MRT){
+            facility_tmp += '<span> <i class="bi bi-geo-alt"></i>  BTS Or MRT : '+data?.building_info?.distance_from_location_to_BTS_or_MRT+'</span>'
         };
 
-        if(data?.building_info?.have_access_to_ARL){
-            facility_tmp += '<span> <i class="bi bi-geo-alt"></i>  ART : '+data?.building_info?.have_access_to_ARL+'</span>'
+        if(data?.building_info?.distance_from_location_to_ARL){
+            facility_tmp += '<span> <i class="bi bi-geo-alt"></i>  ART : '+data?.building_info?.distance_from_location_to_ARL+'</span>'
         };
 
         if(data?.building_info?.have_pets_allowed){

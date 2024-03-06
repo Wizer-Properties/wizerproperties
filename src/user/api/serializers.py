@@ -5,12 +5,13 @@ from utils.general_func import show_custom_error_message
 
 
 class BaseProfileSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(source="user.username", read_only=True)
     email = serializers.EmailField(source="user.email", read_only=True)
     phone_number = PhoneNumberField(required=True)
 
     class Meta:
         abstract = True
-        fields = ["email", "phone_number"]
+        fields = ["name", "email", "phone_number"]
         extra_kwargs = {
             "company_logo": {"required": True, "allow_null": False},
             "company_name": {"required": True, "allow_null": False},
