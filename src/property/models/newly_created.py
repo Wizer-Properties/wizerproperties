@@ -6,7 +6,7 @@ from property.models import Property
 
 
 class NewlyCreatedProperty(TimestampedModel):
-    property = models.ForeignKey(Property, null=True, on_delete=models.SET_NULL)
+    property = models.ForeignKey(Property, null=True, on_delete=models.SET_NULL, related_name="newly_createds")
 
     class Meta:
         verbose_name_plural = "Newly created properties"

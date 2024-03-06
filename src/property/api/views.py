@@ -10,7 +10,7 @@ from .serializers import (
     PropertyMediaSerializer,
     ComparePropertySerializer,
     ProspectFavoritePropertySerializer,
-    GeneralPropertySerializer,
+    PropertyVariousFeatureSerializer,
 )
 from .filters import PropertyFilter
 from building.api.serializers import BuildingMediaSerializer
@@ -101,14 +101,14 @@ class PropertyViewSet(viewsets.ModelViewSet):
         """
         Retrieve a list of newly created properties with pagination.
         """
-        queryset = self.get_queryset().filter(newlycreatedproperty__isnull=False)
+        queryset = self.get_queryset().filter(newly_createds__isnull=False)
         page = self.paginate_queryset(queryset)
 
         if page is not None:
-            serializer = GeneralPropertySerializer(page, many=True)
+            serializer = PropertyVariousFeatureSerializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = GeneralPropertySerializer(queryset, many=True)
+        serializer = PropertyVariousFeatureSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=["get"])
@@ -116,14 +116,14 @@ class PropertyViewSet(viewsets.ModelViewSet):
         """
         Retrieve a list of popular properties with pagination.
         """
-        queryset = self.get_queryset().filter(popularproperty__isnull=False)
+        queryset = self.get_queryset().filter(populars__isnull=False)
         page = self.paginate_queryset(queryset)
 
         if page is not None:
-            serializer = GeneralPropertySerializer(page, many=True)
+            serializer = PropertyVariousFeatureSerializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = GeneralPropertySerializer(queryset, many=True)
+        serializer = PropertyVariousFeatureSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=["get"])
@@ -132,14 +132,14 @@ class PropertyViewSet(viewsets.ModelViewSet):
         Retrieve a list of discount properties with pagination.
         """
         today = timezone.now().date()
-        queryset = self.get_queryset().filter(discountproperty__period__gte=today)
+        queryset = self.get_queryset().filter(discounts__period__gte=today)
         page = self.paginate_queryset(queryset)
 
         if page is not None:
-            serializer = GeneralPropertySerializer(page, many=True)
+            serializer = PropertyVariousFeatureSerializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = GeneralPropertySerializer(queryset, many=True)
+        serializer = PropertyVariousFeatureSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=["post"])

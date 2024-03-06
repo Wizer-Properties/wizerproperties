@@ -7,7 +7,7 @@ from property.models import Property
 
 
 class DiscountProperty(TimestampedModel):
-    property = models.ForeignKey(Property, null=True, on_delete=models.SET_NULL)
+    property = models.ForeignKey(Property, null=True, on_delete=models.SET_NULL, related_name="discounts")
     period = models.DateField(null=True)
 
     class Meta:

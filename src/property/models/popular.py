@@ -6,7 +6,7 @@ from property.models import Property
 
 
 class PopularProperty(TimestampedModel):
-    property = models.ForeignKey(Property, null=True, on_delete=models.SET_NULL)
+    property = models.ForeignKey(Property, null=True, on_delete=models.SET_NULL, related_name="populars")
 
     class Meta:
         verbose_name_plural = "Popular properties"
