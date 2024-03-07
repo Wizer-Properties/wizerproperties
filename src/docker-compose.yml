@@ -2,6 +2,7 @@ version: '3'
 
 services:
   web:
+    restart: always
     build:
       context: .
     command: bash -c "gunicorn wizerproperties.wsgi:application --bind 0.0.0.0:8000 --reload --timeout 120 --workers 3"
@@ -18,6 +19,7 @@ services:
       - PYTHONUNBUFFERED=1
 
   db:
+    restart: always
     image: postgres:15.4  # Use an appropriate PostgreSQL version
     volumes:
       - postgres_data:/var/lib/postgresql/data

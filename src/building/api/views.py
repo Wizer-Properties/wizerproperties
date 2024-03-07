@@ -16,7 +16,7 @@ from building.api.serializers import (
 from building.api.filters import BuildingFilter
 from building.models import Building, BuildingMedia, BuildingReview
 from property.models import Property, PropertyMedia
-from property.api.serializers import PropertyAvailableUnitsForBuildingSerializer
+from property.api.serializers import PropertyAvailableUnitsSerializer
 from user.api.serializers import AgentProfileSerializer, DeveloperProfileSerializer
 from utils.general_func import get_chatgpt_response
 
@@ -103,7 +103,7 @@ class BuildingViewSet(viewsets.ModelViewSet):
     def available_facilities(self, request, pk=None):
         building = self.get_object()
 
-        # Create a list of facility names where the value is True (available)
+        # Create a list of building facility names where the value is True (available)
         available_facilities = [
             key.split("_", 1)[1].replace("_", " ").title()
             for key, value in building.__dict__.items()
@@ -135,10 +135,10 @@ class BuildingViewSet(viewsets.ModelViewSet):
 
         paginated_queryset = self.paginate_queryset(properties)
         if paginated_queryset is not None:
-            serializer = PropertyAvailableUnitsForBuildingSerializer(paginated_queryset, many=True)
+            serializer = PropertyAvailableUnitsSerializer(paginated_queryset, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = PropertyAvailableUnitsForBuildingSerializer(properties, many=True)
+        serializer = PropertyAvailableUnitsSerializer(properties, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 

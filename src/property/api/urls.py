@@ -4,14 +4,21 @@ from .views import PropertyViewSet, ComparePropertyViewSet, ProspectFavoriteProp
 
 urlpatterns = [
     path("list/", PropertyViewSet.as_view({"get": "list"}), name="list"),
+    path("list/discount/", PropertyViewSet.as_view({"get": "discount"}), name="discount"),
     path("list/newly-created/", PropertyViewSet.as_view({"get": "newly_created"}), name="newly_created"),
     path("list/popular/", PropertyViewSet.as_view({"get": "popular"}), name="popular"),
-    path("list/discount/", PropertyViewSet.as_view({"get": "discount"}), name="discount"),
+    path("details/<int:pk>/", PropertyViewSet.as_view({"get": "retrieve"}), name="details"),
+    path("details/<int:pk>/media-files/", PropertyViewSet.as_view({"get": "media_files"}), name="media_files"),
+    path("details/<int:pk>/developer-info/", PropertyViewSet.as_view({"get": "developer_info"}), name="developer_info"),
+    path("details/<int:pk>/building-info/", PropertyViewSet.as_view({"get": "building_info"}), name="building_info"),
+    path(
+        "details/<int:pk>/available-facilities/",
+        PropertyViewSet.as_view({"get": "available_facilities"}),
+        name="available_facilities",
+    ),
     path(
         "generate-description/", PropertyViewSet.as_view({"post": "generate_description"}), name="generate_description"
     ),
-    path("details/<int:pk>/", PropertyViewSet.as_view({"get": "retrieve"}), name="details"),
-    path("details/<int:pk>/media-files/", PropertyViewSet.as_view({"get": "media_files"}), name="media_files"),
     path("create/", PropertyViewSet.as_view({"post": "create"}), name="create"),
     path(
         "update/<int:pk>/",

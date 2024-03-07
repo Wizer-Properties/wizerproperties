@@ -7,19 +7,26 @@ from rest_framework.response import Response
 from .permissions import PropertyPermission, ComparePropertyPermission, ProspectPropertyFavoritePermission
 from .serializers import (
     PropertySerializer,
+    PropertyListSerializer,
+    PropertyDetailsSerializer,
+    PropertyCreateAndUpdateSerializer,
     PropertyMediaSerializer,
     ComparePropertySerializer,
     ProspectFavoritePropertySerializer,
     PropertyVariousFeatureSerializer,
 )
 from .filters import PropertyFilter
-from building.api.serializers import BuildingMediaSerializer
+from building.api.serializers import BuildingInfoForPropertySerializer, BuildingMediaSerializer
 from building.models import Building
 from property.models import Property, PropertyMedia, CompareProperty, ProspectFavoriteProperty
+from user.api.serializers import AgentProfileSerializer, DeveloperProfileSerializer
 from utils.general_func import get_chatgpt_response
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
+    queryset = Property.objects.select_related("building", "created_by").prefetch_related(
+        "media_files", "discounts", "newly_createds", "populars"
+    )
     serializer_class = PropertySerializer
     permission_classes = [PropertyPermission]
     filterset_class = PropertyFilter
@@ -32,33 +39,53 @@ class PropertyViewSet(viewsets.ModelViewSet):
     ordering = ["-created_at"]  # Default ordering
 
     def get_queryset(self):
-        if self.request.method in ["POST", "PATCH", "PUT"]:
-            return Property.objects.all()
-
+        queryset = self.queryset
         user = self.request.user
 
-        queryset = Property.objects.filter(is_active=True).annotate(
-            # Annotate default_image_url with the URL of the first image for each property (if available)
-            default_image_url=Subquery(
-                PropertyMedia.objects.filter(property=OuterRef("pk"), type="image")
-                .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
-                .values("full_file_url")[:1]
-            ),
-            # Annotate is_compared based on whether the property is in the user's comparison list
-            is_compared=(
-                Exists(CompareProperty.objects.filter(user=user, property=OuterRef("pk")))
-                if user.is_authenticated and hasattr(user, "prospectprofile")
-                else Value(None, output_field=BooleanField())
-            ),
-            # Annotate is_favorited based on whether the property is in the user's favorite list
-            is_favorited=(
-                Exists(ProspectFavoriteProperty.objects.filter(prospect=user.prospectprofile, property=OuterRef("pk")))
-                if user.is_authenticated and hasattr(user, "prospectprofile")
-                else Value(None, output_field=BooleanField())
-            ),
-        )
+        if self.action in ["list", "retrieve", "available_units", "discount", "newly_created", "popular"]:
+            if self.action not in ["available_units"]:
+                queryset = queryset.filter(is_active=True).annotate(
+                    # Annotate is_compared based on whether the property is in the user's comparison list
+                    is_compared=(
+                        Exists(CompareProperty.objects.filter(user=user, property=OuterRef("pk")))
+                        if user.is_authenticated and hasattr(user, "prospectprofile")
+                        else Value(None, output_field=BooleanField())
+                    ),
+                    # Annotate is_favorited based on whether the property is in the user's favorite list
+                    is_favorited=(
+                        Exists(
+                            ProspectFavoriteProperty.objects.filter(
+                                prospect=user.prospectprofile, property=OuterRef("pk")
+                            )
+                        )
+                        if user.is_authenticated and hasattr(user, "prospectprofile")
+                        else Value(None, output_field=BooleanField())
+                    ),
+                )
+
+            if self.action not in ["list", "retrieve"]:
+                queryset = queryset.annotate(
+                    # Annotate default_image_url with the URL of the first image for each property (if available)
+                    default_image_url=Subquery(
+                        PropertyMedia.objects.filter(property=OuterRef("pk"), type="image")
+                        .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
+                        .values("full_file_url")[:1]
+                    ),
+                )
 
         return queryset
+
+    def get_serializer_class(self):
+        serializer = self.serializer_class
+
+        if self.action == "list":  # For list
+            serializer = PropertyListSerializer
+        elif self.action == "retrieve":  # For details
+            serializer = PropertyDetailsSerializer
+        elif self.action in ["create", "update", "partial_update"]:  # For create/update
+            serializer = PropertyCreateAndUpdateSerializer
+
+        return serializer  # Return default serializer class
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -95,6 +122,44 @@ class PropertyViewSet(viewsets.ModelViewSet):
             return self._get_paginated_media_files(media_files, serializer_class)
         else:
             return Response({"detail": "Media type is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=["get"])
+    def developer_info(self, request, pk=None):
+        property = self.get_object()
+
+        user = property.created_by  # Get the user who created the property
+
+        # Check if the user is an agent or developer
+        if hasattr(user, "agentprofile"):
+            profile_data = AgentProfileSerializer(user.agentprofile).data
+        elif hasattr(user, "developerprofile"):
+            profile_data = DeveloperProfileSerializer(user.developerprofile).data
+        else:
+            profile_data = {}
+
+        return Response(profile_data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=["get"])
+    def building_info(self, request, pk=None):
+        property = self.get_object()
+
+        building = property.building  # Get the property building
+        building_data = BuildingInfoForPropertySerializer(building).data
+
+        return Response(building_data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=["get"])
+    def available_facilities(self, request, pk=None):
+        property = self.get_object()
+
+        # Create a list of property facility names where the value is True (available)
+        available_facilities = [
+            key.split("_", 1)[1].replace("_", " ").title()
+            for key, value in property.__dict__.items()
+            if key.startswith("have_") and value
+        ]
+
+        return Response(available_facilities, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=["get"])
     def newly_created(self, request):
@@ -136,10 +201,10 @@ class PropertyViewSet(viewsets.ModelViewSet):
         page = self.paginate_queryset(queryset)
 
         if page is not None:
-            serializer = PropertyVariousFeatureSerializer(page, many=True)
+            serializer = PropertyVariousFeatureSerializer(page, many=True, include_discount_period=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = PropertyVariousFeatureSerializer(queryset, many=True)
+        serializer = PropertyVariousFeatureSerializer(queryset, many=True, include_discount_period=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=["post"])

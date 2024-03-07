@@ -16,32 +16,152 @@ class PropertyMediaSerializer(serializers.ModelSerializer):
 
 
 class PropertySerializer(serializers.ModelSerializer):
-    all_media_files = PropertyMediaSerializer(source="media_files", many=True, read_only=True)
-    building_info = serializers.SerializerMethodField()
-    images = serializers.ImageField(allow_empty_file=False, write_only=True)
-    videos = serializers.FileField(allow_empty_file=False, write_only=True)
-    default_image = serializers.URLField(source="default_image_url", read_only=True)
-    is_compared = serializers.BooleanField(read_only=True)
-    is_favorited = serializers.BooleanField(read_only=True)
-    discount_period = serializers.DateField(source="discountproperty_set.first.period", read_only=True)
 
     class Meta:
         model = Property
         fields = [
             "id",
-            "building",
-            "unit_id",
             "title",
-            "default_image",
-            "all_media_files",
             "description",
             "price",
             "price_per_sqm",
             "floor_number",
             "unit_area",
-            "interior_view",
             "number_of_bedroom",
             "number_of_bathroom",
+        ]
+
+
+class PropertyListSerializer(PropertySerializer):
+    building_type = serializers.CharField(source="building.type", read_only=True)
+    address = serializers.CharField(source="building.address", read_only=True)
+    have_freehold = serializers.BooleanField(source="building.have_freehold", read_only=True)
+    have_leasehold = serializers.BooleanField(source="building.have_leasehold", read_only=True)
+    have_infinity_pool = serializers.BooleanField(source="building.have_infinity_pool", read_only=True)
+    have_pets_allowed = serializers.BooleanField(source="building.have_pets_allowed", read_only=True)
+    have_guard_house = serializers.BooleanField(source="building.have_guard_house", read_only=True)
+    have_sauna = serializers.BooleanField(source="building.address", read_only=True)
+    have_sky_lounge = serializers.BooleanField(source="building.have_sky_lounge", read_only=True)
+    have_grocery = serializers.BooleanField(source="building.have_grocery", read_only=True)
+    have_fitness_area = serializers.BooleanField(source="building.have_fitness_area", read_only=True)
+    developer_email = serializers.CharField(source="created_by.email", read_only=True)
+    developer_phone_number = serializers.SerializerMethodField(read_only=True)
+    developer_image = serializers.SerializerMethodField(read_only=True)
+    is_compared = serializers.BooleanField(read_only=True)
+    is_favorited = serializers.BooleanField(read_only=True)
+    default_images = serializers.SerializerMethodField()
+
+    class Meta(PropertySerializer.Meta):
+        fields = PropertySerializer.Meta.fields + [
+            "interior_view",
+            "building_id",
+            "building_type",
+            "address",
+            "have_freehold",
+            "have_leasehold",
+            "have_infinity_pool",
+            "have_pets_allowed",
+            "have_guard_house",
+            "have_sauna",
+            "have_sky_lounge",
+            "have_grocery",
+            "have_fitness_area",
+            "developer_image",
+            "developer_email",
+            "developer_phone_number",
+            "is_compared",
+            "is_favorited",
+            "default_images",
+        ]
+
+    def get_default_images(self, obj):
+        request = self.context.get("request")
+        images = obj.media_files.filter(type="image")
+
+        # Determine the number of default_images to return in the list based on the provided default_images_number parameter.
+        default_images_number = request.GET.get("default_images_number")
+        if default_images_number:
+            images = images[: int(default_images_number)]
+
+        return PropertyMediaSerializer(images, many=True).data
+
+    def get_developer_image(self, obj):
+        user = obj.created_by
+
+        if hasattr(user, "developerprofile"):
+            return user.developerprofile.company_logo.url
+        elif hasattr(user, "agentprofile"):
+            return user.agentprofile.company_logo.url
+
+        return ""
+
+    def get_developer_phone_number(self, obj):
+        user = obj.created_by
+
+        if hasattr(user, "developerprofile"):
+            return str(user.developerprofile.phone_number)
+        elif hasattr(user, "agentprofile"):
+            return str(user.agentprofile.phone_number)
+
+        return ""
+
+
+class PropertyDetailsSerializer(PropertySerializer):
+    building_type = serializers.CharField(source="building.type", read_only=True)
+    address = serializers.CharField(source="building.address", read_only=True)
+    latitude = serializers.CharField(source="building.latitude", read_only=True)
+    longitude = serializers.CharField(source="building.longitude", read_only=True)
+    facility_view = serializers.URLField(source="building.facility_view", read_only=True)
+    location_view = serializers.URLField(source="building.location_view", read_only=True)
+    is_compared = serializers.BooleanField(read_only=True)
+    is_favorited = serializers.BooleanField(read_only=True)
+    default_images = serializers.SerializerMethodField()
+
+    class Meta(PropertySerializer.Meta):
+        fields = PropertySerializer.Meta.fields + [
+            "unit_id",
+            "interior_view",
+            "number_of_balcony",
+            "number_of_car_parking",
+            "balcony_direction",
+            "main_door_direction",
+            "unit_position",
+            "tenant_occupied_validity",
+            "is_active",
+            "building_id",
+            "building_type",
+            "address",
+            "latitude",
+            "longitude",
+            "facility_view",
+            "location_view",
+            "is_compared",
+            "is_favorited",
+            "default_images",
+        ]
+
+    def get_default_images(self, obj):
+        request = self.context.get("request")
+        images = obj.media_files.filter(type="image")
+
+        # Determine the number of default_images to return in the list based on the provided default_images_number parameter.
+        default_images_number = request.GET.get("default_images_number")
+        if default_images_number:
+            images = images[: int(default_images_number)]
+
+        return PropertyMediaSerializer(images, many=True).data
+
+
+class PropertyCreateAndUpdateSerializer(PropertySerializer):
+    created_by = serializers.CharField(source="created_by.username", read_only=True)
+    images = serializers.ImageField(allow_empty_file=False, write_only=True)
+    videos = serializers.FileField(allow_empty_file=False, write_only=True)
+
+    class Meta(PropertySerializer.Meta):
+        fields = PropertySerializer.Meta.fields + [
+            "building",
+            "unit_id",
+            "interior_view",
             "number_of_balcony",
             "number_of_car_parking",
             "balcony_direction",
@@ -53,17 +173,11 @@ class PropertySerializer(serializers.ModelSerializer):
             "have_owner_occupied",
             "have_bathtub",
             "have_duplex",
-            "discount_period",
             "is_active",
-            "is_compared",
-            "is_favorited",
+            "created_by",
             "images",
             "videos",
-            "building_info",
         ]
-        extra_kwargs = {
-            "building": {"write_only": True},  # Exclude the building field from the response
-        }
 
     # Validate that all fields are required and not blank
     def __init__(self, *args, **kwargs):
@@ -71,7 +185,7 @@ class PropertySerializer(serializers.ModelSerializer):
         self.request = self.context.get("request")
 
         for field_name, field in self.fields.items():
-            if field_name not in ["tenant_occupied_validity", "discount_period"]:
+            if field_name not in ["tenant_occupied_validity"]:
                 if self.instance is not None and field_name in ["images", "videos"]:
                     field.required = False
                 else:
@@ -110,65 +224,11 @@ class PropertySerializer(serializers.ModelSerializer):
 
         return data
 
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        # Filter type 'image'
-        if self.request and self.request.method == "GET":
-            representation["all_media_files"] = [
-                media for media in representation["all_media_files"] if media["type"] == "image"
-            ]
-            # Return only the 'file' field
-            representation["all_media_files"] = [
-                urlsplit(media["file"]).path for media in representation["all_media_files"]
-            ]
-        return representation
-
-    def get_fields(self):
-        fields = super().get_fields()
-        if self.request and self.request.method in ["POST", "PUT", "PATCH"]:  # Check request method and view
-            # Remove these fields during create and update
-            fields.pop("all_media_files", None)
-            fields.pop("default_image", None)
-            fields.pop("is_compared", None)
-            fields.pop("is_favorited", None)
-        return fields
-
     def get_media_files(self, request):
         return {
             "image": self.request.FILES.getlist("images"),
             "video": self.request.FILES.getlist("videos"),
         }
-
-    # 'ModelSerializer' does not directly allow you to modify the queryset while calling it
-    def get_building_info(self, obj):
-        if obj.building:
-            building = (
-                Building.objects.filter(id=obj.building.id)
-                .annotate(
-                    default_image_url=Subquery(
-                        BuildingMedia.objects.filter(building=OuterRef("pk"), type="image")
-                        .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
-                        .values("full_file_url")[:1]
-                    ),
-                    is_reviewed=(
-                        Case(
-                            When(buildingreview__user=self.request.user, then=True),
-                            default=False,
-                            output_field=BooleanField(),
-                        )
-                        if self.request
-                        and self.request.user.is_authenticated
-                        and hasattr(self.request.user, "prospectprofile")
-                        else Value(None, output_field=CharField())
-                    ),
-                    average_rating=Avg("buildingreview__rating"),
-                    total_reviews=Count("buildingreview"),
-                )
-                .first()
-            )
-            return BuildingVariousFeatureSerializer(building).data
-        else:
-            return None
 
     def create(self, validated_data):
         media_files_data = self.get_media_files(self.request)
@@ -180,10 +240,6 @@ class PropertySerializer(serializers.ModelSerializer):
                 media_file = PropertyMedia(type=media_type, file=file)
                 media_file.save()
                 media_files.append(media_file)
-
-        # Remove unwanted attributes from validated_data for 'Property' instance
-        for attr in ["is_active", "images", "videos"]:
-            validated_data.pop(attr, None)
 
         property = Property.objects.create(**validated_data, created_by=self.request.user)
         property.media_files.set(media_files)
@@ -278,47 +334,11 @@ class ComparePropertySerializer(serializers.ModelSerializer):
             return None
 
 
-class PropertyAvailableUnitsForBuildingSerializer(serializers.ModelSerializer):
+class PropertyAvailableUnitsSerializer(PropertySerializer):
     default_image = serializers.URLField(source="default_image_url", read_only=True)
 
-    class Meta:
-        model = Property
-        fields = [
-            "id",
-            "title",
-            "default_image",
-            "description",
-            "price",
-            "price_per_sqm",
-            "floor_number",
-            "unit_area",
-            "number_of_bedroom",
-            "number_of_bathroom",
-        ]
-
-
-class PropertyAvailableUnitsSerializer(PropertyAvailableUnitsForBuildingSerializer):
-    discount_period = serializers.DateField(source="discountproperty_set.first.period", read_only=True)
-
-    class Meta(PropertyAvailableUnitsForBuildingSerializer.Meta):
-        fields = PropertyAvailableUnitsForBuildingSerializer.Meta.fields + [
-            "building",
-            "unit_id",
-            "interior_view",
-            "number_of_balcony",
-            "number_of_car_parking",
-            "balcony_direction",
-            "main_door_direction",
-            "unit_position",
-            "have_tenant_occupied",
-            "tenant_occupied_validity",
-            "have_vacant",
-            "have_owner_occupied",
-            "have_bathtub",
-            "have_duplex",
-            "discount_period",
-            "is_active",
-        ]
+    class Meta(PropertySerializer.Meta):
+        fields = PropertySerializer.Meta.fields + ["default_image"]
 
 
 class ProspectFavoritePropertySerializer(serializers.ModelSerializer):
@@ -374,26 +394,25 @@ class ProspectFavoritePropertySerializer(serializers.ModelSerializer):
 
 # Serializer for handling popular, newly added, and discounted properties.
 # This serializer is designed to retrieve a list of properties with various attributes.
-class PropertyVariousFeatureSerializer(serializers.ModelSerializer):
+class PropertyVariousFeatureSerializer(PropertySerializer):
     building_type = serializers.CharField(source="building.type", read_only=True)
     building_address = serializers.CharField(source="building.address", read_only=True)
-    discount_period = serializers.DateField(source="discountproperty_set.first.period", read_only=True)
     default_image = serializers.URLField(source="default_image_url", read_only=True)
+    is_compared = serializers.BooleanField(read_only=True)
+    is_favorited = serializers.BooleanField(read_only=True)
 
-    class Meta:
-        model = Property
-        fields = [
-            "id",
+    class Meta(PropertySerializer.Meta):
+        fields = PropertySerializer.Meta.fields + [
             "building_type",
             "building_address",
-            "title",
-            "description",
-            "price",
-            "price_per_sqm",
-            "floor_number",
-            "unit_area",
-            "number_of_bedroom",
-            "number_of_bathroom",
-            "discount_period",
+            "is_compared",
+            "is_favorited",
             "default_image",
         ]
+
+    def __init__(self, *args, **kwargs):
+        include_discount_period = kwargs.pop("include_discount_period", False)
+        super().__init__(*args, **kwargs)
+
+        if include_discount_period:
+            self.fields["discount_period"] = serializers.DateField(source="discounts.first.period", read_only=True)
