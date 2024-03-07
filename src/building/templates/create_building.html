@@ -291,8 +291,8 @@
                         </div>
 
                         <div class="col-lg-6">
-                            <button type="button" id="generate-building-description" style="margin-bottom: 20px;">
-                                <span id="generateBuildingDescription">Generate Description</span>
+                            <button type="button" id="generate-building-description"  class="generating-btn">
+                                <span id="generateBuildingDescription" class="p-0">Generate Description</span>
                                 <div id="descriptionLoadingSpinner" class="spinner-border" role="status"
                                     style="display: none;">
                                     <span class="sr-only">Loading...</span>
@@ -418,6 +418,20 @@
         </div>
     </div>
 </section>
+
+<div class="ai-generate-description-modal">
+    <div class="ai-generate-description-overloay" ai-close-modal="description"></div>
+    <div class="ai-generate-description-body">
+        <h1> Generated Description </h1>
+        <textarea class="created-description-textarea" placeholder="Generated description ..."></textarea>
+        
+        <div class="ai-generate-description-footer">
+            <button ai-close-modal="description"> Cancel </button>
+            <button class="add-to-description-field"> Add </button>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 {% block extend_script %}
 <script type="text/javascript">

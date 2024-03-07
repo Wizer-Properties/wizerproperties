@@ -101,7 +101,8 @@ $(document).ready(function () {
                 loadingSpinner.hide(); // Hide the spinner
                 generatePropertyDescription.show(); // Show the text
                 $(".error-message").html("");
-                $(".profileCompanyDeatils").val(response.generated_property_description);
+                $('body').attr('open-modal', 'property-description');
+                $('.created-description-textarea').val(response.generated_property_description);
             },
             error: function (error) {
                 loadingSpinner.hide(); // Hide the spinner
@@ -175,4 +176,14 @@ $(document).ready(function () {
             },
         });
     });
+
+
+    $('.add-to-description-field').click(function(){
+        $('textarea[name="description"]').val($('.created-description-textarea').val());
+        $('body').attr('open-modal', 'false');
+    })
+
+    $('[ai-close-modal="description"]').click(function(){
+        $('body').attr('open-modal', 'false');
+    })
 });
