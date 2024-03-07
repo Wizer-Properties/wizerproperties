@@ -1,8 +1,8 @@
 .banner,
 #new-properties,
 #popular-properties,
-#contact-card,
 #popular-buildings,
+#open-ai-chat-box,
 #discount-properties,
 #popular-city{
     margin-bottom: 55px;
@@ -54,12 +54,6 @@
     opacity: .4;
 }
 
-/* .banner img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-} */
-
 .banner-title{
     position: absolute;
     top: 180px;
@@ -91,19 +85,6 @@
     z-index: 9;
 }
 
-.contact-card-img{
-    border-radius: 20px;
-    overflow: hidden;
-    position: relative;
-    right: 50px;
-}
-
-.contact-card-img img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
 .contact-cart-info-position{
     display: flex;
     flex-direction: column;
@@ -112,10 +93,6 @@
 
 .contact-cart-info-position{
     min-height: 450px;
-}
-
-.contact-card-img{
-    height: 450px;
 }
 
 .contact-cart-info h1{
@@ -323,21 +300,11 @@
         min-height: auto;
     }
 
-    .contact-cart-info,
-    .contact-card-img{
-        position: initial;
-    }
-
     .contact-cart-info{
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
     }
 
-    .contact-card-img{
-        border-top-right-radius: 0;
-        border-top-left-radius: 0;
-        height: 360px;
-    }
 
     .popular-cities-gallery{
         grid-template-columns: repeat(2, 1fr);

@@ -1,5 +1,10 @@
 $(function(){
 
+    function scroll_bown(){
+        $('.chat-history').animate({
+            scrollTop: $('.chat-history').offset().top 
+        }, 800);
+    }
 
     $(".chatbot-send-btn").click(function(){
         var this_ = $(this)
@@ -18,7 +23,8 @@ $(function(){
         $(".chatbot-loader").css("display", "block")
         chatArea.append(contentHtml)
 
-        this_.attr("disabled", "")
+        this_.attr("disabled", "");
+        scroll_bown()
 
         $.ajax({
             url: "/core/api/chatbot-gpt-api/",
@@ -37,6 +43,7 @@ $(function(){
 
                 $(".class-chatbot-input").val("")
                 this_.removeAttr("disabled")
+                scroll_bown()
             },
             error: function(err){
                 $(".chatbot-loader").css("display", "none")

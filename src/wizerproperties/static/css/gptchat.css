@@ -39,7 +39,7 @@
 
 .chat .chat-history ul li {
     list-style: none;
-    margin-bottom: 30px
+    margin-bottom: 10px
 }
 
 .chat .chat-history ul li:last-child {
@@ -63,53 +63,39 @@
 .chat .chat-history .message {
     color: #444;
     padding: 18px 20px;
-    line-height: 26px;
-    font-size: 16px;
-    border-radius: 7px;
+    font-size: 14px;
+    border-radius: 20px;
     display: inline-block;
-    position: relative
+    position: relative;
+    max-width : 50%;
 }
 
 .chat .chat-history .message:after {
-    bottom: 100%;
-    left: 7%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
+    top: 0;
+    width: 8px;
+    right: -7px;
+    content: '';
+    height: 15px;
     position: absolute;
-    pointer-events: none;
-    border-bottom-color: #fff;
-    border-width: 10px;
-    margin-left: -10px
+    background: #fff;
+    clip-path: polygon(0 0, 100% 0, 0 100%);
 }
 
 .chat .chat-history .my-message {
-    background: #efefef
+    color: #fff;
+    border-top-left-radius: 0;
+    background: var(--th-bg-color);
 }
 
 .chat .chat-history .my-message:after {
-    bottom: 100%;
-    left: 30px;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-    border-bottom-color: #efefef;
-    border-width: 10px;
-    margin-left: -10px
+    left: -7px;
+    background: var(--th-bg-color);
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
 }
 
 .chat .chat-history .other-message {
-    background: #e8f1f3;
-    text-align: right
-}
-
-.chat .chat-history .other-message:after {
-    border-bottom-color: #e8f1f3;
-    left: 93%
+    background: #fff;
+    border-top-right-radius: 0;
 }
 
 .chat .chat-message {
@@ -149,6 +135,36 @@
     height: 0
 }
 
+.chat-message input{
+    display: block;
+    width: 100%;
+    border: 1px solid #dde4ff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.chat-message button span{
+    display: block;
+    transform: rotate(45deg);
+}
+
+.chat-message button{
+    padding: 2px;
+    padding-right: 15px;
+    padding-left: 5px;
+    font-size: 22px;
+    border: 1px solid #dde4ff;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.open-ai-card{
+    background-color: #F3F6FF;
+    padding: 10px;
+    border-radius: 10px;
+}
+
 @media only screen and (max-width: 767px) {
     .chat-app .people-list {
         height: 465px;
@@ -170,6 +186,14 @@
     .chat-app .chat-history {
         height: 300px;
         overflow-x: auto
+    }
+
+    .chat .chat-history .message{
+        max-width: 90%;
+    }
+
+    .chat .chat-message{
+        padding: 15px 0;
     }
 }
 
