@@ -10,202 +10,6 @@
 			"name": "Building",
 			"item": [
 				{
-					"name": "Create",
-					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "username",
-									"value": "salmansidddik@gmail.com",
-									"type": "string"
-								},
-								{
-									"key": "password",
-									"value": "wip12345",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "title",
-									"value": "VTS",
-									"type": "text"
-								},
-								{
-									"key": "lowest_price",
-									"value": "1231234",
-									"type": "text"
-								},
-								{
-									"key": "highest_price",
-									"value": "123123434",
-									"type": "text"
-								},
-								{
-									"key": "type",
-									"value": "house",
-									"type": "text"
-								},
-								{
-									"key": "quota",
-									"value": "thai",
-									"type": "text"
-								},
-								{
-									"key": "furnishing",
-									"value": "fully",
-									"type": "text"
-								},
-								{
-									"key": "total_units_for_sale",
-									"value": "12",
-									"type": "text"
-								},
-								{
-									"key": "province",
-									"value": "Thiland",
-									"type": "text"
-								},
-								{
-									"key": "district",
-									"value": "Thiland",
-									"type": "text"
-								},
-								{
-									"key": "sub_district",
-									"value": "Thiland",
-									"type": "text"
-								},
-								{
-									"key": "address",
-									"value": "baj flasfn klhfkdash",
-									"type": "text"
-								},
-								{
-									"key": "project_total_area",
-									"value": "12314",
-									"type": "text"
-								},
-								{
-									"key": "total_floors",
-									"value": "23",
-									"type": "text"
-								},
-								{
-									"key": "construction_year",
-									"value": "1945",
-									"type": "text"
-								},
-								{
-									"key": "have_freehold",
-									"value": "False",
-									"type": "text"
-								},
-								{
-									"key": "have_leasehold",
-									"value": "False",
-									"type": "text"
-								},
-								{
-									"key": "have_infinity_pool",
-									"value": "False",
-									"type": "text"
-								},
-								{
-									"key": "have_pets_allowed",
-									"value": "False",
-									"type": "text"
-								},
-								{
-									"key": "have_guard_house",
-									"value": "True",
-									"type": "text"
-								},
-								{
-									"key": "have_sauna",
-									"value": "True",
-									"type": "text"
-								},
-								{
-									"key": "have_sky_lounge",
-									"value": "True",
-									"type": "text"
-								},
-								{
-									"key": "have_grocery",
-									"value": "True",
-									"type": "text"
-								},
-								{
-									"key": "have_fitness_area",
-									"value": "False",
-									"type": "text"
-								},
-								{
-									"key": "description",
-									"value": "fsdfaf dmsfbkjsa",
-									"type": "text"
-								},
-								{
-									"key": "images",
-									"type": "file",
-									"src": [
-										"/home/kazal/Pictures/Screenshot 2.png",
-										"/home/kazal/Pictures/Screenshot 3.png"
-									]
-								},
-								{
-									"key": "floor_plans",
-									"type": "file",
-									"src": "/home/kazal/Pictures/Screenshot 1.png"
-								},
-								{
-									"key": "unit_floor_plans",
-									"type": "file",
-									"src": "/home/kazal/Pictures/icons8-python-48.png"
-								},
-								{
-									"key": "master_plans",
-									"type": "file",
-									"src": [
-										"/home/kazal/Pictures/icons8-database-80.png",
-										"/home/kazal/Pictures/icons8-django-480.png"
-									]
-								},
-								{
-									"key": "videos",
-									"type": "file",
-									"src": "/home/kazal/Videos/Screencasts/pd.mp4"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://0.0.0.0:8000/building/api/create/",
-							"protocol": "http",
-							"host": [
-								"0",
-								"0",
-								"0",
-								"0"
-							],
-							"port": "8000",
-							"path": [
-								"building",
-								"api",
-								"create",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "List",
 					"request": {
 						"auth": {
@@ -231,6 +35,16 @@
 							],
 							"query": [
 								{
+									"key": "page_size",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
 									"key": "lowest_price",
 									"value": "1231234",
 									"disabled": true
@@ -242,21 +56,6 @@
 								},
 								{
 									"key": "type",
-									"value": "",
-									"disabled": true
-								},
-								{
-									"key": "quota",
-									"value": "",
-									"disabled": true
-								},
-								{
-									"key": "furnishing",
-									"value": "",
-									"disabled": true
-								},
-								{
-									"key": "province",
 									"value": "",
 									"disabled": true
 								},
@@ -277,7 +76,7 @@
 								},
 								{
 									"key": "have_pets_allowed",
-									"value": "",
+									"value": null,
 									"disabled": true
 								},
 								{
@@ -311,6 +110,102 @@
 					"response": []
 				},
 				{
+					"name": "Popular",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0:8000/building/api/list/popular/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"building",
+								"api",
+								"list",
+								"popular",
+								""
+							],
+							"query": [
+								{
+									"key": "page_size",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "lowest_price",
+									"value": "1231234",
+									"disabled": true
+								},
+								{
+									"key": "highest_price",
+									"value": "3113123130",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "province",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "have_lake_or_river_view",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "have_guard_house",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "have_sauna",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "have_sky_lounge",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "have_grocery",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "have_fitness_area",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "towards",
+									"value": "search",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Details",
 					"request": {
 						"auth": {
@@ -319,7 +214,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://0.0.0.0:8000/building/api/details/33/",
+							"raw": "http://0.0.0.0:8000/building/api/details/3/",
 							"protocol": "http",
 							"host": [
 								"0",
@@ -332,15 +227,22 @@
 								"building",
 								"api",
 								"details",
-								"33",
+								"3",
 								""
+							],
+							"query": [
+								{
+									"key": "default_images_number",
+									"value": "1",
+									"disabled": true
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Media files",
+					"name": "Media Files",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -348,7 +250,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://0.0.0.0:8000/building/api/details/33/media-files/?media_type=master_plan&page_size=1&page=1",
+							"raw": "http://0.0.0.0:8000/building/api/details/3/media-files/?media_type=aerial_drone_video",
 							"protocol": "http",
 							"host": [
 								"0",
@@ -361,22 +263,24 @@
 								"building",
 								"api",
 								"details",
-								"33",
+								"3",
 								"media-files",
 								""
 							],
 							"query": [
 								{
 									"key": "media_type",
-									"value": "master_plan"
+									"value": "aerial_drone_video"
 								},
 								{
 									"key": "page_size",
-									"value": "1"
+									"value": "10",
+									"disabled": true
 								},
 								{
 									"key": "page",
-									"value": "1"
+									"value": "1",
+									"disabled": true
 								}
 							]
 						}
@@ -384,7 +288,7 @@
 					"response": []
 				},
 				{
-					"name": "Available units",
+					"name": "Developer Info",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -392,7 +296,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://0.0.0.0:8000/building/api/details/33/available-units/?page_size=2",
+							"raw": "http://0.0.0.0:8000/building/api/details/3/developer-info/",
 							"protocol": "http",
 							"host": [
 								"0",
@@ -405,14 +309,85 @@
 								"building",
 								"api",
 								"details",
-								"33",
+								"3",
+								"developer-info",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Available Facilities",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0:8000/building/api/details/3/available-facilities/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"building",
+								"api",
+								"details",
+								"3",
+								"available-facilities",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Available Units",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0:8000/building/api/details/1/available-units/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"building",
+								"api",
+								"details",
+								"1",
 								"available-units",
 								""
 							],
 							"query": [
 								{
+									"key": "bed",
+									"value": "1",
+									"disabled": true
+								},
+								{
 									"key": "page_size",
-									"value": "2"
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
 								}
 							]
 						}
@@ -420,14 +395,14 @@
 					"response": []
 				},
 				{
-					"name": "Update",
+					"name": "Generate Description",
 					"request": {
 						"auth": {
 							"type": "basic",
 							"basic": [
 								{
 									"key": "username",
-									"value": "salmansidddik@gmail.com",
+									"value": "salmansiddik19@outlook.com",
 									"type": "string"
 								},
 								{
@@ -437,14 +412,71 @@
 								}
 							]
 						},
-						"method": "PUT",
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0:8000/building/api/generate-description/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"building",
+								"api",
+								"generate-description",
+								""
+							],
+							"query": [
+								{
+									"key": "page_size",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "hghdfas",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "salmansiddik19@outlook.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "formdata",
 							"formdata": [
 								{
 									"key": "title",
-									"value": "VTS27",
+									"value": "Test building 7",
 									"type": "text"
 								},
 								{
@@ -454,7 +486,7 @@
 								},
 								{
 									"key": "highest_price",
-									"value": "3113123131",
+									"value": "123123434",
 									"type": "text"
 								},
 								{
@@ -463,38 +495,28 @@
 									"type": "text"
 								},
 								{
-									"key": "quota",
-									"value": "thai",
-									"type": "text"
-								},
-								{
-									"key": "furnishing",
-									"value": "fully",
-									"type": "text"
-								},
-								{
 									"key": "total_units_for_sale",
-									"value": "14",
+									"value": "2",
 									"type": "text"
 								},
 								{
 									"key": "province",
-									"value": "Thiland",
+									"value": "Krabi",
 									"type": "text"
 								},
 								{
 									"key": "district",
-									"value": "Thiland",
+									"value": "Mueang Krabi District",
 									"type": "text"
 								},
 								{
 									"key": "sub_district",
-									"value": "Thiland",
+									"value": "Ao Nang",
 									"type": "text"
 								},
 								{
 									"key": "address",
-									"value": "hghdfas",
+									"value": "Ao Nang, Mueang Krabi District, Krabi, Thailand",
 									"type": "text"
 								},
 								{
@@ -504,12 +526,12 @@
 								},
 								{
 									"key": "total_floors",
-									"value": "22",
+									"value": "23",
 									"type": "text"
 								},
 								{
 									"key": "construction_year",
-									"value": "1945",
+									"value": "2020",
 									"type": "text"
 								},
 								{
@@ -519,17 +541,17 @@
 								},
 								{
 									"key": "have_leasehold",
-									"value": "False",
+									"value": "false",
 									"type": "text"
 								},
 								{
 									"key": "have_infinity_pool",
-									"value": "True",
+									"value": "false",
 									"type": "text"
 								},
 								{
 									"key": "have_pets_allowed",
-									"value": "True",
+									"value": "false",
 									"type": "text"
 								},
 								{
@@ -559,7 +581,285 @@
 								},
 								{
 									"key": "description",
-									"value": "fsdfaf dmsfbkjsa",
+									"value": "This is a test building",
+									"type": "text"
+								},
+								{
+									"key": "latitude",
+									"value": "8.0414921",
+									"type": "text"
+								},
+								{
+									"key": "longitude",
+									"value": "98.8366162",
+									"type": "text"
+								},
+								{
+									"key": "quota",
+									"value": "thai",
+									"type": "text"
+								},
+								{
+									"key": "furnishing",
+									"value": "fully",
+									"type": "text"
+								},
+								{
+									"key": "distance_from_location_to_BTS_or_MRT",
+									"value": "0.27",
+									"type": "text"
+								},
+								{
+									"key": "distance_from_location_to_ARL",
+									"value": "0.96",
+									"type": "text"
+								},
+								{
+									"key": "view",
+									"value": "See",
+									"type": "text"
+								},
+								{
+									"key": "facility_view",
+									"value": "http://facility.com",
+									"type": "text"
+								},
+								{
+									"key": "location_view",
+									"value": "http://location.com",
+									"type": "text"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": [
+										"/home/kazal/Pictures/IMG20230111164017.jpg",
+										"/home/kazal/Pictures/IMG20230526183126.jpg"
+									]
+								},
+								{
+									"key": "floor_plans",
+									"type": "file",
+									"src": "/home/kazal/Pictures/IMG_20230808_191242.jpg"
+								},
+								{
+									"key": "unit_floor_plans",
+									"type": "file",
+									"src": "/home/kazal/Pictures/IMG_20230808_191307.jpg"
+								},
+								{
+									"key": "master_plans",
+									"type": "file",
+									"src": "/home/kazal/Pictures/IMG_20230808_191242.jpg"
+								},
+								{
+									"key": "videos",
+									"type": "file",
+									"src": "/home/kazal/Videos/django_coding_test.mp4"
+								},
+								{
+									"key": "aerial_drone_videos",
+									"type": "file",
+									"src": "/home/kazal/Videos/django_coding_test.mp4"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://0.0.0.0:8000/building/api/create/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"building",
+								"api",
+								"create",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "salmansiddik19@outlook.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Test building 1 (updated)",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "This is a test building",
+									"type": "text"
+								},
+								{
+									"key": "lowest_price",
+									"value": "1231234",
+									"type": "text"
+								},
+								{
+									"key": "highest_price",
+									"value": "123123434",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "house",
+									"type": "text"
+								},
+								{
+									"key": "total_units_for_sale",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "province",
+									"value": "Krabi",
+									"type": "text"
+								},
+								{
+									"key": "district",
+									"value": "Mueang Krabi District",
+									"type": "text"
+								},
+								{
+									"key": "sub_district",
+									"value": "Ao Nang",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "Ao Nang, Mueang Krabi District, Krabi, Thailand",
+									"type": "text"
+								},
+								{
+									"key": "latitude",
+									"value": "8.0414921",
+									"type": "text"
+								},
+								{
+									"key": "longitude",
+									"value": "98.8366162",
+									"type": "text"
+								},
+								{
+									"key": "project_total_area",
+									"value": "12314",
+									"type": "text"
+								},
+								{
+									"key": "total_floors",
+									"value": "23",
+									"type": "text"
+								},
+								{
+									"key": "construction_year",
+									"value": "2020",
+									"type": "text"
+								},
+								{
+									"key": "quota",
+									"value": "thai",
+									"type": "text"
+								},
+								{
+									"key": "furnishing",
+									"value": "fully",
+									"type": "text"
+								},
+								{
+									"key": "distance_from_location_to_BTS_or_MRT",
+									"value": "0.27",
+									"type": "text"
+								},
+								{
+									"key": "distance_from_location_to_ARL",
+									"value": "0.96",
+									"type": "text"
+								},
+								{
+									"key": "view",
+									"value": "See",
+									"type": "text"
+								},
+								{
+									"key": "facility_view",
+									"value": "http://facility.com",
+									"type": "text"
+								},
+								{
+									"key": "location_view",
+									"value": "http://location.com",
+									"type": "text"
+								},
+								{
+									"key": "have_freehold",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "have_leasehold",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "have_infinity_pool",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "have_pets_allowed",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "have_guard_house",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "have_sauna",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "have_sky_lounge",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "have_grocery",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "have_fitness_area",
+									"value": "false",
 									"type": "text"
 								},
 								{
@@ -586,11 +886,16 @@
 									"key": "videos",
 									"type": "file",
 									"src": "/home/kazal/Videos/Screencasts/pd.mp4"
+								},
+								{
+									"key": "aerial_drone_videos",
+									"type": "file",
+									"src": "/home/kazal/Videos/django_coding_test.mp4"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://0.0.0.0:8000/building/api/update/33/",
+							"raw": "http://0.0.0.0:8000/building/api/update/3/",
 							"protocol": "http",
 							"host": [
 								"0",
@@ -603,7 +908,7 @@
 								"building",
 								"api",
 								"update",
-								"33",
+								"3",
 								""
 							]
 						}
@@ -617,13 +922,13 @@
 							"type": "basic",
 							"basic": [
 								{
-									"key": "username",
-									"value": "salmansidddik@gmail.com",
+									"key": "password",
+									"value": "wip12345",
 									"type": "string"
 								},
 								{
-									"key": "password",
-									"value": "wip12345",
+									"key": "username",
+									"value": "salmansiddik19@outlook.com",
 									"type": "string"
 								}
 							]
@@ -635,13 +940,13 @@
 							"formdata": [
 								{
 									"key": "is_active",
-									"value": "false",
+									"value": "true",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/building/api/update/33/",
+							"raw": "http://127.0.0.1:8000/building/api/update/3/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -654,7 +959,7 @@
 								"building",
 								"api",
 								"update",
-								"33",
+								"3",
 								""
 							]
 						}
@@ -669,7 +974,7 @@
 							"basic": [
 								{
 									"key": "username",
-									"value": "salmansidddik@gmail.com",
+									"value": "salmansiddik19@outlook.com",
 									"type": "string"
 								},
 								{
@@ -682,7 +987,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://0.0.0.0:8000/building/api/delete/32/",
+							"raw": "http://0.0.0.0:8000/building/api/delete/4/",
 							"protocol": "http",
 							"host": [
 								"0",
@@ -695,7 +1000,7 @@
 								"building",
 								"api",
 								"delete",
-								"32",
+								"4",
 								""
 							]
 						}
@@ -703,7 +1008,71 @@
 					"response": []
 				},
 				{
-					"name": "Create review",
+					"name": "Review List",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://0.0.0.0:8000/building/api/review/list/?building_id=3",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"building",
+								"api",
+								"review",
+								"list",
+								""
+							],
+							"query": [
+								{
+									"key": "building_id",
+									"value": "3"
+								},
+								{
+									"key": "page_size",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Review",
 					"request": {
 						"auth": {
 							"type": "basic",
@@ -727,7 +1096,7 @@
 							"formdata": [
 								{
 									"key": "building",
-									"value": "22",
+									"value": "10",
 									"type": "text"
 								},
 								{
@@ -762,12 +1131,209 @@
 						}
 					},
 					"response": []
-				},
+				}
+			]
+		},
+		{
+			"name": "Property",
+			"item": [
 				{
-					"name": "Review list",
+					"name": "List",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://0.0.0.0:8000/property/api/list/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"list",
+								""
+							],
+							"query": [
+								{
+									"key": "page_size",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "default_images_number",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Newly Created",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0:8000/property/api/list/newly-created/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"list",
+								"newly-created",
+								""
+							],
+							"query": [
+								{
+									"key": "page_size",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "towards",
+									"value": "search",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Popular",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0:8000/property/api/list/popular/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"list",
+								"popular",
+								""
+							],
+							"query": [
+								{
+									"key": "page_size",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "towards",
+									"value": "search",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Discount",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0:8000/property/api/list/discount/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"list",
+								"discount",
+								""
+							],
+							"query": [
+								{
+									"key": "page_size",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "towards",
+									"value": "search",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Details",
 					"request": {
 						"auth": {
 							"type": "basic",
@@ -786,12 +1352,8 @@
 						},
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": []
-						},
 						"url": {
-							"raw": "http://0.0.0.0:8000/building/api/review/list/?building_id=22",
+							"raw": "http://0.0.0.0:8000/property/api/details/1/",
 							"protocol": "http",
 							"host": [
 								"0",
@@ -801,27 +1363,237 @@
 							],
 							"port": "8000",
 							"path": [
-								"building",
+								"property",
 								"api",
-								"review",
-								"list",
+								"details",
+								"1",
 								""
 							],
 							"query": [
 								{
-									"key": "building_id",
-									"value": "22"
+									"key": "default_images_number",
+									"value": "1",
+									"disabled": true
 								}
 							]
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "Property",
-			"item": [
+				},
+				{
+					"name": "Media Files",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0:8000/property/api/details/1/media-files/?media_type=image",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"details",
+								"1",
+								"media-files",
+								""
+							],
+							"query": [
+								{
+									"key": "media_type",
+									"value": "image"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Developer Info",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0:8000/property/api/details/4/developer-info/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"details",
+								"4",
+								"developer-info",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Building Info",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0:8000/property/api/details/4/building-info/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"details",
+								"4",
+								"building-info",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Available Facilities",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0:8000/property/api/details/4/available-facilities/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"details",
+								"4",
+								"available-facilities",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Generate Description",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "salmansiddik19@outlook.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://0.0.0.0:8000/property/api/generate-description/",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"generate-description",
+								""
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "Create",
 					"request": {
@@ -847,7 +1619,7 @@
 							"formdata": [
 								{
 									"key": "building",
-									"value": "28",
+									"value": "2",
 									"type": "text"
 								},
 								{
@@ -857,7 +1629,7 @@
 								},
 								{
 									"key": "title",
-									"value": "VTS",
+									"value": "VTS23",
 									"type": "text"
 								},
 								{
@@ -906,17 +1678,34 @@
 									"type": "text"
 								},
 								{
+									"key": "interior_view",
+									"value": "https://sddfasdasda.com",
+									"type": "text"
+								},
+								{
+									"key": "balcony_direction",
+									"value": "RTL",
+									"type": "text"
+								},
+								{
+									"key": "main_door_direction",
+									"value": "LTL",
+									"type": "text"
+								},
+								{
+									"key": "unit_position",
+									"value": "center",
+									"type": "text"
+								},
+								{
 									"key": "images",
 									"type": "file",
-									"src": [
-										"/home/kazal/Pictures/icons8-docker-48.png",
-										"/home/kazal/Pictures/icons8-html-480.png"
-									]
+									"src": "/home/kazal/Pictures/IMG_20230808_191242.jpg"
 								},
 								{
 									"key": "videos",
 									"type": "file",
-									"src": "/home/kazal/Videos/Screencasts/pd.mp4"
+									"src": "/home/kazal/Videos/django_coding_test.mp4"
 								}
 							]
 						},
@@ -941,124 +1730,6 @@
 					"response": []
 				},
 				{
-					"name": "List",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://0.0.0.0:8000/property/api/list/",
-							"protocol": "http",
-							"host": [
-								"0",
-								"0",
-								"0",
-								"0"
-							],
-							"port": "8000",
-							"path": [
-								"property",
-								"api",
-								"list",
-								""
-							],
-							"query": [
-								{
-									"key": "page_size",
-									"value": null,
-									"disabled": true
-								},
-								{
-									"key": "page",
-									"value": null,
-									"disabled": true
-								},
-								{
-									"key": "search",
-									"value": "hghdfas",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Details",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://0.0.0.0:8000/property/api/details/17/",
-							"protocol": "http",
-							"host": [
-								"0",
-								"0",
-								"0",
-								"0"
-							],
-							"port": "8000",
-							"path": [
-								"property",
-								"api",
-								"details",
-								"17",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Media files",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://0.0.0.0:8000/property/api/details/5/media-files/?media_type=master_plan&page_size=1&page=1",
-							"protocol": "http",
-							"host": [
-								"0",
-								"0",
-								"0",
-								"0"
-							],
-							"port": "8000",
-							"path": [
-								"property",
-								"api",
-								"details",
-								"5",
-								"media-files",
-								""
-							],
-							"query": [
-								{
-									"key": "media_type",
-									"value": "master_plan"
-								},
-								{
-									"key": "page_size",
-									"value": "1"
-								},
-								{
-									"key": "page",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Update",
 					"request": {
 						"auth": {
@@ -1071,7 +1742,7 @@
 								},
 								{
 									"key": "username",
-									"value": "salmansidddik@gmail.com",
+									"value": "salmansiddik19@outlook.com",
 									"type": "string"
 								}
 							]
@@ -1083,7 +1754,7 @@
 							"formdata": [
 								{
 									"key": "building",
-									"value": "20",
+									"value": "2",
 									"type": "text"
 								},
 								{
@@ -1142,20 +1813,61 @@
 									"type": "text"
 								},
 								{
+									"key": "interior_view",
+									"value": "https://jaskdjalsdk.com",
+									"type": "text"
+								},
+								{
+									"key": "balcony_direction",
+									"value": "rwe",
+									"type": "text"
+								},
+								{
+									"key": "main_door_direction",
+									"value": "dasd",
+									"type": "text"
+								},
+								{
+									"key": "unit_position",
+									"value": "center",
+									"type": "text"
+								},
+								{
+									"key": "have_tenant_occupied",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "tenant_occupied_validity",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "have_vacant",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "have_owner_occupied",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "have_bathtub",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "have_duplex",
+									"value": "true",
+									"type": "text"
+								},
+								{
 									"key": "images",
 									"type": "file",
 									"src": [
 										"/home/kazal/Pictures/icons8-database-80.png",
 										"/home/kazal/Pictures/icons8-django-480.png"
-									],
-									"disabled": true
-								},
-								{
-									"key": "unit_floor_plans",
-									"type": "file",
-									"src": [
-										"/home/kazal/Pictures/icons8-nginx-480.png",
-										"/home/kazal/Pictures/icons8-postgresql-480.png"
 									],
 									"disabled": true
 								},
@@ -1171,7 +1883,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/property/api/update/17/",
+							"raw": "http://127.0.0.1:8000/property/api/update/4/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1184,7 +1896,7 @@
 								"property",
 								"api",
 								"update",
-								"17",
+								"4",
 								""
 							]
 						}
@@ -1198,13 +1910,13 @@
 							"type": "basic",
 							"basic": [
 								{
-									"key": "username",
-									"value": "salmansidddik@gmail.com",
+									"key": "password",
+									"value": "wip12345",
 									"type": "string"
 								},
 								{
-									"key": "password",
-									"value": "wip12345",
+									"key": "username",
+									"value": "salmansiddik19@outlook.com",
 									"type": "string"
 								}
 							]
@@ -1222,7 +1934,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/property/api/update/20/",
+							"raw": "http://127.0.0.1:8000/property/api/update/4/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1235,7 +1947,7 @@
 								"property",
 								"api",
 								"update",
-								"20",
+								"4",
 								""
 							]
 						}
@@ -1250,7 +1962,7 @@
 							"basic": [
 								{
 									"key": "username",
-									"value": "salmansidddik@gmail.com",
+									"value": "salmansiddik19@outlook.com",
 									"type": "string"
 								},
 								{
@@ -1263,7 +1975,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://0.0.0.0:8000/property/api/delete/32/",
+							"raw": "http://0.0.0.0:8000/property/api/delete/5/",
 							"protocol": "http",
 							"host": [
 								"0",
@@ -1276,58 +1988,7 @@
 								"property",
 								"api",
 								"delete",
-								"32",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Compare create",
-					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "username",
-									"value": "newuser1@gmail.com",
-									"type": "string"
-								},
-								{
-									"key": "password",
-									"value": "wip12345",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "property",
-									"value": "21",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://127.0.0.1:8000/property/api/compare/create/",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"property",
-								"api",
-								"compare",
-								"create",
+								"5",
 								""
 							]
 						}
@@ -1376,6 +2037,57 @@
 								"api",
 								"compare",
 								"list",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Compare create",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "property",
+									"value": "8",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/property/api/compare/create/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"compare",
+								"create",
 								""
 							]
 						}
@@ -1434,57 +2146,6 @@
 					"response": []
 				},
 				{
-					"name": "Add favorite property",
-					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "username",
-									"value": "newuser1@gmail.com",
-									"type": "string"
-								},
-								{
-									"key": "password",
-									"value": "wip12345",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "property",
-									"value": "21",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://127.0.0.1:8000/property/api/prospect-favorite/add/",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"property",
-								"api",
-								"prospect-favorite",
-								"add",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Favorite property list",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -1526,6 +2187,57 @@
 								"api",
 								"prospect-favorite",
 								"list",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add favorite property",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "newuser1@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "wip12345",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "property",
+									"value": "4",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/property/api/prospect-favorite/add/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"property",
+								"api",
+								"prospect-favorite",
+								"add",
 								""
 							]
 						}
