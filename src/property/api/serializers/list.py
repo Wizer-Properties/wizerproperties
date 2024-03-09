@@ -1,0 +1,85 @@
+from rest_framework import serializers
+from .default import PropertySerializer
+from .media import PropertyMediaSerializer
+
+
+class PropertyListSerializer(PropertySerializer):
+    building_type = serializers.CharField(source="building.type", read_only=True)
+    address = serializers.CharField(source="building.address", read_only=True)
+    have_freehold = serializers.BooleanField(source="building.have_freehold", read_only=True)
+    have_leasehold = serializers.BooleanField(source="building.have_leasehold", read_only=True)
+    have_infinity_pool = serializers.BooleanField(source="building.have_infinity_pool", read_only=True)
+    have_pets_allowed = serializers.BooleanField(source="building.have_pets_allowed", read_only=True)
+    have_guard_house = serializers.BooleanField(source="building.have_guard_house", read_only=True)
+    have_sauna = serializers.BooleanField(source="building.address", read_only=True)
+    have_sky_lounge = serializers.BooleanField(source="building.have_sky_lounge", read_only=True)
+    have_grocery = serializers.BooleanField(source="building.have_grocery", read_only=True)
+    have_fitness_area = serializers.BooleanField(source="building.have_fitness_area", read_only=True)
+    developer_email = serializers.CharField(source="created_by.email", read_only=True)
+    developer_phone_number = serializers.SerializerMethodField()
+    developer_image = serializers.SerializerMethodField()
+    is_compared = serializers.BooleanField(read_only=True)
+    is_favorited = serializers.BooleanField(read_only=True)
+    ariel_video = serializers.URLField(source="ariel_video_url")
+    total_default_images = serializers.SerializerMethodField()
+    default_images = serializers.SerializerMethodField()
+
+    class Meta(PropertySerializer.Meta):
+        fields = PropertySerializer.Meta.fields + [
+            "interior_view",
+            "building_id",
+            "building_type",
+            "address",
+            "have_freehold",
+            "have_leasehold",
+            "have_infinity_pool",
+            "have_pets_allowed",
+            "have_guard_house",
+            "have_sauna",
+            "have_sky_lounge",
+            "have_grocery",
+            "have_fitness_area",
+            "developer_image",
+            "developer_email",
+            "developer_phone_number",
+            "is_compared",
+            "is_favorited",
+            "ariel_video",
+            "total_default_images",
+            "default_images",
+        ]
+
+    def get_default_images(self, obj):
+        request = self.context.get("request")
+        images = obj.media_files.filter(type="image")
+
+        # Determine the number of default_images to return in the list based on the provided default_images_number parameter.
+        default_images_number = request.GET.get("default_images_number")
+        if default_images_number:
+            images = images[: int(default_images_number)]
+
+        return PropertyMediaSerializer(images, many=True).data
+
+    def get_total_default_images(self, obj):
+        total_images = obj.media_files.filter(type="image").count()
+        return total_images
+
+    def get_developer_image(self, obj):
+        user = obj.created_by
+
+        if hasattr(user, "developerprofile"):
+            return user.developerprofile.company_logo.url
+        elif hasattr(user, "agentprofile"):
+            return user.agentprofile.company_logo.url
+
+        return ""
+
+    def get_developer_phone_number(self, obj):
+        user = obj.created_by
+
+        if hasattr(user, "developerprofile"):
+            return str(user.developerprofile.phone_number)
+        elif hasattr(user, "agentprofile"):
+            return str(user.agentprofile.phone_number)
+
+        return ""

@@ -13,19 +13,3 @@ class PropertyPermission(permissions.BasePermission):
             return obj.created_by == request.user
 
         return True
-
-
-class ComparePropertyPermission(permissions.BasePermission):
-    def has_permission(self, request, view):
-        return hasattr(request.user, "prospectprofile")
-
-    def has_object_permission(self, request, view, obj):
-        return obj.user == request.user
-
-
-class ProspectPropertyFavoritePermission(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj):
-        if request.method in ["DELETE"]:
-            return obj.prospect.user == request.user
-
-        return True

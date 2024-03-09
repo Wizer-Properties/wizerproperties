@@ -1,21 +1,19 @@
 from django.utils import timezone
 from django.db.models import OuterRef, Subquery, Value, F, CharField, Exists, BooleanField
 from django.db.models.functions import Concat
-from rest_framework import viewsets, status, permissions
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .permissions import PropertyPermission, ComparePropertyPermission, ProspectPropertyFavoritePermission
-from .serializers import (
+from property.api.permissions import PropertyPermission
+from property.api.serializers import (
     PropertySerializer,
     PropertyListSerializer,
     PropertyDetailsSerializer,
     PropertyCreateAndUpdateSerializer,
     PropertyMediaSerializer,
-    ComparePropertySerializer,
-    ProspectFavoritePropertySerializer,
     PropertyVariousFeatureSerializer,
 )
-from .filters import PropertyFilter
+from property.api.filters import PropertyFilter
 from building.api.serializers import BuildingInfoForPropertySerializer, BuildingMediaSerializer
 from building.models import Building, BuildingMedia
 from property.models import Property, PropertyMedia, CompareProperty, ProspectFavoriteProperty
@@ -247,76 +245,3 @@ class PropertyViewSet(viewsets.ModelViewSet):
         generated_property_description = get_chatgpt_response(content)
 
         return Response({"generated_property_description": generated_property_description}, status=status.HTTP_200_OK)
-
-
-class ComparePropertyViewSet(viewsets.ModelViewSet):
-    serializer_class = ComparePropertySerializer
-    permission_classes = [ComparePropertyPermission]
-
-    def get_queryset(self):
-        return CompareProperty.objects.filter(user=self.request.user)
-
-    def get_serializer_context(self):
-        # Get the default context from the parent class
-        context = super(ComparePropertyViewSet, self).get_serializer_context()
-        context.update(
-            {
-                "request": self.request,
-            }
-        )
-        return context
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
-    def perform_destroy(self, serializer):
-        # Get the property from the request data
-        property = self.request.data.get("property")
-
-        if property is None:
-            return Response({"property": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Try to get and delete the CompareProperty instance based on user and property
-        try:
-            compare_property = CompareProperty.objects.get(user=self.request.user, property=property)
-            compare_property.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except CompareProperty.DoesNotExist:
-            return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
-
-
-class ProspectFavoritePropertyViewSet(viewsets.ModelViewSet):
-    serializer_class = ProspectFavoritePropertySerializer
-    permission_classes = [permissions.IsAuthenticated, ProspectPropertyFavoritePermission]
-    serializer_method_fields = ["POST", "GET", "DELETE"]
-
-    def get_queryset(self):
-        return ProspectFavoriteProperty.objects.select_related("prospect", "property").filter(
-            prospect=self.request.user.prospectprofile
-        )
-
-    def get_serializer_context(self):
-        # Get the default context from the parent class
-        context = super(ProspectFavoritePropertyViewSet, self).get_serializer_context()
-
-        # Add custom data to the context
-        context["request"] = self.request
-
-        return context
-
-    def perform_destroy(self, serializer):
-        # Get the property from the request data
-        property = self.request.data.get("property")
-
-        if property is None:
-            return Response({"property": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Try to get and delete the CompareProperty instance based on prospect and property
-        try:
-            compare_property = ProspectFavoriteProperty.objects.get(
-                prospect=self.request.user.prospectprofile, property=property
-            )
-            compare_property.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except CompareProperty.DoesNotExist:
-            return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
