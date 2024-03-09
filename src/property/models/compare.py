@@ -4,8 +4,8 @@ from core.models import TimestampedModel
 
 
 class CompareProperty(TimestampedModel):
-    user = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True)
-    property = models.ForeignKey("property.Property", on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True, related_name="compare_properties")
+    property = models.ForeignKey("property.Property", on_delete=models.CASCADE, null=True, related_name="compares")
 
     class Meta:
         verbose_name_plural = "compare properties"

@@ -7,7 +7,7 @@ from utils.general_data import UNIT_POSITION_TYPES
 
 
 class Property(TimestampedModel):
-    building = models.ForeignKey("building.Building", on_delete=models.SET_NULL, null=True)
+    building = models.ForeignKey("building.Building", on_delete=models.SET_NULL, null=True, related_name="properties")
     unit_id = models.CharField(max_length=100, null=True)
     title = models.CharField(max_length=255, null=True)
     description = models.TextField(max_length=3000, null=True)
@@ -34,7 +34,7 @@ class Property(TimestampedModel):
     have_bathtub = models.BooleanField(default=False)
     have_duplex = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    created_by = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True)
+    created_by = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True, related_name="properties")
 
     class Meta:
         verbose_name_plural = "properties"

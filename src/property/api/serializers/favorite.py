@@ -2,7 +2,7 @@ from django.db.models import OuterRef, Subquery, Value, F, CharField, When, Case
 from django.db.models.functions import Concat
 from rest_framework import serializers
 from property.models import Property, PropertyMedia, ProspectFavoriteProperty
-from .default import PropertySerializer
+from .favorite_list import PropertyFavoriteListSerializer
 
 
 class ProspectFavoritePropertySerializer(serializers.ModelSerializer):
@@ -29,7 +29,8 @@ class ProspectFavoritePropertySerializer(serializers.ModelSerializer):
         return instance
 
     def get_property_info(self, obj):
-        if obj.property:
+        request = self.context.get("request")
+        if request and request.method == "GET" and obj.property:
             property = (
                 Property.objects.filter(id=obj.property.id)
                 .annotate(
@@ -39,18 +40,18 @@ class ProspectFavoritePropertySerializer(serializers.ModelSerializer):
                         .values("full_file_url")[:1]
                     ),
                     is_compared=Case(
-                        When(compareproperty__user__prospectprofile=obj.prospect, then=Value(True)),
+                        When(compares__user__prospectprofile=obj.prospect, then=Value(True)),
                         default=Value(False),
                         output_field=BooleanField(),
                     ),
                     is_favorited=Case(
-                        When(prospectfavoriteproperty__prospect=obj.prospect, then=Value(True)),
+                        When(favorites__prospect=obj.prospect, then=Value(True)),
                         default=Value(False),
                         output_field=BooleanField(),
                     ),
                 )
                 .first()
             )
-            return PropertySerializer(property).data
+            return PropertyFavoriteListSerializer(property).data
         else:
-            return None
+            return obj.property.title

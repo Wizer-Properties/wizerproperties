@@ -8,6 +8,7 @@ class PropertyDetailsSerializer(PropertySerializer):
     address = serializers.CharField(source="building.address", read_only=True)
     latitude = serializers.CharField(source="building.latitude", read_only=True)
     longitude = serializers.CharField(source="building.longitude", read_only=True)
+    construction_year = serializers.CharField(source="building.construction_year", read_only=True)
     facility_view = serializers.URLField(source="building.facility_view", read_only=True)
     location_view = serializers.URLField(source="building.location_view", read_only=True)
     is_compared = serializers.BooleanField(read_only=True)
@@ -30,6 +31,7 @@ class PropertyDetailsSerializer(PropertySerializer):
             "address",
             "latitude",
             "longitude",
+            "construction_year",
             "facility_view",
             "location_view",
             "is_compared",

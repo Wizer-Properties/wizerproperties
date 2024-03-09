@@ -12,6 +12,7 @@ from property.api.serializers import (
     PropertyCreateAndUpdateSerializer,
     PropertyMediaSerializer,
     PropertyVariousFeatureSerializer,
+    PropertyVariousFeatureMinimalInfoSerializer,
 )
 from property.api.filters import PropertyFilter
 from building.api.serializers import BuildingInfoForPropertySerializer, BuildingMediaSerializer
@@ -103,12 +104,14 @@ class PropertyViewSet(viewsets.ModelViewSet):
         )
         return context
 
-    def _get_paginated_media_files(self, media_files, serializer_class):
-        paginated_queryset = self.paginate_queryset(media_files)
+    def _get_paginated_response(self, queryset, serializer_class, **serializer_context):
+        paginated_queryset = self.paginate_queryset(queryset)
+
         if paginated_queryset is not None:
-            serializer = serializer_class(paginated_queryset, many=True)
+            serializer = serializer_class(paginated_queryset, many=True, **serializer_context)
             return self.get_paginated_response(serializer.data)
-        serializer = serializer_class(media_files, many=True)
+
+        serializer = serializer_class(queryset, many=True, **serializer_context)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=["get"])
@@ -126,7 +129,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
                 media_files = building_media_files.filter(type=media_type)
                 serializer_class = BuildingMediaSerializer
 
-            return self._get_paginated_media_files(media_files, serializer_class)
+            return self._get_paginated_response(media_files, serializer_class)
         else:
             return Response({"detail": "Media type is required."}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -174,14 +177,15 @@ class PropertyViewSet(viewsets.ModelViewSet):
         Retrieve a list of newly created properties with pagination.
         """
         queryset = self.get_queryset().filter(newly_createds__isnull=False)
-        page = self.paginate_queryset(queryset)
 
-        if page is not None:
-            serializer = PropertyVariousFeatureSerializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+        serializer_context = {}  # Default empty context
 
-        serializer = PropertyVariousFeatureSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        serializer_class = (
+            PropertyVariousFeatureMinimalInfoSerializer
+            if request.GET.get("towards") == "search"
+            else PropertyVariousFeatureSerializer
+        )
+        return self._get_paginated_response(queryset, serializer_class, **serializer_context)
 
     @action(detail=False, methods=["get"])
     def popular(self, request):
@@ -189,14 +193,15 @@ class PropertyViewSet(viewsets.ModelViewSet):
         Retrieve a list of popular properties with pagination.
         """
         queryset = self.get_queryset().filter(populars__isnull=False)
-        page = self.paginate_queryset(queryset)
 
-        if page is not None:
-            serializer = PropertyVariousFeatureSerializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+        serializer_context = {}  # Default empty context
 
-        serializer = PropertyVariousFeatureSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        serializer_class = (
+            PropertyVariousFeatureMinimalInfoSerializer
+            if request.GET.get("towards") == "search"
+            else PropertyVariousFeatureSerializer
+        )
+        return self._get_paginated_response(queryset, serializer_class, **serializer_context)
 
     @action(detail=False, methods=["get"])
     def discount(self, request):
@@ -205,14 +210,18 @@ class PropertyViewSet(viewsets.ModelViewSet):
         """
         today = timezone.now().date()
         queryset = self.get_queryset().filter(discounts__period__gte=today)
-        page = self.paginate_queryset(queryset)
 
-        if page is not None:
-            serializer = PropertyVariousFeatureSerializer(page, many=True, include_discount_period=True)
-            return self.get_paginated_response(serializer.data)
+        serializer_context = {}  # Default empty context
+        if request.GET.get("towards") != "search":
+            serializer_context["include_discount_period"] = True
 
-        serializer = PropertyVariousFeatureSerializer(queryset, many=True, include_discount_period=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        serializer_class = (
+            PropertyVariousFeatureMinimalInfoSerializer
+            if request.GET.get("towards") == "search"
+            else PropertyVariousFeatureSerializer
+        )
+
+        return self._get_paginated_response(queryset, serializer_class, **serializer_context)
 
     @action(detail=False, methods=["post"])
     def generate_description(self, request):

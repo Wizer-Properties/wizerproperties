@@ -8,11 +8,11 @@ from property.models import Property
 
 class ProspectFavoriteProperty(TimestampedModel):
     prospect = models.ForeignKey(ProspectProfile, null=True, blank=True, on_delete=models.CASCADE)
-    property = models.ForeignKey(Property, null=True, on_delete=models.CASCADE)
+    property = models.ForeignKey(Property, null=True, on_delete=models.CASCADE, related_name="favorites")
 
     def clean(self, *args, **kwargs):
         super().clean()
-        
+
         # Duplication check
         is_exists = ProspectFavoriteProperty.objects.filter(
             prospect=self.prospect,
@@ -20,5 +20,3 @@ class ProspectFavoriteProperty(TimestampedModel):
         ).exists()
         if is_exists:
             raise ValidationError("This Item Is Already in the System")
-
-        

@@ -20,7 +20,7 @@ class PropertyListSerializer(PropertySerializer):
     developer_image = serializers.SerializerMethodField()
     is_compared = serializers.BooleanField(read_only=True)
     is_favorited = serializers.BooleanField(read_only=True)
-    ariel_video = serializers.URLField(source="ariel_video_url")
+    ariel_view = serializers.URLField(source="ariel_video_url", read_only=True)
     total_default_images = serializers.SerializerMethodField()
     default_images = serializers.SerializerMethodField()
 
@@ -44,7 +44,7 @@ class PropertyListSerializer(PropertySerializer):
             "developer_phone_number",
             "is_compared",
             "is_favorited",
-            "ariel_video",
+            "ariel_view",
             "total_default_images",
             "default_images",
         ]

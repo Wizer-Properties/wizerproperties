@@ -11,6 +11,7 @@ from building.api.serializers import (
     BuildingCreateAndUpdateSerializer,
     BuildingMediaSerializer,
     BuildingVariousFeatureSerializer,
+    BuildingVariousFeatureMinimalInfoSerializer,
 )
 from building.api.filters import BuildingFilter
 from building.models import Building, BuildingMedia
@@ -147,13 +148,20 @@ class BuildingViewSet(viewsets.ModelViewSet):
         Retrieve a list of popular buildings with pagination.
         """
         queryset = self.get_queryset().filter(populars__isnull=False)
+        towards = request.GET.get("towards")
+
+        if towards == "search":
+            serializer_class = BuildingVariousFeatureMinimalInfoSerializer
+        else:
+            serializer_class = BuildingVariousFeatureSerializer
+
         page = self.paginate_queryset(queryset)
 
         if page is not None:
-            serializer = BuildingVariousFeatureSerializer(page, many=True)
+            serializer = serializer_class(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = BuildingVariousFeatureSerializer(queryset, many=True)
+        serializer = serializer_class(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=["post"])

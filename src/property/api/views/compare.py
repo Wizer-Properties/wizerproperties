@@ -10,7 +10,7 @@ class ComparePropertyViewSet(viewsets.ModelViewSet):
     permission_classes = [ComparePropertyPermission]
 
     def get_queryset(self):
-        return CompareProperty.objects.filter(user=self.request.user)
+        return CompareProperty.objects.select_related("user", "property").filter(user=self.request.user)
 
     def get_serializer_context(self):
         # Get the default context from the parent class

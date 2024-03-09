@@ -2,7 +2,8 @@ from django.db.models import OuterRef, Subquery, Value, F, CharField, When, Case
 from django.db.models.functions import Concat
 from rest_framework import serializers
 from property.models import Property, PropertyMedia, CompareProperty
-from .default import PropertySerializer
+from building.models import BuildingMedia
+from .comparisons_list import PropertyComparisonsListSerializer
 
 
 class ComparePropertySerializer(serializers.ModelSerializer):
@@ -25,7 +26,8 @@ class ComparePropertySerializer(serializers.ModelSerializer):
         return attrs
 
     def get_property_info(self, obj):
-        if obj.property:
+        request = self.context.get("request")
+        if request and request.method == "GET" and obj.property:
             property = (
                 Property.objects.filter(id=obj.property.id)
                 .annotate(
@@ -34,19 +36,14 @@ class ComparePropertySerializer(serializers.ModelSerializer):
                         .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
                         .values("full_file_url")[:1]
                     ),
-                    is_compared=Case(
-                        When(compareproperty__user=obj.user, then=Value(True)),
-                        default=Value(False),
-                        output_field=BooleanField(),
-                    ),
-                    is_favorited=Case(
-                        When(prospectfavoriteproperty__prospect=obj.user.prospectprofile, then=Value(True)),
-                        default=Value(False),
-                        output_field=BooleanField(),
+                    ariel_video_url=Subquery(
+                        BuildingMedia.objects.filter(building=OuterRef("building_id"), type="aerial_drone_video")
+                        .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
+                        .values("full_file_url")[:1]
                     ),
                 )
                 .first()
             )
-            return PropertySerializer(property).data
+            return PropertyComparisonsListSerializer(property).data
         else:
-            return None
+            return obj.property.title

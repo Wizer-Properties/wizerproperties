@@ -5,5 +5,8 @@ from .details import PropertyDetailsSerializer
 from .create_n_update import PropertyCreateAndUpdateSerializer
 from .available_units import PropertyAvailableUnitsSerializer
 from .various_feature import PropertyVariousFeatureSerializer
+from .various_feature_minimal_info import PropertyVariousFeatureMinimalInfoSerializer
 from .compare import ComparePropertySerializer
 from .favorite import ProspectFavoritePropertySerializer
+from .comparisons_list import PropertyComparisonsListSerializer
+from .favorite_list import PropertyFavoriteListSerializer

@@ -493,6 +493,10 @@ paths:
         - name: "page"
           in: "query"
           type: "number"
+        - name: "towards"
+          description: "Its control page (e.g 'search' then show fields only for search page)"
+          in: "query"
+          type: "string"
         - name: "lowest_price"
           description: "Filtered by"
           in: "query"
@@ -1330,140 +1334,6 @@ paths:
         504:
           description: Taking more time to get a response
   
-  /property/api/create/:
-    post:
-      tags:
-        - Property
-      summary: "Create property"
-      description: "**User type**: logged in as developer or agent"
-      operationId: create_property
-      produces:
-        - "application/json"
-      consumes:
-        - "multipart/form-data"
-      parameters:
-        - name: "building"
-          in: "formData"
-          required: true
-          type: "number"
-        - name: "unit_id"
-          in: "formData"
-          required: true
-          type: "string"
-        - name: "title"
-          in: "formData"
-          required: true
-          type: "string"
-        - name: "description"
-          in: "formData"
-          required: true
-          type: "string"
-        - name: "price"
-          in: "formData"
-          required: true
-          type: "number"
-        - name: "price_per_sqm"
-          in: "formData"
-          required: true
-          type: "number"
-        - name: "floor_number"
-          in: "formData"
-          required: true
-          type: "string"
-        - name: "unit_area"
-          in: "formData"
-          required: true
-          type: "number"
-        - name: "interior_view"
-          in: "formData"
-          type: "string"
-        - name: "number_of_bedroom"
-          in: "formData"
-          required: true
-          type: "number"
-        - name: "number_of_bathroom"
-          in: "formData"
-          required: true
-          type: "number"
-        - name: "number_of_balcony"
-          in: "formData"
-          required: true
-          type: "number"
-        - name: "number_of_car_parking"
-          in: "formData"
-          required: true
-          type: "number"
-        - name: "balcony_direction"
-          in: "formData"
-          required: true
-          type: "string"
-        - name: "main_door_direction"
-          in: "formData"
-          required: true
-          type: "string"
-        - name: "unit_position"
-          in: "formData"
-          required: true
-          type: "string"
-        - name: "have_tenant_occupied"
-          in: "formData"
-          type: "boolean"
-        - name: "tenant_occupied_validity"
-          description: "If have_tenant_occupied Yes the required true"
-          in: "formData"
-          type: "string"
-        - name: "have_vacant"
-          in: "formData"
-          type: "boolean"
-        - name: "have_owner_occupied"
-          in: "formData"
-          type: "boolean"
-        - name: "have_bathtub"
-          in: "formData"
-          type: "boolean"
-        - name: "have_duplex"
-          in: "formData"
-          type: "boolean"
-        - name: "images"
-          in: "formData"
-          required: true
-          type: "file"
-        - name: "videos"
-          in: "formData"
-          required: true
-          type: "file"
-        - name: "interior_virtual_tours"
-          in: "formData"
-          required: true
-          type: "file"
-      responses:
-        201:
-          description: Property created
-          schema:
-            $ref: "#/definitions/PropertyResponse"
-        400:
-          description: Required fields are missing
-          schema:
-            $ref: "#/definitions/commonValidationError"
-        403:
-          description: permission denied
-          schema:
-            $ref: "#/definitions/commonSingleErrorResponse"
-        405:
-          description: Method not allowed(Method ain't supported by this URL)
-          schema:
-            $ref: "#/definitions/commonSingleErrorResponse"
-        500:
-          description: Internal Server Error(Something has gone wrong on the website's server)
-        501:
-          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
-        502:
-          description: Bad Gateway(Received an invalid response from the upstream server)
-        503:
-          description: Service Unavailable(Server is down for maintenance or overloaded)
-        504:
-          description: Taking more time to get a response
-  
   /property/api/list/:
     get:
       tags:
@@ -1480,6 +1350,10 @@ paths:
         - name: "page"
           in: "query"
           type: "string"
+        - name: "default_images_number"
+          description: "Its control images list count"
+          in: "query"
+          type: "number"
         - name: "search"
           description: "Search by only location related value"
           in: "query"
@@ -1656,6 +1530,10 @@ paths:
         - name: "page"
           in: "query"
           type: "number"
+        - name: "towards"
+          description: "Its control page (e.g 'search' then show fields only for search page)"
+          in: "query"
+          type: "string"
       responses:
         200:
           description: Properties list
@@ -1692,6 +1570,10 @@ paths:
         - name: "page"
           in: "query"
           type: "number"
+        - name: "towards"
+          description: "Its control page (e.g 'search' then show fields only for search page)"
+          in: "query"
+          type: "string"
       responses:
         200:
           description: Properties list
@@ -1728,6 +1610,10 @@ paths:
         - name: "page"
           in: "query"
           type: "number"
+        - name: "towards"
+          description: "Its control page (e.g 'search' then show fields only for search page)"
+          in: "query"
+          type: "string"
       responses:
         200:
           description: Properties list
@@ -1748,7 +1634,7 @@ paths:
         504:
           description: Taking more time to get a response
   
-  /property/api/details/{id}/:
+  /property/api/details/{property_id}/:
     get:
       tags:
         - Property
@@ -1758,10 +1644,14 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - name: "id"
+        - name: "property_id"
           required: true
           in: "path"
           type: "string"
+        - name: "default_images_number"
+          description: "Its control images list count"
+          in: "query"
+          type: "number"
       responses:
         200:
           description: Building details
@@ -1782,7 +1672,7 @@ paths:
         504:
           description: Taking more time to get a response
   
-  /property/api/details/{id}/media-files/:
+  /property/api/details/{property_id}/media-files/:
     get:
       tags:
         - Property
@@ -1792,7 +1682,7 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - name: "id"
+        - name: "property_id"
           required: true
           in: "path"
           type: "string"
@@ -1830,7 +1720,289 @@ paths:
         504:
           description: Taking more time to get a response
   
-  /property/api/update/{id}/:
+  /property/api/details/{property_id}/developer-info/:
+    get:
+      tags:
+        - Property
+      summary: "Property developer info"
+      description: "**User type**: both"
+      operationId: property_developer_info
+      produces:
+        - "application/json"
+      parameters:
+        - name: "property_id"
+          required: true
+          in: "path"
+          type: "string"
+      responses:
+        200:
+          description: Property developer info
+          schema:
+            $ref: "#/definitions/PropertyDeveloperInfoResponse"
+        404:
+          description: Not found
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /property/api/details/{property_id}/building-info/:
+    get:
+      tags:
+        - Property
+      summary: "Property building info"
+      description: "**User type**: both"
+      operationId: property_building_info
+      produces:
+        - "application/json"
+      parameters:
+        - name: "property_id"
+          required: true
+          in: "path"
+          type: "string"
+      responses:
+        200:
+          description: Property building info
+          schema:
+            $ref: "#/definitions/PropertyBuildingInfoResponse"
+        404:
+          description: Not found
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /property/api/details/{property_id}/available-facilities/:
+    get:
+      tags:
+        - Property
+      summary: "Property available facilities"
+      description: "**User type**: both"
+      operationId: property_available_facilities
+      produces:
+        - "application/json"
+      parameters:
+        - name: "property_id"
+          required: true
+          in: "path"
+          type: "string"
+      responses:
+        200:
+          description: Property available facilities
+          schema:
+            $ref: "#/definitions/PropertyAvailableFacilitiesResponse"
+        404:
+          description: Not found
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /property/api/generate-description/:
+    post:
+      tags:
+        - Property
+      summary: "Generate property description"
+      description: "**User type**: logged in as developer or agent"
+      operationId: generate_property_description
+      produces:
+        - "application/json"
+ 
+      responses:
+        201:
+          description: Generate property description
+          schema:
+            $ref: "#/definitions/PropertyGeneratedDescriptionResponse"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /property/api/create/:
+    post:
+      tags:
+        - Property
+      summary: "Create property"
+      description: "**User type**: logged in as developer or agent"
+      operationId: create_property
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "building"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "unit_id"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "title"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "description"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "price"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "price_per_sqm"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "floor_number"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "unit_area"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "interior_view"
+          in: "formData"
+          type: "string"
+        - name: "number_of_bedroom"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "number_of_bathroom"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "number_of_balcony"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "number_of_car_parking"
+          in: "formData"
+          required: true
+          type: "number"
+        - name: "balcony_direction"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "main_door_direction"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "unit_position"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "have_tenant_occupied"
+          in: "formData"
+          type: "boolean"
+        - name: "tenant_occupied_validity"
+          description: "If have_tenant_occupied Yes the required true"
+          in: "formData"
+          type: "string"
+        - name: "have_vacant"
+          in: "formData"
+          type: "boolean"
+        - name: "have_owner_occupied"
+          in: "formData"
+          type: "boolean"
+        - name: "have_bathtub"
+          in: "formData"
+          type: "boolean"
+        - name: "have_duplex"
+          in: "formData"
+          type: "boolean"
+        - name: "images"
+          in: "formData"
+          required: true
+          type: "file"
+        - name: "videos"
+          in: "formData"
+          required: true
+          type: "file"
+        - name: "interior_virtual_tours"
+          in: "formData"
+          required: true
+          type: "file"
+      responses:
+        201:
+          description: Property created
+          schema:
+            $ref: "#/definitions/PropertyResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /property/api/update/{property_id}/:
     put:
       tags:
         - Property
@@ -1842,7 +2014,7 @@ paths:
       consumes:
         - "multipart/form-data"
       parameters:
-        - name: "id"
+        - name: "property_id"
           required: true
           in: "path"
           type: "string"
@@ -1978,7 +2150,7 @@ paths:
       consumes:
         - "multipart/form-data"
       parameters:
-        - name: "id"
+        - name: "property_id"
           required: true
           in: "path"
           type: "string"
@@ -2014,7 +2186,7 @@ paths:
         504:
           description: Taking more time to get a response
   
-  /property/api/delete/{id}/:
+  /property/api/delete/{property_id}/:
     delete:
       tags:
         - Property
@@ -2024,7 +2196,7 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - name: "id"
+        - name: "property_id"
           required: true
           in: "path"
           type: "string"
@@ -2046,27 +2218,20 @@ paths:
         504:
           description: Taking more time to get a response
   
-  /property/api/compare/create/:
-    post:
+  /property/api/compare/list/:
+    get:
       tags:
         - Property
-      summary: "Create property comparison"
+      summary: "Property comparison list"
       description: "**User type**: logged in as a prospect"
-      operationId: create_property_compare
+      operationId: property_compare_list
       produces:
         - "application/json"
-      consumes:
-        - "multipart/form-data"
-      parameters:
-        - name: "property"
-          in: "formData"
-          required: true
-          type: "number"
       responses:
         201:
-          description: Property comparison
+          description: Property comparison list
           schema:
-            $ref: "#/definitions/PropertyComparisonResponse"
+            $ref: "#/definitions/PropertyComparisonListResponse"
         400:
           description: Required fields are missing
           schema:
@@ -2090,20 +2255,27 @@ paths:
         504:
           description: Taking more time to get a response
           
-  /property/api/compare/list/:
-    get:
+  /property/api/compare/create/:
+    post:
       tags:
         - Property
-      summary: "Property comparison list"
+      summary: "Create property comparison"
       description: "**User type**: logged in as a prospect"
-      operationId: property_compare_list
+      operationId: create_property_compare
       produces:
         - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "property"
+          in: "formData"
+          required: true
+          type: "number"
       responses:
         201:
-          description: Property comparison list
+          description: Property comparison
           schema:
-            $ref: "#/definitions/PropertyComparisonListResponse"
+            $ref: "#/definitions/PropertyComparisonResponse"
         400:
           description: Required fields are missing
           schema:
@@ -2166,27 +2338,20 @@ paths:
         504:
           description: Taking more time to get a response
   
-  /property/api/prospect-favorite/add/:
-    post:
+  /property/api/prospect-favorite/list/:
+    get:
       tags:
         - Property
-      summary: "Add favorite property"
+      summary: "Favorite properties list"
       description: "**User type**: logged in as a prospect"
-      operationId: add_favorite_property
+      operationId: favorite_property_list
       produces:
         - "application/json"
-      consumes:
-        - "multipart/form-data"
-      parameters:
-        - name: "property"
-          in: "formData"
-          required: true
-          type: "number"
       responses:
         201:
-          description: Favorite property Added
+          description: Favorite properties list
           schema:
-            $ref: "#/definitions/FavoritePropertyResponse"
+            $ref: "#/definitions/FavoritePropertyListResponse"
         400:
           description: Required fields are missing
           schema:
@@ -2210,20 +2375,27 @@ paths:
         504:
           description: Taking more time to get a response
   
-  /property/api/prospect-favorite/list/:
-    get:
+  /property/api/prospect-favorite/add/:
+    post:
       tags:
         - Property
-      summary: "Favorite properties list"
+      summary: "Add favorite property"
       description: "**User type**: logged in as a prospect"
-      operationId: favorite_property_list
+      operationId: add_favorite_property
       produces:
         - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "property"
+          in: "formData"
+          required: true
+          type: "number"
       responses:
         201:
-          description: Favorite properties list
+          description: Favorite property Added
           schema:
-            $ref: "#/definitions/FavoritePropertyListResponse"
+            $ref: "#/definitions/FavoritePropertyResponse"
         400:
           description: Required fields are missing
           schema:
@@ -3022,10 +3194,6 @@ definitions:
     properties:
       id:
         type: "number"
-      building:
-        type: "number"
-      unit_id:
-        type: "string"
       title:
         type: "string"
       description:
@@ -3038,12 +3206,16 @@ definitions:
         type: "string"
       unit_area:
         type: "number"
-      interior_view:
-        type: "string"
       number_of_bedroom:
         type: "number"
       number_of_bathroom:
         type: "number"
+      building:
+        type: "number"
+      unit_id:
+        type: "string"
+      interior_view:
+        type: "string"
       number_of_balcony:
         type: "number"
       number_of_car_parking:
@@ -3066,84 +3238,11 @@ definitions:
         type: "boolean"
       have_duplex:
         type: "boolean"
-      discount_period:
-        type: "string"
       is_active:
         type: "boolean"
-      building_info:
-        type: object
-        properties:
-          id:
-            type: "number"
-          title:
-            type: "string"
-          description:
-            type: "string"
-          lowest_price:
-            type: "number"
-          highest_price:
-            type: "number"
-          type:
-            type: "string"
-          quota:
-            type: "string"
-          furnishing:
-            type: "string"
-          total_units_for_sale:
-            type: "number"
-          province:
-            type: "string"
-          district:
-            type: "string"
-          sub_district:
-            type: "string"
-          address:
-            type: "string"
-          latitude:
-            type: "number"
-          longitude:
-            type: "number"
-          project_total_area:
-            type: "number"
-          total_floors:
-            type: "number"
-          construction_year:
-            type: "number"
-          have_freehold:
-            type: "boolean"
-          have_leasehold:
-            type: "boolean"
-          have_infinity_pool:
-            type: "boolean"
-          have_pets_allowed:
-            type: "boolean"
-          have_guard_house:
-            type: "boolean"
-          have_sauna:
-            type: "boolean"
-          have_sky_lounge:
-            type: "boolean"
-          have_grocery:
-            type: "boolean"
-          have_fitness_area:
-            type: "boolean"
-          is_active:
-            type: "boolean"
-          created_by:
-            type: object
-            properties:
-              email:
-                type: "string"
-              phone_number:
-                type: "string"
-              company_logo:
-                type: "string"
-              company_name:
-                type: "string"
-              company_address:
-                type: "string"
-              company_details:
-                type: "string"
+      created_by:
+        type: "string"
+      
   
   PropertyListResponse:
     type: object
@@ -3165,18 +3264,8 @@ definitions:
           properties:
             id:
               type: "number"
-            building:
-              type: "number"
-            unit_id:
-              type: "string"
             title:
               type: "string"
-            default_image:
-              type: "string"
-            all_media_files:
-              type: "array"
-              items:
-                type: "string"
             description:
               type: "string"
             price:
@@ -3187,134 +3276,61 @@ definitions:
               type: "string"
             unit_area:
               type: "number"
-            interior_view:
-              type: "string"
             number_of_bedroom:
               type: "number"
             number_of_bathroom:
               type: "number"
-            number_of_balcony:
+            interior_view:
+              type: "string"
+            building_id:
               type: "number"
-            number_of_car_parking:
-              type: "number"
-            balcony_direction:
+            building_type:
               type: "string"
-            main_door_direction:
+            address:
               type: "string"
-            unit_position:
+            have_freehold:
+              type: "boolean"
+            have_leasehold:
+              type: "boolean"
+            have_infinity_pool:
+              type: "boolean"
+            have_pets_allowed:
+              type: "boolean"
+            have_guard_house:
+              type: "boolean"
+            have_sauna:
+              type: "boolean"
+            have_sky_lounge:
+              type: "boolean"
+            have_grocery:
+              type: "boolean"
+            have_fitness_area:
+              type: "boolean"
+            developer_image:
               type: "string"
-            have_tenant_occupied:
-              type: "boolean"
-            tenant_occupied_validity:
+            developer_email:
               type: "string"
-            have_vacant:
-              type: "boolean"
-            have_owner_occupied:
-              type: "boolean"
-            have_bathtub:
-              type: "boolean"
-            have_duplex:
-              type: "boolean"
-            discount_period:
+            developer_phone_number:
               type: "string"
-            is_active:
-              type: "boolean"
             is_compared:
               type: "boolean"
             is_favorited:
               type: "boolean"
-            building_info:
-              type: object
-              properties:
-                id:
-                  type: "number"
-                title:
-                  type: "string"
-                default_image:
-                  type: "string"
-                all_media_files:
-                  type: "array"
-                  items:
+            ariel_view:
+              type: "string"
+            total_default_images:
+              type: "number"
+            default_images:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: "number"
+                  file:
                     type: "string"
-                description:
-                  type: "string"
-                lowest_price:
-                  type: "number"
-                highest_price:
-                  type: "number"
-                type:
-                  type: "string"
-                quota:
-                  type: "string"
-                furnishing:
-                  type: "string"
-                total_units_for_sale:
-                  type: "number"
-                province:
-                  type: "string"
-                district:
-                  type: "string"
-                sub_district:
-                  type: "string"
-                address:
-                  type: "string"
-                latitude:
-                  type: "number"
-                longitude:
-                  type: "number"
-                project_total_area:
-                  type: "number"
-                total_floors:
-                  type: "number"
-                construction_year:
-                  type: "number"
-                distance_from_location_to_BTS_or_MRT:
-                  type: "number"
-                distance_from_location_to_ARL:
-                  type: "number"
-                view:
-                  type: "string"
-                have_freehold:
-                  type: "boolean"
-                have_leasehold:
-                  type: "boolean"
-                have_infinity_pool:
-                  type: "boolean"
-                have_pets_allowed:
-                  type: "boolean"
-                have_guard_house:
-                  type: "boolean"
-                have_sauna:
-                  type: "boolean"
-                have_sky_lounge:
-                  type: "boolean"
-                have_grocery:
-                  type: "boolean"
-                have_fitness_area:
-                  type: "boolean"
-                is_active:
-                  type: "boolean"
-                is_reviewed:
-                  type: "boolean"
-                average_rating:
-                  type: "number"
-                total_reviews:
-                  type: "number"
-                created_by:
-                  type: object
-                  properties:
-                    email:
-                      type: "string"
-                    phone_number:
-                      type: "string"
-                    company_logo:
-                      type: "string"
-                    company_name:
-                      type: "string"
-                    company_address:
-                      type: "string"
-                    company_details:
-                      type: "string"
+                  type:
+                    type: "string"
   
   PropertyVariousFeatureListResponse:
     type: object
@@ -3336,10 +3352,6 @@ definitions:
           properties:
             id:
               type: "number"
-            building_type:
-              type: "string"
-            building_address:
-              type: "string"
             title:
               type: "string"
             description:
@@ -3356,9 +3368,17 @@ definitions:
               type: "number"
             number_of_bathroom:
               type: "number"
-            discount_period:
+            building_type:
               type: "string"
+            building_address:
+              type: "string"
+            is_compared:
+              type: "boolean"
+            is_favorited:
+              type: "boolean"
             default_image:
+              type: "string"
+            discount_period:
               type: "string"
   
   PropertyDetailsResponse:
@@ -3366,18 +3386,8 @@ definitions:
     properties:
       id:
         type: "number"
-      building:
-        type: "number"
-      unit_id:
-        type: "string"
       title:
         type: "string"
-      default_image:
-        type: "string"
-      all_media_files:
-        type: "array"
-        items:
-          type: "string"
       description:
         type: "string"
       price:
@@ -3388,12 +3398,14 @@ definitions:
         type: "string"
       unit_area:
         type: "number"
-      interior_view:
-        type: "string"
       number_of_bedroom:
         type: "number"
       number_of_bathroom:
         type: "number"
+      unit_id:
+        type: "string"
+      interior_view:
+        type: "string"
       number_of_balcony:
         type: "number"
       number_of_car_parking:
@@ -3404,118 +3416,92 @@ definitions:
         type: "string"
       unit_position:
         type: "string"
-      have_tenant_occupied:
-        type: "boolean"
       tenant_occupied_validity:
-        type: "string"
-      have_vacant:
-        type: "boolean"
-      have_owner_occupied:
-        type: "boolean"
-      have_bathtub:
-        type: "boolean"
-      have_duplex:
-        type: "boolean"
-      discount_period:
         type: "string"
       is_active:
         type: "boolean"
+      building_id:
+        type: "number"
+      building_type:
+        type: "string"
+      address:
+        type: "string"
+      latitude:
+        type: "string"
+      longitude:
+        type: "string"
+      construction_year:
+        type: "string"
+      facility_view:
+        type: "string"
+      location_view:
+        type: "string"
       is_compared:
         type: "boolean"
       is_favorited:
         type: "boolean"
-      building_info:
-        type: object
-        properties:
-          id:
-            type: "number"
-          title:
-            type: "string"
-          default_image:
-            type: "string"
-          all_media_files:
-              type: "array"
-              items:
-                type: "string"
-          description:
-            type: "string"
-          lowest_price:
-            type: "number"
-          highest_price:
-            type: "number"
-          type:
-            type: "string"
-          quota:
-            type: "string"
-          furnishing:
-            type: "string"
-          total_units_for_sale:
-            type: "number"
-          province:
-            type: "string"
-          district:
-            type: "string"
-          sub_district:
-            type: "string"
-          address:
-            type: "string"
-          latitude:
-            type: "number"
-          longitude:
-            type: "number"
-          project_total_area:
-            type: "number"
-          total_floors:
-            type: "number"
-          construction_year:
-            type: "number"
-          distance_from_location_to_BTS_or_MRT:
-            type: "number"
-          distance_from_location_to_ARL:
-            type: "number"
-          view:
-            type: "string"
-          have_freehold:
-            type: "boolean"
-          have_leasehold:
-            type: "boolean"
-          have_infinity_pool:
-            type: "boolean"
-          have_pets_allowed:
-            type: "boolean"
-          have_guard_house:
-            type: "boolean"
-          have_sauna:
-            type: "boolean"
-          have_sky_lounge:
-            type: "boolean"
-          have_grocery:
-            type: "boolean"
-          have_fitness_area:
-            type: "boolean"
-          is_active:
-            type: "boolean"
-          is_reviewed:
-            type: "boolean"
-          average_rating:
-            type: "number"
-          total_reviews:
-            type: "number"
-          created_by:
-            type: object
-            properties:
-              email:
-                type: "string"
-              phone_number:
-                type: "string"
-              company_logo:
-                type: "string"
-              company_name:
-                type: "string"
-              company_address:
-                type: "string"
-              company_details:
-                type: "string"
+      default_images:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: "number"
+            file:
+              type: "string"
+            type:
+              type: "string"
+  
+  PropertyDeveloperInfoResponse:
+    type: object
+    properties:
+      name:
+        type: "string"
+      email:
+        type: "string"
+      phone_number:
+        type: "string"
+      company_logo:
+        type: "string"
+      company_name:
+        type: "string"
+      company_address:
+        type: "string"
+      company_details:
+        type: "string"
+  
+  PropertyBuildingInfoResponse:
+    type: object
+    properties:
+      id:
+        type: "number"
+      title:
+        type: "string"
+      description:
+        type: "string"
+      type:
+        type: "string"
+      total_units_for_sale:
+        type: "number"
+      address:
+        type: "string"
+      project_total_area:
+        type: "number"
+      total_floors:
+        type: "number"
+      default_image:
+        type: "string"
+  
+  PropertyAvailableFacilitiesResponse:
+    type: array
+    items:
+      type: "string"
+  
+  PropertyGeneratedDescriptionResponse:
+    type: object
+    properties:
+      generated_property_description:
+        type: "string"
   
   PropertyComparisonResponse:
     type: object
@@ -3525,150 +3511,7 @@ definitions:
       user:
         type: "number"
       property_info:
-        type: object
-        properties:
-          id:
-            type: "number"
-          building:
-            type: "number"
-          unit_id:
-            type: "string"
-          title:
-            type: "string"
-          default_image:
-            type: "string"
-          all_media_files:
-            type: "array"
-            items:
-              type: "string"
-          description:
-            type: "string"
-          price:
-            type: "number"
-          price_per_sqm:
-            type: "number"
-          floor_number:
-            type: "string"
-          unit_area:
-            type: "number"
-          interior_view:
-            type: "string"
-          number_of_bedroom:
-            type: "number"
-          number_of_bathroom:
-            type: "number"
-          number_of_balcony:
-            type: "number"
-          number_of_car_parking:
-            type: "number"
-          balcony_direction:
-            type: "string"
-          main_door_direction:
-            type: "string"
-          unit_position:
-            type: "string"
-          have_tenant_occupied:
-            type: "boolean"
-          tenant_occupied_validity:
-            type: "string"
-          have_vacant:
-            type: "boolean"
-          have_owner_occupied:
-            type: "boolean"
-          have_bathtub:
-            type: "boolean"
-          have_duplex:
-            type: "boolean"
-          discount_period:
-            type: "string"
-          is_active:
-            type: "boolean"
-          building_info:
-            type: object
-            properties:
-              id:
-                type: "number"
-              title:
-                type: "string"
-              default_image:
-                type: "string"
-              all_media_files:
-                type: "array"
-                items:
-                  type: "string"
-              description:
-                type: "string"
-              lowest_price:
-                type: "number"
-              highest_price:
-                type: "number"
-              type:
-                type: "string"
-              quota:
-                type: "string"
-              furnishing:
-                type: "string"
-              total_units_for_sale:
-                type: "number"
-              province:
-                type: "string"
-              district:
-                type: "string"
-              sub_district:
-                type: "string"
-              address:
-                type: "string"
-              latitude:
-                type: "number"
-              longitude:
-                type: "number"
-              project_total_area:
-                type: "number"
-              total_floors:
-                type: "number"
-              construction_year:
-                type: "number"
-              distance_from_location_to_BTS_or_MRT:
-                type: "number"
-              distance_from_location_to_ARL:
-                type: "number"
-              view:
-                type: "string"
-              have_freehold:
-                type: "boolean"
-              have_leasehold:
-                type: "boolean"
-              have_infinity_pool:
-                type: "boolean"
-              have_pets_allowed:
-                type: "boolean"
-              have_guard_house:
-                type: "boolean"
-              have_sauna:
-                type: "boolean"
-              have_sky_lounge:
-                type: "boolean"
-              have_grocery:
-                type: "boolean"
-              have_fitness_area:
-                type: "boolean"
-              is_active:
-                type: "boolean"
-              created_by:
-                type: object
-                properties:
-                  email:
-                    type: "string"
-                  phone_number:
-                    type: "string"
-                  company_logo:
-                    type: "string"
-                  company_name:
-                    type: "string"
-                  company_address:
-                    type: "string"
-                  company_details:
-                    type: "string"
+        type: "string"
   
   PropertyComparisonListResponse:
     type: object
@@ -3697,30 +3540,12 @@ definitions:
               properties:
                 id:
                   type: "number"
-                building:
-                  type: "number"
-                unit_id:
-                  type: "string"
                 title:
-                  type: "string"
-                default_image:
-                  type: "string"
-                all_media_files:
-                  type: "array"
-                  items:
-                    type: "string"
-                description:
                   type: "string"
                 price:
                   type: "number"
                 price_per_sqm:
                   type: "number"
-                floor_number:
-                  type: "string"
-                unit_area:
-                  type: "number"
-                interior_view:
-                  type: "string"
                 number_of_bedroom:
                   type: "number"
                 number_of_bathroom:
@@ -3735,10 +3560,6 @@ definitions:
                   type: "string"
                 unit_position:
                   type: "string"
-                have_tenant_occupied:
-                  type: "boolean"
-                tenant_occupied_validity:
-                  type: "string"
                 have_vacant:
                   type: "boolean"
                 have_owner_occupied:
@@ -3747,96 +3568,50 @@ definitions:
                   type: "boolean"
                 have_duplex:
                   type: "boolean"
-                discount_period:
+                building_id:
+                  type: "number"
+                building_type:
                   type: "string"
-                is_active:
+                address:
+                   type: "string"
+                construction_year:
+                   type: "string"
+                quota:
+                   type: "string"
+                furnishing:
+                   type: "string"
+                distance_from_location_to_BTS_or_MRT:
+                   type: "string"
+                distance_from_location_to_ARL:
+                   type: "string"
+                have_freehold:
                   type: "boolean"
-                building_info:
-                  type: object
-                  properties:
-                    id:
-                      type: "number"
-                    title:
-                      type: "string"
-                    default_image:
-                      type: "string"
-                    all_media_files:
-                      type: "array"
-                      items:
-                        type: "string"
-                    description:
-                      type: "string"
-                    lowest_price:
-                      type: "number"
-                    highest_price:
-                      type: "number"
-                    type:
-                      type: "string"
-                    quota:
-                      type: "string"
-                    furnishing:
-                      type: "string"
-                    total_units_for_sale:
-                      type: "number"
-                    province:
-                      type: "string"
-                    district:
-                      type: "string"
-                    sub_district:
-                      type: "string"
-                    address:
-                      type: "string"
-                    latitude:
-                      type: "number"
-                    longitude:
-                      type: "number"
-                    project_total_area:
-                      type: "number"
-                    total_floors:
-                      type: "number"
-                    construction_year:
-                      type: "number"
-                    distance_from_location_to_BTS_or_MRT:
-                      type: "number"
-                    distance_from_location_to_ARL:
-                      type: "number"
-                    view:
-                      type: "string"
-                    have_freehold:
-                      type: "boolean"
-                    have_leasehold:
-                      type: "boolean"
-                    have_infinity_pool:
-                      type: "boolean"
-                    have_pets_allowed:
-                      type: "boolean"
-                    have_guard_house:
-                      type: "boolean"
-                    have_sauna:
-                      type: "boolean"
-                    have_sky_lounge:
-                      type: "boolean"
-                    have_grocery:
-                      type: "boolean"
-                    have_fitness_area:
-                      type: "boolean"
-                    is_active:
-                      type: "boolean"
-                    created_by:
-                      type: object
-                      properties:
-                        email:
-                          type: "string"
-                        phone_number:
-                          type: "string"
-                        company_logo:
-                          type: "string"
-                        company_name:
-                          type: "string"
-                        company_address:
-                          type: "string"
-                        company_details:
-                          type: "string"
+                have_leasehold:
+                  type: "boolean"
+                have_infinity_pool:
+                  type: "boolean"
+                have_pets_allowed:
+                  type: "boolean"
+                have_guard_house:
+                  type: "boolean"
+                have_sauna:
+                  type: "boolean"
+                have_sky_lounge:
+                  type: "boolean"
+                have_grocery:
+                  type: "boolean"
+                have_fitness_area:
+                  type: "boolean"
+                default_image:
+                  type: "string"
+                interior_view:
+                  type: "string"
+                ariel_view:
+                  type: "string"
+                facility_view:
+                  type: "string"
+                location_view:
+                  type: "string"
   
   FavoritePropertyResponse:
     type: object
@@ -3846,150 +3621,7 @@ definitions:
       prospect:
         type: "number"
       property_info:
-        type: object
-        properties:
-          id:
-            type: "number"
-          building:
-            type: "number"
-          unit_id:
-            type: "string"
-          title:
-            type: "string"
-          default_image:
-            type: "string"
-          all_media_files:
-            type: "array"
-            items:
-              type: "string"
-          description:
-            type: "string"
-          price:
-            type: "number"
-          price_per_sqm:
-            type: "number"
-          floor_number:
-            type: "string"
-          unit_area:
-            type: "number"
-          interior_view:
-            type: "string"
-          number_of_bedroom:
-            type: "number"
-          number_of_bathroom:
-            type: "number"
-          number_of_balcony:
-            type: "number"
-          number_of_car_parking:
-            type: "number"
-          balcony_direction:
-            type: "string"
-          main_door_direction:
-            type: "string"
-          unit_position:
-            type: "string"
-          have_tenant_occupied:
-            type: "boolean"
-          tenant_occupied_validity:
-            type: "string"
-          have_vacant:
-            type: "boolean"
-          have_owner_occupied:
-            type: "boolean"
-          have_bathtub:
-            type: "boolean"
-          have_duplex:
-            type: "boolean"
-          discount_period:
-            type: "string"
-          is_active:
-            type: "boolean"
-          building_info:
-            type: object
-            properties:
-              id:
-                type: "number"
-              title:
-                type: "string"
-              default_image:
-                type: "string"
-              all_media_files:
-                type: "array"
-                items:
-                  type: "string"
-              description:
-                type: "string"
-              lowest_price:
-                type: "number"
-              highest_price:
-                type: "number"
-              type:
-                type: "string"
-              quota:
-                type: "string"
-              furnishing:
-                type: "string"
-              total_units_for_sale:
-                type: "number"
-              province:
-                type: "string"
-              district:
-                type: "string"
-              sub_district:
-                type: "string"
-              address:
-                type: "string"
-              latitude:
-                type: "number"
-              longitude:
-                type: "number"
-              project_total_area:
-                type: "number"
-              total_floors:
-                type: "number"
-              construction_year:
-                type: "number"
-              distance_from_location_to_BTS_or_MRT:
-                type: "number"
-              distance_from_location_to_ARL:
-                type: "number"
-              view:
-                type: "string"
-              have_freehold:
-                type: "boolean"
-              have_leasehold:
-                type: "boolean"
-              have_infinity_pool:
-                type: "boolean"
-              have_pets_allowed:
-                type: "boolean"
-              have_guard_house:
-                type: "boolean"
-              have_sauna:
-                type: "boolean"
-              have_sky_lounge:
-                type: "boolean"
-              have_grocery:
-                type: "boolean"
-              have_fitness_area:
-                type: "boolean"
-              is_active:
-                type: "boolean"
-              created_by:
-                type: object
-                properties:
-                  email:
-                    type: "string"
-                  phone_number:
-                    type: "string"
-                  company_logo:
-                    type: "string"
-                  company_name:
-                    type: "string"
-                  company_address:
-                    type: "string"
-                  company_details:
-                    type: "string"
+        type: "string"
   
   FavoritePropertyListResponse:
     type: object
@@ -4018,19 +3650,7 @@ definitions:
               properties:
                 id:
                   type: "number"
-                building:
-                  type: "number"
-                unit_id:
-                  type: "string"
                 title:
-                  type: "string"
-                default_image:
-                  type: "string"
-                all_media_files:
-                  type: "array"
-                  items:
-                    type: "string"
-                description:
                   type: "string"
                 price:
                   type: "number"
@@ -4040,124 +3660,40 @@ definitions:
                   type: "string"
                 unit_area:
                   type: "number"
-                interior_view:
-                  type: "string"
                 number_of_bedroom:
                   type: "number"
                 number_of_bathroom:
                   type: "number"
-                number_of_balcony:
+                building_id:
                   type: "number"
-                number_of_car_parking:
-                  type: "number"
-                balcony_direction:
+                building_type:
                   type: "string"
-                main_door_direction:
+                address:
                   type: "string"
-                unit_position:
+                have_freehold:
+                  type: "boolean"
+                have_leasehold:
+                  type: "boolean"
+                have_infinity_pool:
+                  type: "boolean"
+                have_pets_allowed:
+                  type: "boolean"
+                have_guard_house:
+                  type: "boolean"
+                have_sauna:
+                  type: "boolean"
+                have_sky_lounge:
+                  type: "boolean"
+                have_grocery:
+                  type: "boolean"
+                have_fitness_area:
+                  type: "boolean"
+                default_image:
                   type: "string"
-                have_tenant_occupied:
+                is_compared:
                   type: "boolean"
-                tenant_occupied_validity:
-                  type: "string"
-                have_vacant:
+                is_favorited:
                   type: "boolean"
-                have_owner_occupied:
-                  type: "boolean"
-                have_bathtub:
-                  type: "boolean"
-                have_duplex:
-                  type: "boolean"
-                discount_period:
-                  type: "string"
-                is_active:
-                  type: "boolean"
-                building_info:
-                  type: object
-                  properties:
-                    id:
-                      type: "number"
-                    title:
-                      type: "string"
-                    default_image:
-                      type: "string"
-                    all_media_files:
-                      type: "array"
-                      items:
-                        type: "string"
-                    description:
-                      type: "string"
-                    lowest_price:
-                      type: "number"
-                    highest_price:
-                      type: "number"
-                    type:
-                      type: "string"
-                    quota:
-                      type: "string"
-                    furnishing:
-                      type: "string"
-                    total_units_for_sale:
-                      type: "number"
-                    province:
-                      type: "string"
-                    district:
-                      type: "string"
-                    sub_district:
-                      type: "string"
-                    address:
-                      type: "string"
-                    latitude:
-                      type: "number"
-                    longitude:
-                      type: "number"
-                    project_total_area:
-                      type: "number"
-                    total_floors:
-                      type: "number"
-                    construction_year:
-                      type: "number"
-                    distance_from_location_to_BTS_or_MRT:
-                      type: "number"
-                    distance_from_location_to_ARL:
-                      type: "number"
-                    view:
-                      type: "string"
-                    have_freehold:
-                      type: "boolean"
-                    have_leasehold:
-                      type: "boolean"
-                    have_infinity_pool:
-                      type: "boolean"
-                    have_pets_allowed:
-                      type: "boolean"
-                    have_guard_house:
-                      type: "boolean"
-                    have_sauna:
-                      type: "boolean"
-                    have_sky_lounge:
-                      type: "boolean"
-                    have_grocery:
-                      type: "boolean"
-                    have_fitness_area:
-                      type: "boolean"
-                    is_active:
-                      type: "boolean"
-                    created_by:
-                      type: object
-                      properties:
-                        email:
-                          type: "string"
-                        phone_number:
-                          type: "string"
-                        company_logo:
-                          type: "string"
-                        company_name:
-                          type: "string"
-                        company_address:
-                          type: "string"
-                        company_details:
-                          type: "string"
   
   ScheduleResponse:
     type: object

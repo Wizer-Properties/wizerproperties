@@ -5,4 +5,5 @@ from .create_n_update import BuildingCreateAndUpdateSerializer
 from .details import BuildingDetailsSerializer
 from .info_for_property import BuildingInfoForPropertySerializer
 from .various_feature import BuildingVariousFeatureSerializer
+from .various_feature_minimal_info import BuildingVariousFeatureMinimalInfoSerializer
 from .review import BuildingReviewSerializer
