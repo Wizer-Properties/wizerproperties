@@ -50,12 +50,12 @@ $(document).ready(function(){
         return '<div class="col-lg-12 mb-4 searching-loader">'+
                     '<div class="search-result-box-wrapper">'+
                         '<div class="row">'+
-                            '<div class="col-lg-5 col-xl-7">'+
+                            '<div class="col-lg-6 col-xl-7">'+
                                 '<div class="search-result-box-img">'+
                                     '<span class="skeleton-box" style="width: 100%; height: 240px;"></span>'+
                                 '</div>'+
                             '</div>'+
-                            '<div class="col-lg-7 col-xl-5">'+
+                            '<div class="col-lg-6 col-xl-5">'+
                                 '<div class="search-result-box">'+
                                     '<h1> <span class="skeleton-box" style="width: 100%; height: 20px;"></span> </h1>'+
                                     '<div class="location">'+
@@ -84,47 +84,47 @@ $(document).ready(function(){
     function property_facility_tmp(data){
         var facility_tmp = '';
 
-        if(data?.building_info?.have_freehold){
+        if(data?.have_freehold){
             facility_tmp += '<span> <i class="bi bi-geo-alt"></i> Freehold</span>'
         };
 
-        if(data?.building_info?.have_leasehold){
+        if(data?.have_leasehold){
             facility_tmp += '<span> <i class="bi bi-geo-alt"></i> Leasehold</span>'
         };
         
-        if(data?.building_info?.construction_year){
-            facility_tmp += '<span> <i class="bi bi-geo-alt"></i>  Year Built '+data?.building_info?.construction_year+'</span>'
+        if(data?.construction_year){
+            facility_tmp += '<span> <i class="bi bi-geo-alt"></i>  Year Built '+data?.construction_year+'</span>'
         };
 
-        if(data?.building_info?.quota){
-            facility_tmp += '<span> <i class="bi bi-geo-alt"></i>  '+data?.building_info?.quota+' Quota </span>'
+        if(data?.quota){
+            facility_tmp += '<span> <i class="bi bi-geo-alt"></i>  '+data?.quota+' Quota </span>'
         };
 
-        if(data?.building_info?.distance_from_location_to_BTS_or_MRT){
-            facility_tmp += '<span> <i class="bi bi-geo-alt"></i>  BTS Or MRT : '+data?.building_info?.distance_from_location_to_BTS_or_MRT+'</span>'
+        if(data?.distance_from_location_to_BTS_or_MRT){
+            facility_tmp += '<span> <i class="bi bi-geo-alt"></i>  BTS Or MRT : '+data?.distance_from_location_to_BTS_or_MRT+'</span>'
         };
 
-        if(data?.building_info?.distance_from_location_to_ARL){
-            facility_tmp += '<span> <i class="bi bi-geo-alt"></i>  ART : '+data?.building_info?.distance_from_location_to_ARL+'</span>'
+        if(data?.distance_from_location_to_ARL){
+            facility_tmp += '<span> <i class="bi bi-geo-alt"></i>  ART : '+data?.distance_from_location_to_ARL+'</span>'
         };
 
-        if(data?.building_info?.have_pets_allowed){
+        if(data?.have_pets_allowed){
             facility_tmp += '<span> <i class="bi bi-geo-alt"></i>  Pet Friendly </span>'
         };
         
-        if(data?.building_info?.view){
-            facility_tmp += '<span> <i class="bi bi-geo-alt"></i> '+data?.building_info?.view+'</span>'
+        if(data?.view){
+            facility_tmp += '<span> <i class="bi bi-geo-alt"></i> '+data?.view+'</span>'
         };
 
-        if(data?.building_info?.have_infinity_pool){
+        if(data?.have_infinity_pool){
             facility_tmp += '<span> <i class="bi bi-geo-alt"></i> Infinity Pool</span>'
         };
 
-        if(data?.building_info?.have_fitness_area){
+        if(data?.have_fitness_area){
             facility_tmp += '<span> <i class="bi bi-geo-alt"></i> Gym</span>'
         };
 
-        if(data?.building_info?.have_sky_lounge){
+        if(data?.have_sky_lounge){
             facility_tmp += '<span> <i class="bi bi-geo-alt"></i> Sky Lounge</span>'
         };
 
@@ -132,13 +132,19 @@ $(document).ready(function(){
     };
 
 
-    function property_image_tmp(data){
+    function property_image_tmp(data, total_default_images){
         var image_tmp = '';
         for (let i = 0; i < data?.length; i++) {
             image_tmp += '<div class="splide__slide search-result-box-img">'+
-                            '<img src="'+data[i]+'" alt="image" loading="lazy">'+
+                            '<img src="'+data[i]?.file+'" alt="image" loading="lazy">'+
                          '</div>'
         };
+
+        if(data?.length < total_default_images){
+            image_tmp += '<div class="splide__slide search-result-box-img search-result-box-img-loader">'+
+                            '<span class="skeleton-box" style="width: 100%; height: 100%;"></span>'+
+                         '</div>'
+        }
 
         return image_tmp;
     };
@@ -150,16 +156,16 @@ $(document).ready(function(){
             $('.add-to-favorite').remove();
         };
 
-        var aerial_drone_video = _.find(data.building_info.all_media_files, { 'type': 'aerial_drone_video' });
-
         return  '<div class="col-12 mb-4 property-single-box">'+
                     '<div class="search-result-box-wrapper p-0">'+
                         '<div class="row m-0">'+
-                            '<div class="col-lg-5 col-xl-7 p-0">'+
-                                '<div class="splide search-result-box-img-splid">'+
+                            '<div class="col-lg-6 col-xl-7 p-0">'+
+                                '<div class="splide search-result-box-img-splid"'+
+                                    'property-id="'+data?.id+'" images-next-page="'+(window.innerWidth <= 768 ? 2 : 3)+'"'+
+                                    'loading moved-page="0" total-images="'+data?.total_default_images+'">'+
                                     '<div class="splide__track">'+
                                         '<div class="splide__list">'+
-                                            property_image_tmp(data?.all_media_files)+
+                                            property_image_tmp(data?.default_images, data?.total_default_images)+
                                         '</div>'+
                                     '</div>'+
                                 '</div>'+
@@ -168,7 +174,7 @@ $(document).ready(function(){
                                     formatBalance(Math.floor(data?.price) || 0)+
                                 '</div>'+
                             '</div>'+
-                            '<div class="col-lg-7 col-xl-5 p-0">'+
+                            '<div class="col-lg-6 col-xl-5 p-0">'+
                                 '<div class="search-result-box p-3">'+
                                     '<div>'+
                                         '<a href="/property/details/'+data?.id+'/" class="d-block">'+
@@ -216,8 +222,8 @@ $(document).ready(function(){
                                                '<button class="link border-0 open-3D-model" data-src="'+data?.interior_view+'" > Interior View </button>' : ''
                                             )+
                                             (
-                                                aerial_drone_video?.file ?
-                                               '<button class="link border-0 open-drone-view" data-src="'+aerial_drone_video?.file+'" > Ariel View </button>' : ''
+                                                data?.ariel_video ?
+                                               '<button class="link border-0 open-drone-view" data-src="'+data?.ariel_video+'" > Ariel View </button>' : ''
                                             )+
                                         '</div>'+
 
@@ -225,12 +231,12 @@ $(document).ready(function(){
                                             '<div class="d-flex justify-content-between align-items-center">'+
                                             '<div class="buillding-agency-info me-4">'+
                                                 '<div class="buillding-agency-logo">'+
-                                                    '<img src="'+ data?.building_info?.created_by?.company_logo +'" alt="company logo">'+
+                                                    '<img src="'+ data?.developer_image +'" alt="company logo">'+
                                                 '</div>'+
                                                 '<div class="buillding-agency-tel">'+
-                                                    '<a href="tel:'+ data?.building_info?.created_by?.phone_number +'">'+
+                                                    '<a href="tel:'+ data?.developer_phone_number +'">'+
                                                             '<i class="bi bi-telephone"></i>'+
-                                                        '<span>'+ data?.building_info?.created_by?.phone_number +'</span>'+
+                                                        '<span>'+ data?.developer_phone_number +'</span>'+
                                                     '</a>'+
                                                         '<span>Local Call rate</span>'+
                                                     '</div>'+
@@ -270,11 +276,11 @@ $(document).ready(function(){
 
     var prams_list = {
         page_size : 5,
-        search : place || ''
+        search : place || '',
+        default_images_number : (window.innerWidth <= 768 ? 1 : 2)
     }
 
     var active_free_scrolling = false;
-    var last_property_box; 
     var next_property = 1;
 
     function searching(search_type){
@@ -513,18 +519,81 @@ $(document).ready(function(){
     function installing_splide(){
         var elms = $('.search-result-box-img-splid');
 
-        for ( var i = 0; i < elms.length; i++ ) {
-            new Splide( elms[ i ], {
-                gap: 5,
-                perPage: 2,
-                pagination : false,
-                breakpoints: {
-                    768: {
-                        perPage: 1,
-                    },
-                }
-            }).mount();
-        };
+        for (var i = 0; i < elms.length; i++) {
+            (function (index) {
+                var image_splider = new Splide(elms[index], {
+                    gap: 5,
+                    perPage: 2,
+                    pagination: false,
+                    breakpoints: {
+                        768: {
+                            perPage: 1,
+                        },
+                    }
+                }).mount();
+        
+                image_splider.on('moved', function (e) {
+                    var option_list = {
+                        splide_el : image_splider,
+                        element : elms[index],
+                        moved_page : e
+                    };
+
+                    get_images(option_list)
+                });
+            })(i);
+        }
+    };
+
+    function loader_for_img(){
+        return  '<div class="splide__slide search-result-box-img search-result-box-img-loader">'+
+                    '<span class="skeleton-box" style="width: 100%; height: 100%;"></span>'+
+                '</div>'
+    }
+
+    function get_images ({
+        element,
+        splide_el,
+        moved_page
+    }){
+        var is_loading = element.getAttribute('loading');
+        if( Boolean(is_loading) ) return;
+
+        var moved_page_to = element.getAttribute('moved-page');
+        if(Number(moved_page_to) >= moved_page ) return;
+        element?.setAttribute('moved-page', moved_page);
+        var property_id = element.getAttribute('property-id');
+        var next_page = element.getAttribute('images-next-page');
+        if( [null, undefined, NaN, ''].includes(Number(next_page))) return;
+        
+        element?.setAttribute('loading', 'true');
+
+        $.ajax({
+            url: '/property/api/details/'+property_id+'/media-files/',
+            type: 'GET',
+            data : {
+                page_size : 1,
+                media_type : 'image',
+                page : Number(next_page)
+            },
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            success: function (data) {
+                element?.setAttribute('images-next-page', data?.next);
+                splide_el.add(property_image_tmp(data?.results));
+                splide_el.remove('.search-result-box-img-loader');
+                if(data?.next){
+                    splide_el.add(loader_for_img())
+                };
+            },
+            error : function () {
+                console.log("erorr")
+            },
+            complete: function(){
+                element?.setAttribute('loading', '');
+            }
+        });
     };
 
 
@@ -632,7 +701,6 @@ $(document).ready(function(){
         });
     };
 
-
     function get_newly_properties_list(){
         $.ajax({
             url: '/property/api/list/newly-created/',
@@ -664,7 +732,6 @@ $(document).ready(function(){
             }
         });
     };
-
 
     function get_popular_building_list(){
         $.ajax({
