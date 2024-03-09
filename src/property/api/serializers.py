@@ -45,10 +45,12 @@ class PropertyListSerializer(PropertySerializer):
     have_grocery = serializers.BooleanField(source="building.have_grocery", read_only=True)
     have_fitness_area = serializers.BooleanField(source="building.have_fitness_area", read_only=True)
     developer_email = serializers.CharField(source="created_by.email", read_only=True)
-    developer_phone_number = serializers.SerializerMethodField(read_only=True)
-    developer_image = serializers.SerializerMethodField(read_only=True)
+    developer_phone_number = serializers.SerializerMethodField()
+    developer_image = serializers.SerializerMethodField()
     is_compared = serializers.BooleanField(read_only=True)
     is_favorited = serializers.BooleanField(read_only=True)
+    ariel_video = serializers.URLField(source="ariel_video_url")
+    total_default_images = serializers.SerializerMethodField()
     default_images = serializers.SerializerMethodField()
 
     class Meta(PropertySerializer.Meta):
@@ -71,6 +73,8 @@ class PropertyListSerializer(PropertySerializer):
             "developer_phone_number",
             "is_compared",
             "is_favorited",
+            "ariel_video",
+            "total_default_images",
             "default_images",
         ]
 
@@ -84,6 +88,10 @@ class PropertyListSerializer(PropertySerializer):
             images = images[: int(default_images_number)]
 
         return PropertyMediaSerializer(images, many=True).data
+
+    def get_total_default_images(self, obj):
+        total_images = obj.media_files.filter(type="image").count()
+        return total_images
 
     def get_developer_image(self, obj):
         user = obj.created_by

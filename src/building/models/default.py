@@ -1,15 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
-from utils.general_data import (
-    BUILDING_TYPES,
-    QUOTA_TYPES,
-    FURNISHING_TYPES,
-    BUILDING_MEDIA_TYPES,
-    ALLOWED_IMAGE_EXTENSIONS,
-    ALLOWED_VIDEO_EXTENSIONS,
-)
-from utils.general_func import validate_media_file_extension
+from utils.general_data import BUILDING_TYPES, QUOTA_TYPES, FURNISHING_TYPES
 from core.models import TimestampedModel
 
 
@@ -63,71 +55,3 @@ class Building(TimestampedModel):
         if self.lowest_price is not None and self.highest_price is not None:
             if self.lowest_price >= self.highest_price:
                 raise ValidationError({"highest_price": "The highest price must be greater than the lowest price."})
-
-
-class BuildingMedia(TimestampedModel):
-    def upload_to(self, filename):
-        # Handle upload path based on media type (image, video, etc.)
-        if self.type in ["image", "floor_plan", "unit_floor_plan", "master_plan"]:
-            return "building/images/{}".format(filename)
-        elif self.type in ["video", "aerial_drone_video"]:
-            return "building/videos/{}".format(filename)
-
-    type = models.CharField(max_length=100, null=True, choices=BUILDING_MEDIA_TYPES)
-    file = models.FileField(null=True, upload_to=upload_to)
-    building = models.ForeignKey(Building, on_delete=models.CASCADE, null=True, related_name="media_files")
-
-    def __str__(self):
-        return str(self.id)
-
-    def clean(self):
-        allowed_extensions = None
-        if self.type in ["image", "floor_plan", "unit_floor_plan", "master_plan"]:
-            allowed_extensions = ALLOWED_IMAGE_EXTENSIONS
-        elif self.type in ["video", "aerial_drone_video"]:
-            allowed_extensions = ALLOWED_VIDEO_EXTENSIONS
-
-        if allowed_extensions:
-            validate_media_file_extension(self.file, allowed_extensions)
-        else:
-            raise ValidationError("Invalid media type")
-
-
-class BuildingReview(TimestampedModel):
-    RATING_CHOICES = (
-        (1, "1"),
-        (2, "2"),
-        (3, "3"),
-        (4, "4"),
-        (5, "5"),
-    )
-
-    user = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True, related_name="building_reviews")
-    building = models.ForeignKey(Building, on_delete=models.CASCADE, null=True, related_name="reviews")
-    rating = models.IntegerField(choices=RATING_CHOICES, default=0)
-    review_text = models.TextField(blank=True, null=True, max_length=1000)
-    is_active = models.BooleanField(default=True)
-
-    def clean(self, *args, **kwargs):
-        super().clean()
-
-        # Duplication check
-        is_exists = BuildingReview.objects.filter(
-            user=self.user,
-            building=self.building,
-        ).exists()
-        if is_exists:
-            raise ValidationError("This building has been previously reviewed.")
-
-
-class PopularBuilding(TimestampedModel):
-    building = models.ForeignKey(Building, null=True, on_delete=models.SET_NULL, related_name="populars")
-
-    def clean(self):
-        # Check if there is already an object with the same building
-        existing_objects = self.__class__.objects.filter(building=self.building)
-        if self.id:
-            existing_objects = existing_objects.exclude(id=self.id)  # Exclude the current object for updates
-
-        if existing_objects.exists():
-            raise ValidationError({"property": "The building have already in popular list."})

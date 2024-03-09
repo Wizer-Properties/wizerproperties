@@ -17,7 +17,7 @@ from .serializers import (
 )
 from .filters import PropertyFilter
 from building.api.serializers import BuildingInfoForPropertySerializer, BuildingMediaSerializer
-from building.models import Building
+from building.models import Building, BuildingMedia
 from property.models import Property, PropertyMedia, CompareProperty, ProspectFavoriteProperty
 from user.api.serializers import AgentProfileSerializer, DeveloperProfileSerializer
 from utils.general_func import get_chatgpt_response
@@ -68,6 +68,15 @@ class PropertyViewSet(viewsets.ModelViewSet):
                     # Annotate default_image_url with the URL of the first image for each property (if available)
                     default_image_url=Subquery(
                         PropertyMedia.objects.filter(property=OuterRef("pk"), type="image")
+                        .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
+                        .values("full_file_url")[:1]
+                    ),
+                )
+            if self.action in ["list"]:
+                queryset = queryset.annotate(
+                    # Annotate default_image_url with the URL of the first image for each property (if available)
+                    ariel_video_url=Subquery(
+                        BuildingMedia.objects.filter(building=OuterRef("building_id"), type="aerial_drone_video")
                         .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
                         .values("full_file_url")[:1]
                     ),
