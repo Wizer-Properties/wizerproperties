@@ -10,8 +10,7 @@ $(document).ready(function(){
     };
 
     function append_data(data_list){
-        var gallery_dom = ''
-        console.log("======", data_list)
+        var gallery_dom = '';
         
         for (let i = 0; i < data_list?.length; i++) {
             gallery_dom += '<div class="details-gallery-img-box" type="'+data_list[i]?.type+'" index='+(i+1)+' >'+
@@ -35,18 +34,9 @@ $(document).ready(function(){
                 'X-CSRFToken': csrfToken,
             },
             success: function (data) {
-                var data = data;
-                // if(!data?.building_info){
-                //     data = {
-                //         building_info : data
-                //     }
-                // };
+                get_review_list(data?.id); 
 
-                building_id = data?.building_info?.id;
-                get_review_list(data?.id); // get review data
-
-                console.log(data)
-                // $('[label-name="media-files-image"] .details-gallery').html(append_data(data?.default_images));
+                $('[label-name="media-files-image"] .details-gallery').html(append_data(data?.default_images));
                 
                 // property info
                 $('.add-to-compare').attr('added', data?.is_compared);
@@ -62,48 +52,47 @@ $(document).ready(function(){
                 $('[label-name="title"]').html(data?.title)
                 $('[label-name="unit_id"]').html(data?.unit_id)
                 $('[label-name="price"]').html('฿ '+ formatBalance(Math.floor(data?.price) || 0))
-                $('[label-name="build-max-min-price"]').html(
-                    '฿ '+formatBalance(Math.floor(data?.building_info?.lowest_price) || 0) +' - '+ 
-                    formatBalance(Math.floor(data?.building_info?.highest_price) || 0)
-                )
                 $('[label-name="number_of_bedroom"]').html(data?.number_of_bedroom)
                 $('[label-name="number_of_bathroom"]').html(data?.number_of_bathroom)
                 $('[label-name="unit_area"]').html(data?.unit_area + ' SqM')
                 $('[label-name="floor_number"]').html(data?.floor_number)
                 $('[label-name="description"]').html(data?.description)
                 $('[label-name="price_per_sqm"]').html('฿ '+ data?.price_per_sqm)
-
-                $('[label-name="building-description"]').html(data?.building_info?.description);
-                $('[label-name="build-title"]').html(data?.building_info?.title)
-                $('[label-name="build-price"]').html('฿ '+ Math.floor(data?.building_info?.price))
-                $('[label-name="address"]').html(data?.building_info?.address)
-                $('[label-name="total_floors"]').html(data?.building_info?.total_floors)
-                $('[label-name="number_of_balcony"]').html(data?.number_of_balcony)
-                $('[label-name="number_of_car_parking"]').html(data?.number_of_car_parking)
-                $('[label-name="building_type"]').html(data?.building_info?.type)
-                $('[label-name="construction_year"]').html(data?.building_info?.construction_year)
-                $('[label-name="project_name"]').html(data?.building_info?.title)
-                $('[label-name="project_name"]').html(data?.building_info?.title)
-                $('[label-name="project_total_area"]').html(data?.building_info?.project_total_area)
-                $('[label-name="total_units_for_sale"]').html(data?.building_info?.total_units_for_sale)
-                $('[label-name="building_name"]')
-                .html('<img src="'+data?.building_info?.default_image+'" alt="building img" loading="lazy"/>');
-
-                $('[label-name="company_logo"]')
-                .html('<img src="'+data?.building_info?.created_by?.company_logo+'" alt="building img" loading="lazy"/>')
-                $('[label-name="company_name"').html(data?.building_info?.created_by?.company_name)
-                $('[label-name="company_address"').html(data?.building_info?.created_by?.company_address)
-                $('[label-name="phone_number"]').html('<a href="tel:'+data?.building_info?.created_by?.phone_number+'">'+data?.building_info?.created_by?.phone_number+'</a>')
-                $('[label-name="email"]').html('<a href="mailto:'+data?.building_info?.created_by?.email+'">'+data?.building_info?.created_by?.email+'</a>')
-                $('[label-name="building_details_button"]').html('<a href="/building/details/'+data?.building_info?.id+'/" class="link"> View Building </a>')
-
+                $('[label-name="address"]').html(data?.address)
+                $('[label-name="construction_year"]').html(data?.construction_year)
                 $('[label-name="interior-view"] .details-gallery-3D-view').html( iframe_void(data?.interior_view))
-                $('[label-name="facilities-view"] .details-gallery-3D-view').html( iframe_void(data?.building_info?.facility_view))
-                $('[label-name="location-video"] .details-gallery-3D-view').html( iframe_void(data?.building_info?.location_view))
+                $('[label-name="facilities-view"] .details-gallery-3D-view').html( iframe_void(data?.facility_view))
+                $('[label-name="location-video"] .details-gallery-3D-view').html( iframe_void(data?.location_view))
 
-                // Facilities ==============
-                facilities_void(data?.building_info);
-                $('.review-writing-area').html(review_tmp(data))
+                // ================
+                // ================
+                // ================
+                // ================
+                // ================
+
+
+                // $('[label-name="building-description"]').html(data?.description);
+                // $('[label-name="build-title"]').html(data?.title)
+                // $('[label-name="build-price"]').html('฿ '+ Math.floor(data?.price))
+                // $('[label-name="number_of_balcony"]').html(data?.number_of_balcony)
+                // $('[label-name="number_of_car_parking"]').html(data?.number_of_car_parking)
+                // $('[label-name="building_type"]').html(data?.type)
+                // $('[label-name="construction_year"]').html(data?.construction_year)
+                // $('[label-name="project_name"]').html(data?.title)
+                // $('[label-name="project_name"]').html(data?.title)
+                // $('[label-name="project_total_area"]').html(data?.project_total_area)
+                // $('[label-name="total_units_for_sale"]').html(data?.total_units_for_sale)
+                // $('[label-name="building_name"]')
+                // .html('<img src="'+data?.building_info?.default_image+'" alt="building img" loading="lazy"/>');
+
+
+                
+
+
+
+                // // Facilities ==============
+                // facilities_void(data?.building_info);
+                // $('.review-writing-area').html(review_tmp(data))
             },
             error: function (error) {
                 console.log("error")
@@ -125,92 +114,9 @@ $(document).ready(function(){
                 '</div>'
     };
 
-    function facilities_void(building_info){
-        var facilities_dom = '';
-
-        if(building_info?.have_fitness_area){
-            var _icon = '<i class="material-symbols-outlined"> exercise </i>';
-            facilities_dom += facilities_info_tmp('Fitness Area', _icon)
-        };
-
-        if(building_info?.have_guard_house){
-            var _icon = '<i class="material-symbols-outlined"> security </i>';
-            facilities_dom += facilities_info_tmp('Guard House', _icon)
-        };
-
-        if(building_info?.have_river_view){
-            var _icon = '<i class="material-symbols-outlined"> legend_toggle </i>';
-            facilities_dom += facilities_info_tmp('River View', _icon)
-        };
-
-        if(building_info?.have_sauna){
-            var _icon = '<i class="material-symbols-outlined"> sauna </i>';
-            facilities_dom += facilities_info_tmp('Sauna', _icon)
-        };
-
-        if(building_info?.have_sky_lounge){
-            var _icon = '<i class="material-symbols-outlined"> filter_drama </i>';
-            facilities_dom += facilities_info_tmp('Sky Lounge', _icon)
-        };
-
-        if(building_info?.have_grocery){
-            var _icon = '<i class="material-symbols-outlined"> shopping_cart </i>';
-            facilities_dom += facilities_info_tmp('Grocery', _icon)
-        };
-
-        if(
-            building_info?.view &&
-            building_info?.view !== ''
-        ){
-            var _icon = '<i class="material-symbols-outlined"> location_city </i>';
-            facilities_dom += facilities_info_tmp(building_info?.view , _icon)
-        };
-
-        if(building_info?.have_freehold){
-            var _icon = '<i class="material-symbols-outlined"> real_estate_agent </i>';
-            facilities_dom += facilities_info_tmp('Freehold Land', _icon)
-        };
-
-        if(building_info?.have_infinity_pool){
-            var _icon = '<i class="material-symbols-outlined"> pool </i>';
-            facilities_dom += facilities_info_tmp('Infinity Pool', _icon)
-        };
-
-        if(building_info?.have_leasehold){
-            var _icon = '<i class="material-symbols-outlined"> real_estate_agent </i>';
-            facilities_dom += facilities_info_tmp('Leasehold Land', _icon)
-        };
-
-        if(building_info?.have_pets_allowed){
-            var _icon = '<i class="material-symbols-outlined"> pets </i>';
-            facilities_dom += facilities_info_tmp('Pet Friendly', _icon)
-        };
-
-        if(
-            building_info?.distance_from_location_to_BTS_or_MRT &&
-            building_info?.distance_from_location_to_BTS_or_MRT != ''
-        ){
-            var _icon = '<i class="material-symbols-outlined"> train </i>';
-            facilities_dom += facilities_info_tmp(building_info?.distance_from_location_to_BTS_or_MRT, _icon)
-        };
-
-        if(
-            building_info?.distance_from_location_to_ARL &&
-            building_info?.distance_from_location_to_ARL != ''
-        ){
-            var _icon = '<i class="material-symbols-outlined"> train </i>';
-            facilities_dom += facilities_info_tmp(building_info?.distance_from_location_to_ARL, _icon)
-        };
-
-        if(facilities_dom == ''){
-            facilities_dom += '<p class="no-facilities"> No Facilities added </p>'
-        }
-
-        $('[label-name="facilities"]').html(facilities_dom)
-    };
 
 
-    var got_media_file_type = [];
+    var got_media_file_type = ['image', 'interior-view'];
     var got_media_file_data = [];
 
 
@@ -727,7 +633,11 @@ $(document).ready(function(){
                     review_dom += show_review_tmp(data?.results[i])
                 };
 
-                $('.view-the-reviews').append(review_dom);
+                if(review_dom == ''){
+                    $('.review-writing-area').html("No review available");
+                }else{
+                    $('.view-the-reviews').append(review_dom);
+                }
                 if(!data?.next){
                     $('.load-more-reviews').remove();
                 }else{
@@ -739,5 +649,216 @@ $(document).ready(function(){
             }
         })
     };
+
+
+    // building details start =====================
+
+    var is_building_details_get = false;
+
+    function get_building_details(){
+        is_building_details_get = true;
+        $.ajax({
+            url: '/property/api/details/'+PROPERTY_ID+'/building-info/',
+            type: 'GET',
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            success : function (data) {
+                $('[label-name="building_name"]')
+                .html('<img src="'+data?.default_image+'" alt="building img" loading="lazy"/>');
+
+                $('[label-name="project_name"]').html(data?.title)
+                $('[label-name="project_total_area"]').html(data?.project_total_area)
+                $('[label-name="building_type"]').html(data?.type)
+                $('[label-name="construction_year"]').html(data?.construction_year)
+                $('[label-name="total_units_for_sale"]').html(data?.total_units_for_sale)
+                $('[label-name="total_floors"]').html(data?.total_floors);
+
+                $('[label-name="building_details_button"]')
+                .html('<a href="/building/details/'+data?.id+'/" class="link"> View Building </a>')
+            },
+        })
+    };
+
+    new Waypoint({
+        element: document.querySelector('.building-details'),
+        handler: function() {
+            if(is_building_details_get) return;
+            get_building_details()
+        },
+        offset: '110%'
+    });
+
+    // building details end =====================
+
+
+
+    // facilities details end =====================
+
+    var is_facilities_get = false;
+
+    function facilities_void(building_info){
+        var facilities_dom = '';
+
+        if(building_info?.have_fitness_area){
+            var _icon = '<i class="material-symbols-outlined"> exercise </i>';
+            facilities_dom += facilities_info_tmp('Fitness Area', _icon)
+        };
+
+        if(building_info?.have_guard_house){
+            var _icon = '<i class="material-symbols-outlined"> security </i>';
+            facilities_dom += facilities_info_tmp('Guard House', _icon)
+        };
+
+        if(building_info?.have_river_view){
+            var _icon = '<i class="material-symbols-outlined"> legend_toggle </i>';
+            facilities_dom += facilities_info_tmp('River View', _icon)
+        };
+
+        if(building_info?.have_sauna){
+            var _icon = '<i class="material-symbols-outlined"> sauna </i>';
+            facilities_dom += facilities_info_tmp('Sauna', _icon)
+        };
+
+        if(building_info?.have_sky_lounge){
+            var _icon = '<i class="material-symbols-outlined"> filter_drama </i>';
+            facilities_dom += facilities_info_tmp('Sky Lounge', _icon)
+        };
+
+        if(building_info?.have_grocery){
+            var _icon = '<i class="material-symbols-outlined"> shopping_cart </i>';
+            facilities_dom += facilities_info_tmp('Grocery', _icon)
+        };
+
+        if(
+            building_info?.view &&
+            building_info?.view !== ''
+        ){
+            var _icon = '<i class="material-symbols-outlined"> location_city </i>';
+            facilities_dom += facilities_info_tmp(building_info?.view , _icon)
+        };
+
+        if(building_info?.have_freehold){
+            var _icon = '<i class="material-symbols-outlined"> real_estate_agent </i>';
+            facilities_dom += facilities_info_tmp('Freehold Land', _icon)
+        };
+
+        if(building_info?.have_infinity_pool){
+            var _icon = '<i class="material-symbols-outlined"> pool </i>';
+            facilities_dom += facilities_info_tmp('Infinity Pool', _icon)
+        };
+
+        if(building_info?.have_leasehold){
+            var _icon = '<i class="material-symbols-outlined"> real_estate_agent </i>';
+            facilities_dom += facilities_info_tmp('Leasehold Land', _icon)
+        };
+
+        if(building_info?.have_pets_allowed){
+            var _icon = '<i class="material-symbols-outlined"> pets </i>';
+            facilities_dom += facilities_info_tmp('Pet Friendly', _icon)
+        };
+
+        if(
+            building_info?.distance_from_location_to_BTS_or_MRT &&
+            building_info?.distance_from_location_to_BTS_or_MRT != ''
+        ){
+            var _icon = '<i class="material-symbols-outlined"> train </i>';
+            facilities_dom += facilities_info_tmp(building_info?.distance_from_location_to_BTS_or_MRT, _icon)
+        };
+
+        if(
+            building_info?.distance_from_location_to_ARL &&
+            building_info?.distance_from_location_to_ARL != ''
+        ){
+            var _icon = '<i class="material-symbols-outlined"> train </i>';
+            facilities_dom += facilities_info_tmp(building_info?.distance_from_location_to_ARL, _icon)
+        };
+
+        if(facilities_dom == ''){
+            facilities_dom += '<p class="no-facilities"> No Facilities added </p>'
+        }
+
+        $('[label-name="facilities"]').html(facilities_dom)
+    };
+
+    function get_facilities_details(){
+        is_facilities_get = true;
+        $.ajax({
+            url: '/property/api/details/'+PROPERTY_ID+'/available-facilities/',
+            type: 'GET',
+            // data : {
+            //     default_images_number : 5
+            // },
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            success : function (data) {
+                console.log(data)
+                // $('[label-name="building_name"]')
+                // .html('<img src="'+data?.default_image+'" alt="building img" loading="lazy"/>');
+
+                // $('[label-name="project_name"]').html(data?.title)
+                // $('[label-name="project_total_area"]').html(data?.project_total_area)
+                // $('[label-name="building_type"]').html(data?.type)
+                // $('[label-name="construction_year"]').html(data?.construction_year)
+                // $('[label-name="total_units_for_sale"]').html(data?.total_units_for_sale)
+                // $('[label-name="total_floors"]').html(data?.total_floors);
+
+                // $('[label-name="building_details_button"]')
+                // .html('<a href="/building/details/'+data?.id+'/" class="link"> View Building </a>')
+            },
+        })
+    };
+
+    new Waypoint({
+        element: document.querySelector('.facilities-area'),
+        handler: function() {
+            if(is_facilities_get) return;
+            get_facilities_details()
+        },
+        offset: '110%'
+    });
+
+    // facilities details end =====================
+
+
+
+    // developer details start =====================
+
+
+    var is_developer_details_get = false;
+
+    function get_developer_details(){
+        is_developer_details_get = true;
+        $.ajax({
+            url: '/property/api/details/'+PROPERTY_ID+'/developer-info/',
+            type: 'GET',
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            success : function (data) {
+                console.log(data)
+                $('[label-name="company_logo"]')
+                .html('<img src="'+data?.company_logo+'" alt="building img" loading="lazy"/>')
+                $('[label-name="company_name"').html(data?.company_name)
+                $('[label-name="company_address"').html(data?.company_address)
+                $('[label-name="phone_number"]').html('<a href="tel:'+data?.phone_number+'">'+data?.phone_number+'</a>')
+                $('[label-name="email"]').html('<a href="mailto:'+data?.email+'">'+data?.email+'</a>')
+            },
+        })
+    };
+
+    new Waypoint({
+        element: document.querySelector('.developer-info'),
+        handler: function() {
+            if(is_developer_details_get) return;
+            get_developer_details()
+        },
+        offset: '110%'
+    });
+
+    // developer details end =====================
+
+
 
 });

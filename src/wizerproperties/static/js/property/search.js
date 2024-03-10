@@ -222,8 +222,8 @@ $(document).ready(function(){
                                                '<button class="link border-0 open-3D-model" data-src="'+data?.interior_view+'" > Interior View </button>' : ''
                                             )+
                                             (
-                                                data?.ariel_video ?
-                                               '<button class="link border-0 open-drone-view" data-src="'+data?.ariel_video+'" > Ariel View </button>' : ''
+                                                data?.ariel_view ?
+                                               '<button class="link border-0 open-drone-view" data-src="'+data?.ariel_view+'" > Ariel View </button>' : ''
                                             )+
                                         '</div>'+
 
@@ -640,6 +640,7 @@ $(document).ready(function(){
             type: 'GET',
             data : {
                 page_size : 5,
+                towards : 'search'
             },
             headers: {
                 'X-CSRFToken': csrfToken,
@@ -655,9 +656,9 @@ $(document).ready(function(){
                 for (let i = 0; i < data?.results.length; i++) {
                     var data_result = data?.results[i];
                     gatheing_dom += '<li> <a href="/property/details/'+data_result?.id+'/"> '+
-                                        data_result?.number_of_bathroom +
-                                        ' bedroom houses for sale in '+
-                                        data_result?.building_address +
+                                        data_result?.number_of_bedroom +
+                                        ' bedroom '+ data_result?.type +' for sale in '+
+                                        data_result?.address +
                                     '</li>';
                 };
                 $('[sugested-type="popular-properties"]').append(gatheing_dom);
@@ -674,6 +675,7 @@ $(document).ready(function(){
             type: 'GET',
             data : {
                 page_size : 5,
+                towards : 'search'
             },
             headers: {
                 'X-CSRFToken': csrfToken,
@@ -688,9 +690,9 @@ $(document).ready(function(){
                 for (let i = 0; i < data?.results.length; i++) {
                     var data_result = data?.results[i];
                     gatheing_dom += '<li> <a href="/property/details/'+data_result?.id+'/"> '+
-                                        data_result?.number_of_bathroom +
-                                        ' bedroom houses for sale in '+
-                                        data_result?.building_address +
+                                        data_result?.number_of_bedroom +
+                                        ' bedroom '+ data_result?.type +' for sale in '+
+                                        data_result?.address +
                                     '</li>';
                 };
                 $('[sugested-type="discount-properties"]').append(gatheing_dom);
@@ -707,6 +709,7 @@ $(document).ready(function(){
             type: 'GET',
             data : {
                 page_size : 5,
+                towards : 'search'
             },
             headers: {
                 'X-CSRFToken': csrfToken,
@@ -720,9 +723,9 @@ $(document).ready(function(){
                 for (let i = 0; i < data?.results.length; i++) {
                     var data_result = data?.results[i];
                     gatheing_dom += '<li> <a href="/property/details/'+data_result?.id+'/"> '+
-                                        data_result?.number_of_bathroom +
-                                        ' bedroom houses for sale in '+
-                                        data_result?.building_address +
+                                        data_result?.number_of_bedroom +
+                                        ' bedroom '+ data_result?.type +' for sale in '+
+                                        data_result?.address +
                                     '</li>';
                 };
                 $('[sugested-type="new-properties"]').append(gatheing_dom);
@@ -739,6 +742,7 @@ $(document).ready(function(){
             type: 'GET',
             data : {
                 page_size : 5,
+                towards : 'search'
             },
             headers: {
                 'X-CSRFToken': csrfToken,

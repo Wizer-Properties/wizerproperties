@@ -10,8 +10,7 @@ $(document).ready(function(){
     };
 
     function append_data(data_list){
-        var gallery_dom = ''
-        console.log("======", data_list)
+        var gallery_dom = '';
         
         for (let i = 0; i < data_list?.length; i++) {
             gallery_dom += '<div class="details-gallery-img-box" type="'+data_list[i]?.type+'" index='+(i+1)+' >'+
@@ -35,57 +34,40 @@ $(document).ready(function(){
                 'X-CSRFToken': csrfToken,
             },
             success: function (data) {
-                var data = data;
-                // if(!data?.building_info){
-                //     data = {
-                //         building_info : data
-                //     }
-                // };
+                get_review_list(data?.id); 
 
-                building_id = data?.building_info?.id;
-                get_review_list(data?.id); // get review data
-
-                console.log(data)
-                // $('[label-name="media-files-image"] .details-gallery').html(append_data(data?.default_images));
+                $('[label-name="media-files-image"] .details-gallery').html(append_data(data?.default_images));
                 
-                // property info
-                $('.add-to-compare').attr('added', data?.is_compared);
-                $('.add-to-favorite').attr('added', data?.is_favorited);
-                $('.add-to-compare').attr('index', data?.id);
-                $('.add-to-favorite').attr('index', data?.id);
+                // $('[label-name="title"]').html(data?.title)
+                // $('[label-name="unit_id"]').html(data?.unit_id)
+                // $('[label-name="price"]').html('฿ '+ formatBalance(Math.floor(data?.price) || 0))
+                // $('[label-name="number_of_bedroom"]').html(data?.number_of_bedroom)
+                // $('[label-name="number_of_bathroom"]').html(data?.number_of_bathroom)
+                // $('[label-name="unit_area"]').html(data?.unit_area + ' SqM')
+                // $('[label-name="floor_number"]').html(data?.floor_number)
+                // $('[label-name="description"]').html(data?.description)
+                // $('[label-name="price_per_sqm"]').html('฿ '+ data?.price_per_sqm)
+                // $('[label-name="address"]').html(data?.address)
+                // $('[label-name="construction_year"]').html(data?.construction_year)
 
-                if( ['agent', 'developer'].includes(user_type)){
-                    $('.add-to-compare').remove();
-                    $('.add-to-favorite').remove();
-                };
+                // ================
+                // ================
+                // ================
+                // ================
+                // ================
 
-                $('[label-name="title"]').html(data?.title)
-                $('[label-name="unit_id"]').html(data?.unit_id)
-                $('[label-name="price"]').html('฿ '+ formatBalance(Math.floor(data?.price) || 0))
-                $('[label-name="build-max-min-price"]').html(
-                    '฿ '+formatBalance(Math.floor(data?.building_info?.lowest_price) || 0) +' - '+ 
-                    formatBalance(Math.floor(data?.building_info?.highest_price) || 0)
-                )
-                $('[label-name="number_of_bedroom"]').html(data?.number_of_bedroom)
-                $('[label-name="number_of_bathroom"]').html(data?.number_of_bathroom)
-                $('[label-name="unit_area"]').html(data?.unit_area + ' SqM')
-                $('[label-name="floor_number"]').html(data?.floor_number)
-                $('[label-name="description"]').html(data?.description)
-                $('[label-name="price_per_sqm"]').html('฿ '+ data?.price_per_sqm)
 
-                $('[label-name="building-description"]').html(data?.building_info?.description);
-                $('[label-name="build-title"]').html(data?.building_info?.title)
-                $('[label-name="build-price"]').html('฿ '+ Math.floor(data?.building_info?.price))
-                $('[label-name="address"]').html(data?.building_info?.address)
-                $('[label-name="total_floors"]').html(data?.building_info?.total_floors)
+                $('[label-name="building-description"]').html(data?.description);
+                $('[label-name="build-title"]').html(data?.title)
+                $('[label-name="build-price"]').html('฿ '+ Math.floor(data?.price))
                 $('[label-name="number_of_balcony"]').html(data?.number_of_balcony)
                 $('[label-name="number_of_car_parking"]').html(data?.number_of_car_parking)
-                $('[label-name="building_type"]').html(data?.building_info?.type)
-                $('[label-name="construction_year"]').html(data?.building_info?.construction_year)
-                $('[label-name="project_name"]').html(data?.building_info?.title)
-                $('[label-name="project_name"]').html(data?.building_info?.title)
-                $('[label-name="project_total_area"]').html(data?.building_info?.project_total_area)
-                $('[label-name="total_units_for_sale"]').html(data?.building_info?.total_units_for_sale)
+                $('[label-name="building_type"]').html(data?.type)
+                $('[label-name="construction_year"]').html(data?.construction_year)
+                $('[label-name="project_name"]').html(data?.title)
+                $('[label-name="project_name"]').html(data?.title)
+                $('[label-name="project_total_area"]').html(data?.project_total_area)
+                $('[label-name="total_units_for_sale"]').html(data?.total_units_for_sale)
                 $('[label-name="building_name"]')
                 .html('<img src="'+data?.building_info?.default_image+'" alt="building img" loading="lazy"/>');
 
@@ -210,7 +192,7 @@ $(document).ready(function(){
     };
 
 
-    var got_media_file_type = [];
+    var got_media_file_type = ['image', 'master_plan', 'interior-view'];
     var got_media_file_data = [];
 
 
