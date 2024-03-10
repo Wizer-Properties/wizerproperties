@@ -13,6 +13,7 @@ from property.api.serializers import (
     PropertyMediaSerializer,
     PropertyVariousFeatureSerializer,
     PropertyVariousFeatureMinimalInfoSerializer,
+    PropertyFacilitiesSerializer,
 )
 from property.api.filters import PropertyFilter
 from building.api.serializers import BuildingInfoForPropertySerializer, BuildingMediaSerializer
@@ -161,15 +162,8 @@ class PropertyViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["get"])
     def available_facilities(self, request, pk=None):
         property = self.get_object()
-
-        # Create a list of property facility names where the value is True (available)
-        available_facilities = [
-            key.split("_", 1)[1].replace("_", " ").title()
-            for key, value in property.__dict__.items()
-            if key.startswith("have_") and value
-        ]
-
-        return Response(available_facilities, status=status.HTTP_200_OK)
+        serializer = PropertyFacilitiesSerializer(property)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=["get"])
     def newly_created(self, request):

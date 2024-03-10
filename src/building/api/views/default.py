@@ -12,6 +12,7 @@ from building.api.serializers import (
     BuildingMediaSerializer,
     BuildingVariousFeatureSerializer,
     BuildingVariousFeatureMinimalInfoSerializer,
+    BuildingFacilitiesSerializer,
 )
 from building.api.filters import BuildingFilter
 from building.models import Building, BuildingMedia
@@ -102,15 +103,8 @@ class BuildingViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["get"])
     def available_facilities(self, request, pk=None):
         building = self.get_object()
-
-        # Create a list of building facility names where the value is True (available)
-        available_facilities = [
-            key.split("_", 1)[1].replace("_", " ").title()
-            for key, value in building.__dict__.items()
-            if key.startswith("have_") and value
-        ]
-
-        return Response(available_facilities, status=status.HTTP_200_OK)
+        serializer = BuildingFacilitiesSerializer(building)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=["get"])
     def available_units(self, request, pk=None):

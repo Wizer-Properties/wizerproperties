@@ -10,3 +10,4 @@ from .compare import ComparePropertySerializer
 from .favorite import ProspectFavoritePropertySerializer
 from .comparisons_list import PropertyComparisonsListSerializer
 from .favorite_list import PropertyFavoriteListSerializer
+from .property_facilities import PropertyFacilitiesSerializer
