@@ -450,6 +450,7 @@ footer{
 .property-card{
     border: 1px solid #e3e3ee;
     border-radius: 5px;
+    height: 100%;
 }
 
 .available-unitssplide-splide .splide__arrow{

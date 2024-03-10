@@ -67,7 +67,6 @@ $(document).ready(function(){
     }
 
     function comparison_tmp(data, video_id){
-        var aerial_drone_video = _.find(data?.property_info?.building_info?.all_media_files, { 'type': 'aerial_drone_video' });
 
         return  '<div class="splide__slide comparison-slider-box">'+
                     '<button class="remove-from-comparison" index="'+data?.property_info?.id+'" >'+
@@ -77,7 +76,7 @@ $(document).ready(function(){
                         '<img src="'+data?.property_info?.default_image+'" alt="property img">'+
                     '</div>'+
                     '<div class="comparison-list-label">'+
-                    '<li> '+label_name('Project Name')+' <a href="/building/details/'+data?.property_info?.building_info?.id+'/">'+data?.property_info?.building_info?.title+'</a> </li>'+
+                    '<li> '+label_name('Project Name')+' <a href="/building/details/'+data?.property_info?.id+'/">'+data?.property_info?.title+'</a> </li>'+
                         '<li> '+label_name('Price')+' ฿ '+ formatBalance(data?.property_info?.price || 0) +' </li>'+
                         '<li> '+label_name('Price Per Sqm')+' ฿ '+ formatBalance(data?.property_info?.price_per_sqm || 0) +' </li>'+
                         '<li> '+label_name('Built Up Area') + 'Built Up Area' +' </li>'+
@@ -85,24 +84,24 @@ $(document).ready(function(){
                         '<li> '+label_name('Bedrooms') +data?.property_info?.number_of_bedroom+' </li>'+
                         '<li> '+label_name('Bathrooms') +data?.property_info?.number_of_bathroom+' </li>'+
                         '<li> '+label_name('Parking') +data?.property_info?.number_of_car_parking+' </li>'+
-                        '<li> '+label_name('Freehold') + facilities_tmp(data?.property_info?.building_info?.have_freehold) +' </li>'+
-                        '<li> '+label_name('Leasehold') + facilities_tmp(data?.property_info?.building_info?.have_leasehold) +' </li>'+
-                        '<li> '+label_name('Completion Date') +data?.property_info?.building_info?.construction_year+' </li>'+
-                        '<li> '+label_name('Quota') + data?.property_info?.building_info?.quota +' </li>'+
-                        '<li> '+label_name('Access to BTS/MRT') + data?.property_info?.building_info?.distance_from_location_to_BTS_or_MRT +' </li>'+
-                        '<li> '+label_name('Access to ARL') + data?.property_info?.building_info?.distance_from_location_to_ARL +' </li>'+
-                        '<li> '+label_name('Furnished') + data?.property_info?.building_info?.furnishing +' </li>'+
+                        '<li> '+label_name('Freehold') + facilities_tmp(data?.property_info?.have_freehold) +' </li>'+
+                        '<li> '+label_name('Leasehold') + facilities_tmp(data?.property_info?.have_leasehold) +' </li>'+
+                        '<li> '+label_name('Completion Date') +data?.property_info?.construction_year+' </li>'+
+                        '<li> '+label_name('Quota') + data?.property_info?.quota +' </li>'+
+                        '<li> '+label_name('Access to BTS/MRT') + data?.property_info?.distance_from_location_to_BTS_or_MRT +' </li>'+
+                        '<li> '+label_name('Access to ARL') + data?.property_info?.distance_from_location_to_ARL +' </li>'+
+                        '<li> '+label_name('Furnished') + data?.property_info?.furnishing +' </li>'+
                         '<li> '+label_name('Tenant Occupied') + facilities_tmp(data?.property_info?.have_tenant_occupied) +' </li>'+
                         '<li> '+label_name('Owner Occupied') + facilities_tmp(data?.property_info?.have_owner_occupied) +' </li>'+
                         '<li> '+label_name('Duplex') + facilities_tmp(data?.property_info?.have_duplex) +' </li>'+
-                        '<li> '+label_name('Pet Friendly') + facilities_tmp(data?.property_info?.building_info?.have_pets_allowed) +' </li>'+
+                        '<li> '+label_name('Pet Friendly') + facilities_tmp(data?.property_info?.have_pets_allowed) +' </li>'+
                         '<li> '+label_name('Balcony') + data?.property_info?.number_of_balcony +' </li>'+
                         '<li> '+label_name('Bathtubs') + facilities_tmp(data?.property_info?.have_bathtub) +' </li>'+
-                        '<li> '+label_name('View') + data?.property_info?.building_info?.view +' </li>'+
+                        '<li> '+label_name('View') + data?.property_info?.view +' </li>'+
                         '<li> '+label_name('Rooftop Pool') + 'Rooftop Pool' +' </li>'+
-                        '<li> '+label_name('Infinity Pool') + facilities_tmp(data?.property_info?.building_info?.have_infinity_pool) +' </li>'+
-                        '<li> '+label_name('Gym') + facilities_tmp(data?.property_info?.building_info?.have_fitness_area) +' </li>'+
-                        '<li> '+label_name('Sky Lounge') + facilities_tmp(data?.property_info?.building_info?.have_sky_lounge) +' </li>'+
+                        '<li> '+label_name('Infinity Pool') + facilities_tmp(data?.property_info?.have_infinity_pool) +' </li>'+
+                        '<li> '+label_name('Gym') + facilities_tmp(data?.property_info?.have_fitness_area) +' </li>'+
+                        '<li> '+label_name('Sky Lounge') + facilities_tmp(data?.property_info?.have_sky_lounge) +' </li>'+
 
                         '<li class="text-center"> <a href="/property/details/'+data?.property_info?.id+'/" class="link">Details</a> </li>'+
 
@@ -118,8 +117,8 @@ $(document).ready(function(){
                         '<li style="height: 240px;"> '+
                             label_name('Facilities') +
                             (
-                                data?.property_info?.building_info?.facility_view ?
-                                '<iframe width="100%" height="100%" src="'+data?.property_info?.building_info?.facility_view+'" frameborder="0" allowfullscreen=""></iframe>' : 
+                                data?.property_info?.facility_view ?
+                                '<iframe width="100%" height="100%" src="'+data?.property_info?.facility_view+'" frameborder="0" allowfullscreen=""></iframe>' : 
                                 '<span class="no-video-data"> No 3D view ! </span>'
                             ) +
                         '</li>' +
@@ -127,8 +126,8 @@ $(document).ready(function(){
                         '<li style="height: 240px;"> '+
                             label_name('Location') +
                             (
-                                data?.property_info?.building_info?.location_view ?
-                                '<iframe width="100%" height="100%" src="'+data?.property_info?.building_info?.location_view+'" frameborder="0" allowfullscreen=""></iframe>' : 
+                                data?.property_info?.location_view ?
+                                '<iframe width="100%" height="100%" src="'+data?.property_info?.location_view+'" frameborder="0" allowfullscreen=""></iframe>' : 
                                 '<span class="no-video-data"> No 3D view ! </span>'
                             ) +
                         '</li>' +
@@ -136,9 +135,9 @@ $(document).ready(function(){
                         '<li style="height: 240px;">'+
                             label_name('Ariel View') +
                             (
-                                aerial_drone_video?.file ?
+                                data?.property_info?.ariel_view ?
                                 '<video class="video-js comparison-videos" id="'+video_id+'" controls preload="auto" data-setup="{}">'+
-                                    '<source src="'+aerial_drone_video?.file+'" type="video/mp4" />'+
+                                    '<source src="'+data?.property_info?.ariel_view+'" type="video/mp4" />'+
                                     '<p class="vjs-no-js">'+
                                         'To view this video please enable JavaScript, and consider upgrading to a web browser that'+
                                     '</p>'+

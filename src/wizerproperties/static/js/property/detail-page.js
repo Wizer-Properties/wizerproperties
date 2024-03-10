@@ -34,7 +34,7 @@ $(document).ready(function(){
                 'X-CSRFToken': csrfToken,
             },
             success: function (data) {
-                get_review_list(data?.id); 
+                get_review_list(data?.building_id?.id); 
 
                 $('[label-name="media-files-image"] .details-gallery').html(append_data(data?.default_images));
                 
@@ -63,36 +63,6 @@ $(document).ready(function(){
                 $('[label-name="interior-view"] .details-gallery-3D-view').html( iframe_void(data?.interior_view))
                 $('[label-name="facilities-view"] .details-gallery-3D-view').html( iframe_void(data?.facility_view))
                 $('[label-name="location-video"] .details-gallery-3D-view').html( iframe_void(data?.location_view))
-
-                // ================
-                // ================
-                // ================
-                // ================
-                // ================
-
-
-                // $('[label-name="building-description"]').html(data?.description);
-                // $('[label-name="build-title"]').html(data?.title)
-                // $('[label-name="build-price"]').html('฿ '+ Math.floor(data?.price))
-                // $('[label-name="number_of_balcony"]').html(data?.number_of_balcony)
-                // $('[label-name="number_of_car_parking"]').html(data?.number_of_car_parking)
-                // $('[label-name="building_type"]').html(data?.type)
-                // $('[label-name="construction_year"]').html(data?.construction_year)
-                // $('[label-name="project_name"]').html(data?.title)
-                // $('[label-name="project_name"]').html(data?.title)
-                // $('[label-name="project_total_area"]').html(data?.project_total_area)
-                // $('[label-name="total_units_for_sale"]').html(data?.total_units_for_sale)
-                // $('[label-name="building_name"]')
-                // .html('<img src="'+data?.building_info?.default_image+'" alt="building img" loading="lazy"/>');
-
-
-                
-
-
-
-                // // Facilities ==============
-                // facilities_void(data?.building_info);
-                // $('.review-writing-area').html(review_tmp(data))
             },
             error: function (error) {
                 console.log("error")
@@ -837,7 +807,6 @@ $(document).ready(function(){
                 'X-CSRFToken': csrfToken,
             },
             success : function (data) {
-                console.log(data)
                 $('[label-name="company_logo"]')
                 .html('<img src="'+data?.company_logo+'" alt="building img" loading="lazy"/>')
                 $('[label-name="company_name"').html(data?.company_name)

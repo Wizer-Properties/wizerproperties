@@ -32,49 +32,50 @@ $(document).ready(function(){
     
 
     function property_facility_tmp(data){
+        console.log("=========== data", data)
         var facility_tmp = '';
 
-        if(data?.building_info?.have_freehold){
+        if(data?.have_freehold){
             facility_tmp += '<span>Freehold</span>'
         };
 
-        if(data?.building_info?.have_leasehold){
+        if(data?.have_leasehold){
             facility_tmp += '<span>Leasehold</span>'
         };
         
-        if(data?.building_info?.construction_year){
-            facility_tmp += '<span> Year Built '+data?.building_info?.construction_year+'</span>'
+        if(data?.construction_year){
+            facility_tmp += '<span> Year Built '+data?.construction_year+'</span>'
         };
 
-        if(data?.building_info?.quota){
-            facility_tmp += '<span> '+data?.building_info?.quota+' Quota </span>'
+        if(data?.quota){
+            facility_tmp += '<span> '+data?.quota+' Quota </span>'
         };
 
-        if(data?.building_info?.distance_from_location_to_BTS_or_MRT){
-            facility_tmp += '<span> BTS Or MRT : '+data?.building_info?.distance_from_location_to_BTS_or_MRT+'</span>'
+        if(data?.distance_from_location_to_BTS_or_MRT){
+            facility_tmp += '<span> BTS Or MRT : '+data?.distance_from_location_to_BTS_or_MRT+'</span>'
         };
 
-        if(data?.building_info?.distance_from_location_to_ARL){
-            facility_tmp += '<span> ART : '+data?.building_info?.distance_from_location_to_ARL+'</span>'
+        if(data?.distance_from_location_to_ARL){
+            facility_tmp += '<span> ART : '+data?.distance_from_location_to_ARL+'</span>'
         };
 
-        if(data?.building_info?.have_pets_allowed){
+        if(data?.have_pets_allowed){
             facility_tmp += '<span> Pet Friendly </span>'
         };
         
-        if(data?.building_info?.view){
-            facility_tmp += '<span>'+data?.building_info?.view+'</span>'
+        if(data?.view){
+            facility_tmp += '<span>'+data?.view+'</span>'
         };
 
-        if(data?.building_info?.have_infinity_pool){
+        if(data?.have_infinity_pool){
             facility_tmp += '<span>Infinity Pool</span>'
         };
 
-        if(data?.building_info?.have_fitness_area){
+        if(data?.have_fitness_area){
             facility_tmp += '<span>Gym</span>'
         };
 
-        if(data?.building_info?.have_sky_lounge){
+        if(data?.have_sky_lounge){
             facility_tmp += '<span>Sky Lounge</span>'
         };
 
@@ -87,13 +88,13 @@ $(document).ready(function(){
 
         return  '<div class="col-sm-6 col-lg-4 col-xl-3 mb-4 property-single-box">'+
                     '<div class="banner-action-button">'+
-                        '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+value?.property_info?.id+'">'+
+                        '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
                             '<i class="bi bi-arrow-left-right"></i>'+
                             '<i class="bi bi-check-circle-fill"></i>'+
                             ' Compare'+
                         '</button>'+
 
-                        '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+value?.property_info?.id+'">'+
+                        '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'">'+
                             '<i class="bi bi-heart-fill"></i>'+
                             '<i class="bi bi-heart"></i>'+
                             ' Favorite'+
@@ -108,17 +109,17 @@ $(document).ready(function(){
                             '<div class="location">'+
                                 '<div class="icon">'+
                                     '<i class="bi bi-geo-alt"></i>'+
-                                    data?.building_info?.address+
+                                    data?.address+
                                 '</div>'+
                             '</div>'+
                             '<p class="sub-title">'+
                             data?.number_of_bedroom+
                             ' bedroom ' +
-                            data?.building_info?.type+
+                            data?.building_type+
                             ' for sale at ' +
-                            data?.building_info?.title+
+                            data?.title+
                             '</p>'+
-                            '<p class="details"> '+ data?.description+' </p>'+
+                            // '<p class="details"> '+ data?.description+' </p>'+
 
                             '<div class="property-contains">'+
                                 '<div class="property-short-info-box">'+
@@ -163,8 +164,7 @@ $(document).ready(function(){
     var prams_list = {
         page_size : 10,
     }
-    var active_free_scrolling = false;
-    var last_property_box; 
+
     var next_property = 1;
 
     function searching(search_type){ 
