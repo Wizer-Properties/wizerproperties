@@ -1834,6 +1834,44 @@ paths:
         504:
           description: Taking more time to get a response
   
+  /property/api/details/{property_id}/schedule/:
+    get:
+      tags:
+        - Property
+      summary: "Property schedule"
+      description: "**User type**: both"
+      operationId: property_schedule
+      produces:
+        - "application/json"
+      parameters:
+        - name: "property_id"
+          required: true
+          in: "path"
+          type: "string"
+      responses:
+        200:
+          description: Property available facilities
+          schema:
+            $ref: "#/definitions/PropertyScheduleResponse"
+        404:
+          description: Not found
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
   /property/api/generate-description/:
     post:
       tags:
@@ -3496,6 +3534,58 @@ definitions:
     type: array
     items:
       type: "string"
+  
+  PropertyScheduleResponse:
+    type: object
+    properties:
+      id:
+        type: "number"
+      title:
+        type: "string"
+      description:
+        type: "string"
+      price:
+        type: "string"
+      price_per_sqm:
+        type: "string"
+      unit_area:
+        type: "number"
+      floor_number:
+        type: "string"
+      number_of_bedroom:
+        type: "number"
+      number_of_bathroom:
+        type: "number"
+      building:
+        type: object
+        properties:
+          id:
+            type: "number"
+          type:
+            type: "string"
+          address:
+            type: "string"
+          have_freehold:
+            type: "boolean"
+          have_leasehold:
+            type: "boolean"
+          have_infinity_pool:
+            type: "boolean"
+          have_pets_allowed:
+            type: "boolean"
+          have_guard_house:
+            type: "boolean"
+          have_sauna:
+            type: "boolean"
+          have_sky_lounge:
+            type: "boolean"
+          have_grocery:
+            type: "boolean"
+          have_fitness_area:
+            type: "boolean"
+      image_path:
+        type: "string"
+          
   
   PropertyGeneratedDescriptionResponse:
     type: object

@@ -14,6 +14,7 @@ from property.api.serializers import (
     PropertyVariousFeatureSerializer,
     PropertyVariousFeatureMinimalInfoSerializer,
     PropertyFacilitiesSerializer,
+    SchedulePropertySerializer,
 )
 from property.api.filters import PropertyFilter
 from building.api.serializers import BuildingInfoForPropertySerializer, BuildingMediaSerializer
@@ -149,6 +150,20 @@ class PropertyViewSet(viewsets.ModelViewSet):
             profile_data = {}
 
         return Response(profile_data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=["get"])
+    def schedule(self, request, pk=None):
+        property = self.get_object()
+        serializer = SchedulePropertySerializer(property)
+        data = serializer.data
+
+        property_image = property.media_files.filter(type="image").first()
+        image_path = ""
+        if property_image:
+            image_path = property_image.file.url
+        data.update({"image_path": image_path})
+
+        return Response(data, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=["get"])
     def building_info(self, request, pk=None):

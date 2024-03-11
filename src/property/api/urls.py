@@ -11,6 +11,7 @@ urlpatterns = [
     path("details/<int:pk>/media-files/", PropertyViewSet.as_view({"get": "media_files"}), name="media_files"),
     path("details/<int:pk>/developer-info/", PropertyViewSet.as_view({"get": "developer_info"}), name="developer_info"),
     path("details/<int:pk>/building-info/", PropertyViewSet.as_view({"get": "building_info"}), name="building_info"),
+    path("details/<int:pk>/schedule/", PropertyViewSet.as_view({"get": "schedule"}), name="schedule"),
     path(
         "details/<int:pk>/available-facilities/",
         PropertyViewSet.as_view({"get": "available_facilities"}),

@@ -23,6 +23,7 @@ class PropertyFavoriteListSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "title",
+            "description",
             "price",
             "price_per_sqm",
             "floor_number",
