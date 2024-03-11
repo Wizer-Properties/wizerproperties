@@ -33,6 +33,10 @@
     z-index: 9999 !important;
 }
 
+header{
+    background-color: #fff;
+}
+
 .skeleton-box {
     display: inline-block;
     height: 1em;
@@ -789,6 +793,37 @@ footer{
     overflow: hidden;
 }
 
+.privacy-about-reading-box{
+    background-color: #fff;
+    padding: 45px 30px;
+    box-shadow: 0 5px 20px 0 rgba(0,0,0,.05);
+}
+
+#privacy-about-page .title{
+    font-size: 26px;
+    margin-bottom: 25px;
+}
+
+.privacy-about-text,
+.privacy-about-text *{
+    color: #726E6E;
+}
+
+.privacy-page-bg-images,
+.about-page-bg-images{
+    height: 360px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.privacy-page-bg-images{
+    background-image: url('/static/media/privacy-bg.webp');
+}
+
+.about-page-bg-images{
+    background-image: url('/static/media/about-us-bg.webp');
+}
 
 @media screen and (max-width: 768px) {
     .table-title{
@@ -808,6 +843,11 @@ footer{
     .ai-generate-description-body{
         width: 94%;
         padding: 30px 15px;
+    }
+
+    .privacy-page-bg-images,
+    .about-page-bg-images{
+        height: 260px;
     }
 }
 

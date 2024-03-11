@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from core.views import dashboard, contact_page, home_page
+from core.views import dashboard, contact_page, home_page, privacy_page, about_us_page
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -30,6 +30,8 @@ urlpatterns = [
     path("property/", include(("property.urls", "property"), namespace="property")),
     path("schedule/", include(("schedule.urls", "schedule"), namespace="schedule")),
     path("core/", include(("core.urls", "core"), namespace="core")),
+    path('about-us/', about_us_page, name='about-us'),
+    path('privacy/', privacy_page, name='privacy'),
 ]
 
 if settings.DEBUG:
