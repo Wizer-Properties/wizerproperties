@@ -667,8 +667,9 @@ $(document).ready(function(){
 
     var is_facilities_get = false;
 
-    function facilities_void(building_info){
+    function facilities_void(data){
         var facilities_dom = '';
+        var building_info = data?.building;
 
         if(building_info?.have_fitness_area){
             var _icon = '<i class="material-symbols-outlined"> exercise </i>';
@@ -763,19 +764,7 @@ $(document).ready(function(){
                 'X-CSRFToken': csrfToken,
             },
             success : function (data) {
-                console.log(data)
-                // $('[label-name="building_name"]')
-                // .html('<img src="'+data?.default_image+'" alt="building img" loading="lazy"/>');
-
-                // $('[label-name="project_name"]').html(data?.title)
-                // $('[label-name="project_total_area"]').html(data?.project_total_area)
-                // $('[label-name="building_type"]').html(data?.type)
-                // $('[label-name="construction_year"]').html(data?.construction_year)
-                // $('[label-name="total_units_for_sale"]').html(data?.total_units_for_sale)
-                // $('[label-name="total_floors"]').html(data?.total_floors);
-
-                // $('[label-name="building_details_button"]')
-                // .html('<a href="/building/details/'+data?.id+'/" class="link"> View Building </a>')
+                facilities_void(data)
             },
         })
     };
@@ -794,8 +783,6 @@ $(document).ready(function(){
 
 
     // developer details start =====================
-
-
     var is_developer_details_get = false;
 
     function get_developer_details(){
@@ -825,7 +812,6 @@ $(document).ready(function(){
         },
         offset: '110%'
     });
-
     // developer details end =====================
 
 
