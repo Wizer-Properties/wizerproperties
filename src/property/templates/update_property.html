@@ -102,7 +102,9 @@
                                 <!-- <span class="authErrorMessage">Message</span> -->
                                 <input name="interior_view" type="url" class="authInput" placeholder="Interior View"
                                     value="{{ property.interior_view }}">
-                                <div class="authlabelline authcompleteProfileLabe">Interior View</div>
+                                <div class="authlabelline authcompleteProfileLabe">
+                                    Interior View ( e.g. https://my.matterport.com/show/?m=tHeZn1V85YQ)
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -185,7 +187,7 @@
                                     <div class="form-check">
                                         <input name="have_vacant" class="form-check-input" type="checkbox" id="vacant" {% if property.have_vacant %}checked{% endif %}>
                                         <label class="form-check-label" for="vacant">
-                                            Have Vacant
+                                            Vacant
                                         </label>
                                     </div>
                                 </div>
@@ -193,7 +195,7 @@
                                     <div class="form-check">
                                         <input name="have_owner_occupied" class="form-check-input" type="checkbox" id="owner_occupied" {% if property.have_owner_occupied %}checked{% endif %}>
                                         <label class="form-check-label" for="owner_occupied">
-                                            Have Owner Occupied
+                                            Owner Occupied
                                         </label>
                                     </div>
                                 </div>
@@ -201,7 +203,7 @@
                                     <div class="form-check">
                                         <input name="have_bathtub" class="form-check-input" type="checkbox" id="bathtub" {% if property.have_bathtub %}checked{% endif %}>
                                         <label class="form-check-label" for="bathtub">
-                                            Have Bathtub
+                                            Bathtub
                                         </label>
                                     </div>
                                 </div>
@@ -209,7 +211,7 @@
                                     <div class="form-check">
                                         <input name="have_duplex" class="form-check-input" type="checkbox" id="duplex" {% if property.have_duplex %}checked{% endif %}>
                                         <label class="form-check-label" for="duplex">
-                                            Have Duplex
+                                            Duplex
                                         </label>
                                     </div>
                                 </div>
@@ -218,7 +220,7 @@
                                         <input name="have_tenant_occupied" class="form-check-input" type="checkbox"
                                         id="have_tenant_occupied" {% if property.have_tenant_occupied %}checked{% endif %}>
                                         <label class="form-check-label" for="have_tenant_occupied">
-                                            Have Tenant Occupied
+                                            Tenant Occupied
                                         </label>
                                     </div>
                                 </div>

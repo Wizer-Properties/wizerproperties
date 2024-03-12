@@ -74,6 +74,7 @@ body{
    z-index: 111;
    margin: 0 24px;
    background-color: #375ad5;
+   max-width: 200px !important;
  }
 .authInput::placeholder {
    opacity: 0; 
@@ -222,6 +223,7 @@ body{
 .authcompleteProfileLabe {
     padding: 7px 25px;
     top: 5px;
+    max-height: 35px;
 }
 
 #phone_code{
