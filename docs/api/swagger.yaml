@@ -3150,7 +3150,7 @@ definitions:
       reviews:
         type: object
         properties:
-          total_reviews:
+          average_rating:
             type: "number"
           has_reviewed:
             type: "boolean"
@@ -3580,7 +3580,7 @@ definitions:
       reviews:
         type: object
         properties:
-          total_reviews:
+          average_rating:
             type: "number"
           has_reviewed:
             type: "boolean"

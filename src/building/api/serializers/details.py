@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.db.models import Avg
 from .media import BuildingMediaSerializer
 from .default import BuildingSerializer
 
@@ -32,12 +33,16 @@ class BuildingDetailsSerializer(BuildingSerializer):
     def get_reviews(self, obj):
         request = self.context.get("request")
         reviews = obj.reviews.all()
-        total_reviews = reviews.count()
+        average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
         data = {
-            "total_reviews": total_reviews
+            "average_rating": average_rating
         }
         reviewed_by = request.GET.get("reviewed_by")
         if reviewed_by:
-            has_reviewed = reviews.filter(user=reviewed_by).exists()
-            data.update({"has_reviewed": has_reviewed})
+            try:
+                has_reviewed = reviews.filter(user__id=reviewed_by).exists()
+                data["has_reviewed"] = has_reviewed
+            except ValueError:
+                # Handle the case where 'reviewed_by' is not a valid integer
+                pass
         return data
