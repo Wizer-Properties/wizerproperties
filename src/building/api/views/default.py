@@ -13,6 +13,7 @@ from building.api.serializers import (
     BuildingVariousFeatureSerializer,
     BuildingVariousFeatureMinimalInfoSerializer,
     BuildingFacilitiesSerializer,
+    ScheduleBuildingSerializer,
 )
 from building.api.filters import BuildingFilter
 from building.models import Building, BuildingMedia
@@ -105,6 +106,20 @@ class BuildingViewSet(viewsets.ModelViewSet):
         building = self.get_object()
         serializer = BuildingFacilitiesSerializer(building)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    @action(detail=True, methods=["get"])
+    def schedule(self, request, pk=None):
+        building = self.get_object()
+        serializer = ScheduleBuildingSerializer(building)
+        data = serializer.data
+
+        building_image = building.media_files.filter(type="image").first()
+        image_path = ""
+        if building_image:
+            image_path = building_image.file.url
+        data.update({"image_path": image_path})
+
+        return Response(data, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=["get"])
     def available_units(self, request, pk=None):

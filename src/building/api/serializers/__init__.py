@@ -8,3 +8,4 @@ from .various_feature import BuildingVariousFeatureSerializer
 from .various_feature_minimal_info import BuildingVariousFeatureMinimalInfoSerializer
 from .review import BuildingReviewSerializer
 from .building_facilities import BuildingFacilitiesSerializer
+from .schedule_building import ScheduleBuildingSerializer

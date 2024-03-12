@@ -14,6 +14,7 @@ class PropertyDetailsSerializer(PropertySerializer):
     is_compared = serializers.BooleanField(read_only=True)
     is_favorited = serializers.BooleanField(read_only=True)
     default_images = serializers.SerializerMethodField()
+    reviews = serializers.SerializerMethodField()
 
     class Meta(PropertySerializer.Meta):
         fields = PropertySerializer.Meta.fields + [
@@ -37,6 +38,7 @@ class PropertyDetailsSerializer(PropertySerializer):
             "is_compared",
             "is_favorited",
             "default_images",
+            "reviews",
         ]
 
     def get_default_images(self, obj):
@@ -49,3 +51,16 @@ class PropertyDetailsSerializer(PropertySerializer):
             images = images[: int(default_images_number)]
 
         return PropertyMediaSerializer(images, many=True).data
+        
+    def get_reviews(self, obj):
+        request = self.context.get("request")
+        reviews = obj.building.reviews.all()
+        total_reviews = reviews.count()
+        data = {
+            "total_reviews": total_reviews
+        }
+        reviewed_by = request.GET.get("reviewed_by")
+        if reviewed_by:
+            has_reviewed = reviews.filter(user=reviewed_by).exists()
+            data.update({"has_reviewed": has_reviewed})
+        return data

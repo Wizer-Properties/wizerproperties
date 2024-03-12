@@ -591,6 +591,10 @@ paths:
           description: "Determine the number of default_images to return in the list based on the provided default_images_number parameter."
           in: "query"
           type: "string"
+        - name: "reviewed_by"
+          description: "Has reviewed by this user"
+          in: "query"
+          type: "number"
       responses:
         200:
           description: Building details
@@ -756,6 +760,44 @@ paths:
           description: Building available units
           schema:
             $ref: "#/definitions/BuildingAvailableUnitsResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /building/api/details/{building_id}/schedule/:
+    get:
+      tags:
+        - Building
+      summary: "Building schedule"
+      description: "**User type**: both"
+      operationId: building_schedule
+      produces:
+        - "application/json"
+      parameters:
+        - name: "building_id"
+          required: true
+          in: "path"
+          type: "string"
+      responses:
+        200:
+          description: Property available facilities
+          schema:
+            $ref: "#/definitions/BuildingScheduleResponse"
+        404:
+          description: Not found
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
         405:
           description: Method not allowed(Method ain't supported by this URL)
           schema:
@@ -1650,6 +1692,10 @@ paths:
           type: "string"
         - name: "default_images_number"
           description: "Its control images list count"
+          in: "query"
+          type: "number"
+        - name: "reviewed_by"
+          description: "Has reviewed by this user"
           in: "query"
           type: "number"
       responses:
@@ -3101,6 +3147,14 @@ definitions:
               type: "string"
             type:
               type: "string"
+      reviews:
+        type: object
+        properties:
+          total_reviews:
+            type: "number"
+          has_reviewed:
+            type: "boolean"
+          
   
   BuildingDeveloperInfoResponse:
     type: object
@@ -3163,6 +3217,40 @@ definitions:
               type: "number"
             number_of_bathroom:
               type: "number"
+  
+  BuildingScheduleResponse:
+    type: object
+    properties:
+      id:
+        type: "number"
+      title:
+        type: "string"
+      type:
+        type: "string"
+      address:
+        type: "string"
+      have_freehold:
+        type: "boolean"
+      have_leasehold:
+        type: "boolean"
+      have_infinity_pool:
+        type: "boolean"
+      have_pets_allowed:
+        type: "boolean"
+      have_guard_house:
+        type: "boolean"
+      have_sauna:
+        type: "boolean"
+      have_sky_lounge:
+        type: "boolean"
+      have_grocery:
+        type: "boolean"
+      have_fitness_area:
+        type: "boolean"
+      image_path:
+        type: "string"
+          
+    
   
   BuildingGeneratedDescriptionResponse:
     type: object
@@ -3489,6 +3577,13 @@ definitions:
               type: "string"
             type:
               type: "string"
+      reviews:
+        type: object
+        properties:
+          total_reviews:
+            type: "number"
+          has_reviewed:
+            type: "boolean"
   
   PropertyDeveloperInfoResponse:
     type: object
@@ -3544,10 +3639,6 @@ definitions:
         type: "string"
       description:
         type: "string"
-      price:
-        type: "string"
-      price_per_sqm:
-        type: "string"
       unit_area:
         type: "number"
       floor_number:
@@ -3561,6 +3652,8 @@ definitions:
         properties:
           id:
             type: "number"
+          title:
+            type: "string"
           type:
             type: "string"
           address:

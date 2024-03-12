@@ -16,6 +16,7 @@ urlpatterns = [
     path(
         "details/<int:pk>/available-units/", BuildingViewSet.as_view({"get": "available_units"}), name="available_units"
     ),
+    path("details/<int:pk>/schedule/", BuildingViewSet.as_view({"get": "schedule"}), name="schedule"),
     path("create/", BuildingViewSet.as_view({"post": "create"}), name="create"),
     path(
         "generate-description/", BuildingViewSet.as_view({"post": "generate_description"}), name="generate_description"
