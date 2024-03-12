@@ -27,6 +27,7 @@ class PropertyComparisonsListSerializer(serializers.ModelSerializer):
     ariel_view = serializers.URLField(source="ariel_video_url", read_only=True)
     facility_view = serializers.URLField(source="building.facility_view", read_only=True)
     location_view = serializers.URLField(source="building.location_view", read_only=True)
+    view = serializers.URLField(source="building.view", read_only=True)
 
     class Meta:
         model = Property
@@ -68,4 +69,6 @@ class PropertyComparisonsListSerializer(serializers.ModelSerializer):
             "ariel_view",
             "facility_view",
             "location_view",
+            "view",
+            "unit_area",
         ]
