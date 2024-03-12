@@ -79,7 +79,7 @@ $(document).ready(function(){
                     '<li> '+label_name('Project Name')+' <a href="/building/details/'+data?.property_info?.id+'/">'+data?.property_info?.title+'</a> </li>'+
                         '<li> '+label_name('Price')+' ฿ '+ formatBalance(data?.property_info?.price || 0) +' </li>'+
                         '<li> '+label_name('Price Per Sqm')+' ฿ '+ formatBalance(data?.property_info?.price_per_sqm || 0) +' </li>'+
-                        '<li> '+label_name('Built Up Area') + 'Built Up Area' +' </li>'+
+                        // '<li> '+label_name('Built Up Area') + 'Built Up Area' +' </li>'+
                         '<li> '+label_name('Land Area') +data?.property_info?.unit_area+' </li>'+
                         '<li> '+label_name('Bedrooms') +data?.property_info?.number_of_bedroom+' </li>'+
                         '<li> '+label_name('Bathrooms') +data?.property_info?.number_of_bathroom+' </li>'+
@@ -98,7 +98,7 @@ $(document).ready(function(){
                         '<li> '+label_name('Balcony') + data?.property_info?.number_of_balcony +' </li>'+
                         '<li> '+label_name('Bathtubs') + facilities_tmp(data?.property_info?.have_bathtub) +' </li>'+
                         '<li> '+label_name('View') + data?.property_info?.view +' </li>'+
-                        '<li> '+label_name('Rooftop Pool') + 'Rooftop Pool' +' </li>'+
+                        // '<li> '+label_name('Rooftop Pool') + 'Rooftop Pool' +' </li>'+
                         '<li> '+label_name('Infinity Pool') + facilities_tmp(data?.property_info?.have_infinity_pool) +' </li>'+
                         '<li> '+label_name('Gym') + facilities_tmp(data?.property_info?.have_fitness_area) +' </li>'+
                         '<li> '+label_name('Sky Lounge') + facilities_tmp(data?.property_info?.have_sky_lounge) +' </li>'+

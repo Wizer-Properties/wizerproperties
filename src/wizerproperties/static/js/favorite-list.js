@@ -119,7 +119,7 @@ $(document).ready(function(){
                             ' for sale at ' +
                             data?.title+
                             '</p>'+
-                            // '<p class="details"> '+ data?.description+' </p>'+
+                            '<p class="details"> '+ data?.description+' </p>'+
 
                             '<div class="property-contains">'+
                                 '<div class="property-short-info-box">'+

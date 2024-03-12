@@ -34,8 +34,6 @@ $(document).ready(function(){
                 'X-CSRFToken': csrfToken,
             },
             success: function (data) {
-                get_review_list(data?.building_id?.id); 
-
                 $('[label-name="media-files-image"] .details-gallery').html(append_data(data?.default_images));
                 
                 // property info
@@ -540,7 +538,7 @@ $(document).ready(function(){
             url: '/building/api/review/create/',
             type: 'POST',
             data: { 
-                building : building_id,
+                building : RELATED_BUILDING_ID,
                 review_text : review_text,
                 rating : rating_num
             },
@@ -581,43 +579,6 @@ $(document).ready(function(){
                         data?.review_text +
                     '</p>'+
                 '</div>'
-    };
-
-
-    function get_review_list(building_id){
-        $.ajax({
-            url: '/building/api/review/list/',
-            type: 'GET',
-            data : {
-                building_id : building_id,
-                page_size : 5,
-                page : rating_next
-            },
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            success : function (data) {
-                rating_next = data?.next;
-                var review_dom = '';
-                for (let i = 0; i < data?.results.length; i++) {
-                    review_dom += show_review_tmp(data?.results[i])
-                };
-
-                if(review_dom == ''){
-                    $('.review-writing-area').html("No review available");
-                }else{
-                    $('.view-the-reviews').append(review_dom);
-                }
-                if(!data?.next){
-                    $('.load-more-reviews').remove();
-                }else{
-                    $('.load-more-reviews').html('<button class="link"> Load More </button>')
-                };
-            },
-            error: function (error) {
-                console.log("error")
-            }
-        })
     };
 
 
@@ -815,5 +776,60 @@ $(document).ready(function(){
     // developer details end =====================
 
 
+
+
+
+    // get review list start =====================
+
+    var is_review_list_get = false;
+
+    function get_review_list(){
+        is_review_list_get = true;
+        $.ajax({
+            url: '/building/api/review/list/',
+            type: 'GET',
+            data : {
+                building_id : RELATED_BUILDING_ID,
+                page_size : 5,
+                page : rating_next
+            },
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            success : function (data) {
+                rating_next = data?.next;
+                var review_dom = '';
+                for (let i = 0; i < data?.results.length; i++) {
+                    review_dom += show_review_tmp(data?.results[i])
+                };
+
+                if(review_dom == ''){
+                    $('.review-writing-area').html("No review available");
+                }else{
+                    $('.view-the-reviews').append(review_dom);
+                }
+                if(!data?.next){
+                    $('.load-more-reviews').remove();
+                }else{
+                    $('.load-more-reviews').html('<button class="link"> Load More </button>')
+                };
+            },
+            error: function (error) {
+                console.log("error")
+            }
+        })
+    };
+
+
+    new Waypoint({
+        element: document.querySelector('#review'),
+        handler: function() {
+            if(is_review_list_get) return;
+            get_review_list()
+        },
+        offset: '110%'
+    });
+
+    // get review list end =====================
 
 });

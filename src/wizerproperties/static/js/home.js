@@ -286,6 +286,10 @@ $(document).ready(function(){
                 calling_next_properties = true;
             },
             success: function (data) {
+                if(data?.count == 0){
+                    $('#new-properties').remove()
+                    return
+                }
                 calling_next_properties = false;
                 
                 for (let i = 0; i < data?.results.length; i++) {
@@ -366,6 +370,10 @@ $(document).ready(function(){
                 calling_popular_properties = true;
             },
             success: function (data) {
+                if(data?.count == 0){
+                    $('#popular-properties').remove()
+                    return
+                }
                 calling_popular_properties = false;
                 
                 for (let i = 0; i < data?.results.length; i++) {
@@ -398,7 +406,7 @@ $(document).ready(function(){
 
 
 
-     // ======================== popular-buildings-slider
+    // ======================== popular-buildings-slider
 
 
 
@@ -447,6 +455,10 @@ $(document).ready(function(){
                 calling_popular_building = true;
             },
             success: function (data) {
+                if(data?.count == 0){
+                    $('#popular-buildings').remove()
+                    return
+                }
                 calling_popular_building = false;
                 
                 for (let i = 0; i < data?.results.length; i++) {
@@ -527,6 +539,10 @@ $(document).ready(function(){
                 calling_discount_properties = true;
             },
             success: function (data) {
+                if(data?.count == 0){
+                    $('#discount-properties').remove()
+                    return
+                }
                 calling_discount_properties = false;
                 
                 for (let i = 0; i < data?.results.length; i++) {

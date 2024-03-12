@@ -237,34 +237,34 @@ $(document).ready(function(){
 
 
     var ASSET_API_URL = asset_type == 'property' ? 
-                        '/property/api/details/'+asset_id+'/' :
+                        '/property/api/details/'+asset_id+'/schedule/' :
                         '/building/api/details/'+asset_id+'/'
 
                             
     function property_facility_tmp(data){
         var facility_tmp = '';
 
-        if(data?.building_info?.have_fitness_area){
+        if(data?.building?.have_fitness_area){
             facility_tmp += '<span>GYM</span>'
         };
 
-        if(data?.building_info?.have_grocery){
+        if(data?.building?.have_grocery){
             facility_tmp += '<span>Grocery</span>'
         };
 
-        if(data?.building_info?.have_guard_house){
+        if(data?.building?.have_guard_house){
             facility_tmp += '<span>Security</span>'
         };
 
-        if(data?.building_info?.have_river_view){
+        if(data?.building?.have_river_view){
             facility_tmp += '<span>River View</span>'
         };
 
-        if(data?.building_info?.have_sauna){
+        if(data?.building?.have_sauna){
             facility_tmp += '<span>Sauna</span>'
         };
 
-        if(data?.building_info?.have_sky_lounge){
+        if(data?.building?.have_sky_lounge){
             facility_tmp += '<span>Sky Lounge</span>'
         };
         
@@ -275,9 +275,9 @@ $(document).ready(function(){
         return '<p class="sub-title">'+
                     data?.number_of_bedroom+
                     ' bedroom ' +
-                    data?.building_info?.type+
+                    data?.building?.type+
                     ' for sale at ' +
-                    data?.building_info?.title+
+                    data?.title+
                     '</p>'+
                     '<p class="details"> '+ data?.description+' </p>'+
 
@@ -318,16 +318,16 @@ $(document).ready(function(){
                     '<div class="row">'+
                         '<div class="col-sm-4">'+
                             '<div class="search-result-box-img">'+
-                                '<img src="'+(data?.default_image || data?.building_info?.default_image)+'" alt="image" loading="lazy">' +
+                                '<img src="'+(data?.image_path || data?.building?.image_path)+'" alt="image" loading="lazy">' +
                             '</div>'+
                         '</div>'+
                         '<div class="col-sm-8">'+
                             '<div class="search-result-box">'+
-                                '<h1> '+(data?.title || data?.building_info?.title)+' </h1>'+
+                                '<h1> '+(data?.title || data?.building?.title)+' </h1>'+
                                 '<div class="location">'+
                                     '<div class="icon">'+
                                         '<i class="bi bi-geo-alt"></i>'+
-                                        data?.building_info?.address+
+                                        data?.building?.address+
                                     '</div>'+
                                 '</div>'+
                                 ( asset_type == 'property' ? property_data_tmp(data) : '') +
@@ -349,9 +349,10 @@ $(document).ready(function(){
             },
             success: function (data) {
                 var data = data;
-                if(!data?.building_info){
+
+                if(asset_type == 'building'){
                     data = {
-                        building_info : data
+                        building : data
                     }
                 };
 

@@ -88,6 +88,12 @@
     }
 
     .search-result-box-img {
+        height: 100% !important;
+    }
+}
+
+@media screen and (max-width: 576px){
+    .search-result-box-img {
         height: 180px !important;
     }
 }
