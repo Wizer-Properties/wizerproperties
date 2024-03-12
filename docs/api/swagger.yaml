@@ -3150,6 +3150,8 @@ definitions:
       reviews:
         type: object
         properties:
+          total_rating:
+            type: "number"
           average_rating:
             type: "number"
           has_reviewed:
@@ -3580,6 +3582,8 @@ definitions:
       reviews:
         type: object
         properties:
+          total_rating:
+            type: "number"
           average_rating:
             type: "number"
           has_reviewed:

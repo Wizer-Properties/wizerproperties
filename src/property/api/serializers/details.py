@@ -56,9 +56,11 @@ class PropertyDetailsSerializer(PropertySerializer):
     def get_reviews(self, obj):
         request = self.context.get("request")
         reviews = obj.building.reviews.all()
+        total_rating = reviews.count()
         average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
         data = {
-            "average_rating": average_rating
+            "total_rating": total_rating,
+            "average_rating": round(average_rating, 2) if average_rating is not None else 0,
         }
         reviewed_by = request.GET.get("reviewed_by")
         if reviewed_by:
