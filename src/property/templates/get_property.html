@@ -724,7 +724,8 @@
     var AVAILABLE_API_URL = '/building/api/details/{{property.building.id}}/available-units/?property_id={{property.id}}';
     var ADD_COMPARE_API_URL = '/property/api/compare/create/';
     var PROPERTY_ID = '{{property.id}}';
-    var RELATED_BUILDING_ID = '{{property.id}}';
+    var RELATED_BUILDING_ID = '{{property.building.id}}';
+    var USER_ID = '{{ user.id }}';
 </script>
 
 <script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>

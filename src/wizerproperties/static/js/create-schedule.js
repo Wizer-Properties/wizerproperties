@@ -238,7 +238,7 @@ $(document).ready(function(){
 
     var ASSET_API_URL = asset_type == 'property' ? 
                         '/property/api/details/'+asset_id+'/schedule/' :
-                        '/building/api/details/'+asset_id+'/'
+                        '/building/api/details/'+asset_id+'/schedule/'
 
                             
     function property_facility_tmp(data){

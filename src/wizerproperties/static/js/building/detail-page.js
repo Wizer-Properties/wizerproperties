@@ -1,6 +1,4 @@
 $(document).ready(function(){
-    var building_id = null;
-
     function iframe_void(data){
         if(data){
             return '<iframe width="100%" height="100%" src="'+data+'" frameborder="0" allowfullscreen=""></iframe>'
@@ -28,7 +26,8 @@ $(document).ready(function(){
             url: ASSET_API_URL,
             type: 'GET',
             data : {
-                default_images_number : 5
+                default_images_number : 5,
+                reviewed_by : USER_ID
             },
             headers: {
                 'X-CSRFToken': csrfToken,
@@ -50,7 +49,7 @@ $(document).ready(function(){
                 $('[label-name="construction_year"]').html(data?.construction_year)
                 $('[label-name="total_floors"]').html(data?.total_floors)
 
-                $('.review-writing-area').html(review_tmp(data))
+                $('.review-writing-area').html(review_tmp(data?.reviews))
             },
             error: function (error) {
                 console.log("error")
@@ -58,8 +57,34 @@ $(document).ready(function(){
         });
     };
 
-
     get_asset_details();
+
+    function review_tmp(data){
+        return  '<div class="show-rating">'+
+                    '<span> 5 out of '+(data?.average_rating || 0)+' </span>'+
+                    '<span label-name="rating">'+
+                        rating_generator(data?.average_rating || 0)+
+                    '</span>'+
+                    '<p>Based on <b>'+data?.total_rating+' Review</b></p>'+
+                '</div>'+
+                (
+                    (!data?.has_reviewed && user_type == 'prospect') ?
+                    ('<div class="review-submit-area">'+
+                        '<div class="give-rating">'+
+                            '<i index="1" class="bi bi-star"></i>'+
+                            '<i index="2" class="bi bi-star"></i>'+
+                            '<i index="3" class="bi bi-star"></i>'+
+                            '<i index="4" class="bi bi-star"></i>'+
+                            '<i index="5" class="bi bi-star"></i>'+
+                        '</div>'+
+                        '<textarea placeholder="Type here ..." class="give-review" rows="7"></textarea>'+
+                        '<div class="d-flex justify-content-center">'+
+                            '<button class="link review-submit-btn"> Submit </button>'+
+                        '</div>'+
+                        '<div class="review-warrning-text"></div>'+
+                    '</div>') : ''
+                )
+    };
 
     function facilities_info_tmp(label, icon){
         return '<div class="col-6 col-md-6 col-lg-4 mb-3">'+
@@ -472,32 +497,7 @@ $(document).ready(function(){
     });
 
 
-    function review_tmp(data){
-        return  '<div class="show-rating">'+
-                    '<span> 5 out of '+(data?.building_info?.average_rating || 0)+' </span>'+
-                    '<span label-name="rating">'+
-                        rating_generator(data?.building_info?.average_rating || 0)+
-                    '</span>'+
-                    '<p>Based on <b>'+data?.building_info?.total_reviews+' Review</b></p>'+
-                '</div>'+
-                (
-                    (!data?.building_info?.is_reviewed && user_type == 'prospect') ?
-                    ('<div class="review-submit-area">'+
-                        '<div class="give-rating">'+
-                            '<i index="1" class="bi bi-star"></i>'+
-                            '<i index="2" class="bi bi-star"></i>'+
-                            '<i index="3" class="bi bi-star"></i>'+
-                            '<i index="4" class="bi bi-star"></i>'+
-                            '<i index="5" class="bi bi-star"></i>'+
-                        '</div>'+
-                        '<textarea placeholder="Type here ..." class="give-review" rows="7"></textarea>'+
-                        '<div class="d-flex justify-content-center">'+
-                            '<button class="link review-submit-btn"> Submit </button>'+
-                        '</div>'+
-                        '<div class="review-warrning-text"></div>'+
-                    '</div>') : ''
-                )
-    };
+
 
 
 
