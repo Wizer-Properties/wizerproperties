@@ -263,3 +263,16 @@ class PropertyViewSet(viewsets.ModelViewSet):
         generated_property_description = get_chatgpt_response(content)
 
         return Response({"generated_property_description": generated_property_description}, status=status.HTTP_200_OK)
+    
+    @action(detail=False, methods=["post"])
+    def re_generate_description(self, request):
+        """
+        Return an automated professional building description with ChatGPT
+        """
+        content = request.data.get('content', None)
+        previous_response = request.data.get('previous_response', None)
+        generated_property_description = get_chatgpt_response(content, previous_response)
+
+        return Response(
+            {"generated_property_description": generated_property_description}, status=status.HTTP_201_CREATED
+        )

@@ -20,6 +20,8 @@ $(document).ready(function () {
         }
     });
 
+    var previousBuildingDescription = "" // Previous AI related response will append here
+
     // Get an automated professional description with ChatGPT
     $("#generate-building-description").click(function () {
         var title = $("input[name='title']").val();
@@ -33,6 +35,9 @@ $(document).ready(function () {
         ).val();
         var construction_year = $("input[name='construction_year']").val();
         var address = $("input[name='address']").val();
+        var province = $("input[name='province']").val();
+        var district = $("input[name='district']").val();
+        var sub_district = $("input[name='sub_district']").val();
         var project_total_area = $("input[name='project_total_area']").val();
         var total_floors = $("input[name='total_floors']").val();
         var distance_from_location_to_BTS_or_MRT = $(
@@ -63,6 +68,9 @@ $(document).ready(function () {
             total_units_for_sale,
             construction_year,
             address,
+            province,
+            district,
+            sub_district,
             project_total_area,
             total_floors,
             distance_from_location_to_BTS_or_MRT,
@@ -95,6 +103,9 @@ $(document).ready(function () {
             total_units_for_sale: total_units_for_sale,
             construction_year: construction_year,
             address: address,
+            province: province,
+            district: district,
+            sub_district: sub_district,
             total_area: project_total_area + "sqm",
             total_floors: total_floors,
             distance_from_location_to_BTS_or_MRT:
@@ -125,6 +136,7 @@ $(document).ready(function () {
             success: function (response) {
                 loadingSpinner.hide(); // Hide the spinner
                 generateBuildingDescription.show(); // Show the text
+                previousBuildingDescription = response.generated_building_description;
                 $(".error-message").html("");
                 $('body').attr('open-modal', 'building-description');
                 $('.created-description-textarea').val(response.generated_building_description);
@@ -137,6 +149,45 @@ $(document).ready(function () {
                 alert("An error occurred. Please try again later.");
             },
         });
+    });
+
+    // Regenerate description
+    $(".regenerate-chatbot-send-btn").click(function(event) {
+        event.preventDefault();
+        var instruction_of_modification = $("input[name='instruction_of_modification']").val();
+        if (instruction_of_modification.trim() === '') {
+            // Show error message
+            $(".re-generate-error-message").html(
+                "<span class='reGenerateBarErrorMessage'>Please write something</span>"
+            );
+        } else {
+            // Clear error message if input is not empty
+            $(".re-generate-error-message").html("");
+            $("input[name='instruction_of_modification']").val("");
+
+            if (instruction_of_modification && previousBuildingDescription) {
+                $.ajax({
+                    url: reGenerateBuildingDescriptionAPIUrl,
+                    type: "POST",
+                    data: {
+                        content: instruction_of_modification,
+                        previous_response: previousBuildingDescription,
+                    },
+                    headers: {
+                        "X-CSRFToken": csrfToken,
+                    },
+                    success: function (response) {
+                        previousBuildingDescription = response.generated_building_description;
+                        $('.created-description-textarea').val(response.generated_building_description);
+                    },
+                    error: function (error) {
+                        // Handle other error cases (e.g., server error)
+                        console.error(error);
+                        alert("An error occurred. Please try again later.");
+                    },
+                });
+            }
+        }
     });
 
     $("#building-create-form").submit(function (event) {

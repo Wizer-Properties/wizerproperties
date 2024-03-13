@@ -4,6 +4,7 @@
 
 {% block extend_head %}
 <title>Create building</title>
+<link href="{% static 'css/gptchat.css' %}?v=1.00" rel="stylesheet" />
 <link rel="stylesheet" href="{% static '/css/auth.css' %}" />
 <style>
     [label-name="latitude"],
@@ -429,6 +430,26 @@
         <h1> Generated Description </h1>
         <textarea class="created-description-textarea" placeholder="Generated description ..."></textarea>
         
+        <section id="open-ai-chat-box">
+            <div class="re-generate-error-message my-2"></div>
+            <div class="clearfix open-ai-card">
+                <div class="chat-app">
+                    <div class="chat">
+                        <div class="chat-message clearfix">
+                            <div class="d-flex gap-2 mb-0 align-items-center">
+                                <input type="text" class="class-chatbot-input" name="instruction_of_modification" placeholder="Write What You Want...">
+                                <div class="input-group-prepend">
+                                    <button type="botton" class="regenerate-chatbot-send-btn">
+                                        <span><i class="bi bi-send"></i></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <div class="ai-generate-description-footer">
             <button ai-close-modal="description"> Cancel </button>
             <button class="add-to-description-field"> Add </button>
@@ -441,6 +462,7 @@
 <script type="text/javascript">
     var createBuildingAPIUrl = "{% url 'building:api:create' %}"
     var generateBuildingDescriptionAPIUrl = "{% url 'building:api:generate_description' %}"
+    var reGenerateBuildingDescriptionAPIUrl = "{% url 'building:api:re_generate_description' %}"
 </script>
 <script src="{% static 'js/building/create_building.js' %}?v=1.03"></script>
 {% endblock extend_script %}

@@ -22,6 +22,9 @@ urlpatterns = [
         "generate-description/", BuildingViewSet.as_view({"post": "generate_description"}), name="generate_description"
     ),
     path(
+        "re-generate-description/", BuildingViewSet.as_view({"post": "re_generate_description"}), name="re_generate_description"
+    ),
+    path(
         "update/<int:pk>/",
         BuildingViewSet.as_view({"put": "update", "patch": "partial_update"}),
         name="update",

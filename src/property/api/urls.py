@@ -20,6 +20,9 @@ urlpatterns = [
     path(
         "generate-description/", PropertyViewSet.as_view({"post": "generate_description"}), name="generate_description"
     ),
+    path(
+        "re-generate-description/", PropertyViewSet.as_view({"post": "re_generate_description"}), name="re_generate_description"
+    ),
     path("create/", PropertyViewSet.as_view({"post": "create"}), name="create"),
     path(
         "update/<int:pk>/",

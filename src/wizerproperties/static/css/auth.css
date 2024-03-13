@@ -217,6 +217,11 @@ body{
 .authErrorMessage {
     background-color: #e56767d4;
 }
+.reGenerateBarErrorMessage {
+    background-color: #e56767d4;
+    padding: 5px;
+    border-radius: 5px;
+}
 .authSuccessMessage {
     background-color: #14b714e8;
 }

@@ -4,6 +4,7 @@
 
 {% block extend_head %}
 <title>Create property</title>
+<link href="{% static 'css/gptchat.css' %}?v=1.00" rel="stylesheet" />
 <link rel="stylesheet" href="{% static '/css/auth.css' %}" />
 <link rel="stylesheet" href="{% static '/css/libraries/bootstrap-datepicker3.css' %}" />
 
@@ -276,6 +277,26 @@
     <div class="ai-generate-description-body">
         <h1> Generated Description </h1>
         <textarea class="created-description-textarea" placeholder="Generated description ..."></textarea>
+
+        <section id="open-ai-chat-box">
+            <div class="re-generate-error-message my-2"></div>
+            <div class="clearfix open-ai-card">
+                <div class="chat-app">
+                    <div class="chat">
+                        <div class="chat-message clearfix">
+                            <div class="d-flex gap-2 mb-0 align-items-center">
+                                <input type="text" class="class-chatbot-input" name="instruction_of_modification" placeholder="Write What You Want...">
+                                <div class="input-group-prepend">
+                                    <button type="botton" class="regenerate-chatbot-send-btn">
+                                        <span><i class="bi bi-send"></i></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
         
         <div class="ai-generate-description-footer">
             <button ai-close-modal="description"> Cancel </button>
@@ -291,6 +312,7 @@
 <script type="text/javascript">
     var createPropertyAPIUrl = "{% url 'property:api:create' %}"
     var generatePropertyDescriptionAPIUrl = "{% url 'property:api:generate_description' %}"
+    var reGeneratePropertyDescriptionAPIUrl = "{% url 'property:api:re_generate_description' %}"
 
     function init_datepacker(){
         $('.date_picker_box')

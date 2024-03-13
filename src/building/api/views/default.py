@@ -188,3 +188,16 @@ class BuildingViewSet(viewsets.ModelViewSet):
         return Response(
             {"generated_building_description": generated_building_description}, status=status.HTTP_201_CREATED
         )
+    
+    @action(detail=False, methods=["post"])
+    def re_generate_description(self, request):
+        """
+        Return an automated professional building description with ChatGPT
+        """
+        content = request.data.get('content', None)
+        previous_response = request.data.get('previous_response', None)
+        generated_building_description = get_chatgpt_response(content, previous_response)
+
+        return Response(
+            {"generated_building_description": generated_building_description}, status=status.HTTP_201_CREATED
+        )

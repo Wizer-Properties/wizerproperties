@@ -20,6 +20,8 @@ $(document).ready(function () {
         }
     });
 
+    var previousPropertyDescription = "" // Previous AI related response will append here
+
     // Get an automated professional description with ChatGPT
     $("#generate-property-description").click(function () {
         var building_id = $("select[name='building']").val();
@@ -45,9 +47,9 @@ $(document).ready(function () {
         var have_pets_allowed = $("#pets_allowed").prop("checked");
 
         // Check for empty input values
-        var required_fields = [building_id, title, price, price_per_sqm, unit_id, floor_number, unit_area, interior_view, 
+        var required_fields = [building_id, title, price, price_per_sqm, unit_id, floor_number, unit_area, 
             number_of_bathroom, number_of_bedroom, number_of_balcony, number_of_car_parking, 
-            balcony_direction, main_door_direction, unit_position];
+            balcony_direction, main_door_direction];
 
         for (var i = 0; i < required_fields.length; i++) {
             if (required_fields[i] === "") {
@@ -100,6 +102,7 @@ $(document).ready(function () {
             success: function (response) {
                 loadingSpinner.hide(); // Hide the spinner
                 generatePropertyDescription.show(); // Show the text
+                previousPropertyDescription = response.generated_property_description;
                 $(".error-message").html("");
                 $('body').attr('open-modal', 'property-description');
                 $('.created-description-textarea').val(response.generated_property_description);
@@ -113,6 +116,45 @@ $(document).ready(function () {
             },
         });
     })
+
+    // Regenerate description
+    $(".regenerate-chatbot-send-btn").click(function(event) {
+        event.preventDefault();
+        var instruction_of_modification = $("input[name='instruction_of_modification']").val();
+        if (instruction_of_modification.trim() === '') {
+            // Show error message
+            $(".re-generate-error-message").html(
+                "<span class='reGenerateBarErrorMessage'>Please write something</span>"
+            );
+        } else {
+            // Clear error message if input is not empty
+            $(".re-generate-error-message").html("");
+            $("input[name='instruction_of_modification']").val("");
+
+            if (instruction_of_modification && previousPropertyDescription) {
+                $.ajax({
+                    url: reGeneratePropertyDescriptionAPIUrl,
+                    type: "POST",
+                    data: {
+                        content: instruction_of_modification,
+                        previous_response: previousPropertyDescription,
+                    },
+                    headers: {
+                        "X-CSRFToken": csrfToken,
+                    },
+                    success: function (response) {
+                        previousPropertyDescription = response.generated_property_description;
+                        $('.created-description-textarea').val(response.generated_property_description);
+                    },
+                    error: function (error) {
+                        // Handle other error cases (e.g., server error)
+                        console.error(error);
+                        alert("An error occurred. Please try again later.");
+                    },
+                });
+            }
+        }
+    });
 
     $("#property-create-form").submit(function (event) {
         event.preventDefault();

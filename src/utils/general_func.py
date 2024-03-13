@@ -85,15 +85,18 @@ def validate_date_format(value):
         raise ValidationError("Invalid date format. Use mm/dd/yyyy.")
 
 
-def get_chatgpt_response(content):
+def get_chatgpt_response(content, previous_response=None):
     """
     Return generated message response using ChatGPT based on the provided 'content'.
     """
     client = OpenAI()
+    messages = []
+    if previous_response:
+        messages.append({"role": "system", "content": previous_response})
+    messages.append({"role": "user", "content": content})
+
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
-        messages=[
-            {"role": "user", "content": content},
-        ],
+        messages=messages,
     )
     return response.choices[0].message.content
