@@ -489,6 +489,10 @@
     background-color: #00000005;
 }
 
+#extra-filter .filter-option-box-wrapper label{
+    margin-bottom: 7px;
+}
+
 .filter-modal-body{
     padding-top: 10px;
     padding-bottom: 25px;
