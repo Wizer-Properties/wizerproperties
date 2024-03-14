@@ -37,163 +37,239 @@
 {% block content %}
 
 <section class="filter-box">
-    <div class="w-100 px-5">
-        <div class="filter-categories">
+    <div class="filter-box-container px-5">
+        <div class="all-filter-option">
 
-            <div class="filter-categories-dropdown" label="Area">
-                <button class="filter-dropdown-btn">
-                    Area
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="filter-dropdown-field">
-                    <div class="filter-dropdown-buttons area-filter-buttons">
-                        <button name="nearby" value="2">+ 2 miles</button>
-                        <button name="nearby" value="5">+ 5 miles</button>
-                        <button name="nearby" value="10">+ 10 miles</button>
-                        <button name="nearby" value="15">+ 15 miles</button>
-                        <button name="nearby" value="20">+ 20 miles</button>
-                        <button name="nearby" value="30">+ 30 miles</button>
+            <div class="search-box my-2">
+                <i class="bi bi-search"></i>
+                <input id="gm-search-input" type="text" placeholder="Search by location" />
+                <button class="search-box-clear-button"> clear </button>
+                <div class="filter-categories-dropdown" label="Area">
+                    <button class="filter-dropdown-btn">
+                        + 0 miles
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+                    <div class="filter-dropdown-field">
+                        <div class="filter-dropdown-buttons area-filter-buttons d-flex flex-column">
+                            <button name="nearby" value="0">+ 0 miles</button>
+                            <button name="nearby" value="2">+ 2 miles</button>
+                            <button name="nearby" value="5">+ 5 miles</button>
+                            <button name="nearby" value="10">+ 10 miles</button>
+                            <button name="nearby" value="15">+ 15 miles</button>
+                            <button name="nearby" value="20">+ 20 miles</button>
+                            <button name="nearby" value="30">+ 30 miles</button>
+                        </div>
                     </div>
                 </div>
             </div>
+            
 
-            <div class="filter-categories-dropdown" label="price">
-                <button class="filter-dropdown-btn">
-                    Any Price 
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="filter-dropdown-field">
-                    <div class="range-area">
-                        <select name="min_price">
-                            <option value="null">Min</option>
-                            <option value="500000"> ฿ 500,000</option>
-                            <option value="1000000"> ฿ 1,000,000</option>
-                            <option value="1500000"> ฿ 1,500,000</option>
-                            <option value="2000000"> ฿ 2,000,000</option>
-                            <option value="2500000"> ฿ 2,500,000</option>
-                            <option value="3000000"> ฿ 3,000,000</option>
-                        </select>
-                        <i class="bi bi-dash"></i>
-                        <select name="max_price">
-                            <option value="null">Max</option>
-                            <option value="500000"> ฿ 500,000</option>
-                            <option value="1000000"> ฿ 1,000,000</option>
-                            <option value="1500000"> ฿ 1,500,000</option>
-                            <option value="2000000"> ฿ 2,000,000</option>
-                            <option value="2500000"> ฿ 2,500,000</option>
-                            <option value="3000000"> ฿ 3,000,000</option>
-                            <option value="3500000"> ฿ 3,500,000</option>
-                        </select>
-                    </div>
-                </div>
+            <div class="range-area filter-option-single-box" aria-label="price">
+                <select name="min_price">
+                    <option value="null">Min Price</option>
+                    <option value="500000"> ฿ 500,000</option>
+                    <option value="1000000"> ฿ 1,000,000</option>
+                    <option value="1500000"> ฿ 1,500,000</option>
+                    <option value="2000000"> ฿ 2,000,000</option>
+                    <option value="2500000"> ฿ 2,500,000</option>
+                    <option value="3000000"> ฿ 3,000,000</option>
+                </select>
+                <span class="to-to"> to </span>
+                <select name="max_price">
+                    <option value="null">Max Price</option>
+                    <option value="500000"> ฿ 500,000</option>
+                    <option value="1000000"> ฿ 1,000,000</option>
+                    <option value="1500000"> ฿ 1,500,000</option>
+                    <option value="2000000"> ฿ 2,000,000</option>
+                    <option value="2500000"> ฿ 2,500,000</option>
+                    <option value="3000000"> ฿ 3,000,000</option>
+                    <option value="3500000"> ฿ 3,500,000</option>
+                </select>
+            </div>
+            
+
+            <div class="range-area filter-option-single-box" aria-label="unit-area">
+                <select name="min_unit_area">
+                    <option value="null">Min Unit Area</option>
+                    <option value="100"> 100 SqM</option>
+                    <option value="200"> 200 SqM</option>
+                    <option value="300"> 300 SqM</option>
+                    <option value="400"> 400 SqM</option>
+                    <option value="500"> 500 SqM</option>
+                </select>
+                <span class="to-to"> to </span>
+                <select name="max_unit_area">
+                    <option value="null">Max Unit Area</option>
+                    <option value="100"> 100 SqM</option>
+                    <option value="200"> 200 SqM</option>
+                    <option value="300"> 300 SqM</option>
+                    <option value="400"> 400 SqM</option>
+                    <option value="500"> 500 SqM</option>
+                    <option value="600"> 600 SqM</option>
+                </select>
             </div>
 
-            <div class="filter-categories-dropdown" label="unit_area">
-                <button class="filter-dropdown-btn">
-                    Unit Area
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="filter-dropdown-field">
-                    <div class="range-area">
-                        <select name="min_unit_area">
-                            <option value="null">Min</option>
-                            <option value="100"> 100 SqM</option>
-                            <option value="200"> 200 SqM</option>
-                            <option value="300"> 300 SqM</option>
-                            <option value="400"> 400 SqM</option>
-                            <option value="500"> 500 SqM</option>
-                        </select>
-                        <i class="bi bi-dash"></i>
-                        <select name="max_unit_area">
-                            <option value="null">Min</option>
-                            <option value="100"> 100 SqM</option>
-                            <option value="200"> 200 SqM</option>
-                            <option value="300"> 300 SqM</option>
-                            <option value="400"> 400 SqM</option>
-                            <option value="500"> 500 SqM</option>
-                            <option value="600"> 600 SqM</option>
-                        </select>
-                    </div>
-                </div>
+            <div class="range-area filter-option-single-box" aria-label="beds">
+                <select name="number_of_bedroom">
+                    <option value="null">Beds</option>
+                    <option value="1"> 1 Bed</option>
+                    <option value="2"> 2 Beds</option>
+                    <option value="3"> 3 Beds</option>
+                    <option value="4"> 4 Beds</option>
+                    <option value="5"> 5 Beds</option>
+                </select>
             </div>
 
-            <div class="filter-categories-dropdown" label="Beds">
-                <button class="filter-dropdown-btn">
-                    Beds
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="filter-dropdown-field">
-                    <div class="filter-dropdown-buttons">
-                        <button name="number_of_bedroom" value="null" active="true">Any</button>
-                        <button name="number_of_bedroom" value="1">1</button>
-                        <button name="number_of_bedroom" value="2">2</button>
-                        <button name="number_of_bedroom" value="3">3</button>
-                        <button name="number_of_bedroom" value="4">4</button>
-                    </div>
-                </div>
+            <div class="range-area filter-option-single-box" aria-label="property-type">
+                <select name="building__type">
+                    <option value="null">Property Type</option>
+                    <option value="condos"> Condos </option>
+                    <option value="house"> House</option>
+                </select>
             </div>
 
-            <div class="filter-categories-dropdown" label="Baths">
-                <button class="filter-dropdown-btn">
-                    Baths
-                    <i class="bi bi-chevron-down"></i>
+            <div class="filter-categories-dropdown filter-option-single-box" aria-label="filter-button">
+                <button class="filter-option-visiable-btn">
+                    <div class="d-flex flex-row gap-3">
+                        Filter
+                        <i class="bi bi-chevron-down"></i>
+                    </div>
                 </button>
-                <div class="filter-dropdown-field">
-                    <div class="filter-dropdown-buttons">
-                        <button name="number_of_bathroom" value="null" active="true">Any</button>
-                        <button name="number_of_bathroom" value="1">1</button>
-                        <button name="number_of_bathroom" value="2">2</button>
-                        <button name="number_of_bathroom" value="3">3</button>
-                        <button name="number_of_bathroom" value="4">4</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="w-100 px-5">
+    <div class="filter-result mt-3">
+        <h1 class="section-title search-area"></h1>
+        <p class="section-scripts">
+            <span label="available-properties">- -</span>
+             Properties available
+        </p>
+    </div>
+</div>
+
+
+<section id="extra-filter">
+    <div class="filter-modal-body">
+        <div class="w-100 px-5">
+            <div class="filter-categories">
+        
+                <div class="row">
+                    <div class="col-lg-6 col-xl-4" filter-aria-label="price">
+                        <div class="filter-option-box-wrapper mb-4">
+                            <label> Price </label>
+                            <div class="range-area">
+                                <select name="min_price">
+                                    <option value="null">Min Price</option>
+                                    <option value="500000"> ฿ 500,000</option>
+                                    <option value="1000000"> ฿ 1,000,000</option>
+                                    <option value="1500000"> ฿ 1,500,000</option>
+                                    <option value="2000000"> ฿ 2,000,000</option>
+                                    <option value="2500000"> ฿ 2,500,000</option>
+                                    <option value="3000000"> ฿ 3,000,000</option>
+                                </select>
+                                <span class="to-to"> to </span>
+                                <select name="max_price">
+                                    <option value="null">Max Price</option>
+                                    <option value="500000"> ฿ 500,000</option>
+                                    <option value="1000000"> ฿ 1,000,000</option>
+                                    <option value="1500000"> ฿ 1,500,000</option>
+                                    <option value="2000000"> ฿ 2,000,000</option>
+                                    <option value="2500000"> ฿ 2,500,000</option>
+                                    <option value="3000000"> ฿ 3,000,000</option>
+                                    <option value="3500000"> ฿ 3,500,000</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-xl-4" filter-aria-label="unit_area">
+                        <div class="filter-option-box-wrapper mb-4">
+                            <label> Unit Area </label>
+                            <div class="range-area">
+                                <select name="min_unit_area">
+                                    <option value="null">Min Unit Area</option>
+                                    <option value="100"> 100 SqM</option>
+                                    <option value="200"> 200 SqM</option>
+                                    <option value="300"> 300 SqM</option>
+                                    <option value="400"> 400 SqM</option>
+                                    <option value="500"> 500 SqM</option>
+                                </select>
+                                <span class="to-to"> to </span>
+                                <select name="max_unit_area">
+                                    <option value="null">Max Unit Area</option>
+                                    <option value="100"> 100 SqM</option>
+                                    <option value="200"> 200 SqM</option>
+                                    <option value="300"> 300 SqM</option>
+                                    <option value="400"> 400 SqM</option>
+                                    <option value="500"> 500 SqM</option>
+                                    <option value="600"> 600 SqM</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-xl-4" filter-aria-label="badroom">
+                        <div class="filter-option-box-wrapper mb-4">
+                            <label> Bedroom </label>
+                            <div class="filter-dropdown-buttons">
+                                <button name="number_of_bedroom" value="null" active="true"> Any </button>
+                                <button name="number_of_bedroom" value="1">1 Bed</button>
+                                <button name="number_of_bedroom" value="2">2 Beds</button>
+                                <button name="number_of_bedroom" value="3">3 Beds</button>
+                                <button name="number_of_bedroom" value="4">4 Beds</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-xl-4" filter-aria-label="bathroom">
+                        <div class="filter-option-box-wrapper mb-4">
+                            <label> Bathroom </label>
+                            <div class="filter-dropdown-buttons">
+                                <button name="number_of_bathroom" value="null" active="true">Any</button>
+                                <button name="number_of_bathroom" value="1">1 Bath</button>
+                                <button name="number_of_bathroom" value="2">2 Bath</button>
+                                <button name="number_of_bathroom" value="3">3 Bath</button>
+                                <button name="number_of_bathroom" value="4">4 Bath</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-xl-4" filter-aria-label="property-type">
+                        <div class="filter-option-box-wrapper mb-4">
+                            <label> Property Type </label>
+                            <div class="filter-dropdown-mtl-buttons" name="property-type">
+                                <button name="building__type" value="condos">Condos</button>
+                                <button name="building__type" value="house">House</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-xl-4" filter-aria-label="property-quota">
+                        <div class="filter-option-box-wrapper mb-4">
+                            <label> Property Quota </label>
+                            <div class="filter-dropdown-mtl-buttons" name="property-quota">
+                                <button name="building__quota" value="thai">Thai</button>
+                                <button name="building__quota" value="foreign">Foreign</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-xl-4" filter-aria-label="property-furnishing">
+                        <div class="filter-option-box-wrapper mb-4">
+                            <label> Property Furnishing </label>
+                            <div class="filter-dropdown-mtl-buttons" name="property-furnishing">
+                                <button name="building__furnishing" value="partly">Partly</button>
+                                <button name="building__furnishing" value="fully">Fully</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="filter-categories-dropdown">
-                <button class="filter-dropdown-btn">
-                    Property Type
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="filter-dropdown-field">
-                    <div class="filter-dropdown-mtl-buttons" name="property-type">
-                        <button name="building__type" value="condos">Condos</button>
-                        <button name="building__type" value="house">House</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="filter-categories-dropdown">
-                <button class="filter-dropdown-btn">
-                    Property Quota
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="filter-dropdown-field">
-                    <div class="filter-dropdown-mtl-buttons" name="property-quota">
-                        <button name="building__quota" value="thai">Thai</button>
-                        <button name="building__quota" value="foreign">Foreign</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="filter-categories-dropdown">
-                <button class="filter-dropdown-btn">
-                    Property Furnishing
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="filter-dropdown-field">
-                    <div class="filter-dropdown-mtl-buttons" name="property-furnishing">
-                        <button name="building__furnishing" value="partly">Partly</button>
-                        <button name="building__furnishing" value="fully">Fully</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="filter-categories-dropdown">
-                <button class="filter-dropdown-btn">
-                    Features
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="filter-dropdown-field">
+                <div class="filter-option-box-wrapper" filter-aria-label="features">
+                    <label> Features </label>
                     <div class="filter-dropdown-mtl-buttons" name="features">
                         <button value="building__have_sauna">Sauna</button>
                         <button value="building__have_guard_house">Guard house</button>
@@ -203,23 +279,25 @@
                         <button value="building__have_grocery">Grocery</button>
                     </div>
                 </div>
+
+
+
+                <div class="filter-modal-footer-btn">
+                    <button class="reset-btn">
+                        Reset Search
+                    </button>
+
+                    <button class="filter-done">
+                        Done
+                    </button>
+                </div>
+        
+                
             </div>
-
-            <button class="reset-btn">
-                Reset Search
-            </button>
-            
-        </div>
-
-        <div class="filter-result mt-3">
-            <h1 class="section-title search-area"></h1>
-            <p class="section-scripts">
-                <span label="available-properties">- -</span>
-                 Properties available
-            </p>
         </div>
     </div>
 </section>
+
 
 <section id="search-result">
     <div class="w-100 px-5">

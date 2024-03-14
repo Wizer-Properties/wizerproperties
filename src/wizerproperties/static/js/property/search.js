@@ -416,10 +416,10 @@ $(document).ready(function(){
         if(prams_list[$(this).attr('name')] == get_val){
             render_btn_dom = ''
         };
-        var label_name = $(this).parents('.filter-categories-dropdown').attr('label');
+        var label_name = $(this).html();
 
         $(this).parents('.filter-categories-dropdown').find('.filter-dropdown-btn')
-        .html(label_name + render_btn_dom + ' <i class="bi bi-chevron-down"></i>')
+        .html( '<div class="d-flex flex-row gap-3">'+ label_name + ' <i class="bi bi-chevron-down"></i> </div>')
 
         if(prams_list[$(this).attr('name')] == get_val){
             $(this).parents('.filter-dropdown-buttons').find('button').attr('active', false);
@@ -493,6 +493,8 @@ $(document).ready(function(){
             $('.filter-dropdown-mtl-buttons button').attr('active', false);
             $('select').val('null')
         }
+
+        $('body').attr('filter-modal-open', 'false')
     });
 
 
@@ -778,5 +780,51 @@ $(document).ready(function(){
     };
 
 
+    var header_el = $('header');
+    var filter_box_el = $('.filter-box');
+    var extra_filter = $('#extra-filter');
+
+    if(
+        header_el?.length > 0 &&
+        filter_box_el?.length > 0 &&
+        extra_filter?.length > 0 
+    ){
+        var extra_px = 10;
+        $('#extra-filter').css({
+            paddingTop : $('header').height() + $('.filter-box').height() + extra_px
+        });
+
+        $('.filter-modal-body').css({
+            maxHeight : window.innerHeight - ($('header').height() + $('.filter-box').height() + extra_px)
+        })
+
+        $(window).resize(function(){
+            $('#extra-filter').css({
+                paddingTop : $('header').height() + $('.filter-box').height() + extra_px
+            });
+
+            $('.filter-modal-body').css({
+                maxHeight : window.innerHeight - ($('header').height() + $('.filter-box').height() + extra_px)
+            })
+        })
+    };
+
+    $('[aria-label="filter-button"]').click(function(){
+        var is_modal_open = $('body').attr('filter-modal-open');
+        if(is_modal_open == 'true'){
+            $('body').attr('filter-modal-open', 'false')
+        }else{
+            $('body').attr('filter-modal-open', 'true')
+        };
+    });
+
+
+    $('.filter-done').click(function(){
+        $('body').attr('filter-modal-open', 'false');
+    });
+
+    $('.filter-option-single-box select').click(function(){
+        $('body').attr('filter-modal-open', 'false');
+    });
 
 });

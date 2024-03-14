@@ -16,7 +16,7 @@
     max-width: none !important;
     width: 620px !important;
     position: absolute !important;
-    top: 340px !important;
+    top: 265px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     background-color: #fff;
@@ -344,7 +344,7 @@
     }
 
     .search-box{
-        top: 300px !important;
+        top: 230px !important;
     }
     
     .discount_period .banner-action-button{

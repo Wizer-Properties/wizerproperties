@@ -201,6 +201,11 @@ async function initializeMap() {
             init_map_circle();
             search_page_map_circle = null;
         });
+
+        $(document).on('click', '.search-box-clear-button', function(){
+            $('#gm-search-input').val('');
+            $('#gm-search-input').focus();
+        })
         
     };
 
