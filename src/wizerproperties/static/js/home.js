@@ -409,6 +409,7 @@ $(document).ready(function(){
     // ======================== popular-buildings-slider
 
 
+    /*
 
     var popular_building_slider = new Splide( '.popular-buildings-slider', {
         perPage: 4,
@@ -487,6 +488,8 @@ $(document).ready(function(){
         if(popular_building_next == null) return;
         get_popular_building_list(popular_building_next);
     });
+
+    */
 
 
 
@@ -587,5 +590,41 @@ $(document).ready(function(){
     //     }
         
     // }, 1000);
+
+
+    var recommended_search_slider = new Splide( '.recommended-search-slider', {
+        perPage: 4,
+        gap : 10,
+        pagination: false,
+        breakpoints: {
+            1200: {
+                perPage: 3,
+            },
+            780: {
+                perPage: 2,
+            },
+            460: {
+                perPage: 1,
+            }
+        }
+    }).mount();
+
+
+    var hot_properties_slider = new Splide( '.hot-properties-slider', {
+        perPage: 4,
+        gap : 10,
+        pagination: false,
+        breakpoints: {
+            1200: {
+                perPage: 3,
+            },
+            780: {
+                perPage: 2,
+            },
+            460: {
+                perPage: 1,
+            }
+        }
+    }).mount();
       
 })

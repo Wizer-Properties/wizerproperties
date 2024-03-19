@@ -4,7 +4,9 @@
 #popular-buildings,
 #open-ai-chat-box,
 #discount-properties,
-#popular-city{
+#popular-city,
+#recommended-search,
+#hot-properties{
     margin-bottom: 55px;
 }
 
@@ -15,13 +17,10 @@
 .search-box {
     max-width: none !important;
     width: 620px !important;
-    position: absolute !important;
-    top: 265px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
     background-color: #fff;
     border-radius: 100px !important;
     z-index: 99;
+    margin: auto;
 }
 
 .search-box input {
@@ -36,12 +35,14 @@
 }
 
 .banner{
-    height: 540px;
+    height: 420px;
     position: relative;
     background-image: url('/static/media/background/home-page-bg.webp');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
+    display: grid;
+    place-items: center;
 }
 
 .banner::before{
@@ -55,15 +56,13 @@
 }
 
 .banner-title{
-    position: absolute;
-    top: 180px;
-    width: 100%;
+    position: relative;
     text-align: center;
-    left: 0;
     font-size: 44px;
     color: #fff;
     z-index: 1;
     padding: 0 15px;
+    margin-bottom: 20px !important;
 }
 
 .sign-up-btn{
@@ -207,7 +206,7 @@
 }
 
 .sign-in-note-box{
-    background-color: #E4F1EE;
+    background-color: #76E1F6;
     display: flex;
     padding: 20px;
     border-radius: 10px;
@@ -335,16 +334,11 @@
 
 @media screen and (max-width: 560px){
     .banner {
-        height: 420px;
+        height: 320px;
     }
 
     .banner-title {
         font-size: 25px !important;
-        top: 110px !important;
-    }
-
-    .search-box{
-        top: 230px !important;
     }
     
     .discount_period .banner-action-button{
