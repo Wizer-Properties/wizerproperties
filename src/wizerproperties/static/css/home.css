@@ -35,7 +35,7 @@
 }
 
 .banner{
-    height: 420px;
+    height: 340px;
     position: relative;
     background-image: url('/static/media/background/home-page-bg.webp');
     background-position: center;
@@ -66,7 +66,11 @@
 }
 
 .sign-up-btn{
-    border: 1px solid #ffd350;
+    border: 1px solid #76E1F6;
+}
+
+[log-modal-btn].active-nav{
+    background: #76E1F6 !important;
 }
 
 .slider-title{
@@ -217,13 +221,14 @@
 
 .sign-in-note-box h1{
     font-size: 22px;
+    color: #312635;
 }
 
 .sign-in-note-box p{
     margin: 0;
     font-size: 16px;
     font-weight: bold;
-    color: #726E6E;
+    color: #3f413b;
 }
 
 .sign-in-note-box a{
