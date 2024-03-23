@@ -62,6 +62,12 @@
                             </a>
                             {% endif %} 
                         {% endif %}
+
+                        <a class="nav-link" href="#">Mortgages</a>
+                        <a class="nav-link" href="#">Prices And Trends</a>
+                        <a class="nav-link" href="#">Find A Developer</a>
+                        <a class="nav-link" href="#">Commercial</a>
+                        <a class="nav-link" href="#">International</a>
                     </div>
 
                     {% if user.is_authenticated and user.is_complete_profile %}
@@ -233,7 +239,7 @@
 <script src="{% static 'js/libraries/fontawesome-all.min.js' %}"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <script src="{% static 'js/main.js' %}?v=1.00"></script>
-<script src="{% static 'js/header.js' %}?v=1.00"></script>
+<script src="{% static 'js/header.js' %}?v=1.01"></script>
 
 <script async
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFApEXkq_FxTWGAVwEOEYxCtIxJ3iR9kU&libraries=places&callback=initializeMap">

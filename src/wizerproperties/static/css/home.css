@@ -76,6 +76,7 @@
 .slider-title{
     font-size: 22px;
     margin-bottom: 20px;
+    text-transform: capitalize;
 }
 
 .contact-cart-info{
@@ -210,7 +211,7 @@
 }
 
 .sign-in-note-box{
-    background-color: #76E1F6;
+    background-color: #230581;
     display: flex;
     padding: 20px;
     border-radius: 10px;
@@ -221,19 +222,18 @@
 
 .sign-in-note-box h1{
     font-size: 22px;
-    color: #312635;
+    color: #fff;
 }
 
 .sign-in-note-box p{
     margin: 0;
     font-size: 16px;
     font-weight: bold;
-    color: #3f413b;
+    color: #ffffffc9;
 }
 
 .sign-in-note-box a{
     display: block;
-    border: 1px solid #ffd350;
     background-color: #fff;
     font-size: 16px;
     padding: 8px 15px;

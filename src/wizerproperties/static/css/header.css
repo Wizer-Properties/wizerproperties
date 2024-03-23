@@ -43,8 +43,8 @@ header{
 .nav-link{
     display: block;
     margin-right: 10px;
-    font-size: 17px;
-    padding: 5px 15px;
+    font-size: 15px;
+    padding: 7px 10px;
     border-radius: 5px;
 }
 
@@ -58,6 +58,7 @@ header{
 
 .profile-dropdown-img{
     width: 45px;
+    min-width: 45px;
     height: 45px;
     margin-right: 10px;
     overflow: hidden;
@@ -86,6 +87,13 @@ header{
 .profile-dropdown span{
     font-weight: bold;
     font-size: 16px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100px;
+    overflow-wrap: break-word;
 }
 
 .search-box{
@@ -165,7 +173,7 @@ header{
     z-index: 7;
 }
 
-@media screen and (max-width: 1080px) {
+@media screen and (max-width: 1180px) {
     .mobile-menu{
         display: flex;
     }
@@ -248,10 +256,11 @@ header{
     }
 
     .side-nav .profile-dropdown span{
-        display: block !important;
+        display: -webkit-box !important;
         position: absolute;
         top: 20px;
         left: 65px;
+        width: 100%;
     }
 
     .side-nav .profile-dropdown{
