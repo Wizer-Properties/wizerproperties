@@ -1,4 +1,5 @@
 .banner,
+.container-wrapper,
 #new-properties,
 #popular-properties,
 #popular-buildings,
@@ -271,7 +272,122 @@
     left: 2px;
 }
 
+.reels-developer-info{
+    padding-top: 5px;
+    border-top: 1px solid #eee;
+}
 
+.reels-filter-btns{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.reels-filter-btns button{
+    padding: 5px 18px;
+    border: 1px solid #103bd429;
+    background-color: transparent;
+    border-radius: 3px;
+    font-size: 15px;
+}
+
+.reels-filter-btns button:hover{
+    border: 1px solid #103ad45d;
+}
+
+.reels-filter-btns button.activate{
+    background-color: var(--th-bg-color) !important;
+    color: #fff !important;
+}
+
+.reels-box-wrapper{
+    border: 1px solid #eee;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.reels-iframe-and-data{
+    height: 520px;
+    overflow: hidden;
+}
+
+.reels-developer-logo{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.reels-developer-logo
+.dev-logo{
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+}
+
+.reels-developer-logo
+.dev-logo img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.reels-developer-logo h1{
+    font-size: 16px;
+}
+
+.reels-developer-contact{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #212529 !important;
+    font-size: 14px;
+}
+
+.reels-visit-btn {
+    display: flex;
+    justify-content: center;
+}
+
+.reels-visit-btn a{
+    padding: 7px 40px;
+    background-color: var(--th-bg-color);
+    color: #fff !important;
+    font-weight: 500;
+    border-radius: 3px;
+}
+
+.reels-iframe-and-data iframe{
+    width: 100% !important;
+    height: 100% !important;
+    min-width: initial !important;
+}
+
+[view-type="less"]
+.reel-details{
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.reel-details{
+    font-size: 14px;
+}
+
+.reel-see-more-see-less{
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.tiktok-embed{
+    max-width: 100% !important;
+    min-width: 100% !important;
+    height: 520px !important;
+}
 
 
 @media screen and (max-width: 991px) {

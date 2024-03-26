@@ -626,5 +626,36 @@ $(document).ready(function(){
             }
         }
     }).mount();
+
+
+    var reels_slider = new Splide( '.reels-slider', {
+        perPage: 4,
+        gap : 10,
+        pagination: false,
+        breakpoints: {
+            1200: {
+                perPage: 3,
+            },
+            1080: {
+                perPage: 2,
+            },
+            768: {
+                perPage: 1,
+            }
+        }
+    }).mount();
       
+
+
+
+    $(document).on('click', '.reel-see-more-see-less', function(){
+        var get_view_type = $(this).parents('p[view-type]').attr('view-type');
+        if(get_view_type == 'less'){
+            $(this).parents('p[view-type]').attr('view-type', 'more')
+            $(this).text('See less')
+        }else if(get_view_type == 'more'){
+            $(this).parents('p[view-type]').attr('view-type', 'less')
+            $(this).text('See more')
+        };
+    })
 })
