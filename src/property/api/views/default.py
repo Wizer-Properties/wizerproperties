@@ -1,9 +1,15 @@
+import ast
+import requests
 from django.utils import timezone
-from django.db.models import OuterRef, Subquery, Value, F, CharField, Exists, BooleanField
+from django.conf import settings
+from urllib.parse import urlparse, parse_qs
+from django.db.models import OuterRef, Subquery, Value, F, Q, CharField, Exists, BooleanField, Value, Case, When
 from django.db.models.functions import Concat
+from itertools import chain
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.core.exceptions import ObjectDoesNotExist
 from property.api.permissions import PropertyPermission
 from property.api.serializers import (
     PropertySerializer,
@@ -15,6 +21,7 @@ from property.api.serializers import (
     PropertyVariousFeatureMinimalInfoSerializer,
     PropertyFacilitiesSerializer,
     SchedulePropertySerializer,
+    ExtendPropertyFacilitiesSerializer,
 )
 from property.api.filters import PropertyFilter
 from building.api.serializers import BuildingInfoForPropertySerializer, BuildingMediaSerializer
@@ -43,7 +50,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
         queryset = self.queryset
         user = self.request.user
 
-        if self.action in ["list", "retrieve", "available_units", "discount", "newly_created", "popular"]:
+        if self.action in ["list", "retrieve", "available_units", "discount", "newly_created", "popular", "suggested_property"]:
             if self.action not in ["available_units"]:
                 queryset = queryset.filter(is_active=True).annotate(
                     # Annotate is_compared based on whether the property is in the user's comparison list
@@ -115,6 +122,68 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
         serializer = serializer_class(queryset, many=True, **serializer_context)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        self._store_filter_data_in_cookies(response)
+        self._store_searched_places_in_cookies(response)
+        return response
+
+    def _store_filter_data_in_cookies(self, response):
+        query_params = self._get_query_params()
+        self._set_cookie_if_present(response, "number_of_bedroom", query_params.get('number_of_bedroom', [''])[0])
+        self._set_cookie_if_present(response, "number_of_bathroom", query_params.get('number_of_bathroom', [''])[0])
+
+    def _get_query_params(self):
+        full_path = self.request.get_full_path()
+        parsed_url = urlparse(full_path)
+        query_params = parse_qs(parsed_url.query)
+        return query_params
+
+    def _set_cookie_if_present(self, response, cookie_name, cookie_value):
+        if cookie_value:
+            response.set_cookie(cookie_name, cookie_value, settings.COOKIE_EXPIRE_TIME)
+
+    def _store_searched_places_in_cookies(self, response):
+        query_params = self._get_query_params()
+        address = query_params.get('search', [''])[0]
+        latitude = query_params.get('lat', [''])[0]
+        longitude = query_params.get('long', [''])[0]
+
+        geolocation_api_url = f"https://maps.googleapis.com/maps/api/geocode/json?address={address}&latlng={latitude},{longitude}&key=AIzaSyAFApEXkq_FxTWGAVwEOEYxCtIxJ3iR9kU"
+        
+        try:
+            geolocation_response = requests.get(geolocation_api_url)
+            geolocation_response.raise_for_status()
+            address_data = geolocation_response.json()["results"][0]["address_components"]
+            building__sub_district, building__district, building__province = "", "", ""
+            for obj in address_data:
+                if "locality" in obj["types"]:
+                    building__sub_district = obj["long_name"]
+                elif "administrative_area_level_2" in obj["types"]:
+                    building__district = obj["long_name"]
+                elif "administrative_area_level_1" in obj["types"]:
+                    building__province = obj["long_name"]
+
+            place = {}
+            if building__province:
+                place.update({"building__province": building__sub_district})
+            if building__district:
+                place.update({"building__district": building__district})
+            if building__sub_district:
+                place.update({"building__sub_district": building__province})
+
+            searched_places = ast.literal_eval(self.request.COOKIES.get('searched_places', '[]'))
+            if place in searched_places:
+                searched_places.remove(place)
+            searched_places.insert(0, place)
+            # Limit the list to only five elements
+            searched_places = searched_places[:5]
+            response.set_cookie("searched_places", searched_places, settings.COOKIE_EXPIRE_TIME)
+        
+        except Exception as e:
+            # Handle errors gracefully, perhaps log them
+            pass
 
     @action(detail=True, methods=["get"])
     def media_files(self, request, pk=None):
@@ -276,3 +345,76 @@ class PropertyViewSet(viewsets.ModelViewSet):
         return Response(
             {"generated_property_description": generated_property_description}, status=status.HTTP_201_CREATED
         )
+
+    @action(detail=False, methods=["get"])
+    def suggested_property(self, request):
+        searched_places = request.COOKIES.get('searched_places')
+        number_of_bedroom = request.COOKIES.get('number_of_bedroom')
+        number_of_bathroom = request.COOKIES.get('number_of_bathroom')
+
+        query_params = {}
+        if number_of_bedroom:
+            number_of_bedroom = ast.literal_eval(number_of_bedroom)
+            query_params.update({"number_of_bedroom": number_of_bedroom})
+        if number_of_bathroom:
+            number_of_bathroom = ast.literal_eval(number_of_bathroom)
+            query_params.update({"number_of_bathroom": number_of_bathroom})
+
+        if searched_places:
+            searched_places = ast.literal_eval(searched_places)
+
+        property_qs =self.get_queryset().select_related('building')
+        suggested_property = property_qs.none()
+        # Initialize an empty list to collect unique property IDs
+        unique_property_ids = []
+
+        if searched_places:
+            for place in searched_places:
+                if query_params:
+                    if place.get("building__sub_district"):
+                        property_sub_qs = property_qs.filter(**query_params, building__sub_district=place["building__sub_district"])
+                        unique_property_ids.extend(value for value in property_sub_qs.values_list('id', flat=True) if value not in unique_property_ids)
+                        if len(unique_property_ids) >= 15:
+                            break
+
+                    if len(unique_property_ids) < 15 and place.get("building__district"):
+                        property_sub_qs = property_qs.filter(**query_params, building__district=place["building__district"])
+                        unique_property_ids.extend(value for value in property_sub_qs.values_list('id', flat=True) if value not in unique_property_ids)
+                        if len(unique_property_ids) >= 15:
+                            break
+
+                    if len(unique_property_ids) < 15 and place.get("building__province"):
+                        property_sub_qs = property_qs.filter(**query_params, building__province=place["building__province"])
+                        unique_property_ids.extend(value for value in property_sub_qs.values_list('id', flat=True) if value not in unique_property_ids)
+                        if len(unique_property_ids) >= 15:
+                            break
+
+                if len(unique_property_ids) < 15 and place.get("building__sub_district"):
+                    property_sub_qs = property_qs.filter(building__sub_district=place["building__sub_district"])
+                    unique_property_ids.extend(value for value in property_sub_qs.values_list('id', flat=True) if value not in unique_property_ids)
+                    if len(unique_property_ids) >= 15:
+                        break
+
+                if len(unique_property_ids) < 15 and place.get("building__district"):
+                    property_sub_qs = property_qs.filter(building__district=place["building__district"])
+                    unique_property_ids.extend(value for value in property_sub_qs.values_list('id', flat=True) if value not in unique_property_ids)
+                    if len(unique_property_ids) >= 15:
+                        break
+
+                if len(unique_property_ids) < 15 and place.get("building__province"):
+                    property_sub_qs = property_qs.filter(building__province=place["building__province"])
+                    unique_property_ids.extend(value for value in property_sub_qs.values_list('id', flat=True) if value not in unique_property_ids)
+                    if len(unique_property_ids) >= 15:
+                        break
+
+            # Truncate the list to contain at most 15 unique property IDs
+            unique_property_ids = unique_property_ids[:15]
+        
+        order = Case(*[When(id=id, then=pos) for pos, id in enumerate(unique_property_ids)])
+        # Create a queryset from the list of unique property IDs
+        suggested_property = self.get_queryset().filter(id__in=unique_property_ids).order_by(order)
+
+        serializer_context = {}  # Default empty context
+        serializer_class = ExtendPropertyFacilitiesSerializer
+
+        return self._get_paginated_response(suggested_property, serializer_class, **serializer_context)

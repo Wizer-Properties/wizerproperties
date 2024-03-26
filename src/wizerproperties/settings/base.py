@@ -182,3 +182,5 @@ if DEBUG:
 # For ChatGPT
 OPENAI_API_KEY = config("OPENAI_API_KEY", "")
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+
+COOKIE_EXPIRE_TIME = 7*24*60*60  #7days in seconds
