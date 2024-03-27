@@ -3,7 +3,7 @@ from rest_framework import permissions
 
 class ReelPermission(permissions.BasePermission):
     def has_permission(self, request, view):
-        if view.action in ["create", "update", "partial_update", "destroy"]:
+        if view.action in ["list", "create", "update", "partial_update", "destroy"]:
             return hasattr(request.user, "developerprofile") or hasattr(request.user, "agentprofile")
         return True
 

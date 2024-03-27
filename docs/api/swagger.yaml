@@ -2950,7 +2950,7 @@ paths:
       tags:
         - Reel
       summary: "Get reels"
-      description: "**User type**: Any"
+      description: "**User type**: Agent/Developer"
       operationId: Get reel list
       responses:
         200:
@@ -3158,6 +3158,42 @@ paths:
           description: Object not Found
           schema:
             $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /advertise/api/reel/active/:
+    get:
+      tags:
+        - Reel
+      summary: "Get active reels"
+      description: "**User type**: Any"
+      operationId: Get active reel list
+      parameters:
+        - name: "category"
+          in: "query"
+          required: false
+          type: "string"
+      responses:
+        200:
+          description: Reel List
+          schema:
+            $ref: "#/definitions/ActiveReelListResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
         405:
           description: Method not allowed(Method ain't supported by this URL)
           schema:
@@ -4325,7 +4361,62 @@ definitions:
               type: "number"
             details:
               type: "string"
-      
+    
+  ActiveReelListResponse:
+    type: object
+    properties:
+      total_page:
+        type: "number"
+      page_size:
+        type: "number"
+      count:
+        type: "number"
+      next:
+        type: "number"
+      previous:
+        type: "number"
+      results:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: "number"
+            url:
+              type: "string"
+            social_media:
+              type: "string"
+            category:
+              type: "number"
+            status:
+              type: "number"
+            details:
+              type: "string"
+            user:
+              type: object
+              properties:
+                id:
+                  type: "number"
+                email:
+                  type: "string"
+                developer:
+                  type: object
+                  properties:
+                    phone_number:
+                      type: "number"
+                    company_logo:
+                      type: "number"
+                    company_name:
+                      type: "string"
+                agent:
+                  type: object
+                  properties:
+                    phone_number:
+                      type: "number"
+                    company_logo:
+                      type: "number"
+                    company_name:
+                      type: "string"
 
 
 # Added by API Auto Mocking Plugin
