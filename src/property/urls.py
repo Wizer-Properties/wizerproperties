@@ -8,6 +8,6 @@ urlpatterns = [
     path("search/", search_property, name="search"),
     path("comparison/", comparison_property, name="comparison"),
     path("favorite-list/", favorite_list, name="favorite_list"),
-    path("list/", dev_agent_property_list, name="list"),
+    path("list/<int:id>/", dev_agent_property_list, name="list"),
     path("api/", include(("property.api.urls", "property"), namespace="api")),
 ]

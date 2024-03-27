@@ -58,7 +58,13 @@
     -webkit-line-clamp: 3;
 }
 
+.user-property-single-box{
+    position: relative;
+}
 
+.banner-action-button{
+    left: 12px;
+}
 
 @media screen and (max-width: 600px) {
     .dev-agent-profile-info-wrapper{

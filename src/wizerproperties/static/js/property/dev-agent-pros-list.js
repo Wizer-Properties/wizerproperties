@@ -4,6 +4,22 @@ $(document).ready(function(){
 
     function property_list_tmp(data){
         return  '<div class="col-xl-3 col-lg-4 col-sm-6 col-12 user-property-single-box mb-3">'+
+                '<div class="banner-action-button">'+
+                    (
+                        !['agent', 'developer'].includes(user_type) ?
+                        '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
+                            '<i class="bi bi-arrow-left-right"></i>'+
+                            '<i class="bi bi-check-circle-fill"></i>'+
+                            ' Compare'+
+                        '</button>'+
+
+                        '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'">'+
+                            '<i class="bi bi-heart-fill"></i>'+
+                            '<i class="bi bi-heart"></i>'+
+                            ' Favorite'+
+                        '</button>' : ''
+                    ) +
+                '</div>'+
                 '<a href="/property/details/'+data?.id+'/" class="search-result-box-wrapper">'+
                     '<div class="search-result-box-img">'+
                         '<img src="'+data?.default_image+'" alt="'+data?.title+'" loading="lazy">' +
