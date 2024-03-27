@@ -48,3 +48,14 @@ def comparison_property(request):
 @login_required
 def favorite_list(request):
     return render(request, "favorite-list.html")
+
+
+@login_required
+def dev_agent_property_list(request):
+    if request.user.user_type == "developer":
+        profile = request.user.developerprofile
+    elif request.user.user_type == "agent":
+        profile = request.user.agentprofile
+    else:
+        profile = None
+    return render(request, "developer-agent-property-list.html", {"profile": profile})

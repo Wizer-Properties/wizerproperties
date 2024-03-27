@@ -1,0 +1,92 @@
+#dev-agent-info{
+    background: #EBF6FA;
+    padding: 45px 0;
+}
+
+#property-list{
+    padding: 45px 0;
+}
+
+.dev-agent-profile-image{
+    width: 180px;
+    min-width: 180px;
+    height: 180px;
+    border-radius: 100%;
+    overflow: hidden;
+}
+
+.dev-agent-profile-image img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.dev-agent-profile-info-wrapper{
+    display: flex;
+    gap: 30px;
+}
+
+.dev-agent-profile-contact h1{
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.agent-developer-contact {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #212529 !important;
+    font-size: 16px;
+}
+
+.agent-developer-contact span{
+    overflow-wrap: anywhere;
+}
+
+.total-property{
+    font-size: 22px;
+}
+
+.total-property span{
+    font-size: 44px;
+    display: block;
+    margin-top: 20px;
+}
+
+[view-type="less"]
+.reel-details{
+    -webkit-line-clamp: 3;
+}
+
+
+
+@media screen and (max-width: 600px) {
+    .dev-agent-profile-info-wrapper{
+        flex-direction: column;
+    }
+    
+    .dev-agent-profile-image{
+        margin: auto;
+    }
+
+    .dev-agent-profile-contact{
+        text-align: center;
+    }
+
+    .dev-agent-profile-info-wrapper{
+        gap: 10px;
+    }
+
+    .total-property span{
+        display: inline-block !important;
+        font-size: 22px !important;
+        margin: 0;
+        padding-left: 5px;
+    }
+
+    .total-property span::before{
+        content: ':';
+        position: relative;
+        left: -7px;
+    }
+}

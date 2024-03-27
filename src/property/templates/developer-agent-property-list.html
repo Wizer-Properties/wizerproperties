@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extend_head %}
+<title>Property List</title>
+<link rel="stylesheet" href="{% static '/css/search-page.css' %}?v=1.00" />
+<link rel="stylesheet" href="{% static '/css/home.css' %}?v=1.00" />
+<link rel="stylesheet" href="{% static '/css/dev-agent-property-list.css' %}?v=1.00" />
+{% endblock extend_head %}
+
+{% block content %}
+
+
+<section id="dev-agent-info">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-xl-5 col-lg-5">
+                <div class="dev-agent-profile-info-wrapper mb-3">
+                    <div class="dev-agent-profile-image">
+                        {% if request.user.user_type == "developer" %}
+                        <img src="{{ request.user.developerprofile.company_logo.url }}" alt="Company Logo">
+                        {% elif request.user.user_type == "agent" %}
+                        <img src="{{ request.user.agentprofile.company_logo.url }}" alt="Company Logo">
+                        {% else %}
+                        <img src="{% static 'media/default-avatar.jpg' %}" alt="img">
+                        {% endif %}
+                    </div>
+                    
+                    <div class="dev-agent-profile-contact">
+                        <h1> {{ request.user.username }} </h1>
+
+                        <div class="mb-2">
+                            <a href="mailto:{{ request.user.email }}" class="agent-developer-contact">
+                                <i class="bi bi-envelope"></i>
+                                <span> {{ request.user.email }}</span>
+                            </a>
+                        </div>
+        
+                        <div>
+                            <a href="tel:{{ profile.phone_number }}" class="agent-developer-contact">
+                                <i class="bi bi-telephone"></i>
+                                <span> {{ profile.phone_number }} </span>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-5 col-lg-4">
+                <div>
+                    <b> Company Name : </b>
+                    <span> {{ profile.company_name }} </span>
+                </div>
+
+                <div class="agent-developer-contact mt-2">
+                    <i class="bi bi-geo-alt"></i>
+                    <span> {{ profile.company_address }}</span>
+                </div>
+
+                <div class="agent-developer-contact mt-2">
+                    <p view-type="less">
+                        <span class="reel-details"> {{ profile.company_details }} </span>
+                        <span class="reel-see-more-see-less"> See more </span>
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="col-xl-2 col-lg-3">
+                <h1 class="total-property">
+                    Total property
+                    <span label-name="total"></span>
+                </h1>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<section id="property-list">
+    <div class="container">
+        <h1 class="slider-title"> Propert List </h1>
+        <div class="row" id="user-property-list">
+            
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extend_script %}
+<script>
+    var USER_ID = '{{user.id}}';
+</script>
+<script src="{% static 'js/property/dev-agent-pros-list.js' %}?v=1.00"></script>
+{% endblock extend_script %}
