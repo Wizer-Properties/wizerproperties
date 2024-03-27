@@ -6,11 +6,19 @@ class UserPropertyPagination(pagination.PageNumberPagination):
     page_size_query_param = 'page_size'
 
     def get_paginated_response(self, data):
+        next_page_number = None
+        if self.page.has_next():
+            next_page_number = self.page.next_page_number()
+        
+        previous_page_number = None
+        if self.page.has_previous():
+            previous_page_number = self.page.previous_page_number()
+
         return Response({
             'total_pages': self.page.paginator.num_pages,
             'page_size': self.page.paginator.per_page,
             'count': self.page.paginator.count,
-            'next': self.get_next_link(),
-            'previous': self.get_previous_link(),
+            'next': next_page_number,
+            'previous': previous_page_number,
             'results': data
         })
