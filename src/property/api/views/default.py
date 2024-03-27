@@ -4,7 +4,6 @@ from django.db.models.functions import Concat
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import api_view
 from property.api.permissions import PropertyPermission
 from property.api.serializers import (
@@ -19,6 +18,7 @@ from property.api.serializers import (
     SchedulePropertySerializer,
 )
 from property.api.filters import PropertyFilter
+from property.api.pagination import UserPropertyPagination
 from building.api.serializers import BuildingInfoForPropertySerializer, BuildingMediaSerializer
 from building.models import Building, BuildingMedia
 from property.models import Property, PropertyMedia, CompareProperty, ProspectFavoriteProperty
@@ -309,7 +309,7 @@ def user_properties(request, user_id):
         ).order_by('-id')
 
     serializer_class = PropertyVariousFeatureSerializer
-    paginator = PageNumberPagination()
+    paginator = UserPropertyPagination()
     paginated_queryset = paginator.paginate_queryset(properties_qs, request)
 
     if paginated_queryset is not None:

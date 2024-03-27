@@ -30,6 +30,7 @@ urlpatterns = [
     path("property/", include(("property.urls", "property"), namespace="property")),
     path("schedule/", include(("schedule.urls", "schedule"), namespace="schedule")),
     path("core/", include(("core.urls", "core"), namespace="core")),
+    path("advertise/", include(("advertise.urls", "advertise"), namespace="advertise")),
     path('about-us/', about_us_page, name='about-us'),
     path('privacy/', privacy_page, name='privacy'),
 ]

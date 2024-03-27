@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "property",
     "user",
     "schedule",
+    "advertise",
 ]
 
 MIDDLEWARE = [

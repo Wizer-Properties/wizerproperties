@@ -2541,6 +2541,40 @@ paths:
           description: Service Unavailable(Server is down for maintenance or overloaded)
         504:
           description: Taking more time to get a response
+    
+  /property/api/user-properties/{user_id}/:
+    get:
+      tags:
+        - Property
+      summary: "Popular properties list"
+      description: "**User type**: both"
+      operationId: user-properties
+      produces:
+        - "application/json"
+      parameters:
+        - name: "user_id"
+          required: true
+          in: "path"
+          type: "string"
+      responses:
+        200:
+          description: Properties list
+          schema:
+            $ref: "#/definitions/PropertyVariousFeatureListResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
   
   /schedule/api/:
     post:
@@ -2834,6 +2868,294 @@ paths:
             $ref: "#/definitions/commonValidationError"
         403:
           description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /advertise/api/reel/:
+    post:
+      tags:
+        - Reel
+      summary: "Create reel"
+      description: "**User type**: Developer/Agent"
+      operationId: Create reel
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "url"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "social_media"
+          in: "formData"
+          required: true
+          type: "string"
+          description: "youtube/titTok/instagram/"
+        - name: "category"
+          in: "formData"
+          required: true
+          type: "string"
+          description: "advice/info/tour"
+        - name: "status"
+          in: "formData"
+          type: "string"
+          description: "active/inactive"
+        - name: "details"
+          in: "formData"
+          type: "string"
+      responses:
+        201:
+          description: Reel created
+          schema:
+            $ref: "#/definitions/SingleReelResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+    
+    get:
+      tags:
+        - Reel
+      summary: "Get reels"
+      description: "**User type**: Any"
+      operationId: Get reel list
+      responses:
+        200:
+          description: Reel List
+          schema:
+            $ref: "#/definitions/ReelListResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /advertise/api/reel/{id}/:
+    get:
+      tags:
+        - Reel
+      summary: "Reel details"
+      description: "**User type**: Any"
+      operationId: Reel details
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "number"
+      responses:
+        200:
+          description: Reel object
+          schema:
+            $ref: "#/definitions/SingleReelResponse"
+        404:
+          description: Object not Found
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+    
+    put:
+      tags:
+        - Reel
+      summary: "Update Reel"
+      description: "**User type**: Developer/Agent"
+      operationId: Update Reel
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "number"
+        - name: "url"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "social_media"
+          in: "formData"
+          required: true
+          type: "string"
+          description: "youtube/titTok/instagram/"
+        - name: "category"
+          in: "formData"
+          required: true
+          type: "string"
+          description: "advice/info/tour"
+        - name: "status"
+          in: "formData"
+          type: "string"
+          description: "active/inactive"
+        - name: "details"
+          in: "formData"
+          type: "string"
+      responses:
+        200:
+          description: Reel object
+          schema:
+            $ref: "#/definitions/SingleReelResponse"
+        404:
+          description: Object not Found
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+    
+    patch:
+      tags:
+        - Reel
+      summary: "Partial Update Reel"
+      description: "**User type**: Developer/Agent"
+      operationId: Partial Update Reel
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "number"
+        - name: "url"
+          in: "formData"
+          required: true
+          type: "string"
+        - name: "social_media"
+          in: "formData"
+          required: true
+          type: "string"
+          description: "youtube/titTok/instagram/"
+        - name: "category"
+          in: "formData"
+          required: true
+          type: "string"
+          description: "advice/info/tour"
+        - name: "status"
+          in: "formData"
+          type: "string"
+          description: "active/inactive"
+        - name: "details"
+          in: "formData"
+          type: "string"
+      responses:
+        200:
+          description: Reel object
+          schema:
+            $ref: "#/definitions/SingleReelResponse"
+        404:
+          description: Object not Found
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+    
+    delete:
+      tags:
+        - Reel
+      summary: "Delete Reel"
+      description: "**User type**: Developer/Agent"
+      operationId: Delete Reel
+      produces:
+        - "application/json"
+      consumes:
+        - "multipart/form-data"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "number"
+      responses:
+        204:
+          description: No content
+        404:
+          description: Object not Found
           schema:
             $ref: "#/definitions/commonSingleErrorResponse"
         405:
@@ -3956,6 +4278,54 @@ definitions:
           type: "string"
       body:
         type: "string"
+  
+  SingleReelResponse:
+    type: object
+    properties:
+      id:
+        type: "string"
+      url:
+          type: "string"
+      social_media:
+          type: "string"
+      category:
+        type: "string"
+      status:
+          type: "string"
+      details:
+        type: "string"
+  
+  ReelListResponse:
+    type: object
+    properties:
+      total_page:
+        type: "number"
+      page_size:
+        type: "number"
+      count:
+        type: "number"
+      next:
+        type: "number"
+      previous:
+        type: "number"
+      results:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: "number"
+            url:
+              type: "string"
+            social_media:
+              type: "string"
+            category:
+              type: "number"
+            status:
+              type: "number"
+            details:
+              type: "string"
+      
 
 
 # Added by API Auto Mocking Plugin
