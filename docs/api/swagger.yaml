@@ -3190,10 +3190,6 @@ paths:
           description: Reel List
           schema:
             $ref: "#/definitions/ActiveReelListResponse"
-        400:
-          description: Required fields are missing
-          schema:
-            $ref: "#/definitions/commonValidationError"
         405:
           description: Method not allowed(Method ain't supported by this URL)
           schema:
@@ -4356,9 +4352,9 @@ definitions:
             social_media:
               type: "string"
             category:
-              type: "number"
+              type: "string"
             status:
-              type: "number"
+              type: "string"
             details:
               type: "string"
     
@@ -4387,9 +4383,9 @@ definitions:
             social_media:
               type: "string"
             category:
-              type: "number"
+              type: "string"
             status:
-              type: "number"
+              type: "string"
             details:
               type: "string"
             user:
@@ -4403,18 +4399,18 @@ definitions:
                   type: object
                   properties:
                     phone_number:
-                      type: "number"
+                      type: "string"
                     company_logo:
-                      type: "number"
+                      type: "string"
                     company_name:
                       type: "string"
                 agent:
                   type: object
                   properties:
                     phone_number:
-                      type: "number"
+                      type: "string"
                     company_logo:
-                      type: "number"
+                      type: "string"
                     company_name:
                       type: "string"
 
