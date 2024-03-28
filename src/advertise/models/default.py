@@ -1,5 +1,6 @@
 from django.db import models
 from core.models import TimestampedModel
+from ckeditor.fields import RichTextField
 
 
 class Reel(TimestampedModel):
@@ -18,7 +19,7 @@ class Reel(TimestampedModel):
         ("inactive", "Inactive"),
     )
 
-    url = models.URLField(max_length=2000, null=True)
+    url = RichTextField(null=True)
     social_media = models.CharField(max_length=30, choices=SOCIAL_MEDIA_CHOICES, null=True)
     category = models.CharField(max_length=30, choices=CATEGORY_CHOICES, null=True)
     status = models.CharField(max_length=30, default="active")
