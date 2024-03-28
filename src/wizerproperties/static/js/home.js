@@ -628,6 +628,52 @@ $(document).ready(function(){
     }).mount();
 
 
+
+    function reels_tmp (data){
+        var company_data;
+        if(data?.user?.agent){
+            company_data = data?.user?.agent;
+        }else{
+            company_data = data?.user?.developer;
+        };
+
+        return( '<div class="reels-box-wrapper">'+
+                    '<div class="reels-iframe-and-data">'+
+                        '<iframe src="'+data?.url+'" frameborder="0"></iframe>' +
+                    '</div>'+
+                    '<div class="reels-developer-info mt-2">'+
+                        '<p>'+
+                            '<span class="reel-details">'+
+                                data?.details +
+                            '</span>'+
+                            '<span class="reel-see-more-see-less"> See more </span>'+
+                        '</p>'+
+                        '<div class="reels-developer-logo">'+
+                            '<div class="dev-logo">'+
+                                '<img src="'+company_data?.company_logo+'" alt="logo">'+
+                            '</div>'+
+                            '<h1>'+company_data?.company_name+'</h1>'+
+                        '</div>'+
+        
+                        '<a href="mailto:'+data?.user?.email+'" class="reels-developer-contact mb-2">'+
+                            '<i class="bi bi-envelope"></i>'+
+                            '<span>'+data?.user?.email+'</span>'+
+                        '</a>'+
+        
+                        '<a href="tel:'+company_data?.phone_number+'" class="reels-developer-contact">'+
+                            '<i class="bi bi-telephone"></i>'+
+                            '<span>'+company_data?.phone_number+'</span>'+
+                        '</a>'+
+        
+                        '<div class="reels-visit-btn mt-3">'+
+                            '<a href="/property/list/'+data?.user?.id+'/"> Visit </a>'+
+                        '</div>'+
+                    '</div>'+
+                '</div>'
+        )
+    }
+
+
     var reels_slider = new Splide( '.reels-slider', {
         perPage: 4,
         gap : 10,
@@ -644,8 +690,118 @@ $(document).ready(function(){
             }
         }
     }).mount();
-      
 
+
+    var reels_next;
+    var calling_reels;
+    var category;
+    var is_category_btn_call;
+    var first_time_reel_api_call = true;
+
+    function get_reels_list(next_page){
+        if(calling_reels) return;
+        var page_size = 4;
+        if(window.innerWidth <= 1200) page_size = 3;
+        if(window.innerWidth <= 740) page_size = 2;
+        if(window.innerWidth <= 460) page_size = 1;
+
+        $.ajax({
+            url: '/advertise/api/reel/active/',
+            type: 'GET',
+            data : {
+                page_size : page_size,
+                page : next_page,
+                category : category
+            },
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            beforeSend: function() {
+                if(is_category_btn_call){
+                    reels_slider.remove('.reels-slider .reels-box-wrapper');
+                };
+
+                for (let i = 0; i < page_size; i++) {
+                    reels_slider.add(loader_tmp())
+                };
+
+                calling_reels = true;
+            },
+            success: function (data) {
+                calling_reels = false;
+
+                if(
+                    first_time_reel_api_call &&
+                    data?.count == 0
+                ){
+                    $('#engaging-reels').remove();
+                    return;
+                };
+
+                first_time_reel_api_call = false;
+                
+                if(data?.count == 0){
+                    $('.no-reels').html('<p class="my-5 py-5 text-center"> No reels available </p>')
+                }else{
+                    $('.no-reels').html('')
+                };
+                
+                for (let i = 0; i < data?.results.length; i++) {
+                    reels_slider.add(reels_tmp(data?.results[i]))
+                };
+
+                reels_slider.remove('.reels-slider .list_loader');
+
+                if(data?.next != null){
+                    for (let i = 0; i < page_size; i++) {
+                        reels_slider.add(loader_tmp())
+                    };
+                };
+
+                reels_next = data?.next;
+
+                var all_reel_details = $('.reel-details');
+                for (let i = 0; i < all_reel_details.length; i++) {
+                    if( all_reel_details[i].offsetHeight > 25){
+                        all_reel_details[i].parentNode.setAttribute("view-type", "less");
+                    }else{
+                        all_reel_details[i].parentNode?.querySelector('.reel-see-more-see-less').remove();
+                    };
+                }
+
+                is_category_btn_call = false;
+            },
+            error: function (error) {
+                calling_reels = false;
+                is_category_btn_call = false;
+            }
+        });
+    };
+
+    get_reels_list();
+
+    reels_slider.on( 'moved', (e) => {
+        if(reels_next == null) return;
+        get_reels_list(reels_next);
+    });
+
+
+    $(document).on('click', '.reels-filter-btns button', function(){
+        is_category_btn_call = true;
+        
+        if($(this).hasClass('activate')){
+            $('.reels-filter-btns button').removeClass('activate');
+            category = null;
+        }else{
+            $('.reels-filter-btns button').removeClass('activate');
+            $(this).addClass('activate');
+            category = $(this).val();
+        };
+        
+        get_reels_list()
+    });
+
+    
 
 
     $(document).on('click', '.reel-see-more-see-less', function(){
@@ -657,5 +813,5 @@ $(document).ready(function(){
             $(this).parents('p[view-type]').attr('view-type', 'less')
             $(this).text('See more')
         };
-    })
+    });
 })

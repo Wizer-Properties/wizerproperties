@@ -383,6 +383,12 @@
     font-size: 14px;
 }
 
+[view-type="more"]
+.reel-see-more-see-less{
+    display: inline-block;
+    padding: 0 10px;
+}
+
 .tiktok-embed{
     max-width: 100% !important;
     min-width: 100% !important;

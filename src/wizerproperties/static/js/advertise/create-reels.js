@@ -1,5 +1,4 @@
 $(document).ready(function(){
-    console.log("==========")
 
     $("#reels-create-form").submit(function (event) {
         event.preventDefault();
