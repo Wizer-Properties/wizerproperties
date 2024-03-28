@@ -32,7 +32,7 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="authFormDiv">
-                                <select name="social_media " type="text" class="authInput authSelectInput" placeholder="Social Media" required>
+                                <select name="social_media" type="text" class="authInput authSelectInput" placeholder="Social Media" required>
                                     <option value="">........</option>
                                     <option value="youtube">Youtube</option>
                                     <option value="titTok">TitTok</option>
@@ -44,7 +44,7 @@
 
                         <div class="col-lg-6">
                             <div class="authFormDiv">
-                                <select name="category " type="text" class="authInput authSelectInput" placeholder="Category" required>
+                                <select name="category" type="text" class="authInput authSelectInput" placeholder="Category" required>
                                     <option value="">........</option>
                                     <option value="advice">Advice</option>
                                     <option value="info">Info</option>
@@ -64,7 +64,15 @@
 
 
                     <button type="submit" class="authButton completeProfileButton mt-2" id="create-reel">
-                        <span id="createReelButtonText">Create reel</span>
+                        <span id="createReelButtonText">
+                            {% if action_type == 'create' %}
+                                Create
+                            {% elif action_type == 'edit' %}
+                                Update
+                            {% endif %}
+
+                            reel
+                        </span>
                         <div id="loadingSpinner" class="spinner-border" role="status" style="display: none;">
                             <span class="sr-only">Loading...</span>
                         </div>
@@ -78,5 +86,17 @@
 
 
 {% block extend_script %}
+
+<script>
+    var REEL_ID = '{{reel_id}}'
+</script>
+
+{% if action_type == 'create' %}
 <script src="{% static 'js/advertise/create-reels.js' %}?v=1.00"></script>
+{% endif %}
+
+{% if action_type == 'edit' %}
+<script src="{% static 'js/advertise/edit-reels.js' %}?v=1.00"></script>
+{% endif %}
+
 {% endblock extend_script %}

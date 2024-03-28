@@ -253,4 +253,56 @@ $(document).ready(function () {
     };
 
 
+    var shared_reels_table = $('#shared-reels-schedule').DataTable({
+        ordering: false,
+        lengthChange: false,
+        info: false,
+        pageLength : 5
+    });
+
+    function shared_reels_button_tmp (data){
+        return  '<div class="td-edit-delete-see">' +
+                    '<a class="link edit-button" href="/advertise/edit-reels/'+data?.id+'/">Edit</a>' +
+                    '<button class="link delete-building delete-button" data-id="2" data-api-url="/building/api/delete/2/">Delete</button>' +
+                '</div>'
+    };
+
+    function shared_reels_social_media(data){
+        if(data == 'youtube') return '<button class="social-media _youtube"> <i class="bi bi-youtube"></i> </button>';
+        if(data == 'titTok') return '<button class="social-media _titTok"> <i class="bi bi-tiktok"></i> </button>';
+        if(data == 'instagram') return '<button class="social-media _instagram"> <i class="bi bi-instagram"></i> </button>';
+    };
+
+
+    function display_shared_reels(){
+        $.ajax({
+            url: '/advertise/api/reel/',
+            type: 'GET',
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            success: function (data) {
+                var the_results = data?.results;
+                if(the_results.length > 0){
+                    for (let i = 0; i < the_results.length; i++) {
+                        shared_reels_table.row.add([
+                            the_results[i]?.id,
+                            the_results[i]?.category,
+                            shared_reels_social_media(the_results[i]?.social_media),
+                            '<textarea readonly class="shared-reels-url">'+the_results[i]?.url+'</textarea>',
+                            '<input type="checkbox" name="" '+(the_results[i]?.status == "active" ? 'checked' : '')+'>',
+                            shared_reels_button_tmp(the_results[i])
+                        ]).draw(false);
+                    }
+                }
+            },
+            error: function (error) {
+                console.log("error")
+            }
+        });
+    };
+
+    display_shared_reels()
+
+
 });

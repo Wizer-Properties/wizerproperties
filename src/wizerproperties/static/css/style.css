@@ -82,6 +82,14 @@ input{
     outline: none !important;
 }
 
+.single-line-dots{
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .active>.page-link, 
 .page-link.active{
     background: #ffd350 !important;

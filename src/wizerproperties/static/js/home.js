@@ -629,6 +629,18 @@ $(document).ready(function(){
 
 
 
+    function reels_iframe_tmp(data){
+        if(data?.social_media == 'youtube'){
+            var parts = data.url.split('/');
+            var videoId = parts[parts.length - 1];
+            var embedUrl = `https://youtube.com/embed/${videoId}`;
+            return '<iframe src="'+embedUrl+'" frameborder="0"></iframe>';
+        };
+
+        console.log(data.url)
+        return data.url
+    }
+
     function reels_tmp (data){
         var company_data;
         if(data?.user?.agent){
@@ -639,7 +651,7 @@ $(document).ready(function(){
 
         return( '<div class="reels-box-wrapper">'+
                     '<div class="reels-iframe-and-data">'+
-                        '<iframe src="'+data?.url+'" frameborder="0"></iframe>' +
+                        reels_iframe_tmp(data)+
                     '</div>'+
                     '<div class="reels-developer-info mt-2">'+
                         '<p>'+
@@ -749,6 +761,7 @@ $(document).ready(function(){
                 for (let i = 0; i < data?.results.length; i++) {
                     reels_slider.add(reels_tmp(data?.results[i]))
                 };
+                reel_detail()
 
                 reels_slider.remove('.reels-slider .list_loader');
 
@@ -759,22 +772,12 @@ $(document).ready(function(){
                 };
 
                 reels_next = data?.next;
-
-                var all_reel_details = $('.reel-details');
-                for (let i = 0; i < all_reel_details.length; i++) {
-                    if( all_reel_details[i].offsetHeight > 25){
-                        all_reel_details[i].parentNode.setAttribute("view-type", "less");
-                    }else{
-                        all_reel_details[i].parentNode?.querySelector('.reel-see-more-see-less').remove();
-                    };
-                }
-
                 is_category_btn_call = false;
             },
             error: function (error) {
                 calling_reels = false;
                 is_category_btn_call = false;
-            }
+            },
         });
     };
 
@@ -785,6 +788,16 @@ $(document).ready(function(){
         get_reels_list(reels_next);
     });
 
+    function reel_detail(){
+        var all_reel_details = $('.reel-details');
+        for (let i = 0; i < all_reel_details.length; i++) {
+            if( all_reel_details[i].offsetHeight > 25){
+                all_reel_details[i].parentNode.setAttribute("view-type", "less");
+            }else{
+                all_reel_details[i].parentNode?.querySelector('.reel-see-more-see-less')?.remove();
+            };
+        };
+    }
 
     $(document).on('click', '.reels-filter-btns button', function(){
         is_category_btn_call = true;
