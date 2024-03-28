@@ -172,6 +172,10 @@
     .expand-box-icon .bi-heart-fill{
         font-size: 30px;
     }
+
+    .shared-reels-url{
+        width: 180px;
+    }
 }
 
 @media screen and (max-width: 600px){
