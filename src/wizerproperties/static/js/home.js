@@ -636,18 +636,18 @@ $(document).ready(function(){
             var parts = data.url.split('/');
             var videoId = parts[parts.length - 1];
             var embedUrl = `https://youtube.com/embed/${videoId}`;
-            return '<iframe src="'+embedUrl+'" frameborder="0"></iframe>';
+            return '<iframe height="520" src="'+embedUrl+'" frameborder="0"></iframe>';
         };
 
         if(data?.social_media == "titTok"){
             var parts = data.url.split('/video/');
             var embedUrl = `https://www.tiktok.com/embed/v2/${parts[1]}`;
-            return '<iframe src="'+embedUrl+'" frameborder="0"></iframe>';
+            return '<iframe height="520" src="'+embedUrl+'" frameborder="0"></iframe>';
         };
 
         if(data?.social_media == 'instagram'){
             var parts = data.url.split('/');
-            return '<iframe src="https://www.instagram.com/p/'+parts[4]+'/embed/" frameborder="0"></iframe>';
+            return '<iframe height="520" src="https://www.instagram.com/p/'+parts[4]+'/embed/" frameborder="0"></iframe>';
         };
 
         return data?.url;

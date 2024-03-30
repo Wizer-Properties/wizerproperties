@@ -292,7 +292,7 @@ $(document).ready(function () {
                 'X-CSRFToken': csrfToken,
             },
             success: function (data) {
-                var the_results = data?.results;
+                var the_results = data;
                 
                 if(the_results.length > 0){
                     for (let i = 0; i < the_results.length; i++) {
