@@ -3,6 +3,7 @@ $(document).ready(function () {
     var toggleActiveAPIUrl;
     var isChecked;
     var checkboxElement;
+    var props_status;
 
     // Function to update active_properties_count
     function updateActivePropertiesCount(change) {
@@ -10,11 +11,17 @@ $(document).ready(function () {
         $("#active-properties-count").text(currentCount + change);
     }
 
-    $(".toggle-active").change(function () {
+    $(document).on('change', '.toggle-active', function () {
         checkboxElement = $(this);
         itemId = checkboxElement.data("id");
         toggleActiveAPIUrl = checkboxElement.data("api-url");
         isChecked = checkboxElement.prop("checked");
+
+        var data_item = checkboxElement.data("item");
+
+        if(['reels'].includes(data_item)){
+            props_status = isChecked ? 'active' : 'inactive';
+        }
 
         // Show the change active status confirmation modal
         var modalTitle = "Toggle Active Status";
@@ -41,6 +48,7 @@ $(document).ready(function () {
             type: "PATCH",
             data: {
                 is_active: isChecked,
+                status : props_status,
             },
             headers: {
                 "X-CSRFToken": csrfToken,

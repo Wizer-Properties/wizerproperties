@@ -274,6 +274,16 @@ $(document).ready(function () {
     };
 
 
+    function reels_checkbox_tmp (data){
+        return (
+            '<input class="toggle-active" data-api-url="/advertise/api/reel/'+data?.id+'/"'+ 
+                'data-item="reels" type="checkbox" data-id="'+data?.id+'"'+
+                (data?.status == "active" ? 'checked' : '')+
+            '>'
+        )
+    }
+
+
     function display_shared_reels(){
         $.ajax({
             url: '/advertise/api/reel/',
@@ -283,6 +293,7 @@ $(document).ready(function () {
             },
             success: function (data) {
                 var the_results = data?.results;
+                
                 if(the_results.length > 0){
                     for (let i = 0; i < the_results.length; i++) {
                         var rowNode = shared_reels_table.row.add([
@@ -291,11 +302,10 @@ $(document).ready(function () {
                             the_results[i]?.category,
                             '<div class="single-line-dots"> '+the_results[i]?.details+' </div>',
                             '<textarea readonly class="shared-reels-url">'+the_results[i]?.url+'</textarea>',
-                            '<input type="checkbox" name="" '+(the_results[i]?.status == "active" ? 'checked' : '')+'>',
+                            reels_checkbox_tmp(the_results[i]),
                             shared_reels_button_tmp(the_results[i])
                         ]).draw(false).node();
 
-                        console.log(rowNode)
                         $(rowNode).attr('id', 'shared-reel-' + the_results[i]?.id);
                     };
 
@@ -347,7 +357,6 @@ $(document).ready(function () {
             success: function (response) {
                 // Remove the row from DataTable by ID
                 var rowId = "#shared-reel-" + sharedReelsId;
-                console.log("=========", rowId)
                 var table = $("#shared-reels-table").DataTable();
                 table
                     .row(rowId)
@@ -372,6 +381,39 @@ $(document).ready(function () {
                 showModal(modal_option);
             },
         });
-    })
+    });
+
+
+    // var reels_itemId;
+    // var reels_toggleActiveAPIUrl;
+    // var reels_isChecked;
+    // var reels_checkboxElement;
+
+    // $(document).on('change', '.reels-status', function(){
+    //     // console.log($(this).attr('name'))
+    //     // console.log($(this).is(":checked"))
+
+    //     reels_checkboxElement = $(this);
+    //     reels_itemId = reels_checkboxElement.attr('name');
+    //     reels_toggleActiveAPIUrl = reels_checkboxElement.data("api-url");
+    //     reels_isChecked = reels_checkboxElement.prop("checked");
+
+    //     // Show the change active status confirmation modal
+    //     var modalTitle = "Toggle Active Status";
+    //     var modalBody = "Are you sure you want to change the active status?";
+
+    //     var modal_option = {
+    //         modalTitle : modalTitle, // modal title text
+    //         modalBody : modalBody, // modal body text
+    //         confirmButtonLabel : "Change", // action button text
+    //         parentClass : 'active-status', // adding a class with #confirmationModal
+    //         confirmButtonType : 'success'
+    //     };
+
+    //     showModal(modal_option);
+    // });
+
+
+
 
 });
