@@ -17,12 +17,9 @@ class ReelViewSet(viewsets.ModelViewSet):
 
     def list(self, request):
         # Returns Agent/Developer Reels
-
         queryset = self.get_queryset().filter(created_by=request.user).order_by("-created_at")
-        paginator = self.pagination_class()
-        paginated_queryset = paginator.paginate_queryset(queryset, request)
-        serializer = self.serializer_class(paginated_queryset, many=True)
-        return paginator.get_paginated_response(serializer.data)
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
         reel_obj = get_object_or_404(self.get_queryset(), pk=pk)
