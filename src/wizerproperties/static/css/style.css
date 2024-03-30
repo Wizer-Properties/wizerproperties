@@ -856,6 +856,17 @@ footer{
     padding: 0 10px;
 }
 
+.price-tag {
+    display: block;
+    color: #5b5481 !important;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 6px 10px;
+    padding-bottom: 10px;
+    background: #f9f9f9;
+    margin-bottom: 3px;
+}
+
 @media screen and (max-width: 768px) {
     .table-title{
         position: initial !important;

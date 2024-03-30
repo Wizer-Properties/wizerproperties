@@ -35,6 +35,7 @@ $(document).ready(function(){
                             '<img src="'+data?.default_image+'" alt="'+data?.title+'" loading="lazy">' +
                         '</div>'+
                         '<div class="search-result-box">'+
+                            '<span class="price-tag"> ฿ '+formatBalance(Math.floor(data?.price) || 0)+' </span>'+
                             '<h1> '+data?.title+' </h1>'+
                             '<div class="location">'+
                                 '<div class="icon">'+
@@ -110,6 +111,7 @@ $(document).ready(function(){
                             '<img src="'+data?.default_image+'" alt="'+data?.title+'" loading="lazy">' +
                         '</div>'+
                         '<div class="search-result-box">'+
+                            '<span class="price-tag"> ฿ '+formatBalance(Math.floor(data?.price) || 0)+' </span>'+
                             '<h1> '+data?.title+' </h1>'+
                             '<div class="location">'+
                                 '<div class="icon">'+
