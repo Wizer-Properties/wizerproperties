@@ -637,9 +637,19 @@ $(document).ready(function(){
             return '<iframe src="'+embedUrl+'" frameborder="0"></iframe>';
         };
 
-        console.log(data.url)
-        return data.url
-    }
+        if(data?.social_media == "titTok"){
+            var parts = data.url.split('/video/');
+            var embedUrl = `https://www.tiktok.com/embed/v2/${parts[1]}`;
+            return '<iframe src="'+embedUrl+'" frameborder="0"></iframe>';
+        };
+
+        if(data?.social_media == 'instagram'){
+            var parts = data.url.split('/');
+            return '<iframe src="https://www.instagram.com/p/'+parts[4]+'/embed/" frameborder="0"></iframe>';
+        };
+
+        return data?.url;
+    };
 
     function reels_tmp (data){
         var company_data;
@@ -788,6 +798,7 @@ $(document).ready(function(){
         get_reels_list(reels_next);
     });
 
+
     function reel_detail(){
         var all_reel_details = $('.reel-details');
         for (let i = 0; i < all_reel_details.length; i++) {
@@ -797,7 +808,8 @@ $(document).ready(function(){
                 all_reel_details[i].parentNode?.querySelector('.reel-see-more-see-less')?.remove();
             };
         };
-    }
+    };
+
 
     $(document).on('click', '.reels-filter-btns button', function(){
         is_category_btn_call = true;
@@ -813,7 +825,6 @@ $(document).ready(function(){
         
         get_reels_list()
     });
-
     
 
 
@@ -827,4 +838,7 @@ $(document).ready(function(){
             $(this).text('See more')
         };
     });
-})
+
+
+
+});
