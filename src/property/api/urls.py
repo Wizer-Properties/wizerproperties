@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import PropertyViewSet, ComparePropertyViewSet, ProspectFavoritePropertyViewSet
+from .views import PropertyViewSet, ComparePropertyViewSet, ProspectFavoritePropertyViewSet, user_properties
 
 
 urlpatterns = [
@@ -58,4 +58,5 @@ urlpatterns = [
         ProspectFavoritePropertyViewSet.as_view({"delete": "perform_destroy"}),
         name="remove_prospect_favorite_property",
     ),
+    path("user-properties/<int:user_id>/", user_properties, name="user_properties"),
 ]

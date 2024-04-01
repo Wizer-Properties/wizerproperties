@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block extend_head %}
+<title>Create Reels</title>
+<link rel="stylesheet" href="{% static '/css/auth.css' %}" />
+{% endblock extend_head %}
+
+
+{% block content %}
+<section id="create_reels">
+    <div class="container">
+
+        <div class="light-form-box">
+            <h1 class="form-title"> Share Reels </h1>
+            <form id="reels-create-form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="authForm">
+                    <div class="success-message">
+                        <!-- <span class="authSuccessMessage"></span> -->
+                    </div>
+                    <div class="error-message">
+                        <!-- <span class="authErrorMessage"></span> -->
+                    </div>
+
+                    <div class="authFormDiv">
+                        <input name="url" type="url" class="authInput" placeholder="Title" required>
+                        <div class="authlabelline authcompleteProfileLabe">URL</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="authFormDiv">
+                                <select name="social_media" type="text" class="authInput authSelectInput" placeholder="Social Media" required>
+                                    <option value="">........</option>
+                                    <option value="youtube">Youtube</option>
+                                    <option value="titTok">TitTok</option>
+                                    <option value="instagram">Instagram</option>
+                                </select>
+                                <div class="authlabelline authcompleteProfileLabe">Social Media</div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="authFormDiv">
+                                <select name="category" type="text" class="authInput authSelectInput" placeholder="Category" required>
+                                    <option value="">........</option>
+                                    <option value="advice">Advice</option>
+                                    <option value="info">Info</option>
+                                    <option value="tour">Tour</option>
+                                </select>
+                                <div class="authlabelline authcompleteProfileLabe">Category</div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="authFormDiv textarea">
+                                <textarea name="details" type="text" class="authInput profileCompanyDeatils" placeholder="details"></textarea>
+                                <div class="authlabelline authcompleteProfileLabe">Details</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <button type="submit" class="authButton completeProfileButton mt-2" id="create-reel">
+                        <span id="createReelButtonText">
+                            {% if action_type == 'create' %}
+                                Create
+                            {% elif action_type == 'edit' %}
+                                Update
+                            {% endif %}
+
+                            reel
+                        </span>
+                        <div id="loadingSpinner" class="spinner-border" role="status" style="display: none;">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+
+{% block extend_script %}
+
+<script>
+    var REEL_ID = '{{reel_id}}'
+</script>
+
+{% if action_type == 'create' %}
+<script src="{% static 'js/advertise/create-reels.js' %}?v=1.00"></script>
+{% endif %}
+
+{% if action_type == 'edit' %}
+<script src="{% static 'js/advertise/edit-reels.js' %}?v=1.00"></script>
+{% endif %}
+
+{% endblock extend_script %}

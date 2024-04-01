@@ -30,6 +30,7 @@
         {% url 'property:create' as create_property_url %}
         {% url 'property:comparison' as comparison_property_url %}
         {% url 'property:favorite_list' as favorite_list_property_url %}
+        {% url 'advertise:create_reels' as create_reels_url %}
 
         <header class="wip-header">
             <div class="w-100 px-5">
@@ -48,6 +49,9 @@
                                 href="{{ create_building_url }}">Building</a>
                             <a class="nav-link {% if request.path == create_property_url %}active-nav{% endif %}"
                                 href="{{ create_property_url }}">Property</a>
+
+                            <a class="nav-link {% if request.path == create_reels_url %}active-nav{% endif %}"
+                                href="{{ create_reels_url }}">Reels</a>
                             {% endif %}
 
                             {% if request.user.user_type == "prospect" %}

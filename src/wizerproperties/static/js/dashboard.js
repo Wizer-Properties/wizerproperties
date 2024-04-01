@@ -253,4 +253,167 @@ $(document).ready(function () {
     };
 
 
+    var shared_reels_table = $('#shared-reels-table').DataTable({
+        ordering: false,
+        lengthChange: false,
+        info: false,
+        pageLength : 5
+    });
+
+    function shared_reels_button_tmp (data){
+        return  '<div class="td-edit-delete-see">' +
+                    '<a class="link edit-button" href="/advertise/edit-reels/'+data?.id+'/">Edit</a>' +
+                    '<button class="link delete-shared-reels delete-button" data-id="'+data?.id+'" data-api-url="/advertise/api/reel/'+data?.id+'/">Delete</button>' +
+                '</div>'
+    };
+
+    function shared_reels_social_media(data){
+        if(data == 'youtube') return '<button class="social-media _youtube"> <i class="bi bi-youtube"></i> </button>';
+        if(data == 'titTok') return '<button class="social-media _titTok"> <i class="bi bi-tiktok"></i> </button>';
+        if(data == 'instagram') return '<button class="social-media _instagram"> <i class="bi bi-instagram"></i> </button>';
+    };
+
+
+    function reels_checkbox_tmp (data){
+        return (
+            '<input class="toggle-active" data-api-url="/advertise/api/reel/'+data?.id+'/"'+ 
+                'data-item="reels" type="checkbox" data-id="'+data?.id+'"'+
+                (data?.status == "active" ? 'checked' : '')+
+            '>'
+        )
+    }
+
+
+    function display_shared_reels(){
+        $.ajax({
+            url: '/advertise/api/reel/',
+            type: 'GET',
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            success: function (data) {
+                var the_results = data;
+                
+                if(the_results.length > 0){
+                    for (let i = 0; i < the_results.length; i++) {
+                        var rowNode = shared_reels_table.row.add([
+                            the_results[i]?.id,
+                            shared_reels_social_media(the_results[i]?.social_media),
+                            the_results[i]?.category,
+                            '<div class="single-line-dots"> '+the_results[i]?.details+' </div>',
+                            '<textarea readonly class="shared-reels-url">'+the_results[i]?.url+'</textarea>',
+                            reels_checkbox_tmp(the_results[i]),
+                            shared_reels_button_tmp(the_results[i])
+                        ]).draw(false).node();
+
+                        $(rowNode).attr('id', 'shared-reel-' + the_results[i]?.id);
+                    };
+
+                    
+                }
+            },
+            error: function (error) {
+                console.log("error")
+            }
+        });
+    };
+
+    display_shared_reels();
+
+
+    var deleteReelsAPIUrl;
+    var sharedReelsId;
+
+    $(document).on('click', '.delete-shared-reels', function () {
+        sharedReelsId = $(this).data("id");
+        deleteReelsAPIUrl = $(this).data("api-url");
+
+        // Show the delete confirmation modal
+        var modalTitle = "Delete Reels";
+        var modalBody = "Are you sure you want to delete this reels?";
+
+        var modal_option = {
+            modalTitle : modalTitle, // modal title text
+            modalBody : modalBody, // modal body text
+            confirmButtonLabel : "Delete", // action button text
+            parentClass : 'delete-shared-reels-modal', // adding a class with #confirmationModal
+            confirmButtonType : 'danger'
+        };
+
+        showModal(modal_option);
+    });
+
+
+    $(document).on('click', '.delete-shared-reels-modal #confirmButton', function () {
+        $(this).parents('.delete-property').removeClass('delete-property');
+
+        // Send AJAX request to delete the property
+        $.ajax({
+            url: deleteReelsAPIUrl,
+            type: "DELETE",
+            headers: {
+                "X-CSRFToken": csrfToken,
+            },
+            success: function (response) {
+                // Remove the row from DataTable by ID
+                var rowId = "#shared-reel-" + sharedReelsId;
+                var table = $("#shared-reels-table").DataTable();
+                table
+                    .row(rowId)
+                    .remove()
+                    .draw(false);
+
+                // Close the modal after the delete button is clicked
+                $('#confirmationModal').modal("hide");
+            },
+            error: function (error) {
+                // Display error message in modal
+                var errorMessage = error.responseJSON.detail; // Assuming error response has a 'detail' field
+                // $("#error-message").html(
+                //     "<div class='alert alert-danger'>" + errorMessage + "</div>"
+                // );
+                
+                var modal_option = {
+                    modalTitle : "Error massage", // modal title text
+                    modalBody : errorMessage, // modal body text
+                    confirmButtonType : 'hidden'
+                };        
+                showModal(modal_option);
+            },
+        });
+    });
+
+
+    // var reels_itemId;
+    // var reels_toggleActiveAPIUrl;
+    // var reels_isChecked;
+    // var reels_checkboxElement;
+
+    // $(document).on('change', '.reels-status', function(){
+    //     // console.log($(this).attr('name'))
+    //     // console.log($(this).is(":checked"))
+
+    //     reels_checkboxElement = $(this);
+    //     reels_itemId = reels_checkboxElement.attr('name');
+    //     reels_toggleActiveAPIUrl = reels_checkboxElement.data("api-url");
+    //     reels_isChecked = reels_checkboxElement.prop("checked");
+
+    //     // Show the change active status confirmation modal
+    //     var modalTitle = "Toggle Active Status";
+    //     var modalBody = "Are you sure you want to change the active status?";
+
+    //     var modal_option = {
+    //         modalTitle : modalTitle, // modal title text
+    //         modalBody : modalBody, // modal body text
+    //         confirmButtonLabel : "Change", // action button text
+    //         parentClass : 'active-status', // adding a class with #confirmationModal
+    //         confirmButtonType : 'success'
+    //     };
+
+    //     showModal(modal_option);
+    // });
+
+
+
+
 });

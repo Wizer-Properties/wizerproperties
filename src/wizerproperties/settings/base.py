@@ -45,12 +45,14 @@ INSTALLED_APPS = [
     "django_filters",
     "widget_tweaks",
     "phonenumber_field",
+    "ckeditor",
     # Custom apps
     "building",
     "core",
     "property",
     "user",
     "schedule",
+    "advertise",
 ]
 
 MIDDLEWARE = [

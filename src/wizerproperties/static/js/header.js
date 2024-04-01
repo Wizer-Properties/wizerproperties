@@ -52,7 +52,7 @@ $(document).ready(function(){
             is_html_append = false;
         };
 
-        if(windowWidth < 1440 ){
+        if(windowWidth < 1580 ){
             if(incert_nav) return;
 
             for (let i = 0; i < nav_links.length; i++) {
@@ -63,7 +63,7 @@ $(document).ready(function(){
         };
 
         var dropdown_nav_links = $('.profile-dropdown-area a.nav-link')
-        if(windowWidth >= 1440 ){
+        if(windowWidth >= 1580 ){
             if(!incert_nav) return;
             for (let i = 0; i < dropdown_nav_links.length; i++) {
                 $('.navigations').append(dropdown_nav_links[i]);

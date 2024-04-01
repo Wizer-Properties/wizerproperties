@@ -10,6 +10,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.core.exceptions import ObjectDoesNotExist
+from rest_framework.decorators import api_view
 from property.api.permissions import PropertyPermission
 from property.api.serializers import (
     PropertySerializer,
@@ -24,6 +25,7 @@ from property.api.serializers import (
     ExtendPropertyFacilitiesSerializer,
 )
 from property.api.filters import PropertyFilter
+from property.api.pagination import UserPropertyPagination
 from building.api.serializers import BuildingInfoForPropertySerializer, BuildingMediaSerializer
 from building.models import Building, BuildingMedia
 from property.models import Property, PropertyMedia, CompareProperty, ProspectFavoriteProperty
@@ -418,3 +420,44 @@ class PropertyViewSet(viewsets.ModelViewSet):
         serializer_class = ExtendPropertyFacilitiesSerializer
 
         return self._get_paginated_response(suggested_property, serializer_class, **serializer_context)
+    
+
+@api_view(['GET'])
+def user_properties(request, user_id):
+    properties_qs = Property.objects.filter(
+        building__created_by__id=user_id, is_active=True
+        ).annotate(
+            # Annotate is_compared based on whether the property is in the user's comparison list
+            is_compared=(
+                Exists(CompareProperty.objects.filter(user=request.user, property=OuterRef("pk")))
+                if request.user.is_authenticated and hasattr(request.user, "prospectprofile")
+                else Value(None, output_field=BooleanField())
+            ),
+            # Annotate is_favorited based on whether the property is in the user's favorite list
+            is_favorited=(
+                Exists(
+                    ProspectFavoriteProperty.objects.filter(
+                        prospect=request.user.prospectprofile, property=OuterRef("pk")
+                    )
+                )
+                if request.user.is_authenticated and hasattr(request.user, "prospectprofile")
+                else Value(None, output_field=BooleanField())
+            ),
+            # Annotate default_image_url based on whether the property is in the user's
+            default_image_url=Subquery(
+                PropertyMedia.objects.filter(property=OuterRef("pk"), type="image")
+                .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
+                .values("full_file_url")[:1]
+            ),
+        ).order_by('-id')
+
+    serializer_class = PropertyVariousFeatureSerializer
+    paginator = UserPropertyPagination()
+    paginated_queryset = paginator.paginate_queryset(properties_qs, request)
+
+    if paginated_queryset is not None:
+        serializer = serializer_class(paginated_queryset, many=True)
+        return paginator.get_paginated_response(serializer.data)
+
+    serializer = serializer_class(properties_qs, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)

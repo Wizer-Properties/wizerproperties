@@ -82,6 +82,14 @@ input{
     outline: none !important;
 }
 
+.single-line-dots{
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .active>.page-link, 
 .page-link.active{
     background: #ffd350 !important;
@@ -269,7 +277,8 @@ footer{
 
 #profile-setting,
 #create_property,
-#create_building{
+#create_building,
+#create_reels{
     padding: 45px 0;
 }
 
@@ -845,6 +854,17 @@ footer{
     opacity: .6;
     display: inline-block;
     padding: 0 10px;
+}
+
+.price-tag {
+    display: block;
+    color: #5b5481 !important;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 6px 10px;
+    padding-bottom: 10px;
+    background: #f9f9f9;
+    margin-bottom: 3px;
 }
 
 @media screen and (max-width: 768px) {
