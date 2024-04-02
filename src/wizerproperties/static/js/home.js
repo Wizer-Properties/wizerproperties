@@ -36,20 +36,20 @@ $(document).ready(function(){
                         '</div>'+
                         '<div class="search-result-box">'+
                             '<span class="price-tag"> ฿ '+formatBalance(Math.floor(data?.price) || 0)+' </span>'+
-                            '<h1> '+data?.title+' </h1>'+
+                            // '<h1> '+data?.title+' </h1>'+
                             '<div class="location">'+
                                 '<div class="icon">'+
                                     '<i class="bi bi-geo-alt"></i>'+
                                     data?.building_address+
                                 '</div>'+
                             '</div>'+
-                            // '<p class="sub-title">'+
-                            // data?.number_of_bedroom+
-                            // ' bedroom ' +
-                            // data?.building_type+
-                            // ' for sale at ' +
-                            // data?.title+
-                            // '</p>'+
+                            '<p class="sub-title">'+
+                            data?.number_of_bedroom+
+                            ' bedroom ' +
+                            data?.building_type+
+                            ' for sale at ' +
+                            data?.title+
+                            '</p>'+
                             // '<p class="details"> '+ data?.description+' </p>'+
 
                             '<div class="property-contains">'+
@@ -112,20 +112,20 @@ $(document).ready(function(){
                         '</div>'+
                         '<div class="search-result-box">'+
                             '<span class="price-tag"> ฿ '+formatBalance(Math.floor(data?.price) || 0)+' </span>'+
-                            '<h1> '+data?.title+' </h1>'+
+                            // '<h1> '+data?.title+' </h1>'+
                             '<div class="location">'+
                                 '<div class="icon">'+
                                     '<i class="bi bi-geo-alt"></i>'+
                                     data?.building_address+
                                 '</div>'+
                             '</div>'+
-                            // '<p class="sub-title">'+
-                            // data?.number_of_bedroom+
-                            // ' bedroom ' +
-                            // data?.building_type+
-                            // ' for sale at ' +
-                            // data?.title+
-                            // '</p>'+
+                            '<p class="sub-title">'+
+                            data?.number_of_bedroom+
+                            ' bedroom ' +
+                            data?.building_type+
+                            ' for sale at ' +
+                            data?.title+
+                            '</p>'+
                             // '<p class="details"> '+ data?.description+' </p>'+
 
                             '<div class="property-contains">'+
@@ -171,7 +171,7 @@ $(document).ready(function(){
                             '<img src="'+data?.default_image+'" alt="'+data?.title+'" loading="lazy">' +
                         '</div>'+
                         '<div class="search-result-box">'+
-                            '<h1> '+data?.title+' </h1>'+
+                            // '<h1> '+data?.title+' </h1>'+
                             '<div class="location">'+
                                 '<div class="icon">'+
                                     '<i class="bi bi-geo-alt"></i> '+
@@ -182,7 +182,7 @@ $(document).ready(function(){
                             data?.total_units_for_sale +
                             ' units for sale at this building' +
                             '</p>'+
-                            '<p class="details"> '+ data?.description+' </p>'+
+                            // '<p class="details"> '+ data?.description+' </p>'+
 
                             '<div class="property-contains">'+
                                 '<div class="property-short-info-box">'+
