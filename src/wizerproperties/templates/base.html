@@ -35,12 +35,13 @@
         <header class="wip-header">
             <div class="w-100 px-5">
                 <div class="header">
+                    <div class="wip-logo">
+                        <a href="/">
+                            <img src="{% static 'media/logo.png' %}" alt="logo">
+                        </a>
+                    </div>
+                    
                     <div class="navigations">
-                        <div class="wip-logo">
-                            <a href="/">
-                                <img src="{% static 'media/logo.png' %}" alt="logo">
-                            </a>
-                        </div>
                         {% if user.is_authenticated and user.is_complete_profile %}
                             <a class="nav-link {% if request.path == '/dashboard/' %}active-nav{% endif %}"
                                 href="/dashboard">Dashboard</a>

@@ -71,13 +71,16 @@
 }
 
 [log-modal-btn].active-nav{
-    background: #76E1F6 !important;
+    background: #15C1B9 !important;
+    color: #fff !important;
+    margin: 0 !important;
 }
 
 .slider-title{
     font-size: 22px;
     margin-bottom: 20px;
     text-transform: capitalize;
+    font-weight: 600;
 }
 
 .contact-cart-info{
@@ -212,7 +215,7 @@
 }
 
 .sign-in-note-box{
-    background-color: #230581;
+    background-color: #7F1377;
     display: flex;
     padding: 20px;
     border-radius: 10px;

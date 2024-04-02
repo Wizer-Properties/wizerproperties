@@ -17,7 +17,7 @@
 .search-result-box .location{
     display: flex;
     font-size: 13px;
-    margin-bottom: 10px;
+    margin: 5px 0;
     color: #726E6E;
 }
 

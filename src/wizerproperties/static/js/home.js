@@ -43,14 +43,14 @@ $(document).ready(function(){
                                     data?.building_address+
                                 '</div>'+
                             '</div>'+
-                            '<p class="sub-title">'+
-                            data?.number_of_bedroom+
-                            ' bedroom ' +
-                            data?.building_type+
-                            ' for sale at ' +
-                            data?.title+
-                            '</p>'+
-                            '<p class="details"> '+ data?.description+' </p>'+
+                            // '<p class="sub-title">'+
+                            // data?.number_of_bedroom+
+                            // ' bedroom ' +
+                            // data?.building_type+
+                            // ' for sale at ' +
+                            // data?.title+
+                            // '</p>'+
+                            // '<p class="details"> '+ data?.description+' </p>'+
 
                             '<div class="property-contains">'+
                                 '<div class="property-short-info-box">'+
@@ -119,14 +119,14 @@ $(document).ready(function(){
                                     data?.building_address+
                                 '</div>'+
                             '</div>'+
-                            '<p class="sub-title">'+
-                            data?.number_of_bedroom+
-                            ' bedroom ' +
-                            data?.building_type+
-                            ' for sale at ' +
-                            data?.title+
-                            '</p>'+
-                            '<p class="details"> '+ data?.description+' </p>'+
+                            // '<p class="sub-title">'+
+                            // data?.number_of_bedroom+
+                            // ' bedroom ' +
+                            // data?.building_type+
+                            // ' for sale at ' +
+                            // data?.title+
+                            // '</p>'+
+                            // '<p class="details"> '+ data?.description+' </p>'+
 
                             '<div class="property-contains">'+
                                 '<div class="property-short-info-box">'+
