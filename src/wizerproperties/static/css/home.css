@@ -288,18 +288,18 @@
 
 .reels-filter-btns button{
     padding: 5px 18px;
-    border: 1px solid #103bd429;
+    border: 1px solid #15c1b873;
     background-color: transparent;
     border-radius: 3px;
     font-size: 15px;
 }
 
 .reels-filter-btns button:hover{
-    border: 1px solid #103ad45d;
+    border: 1px solid #15C1B9;
 }
 
 .reels-filter-btns button.activate{
-    background-color: var(--th-bg-color) !important;
+    background-color: #15C1B9 !important;
     color: #fff !important;
 }
 
@@ -355,11 +355,11 @@
 
 .reels-visit-btn a{
     padding: 7px 40px;
-    background-color: var(--th-bg-color);
+    background-color: #15C1B9;
     color: #fff !important;
     font-weight: 500;
     border-radius: 3px;
-    box-shadow: 0px 1px 12px 2px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25);
     transition: .3s box-shadow;
 }
 

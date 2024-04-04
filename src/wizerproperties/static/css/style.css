@@ -193,7 +193,7 @@ table.dataTable.no-footer{
 }
 
 footer{
-    background-image: var(--th-gradient-bg);
+    background-image: linear-gradient(315deg, #140733 0%, #7F1377 54%);
     padding-top: 25px;
     padding-bottom: 10px;
 }

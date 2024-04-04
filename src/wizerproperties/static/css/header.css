@@ -49,11 +49,12 @@ header{
 }
 
 .active-nav{
-    background-color: #ffd350 !important;
+    background-color: #15C1B9 !important;
+    color: #fff !important;
 }
 
 .nav-link:hover{
-    background-color: #ffd35038;
+    background-color: #15c1b849;
 }
 
 .profile-dropdown-img{
@@ -81,7 +82,7 @@ header{
 }
 
 .profile-dropdown:hover{
-    background-color: #ffd35017;
+    background-color: #15c1b849;
 }
 
 .profile-dropdown span{
