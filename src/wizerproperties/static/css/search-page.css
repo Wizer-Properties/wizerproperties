@@ -201,7 +201,8 @@
 
 .filter-dropdown-buttons button[active="true"],
 .filter-dropdown-mtl-buttons button[active="true"]{
-    background-color: #ffd350;
+    background-color: #15C1B9;
+    color: white;
 }
 
 .filter-dropdown-mtl-buttons button{
@@ -366,7 +367,7 @@
 }
 
 .property-card-modal-btns button{
-    background: var(--th-bg-color) !important;
+    background: #15C1B9 !important;
     color: #fff !important;
     padding: 8px 25px;
     font-size: 13px;
@@ -419,7 +420,7 @@
 }
 
 .filter-box-container{
-    background-color: #262637;
+    background-color: #7f1378;
 }
 
 .all-filter-option{
@@ -561,7 +562,7 @@
 }
 
 .filter-done{
-    background: var(--th-bg-color) !important;
+    background-color: #15C1B9 !important;
     color: #fff !important;
     border: none;
     box-shadow: 2px 3px 7px 2px rgb(0 0 0 / 20%);
