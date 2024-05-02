@@ -319,7 +319,7 @@ body{
     text-align: center;
     border: none;
     border-radius: 3px;
-    background-image: var(--th-gradient-bg);
+    background-color: #15C1B9;
 }
 
 .password-view{
