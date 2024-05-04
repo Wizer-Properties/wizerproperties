@@ -50,13 +50,13 @@ $(document).ready(function(){
         return '<div class="col-lg-12 mb-4 searching-loader">'+
                     '<div class="search-result-box-wrapper">'+
                         '<div class="row">'+
-                            '<div class="col-lg-6 col-xl-7">'+
+                            '<div class="col-lg-5 col-xl-4">'+
                                 '<div class="search-result-box-img">'+
                                     '<span class="skeleton-box" style="width: 100%; height: 240px;"></span>'+
                                 '</div>'+
                             '</div>'+
                             '<div class="col-lg-6 col-xl-5">'+
-                                '<div class="search-result-box">'+
+                                '<div>'+
                                     '<h1> <span class="skeleton-box" style="width: 100%; height: 20px;"></span> </h1>'+
                                     '<div class="location">'+
                                         '<span class="skeleton-box" style="width: 100%; height: 20px;"></span>'+
@@ -157,27 +157,46 @@ $(document).ready(function(){
         };
 
         return  '<div class="col-12 mb-4 property-single-box">'+
-                    '<div class="search-result-box-wrapper p-0">'+
+                    '<div class="search-result-box-wrapper">'+
                         '<div class="row m-0">'+
-                            '<div class="col-lg-6 col-xl-7 p-0">'+
-                                '<div class="splide search-result-box-img-splid"'+
-                                    'property-id="'+data?.id+'" images-next-page="'+(window.innerWidth <= 768 ? 2 : 3)+'"'+
-                                    'loading moved-page="0" total-images="'+data?.total_default_images+'">'+
-                                    '<div class="splide__track">'+
-                                        '<div class="splide__list">'+
-                                            property_image_tmp(data?.default_images, data?.total_default_images)+
+
+                            '<div class="col-lg-5 col-xl-4 p-0">'+
+                                '<div class="image-area-with-add-btns">'+
+                                    '<div class="splide search-result-box-img-splid"'+
+                                        'property-id="'+data?.id+'" images-next-page="'+(window.innerWidth <= 768 ? 2 : 3)+'"'+
+                                        'loading moved-page="0" total-images="'+data?.total_default_images+'">'+
+                                        '<div class="splide__track">'+
+                                            '<div class="splide__list">'+
+                                                property_image_tmp(data?.default_images, data?.total_default_images)+
+                                            '</div>'+
                                         '</div>'+
                                     '</div>'+
-                                '</div>'+
-                                '<div class="search-box-price">'+
-                                    '฿ '+ 
-                                    formatBalance(Math.floor(data?.price) || 0)+
+                                    (
+                                        !['agent', 'developer'].includes(user_type) ?
+                                        '<div class="search-list-add-btns">'+
+                                            '<button class="building-agency-action-btn add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
+                                                '<i class="bi bi-arrow-left-right pe-2"></i>'+
+                                                '<i class="bi bi-check-circle-fill pe-2"></i>'+
+                                                    '<span> Add<added>ed</added> to Compare </span>'+
+                                            '</button>'+
+
+                                            '<button class="building-agency-action-btn add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'">'+
+                                                '<i class="bi bi-heart-fill pe-2"></i>'+
+                                                '<i class="bi bi-heart pe-2"></i>'+
+                                            '</button>'+
+                                        '</div>' : ''
+                                    )+
                                 '</div>'+
                             '</div>'+
-                            '<div class="col-lg-6 col-xl-5 p-0">'+
-                                '<div class="search-result-box p-3">'+
-                                    '<div>'+
-                                        '<a href="/property/details/'+data?.id+'/" class="d-block">'+
+
+                            '<div class="col-lg-7 col-xl-8 p-0">'+
+                                '<div class="search-result-box">'+
+                                    '<div class="w-100">'+
+                                        '<a href="/property/details/'+data?.id+'/" class="d-block w-100">'+
+                                            '<div class="search-box-price">'+
+                                                '฿ '+ 
+                                                formatBalance(Math.floor(data?.price) || 0)+
+                                            '</div>'+
                                             '<h1> '+data?.title+' </h1>'+
                                             
                                             '<div class="property-contains">'+
@@ -213,62 +232,41 @@ $(document).ready(function(){
                                                 property_facility_tmp(data)+
                                             '</div>'+
                                         '</a>'+
-                                    '</div>'+
 
-                                    '<div class="property-card-down-area">'+
                                         '<div class="property-card-modal-btns">'+
                                             ( 
                                                 ![null, ''].includes(data?.interior_view) ?
-                                               '<button class="link border-0 open-3D-model" data-src="'+data?.interior_view+'" > Interior View </button>' : ''
+                                            '<button class="link border-0 open-3D-model" data-src="'+data?.interior_view+'" > Interior View </button>' : ''
                                             )+
                                             (
                                                 data?.ariel_view ?
-                                               '<button class="link border-0 open-drone-view" data-src="'+data?.ariel_view+'" > Ariel View </button>' : ''
+                                            '<button class="link border-0 open-drone-view" data-src="'+data?.ariel_view+'" > Ariel View </button>' : ''
                                             )+
-                                        '</div>'+
-
-                                    '<div class="property-card-footer">'+
-                                            '<div class="d-flex justify-content-between align-items-center">'+
-                                            '<div class="buillding-agency-info me-4">'+
-                                                '<div class="buillding-agency-logo">'+
-                                                    '<img src="'+ data?.developer_image +'" alt="company logo">'+
-                                                '</div>'+
-                                                '<div class="buillding-agency-tel">'+
-                                                    '<a href="tel:'+ data?.developer_phone_number +'">'+
-                                                            '<i class="bi bi-telephone"></i>'+
-                                                        '<span>'+ data?.developer_phone_number +'</span>'+
-                                                    '</a>'+
-                                                        '<span>Local Call rate</span>'+
-                                                    '</div>'+
-                                                '</div>'+
-
-                                                '<a href="/schedule/create_schedule/?type=property&id='+data?.id+'" class="building-agency-action-btn me-4">'+
-                                                    '<i class="bi bi-envelope pe-2"></i>'+
-                                                    '<span class="_contact"> Contact </span>'+
-                                                '</a>'+
-                                            '</div>'+
-
-                                            (
-                                                !['agent', 'developer'].includes(user_type) ?
-                                                '<div class="d-flex justify-content-between align-items-center gap-2">'+
-                                                    '<button class="building-agency-action-btn me-2 add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'">'+
-                                                    '<i class="bi bi-heart-fill pe-2"></i>'+
-                                                    '<i class="bi bi-heart pe-2"></i>'+
-                                                        '<span> Favorite </span>'+
-                                                    '</button>'+
-        
-                                                    '<button class="building-agency-action-btn add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
-                                                    '<i class="bi bi-arrow-left-right pe-2"></i>'+
-                                                    '<i class="bi bi-check-circle-fill pe-2"></i>'+
-                                                        '<span> Compare </span>'+
-                                                    '</button>'+
-                                                '</div>' : ''
-                                            )+
-
                                         '</div>'+
                                     '</div>'+
+
+                                    '<div class="property-card-down-area">'+
+                                        '<div class="agency-company-info">'+
+                                            '<div class="buillding-agency-logo">'+
+                                                '<img src="'+ data?.developer_image +'" alt="company logo">'+
+                                            '</div>'+
+                                            '<p class="agent-company-name"> Dummy name for company </p>'+
+                                        '</div>'+
+                                        '<div class="agency-contact-info">'+
+                                            '<a href="tel:'+ data?.developer_phone_number +'" class="dev-phn-number">'+
+                                                '<span>'+ data?.developer_phone_number +'</span>'+
+                                            '</a>'+
+                                            '<a href="/schedule/create_schedule/?type=property&id='+data?.id+'" class="dev-to-contact">'+
+                                                '<i class="bi bi-envelope"></i>'+
+                                                '<span class="_contact"> Contact </span>'+
+                                            '</a>'+
+                                        '</div>'+
+                                    '</div>'+
+
                                 '</div>'+
                             '</div>'+
+
+
                         '</div>'+
                     '</div>'+
                 '</div>'
@@ -525,10 +523,13 @@ $(document).ready(function(){
             (function (index) {
                 var image_splider = new Splide(elms[index], {
                     gap: 5,
-                    perPage: 2,
+                    perPage: 1,
                     pagination: false,
                     breakpoints: {
-                        768: {
+                        991 : {
+                            perPage: 2,
+                        },
+                        768 : {
                             perPage: 1,
                         },
                     }

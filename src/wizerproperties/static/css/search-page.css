@@ -258,8 +258,16 @@
 }
 
 .add-to-compare .bi-check-circle-fill{
-    color: #4CAF50;
+    color: #65ff6c;
     display: none;
+}
+
+added{
+    display: none !important;
+}
+
+[added="true"] added{
+    display: inline-block !important;
 }
 
 .add-to-favorite .bi-heart-fill{
