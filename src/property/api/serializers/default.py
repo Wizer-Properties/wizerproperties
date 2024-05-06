@@ -16,4 +16,6 @@ class PropertySerializer(serializers.ModelSerializer):
             "unit_area",
             "number_of_bedroom",
             "number_of_bathroom",
+            "created_at",
+            "updated_at",
         ]

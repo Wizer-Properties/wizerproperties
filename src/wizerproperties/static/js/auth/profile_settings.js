@@ -12,6 +12,22 @@ $(document).ready(function () {
         }
     });
 
+    // Function to update the company logo preview
+    function updateCompanyLogoPreview(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $(".companyLogoDiv img").attr("src", e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // Listen for changes in the company logo file input field
+    $("input[name='company_logo']").change(function() {
+        updateCompanyLogoPreview(this);
+    });
+
     $("#profile-form").submit(function (event) {
         event.preventDefault();
 

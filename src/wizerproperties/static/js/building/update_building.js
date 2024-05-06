@@ -48,9 +48,9 @@ $(document).ready(function () {
                 // Handle success (e.g., show a success message)
                 $(".success-message").html(successMessages);
 
-                // Redirect to the homepage after 1 second
+                // Redirect to the dashboard after 1 second
                 setTimeout(function () {
-                    window.location.href = "/";
+                    window.location.href = "/dashboard";
                 }, 1000);
             },
             error: function (xhr, status, error) {

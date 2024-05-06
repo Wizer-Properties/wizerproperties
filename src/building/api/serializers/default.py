@@ -16,4 +16,6 @@ class BuildingSerializer(serializers.ModelSerializer):
             "total_floors",
             "facility_view",
             "location_view",
+            "created_at",
+            "updated_at",
         ]

@@ -12,15 +12,20 @@
     <div class="error-message">
         <!-- <span class="authErrorMessage"></span> -->
     </div>
-    <div class="authFormDiv">
-        <!-- <span class="authErrorMessage">Message</span> -->
-        <input name="email" type="email" class="authInput" placeholder="Email" value="{{ request.user.email }}" readonly>
-        <div class="authlabelline authcompleteProfileLabe">Email</div>
+    {% if profile.company_logo %}
+    <div class="companyLogoDiv">
+        <img src="{{ profile.company_logo.url }}" alt="Company Logo" style="max-width: 200px;">
     </div>
+    {% endif %}
     <div class="authFormDiv">
         <!-- <span class="authErrorMessage">Message</span> -->
         <input name="company_logo" type="file" accept="image/*" class="authInput authFile">
         <div class="fileName"> Company Logo</div>
+    </div>
+    <div class="authFormDiv">
+        <!-- <span class="authErrorMessage">Message</span> -->
+        <input name="email" type="email" class="authInput" placeholder="Email" value="{{ request.user.email }}" readonly>
+        <div class="authlabelline authcompleteProfileLabe">Email</div>
     </div>
     <div class="authFormDiv">
         <!-- <span class="authErrorMessage">Message</span> -->
@@ -40,7 +45,7 @@
         <div class="phone_number_area">
             <div class="authFormDiv">
                 <!-- <span class="authErrorMessage">Message</span> -->
-                <input name="phone_number" type="tel" class="authInput" placeholder="Phone Number" value="{{ profile.phone_number }}" required>
+                <input name="phone_number" type="tel" class="authInput" placeholder="Phone Number" value="{{ profile.phone_number|cut:'+66' }}" required>
                 <div class="authlabelline authcompleteProfileLabe">Phone Number</div>
             </div>
         </div>

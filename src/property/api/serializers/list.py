@@ -16,8 +16,9 @@ class PropertyListSerializer(PropertySerializer):
     have_grocery = serializers.BooleanField(source="building.have_grocery", read_only=True)
     have_fitness_area = serializers.BooleanField(source="building.have_fitness_area", read_only=True)
     developer_email = serializers.CharField(source="created_by.email", read_only=True)
-    developer_phone_number = serializers.SerializerMethodField()
     developer_image = serializers.SerializerMethodField()
+    developer_phone_number = serializers.SerializerMethodField()
+    developer_company_name = serializers.SerializerMethodField()
     is_compared = serializers.BooleanField(read_only=True)
     is_favorited = serializers.BooleanField(read_only=True)
     ariel_view = serializers.URLField(source="ariel_video_url", read_only=True)
@@ -42,6 +43,7 @@ class PropertyListSerializer(PropertySerializer):
             "developer_image",
             "developer_email",
             "developer_phone_number",
+            "developer_company_name",
             "is_compared",
             "is_favorited",
             "ariel_view",
@@ -81,5 +83,15 @@ class PropertyListSerializer(PropertySerializer):
             return str(user.developerprofile.phone_number)
         elif hasattr(user, "agentprofile"):
             return str(user.agentprofile.phone_number)
+
+        return ""
+
+    def get_developer_company_name(self, obj):
+        user = obj.created_by
+
+        if hasattr(user, "developerprofile"):
+            return str(user.developerprofile.company_name)
+        elif hasattr(user, "agentprofile"):
+            return str(user.agentprofile.company_name)
 
         return ""

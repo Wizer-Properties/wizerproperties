@@ -151,6 +151,9 @@ $(document).ready(function(){
 
 
     function property_list_tmp(data){
+        var dateString = data?.created_at;
+        var formattedDate = new Date(dateString).toLocaleDateString('en-GB');   // Output formattedDate, it should be "09/03/2024"
+
         if( ['agent', 'developer'].includes(user_type) ){
             $('.add-to-compare').remove();
             $('.add-to-favorite').remove();
@@ -250,7 +253,8 @@ $(document).ready(function(){
                                             '<div class="buillding-agency-logo">'+
                                                 '<img src="'+ data?.developer_image +'" alt="company logo">'+
                                             '</div>'+
-                                            '<p class="agent-company-name"> Dummy name for company </p>'+
+                                            '<p class="agent-company-name">'+ data?.developer_company_name +'</p>'+
+                                            '<p class="agent-company-name"> Added: '+ formattedDate +' </p>'+
                                         '</div>'+
                                         '<div class="agency-contact-info">'+
                                             '<a href="tel:'+ data?.developer_phone_number +'" class="dev-phn-number">'+
