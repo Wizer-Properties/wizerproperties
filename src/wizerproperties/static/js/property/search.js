@@ -159,7 +159,9 @@ $(document).ready(function(){
             $('.add-to-favorite').remove();
         };
 
-        return  '<div class="col-12 mb-4 property-single-box">'+
+        var is_fav_effect = localStorage.getItem('favorite-effect');
+
+        return  '<div class="col-12 mb-4 property-single-box" effect="'+is_fav_effect+'">'+
                     '<div class="search-result-box-wrapper">'+
                         '<div class="row m-0">'+
 
@@ -184,8 +186,8 @@ $(document).ready(function(){
                                             '</button>'+
 
                                             '<button class="building-agency-action-btn add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'">'+
-                                                '<i class="bi bi-heart-fill pe-2"></i>'+
-                                                '<i class="bi bi-heart pe-2"></i>'+
+                                                '<i class="bi bi-heart-fill"></i>'+
+                                                '<i class="bi bi-heart"></i>'+
                                             '</button>'+
                                         '</div>' : ''
                                     )+
@@ -857,5 +859,18 @@ $(document).ready(function(){
         var _random = Math.floor(Math.random() * 100) + 1
         $('.price-rage-chart').append('<li style="height: '+_random+'%;"></li>')
     }
+
+
+    $(document).on('click', '.add-to-favorite', function(){
+        if(!user_type) return;
+        localStorage.setItem("favorite-effect", true);
+        $('.property-single-box').attr('effect', true)
+    })
+
+    $(document).on('click', '.add-to-compare', function(){
+        if(!user_type) return;
+        localStorage.setItem("favorite-effect", true);
+        $('.property-single-box').attr('effect', true)
+    })
 
 });

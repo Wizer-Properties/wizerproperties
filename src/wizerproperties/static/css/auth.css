@@ -105,12 +105,9 @@ body{
 }
 .authIcon {
     font-size: 22px;
-    color: #103bd4;
+    color: #15C1B9;
 }
-.authIcon:hover {
-    color: #ffd350;
-    transition: all .8s ease;
-}
+
 .authTextArea {
     margin-top: 280px;
     text-align: center;
@@ -281,13 +278,9 @@ body{
 }
 
 .auth-form-row{
-    background-color: #fff;
+    background-color: #fbf7ff;
     overflow: hidden;
     border-radius: 5px;
-}
-
-.auth-form-firt-row{
-    background-color: #f7f1ff;
 }
 
 .auth-input-wrapper{
@@ -303,6 +296,7 @@ body{
     width: 100%;
     border-radius: 3px;
     resize: none;
+    background-color: #fff;
 }
 
 .auth-input-wrapper label{
@@ -441,7 +435,6 @@ body{
     }
 
     .auth-form-firt-row{
-        background-color: #fff;
         padding-bottom: 0px !important;
     }
 }

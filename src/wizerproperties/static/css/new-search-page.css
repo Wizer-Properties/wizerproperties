@@ -56,7 +56,6 @@
 .search-result-box-wrapper{
     display: block;
     border-radius: 5px;
-    overflow: hidden;
     box-shadow: 0 0 5px #0000000f;
     border-radius: 15px;
     padding: 15px;
@@ -139,6 +138,76 @@
 }
 
 
+.property-single-box 
+.add-to-favorite,
+.property-single-box 
+.add-to-compare{
+    position: relative;
+}
+
+.property-single-box[effect="null"] 
+.add-to-favorite:not([added="true"])::before,
+.property-single-box[effect="null"] 
+.add-to-favorite:not([added="true"])::after,
+.property-single-box[effect="null"] 
+.add-to-compare:not([added="true"])::before,
+.property-single-box[effect="null"] 
+.add-to-compare:not([added="true"])::after{
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-color: rgba(29, 45, 98, 0.5);
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    content: '';
+    border-radius: 100%;
+}
+
+.property-single-box[effect="null"] 
+.add-to-compare:not([added="true"])::before,
+.property-single-box[effect="null"] 
+.add-to-compare:not([added="true"])::after{
+    left: 5px;
+}
+
+.property-single-box 
+.add-to-favorite:hover::before,
+.property-single-box 
+.add-to-compare:hover::before{
+    animation: before_after_play 10s normal forwards  ;
+}
+
+.property-single-box 
+.add-to-favorite:hover::after,
+.property-single-box 
+.add-to-compare:hover::after{
+    animation: before_after_play 7s normal forwards  ;
+}
+
+@keyframes before_after_play {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+    }
+
+    25% {
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(.5);
+    }
+
+    75% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    100% {
+        transform: scale(0);
+    }
+}
+
+
 
 @media screen and (max-width : 991px){
 
@@ -200,6 +269,14 @@
 
     .agent-company-name{
         margin: 0 !important;
+    }
+
+    .property-single-box[effect="null"]:first-child 
+    .add-to-favorite:not([added="true"])::before,
+    .property-single-box[effect="null"]:first-child 
+    .add-to-favorite:not([added="true"])::after{
+        width: 70px;
+        height: 70px;
     }
 }
 

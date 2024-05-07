@@ -82,14 +82,13 @@
 }
 
 .chat .chat-history .my-message {
-    color: #fff;
     border-top-left-radius: 0;
-    background: var(--th-bg-color);
+    background: #fff;
 }
 
 .chat .chat-history .my-message:after {
     left: -7px;
-    background: var(--th-bg-color);
+    background: #fff;
     clip-path: polygon(0 0, 100% 0, 100% 100%);
 }
 
