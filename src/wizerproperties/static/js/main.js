@@ -67,6 +67,79 @@ $(document).ready(function(){
 
     $(document).on('click', '[log-modal-btn]', function(){
         $('body').attr('log-modal', $(this).attr('log-modal-btn'))
-    });
-  
-})
+    });    
+    
+});
+
+
+// pop-ups start ======================================
+
+function getElementWidthWhileHidden(element) {
+    // Create a clone of the element
+    var clone = element.cloneNode(true);
+    clone.style.cssText = 'display: block !important;'
+    element.parentNode.appendChild(clone);
+    var width = clone.offsetWidth;
+    var height = clone.offsetHeight;
+    // Clean up: remove the clone from the DOM
+    clone.parentNode.removeChild(clone);
+    // Return the measured width
+    return {width, height};
+};
+
+function positionFixedElement(el_obj) {
+    const maxWidth = window.innerWidth - el_obj?.width;
+    const maxHeight = window.innerHeight - el_obj?.height;
+
+    // Ensure desiredLeft and desiredTop are within the window bounds
+    const finalLeft = Math.min(Math.max(el_obj?.desiredLeft, 0), maxWidth);
+    const finalTop = Math.min(Math.max(el_obj?.desiredTop, 0), maxHeight);
+
+    el_obj.element.style.left = `${finalLeft}px`;
+    el_obj.element.style.top = `${finalTop}px`;
+};
+
+$(document).on('click', '[pop-target]', function(){
+    var target_name = $(this).attr('pop-target');
+    var pop_element = $('[pop-element='+target_name+']');
+    if(pop_element.length != 1) return;
+    var get_el_offset = getElementWidthWhileHidden(pop_element[0]);
+    var get_position = $(this).offset();
+    var this_height = $(this).height();
+    pop_element.addClass('pop-default-box');
+
+    var el_obj = {
+        element : pop_element[0],
+        width : get_el_offset.width,
+        height : get_el_offset.height,
+        desiredTop : get_position.top + this_height,
+        desiredLeft : get_position.left,
+    };
+
+    positionFixedElement(el_obj);
+    $('html').attr('pop-status', 'true');
+    $('body').append('<div pop-overflow="true" pop-dispatch="true"></div>')
+});
+
+
+function pop_dispatch(){
+    $('html').attr('pop-status', 'false');
+    $('[pop-overflow]').remove();
+    $('.pop-default-box').removeClass('pop-default-box');
+};
+
+$(document).on('click', '[pop-dispatch]', pop_dispatch)
+
+/*
+    ## how to apply
+
+    <div pop-target="price-box">
+        The button
+    </div>
+
+    <div pop-element="price-box">
+        The context
+    </div>
+*/ 
+
+// pop-ups end ======================================

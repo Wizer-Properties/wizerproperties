@@ -433,7 +433,7 @@ added{
 
 .all-filter-option{
     display: grid;
-    grid-template-columns: 400px 318px 355px 1fr 180px 1fr;
+    grid-template-columns: 400px 150px 355px 150px 180px 180px 1fr;
 }
 
 .search-box{
@@ -583,19 +583,93 @@ added{
     border-radius: 0 !important;
 }
 
+.price-filter-box{
+    width: 500px;
+}
+
+.price-filter-select-box,
+.search-pop-up-select-box{
+    display: flex;
+    padding: 30px 35px;
+}
+
+.price-filter-select-box select,
+.search-pop-up-select-box select{
+    color: #001229;
+    background-color: #fff;
+    border: 1px solid #cbcbcb;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 400;
+    border-radius: 8px;
+}
+
+#price-slider{
+    width: 100%;
+    height: 2px;
+    background-color: #eee!important;
+    border: none !important;
+}
+
+#price-slider
+.ui-slider-range{
+    background-color: #8adff2!important;
+}
+
+#price-slider
+.ui-slider-handle{
+    transform: translateY(-50%);
+    top: 50%;
+    border-radius: 100%;
+    background-color: #fff;
+    border-color: #8adff2 !important;
+    width: 1.6em;
+    height: 1.6em;
+    cursor: grab;
+}
+
+.price-slider-area{
+    padding: 30px 35px;
+    padding-bottom: 0;
+}
+
+[aria-label]{
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.price-rage-chart{
+    height: 100px;
+    display: flex;
+    gap: 2px;
+    align-items: flex-end;
+    margin-bottom: 20px;
+    padding: 0 !important;
+}
+
+.price-rage-chart li{
+    width: 1%;
+    background-color: #cbcbcb;
+    list-style-type: none;
+}
+
 @media screen and (min-width : 1600px){
-    [filter-aria-label="badroom"]{
+    [filter-aria-label="badroom"],
+    [filter-aria-label="property-quota"]{
         display: none;
     }
 }
 
 @media screen and (max-width : 1600px){
-    [aria-label="beds"]{
+    [aria-label="beds"],
+    [aria-label="property-quota"]{
         display: none;
     }
 
     .all-filter-option {
-        grid-template-columns: 400px 318px 355px 180px 1fr;
+        grid-template-columns: 400px 150px 375px 200px 1fr;
     }
 }
 
@@ -610,7 +684,7 @@ added{
     }
 
     .all-filter-option {
-        grid-template-columns: 400px 318px 355px 1fr;
+        grid-template-columns: 400px 150px 355px 1fr;
     }
 }
 
@@ -626,7 +700,11 @@ added{
     }
 
     .all-filter-option {
-        grid-template-columns: 2.3fr 318px 1fr;
+        grid-template-columns: 2.3fr 150px 1fr;
+    }
+
+    .search-box{
+        max-width: none !important;
     }
 }
 

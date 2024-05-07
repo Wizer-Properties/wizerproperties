@@ -342,6 +342,13 @@ $(document).ready(function(){
                 active_free_scrolling = false;
                 last_property_box = $('.property-single-box').last();
                 $('.searching-loader').remove();
+
+                if( 
+                    search_param.hasOwnProperty('max_price') ||
+                    search_param.hasOwnProperty('min_price')
+                 ){
+                    pop_dispatch() // this is call from main.js file
+                };
             },
             error: function (error) {
                 active_free_scrolling = false;
@@ -831,5 +838,24 @@ $(document).ready(function(){
     $('.filter-option-single-box select').click(function(){
         $('body').attr('filter-modal-open', 'false');
     });
+
+
+    $("#price-slider").slider({
+        range: true, // Enable range
+        min: 0,
+        max: 100,
+        step: 1,
+        values: [1, 100], // Initial range values
+        slide: function(event, ui) {
+            // Display range values
+            console.log(ui.values[0] + " - " + ui.values[1])
+        }
+    });
+
+
+    for (let i = 0; i < 100; i++) {
+        var _random = Math.floor(Math.random() * 100) + 1
+        $('.price-rage-chart').append('<li style="height: '+_random+'%;"></li>')
+    }
 
 });

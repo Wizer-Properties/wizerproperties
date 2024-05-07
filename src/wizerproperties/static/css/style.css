@@ -867,6 +867,34 @@ footer{
     margin-bottom: 3px;
 }
 
+[pop-element]{
+    position: fixed;
+    display: none;
+    z-index: 9999;
+}
+
+.pop-default-box{
+    min-width: 200px;
+    display: block !important;
+    filter: drop-shadow(0 0 8px rgba(0,0,0,.08));
+    background-color: #fff;
+    border-radius: 15px;
+}
+
+[pop-overflow]{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    z-index: 9991;
+}
+
+[pop-status="true"],
+[pop-status="true"] body{
+    overflow: hidden !important;
+}
+
 @media screen and (max-width: 768px) {
     .table-title{
         position: initial !important;
