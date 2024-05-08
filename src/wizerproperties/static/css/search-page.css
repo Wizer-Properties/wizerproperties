@@ -10,8 +10,9 @@
 
 .search-result-box h1{
     font-size: 17px;
-    color: #484848 !important;
+    color: #212529 !important;
     margin: 0;
+    font-weight: 600;
 }
 
 .search-result-box .location{
@@ -70,6 +71,8 @@
     font-size: 14px !important;
     position: relative !important;
     top: 4px !important;
+    color: #212529 !important;
+    font-weight: 600;
 }
 
 .search-result-box .property-short-info-icon{
@@ -92,10 +95,11 @@
 
 .property-faciluties-list span{
     font-size: 14px;
-    color: #484848;
+    color: #212529 !important;
     display: flex;
     align-items: center;
     gap: 5px;
+    font-weight: 500;
 }
 
 .property-faciluties-list span .bi{
@@ -380,6 +384,8 @@ added{
     font-size: 13px;
     box-shadow: 2px 3px 7px 2px rgb(0 0 0 / 20%);
     transition:  box-shadow .3s;
+    font-weight: 600;
+    letter-spacing: .6px;
 }
 
 .property-card-modal-btns button:hover{
