@@ -83,17 +83,17 @@
 
 .chat .chat-history .my-message {
     border-top-left-radius: 0;
-    background: #fff;
+    background: #F09AEA;
 }
 
 .chat .chat-history .my-message:after {
     left: -7px;
-    background: #fff;
+    background: #F09AEA;
     clip-path: polygon(0 0, 100% 0, 100% 100%);
 }
 
 .chat .chat-history .other-message {
-    background: #fff;
+    background: #8AF2ED;
     border-top-right-radius: 0;
 }
 
@@ -159,7 +159,8 @@
 }
 
 .open-ai-card{
-    background-color: #15C1B9;
+    background-color: white;
+    border: 1px solid #ebe6e6;
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0px 3px 5px 0px rgb(0 0 0 / 11%);
