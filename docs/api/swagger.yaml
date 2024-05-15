@@ -1393,11 +1393,19 @@ paths:
           in: "query"
           type: "string"
         - name: "default_images_number"
-          description: "Its control images list count"
+          description: "Its control default images list count"
           in: "query"
           type: "number"
+        - name: "platform"
+          description: "Its control images list. Value will be 'web' for website"
+          in: "query"
+          type: "string"
         - name: "search"
           description: "Search by only location related value"
+          in: "query"
+          type: "string"
+        - name: "ordering"
+          description: "Bydefault ordering by '-created_at'(latest). If you want 'Highest Price' then given value will be '-price' and 'Lowest Price' value will be 'price'"
           in: "query"
           type: "string"
         - name: "min_price"
@@ -1424,6 +1432,14 @@ paths:
           description: "Filtered by"
           in: "query"
           type: "number"
+        - name: "min_number_of_bedroom"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
+        - name: "max_number_of_bedroom"
+          description: "Filtered by"
+          in: "query"
+          type: "number"
         - name: "building__type"
           description: "Filtered by and choice will be 'condos' or 'house'."
           in: "query"
@@ -1446,10 +1462,6 @@ paths:
           type: "number"
         - name: "nearby"
           description: "Filtered by nearby (miles)"
-          in: "query"
-          type: "number"
-        - name: "number_of_bedroom"
-          description: "Filtered by"
           in: "query"
           type: "number"
         - name: "number_of_bathroom"
@@ -1903,6 +1915,35 @@ paths:
           description: Not found
           schema:
             $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  /property/api/count-in-price-ranges/:
+    get:
+      tags:
+        - Property
+      summary: "Property schedule"
+      description: "**User type**: both"
+      operationId: count_in_price_ranges
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: Properties count in price ranges
+          schema:
+            $ref: "#/definitions/PropertiesCountInPriceRangesResponse"
         405:
           description: Method not allowed(Method ain't supported by this URL)
           schema:
@@ -3802,7 +3843,22 @@ definitions:
               type: "string"
             total_default_images:
               type: "number"
+            tag:
+              type: "string"
+            discount_period:
+              type: "string"
             default_images:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: "number"
+                  file:
+                    type: "string"
+                  type:
+                    type: "string"
+            images:
               type: array
               items:
                 type: object
@@ -4036,8 +4092,22 @@ definitions:
             type: "boolean"
       image_path:
         type: "string"
-          
-  
+
+  PropertiesCountInPriceRangesResponse:
+    type: object
+    properties:
+      total_properties:
+        type: "number"
+      highest_count_range:
+        type: "string"
+      highest_count:
+        type: "number"
+      price_counts:
+        type: object
+        properties:
+          price_range:
+            type: "number"
+
   PropertyGeneratedDescriptionResponse:
     type: object
     properties:

@@ -10,13 +10,14 @@ class PropertyFilter(django_filters.FilterSet):
     max_price_per_sqm = django_filters.NumberFilter(field_name="price_per_sqm", lookup_expr="lte")
     min_unit_area = django_filters.NumberFilter(field_name="unit_area", lookup_expr="gte")
     max_unit_area = django_filters.NumberFilter(field_name="unit_area", lookup_expr="lte")
+    min_number_of_bedroom = django_filters.NumberFilter(field_name="number_of_bedroom", lookup_expr="gte")
+    max_number_of_bedroom = django_filters.NumberFilter(field_name="number_of_bedroom", lookup_expr="lte")
     nearby = django_filters.NumberFilter(method="filter_nearby", label="Nearby (miles)")
 
     class Meta:
         model = Property
         fields = [
             "building__type",
-            "number_of_bedroom",
             "number_of_bathroom",
             "number_of_balcony",
             "number_of_car_parking",

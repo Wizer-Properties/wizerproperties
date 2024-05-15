@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework import serializers
 from .default import PropertySerializer
 from .media import PropertyMediaSerializer
@@ -24,6 +25,9 @@ class PropertyListSerializer(PropertySerializer):
     ariel_view = serializers.URLField(source="ariel_video_url", read_only=True)
     total_default_images = serializers.SerializerMethodField()
     default_images = serializers.SerializerMethodField()
+    tag = serializers.SerializerMethodField()
+    discount_period = serializers.SerializerMethodField()
+    images = serializers.SerializerMethodField()
 
     class Meta(PropertySerializer.Meta):
         fields = PropertySerializer.Meta.fields + [
@@ -48,7 +52,10 @@ class PropertyListSerializer(PropertySerializer):
             "is_favorited",
             "ariel_view",
             "total_default_images",
+            "tag",
+            "discount_period",
             "default_images",
+            "images",
         ]
 
     def get_default_images(self, obj):
@@ -95,3 +102,33 @@ class PropertyListSerializer(PropertySerializer):
             return str(user.agentprofile.company_name)
 
         return ""
+
+    def get_tag(self, obj):
+        if obj.populars.exists():
+            tag = "popular"
+        elif obj.newly_createds.exists():
+            tag = "newly_created"
+        elif obj.discounts.exists():
+            tag = "discount"
+        else:
+            tag = ""
+
+        return tag
+
+    def get_images(self, obj):
+        request = self.context.get("request")
+        platform = request.GET.get("platform")
+
+        if obj.populars.exists() or obj.newly_createds.exists() or obj.discounts.exists():
+            if platform == "web":
+                images = obj.media_files.filter(type="image")[1:4]
+                return PropertyMediaSerializer(images, many=True).data
+
+        return []
+
+    def get_discount_period(self, obj):
+        if obj.discounts.exists():
+            first_discount = obj.discounts.first()
+            if first_discount and first_discount.period > timezone.now().date():
+                return first_discount.period
+        return None

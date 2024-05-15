@@ -18,10 +18,17 @@ urlpatterns = [
         name="available_facilities",
     ),
     path(
+        "count-in-price-ranges/",
+        PropertyViewSet.as_view({"get": "count_in_price_ranges"}),
+        name="count_in_price_ranges",
+    ),
+    path(
         "generate-description/", PropertyViewSet.as_view({"post": "generate_description"}), name="generate_description"
     ),
     path(
-        "re-generate-description/", PropertyViewSet.as_view({"post": "re_generate_description"}), name="re_generate_description"
+        "re-generate-description/",
+        PropertyViewSet.as_view({"post": "re_generate_description"}),
+        name="re_generate_description",
     ),
     path("create/", PropertyViewSet.as_view({"post": "create"}), name="create"),
     path(

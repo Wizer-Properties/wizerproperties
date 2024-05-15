@@ -24,6 +24,7 @@ from building.models import Building, BuildingMedia
 from property.models import Property, PropertyMedia, CompareProperty, ProspectFavoriteProperty
 from user.api.serializers import AgentProfileSerializer, DeveloperProfileSerializer
 from utils.general_func import get_chatgpt_response
+from utils.general_data import PRICE_RANGES
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
@@ -39,6 +40,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
         "building__district",
         "building__sub_district",
     ]
+    ordering_fields = ["price"]
     ordering = ["-created_at"]  # Default ordering
 
     def get_queryset(self):
@@ -265,25 +267,57 @@ class PropertyViewSet(viewsets.ModelViewSet):
         generated_property_description = get_chatgpt_response(content)
 
         return Response({"generated_property_description": generated_property_description}, status=status.HTTP_200_OK)
-    
+
     @action(detail=False, methods=["post"])
     def re_generate_description(self, request):
         """
         Return an automated professional building description with ChatGPT
         """
-        content = request.data.get('content', None)
-        previous_response = request.data.get('previous_response', None)
+        content = request.data.get("content", None)
+        previous_response = request.data.get("previous_response", None)
         generated_property_description = get_chatgpt_response(content, previous_response)
 
         return Response(
             {"generated_property_description": generated_property_description}, status=status.HTTP_201_CREATED
         )
 
-@api_view(['GET'])
+    @action(detail=False, methods=["get"])
+    def count_in_price_ranges(self, request):
+        # Dictionary to store the count of properties for each price range
+        price_counts = {}
+
+        properties = Property.objects.all()
+
+        # Variable to keep track of the highest count and range of properties among all ranges
+        highest_count = 0
+        highest_count_range = None
+
+        for price_range in PRICE_RANGES:
+            min_price, max_price = price_range
+            count = properties.filter(price__gt=min_price, price__lte=max_price).count()
+
+            # Update price_counts with the count of properties for the current range
+            price_counts[f"{max_price}"] = count
+
+            if count > highest_count:
+                highest_count = count
+                highest_count_range = f"{max_price}"
+
+        response_data = {
+            "total_properties": properties.count(),
+            "highest_count_range": highest_count_range,
+            "highest_count": highest_count,
+            "price_counts": price_counts,
+        }
+
+        return Response(response_data, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
 def user_properties(request, user_id):
-    properties_qs = Property.objects.filter(
-        building__created_by__id=user_id, is_active=True
-        ).annotate(
+    properties_qs = (
+        Property.objects.filter(building__created_by__id=user_id, is_active=True)
+        .annotate(
             # Annotate is_compared based on whether the property is in the user's comparison list
             is_compared=(
                 Exists(CompareProperty.objects.filter(user=request.user, property=OuterRef("pk")))
@@ -306,7 +340,9 @@ def user_properties(request, user_id):
                 .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
                 .values("full_file_url")[:1]
             ),
-        ).order_by('-id')
+        )
+        .order_by("-id")
+    )
 
     serializer_class = PropertyVariousFeatureSerializer
     paginator = UserPropertyPagination()
