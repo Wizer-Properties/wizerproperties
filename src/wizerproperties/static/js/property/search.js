@@ -152,10 +152,12 @@ $(document).ready(function(){
 
 
     function property_multiple_images(data, id){
+        if(data.length == 0) return '';
         var image_list = '';
+
         for (let i = 0; i < data.length; i++) {
             image_list += (
-                '<div  class="pr-ml-image"> <img src="'+data[i]+'" alt=""> </div>'
+                '<div  class="pr-ml-image"> <img src="'+data[i]?.file+'" alt="img" loading="lazy"> </div>'
             )
         };
 
@@ -179,16 +181,13 @@ $(document).ready(function(){
             var difference = target - now;
             
             if (difference <= 0) {
-                c_list[index].innerHTML = '-- : --'
+                c_list[index].innerHTML = '00 : 00'
             } else {
                 var days = Math.floor(difference / (1000 * 60 * 60 * 24));
                 var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
                 var seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
                 if(seconds < 10) seconds = '0'+seconds;
-                
-                console.log(c_list[index])
                 c_list[index].innerHTML = (days && '<count>'+days+'</count> : ')+
                                             '<count>'+hours+'</count> : '+
                                             '<count>'+minutes+'</count> : '+
@@ -214,16 +213,10 @@ $(document).ready(function(){
 
         var is_fav_effect = localStorage.getItem('favorite-effect');
 
-        var demo_image_data = [
-            '/static/media/demo_img/p1.png',
-            '/static/media/demo_img/p2.png',
-            '/static/media/demo_img/p3.png',
-        ]
-
 
         // property-type value seted newly-created, popular in css
 
-        return  '<div class="col-12 mb-4 property-single-box" property-type="all" effect="'+is_fav_effect+'">'+
+        return  '<div class="col-12 mb-4 property-single-box" property-type="'+data?.tag+'" effect="'+is_fav_effect+'">'+
                     '<div class="search-result-box-wrapper">'+
                         '<div class="row m-0">'+
 
@@ -253,7 +246,7 @@ $(document).ready(function(){
                                             '</button>'+
                                         '</div>' : ''
                                     )+
-                                    property_multiple_images(demo_image_data, data?.id) +
+                                    property_multiple_images(data?.images, data?.id) +
                                 '</div>'+
                             '</div>'+
 
@@ -264,7 +257,8 @@ $(document).ready(function(){
                                             '<div class="search-box-title">'+
                                                 '<span> Only with us </span>'+
                                                 '<line></line>'+
-                                                '<div date-count="2024-05-16"></div>'+
+                                                ( data?.discount_period ? 
+                                                    '<div date-count="'+data?.discount_period+'"></div>' : '') +
                                             '</div>'+
                                             '<div class="search-box-price">'+
                                                 '฿ '+ 
@@ -341,7 +335,8 @@ $(document).ready(function(){
     var prams_list = {
         page_size : 5,
         search : place || '',
-        default_images_number : (window.innerWidth <= 768 ? 1 : 2)
+        default_images_number : (window.innerWidth <= 768 ? 1 : 2),
+        platform :  (window.innerWidth >= 768 ? 'web' : '') 
     }
 
     var active_free_scrolling = false;
