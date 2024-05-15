@@ -1,5 +1,5 @@
 from django.utils import timezone
-from django.db.models import OuterRef, Subquery, Value, F, CharField, Exists, BooleanField
+from django.db.models import OuterRef, Subquery, Value, F, CharField, Exists, BooleanField, Count
 from django.db.models.functions import Concat
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -28,9 +28,12 @@ from utils.general_data import PRICE_RANGES
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
-    queryset = Property.objects.select_related("building", "created_by").prefetch_related(
-        "media_files", "discounts", "newly_createds", "populars"
+    queryset = (
+        Property.objects.select_related("building", "created_by")
+        .prefetch_related("media_files", "discounts", "newly_createds", "populars")
+        .annotate(popularity=Count("populars"))
     )
+
     serializer_class = PropertySerializer
     permission_classes = [PropertyPermission]
     filterset_class = PropertyFilter
@@ -40,7 +43,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
         "building__district",
         "building__sub_district",
     ]
-    ordering_fields = ["price"]
+    ordering_fields = ["created_at", "price"]
     ordering = ["-created_at"]  # Default ordering
 
     def get_queryset(self):
@@ -86,6 +89,19 @@ class PropertyViewSet(viewsets.ModelViewSet):
                         .values("full_file_url")[:1]
                     ),
                 )
+
+        return queryset
+
+    def filter_queryset(self, queryset):
+        queryset = super().filter_queryset(queryset)
+
+        # Retrieve the ordering parameter from the request
+        ordering = self.request.query_params.get("ordering", None)
+
+        # If popularity is not explicitly requested in the ordering,
+        # then maintain popularity-based ordering as primary
+        if ordering and "-popularity" not in ordering:
+            queryset = queryset.order_by("-popularity", ordering)
 
         return queryset
 
