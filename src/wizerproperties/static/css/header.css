@@ -28,7 +28,7 @@ header{
 .navigations{
     display: flex;
     align-items: center;
-    width: 70%;
+    width: auto;
 }
 
 .header .nav-link{

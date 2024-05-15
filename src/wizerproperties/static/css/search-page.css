@@ -9,9 +9,9 @@
 }
 
 .search-result-box h1{
-    font-size: 17px;
+    font-size: 18px;
     color: #212529 !important;
-    margin: 0;
+    margin: 5px 0;
     font-weight: 600;
 }
 
@@ -125,10 +125,11 @@
 .search-box-price{
     background: #F4F4F5;
     color: #484848;
-    font-size: 20px;
+    font-size: 24px;
     padding: 10px 25px;
     font-weight: 500;
     min-height: 68px;
+    margin-bottom: 5px;
 }
 
 .filter-categories-dropdown{

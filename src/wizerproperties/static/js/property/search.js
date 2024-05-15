@@ -150,7 +150,60 @@ $(document).ready(function(){
     };
 
 
-    function property_list_tmp(data){
+
+    function property_multiple_images(data, id){
+        var image_list = '';
+        for (let i = 0; i < data.length; i++) {
+            image_list += (
+                '<div  class="pr-ml-image"> <img src="'+data[i]+'" alt=""> </div>'
+            )
+        };
+
+        return(
+            '<a href="/property/details/'+id+'/" class="pr-ml-images-area">'+
+                image_list +
+            '</a>'
+        )
+    };
+
+
+
+    var countdownInterval = null;
+    function countdown() {
+        var c_list = $('[date-count]');        
+        
+        function updateCountdown(targetDate, index) {
+            var [year, month, day] = targetDate.split('-').map(Number);
+            var target = new Date(year, month - 1, day);
+            var now = new Date();
+            var difference = target - now;
+            
+            if (difference <= 0) {
+                c_list[index].innerHTML = '-- : --'
+            } else {
+                var days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                if(seconds < 10) seconds = '0'+seconds;
+                
+                console.log(c_list[index])
+                c_list[index].innerHTML = (days && '<count>'+days+'</count> : ')+
+                                            '<count>'+hours+'</count> : '+
+                                            '<count>'+minutes+'</count> : '+
+                                            '<count>'+seconds+'</count>';
+            }
+        };
+
+        for (let i = 0; i < c_list.length; i++) {
+            var targetDate = c_list[i].getAttribute('date-count')
+            updateCountdown(targetDate, i);
+        };
+    };
+    
+
+    function property_list_tmp(data, link){
         var dateString = data?.created_at;
         var formattedDate = new Date(dateString).toLocaleDateString('en-GB');   // Output formattedDate, it should be "09/03/2024"
 
@@ -161,7 +214,16 @@ $(document).ready(function(){
 
         var is_fav_effect = localStorage.getItem('favorite-effect');
 
-        return  '<div class="col-12 mb-4 property-single-box" effect="'+is_fav_effect+'">'+
+        var demo_image_data = [
+            '/static/media/demo_img/p1.png',
+            '/static/media/demo_img/p2.png',
+            '/static/media/demo_img/p3.png',
+        ]
+
+
+        // property-type value seted newly-created, popular in css
+
+        return  '<div class="col-12 mb-4 property-single-box" property-type="all" effect="'+is_fav_effect+'">'+
                     '<div class="search-result-box-wrapper">'+
                         '<div class="row m-0">'+
 
@@ -191,42 +253,40 @@ $(document).ready(function(){
                                             '</button>'+
                                         '</div>' : ''
                                     )+
+                                    property_multiple_images(demo_image_data, data?.id) +
                                 '</div>'+
                             '</div>'+
 
                             '<div class="col-lg-7 col-xl-8 p-0">'+
                                 '<div class="search-result-box">'+
-                                    '<div class="w-100">'+
+                                    '<div class="search-result-content">'+
                                         '<a href="/property/details/'+data?.id+'/" class="d-block w-100">'+
+                                            '<div class="search-box-title">'+
+                                                '<span> Only with us </span>'+
+                                                '<line></line>'+
+                                                '<div date-count="2024-05-16"></div>'+
+                                            '</div>'+
                                             '<div class="search-box-price">'+
                                                 '฿ '+ 
                                                 formatBalance(Math.floor(data?.price) || 0)+
                                             '</div>'+
-                                            '<h1> '+data?.title+' </h1>'+
+                                            '<h1> '+data?.title+' </h1>'+                                       
                                             
                                             '<div class="property-contains">'+
                                             ' <div class="property-short-info-box">'+
-                                                    '<div class="property-short-info-icon">'+
-                                                        '<img src="/static/media/icons/bed.svg" alt="bed-icon">'+
-                                                    '</div>'+
+                                                    '<span class="material-symbols-outlined">bed</span>'+
                                                     '<span class="property-value"> '+ data?.number_of_bedroom +' </span>'+
                                                 '</div>'+
                                                 '<div class="property-short-info-box">'+
-                                                    '<div class="property-short-info-icon">'+
-                                                        '<img src="/static/media/icons/bath.svg" alt="bath-icon">'+
-                                                    '</div>'+
+                                                    '<span class="material-symbols-outlined"> bathtub </span>' +
                                                     '<span class="property-value">'+ data?.number_of_bathroom +'</span>'+
                                                 '</div>'+
                                                 '<div class="property-short-info-box">'+
-                                                    '<div class="property-short-info-icon">'+
-                                                        '<img src="/static/media/icons/plan-size.svg" alt="plan-size-icon">'+
-                                                    '</div>'+
+                                                    '<span class="material-symbols-outlined">apartment</span>' +
                                                     '<span class="property-value">'+ data?.unit_area +' sqm </span>'+
                                                 '</div>'+
                                                 '<div class="property-short-info-box">'+
-                                                    '<div class="property-short-info-icon">'+
-                                                        '<img src="/static/media/icons/stairs.svg" alt="stairs-icon">'+
-                                                    '</div>'+
+                                                    '<span class="material-symbols-outlined">stairs</span>'+
                                                     '<span class="property-value">'+ data?.floor_number +'</span>'+
                                                 '</div>'+
                                             '</div>'+
@@ -252,7 +312,7 @@ $(document).ready(function(){
 
                                     '<div class="property-card-down-area">'+
                                         '<div class="agency-company-info">'+
-                                            '<div class="buillding-agency-logo">'+
+                                            '<div class="buillding-agency-logo mb-2">'+
                                                 '<img src="'+ data?.developer_image +'" alt="company logo">'+
                                             '</div>'+
                                             '<p class="agent-company-name">'+ data?.developer_company_name +'</p>'+
@@ -338,7 +398,13 @@ $(document).ready(function(){
                 }else{
                     $('#search-result-list').append(search_dom);
                 };
-                
+
+                if(countdownInterval){
+                    clearInterval(countdownInterval)
+                };
+
+                countdown();
+                countdownInterval = setInterval(countdown, 1000);
                 installing_splide();
 
                 active_free_scrolling = false;

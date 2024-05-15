@@ -2,8 +2,11 @@
     background-color: #FAF9F9;
     border-radius: 15px;
     padding: 15px;
-    width: 200px;
-    min-width: 200px;
+    width: 260px;
+    min-width: 260px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .property-card-modal-btns{
@@ -22,7 +25,7 @@
 .buillding-agency-logo{
     display: flex;
     justify-content: center;
-    height: 50px;
+    height: 60px;
     max-width: none;
     margin: 0;
 }
@@ -64,7 +67,7 @@
 
 .image-area-with-add-btns{
     position: relative;
-    padding-right: 25px;
+    padding-right: 0;
 }
 
 .search-list-add-btns{
@@ -73,7 +76,7 @@
     justify-content: space-between;
     position: absolute;
     top: 0px;
-    width: calc(100% - 25px);
+    width: 100%;
     left: 0;
     padding-left: 20px;
     padding-right: 10px;
@@ -89,7 +92,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 15px;
+    border-radius: 10px;
 }
 
 .search-box-price{
@@ -104,25 +107,27 @@
 .dev-phn-number{
     text-align: center;
     color: #0066FF !important;
-    font-size: 20px;
+    font-size: 24px;
     display: block;
     font-weight: 600;
-    margin-top: 45px;
 }
 
 .dev-to-contact{
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    gap: 12px;
     font-size: 16px;
-    padding: 10px 15px;
+    padding: 8px 15px;
     background-color: #D34346;
-    color: #fff !important; 
-    border-radius: 10px;
+    color: #fff !important;
+    border-radius: 5px;
     font-weight: 600;
-    margin-top: 10px;
+    margin-top: 10px
+}
 
+.dev-to-contact i{
+    font-size: 26px;
 }
 
 .search-result-box-img-splid{
@@ -133,10 +138,13 @@
 .agent-company-name{
     text-align: center;
     margin: 0;
-    margin-top: 10px;
-    font-size: 10px;
+    margin-top: 2px;
+    font-size: 14px;
 }
 
+.property-faciluties-list span .bi {
+    font-size: 15px;
+}
 
 .property-single-box 
 .add-to-favorite,
@@ -156,12 +164,13 @@
     position: absolute;
     width: 100px;
     height: 100px;
-    background-color: rgba(29, 45, 98, 0.5);
+    background-color: #8AF2ED;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%) scale(0);
     content: '';
     border-radius: 100%;
+    opacity: .4;
 }
 
 .property-single-box[effect="null"] 
@@ -183,6 +192,34 @@
 .property-single-box 
 .add-to-compare:hover::after{
     animation: before_after_play 7s normal forwards  ;
+}
+
+.pr-ml-images-area{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+}
+
+.pr-ml-image{
+    width: 100%;
+    height: 85px;
+    margin-top: 10px;
+}
+
+.pr-ml-image img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.search-result-box .details,
+.property-faciluties-list span{
+    font-size: 16px;
+}
+
+.property-card-modal-btns button{
+    font-size: 15px;
 }
 
 @keyframes before_after_play {
@@ -208,15 +245,154 @@
 }
 
 
+.search-result-box .property-short-info-icon img {
+    width: 20px !important;
+}
 
-@media screen and (max-width : 991px){
+.search-result-box .property-value {
+    font-size: 16px !important;
+    top: 0px !important;
+}
 
-    .image-area-with-add-btns{
-        padding-right: 0;
+
+.property-single-box[property-type="newly-created"]{
+    .search-result-box-wrapper{
+        background-color: #EEFAFD;
     }
 
+    .property-card-down-area{
+        background-color: #fff;
+    }
+
+    .search-box-title span,
+    [date-count]{
+        background-color: #EEFAFD;
+    }
+}
+
+.property-single-box[property-type="popular"]{
+    .search-box-price,
+    .search-result-box h1,
+    .search-result-box .property-value,
+    .property-faciluties-list span,
+    .search-result-box .details,
+    .property-card-down-area p,
+    .dev-phn-number,
+    .search-box-title span,
+    [date-count]{
+        color: #fff !important;
+    }
+
+    [date-count],
+    .property-faciluties-list span,
+    .search-result-box .details{
+        opacity: .8;
+    }
+
+    .search-result-box-wrapper{
+        background-color: #001229;
+    }
+
+    .search-box-title span,
+    [date-count]{
+        background-color: #001229;
+    }
+}
+
+.property-contains .property-short-info-box{
+    gap: 5px !important;
+}
+
+.property-single-box[property-type="popular"]
+.property-card-down-area{
+    background-color: #1A2A3F;
+}
+
+.property-single-box[property-type="popular"]
+.property-short-info-box .material-symbols-outlined{
+    color: #fff;
+}
+
+
+.search-box-title{
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.search-result-content{
+    width: 100%;
+    padding: 0 25px;
+}
+
+.search-box-title span{
+    font-size: 28px;
+    color: #003D7A !important;
+    font-weight: 500;
+    display: block;
+    z-index: 1;
+    background-color: #fff;
+    padding-right: 10px;
+}
+
+.search-box-title line{
+    height: 2px;
+    background-color: #D34346;
+    display: block;
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+[date-count]{
+    display: flex;
+    color: #D34346 !important;
+    align-items: center;
+    font-size: 24px;
+    gap: 3px;
+    font-weight: 600;
+    z-index: 1;
+    background-color: #fff;
+    padding-left: 10px;
+}
+
+@media screen and (max-width : 991px){
     .search-list-add-btns{
         width: 100%;
+    }
+
+    .search-result-content{
+        padding: 0;
+        padding-top: 20px;
+    }
+
+    .search-box-title span{
+        font-size: 24px;
+    }
+
+    [date-count]{
+        font-size: 20px;
+    }
+
+    .search-box-price {
+        font-size: 20px;
+        margin-bottom: 0;
+    }
+
+    .search-result-box h1{
+        font-size: 15px;
+    }
+
+    .search-result-box .details, 
+    .property-faciluties-list span {
+        font-size: 14px;
+    }
+
+    .property-card-modal-btns button {
+        font-size: 14px;
     }
 }
 
@@ -224,7 +400,7 @@
 @media screen and (max-width : 1220px){
     .search-result-box-wrapper{
         position: relative;
-        padding-bottom: calc(70px + 15px);
+        padding-bottom: calc(78px + 15px);
     }
 
     .property-card-down-area{
@@ -249,6 +425,14 @@
     .dev-to-contact{
         margin: 0;
         font-size: 16px !important;
+    }
+
+    .dev-to-contact{
+        padding: 2px 15px;
+    }
+
+    .buillding-agency-logo{
+        height: 50px;
     }
 
     .search-list-add-btns 
@@ -297,10 +481,25 @@
     }
 
     .search-result-box-wrapper{
-        padding-bottom: calc(60px + 15px);
+        padding-bottom: calc(70px + 15px);
     }
     
     .agent-company-name{
         display: none !important;
+    }
+
+    
+    .search-result-box {
+        .property-value {
+            font-size: 14px !important;
+        }
+        
+        .material-symbols-outlined{
+            font-size: 20px;
+        }
+    }
+
+    .search-box-title{
+        margin-bottom: 0;
     }
 }
