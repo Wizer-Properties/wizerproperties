@@ -373,9 +373,16 @@ $(document).ready(function(){
                 'X-CSRFToken': csrfToken,
             },
             beforeSend: function() {
+                if(
+                    search_type == 'filter' &&
+                    search_param.page == 1
+                ) {
+                    $('#search-result-list').html('');
+                }
+
                 $('#search-result-list').append(
                     loader_tmp() + loader_tmp() + loader_tmp()
-                );
+                );                
             },
             success: function (data) {
                 $('[label="available-properties"]').html(data?.count);
@@ -398,9 +405,9 @@ $(document).ready(function(){
                     clearInterval(countdownInterval)
                 };
 
-                countdown();
+                countdown(); // offer duration time
                 countdownInterval = setInterval(countdown, 1000);
-                installing_splide();
+                installing_splide(); // init slider for image
 
                 active_free_scrolling = false;
                 last_property_box = $('.property-single-box').last();
@@ -408,10 +415,14 @@ $(document).ready(function(){
 
                 if( 
                     search_param.hasOwnProperty('max_price') ||
-                    search_param.hasOwnProperty('min_price')
-                 ){
-                    pop_dispatch() // this is call from main.js file
+                    search_param.hasOwnProperty('min_price') ||
+                    search_param.hasOwnProperty('ordering')
+                ){
+                    pop_dispatch() // this is call from main.js file fow hide pop up
                 };
+
+                // showing sorting type dom
+                if(search_param.ordering) sorting_dom(search_param);
             },
             error: function (error) {
                 active_free_scrolling = false;
@@ -422,6 +433,15 @@ $(document).ready(function(){
     };
 
     searching("search");
+
+
+    function sorting_dom(search_param){
+        console.log(typeof search_param.ordering)
+        if(search_param.ordering == "-created_at") $('[label="sorting-type"]').html("Default");
+        if(search_param.ordering == "-price" ) $('[label="sorting-type"]').html("Highest price");
+        if(search_param.ordering == "price" ) $('[label="sorting-type"]').html("Lowest price");
+    }
+
 
     $(window).on('scroll', function() {
         var targetSection =  $('.property-single-box').last()[0];
@@ -746,6 +766,7 @@ $(document).ready(function(){
         });
     };
 
+
     function get_discount_properties_list(){
         $.ajax({
             url: '/property/api/list/discount/',
@@ -780,6 +801,7 @@ $(document).ready(function(){
         });
     };
 
+
     function get_newly_properties_list(){
         $.ajax({
             url: '/property/api/list/newly-created/',
@@ -812,6 +834,7 @@ $(document).ready(function(){
             }
         });
     };
+
 
     function get_popular_building_list(){
         $.ajax({
@@ -932,6 +955,17 @@ $(document).ready(function(){
         if(!user_type) return;
         localStorage.setItem("favorite-effect", true);
         $('.property-single-box').attr('effect', true)
+    });
+
+
+    $(document).on('click', '.sorting-list-box li', function(){
+        var _val = $(this).attr('value');
+        $(this).parent().find('li').attr('active', 'false');
+        $(this).attr('active', 'true');
+        prams_list.ordering = _val;
+        prams_list.page = 1;
+        next_property = 1;
+        searching("filter")
     })
 
 });

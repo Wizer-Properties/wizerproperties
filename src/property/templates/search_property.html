@@ -377,15 +377,6 @@
     </div>
 </section>
 
-<div class="w-100 px-5">
-    <div class="filter-result mt-3">
-        <h1 class="section-title search-area"></h1>
-        <p class="section-scripts">
-            <span label="available-properties">- -</span>
-             Properties available
-        </p>
-    </div>
-</div>
 
 
 <section id="extra-filter">
@@ -724,6 +715,42 @@
     </div>
 </section>
 
+<section id="sorting-map">
+    <div class="container">
+        <div class="sorting-map-container">
+            <div>
+                <h1 class="section-title search-area"></h1>
+                <p class="section-scripts m-0">
+                    <b>
+                        <span label="available-properties">- -</span>
+                    </b>
+                     Properties available
+                </p>
+            </div>
+
+            <div class="sorting-map-box">
+                <a href="#">
+                    <i class="bi bi-map"></i>
+                    Map view
+                </a>
+
+                <button class="sorting-btn" pop-target="sorting-box">
+                    <i class="bi bi-chevron-expand"></i>
+                    <span>
+                        Sorting : 
+                        <span label="sorting-type"> Default </span>
+                    </span>
+                </button>
+
+                <div class="sorting-list-box" pop-element="sorting-box">
+                    <li active="true" value="-created_at"> Default <i class="bi bi-check2"></i></li>
+                    <li active="false" value="-price"> Highest price <i class="bi bi-check2"></i></li>
+                    <li active="false" value="price"> Lowest price <i class="bi bi-check2"></i></li>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <section id="search-result">
     <div class="container">

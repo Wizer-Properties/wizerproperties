@@ -88,15 +88,13 @@ function getElementWidthWhileHidden(element) {
 };
 
 function positionFixedElement(el_obj) {
-    const maxWidth = window.innerWidth - el_obj?.width;
-    const maxHeight = window.innerHeight - el_obj?.height;
-
+    var maxWidth = window.innerWidth - 30 - el_obj?.width;
     // Ensure desiredLeft and desiredTop are within the window bounds
-    const finalLeft = Math.min(Math.max(el_obj?.desiredLeft, 0), maxWidth);
-    const finalTop = Math.min(Math.max(el_obj?.desiredTop, 0), maxHeight);
+    var finalLeft = Math.min(Math.max(el_obj?.desiredLeft, 0), maxWidth);
+    // const finalTop = Math.min(Math.max(el_obj?.desiredTop, 0), maxHeight);
 
-    el_obj.element.style.left = `${finalLeft}px`;
-    el_obj.element.style.top = `${finalTop}px`;
+    el_obj.element.style.left = finalLeft+'px';
+    el_obj.element.style.top = el_obj.height+'px';
 };
 
 $(document).on('click', '[pop-target]', function(){
@@ -108,10 +106,13 @@ $(document).on('click', '[pop-target]', function(){
     var this_height = $(this).height();
     pop_element.addClass('pop-default-box');
 
+    var rect = $(this)[0].getBoundingClientRect();
+    var pop_top = rect.top  + window.pageXOffset + rect.height;
+
     var el_obj = {
         element : pop_element[0],
         width : get_el_offset.width,
-        height : get_el_offset.height,
+        height : pop_top,
         desiredTop : get_position.top + this_height,
         desiredLeft : get_position.left,
     };

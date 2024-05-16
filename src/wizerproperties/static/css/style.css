@@ -895,6 +895,18 @@ footer{
     overflow: hidden !important;
 }
 
+@media screen and (min-width: 991px){
+    [pop-status="true"] body{
+        padding-right: 17px;
+    }
+}
+
+@-moz-document url-prefix() {
+    [pop-status="true"] body{
+        padding-right: 0px !important;
+    }
+}
+
 @media screen and (max-width: 768px) {
     .table-title{
         position: initial !important;
