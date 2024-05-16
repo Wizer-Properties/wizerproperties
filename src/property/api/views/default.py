@@ -100,8 +100,10 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
         # If popularity is not explicitly requested in the ordering,
         # then maintain popularity-based ordering as primary
-        if ordering and "-popularity" not in ordering:
+        if ordering:
             queryset = queryset.order_by("-popularity", ordering)
+        else:
+            queryset = queryset.order_by("-popularity")
 
         return queryset
 
