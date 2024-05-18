@@ -900,17 +900,10 @@ $(document).ready(function(){
         max: 100,
         step: 1,
         values: [1, 100], // Initial range values
-        slide: function(event, ui) {
-            // Display range values
+        stop: function(event, ui) {
             console.log(ui.values[0] + " - " + ui.values[1])
         }
     });
-
-
-    for (let i = 0; i < 100; i++) {
-        var _random = Math.floor(Math.random() * 100) + 1
-        $('.price-rage-chart').append('<li style="height: '+_random+'%;"></li>')
-    }
 
 
     $(document).on('click', '.add-to-favorite', function(){
@@ -939,6 +932,64 @@ $(document).ready(function(){
 
     $(document).on('click', '.filter-location-box .filter-icon', function(){
         $(this).parents('.filter-location-box').find('input').trigger( "focus" );
-    })
+    });
+
+
+
+    var got_price_data = false;
+    $(document).on('click', '[tag-name="price"]', function(){
+        if(got_price_data) return;
+
+        $.ajax({
+            url: '/property/api/count-in-price-ranges/',
+            type: 'GET',
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            beforeSend: function() {
+                console.log("hello")
+            },
+            success: function (data) {
+                got_price_data = true;
+
+                var obje = {
+                    [data.highest_count_range] : data.highest_count
+                }
+
+                var sadf = calculateHeightPercentages(data.price_counts , obje)
+
+                for (var i = 0; i < sadf.length; i++) {
+                    $('.price-rage-chart').append('<li style="height: '+sadf[i].heightPercentage+'%;"></li>')
+                }
+            },
+            error: function (error) {
+                got_price_data = false;
+            }
+        });
+
+
+    });
+
+
+    function calculateHeightPercentages(products, highestValuePair) {
+        // Ensure highestValuePair is an object with one key-value pair
+        if (typeof highestValuePair !== 'object' || highestValuePair === null || Object.keys(highestValuePair).length !== 1) {
+            throw new Error("highestValuePair must be an object with exactly one key-value pair");
+        }
+    
+        // Get the highest value from the highestValuePair object
+        const highestValue = Object.values(highestValuePair)[0];
+    
+        // Initialize the array to store the percentages
+        const heightPercentages = [];
+    
+        // Calculate the height percentage for each product
+        for (const [key, value] of Object.entries(products)) {
+            const heightPercentage = (value / highestValue) * 100;
+            heightPercentages.push({ index: key, heightPercentage });
+        }
+    
+        return heightPercentages;
+    }
 
 });

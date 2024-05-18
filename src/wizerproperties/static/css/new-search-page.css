@@ -437,13 +437,21 @@
     padding: 10px !important;
 }
 
+.filter-box{
+    /* position: sticky;
+    top: 0;
+    z-index: 999;
+    background-color: #fff; */
+}
+
 .all-filter-option{
     box-shadow: 0px 0px 15px 0 rgba(0,0,0,.08);
     margin-top: 35px;
     margin-bottom: 20px;
-    border-radius: 15px;
+    border-radius: 7px;
     display: flex;
     padding: 20px 30px;
+    background-color: #fff;
 }
 
 .filter-option-area{
@@ -589,6 +597,10 @@
 
     [display-view="small"]{
         display: block;
+    }
+
+    .filter-box{
+        position: initial;
     }
 }
 
