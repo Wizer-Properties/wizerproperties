@@ -196,9 +196,9 @@
     border: 1px solid #e4e9f7;
     color: #484848;
     background-color: #fff;
-    padding: 7px 12px;
+    padding: 10px 12px;
     border-radius: 3px;
-    font-size: 14px;
+    font-size: 16px;
     text-align: center;
     display: block;
 }
@@ -211,6 +211,7 @@
 
 .filter-dropdown-mtl-buttons button{
     min-width: 140px;
+    flex-grow: 1;
 }
 
 .filter-dropdown-mtl-buttons{
@@ -433,20 +434,12 @@ added{
     margin-top: 35px;
 }
 
-.filter-box-container{
-    background-color: #7f1378;
-}
-
-.all-filter-option{
-    display: grid;
-    grid-template-columns: 400px 150px 355px 150px 180px 180px 1fr;
-}
-
 .search-box{
     display: flex;
     align-items: center;
     background-color: #fff;
     width: 100% !important;
+    max-width: initial !important;
 }
 
 [label="Area"] .filter-dropdown-buttons {
@@ -459,17 +452,8 @@ added{
     justify-content: space-between;
 }
 
-.filter-option-single-box{
-    display: flex;
-    padding: 0 20px;
-    align-items: center;
-    justify-content: center;
-    border-right: 1px solid rgba(255, 255, 255, 0.3);
-}
-
 .filter-option-visiable-btn{
     background-color: transparent !important;
-    color: #fff !important;
     border: none !important;
     padding: 0 !important;
     margin: 0 !important;
@@ -480,7 +464,6 @@ added{
 
 .all-filter-option select{
     height: 100%;
-    color: #fff;
     background-color: transparent;
     border: none;
     width: 100%;
@@ -492,35 +475,51 @@ added{
     color: #000 ;
 }
 
-#extra-filter{
+#popup-extra-filter{
     position: fixed;
     width: 100vw;
     height: 100vh;
     top: 0;
     left: 0;
-    z-index: 999;
-    padding-top: 116px;
+    z-index: 99999;
     display: none;
-    background-color: #00000005;
+    background-color: #00000083;
 }
 
-#extra-filter .filter-option-box-wrapper label{
+#popup-extra-filter .filter-option-box-wrapper label{
     margin-bottom: 7px;
+    font-weight: 500;
 }
 
-.filter-modal-body{
-    padding-top: 10px;
-    padding-bottom: 25px;
+.filter-modal-content{
     background-color: #fff;
     box-shadow: 0 5px 20px 0 rgba(0,0,0,.05);
     overflow-y: auto;
     overflow-x: hidden;
+    border-radius: 15px;
 }
 
-[aria-label="filter-button"] button{
-    width: 100%;
-    place-items: center;
-    display: grid;
+.filter-modal-header{
+    padding: 20px 30px;
+    font-size: 24px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    color: #001229 !important;
+    font-weight: 600;
+}
+
+.filter-modal-header button{
+    background: transparent !important;
+    border: none !important;
+    font-size: 20px;
+    box-shadow: none !important;
+    color: #001229 !important;
+}
+
+.filter-modal-body{
+    padding: 20px 30px;
+    max-height: 80vh;
 }
 
 [filter-modal-open="true"] .filter-box{
@@ -528,13 +527,10 @@ added{
     z-index: 99999;
 }
 
-[aria-label="filter-button"]{
-    border: none !important;
-}
-
 [filter-modal-open="true"]
-#extra-filter{
-    display: block;
+#popup-extra-filter{
+    display: grid;
+    place-items: center;
 }
 
 [filter-modal-open="true"]{
@@ -546,27 +542,24 @@ added{
     justify-content: space-between;
     align-items: center;
     margin-top: 35px;
+    padding-bottom: 25px;
 }
 
-#extra-filter .filter-option-box-wrapper select{
+#popup-extra-filter .filter-option-box-wrapper select{
     width: 100%;
-    padding: 7px 5px;
-    font-size: 14px;
+    padding: 10px 5px;
+    font-size: 16px;
     border: 1px solid #e4e9f7;
     color: #484848;
 }
 
-#extra-filter .filter-option-box-wrapper .to-to{
+#popup-extra-filter .filter-option-box-wrapper .to-to{
     color: #212529 !important;
 }
 
-#extra-filter .filter-option-box-wrapper .range-area{
+#popup-extra-filter .filter-option-box-wrapper .range-area{
     display: flex;
     align-items: center;
-}
-
-[filter-aria-label="property-type"]{
-    display: none;
 }
 
 .filter-modal-footer-btn button{
@@ -580,13 +573,6 @@ added{
     color: #fff !important;
     border: none;
     box-shadow: 2px 3px 7px 2px rgb(0 0 0 / 20%);
-}
-
-[filter-modal-open="true"]
-[aria-label="filter-button"] button{
-    background-color: #fff !important;
-    color: #262637 !important;
-    border-radius: 0 !important;
 }
 
 .price-filter-box{
@@ -639,13 +625,6 @@ added{
     padding-bottom: 0;
 }
 
-[aria-label]{
-    color: #fff;
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-}
-
 .price-rage-chart{
     height: 100px;
     display: flex;
@@ -659,59 +638,6 @@ added{
     width: 1%;
     background-color: #cbcbcb;
     list-style-type: none;
-}
-
-@media screen and (min-width : 1600px){
-    [filter-aria-label="badroom"],
-    [filter-aria-label="property-quota"]{
-        display: none;
-    }
-}
-
-@media screen and (max-width : 1600px){
-    [aria-label="beds"],
-    [aria-label="property-quota"]{
-        display: none;
-    }
-
-    .all-filter-option {
-        grid-template-columns: 400px 150px 375px 200px 1fr;
-    }
-}
-
-
-@media screen and (max-width : 1470px){
-    [aria-label="property-type"]{
-        display: none;
-    }
-
-    [filter-aria-label="property-type"]{
-        display: block;
-    }
-
-    .all-filter-option {
-        grid-template-columns: 400px 150px 355px 1fr;
-    }
-}
-
-@media screen and (min-width : 1300px){
-    [filter-aria-label="unit_area"]{
-        display: none;
-    }
-}
-
-@media screen and (max-width : 1300px){
-    [aria-label="unit-area"]{
-        display: none;
-    }
-
-    .all-filter-option {
-        grid-template-columns: 2.3fr 150px 1fr;
-    }
-
-    .search-box{
-        max-width: none !important;
-    }
 }
 
 
@@ -729,35 +655,6 @@ added{
     }
 }
 
-@media screen and (min-width : 991px){
-    [filter-aria-label="price"]{
-        display: none;
-    }
-}
-
-@media screen and (max-width : 991px){
-    .suggested-properties-area,
-    #search-map{
-        display: none;
-    }
-
-    [aria-label="price"]{
-        display: none;
-    }
-
-    [aria-label="property-type"]{
-        display: block;
-    }
-
-    [filter-aria-label="property-type"]{
-        display: none;
-    }
-
-    .all-filter-option {
-        grid-template-columns: 380px 1fr 100px;
-    }
-}
-
 
 @media screen and (max-width : 768px){
     #search-result .banner-action-button{
@@ -766,7 +663,6 @@ added{
         left: 22px;
         flex-direction: column;
     }
-
 
     .buillding-agency-tel .bi{
         display: inline-block;
@@ -780,24 +676,12 @@ added{
         height: 260px;
     }
 
-    [aria-label="property-type"]{
-        display: none;
-    }
-
-    [filter-aria-label="property-type"]{
-        display: block;
-    }
-
-    .all-filter-option {
-        grid-template-columns: 1fr 100px;
+    .filter-modal-body,
+    .filter-modal-header{
+        padding: 20px 10px;
     }
 }
 
-@media screen and (max-width : 600px){
-    .filter-box-container {
-        padding: 0 10px !important;
-    }
-}
 
 @media screen and (max-width : 575px) {
     .search-result-box-img{

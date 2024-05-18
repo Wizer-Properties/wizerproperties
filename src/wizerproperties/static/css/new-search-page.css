@@ -362,9 +362,8 @@
 .sorting-map-container{
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
     margin-bottom: 25px;
-    margin-top: 20px;
+    align-items: center;
 }
 
 .sorting-map-box{
@@ -373,19 +372,19 @@
     gap: 10px;
 }
 
-.sorting-map-box{
-    a, .sorting-btn{
-        display: flex;
-        background-color: #fff;
-        padding: 5px 10px;
-        gap: 7px;
-        color: #001229;
-        font-size: 16px;
-        font-weight: 700;
-        border: 1px solid transparent;
-        border-radius: 5px;
-        height: 36px;
-    }
+.sorting-map-box a,
+.sorting-map-box .sorting-btn{
+    display: flex;
+    background-color: #fff;
+    padding: 5px 10px;
+    gap: 7px;
+    color: #001229;
+    font-size: 16px;
+    font-weight: 700;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    height: 36px;
+    align-items: center;
 }
 
 .sorting-list-box{
@@ -413,13 +412,87 @@
     background-color: #EFEFEF;
 }
 
-.sorting-map-box button:focus{
-    border-color: #eee;
+@media screen and (min-width : 768px){
+    .sorting-map-box button:focus{
+        border-color: #eee;
+    }
 }
+
 
 .search-result-box 
 .property-contains{
     flex-wrap: wrap;
+}
+
+.search-box-clear-button{
+    background: transparent !important;
+    font-size: 20px !important;
+}
+
+.search-box{
+    border: none !important;
+}
+
+.search-box input{
+    padding: 10px !important;
+}
+
+.all-filter-option{
+    box-shadow: 0px 0px 15px 0 rgba(0,0,0,.08);
+    margin-top: 35px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    display: flex;
+    padding: 20px 30px;
+}
+
+.filter-option-area{
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+}
+
+.filter-single-box{
+    flex-grow: 1;
+    padding: 0 10px;
+    border-left: 1px dashed #b1b6be96;
+    cursor: pointer;
+}
+
+.filter-icon i,
+.filter-icon span{
+    font-size: 27px;
+    color: #525F74;
+}
+
+.filter-icon span{
+    font-size: 36px;
+}
+
+.filter-icon{
+    height: 41px;
+}
+
+.filter-label{
+    font-size: 16px;
+    color: #525F74;
+    font-weight: 600;
+}
+
+.filter-location-box{
+    max-width: 40%;
+}
+
+.filter-location-box{
+    cursor: text;
+}
+
+.sorting-map-wrapper{
+    padding: 0 20px;
+}
+
+[display-view="small"]{
+    display: none;
 }
 
 @media screen and (max-width : 991px){
@@ -456,6 +529,66 @@
 
     .property-card-modal-btns button {
         font-size: 14px;
+    }
+
+    .filter-option-area
+    .filter-single-box:not(:last-child),
+    .filter-location-box .filter-icon{
+        display: none !important;
+    }
+
+    .filter-option-area{
+        flex-grow: initial;
+    }
+
+    .filter-location-box{
+        max-width: initial;
+        height: 100%;
+    }
+
+    .filter-button-area{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .filter-single-box{
+        border: none !important;
+    }
+
+    .filter-icon{
+        height: initial !important;
+        
+        .bi{
+            font-size: 20px !important;
+        }
+    }
+
+    .all-filter-option{
+        padding: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        gap: 10px;
+    }
+
+    .filter-location-box,
+    [aria-label="filter-button"]{
+        border: 1px solid #abafb3 !important;
+        border-radius: 5px;
+        box-shadow: 0 0 9px rgba(0,0,0,.1),0 0 9px rgba(0,0,0,.01);
+    }
+
+    .search-box input{
+        padding: 13.8px 10px !important;
+    }
+
+    [aria-label="filter-button"]{
+        padding: 10px 15px;
+        border: none !important;
+    }
+
+    [display-view="small"]{
+        display: block;
     }
 }
 
@@ -524,6 +657,40 @@
     .add-to-favorite:not([added="true"])::after{
         width: 70px;
         height: 70px;
+    }
+}
+
+
+@media screen and (max-width : 768px){
+    .sorting-map-container{
+        flex-direction: column;
+        align-items: initial;
+    }
+
+    .sorting-map-box{
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+        margin-top: 5px;
+        padding: 5px 0;
+    }
+    
+    .sorting-map-box a, 
+    .sorting-map-box .sorting-btn{
+        font-size: 14px;
+        font-weight: 500;
+        justify-content: center;
+        padding: 20px 0;
+    }
+
+    .sorting-map-box i{
+        font-size: 20px;
+    }
+
+    .sorting-map-box a{
+        border-right: 1px solid #eee;
     }
 }
 

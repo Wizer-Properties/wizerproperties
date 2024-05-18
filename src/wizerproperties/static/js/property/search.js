@@ -397,6 +397,7 @@ $(document).ready(function(){
                 
                 if(search_type == 'filter'){
                     $('#search-result-list').html(search_dom);
+                    pop_dispatch() // this is call from main.js file fow hide pop up
                 }else{
                     $('#search-result-list').append(search_dom);
                 };
@@ -412,14 +413,6 @@ $(document).ready(function(){
                 active_free_scrolling = false;
                 last_property_box = $('.property-single-box').last();
                 $('.searching-loader').remove();
-
-                if( 
-                    search_param.hasOwnProperty('max_price') ||
-                    search_param.hasOwnProperty('min_price') ||
-                    search_param.hasOwnProperty('ordering')
-                ){
-                    pop_dispatch() // this is call from main.js file fow hide pop up
-                };
 
                 // showing sorting type dom
                 if(search_param.ordering) sorting_dom(search_param);
@@ -472,32 +465,36 @@ $(document).ready(function(){
             var min_val = formatNumber(prams_list?.min_price || 'Min')
             var max_val = formatNumber(prams_list?.max_price || 'Max')
 
-            if(min_val == "Min" && max_val == "Max" ){
-                button_dom.html('Any Price  <i class="bi bi-chevron-down"></i>')
-                return;
-            }else{
-                min_val = '฿ ' + min_val;
-                max_val = '฿ ' + max_val;
-            };
+            $('[label-value="price"]').html(min_val + ' - ' + max_val);
 
-            button_dom.html(min_val+' - '+max_val+' <i class="bi bi-chevron-down"></i>')
+            if(min_val == 'Min' && max_val == 'Max'){
+                $('[label-value="price"]').html("Price");
+            }
         };
 
-        // max and minmum unit area dom >>>
-        if(get_parent_label == 'unit_area'){
-            var min_val = formatNumber(prams_list?.min_unit_area || 'Min')
-            var max_val = formatNumber(prams_list?.max_unit_area || 'Max')
+        // max and minmum radius dom >>>
+        if(get_parent_label == 'radius'){
+            $('[label-value="radius"]').html( prams_list.nearby && prams_list.nearby +' Km'  || "Radius")
+        };
 
-            if(min_val == "Min" && max_val == "Max" ){
-                button_dom.html('Unit Area  <i class="bi bi-chevron-down"></i>')
-                return;
-            }else{
-                min_val = min_val + ' SqM';
-                max_val = max_val + ' SqM';
-            };
-            button_dom.html(min_val+' - '+max_val+' <i class="bi bi-chevron-down"></i>')
+        // max and minmum bedroom dom >>>
+        if(get_parent_label == 'beds'){
+            var min_beds = prams_list.min_number_of_bedroom || 'Min'
+            var max_beds = prams_list.max_number_of_bedroom || 'Max'
+            $('[label-value="beds"]').html(min_beds +'-'+max_beds )
+
+            if(min_beds == 'Min' && max_beds == 'Max'){
+                $('[label-value="price"]').html("Bedrooms");
+            }
+        };
+
+
+        // propety types dom >>>
+        if(get_parent_label == 'property-type'){
+            $('[label-value="property-type"]').html( prams_list.building__type || "Property type")
         };
     });
+    
 
 
     $(document).on('click', '.filter-dropdown-buttons button', function(){
@@ -575,11 +572,11 @@ $(document).ready(function(){
             next_property = 1;
             searching("filter")
 
-            $('[label="price"] button.filter-dropdown-btn').html('Any Price <i class="bi bi-chevron-down"></i>');
-            $('[label="unit_area"] button.filter-dropdown-btn').html('Any Price <i class="bi bi-chevron-down"></i>');
-            $('[label="Beds"] button.filter-dropdown-btn').html('Beds <i class="bi bi-chevron-down"></i>');
-            $('[label="Baths"] button.filter-dropdown-btn').html('Baths <i class="bi bi-chevron-down"></i>');
-            $('[label="Area"] button.filter-dropdown-btn').html('Area <i class="bi bi-chevron-down"></i>');
+            $('[label-value="price"]').html('Price');
+            $('[label-value="radius"]').html("Radius");
+            $('[label-value="beds"]').html("Bedrooms");
+            $('[label-value="property-type"]').html("Property type");
+
             $('.filter-dropdown-buttons button').attr('active', false);
             $('.filter-dropdown-buttons [value="null"]').attr('active', true);
             $('.filter-dropdown-mtl-buttons button').attr('active', false);
@@ -878,35 +875,6 @@ $(document).ready(function(){
     };
 
 
-    var header_el = $('header');
-    var filter_box_el = $('.filter-box');
-    var extra_filter = $('#extra-filter');
-
-    if(
-        header_el?.length > 0 &&
-        filter_box_el?.length > 0 &&
-        extra_filter?.length > 0 
-    ){
-        var extra_px = 10;
-        $('#extra-filter').css({
-            paddingTop : $('header').height() + $('.filter-box').height() + extra_px
-        });
-
-        $('.filter-modal-body').css({
-            maxHeight : window.innerHeight - ($('header').height() + $('.filter-box').height() + extra_px)
-        })
-
-        $(window).resize(function(){
-            $('#extra-filter').css({
-                paddingTop : $('header').height() + $('.filter-box').height() + extra_px
-            });
-
-            $('.filter-modal-body').css({
-                maxHeight : window.innerHeight - ($('header').height() + $('.filter-box').height() + extra_px)
-            })
-        })
-    };
-
     $('[aria-label="filter-button"]').click(function(){
         var is_modal_open = $('body').attr('filter-modal-open');
         if(is_modal_open == 'true'){
@@ -966,6 +934,11 @@ $(document).ready(function(){
         prams_list.page = 1;
         next_property = 1;
         searching("filter")
+    });
+
+
+    $(document).on('click', '.filter-location-box .filter-icon', function(){
+        $(this).parents('.filter-location-box').find('input').trigger( "focus" );
     })
 
 });
