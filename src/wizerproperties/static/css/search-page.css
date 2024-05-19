@@ -632,7 +632,7 @@ added{
 }
 
 .price-rage-chart li{
-    width: 1%;
+    flex-grow: 1;
     background-color: #cbcbcb;
     list-style-type: none;
 }

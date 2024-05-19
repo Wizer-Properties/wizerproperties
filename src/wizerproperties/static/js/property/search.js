@@ -338,6 +338,7 @@ $(document).ready(function(){
 
     var active_free_scrolling = false;
     var next_property = 1;
+    var price_slider_filter = false;
 
     function searching(search_type){
         var search_param = prams_list;
@@ -395,7 +396,13 @@ $(document).ready(function(){
                 if(search_type == 'filter'){
                     $('#search-result-list').html(search_dom);
                     pop_up_filter_active(search_param) // for give active color
-                    pop_dispatch() // this is call from main.js file fow hide pop up
+
+                    if(!price_slider_filter){
+                        console.log("========")
+                        pop_dispatch() // this is call from main.js file fow hide pop up
+                    };
+                    
+                    price_slider_filter = false;
                 }else{
                     $('#search-result-list').append(search_dom);
                 };
@@ -427,7 +434,6 @@ $(document).ready(function(){
 
 
     function pop_up_filter_active(search_param){
-
         function active_status(selector, param){
             var nearby_status = ![undefined, null, ''].includes(param);
             selector.attr('active-filter', nearby_status);
@@ -439,9 +445,6 @@ $(document).ready(function(){
         active_status($('[filter-name="price-box"]'), search_param.min_price || search_param.max_price);
         var bed_room_status = search_param.min_number_of_bedroom || search_param.max_number_of_bedroom;
         active_status($('[filter-name="bed-box"]'), bed_room_status);
-
-        
-
     };
 
 
@@ -475,7 +478,6 @@ $(document).ready(function(){
         searching("filter");
 
         var get_parent_label = $(this).parents('[label]')?.attr('label');
-        var button_dom = $(this).parents('[label]')?.find('button');
 
         // max and minmum price dom >>>
         if(get_parent_label == 'price'){
@@ -486,7 +488,14 @@ $(document).ready(function(){
 
             if(min_val == 'Min' && max_val == 'Max'){
                 $('[label-value="price"]').html("Price");
-            }
+            };
+
+            var newMinValue = prams_list?.min_price == "500000" ? 0 : Number(prams_list?.min_price || 0) / 1000000;
+            var newMaxValue = prams_list?.max_price == "500000" ? 0 : Number(prams_list?.max_price || 100000000) / 1000000;
+
+            $("#price-slider").slider("values", [newMinValue, newMaxValue]);
+            $('.before-li').css({ width : newMinValue+'%'  })
+            $('.after-li').css({ width : (100 - newMaxValue)+'%'  })
         };
 
         // max and minmum radius dom >>>
@@ -599,6 +608,10 @@ $(document).ready(function(){
             $('.filter-dropdown-mtl-buttons button').attr('active', false);
             $('select').val('null')
             $('[dual-select] option').prop("disabled", false);
+
+            $("#price-slider").slider("values", [0, 100]);
+            $('.before-li').css({ width : 0+'%'  })
+            $('.after-li').css({ width : 0+'%'  })
         }
 
         $('body').attr('filter-modal-open', 'false')
@@ -923,8 +936,22 @@ $(document).ready(function(){
         max: 100,
         step: 1,
         values: [1, 100], // Initial range values
+        slide : function(event, ui){
+            $('.before-li').css({ width : ui.values[0]+'%'  })
+            $('.after-li').css({ width : (100 - ui.values[1])+'%'  })
+        },
         stop: function(event, ui) {
-            console.log(ui.values[0] + " - " + ui.values[1])
+            var min_val = Number(ui.values[0]) + '000000';
+            var max_val = Number(ui.values[1]) + '000000';
+
+            $('[name="min_price"]').val( ui.values[0] ? min_val : 'null');
+            $('[name="max_price"]').val( ui.values[1] ? max_val : 'null');
+
+            prams_list.min_price = Number(min_val)
+            prams_list.max_price = Number(max_val)
+            next_property = 1;
+            price_slider_filter = true;
+            searching("filter");
         }
     });
 
@@ -981,9 +1008,13 @@ $(document).ready(function(){
 
                 var sadf = calculateHeightPercentages(data.price_counts , obje)
 
+                $('.price-rage-chart').html('')
+                $('.price-rage-chart').append('<div class="before-li"></div>');
                 for (var i = 0; i < sadf.length; i++) {
                     $('.price-rage-chart').append('<li style="height: '+sadf[i].heightPercentage+'%;"></li>')
-                }
+                };
+                $('.price-rage-chart').append('<div class="after-li"></div>');
+
             },
             error: function (error) {
                 got_price_data = false;
