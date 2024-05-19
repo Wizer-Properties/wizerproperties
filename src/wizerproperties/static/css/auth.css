@@ -105,7 +105,7 @@ body{
 }
 .authIcon {
     font-size: 22px;
-    color: #15C1B9;
+    color: #7f1378;
 }
 
 .authTextArea {
@@ -278,7 +278,7 @@ body{
 }
 
 .auth-form-row{
-    background-color: #bb5ab4a3;
+    background-color: #F1A1EB;
     overflow: hidden;
     border-radius: 5px;
 }
@@ -376,7 +376,7 @@ body{
 }
 
 .extra-auth-link p a {
-    color: #15C1B9;
+    color: #7f1378;
 }
 
 #loadingSpinner{

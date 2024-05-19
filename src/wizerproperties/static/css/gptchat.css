@@ -83,17 +83,17 @@
 
 .chat .chat-history .my-message {
     border-top-left-radius: 0;
-    background: #F09AEA;
+    background: #F1A1EB;
 }
 
 .chat .chat-history .my-message:after {
     left: -7px;
-    background: #F09AEA;
+    background: #F1A1EB;
     clip-path: polygon(0 0, 100% 0, 100% 100%);
 }
 
 .chat .chat-history .other-message {
-    background: #8AF2ED;
+    background: #91F3EE;
     border-top-right-radius: 0;
 }
 

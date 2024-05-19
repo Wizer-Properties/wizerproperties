@@ -145,7 +145,7 @@
 
 .property-faciluties-list span .bi {
     font-size: 15px;
-    color: #F09AEA !important;
+    color: #15C1B9 !important;
 }
 
 .property-single-box 
@@ -312,7 +312,7 @@
 
 /* .property-single-box[property-type="popular"] */
 .property-short-info-box .material-symbols-outlined{
-    color: #F09AEA;
+    color: #15C1B9 !important;
 }
 
 
