@@ -581,6 +581,7 @@ $(document).ready(function(){
             $('.filter-dropdown-buttons [value="null"]').attr('active', true);
             $('.filter-dropdown-mtl-buttons button').attr('active', false);
             $('select').val('null')
+            $('[dual-select] option').prop("disabled", false);
         }
 
         $('body').attr('filter-modal-open', 'false')
@@ -697,6 +698,7 @@ $(document).ready(function(){
         $('#_3d_view_dialog').modal("show");
     });
 
+
     $(document).on('click', '.open-drone-view', function(){
         var _player = videojs($('#_3d_drone_view video')[0]);
         _player.reset();
@@ -705,10 +707,12 @@ $(document).ready(function(){
         $('#_3d_drone_view').modal("show");
     });
 
+
     $(document).on('click', '.close_3d_view_dialog', function(){
         $('#_3d_view_dialog').modal("hide");
         $('#_3d_view_dialog ._3d_model_display').html('');
     });
+
 
     $(document).on('click', '.close_3d_drone_view', function(){
         var _player = videojs($('#_3d_drone_view video')[0]);
@@ -727,6 +731,7 @@ $(document).ready(function(){
 
 
 
+    /*
 
     function get_popular_properties_list(){
         $.ajax({
@@ -874,6 +879,7 @@ $(document).ready(function(){
         get_popular_building_list()
     };
 
+    */
 
     $('[aria-label="filter-button"]').click(function(){
         var is_modal_open = $('body').attr('filter-modal-open');
