@@ -397,6 +397,7 @@ $(document).ready(function(){
                 
                 if(search_type == 'filter'){
                     $('#search-result-list').html(search_dom);
+                    pop_up_filter_active(search_param) // for give active color
                     pop_dispatch() // this is call from main.js file fow hide pop up
                 }else{
                     $('#search-result-list').append(search_dom);
@@ -426,6 +427,25 @@ $(document).ready(function(){
     };
 
     searching("search");
+
+
+    function pop_up_filter_active(search_param){
+
+        function active_status(selector, param){
+            var nearby_status = ![undefined, null, ''].includes(param);
+            selector.attr('active-filter', nearby_status);
+        };
+
+        active_status($('[filter-name="radius"]'), search_param.nearby)
+        active_status($('[filter-name="property-type"]'), search_param.building__type)
+
+        active_status($('[filter-name="price-box"]'), search_param.min_price || search_param.max_price);
+        var bed_room_status = search_param.min_number_of_bedroom || search_param.max_number_of_bedroom;
+        active_status($('[filter-name="bed-box"]'), bed_room_status);
+
+        
+
+    };
 
 
     function sorting_dom(search_param){

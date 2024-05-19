@@ -40,7 +40,7 @@
                 <div class="filter-icon">
                     <i class="bi bi-geo-alt"></i>
                 </div>
-                <div class="search-box">
+                <div class="search-box" active-filter="true">
                     <input id="gm-search-input" type="text" placeholder="Search by location" />
                     <button class="search-box-clear-button">
                         <i class="bi bi-x-circle"></i>
@@ -49,7 +49,7 @@
             </div>
 
             <div class="filter-option-area">
-                <div class="filter-single-box" pop-target="radius">
+                <div class="filter-single-box" pop-target="radius" filter-name="radius" active-filter="false">
                     <div class="center">
                         <div>
                             <div class="filter-icon">
@@ -78,8 +78,9 @@
                     </div>
                 </div>
 
+                <!-- =========================================== -->
 
-                <div class="filter-single-box" pop-target="price-box" tag-name="price">
+                <div class="filter-single-box" pop-target="price-box" tag-name="price" filter-name="price-box" active-filter="false">
                     <div class="center">
                         <div>
                             <div class="filter-icon">
@@ -314,9 +315,9 @@
                     </div>
                 </div>
 
+                <!-- =========================================== -->
 
-
-                <div class="filter-single-box" pop-target="bed-box">
+                <div class="filter-single-box" pop-target="bed-box" filter-name="bed-box" active-filter="false">
                     <div class="center">
                         <div>
                             <div class="filter-icon">
@@ -364,7 +365,9 @@
                     </div>
                 </div>
 
-                <div class="filter-single-box" pop-target="property-type">
+                <!-- =========================================== -->
+
+                <div class="filter-single-box" pop-target="property-type" filter-name="property-type" active-filter="false">
                     <div class="center">
                         <div>
                             <div class="filter-icon">
@@ -379,14 +382,21 @@
                 <div pop-element="property-type">
                     <div class="search-pop-up-box">
                         <div class="search-pop-up-select-box" label="property-type">
-                            <select name="building__type">
-                                <option value="">Property Type</option>
-                                <option value="condos"> Condos </option>
-                                <option value="house"> House</option>
-                            </select>
+                            <div class="filter-dropdown-mtl-buttons" name="property-type">
+                                <button name="building__type" value="condos">
+                                    <i class="bi bi-buildings"></i>
+                                    Condos
+                                </button>
+                                <button name="building__type" value="house">
+                                    <i class="bi bi-house"></i>
+                                    House
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- =========================================== -->
 
                 <div class="filter-single-box" aria-label="filter-button">
                     <div class="center">
@@ -400,8 +410,6 @@
                         </div>
                     </div>
                 </div>
-
-
 
             </div>
         </div>
