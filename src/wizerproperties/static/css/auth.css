@@ -278,7 +278,7 @@ body{
 }
 
 .auth-form-row{
-    background-color: #f09aeae8;
+    background-color: #bb5ab4a3;
     overflow: hidden;
     border-radius: 5px;
 }
@@ -376,7 +376,7 @@ body{
 }
 
 .extra-auth-link p a {
-    color: #7f1378;
+    color: #15C1B9;
 }
 
 #loadingSpinner{
