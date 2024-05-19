@@ -549,6 +549,11 @@
     right: 0;
 }
 
+[property-type="popular"]
+.search-result-box-img{
+    height: 320px;
+}
+
 
 @media screen and (max-width : 991px){
     .search-list-add-btns{
