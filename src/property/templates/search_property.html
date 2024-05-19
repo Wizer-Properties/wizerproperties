@@ -100,8 +100,8 @@
                             <div id="price-slider"></div>
                         </div>
                 
-                        <div class="price-filter-select-box" label="price">
-                            <select name="min_price">
+                        <div class="price-filter-select-box" label="price" dual-select>
+                            <select name="min_price" select-status="min">
                                 <option value="null">Min Price</option>
                                 <option value="500000">฿ 500,000</option>
                                 <option value="1000000">฿ 1,000,000</option>
@@ -206,7 +206,7 @@
                                 <option value="100000000">฿ 100,000,000</option>
                             </select>
                             <span class="to-to"> to </span>
-                            <select name="max_price">
+                            <select name="max_price" select-status="max">
                                 <option value="null">Max Price</option>
                                 <option value="500000">฿ 500,000</option>
                                 <option value="1000000">฿ 1,000,000</option>
@@ -330,9 +330,9 @@
                 </div>
                 <div pop-element="bed-box">
                     <div class="search-pop-up-box">
-                        <div class="search-pop-up-select-box" label="beds">
-                            <select name="min_number_of_bedroom">
-                                <option value="null">No min</option>
+                        <div class="search-pop-up-select-box" label="beds" dual-select>
+                            <select name="min_number_of_bedroom" select-status="min" select-name="bedroom">
+                                <option value="">No min</option>
                                 <option value="1"> 1 bedroom</option>
                                 <option value="2"> 2 bedrooms</option>
                                 <option value="3"> 3 bedrooms</option>
@@ -343,10 +343,11 @@
                                 <option value="8"> 8 bedrooms</option>
                                 <option value="9"> 9 bedrooms</option>
                                 <option value="10"> 10 bedrooms</option>
+                                <option value="null">No min</option>
                             </select>
                             <span class="to-to"> to </span>
-                            <select name="max_number_of_bedroom">
-                                <option value="null">No max</option>
+                            <select name="max_number_of_bedroom" select-status="max" select-name="bedroom">
+                                <option value="">No max</option>
                                 <option value="1"> 1 bedroom</option>
                                 <option value="2"> 2 bedrooms</option>
                                 <option value="3"> 3 bedrooms</option>
@@ -357,6 +358,7 @@
                                 <option value="8"> 8 bedrooms</option>
                                 <option value="9"> 9 bedrooms</option>
                                 <option value="10"> 10 bedrooms</option>
+                                <option value="null">No max</option>
                             </select>
                         </div>
                     </div>
@@ -439,8 +441,8 @@
                         <div class="col-lg-6 col-xl-4" display-view="small">
                             <div class="filter-option-box-wrapper mb-4">
                                 <label> Price </label>
-                                <div class="range-area">
-                                    <select name="min_price">
+                                <div class="range-area" dual-select>
+                                    <select name="min_price" select-status="min">
                                         <option value="null">Min Price</option>
                                         <option value="500000">฿ 500,000</option>
                                         <option value="1000000">฿ 1,000,000</option>
@@ -545,7 +547,7 @@
                                         <option value="100000000">฿ 100,000,000</option>
                                     </select>
                                     <span class="to-to"> to </span>
-                                    <select name="max_price">
+                                    <select name="max_price" select-status="max">
                                         <option value="null">Max Price</option>
                                         <option value="500000">฿ 500,000</option>
                                         <option value="1000000">฿ 1,000,000</option>
@@ -656,8 +658,8 @@
                         <div class="col-lg-6 col-xl-4" display-view="small">
                             <div class="filter-option-box-wrapper mb-4">
                                 <label> Bedrooms </label>
-                                <div class="range-area">
-                                    <select name="min_number_of_bedroom">
+                                <div class="range-area" dual-select>
+                                    <select name="min_number_of_bedroom" select-status="min">
                                         <option value="null">Min Bedroom</option>
                                         <option value="1"> 1 bedroom</option>
                                         <option value="2"> 3 bedrooms</option>
@@ -671,7 +673,7 @@
                                         <option value="10"> 8 bedrooms</option>
                                     </select>
                                     <span class="to-to"> to </span>
-                                    <select name="max_number_of_bedroom">
+                                    <select name="max_number_of_bedroom" select-status="max">
                                         <option value="null">Max Bedroom</option>
                                         <option value="1"> 1 bedroom</option>
                                         <option value="2"> 3 bedrooms</option>
@@ -691,8 +693,8 @@
                         <div class="col-lg-6 col-xl-4">
                             <div class="filter-option-box-wrapper mb-4">
                                 <label> Unit Area </label>
-                                <div class="range-area">
-                                    <select name="min_unit_area">
+                                <div class="range-area" dual-select>
+                                    <select name="min_unit_area" select-status="min">
                                         <option value="null">Min Unit Area</option>
                                         <option value="100"> 100 SqM</option>
                                         <option value="200"> 200 SqM</option>
@@ -701,7 +703,7 @@
                                         <option value="500"> 500 SqM</option>
                                     </select>
                                     <span class="to-to"> to </span>
-                                    <select name="max_unit_area">
+                                    <select name="max_unit_area" select-status="max">
                                         <option value="null">Max Unit Area</option>
                                         <option value="100"> 100 SqM</option>
                                         <option value="200"> 200 SqM</option>

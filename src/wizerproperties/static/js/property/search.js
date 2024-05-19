@@ -990,6 +990,50 @@ $(document).ready(function(){
         }
     
         return heightPercentages;
-    }
+    };
+
+
+    $(document).on('change', '[dual-select] select', function() {
+        var this_val = $(this).val();
+        var this_status = $(this).attr('select-status')
+        var shib_options = $(this).siblings('select').find('option');
+               
+        shib_options.prop("disabled", this_status == 'max');
+    
+        for (let i = 0; i < shib_options.length; i++) {
+            if(this_status == 'min'){
+                shib_options[i].disabled = true;
+                if(shib_options[i].getAttribute('value') == this_val) break;
+            };
+
+            if(this_status == 'max'){
+                if(shib_options[i].getAttribute('value') == this_val) break;
+                shib_options[i].disabled = false;
+            };
+        };
+
+        // how to apply (do not remove)
+        /*
+        parent attr is "dual-select"
+        child attr "select-status" value (min / max)
+        and make sure the option value not be repeated
+        
+        <div dual-select>
+            <select select-status="min">
+                <option value="any_value"> any_value</option>
+                ... more
+            </select>
+            
+            <select select-status="max">
+                <option value="any_value">  any_value</option>
+                ... more
+            </select>
+        </div>
+        */ 
+    });
+
+    
+    
+
 
 });
