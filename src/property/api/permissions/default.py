@@ -5,6 +5,8 @@ class PropertyPermission(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.method in ["POST", "PUT", "PATCH", "DELETE"]:
             return hasattr(request.user, "developerprofile") or hasattr(request.user, "agentprofile")
+        elif view.action in ["nearest"]:
+            return hasattr(request.user, "prospectprofile")
 
         return True
 

@@ -23,6 +23,11 @@ urlpatterns = [
         name="count_in_price_ranges",
     ),
     path(
+        "nearest/",
+        PropertyViewSet.as_view({"get": "nearest"}),
+        name="nearest",
+    ),
+    path(
         "generate-description/", PropertyViewSet.as_view({"post": "generate_description"}), name="generate_description"
     ),
     path(

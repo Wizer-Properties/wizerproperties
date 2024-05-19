@@ -17,6 +17,11 @@
         justify-content: center;
         padding-bottom: 20px;
     }
+
+    [label-name="latitude"],
+    [label-name="longitude"] {
+        display: none;
+    }
 </style>
 {% endblock extend_head %}
 
@@ -54,5 +59,9 @@
         profileSettingsUrl = "{% url 'user:api:prospect_update' profile.id %}"
     }
 </script>
+<script async
+    src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_API_KEY }}&libraries=places&callback=initializeMap">
+    </script>
+<script src="{% static 'js/g_map.js' %}?v=1.00"></script>
 <script src="{% static 'js/auth/profile_settings.js' %}?v=1.00"></script>
 {% endblock extend_script %}
