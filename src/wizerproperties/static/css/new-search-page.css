@@ -521,6 +521,10 @@
     color: #001229 !important;
 }
 
+.search-box-clear-button .bi{
+    color: #525F74 !important;
+}
+
 @media screen and (max-width : 991px){
     .search-list-add-btns{
         width: 100%;
