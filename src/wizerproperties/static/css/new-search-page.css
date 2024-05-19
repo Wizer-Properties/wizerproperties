@@ -1,5 +1,5 @@
 .property-card-down-area{
-    background-color: #FAF9F9;
+    background-color: #F8E0F6;
     border-radius: 15px;
     padding: 15px;
     width: 260px;
@@ -63,6 +63,7 @@
     border-radius: 15px;
     padding: 15px;
     border: none;
+    background: #ffedfe;
 }
 
 .image-area-with-add-btns{
@@ -119,7 +120,7 @@
     gap: 12px;
     font-size: 16px;
     padding: 8px 15px;
-    background-color: #D34346;
+    background-color: #15C1B9;
     color: #fff !important;
     border-radius: 5px;
     font-weight: 600;
@@ -144,6 +145,7 @@
 
 .property-faciluties-list span .bi {
     font-size: 15px;
+    color: #F09AEA !important;
 }
 
 .property-single-box 
@@ -255,13 +257,13 @@
 }
 
 
-.property-single-box[property-type="newly-created"]{
+.property-single-box[property-type="newly_created"]{
     .search-result-box-wrapper{
         background-color: #EEFAFD;
     }
 
     .property-card-down-area{
-        background-color: #fff;
+        background-color: #D6F4F5;
     }
 
     .search-box-title span,
@@ -290,12 +292,12 @@
     }
 
     .search-result-box-wrapper{
-        background-color: #001229;
+        background-color: #7f1377;
     }
 
     .search-box-title span,
     [date-count]{
-        background-color: #001229;
+        background-color: #7f1377;
     }
 }
 
@@ -305,12 +307,12 @@
 
 .property-single-box[property-type="popular"]
 .property-card-down-area{
-    background-color: #1A2A3F;
+    background-color: #92298A;
 }
 
-.property-single-box[property-type="popular"]
+/* .property-single-box[property-type="popular"] */
 .property-short-info-box .material-symbols-outlined{
-    color: #fff;
+    color: #F09AEA;
 }
 
 
@@ -333,7 +335,7 @@
     font-weight: 500;
     display: block;
     z-index: 1;
-    background-color: #fff;
+    background-color: #ffedfe;
     padding-right: 10px;
 }
 
@@ -355,7 +357,7 @@
     gap: 3px;
     font-weight: 600;
     z-index: 1;
-    background-color: #fff;
+    background-color: #ffedfe;
     padding-left: 10px;
 }
 
@@ -640,6 +642,8 @@
         justify-content: space-between;
         border-radius: 0;
         padding: 10px 15px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
     }
 
     .agency-contact-info{

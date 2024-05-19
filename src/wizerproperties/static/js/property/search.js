@@ -295,7 +295,7 @@ $(document).ready(function(){
                                         '<div class="property-card-modal-btns">'+
                                             ( 
                                                 ![null, ''].includes(data?.interior_view) ?
-                                            '<button class="link border-0 open-3D-model" data-src="'+data?.interior_view+'" > Interior View </button>' : ''
+                                            '<button class="link border-0 open-3D-model" data-src="'+data?.interior_view+'" > Interior 3D View </button>' : ''
                                             )+
                                             (
                                                 data?.ariel_view ?
@@ -313,9 +313,6 @@ $(document).ready(function(){
                                             '<p class="agent-company-name"> Added: '+ formattedDate +' </p>'+
                                         '</div>'+
                                         '<div class="agency-contact-info">'+
-                                            '<a href="tel:'+ data?.developer_phone_number +'" class="dev-phn-number">'+
-                                                '<span>'+ data?.developer_phone_number +'</span>'+
-                                            '</a>'+
                                             '<a href="/schedule/create_schedule/?type=property&id='+data?.id+'" class="dev-to-contact">'+
                                                 '<i class="bi bi-envelope"></i>'+
                                                 '<span class="_contact"> Contact </span>'+
