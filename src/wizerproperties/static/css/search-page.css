@@ -378,7 +378,8 @@ added{
     gap: 10px;
 }
 
-.property-card-modal-btns button{
+.property-card-modal-btns button,
+.property-card-modal-btns a{
     background: #15C1B9 !important;
     color: #fff !important;
     padding: 8px 25px;
@@ -389,7 +390,8 @@ added{
     letter-spacing: .6px;
 }
 
-.property-card-modal-btns button:hover{
+.property-card-modal-btns button:hover,
+.property-card-modal-btns a:hover{
     opacity: .9;
     box-shadow : none;
 }

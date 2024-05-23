@@ -1,9 +1,7 @@
 .property-card-down-area{
-    background-color: #F8E0F6;
     border-radius: 15px;
-    padding: 15px;
-    width: 260px;
-    min-width: 260px;
+    width: 220px;
+    min-width: 220px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -32,10 +30,9 @@
 
 
 .search-result-box{
-    display: flex;
-    justify-content: space-between;
-    height: 100%;
-    flex-direction: row;
+    display: block;
+    padding: 0 25px;
+    padding-right: 10px;
 }
 
 .search-list-add-btns{
@@ -220,7 +217,8 @@
     font-size: 16px;
 }
 
-.property-card-modal-btns button{
+.property-card-modal-btns button,
+.property-card-modal-btns a{
     font-size: 15px;
 }
 
@@ -262,10 +260,6 @@
         background-color: #EEFAFD;
     }
 
-    .property-card-down-area{
-        background-color: #D6F4F5;
-    }
-
     .search-box-title span,
     [date-count]{
         background-color: #EEFAFD;
@@ -305,11 +299,6 @@
     gap: 5px !important;
 }
 
-.property-single-box[property-type="popular"]
-.property-card-down-area{
-    background-color: #92298A;
-}
-
 /* .property-single-box[property-type="popular"] */
 .property-short-info-box .material-symbols-outlined{
     color: #15C1B9 !important;
@@ -326,7 +315,8 @@
 
 .search-result-content{
     width: 100%;
-    padding: 0 25px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .search-box-title span{
@@ -587,7 +577,8 @@
         font-size: 14px;
     }
 
-    .property-card-modal-btns button {
+    .property-card-modal-btns button,
+    .property-card-modal-btns a {
         font-size: 14px;
     }
 
@@ -651,6 +642,10 @@
         display: block;
     }
 
+    .search-result-box {
+        padding: 0;
+    }
+
 }
 
 
@@ -675,9 +670,10 @@
     }
 
     .agency-contact-info{
-        display: flex;
-        align-items: center;
-        gap: 10px;
+        position: absolute;
+        bottom: 20px;
+        right: 15px;
+        z-index: 99;
     }
 
     .dev-phn-number,
@@ -708,6 +704,7 @@
         display: flex;
         align-items: center;
         gap: 5px;
+        max-width: calc(100% - 135px);
     }
 
     .agent-company-name{
@@ -771,6 +768,7 @@
 
     .buillding-agency-logo {
         height: 40px;
+        min-width: max-content;
     }
 
     .search-result-box-wrapper{

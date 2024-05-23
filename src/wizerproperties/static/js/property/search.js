@@ -291,8 +291,19 @@ $(document).ready(function(){
                                                 property_facility_tmp(data)+
                                             '</div>'+
                                         '</a>'+
+                                        '<div class="property-card-down-area">'+
+                                            '<div class="agency-company-info">'+
+                                                '<div class="buillding-agency-logo mb-2">'+
+                                                    '<img src="'+ data?.developer_image +'" alt="company logo">'+
+                                                '</div>'+
+                                                '<p class="agent-company-name">'+ data?.developer_company_name +'</p>'+
+                                                '<p class="agent-company-name"> Added: '+ formattedDate +' </p>'+
+                                            '</div>'+
+                                        '</div>'+
+                                    '</div>'+
 
-                                        '<div class="property-card-modal-btns">'+
+                                    '<div class="property-card-modal-btns gap-2">'+
+                                        '<div class="d-flex gap-2">'+
                                             ( 
                                                 ![null, ''].includes(data?.interior_view) ?
                                             '<button class="link border-0 open-3D-model" data-src="'+data?.interior_view+'" > Interior 3D View </button>' : ''
@@ -302,22 +313,10 @@ $(document).ready(function(){
                                             '<button class="link border-0 open-drone-view" data-src="'+data?.ariel_view+'" > Ariel View </button>' : ''
                                             )+
                                         '</div>'+
-                                    '</div>'+
 
-                                    '<div class="property-card-down-area">'+
-                                        '<div class="agency-company-info">'+
-                                            '<div class="buillding-agency-logo mb-2">'+
-                                                '<img src="'+ data?.developer_image +'" alt="company logo">'+
-                                            '</div>'+
-                                            '<p class="agent-company-name">'+ data?.developer_company_name +'</p>'+
-                                            '<p class="agent-company-name"> Added: '+ formattedDate +' </p>'+
-                                        '</div>'+
-                                        '<div class="agency-contact-info">'+
-                                            '<a href="/schedule/create_schedule/?type=property&id='+data?.id+'" class="dev-to-contact">'+
-                                                '<i class="bi bi-envelope"></i>'+
-                                                '<span class="_contact"> Contact </span>'+
-                                            '</a>'+
-                                        '</div>'+
+                                        '<a href="/schedule/create_schedule/?type=property&id='+data?.id+'" class="link border-0 agency-contact-info"'+
+                                            '<span> <i class="bi bi-envelope"></i> Contact </span>'+
+                                        '</a>'+
                                     '</div>'+
 
                                 '</div>'+
