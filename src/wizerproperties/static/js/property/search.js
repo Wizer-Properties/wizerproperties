@@ -315,7 +315,7 @@ $(document).ready(function(){
                                         '</div>'+
 
                                         '<a href="/schedule/create_schedule/?type=property&id='+data?.id+'" class="link border-0 agency-contact-info"'+
-                                            '<span> <i class="bi bi-envelope"></i> Contact </span>'+
+                                            '<i class="bi bi-envelope"></i> Contact'+
                                         '</a>'+
                                     '</div>'+
 
@@ -397,7 +397,6 @@ $(document).ready(function(){
                     pop_up_filter_active(search_param) // for give active color
 
                     if(!price_slider_filter){
-                        console.log("========")
                         pop_dispatch() // this is call from main.js file fow hide pop up
                     };
                     
@@ -420,6 +419,8 @@ $(document).ready(function(){
 
                 // showing sorting type dom
                 if(search_param.ordering) sorting_dom(search_param);
+
+                setTimeout(contact_button_position, 10); // responsive position for contact btn
             },
             error: function (error) {
                 active_free_scrolling = false;
@@ -430,6 +431,26 @@ $(document).ready(function(){
     };
 
     searching("search");
+
+    function contact_button_position(){
+        var single_box = $('.property-single-box');
+        
+        if(window.innerWidth >= 1220){
+            $('.agency-contact-info').css({
+                left : 'initial'
+            })
+            return;
+        };
+
+        for (let i = 0; i < single_box.length; i++) {
+            var info_width = single_box[i].querySelector('.agency-company-info')?.getBoundingClientRect().width;
+            single_box[i].querySelector('.agency-contact-info').style.left = 30+info_width+'px';
+        }
+    };
+
+    $(window).resize(function() {
+        contact_button_position();
+    });
 
 
     function pop_up_filter_active(search_param){
