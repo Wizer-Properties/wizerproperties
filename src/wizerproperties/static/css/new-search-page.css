@@ -12,6 +12,8 @@
     margin-top: 20px;
     gap: 10px;
     margin-bottom: 0;
+    justify-content: space-between;
+    padding-right:calc((220px - 135.78px) / 2);
 }
 
 .buillding-agency-logo img{
@@ -667,6 +669,10 @@
         padding: 10px 15px;
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;
+    }
+
+    .property-card-modal-btns{
+        padding-right: 0;
     }
 
     .agency-contact-info{
