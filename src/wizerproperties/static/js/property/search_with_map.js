@@ -1,0 +1,283 @@
+$(document).ready(function(){
+    
+    // Create a URL object
+    var url = new URL(window.location.href);
+    var place = url.searchParams.get("place");
+    $('#gm-search-input').val(place || '');
+    $('.search-area').html(place || '');
+    var markers = [];
+
+    function clearMarkers() {
+        markers.forEach(function(marker) {
+            marker.setMap(null);
+        });
+        markers = [];
+    }
+
+    function resetMarkerIcons() {
+        markers.forEach((marker) => {
+          marker.setIcon("http://maps.google.com/mapfiles/ms/icons/red-dot.png"); // Reset icon of all markers
+        });
+    }
+    
+
+    $(document).on('click', '.filter-dropdown-btn', function(){
+        var target_area = 
+            $(this)
+            .parents('.filter-categories-dropdown')
+            .find('.filter-dropdown-field')
+
+        target_area.slideToggle(200);
+
+        $('body').prepend('<div class="filter-overlay"></div>');
+
+        var target_position = target_area[0].getBoundingClientRect();
+        var widnow_w = window.innerWidth;
+        var total_el = target_position?.width + target_position?.x;
+
+        if(total_el + 10 > widnow_w){
+            target_area.css({
+                left : widnow_w - (total_el + 10)
+            })
+        }else{
+            target_area.css({
+                left : 0
+            })
+        };
+    });
+    
+
+    function filter_close_dropdown(){
+        $('.filter-dropdown-field').slideUp(200)
+
+        setTimeout(() => {
+            $('.filter-dropdown-field').css({
+                left : 0
+            })
+            $('.filter-overlay').remove()
+        }, 200);
+    };
+
+
+    $(document).on('click', '.filter-overlay', filter_close_dropdown);
+        
+
+    var prams_list = {
+        page_size : 5,
+        search : place || ''
+    }
+    var next_property = 1;
+
+    function searching(search_type){
+        var search_param = prams_list;
+        var get_url = new URL(window.location.href);
+        var get_params = new URLSearchParams(get_url.search);
+        var p_latitude = get_params.get('latitude');
+        var p_longitude = get_params.get('longitude');
+
+        if(p_latitude && p_longitude){
+            search_param.lat = p_latitude;
+            search_param.long = p_longitude;
+        };
+        
+        if(next_property) search_param.page = next_property;
+        if([null].includes(next_property)) return;
+
+        // removing search filter for nearby
+        if(
+            search_param?.hasOwnProperty("nearby") &&
+            search_param?.hasOwnProperty("search")
+        ){
+            delete search_param.search;
+        };
+        
+        $.ajax({
+            url: '/property/api/property_list_for_map_search/',
+            type: 'GET',
+            data : search_param,
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            success: function (data) {
+
+                clearMarkers()
+
+                data.results.forEach(function(item){
+                    var marker = new google.maps.Marker({
+                        position: {lat: item.building_info.latitude, lng: item.building_info.longitude },
+                        map: search_page_map,
+                        icon: {
+                          url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                          labelOrigin: new google.maps.Point(75, 32),
+                          size: new google.maps.Size(32,32),
+                          anchor: new google.maps.Point(16,32)
+                        }
+                    });
+
+                    markers.push(marker)
+        
+                    marker.addListener('click', function() {
+                        resetMarkerIcons()
+                        marker.setIcon("http://maps.gstatic.com/mapfiles/ms2/micons/rangerstation.png")
+                    });
+                })
+                
+            },
+            error: function (error) {
+            }
+        });
+    };
+
+    searching("search");
+
+
+    $(document).on('change', 'select', function(){
+        filter_close_dropdown();
+        prams_list[$(this).attr('name')] = $(this).val() == 'null' ? '' : $(this).val();
+        next_property = 1;
+        searching("filter");
+
+        var get_parent_label = $(this).parents('[label]')?.attr('label');
+        var button_dom = $(this).parents('[label]')?.find('button');
+
+        // max and minmum price dom >>>
+        if(get_parent_label == 'price'){
+            var min_val = formatNumber(prams_list?.min_price || 'Min')
+            var max_val = formatNumber(prams_list?.max_price || 'Max')
+
+            if(min_val == "Min" && max_val == "Max" ){
+                button_dom.html('Any Price  <i class="bi bi-chevron-down"></i>')
+                return;
+            }else{
+                min_val = '฿ ' + min_val;
+                max_val = '฿ ' + max_val;
+            };
+
+            button_dom.html(min_val+' - '+max_val+' <i class="bi bi-chevron-down"></i>')
+        };
+
+        // max and minmum unit area dom >>>
+        if(get_parent_label == 'unit_area'){
+            var min_val = formatNumber(prams_list?.min_unit_area || 'Min')
+            var max_val = formatNumber(prams_list?.max_unit_area || 'Max')
+
+            if(min_val == "Min" && max_val == "Max" ){
+                button_dom.html('Unit Area  <i class="bi bi-chevron-down"></i>')
+                return;
+            }else{
+                min_val = min_val + ' SqM';
+                max_val = max_val + ' SqM';
+            };
+            button_dom.html(min_val+' - '+max_val+' <i class="bi bi-chevron-down"></i>')
+        };
+    });
+
+
+    $(document).on('click', '.filter-dropdown-buttons button', function(){
+        var get_val =  $(this).val() == 'null' ? '' :  $(this).val();
+        filter_close_dropdown();
+
+        var render_btn_dom = get_val == '' ? '' : ' ('+get_val+') ';
+        if(prams_list[$(this).attr('name')] == get_val){
+            render_btn_dom = ''
+        };
+        var label_name = $(this).parents('.filter-categories-dropdown').attr('label');
+
+        $(this).parents('.filter-categories-dropdown').find('.filter-dropdown-btn')
+        .html(label_name + render_btn_dom + ' <i class="bi bi-chevron-down"></i>')
+
+        if(prams_list[$(this).attr('name')] == get_val){
+            $(this).parents('.filter-dropdown-buttons').find('button').attr('active', false);
+            prams_list[$(this).attr('name')] = '';
+            $(this).parents('.filter-dropdown-buttons').find('button[value="null"]').attr('active', true);
+            if(get_val != '') {
+                next_property = 1;
+                searching("filter");
+            }
+            
+            return;
+        };
+
+        prams_list[$(this).attr('name')] =  get_val;
+        next_property = 1;
+        searching("filter");
+
+        $(this).parents('.filter-dropdown-buttons').find('button').attr('active', false);
+        $(this).attr('active', true);
+    });
+
+
+    $(document).on('click', '[name="features"] button', function(){
+        filter_close_dropdown();
+        prams_list[$(this).val()] = !prams_list[$(this).val()];
+        $(this).attr('active', prams_list[$(this).val()]);
+
+        if(!prams_list[$(this).val()]){
+            delete prams_list[$(this).val()];
+        };
+
+        next_property = 1;
+        searching("filter");
+    });
+
+
+    $(document).on('click', '[name="property-type"] button, [name="property-quota"] button, [name="property-furnishing"] button', function(){
+        filter_close_dropdown();
+        $(this).parents('.filter-dropdown-mtl-buttons').find('button').attr('active', false);
+
+        if(prams_list[$(this).attr('name')] == $(this).val()){
+            prams_list[$(this).attr('name')] = '';
+            next_property = 1;
+            searching("filter");
+            return
+        };
+
+        prams_list[$(this).attr('name')] =  $(this).val();
+        next_property = 1;
+        searching("filter");
+        $(this).attr('active', true);
+    });
+
+
+    $('.reset-btn').click(function(){
+        if( Object.keys(prams_list).length > 1 ){
+            prams_list = {
+                search : place || ''
+            };
+
+            next_property = 1;
+            searching("filter")
+
+            $('[label="price"] button.filter-dropdown-btn').html('Any Price <i class="bi bi-chevron-down"></i>');
+            $('[label="unit_area"] button.filter-dropdown-btn').html('Any Price <i class="bi bi-chevron-down"></i>');
+            $('[label="Beds"] button.filter-dropdown-btn').html('Beds <i class="bi bi-chevron-down"></i>');
+            $('[label="Baths"] button.filter-dropdown-btn').html('Baths <i class="bi bi-chevron-down"></i>');
+            $('[label="Area"] button.filter-dropdown-btn').html('Area <i class="bi bi-chevron-down"></i>');
+            $('.filter-dropdown-buttons button').attr('active', false);
+            $('.filter-dropdown-buttons [value="null"]').attr('active', true);
+            $('.filter-dropdown-mtl-buttons button').attr('active', false);
+            $('select').val('null')
+        }
+    });
+
+
+    function formatNumber(number) {
+        if(
+            Number(number) == NaN ||
+            [null, undefined, ''].includes(number)
+        ){
+            return number
+        }
+
+        if (number >= 1000000000) {
+            return (number / 1000000000).toFixed(1) + ' B';
+        } else if (number >= 1000000) {
+            return (number / 1000000).toFixed(1) + ' M';
+        } else if (number >= 1000) {
+            return (number / 1000).toFixed(1) + ' k';
+        } else {
+            return number.toString();
+        }
+    };
+
+});

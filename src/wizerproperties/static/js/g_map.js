@@ -30,10 +30,15 @@ async function initializeMap() {
             }
         };
 
+        var redirectPath = "/property/search/"
+        if(window.location.pathname == "/property/map/"){
+            redirectPath = "/property/map/"
+        }
+
         if (place.geometry) {
             var latitude = place.geometry.location.lat();
             var longitude = place.geometry.location.lng();
-            window.location.href = '/property/search/'+
+            window.location.href = redirectPath +
                                     '?place='+search_input.value+
                                      '&latitude='+latitude+
                                     '&longitude='+longitude+
@@ -42,7 +47,7 @@ async function initializeMap() {
             return
         };
 
-        window.location.href = '/property/search/?place='+search_input.value
+        window.location.href = redirectPath + '?place='+search_input.value
     })
 
 
