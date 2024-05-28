@@ -5,6 +5,7 @@ from .views import PropertyViewSet, ComparePropertyViewSet, ProspectFavoriteProp
 urlpatterns = [
     path("list/", PropertyViewSet.as_view({"get": "list"}), name="list"),
     path("property_list_for_map_search/", PropertyViewSet.as_view({"get": "property_list_for_map_search"}), name="property_list_for_map_search"),
+    path("nearby_property_list/<int:pk>/", PropertyViewSet.as_view({"get": "nearby_property_list"}), name="nearby_property_list"),
     path("list/newly-created/", PropertyViewSet.as_view({"get": "newly_created"}), name="newly_created"),
     path("list/popular/", PropertyViewSet.as_view({"get": "popular"}), name="popular"),
     path("details/<int:pk>/", PropertyViewSet.as_view({"get": "retrieve"}), name="details"),

@@ -7,6 +7,14 @@
 
 <link rel="stylesheet" href="{% static '/css/search-page.css' %}?v=1.00" />
 
+<style>
+    .property-search-map-detail-modal{
+        background-color: transparent !important;
+        backdrop-filter: none !important;
+        position: absolute !important;
+        width: 400px !important;
+    }
+</style>
 {% endblock extend_head %}
 
 {% block content %}
@@ -194,6 +202,16 @@
         </div>
     </div>
 </section>
+
+
+<!-- detail modal -->
+<div class="log-in-modal property-search-map-detail-modal">
+    <div class="log-in-modal-overlay" log-modal-btn="close"></div>
+    <div class="log-in-modal-body property-search-map-modal-body">
+        <div class="detail-body"></div>
+        <div class="nearby-items"></div>
+    </div>
+</div>
 
 {% endblock %}
 

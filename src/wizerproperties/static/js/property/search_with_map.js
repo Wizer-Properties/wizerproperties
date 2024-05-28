@@ -60,7 +60,128 @@ $(document).ready(function(){
 
 
     $(document).on('click', '.filter-overlay', filter_close_dropdown);
-        
+
+    function loader_tmp(){
+        return '<div class="col-lg-12 mb-1 searching-loader">'+
+                    '<div class="search-result-box-wrapper">'+
+                        '<span class="skeleton-box" style="width: 100%; height: 200px;"></span>'+
+                        '<div class="search-result-box">'+
+                            '<h1> <span class="skeleton-box" style="width: 100%; height: 20px;"></span> </h1>'+
+                            '<div class="location">'+
+                                '<span class="skeleton-box" style="width: 100%; height: 20px;"></span>'+
+                            '</div>'+
+                            '<p class="sub-title">'+
+                                '<span class="skeleton-box" style="width: 100%; height: 21px;"></span>'+
+                            '</p>'+
+
+                            '<p class="details">'+
+                                '<span class="skeleton-box" style="width: 100%; height: 40px;"></span>'+
+                            '</p>'+  
+                        '</div>'+
+                    '</div>'+
+                '</div>'
+    };
+
+    function loader_tmp_nearby_items(){
+        return '<div class="row" style="height: 115px;width: 100%;">'+
+                '<div class="col-lg-3 col-xl-4">'+
+                    '<div class="search-result-box-img">'+
+                        '<span class="skeleton-box" style="width: 100%; height: 90px;"></span>'+
+                    '</div>'+
+                '</div>'+
+                '<div class="col-lg-9 col-xl-8">'+
+                    '<div class="search-result-box" style="height:auto">'+
+                        '<h1> <span class="skeleton-box" style="width: 100%; height: 20px;"></span> </h1>'+
+                        '<div class="location">'+
+                            '<span class="skeleton-box" style="width: 100%; height: 20px;"></span>'+
+                        '</div>'+
+                        
+                        '<p class="details">'+
+                            '<span class="skeleton-box" style="width: 100%; height: 40px;"></span>'+
+                        '</p>'+
+                        
+                    '</div>'+
+                '</div>'+
+            '</div>'
+    };
+
+    function getDetailProperty(propertyID){
+        // Loader skeleton
+        $(".property-search-map-detail-modal").find(".property-search-map-modal-body").find(".detail-body").html(loader_tmp)
+
+        $.ajax({
+            url: '/property/api/details/' + propertyID + '/',
+            type: 'GET',
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            success: function(res){
+                $(".property-search-map-detail-modal").find(".property-search-map-modal-body").find(".detail-body").html(
+                    '<div class="item-detail-container">'+
+                        '<div class="image-gallery">'+
+                            '<img style="height: 160px;" class="card-img-top" src="'+ res.default_image +'" alt="Card image cap">' +
+                        '</div>'+
+                        '<div class="price" style="background-color:#b9acac21;font-weight: bold;padding:10px;">£'+ res.price +'</div>'+
+
+                        '<p style="font-size: 13px;margin-top: 20px;">'+ res.description.slice(0, 200) +'</p>' +
+                        '<a href="/property/details/'+ res.id +'" class="btn btn-success" target="_blank">See Full Property Details</button>'+
+                    '</div>'
+                    + "<hr>"
+                )
+            }
+        })
+    }
+
+    function getRelatedProperties(propertyID){
+        $.ajax({
+            url: '/property/api/nearby_property_list/' + propertyID + '/',
+            type: 'GET',
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            success: function(res){
+                var nearbyItems = ""
+                res.results.forEach(function(item){
+                    nearbyItems += '<div class="row nearby-single-item" data-property-id="'+ item.id +'" style="height: 115px;width: 100%;cursor: pointer;">'+
+                        '<div class="col-lg-3 col-xl-4">'+
+                            '<div class="search-result-box-img">'+
+                                '<img src="'+ item.default_image +'" class="img-responsive" alt=""  style="width: 100%; height: 90px;"/>'+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="col-lg-9 col-xl-8">'+
+                            '<div class="search-result-box" style="height:auto">'+
+                                '<p style="font-size: 14px; font-weight: bold;color: green;">'+ item.title.slice(0, 30) +'</p>'+
+                                '<p style="font-size: 13px; color: grey;">'+ item.description.slice(0, 60) +'</p>'+
+                                
+                                '<p class="details">'+
+                                '<p style="font-size: 16px; font-weight: bold;color: black;">$'+ item.price +'</p>'+
+                                '</p>'+
+                                
+                            '</div>'+
+                        '</div>'+
+                    '</div>'
+                })
+                $(".property-search-map-detail-modal").find(".property-search-map-modal-body").find(".nearby-items").html(
+                    "<p>Nearby properties matching your criteria</p>" + 
+                    nearbyItems
+                )
+            }
+        })
+    }
+
+    $(document).on("click", ".nearby-single-item", function(){
+        resetMarkerIcons()
+        getDetailProperty($(this).data("property-id"))
+        getRelatedProperties($(this).data("property-id"))
+
+        // Select marker
+        markers.forEach(function(marker) {
+            console.log(marker)
+            if (marker.id === "marker_id_" + $(this).data("property-id")) {
+                marker.setIcon("http://maps.gstatic.com/mapfiles/ms2/micons/rangerstation.png");
+            }
+        });
+    })
 
     var prams_list = {
         page_size : 5,
@@ -110,7 +231,8 @@ $(document).ready(function(){
                           url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
                           labelOrigin: new google.maps.Point(75, 32),
                           size: new google.maps.Size(32,32),
-                          anchor: new google.maps.Point(16,32)
+                          anchor: new google.maps.Point(16,32),
+                          id: "marker_id_" + item.id
                         }
                     });
 
@@ -118,7 +240,23 @@ $(document).ready(function(){
         
                     marker.addListener('click', function() {
                         resetMarkerIcons()
+
                         marker.setIcon("http://maps.gstatic.com/mapfiles/ms2/micons/rangerstation.png")
+
+                        $(".property-search-map-detail-modal").css({
+                            "display": "block"
+                        })
+                        
+
+                        // Loader skeleton
+                        $(".property-search-map-detail-modal").find(".property-search-map-modal-body").find(".nearby-items").html(
+                            loader_tmp_nearby_items() + loader_tmp_nearby_items() + loader_tmp_nearby_items()
+                        )
+
+                        // Get property details and related properties
+                        getDetailProperty(item.id)
+                        getRelatedProperties(item.id)
+                        
                     });
                 })
                 
@@ -279,5 +417,12 @@ $(document).ready(function(){
             return number.toString();
         }
     };
+
+    // Onclick event handler on map click
+    google.maps.event.addListener(search_page_map, "click", function(event) {
+        $(".property-search-map-detail-modal").css({
+            "display": "none"
+        })
+    });
 
 });
