@@ -571,6 +571,10 @@ body[img-gallery-open="true"] .img-gallery-dialog{
     margin: 0;
 }
 
+.social-icon i {
+    font-size: 24px;
+}
+
 @media screen and (max-width : 991px) {
     .details-gallery,
     .details-gallery-video,

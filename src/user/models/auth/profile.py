@@ -16,18 +16,25 @@ class Profile(TimestampedModel):
         return str(self.user)
 
 
-class DeveloperProfile(Profile):
-    company_logo = models.ImageField(max_length=1000, null=True, upload_to="developer_profile_company_logo/")
+class CompanyProfile(Profile):
+    company_logo = models.ImageField(max_length=1000, null=True)
     company_name = models.CharField(max_length=100, null=True)
     company_address = models.CharField(max_length=500, null=True)
     company_details = models.CharField(max_length=2000, null=True)
+    whats_app_link = models.URLField(max_length=2000, blank=True, null=True)
+    line_link = models.URLField(max_length=2000, blank=True, null=True)
+    we_chat_link = models.URLField(max_length=2000, blank=True, null=True)
+
+    class Meta:
+        abstract = True
 
 
-class AgentProfile(Profile):
-    company_logo = models.ImageField(max_length=1000, null=True, upload_to="agent_profile_company_logo/")
-    company_name = models.CharField(max_length=100, null=True)
-    company_address = models.CharField(max_length=500, null=True)
-    company_details = models.CharField(max_length=2000, null=True)
+class DeveloperProfile(CompanyProfile):
+    pass
+
+
+class AgentProfile(CompanyProfile):
+    pass
 
 
 class ProspectProfile(Profile):

@@ -56,6 +56,9 @@ class DeveloperProfileSerializer(BaseProfileSerializer):
             "company_name",
             "company_address",
             "company_details",
+            "whats_app_link",
+            "line_link",
+            "we_chat_link",
         ]
 
 
@@ -67,6 +70,9 @@ class AgentProfileSerializer(BaseProfileSerializer):
             "company_name",
             "company_address",
             "company_details",
+            "whats_app_link",
+            "line_link",
+            "we_chat_link",
         ]
 
 
