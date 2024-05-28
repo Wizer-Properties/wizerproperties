@@ -1,4 +1,5 @@
 from django.utils import timezone
+from geopy.distance import geodesic
 from django.db.models import OuterRef, Subquery, Value, F, CharField, Exists, BooleanField, Count
 from django.db.models.functions import Concat
 from rest_framework import viewsets, status
@@ -16,6 +17,7 @@ from property.api.serializers import (
     PropertyVariousFeatureMinimalInfoSerializer,
     PropertyFacilitiesSerializer,
     SchedulePropertySerializer,
+    PropertySearchMapSerializer,
 )
 from property.api.filters import PropertyFilter
 from property.api.pagination import UserPropertyPagination
@@ -50,6 +52,27 @@ class PropertyViewSet(viewsets.ModelViewSet):
         queryset = self.queryset
         user = self.request.user
 
+        queryset = Property.objects.filter(is_active=True).annotate(
+            # Annotate default_image_url with the URL of the first image for each property (if available)
+            default_image_url=Subquery(
+                PropertyMedia.objects.filter(property=OuterRef("pk"), type="image")
+                .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
+                .values("full_file_url")[:1]
+            ),
+            # Annotate is_compared based on whether the property is in the user's comparison list
+            is_compared=(
+                Exists(CompareProperty.objects.filter(user=user, property=OuterRef("pk")))
+                if user.is_authenticated and hasattr(user, "prospectprofile")
+                else Value(None, output_field=BooleanField())
+            ),
+            # Annotate is_favorited based on whether the property is in the user's favorite list
+            is_favorited=(
+                Exists(ProspectFavoriteProperty.objects.filter(prospect=user.prospectprofile, property=OuterRef("pk")))
+                if user.is_authenticated and hasattr(user, "prospectprofile")
+                else Value(None, output_field=BooleanField())
+            ),
+        )
+        
         if self.action in ["list", "retrieve", "available_units", "discount", "newly_created", "popular"]:
             if self.action not in ["available_units"]:
                 queryset = queryset.filter(is_active=True).annotate(
@@ -329,6 +352,42 @@ class PropertyViewSet(viewsets.ModelViewSet):
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=["get"])
+    def property_list_for_map_search(self, request):
+        serializer = PropertySearchMapSerializer(self.filter_queryset(self.get_queryset()), many=True)
+        return Response({"results": serializer.data}, status=200)
+
+    @action(detail=True, methods=["get"])
+    def nearby_property_list(self, request, pk):
+        instance = self.get_object()
+
+        properties_within_given_distance = [
+            property.id
+            for property in Property.objects.filter(
+                building__latitude__isnull=False, building__longitude__isnull=False
+            ).exclude(id=instance.id)
+            # Calculate and get properties within the specified distance by geodesic (geopy package)
+            if geodesic(
+                (instance.building.latitude, instance.building.longitude),
+                (property.building.latitude, property.building.longitude),
+            ).miles
+            <= 20
+        ]
+
+        qs = Property.objects.filter(id__in=properties_within_given_distance).annotate(
+            # Annotate default_image_url with the URL of the first image for each property (if available)
+            default_image_url=Subquery(
+                PropertyMedia.objects.filter(property=OuterRef("pk"), type="image")
+                .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
+                .values("full_file_url")[:1]
+            ),
+            is_compared=Value(False),
+            is_favorited=Value(False),
+        )
+        serializer = PropertySerializer(qs, many=True)
+
+        return Response({"results": serializer.data}, status=200)
 
 
 @api_view(["GET"])

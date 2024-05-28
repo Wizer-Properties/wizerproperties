@@ -9,3 +9,4 @@ from .various_feature_minimal_info import BuildingVariousFeatureMinimalInfoSeria
 from .review import BuildingReviewSerializer
 from .building_facilities import BuildingFacilitiesSerializer
 from .schedule_building import ScheduleBuildingSerializer
+from .search_map import BuildingSearchMapSerializer
