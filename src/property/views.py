@@ -39,6 +39,8 @@ def update_property(request, id):
 def search_property(request):
     return render(request, "search_property.html")
 
+def search_property_with_map(request):
+    return render(request, "search_property_with_map.html")
 
 @login_required
 def comparison_property(request):

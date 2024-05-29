@@ -31,8 +31,8 @@ async function initializeMap() {
         };
 
         var redirectPath = "/property/search/"
-        if(window.location.pathname == "/property/map/"){
-            redirectPath = "/property/map/"
+        if(window.location.pathname == "/property/map-list/"){
+            redirectPath = "/property/map-list/"
         }
 
         if (place.geometry) {
