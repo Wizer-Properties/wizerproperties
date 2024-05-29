@@ -594,6 +594,8 @@ $(document).ready(function(){
     // }, 1000);
 
 
+    // ======================== recommended-properties-slider
+
     var recommended_search_slider = new Splide( '.recommended-search-slider', {
         perPage: 4,
         gap : 10,
@@ -611,6 +613,67 @@ $(document).ready(function(){
         }
     }).mount();
 
+
+    var recommended_properties_next;
+    var calling_recommended_properties;
+
+    function get_recommended_properties_list(next_page){
+        if(calling_recommended_properties) return;
+        var page_size = 4;
+        if(window.innerWidth <= 1200) page_size = 3;
+        if(window.innerWidth <= 740) page_size = 2;
+        if(window.innerWidth <= 460) page_size = 1;
+
+        $.ajax({
+            url: '/property/api/list/suggested-properties/',
+            type: 'GET',
+            data : {
+                page_size : page_size,
+                page : next_page
+            },
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            beforeSend: function() {
+                for (let i = 0; i < page_size; i++) {
+                    recommended_search_slider.add(loader_tmp())
+                };
+
+                calling_recommended_properties = true;
+            },
+            success: function (data) {
+                if(data?.count == 0){
+                    $('#recommended-search').remove()
+                    return
+                }
+                calling_recommended_properties = false;
+                
+                for (let i = 0; i < data?.results.length; i++) {
+                    recommended_search_slider.add(property_list_tmp(data?.results[i]))
+                };
+
+                recommended_search_slider.remove('.recommended-search-slider .list_loader');
+
+                if(data?.next != null){
+                    for (let i = 0; i < page_size; i++) {
+                        recommended_search_slider.add(loader_tmp())
+                    };
+                };
+
+                recommended_properties_next = data?.next
+            },
+            error: function (error) {
+                calling_recommended_properties = false;
+            }
+        });
+    };
+
+    get_recommended_properties_list();
+
+    recommended_search_slider.on( 'moved', (e) => {
+        if(recommended_properties_next == null) return;
+        get_recommended_properties_list(recommended_properties_next);
+    });
 
     // ======================== Hot Properties For Sale- Near You! (prospect's nearest properties)
 

@@ -19,3 +19,12 @@ class SchedulePropertySerializer(serializers.ModelSerializer):
             "number_of_bathroom",
             "building",
         ]
+
+class ExtendPropertyFacilitiesSerializer(SchedulePropertySerializer):
+    sub_district = serializers.CharField(source="building.sub_district", read_only=True)
+    district = serializers.CharField(source="building.district", read_only=True)
+    province = serializers.CharField(source="building.province", read_only=True)
+
+    class Meta:
+         model = Property
+         fields = SchedulePropertySerializer.Meta.fields + ['sub_district', 'district', 'province',]
