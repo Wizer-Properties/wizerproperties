@@ -612,23 +612,64 @@ $(document).ready(function(){
     }).mount();
 
 
-    var hot_properties_slider = new Splide( '.hot-properties-slider', {
-        perPage: 4,
-        gap : 10,
-        pagination: false,
-        breakpoints: {
-            1200: {
-                perPage: 3,
-            },
-            780: {
-                perPage: 2,
-            },
-            460: {
-                perPage: 1,
-            }
-        }
-    }).mount();
+    // ======================== Hot Properties For Sale- Near You! (prospect's nearest properties)
 
+    if (user_type == 'prospect') {
+        var hot_properties_slider = new Splide( '.hot-properties-slider', {
+            perPage: 4,
+            gap : 10,
+            pagination: false,
+            breakpoints: {
+                1200: {
+                    perPage: 3,
+                },
+                780: {
+                    perPage: 2,
+                },
+                460: {
+                    perPage: 1,
+                }
+            }
+        }).mount();
+    
+    
+        var calling_hot_properties;
+    
+        function get_hot_properties_list(){
+            if(calling_hot_properties) return;
+    
+            $.ajax({
+                url: '/property/api/nearest/',
+                type: 'GET',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                },
+                beforeSend: function() {
+                    hot_properties_slider.add(loader_tmp())
+                    calling_hot_properties = true;
+                },
+                success: function (data) {
+                    console.log(data)
+                    if(data?.count == 0){
+                        $('#hot-properties').remove()
+                        return
+                    }
+                    calling_hot_properties = false;
+                    
+                    for (let i = 0; i < data?.length; i++) {
+                        hot_properties_slider.add(property_list_tmp(data[i]))
+                    };
+    
+                    hot_properties_slider.remove('.hot-properties-slider .list_loader');
+                },
+                error: function (error) {
+                    calling_hot_properties = false;
+                }
+            });
+        };
+    
+        get_hot_properties_list();
+    }
 
 
     function reels_iframe_tmp(data){

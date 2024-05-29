@@ -52,7 +52,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
         queryset = self.queryset
         user = self.request.user
 
-        if self.action in ["list", "retrieve", "available_units", "discount", "newly_created", "popular"]:
+        if self.action in ["list", "retrieve", "available_units", "discount", "newly_created", "popular", "nearest"]:
             if self.action not in ["available_units"]:
                 queryset = queryset.filter(is_active=True).annotate(
                     # Annotate is_compared based on whether the property is in the user's comparison list
@@ -343,7 +343,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
         prospect_location = (prospect_profile.latitude, prospect_profile.longitude)
 
         # Calculate the distance of each property from the prospect's location
-        properties = Property.objects.filter(building__latitude__isnull=False, building__longitude__isnull=False)
+        properties = self.get_queryset().filter(building__latitude__isnull=False, building__longitude__isnull=False)
         properties_with_distance = []
 
         for property in properties:
