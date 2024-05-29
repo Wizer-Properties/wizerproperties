@@ -73,4 +73,11 @@ class AgentProfileSerializer(BaseProfileSerializer):
 class ProspectProfileSerializer(BaseProfileSerializer):
     class Meta(BaseProfileSerializer.Meta):
         model = ProspectProfile
-        fields = BaseProfileSerializer.Meta.fields + ["first_name", "last_name", "gender", "address"]
+        fields = BaseProfileSerializer.Meta.fields + [
+            "first_name",
+            "last_name",
+            "gender",
+            "address",
+            "latitude",
+            "longitude",
+        ]

@@ -46,7 +46,7 @@
             <div class="authFormDiv">
                 <!-- <span class="authErrorMessage">Message</span> -->
                 <input name="phone_number" type="tel" class="authInput" placeholder="Phone Number"
-                    value="{{ profile.phone_number }}" required>
+                    value="{{ profile.phone_number|cut:'+66' }}" required>
                 <div class="authlabelline authcompleteProfileLabe">Phone Number</div>
             </div>
         </div>
@@ -64,10 +64,13 @@
     </div>
     <div class="authFormDiv">
         <!-- <span class="authErrorMessage">Message</span> -->
-        <input name="address" type="text" class="authInput" placeholder="Address" value="{{ profile.address }}"
+        <input name="address" type="text" class="authInput pac-input" placeholder="Address" value="{{ profile.address }}"
             required>
         <div class="authlabelline authcompleteProfileLabe">Address</div>
     </div>
+    <input name="latitude" label="latitude" label-name="latitude" type="text" class="authInput" placeholder="Latitude">
+    <input name="longitude" label="longitude" label-name="longitude" type="text" class="authInput" placeholder="Longitude">
+
     <button type="submit" class="authButton completeProfileButton">
         <span id="loginButtonText">Update Profile</span>
         <div id="loadingSpinner" class="spinner-border" role="status" style="display: none;">

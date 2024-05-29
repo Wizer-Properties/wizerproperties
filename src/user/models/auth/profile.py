@@ -42,3 +42,5 @@ class ProspectProfile(Profile):
     last_name = models.CharField(max_length=100)
     gender = models.CharField(max_length=50, choices=GENDER, null=True)
     address = models.CharField(max_length=2000, null=True)
+    latitude = models.FloatField(null=True)
+    longitude = models.FloatField(null=True)
