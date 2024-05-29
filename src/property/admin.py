@@ -4,7 +4,6 @@ from .models import (
     PropertyMedia,
     CompareProperty,
     ProspectFavoriteProperty,
-    PopularProperty,
     NewlyCreatedProperty,
     DiscountProperty,
 )
@@ -54,11 +53,6 @@ class ComparePropertyAdmin(admin.ModelAdmin):
 @admin.register(ProspectFavoriteProperty)
 class ProspectFavoritePropertyAdmin(admin.ModelAdmin):
     list_display = ["id", "prospect", "property", "created_at"]
-
-
-@admin.register(PopularProperty)
-class PopularPropertyAdmin(admin.ModelAdmin):
-    list_display = ["id", "property", "created_at"]
 
 
 @admin.register(NewlyCreatedProperty)
