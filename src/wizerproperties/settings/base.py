@@ -79,6 +79,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "utils.custom.context_processors.common",
             ],
         },
     },
@@ -179,6 +180,9 @@ REST_FRAMEWORK = {
 
 if DEBUG:
     REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"].append("rest_framework.renderers.BrowsableAPIRenderer")
+
+# For Google map 
+GOOGLE_API_KEY = config("GOOGLE_API_KEY", "")
 
 # For ChatGPT
 OPENAI_API_KEY = config("OPENAI_API_KEY", "")

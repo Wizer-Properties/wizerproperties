@@ -1,3 +1,4 @@
+from geopy.distance import geodesic
 from django.utils import timezone
 from django.db.models import OuterRef, Subquery, Value, F, CharField, Exists, BooleanField, Count
 from django.db.models.functions import Concat
@@ -22,6 +23,7 @@ from property.api.pagination import UserPropertyPagination
 from building.api.serializers import BuildingInfoForPropertySerializer, BuildingMediaSerializer
 from building.models import Building, BuildingMedia
 from property.models import Property, PropertyMedia, CompareProperty, ProspectFavoriteProperty
+from user.models import ProspectProfile
 from user.api.serializers import AgentProfileSerializer, DeveloperProfileSerializer
 from utils.general_func import get_chatgpt_response
 from utils.general_data import PRICE_RANGES
@@ -50,7 +52,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
         queryset = self.queryset
         user = self.request.user
 
-        if self.action in ["list", "retrieve", "available_units", "discount", "newly_created", "popular"]:
+        if self.action in ["list", "retrieve", "available_units", "discount", "newly_created", "popular", "nearest"]:
             if self.action not in ["available_units"]:
                 queryset = queryset.filter(is_active=True).annotate(
                     # Annotate is_compared based on whether the property is in the user's comparison list
@@ -329,6 +331,46 @@ class PropertyViewSet(viewsets.ModelViewSet):
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=["get"])
+    def nearest(self, request):
+        prospect_profile = ProspectProfile.objects.get(user=request.user)
+
+        # Get the prospect's location (latitude, longitude)
+        if prospect_profile.latitude is None or prospect_profile.longitude is None:
+            return Response({"non_field_errors": ["Prospect location not set"]}, status=status.HTTP_400_BAD_REQUEST)
+
+        prospect_location = (prospect_profile.latitude, prospect_profile.longitude)
+
+        # Calculate the distance of each property from the prospect's location
+        properties = self.get_queryset().filter(building__latitude__isnull=False, building__longitude__isnull=False)
+        properties_with_distance = []
+
+        for property in properties:
+            building_location = (property.building.latitude, property.building.longitude)
+            distance = geodesic(prospect_location, building_location).kilometers
+            properties_with_distance.append((property, distance))
+
+        # Sort properties by distance
+        properties_with_distance.sort(key=lambda x: x[1])
+
+        # Limit to 2 properties per building
+        filtered_properties = []
+        building_count = {}
+
+        for property, distance in properties_with_distance:
+            building_id = property.building_id
+            if building_count.get(building_id, 0) < 2:
+                property.distance = distance
+                filtered_properties.append(property)
+                building_count[building_id] = building_count.get(building_id, 0) + 1
+            if len(filtered_properties) >= 10:
+                break
+
+        # Serialize the properties
+        serializer = PropertyVariousFeatureSerializer(filtered_properties, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(["GET"])

@@ -1959,6 +1959,39 @@ paths:
         504:
           description: Taking more time to get a response
   
+  /property/api/nearest/:
+    get:
+      tags:
+        - Property
+      summary: "Nearest Property"
+      description: "**User type**: prospect"
+      operationId: nearest
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: Nearest 10 properties list
+          schema:
+            $ref: "#/definitions/NearestPropertyListResponse"
+        400:
+          description: Required fields are missing
+          schema:
+            $ref: "#/definitions/commonValidationError"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
   /property/api/generate-description/:
     post:
       tags:
@@ -3918,6 +3951,42 @@ definitions:
               type: "string"
             discount_period:
               type: "string"
+  
+  NearestPropertyListResponse:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: "number"
+        title:
+          type: "string"
+        description:
+          type: "string"
+        price:
+          type: "number"
+        price_per_sqm:
+          type: "number"
+        floor_number:
+          type: "string"
+        unit_area:
+          type: "number"
+        number_of_bedroom:
+          type: "number"
+        number_of_bathroom:
+          type: "number"
+        building_type:
+          type: "string"
+        building_address:
+          type: "string"
+        is_compared:
+          type: "boolean"
+        is_favorited:
+          type: "boolean"
+        default_image:
+          type: "string"
+        discount_period:
+          type: "string"
   
   PropertyDetailsResponse:
     type: object
