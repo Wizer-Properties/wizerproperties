@@ -22,7 +22,6 @@ from property.api.serializers import (
     PropertyVariousFeatureMinimalInfoSerializer,
     PropertyFacilitiesSerializer,
     SchedulePropertySerializer,
-    ExtendPropertyFacilitiesSerializer,
 )
 from property.api.filters import PropertyFilter
 from property.api.pagination import UserPropertyPagination
@@ -548,7 +547,11 @@ class PropertyViewSet(viewsets.ModelViewSet):
             property_qs = property_qs.filter(id__in=unique_property_ids).order_by(order)
 
         serializer_context = {}  # Default empty context
-        serializer_class = ExtendPropertyFacilitiesSerializer
+        serializer_class = (
+            PropertyVariousFeatureMinimalInfoSerializer
+            if request.GET.get("towards") == "search"
+            else PropertyVariousFeatureSerializer
+        )
 
         return self._get_paginated_response(property_qs, serializer_class, **serializer_context)
 
