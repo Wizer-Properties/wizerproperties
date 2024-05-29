@@ -35,6 +35,7 @@ class Property(TimestampedModel):
     have_duplex = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     created_by = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True, related_name="properties")
+    visit_count = models.IntegerField(default=0, validators=[MinValueValidator(0)])  # To track the number of visits
 
     class Meta:
         verbose_name_plural = "properties"
