@@ -76,7 +76,7 @@ $(document).ready(function(){
                         '<img src="'+data?.property_info?.default_image+'" alt="property img">'+
                     '</div>'+
                     '<div class="comparison-list-label">'+
-                    '<li> '+label_name('Project Name')+' <a href="/building/details/'+data?.property_info?.id+'/">'+data?.property_info?.title+'</a> </li>'+
+                    '<li> '+label_name('Project Name')+' <a href="/building/details/'+data?.property_info?.building_id+'/">'+data?.property_info?.title+'</a> </li>'+
                         '<li> '+label_name('Price')+' ฿ '+ formatBalance(data?.property_info?.price || 0) +' </li>'+
                         '<li> '+label_name('Price Per Sqm')+' ฿ '+ formatBalance(data?.property_info?.price_per_sqm || 0) +' </li>'+
                         // '<li> '+label_name('Built Up Area') + 'Built Up Area' +' </li>'+
