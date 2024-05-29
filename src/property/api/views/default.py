@@ -64,7 +64,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
             "newly_created",
             "popular",
             "nearest",
-            "suggested_property",
+            "suggested_properties",
         ]:
             if self.action not in ["available_units"]:
                 queryset = queryset.filter(is_active=True).annotate(
@@ -448,7 +448,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=["get"])
-    def suggested_property(self, request):
+    def suggested_properties(self, request):
         searched_places = request.COOKIES.get("searched_places")
         number_of_bedroom = request.COOKIES.get("number_of_bedroom")
         number_of_bathroom = request.COOKIES.get("number_of_bathroom")
@@ -465,7 +465,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
             searched_places = ast.literal_eval(searched_places)
 
         property_qs = self.get_queryset().select_related("building")
-        suggested_property = property_qs.none()
+
         # Initialize an empty list to collect unique property IDs
         unique_property_ids = []
 
@@ -543,12 +543,14 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
         order = Case(*[When(id=id, then=pos) for pos, id in enumerate(unique_property_ids)])
         # Create a queryset from the list of unique property IDs
-        suggested_property = self.get_queryset().filter(id__in=unique_property_ids).order_by(order)
+
+        if unique_property_ids:
+            property_qs = property_qs.filter(id__in=unique_property_ids).order_by(order)
 
         serializer_context = {}  # Default empty context
         serializer_class = ExtendPropertyFacilitiesSerializer
 
-        return self._get_paginated_response(suggested_property, serializer_class, **serializer_context)
+        return self._get_paginated_response(property_qs, serializer_class, **serializer_context)
 
 
 @api_view(["GET"])
