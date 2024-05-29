@@ -32,10 +32,8 @@ from utils.general_data import PRICE_RANGES
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
-    queryset = (
-        Property.objects.select_related("building", "created_by")
-        .prefetch_related("media_files", "discounts", "newly_createds", "populars")
-        .annotate(popularity=Count("populars"))
+    queryset = Property.objects.select_related("building", "created_by").prefetch_related(
+        "media_files", "discounts", "newly_createds"
     )
 
     serializer_class = PropertySerializer
@@ -47,7 +45,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
         "building__district",
         "building__sub_district",
     ]
-    ordering_fields = ["created_at", "price"]
+    ordering_fields = ["created_at", "price", "visit_count"]
     ordering = ["-created_at"]  # Default ordering
 
     def get_queryset(self):
@@ -105,9 +103,9 @@ class PropertyViewSet(viewsets.ModelViewSet):
         # If popularity is not explicitly requested in the ordering,
         # then maintain popularity-based ordering as primary
         if ordering:
-            queryset = queryset.order_by("-popularity", ordering)
+            queryset = queryset.order_by("-visit_count", ordering)
         else:
-            queryset = queryset.order_by("-popularity")
+            queryset = queryset.order_by("-visit_count")
 
         return queryset
 
@@ -227,7 +225,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
         """
         Retrieve a list of popular properties with pagination.
         """
-        queryset = self.get_queryset().filter(populars__isnull=False)
+        queryset = self.get_queryset().order_by("-visit_count")[:10]
 
         serializer_context = {}  # Default empty context
 
