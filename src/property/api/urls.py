@@ -7,6 +7,7 @@ urlpatterns = [
     path("list/discount/", PropertyViewSet.as_view({"get": "discount"}), name="discount"),
     path("list/newly-created/", PropertyViewSet.as_view({"get": "newly_created"}), name="newly_created"),
     path("list/popular/", PropertyViewSet.as_view({"get": "popular"}), name="popular"),
+    path("list/suggested-property/", PropertyViewSet.as_view({"get": "suggested_property"}), name="suggested_property"),
     path("details/<int:pk>/", PropertyViewSet.as_view({"get": "retrieve"}), name="details"),
     path("details/<int:pk>/media-files/", PropertyViewSet.as_view({"get": "media_files"}), name="media_files"),
     path("details/<int:pk>/developer-info/", PropertyViewSet.as_view({"get": "developer_info"}), name="developer_info"),

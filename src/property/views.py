@@ -1,5 +1,7 @@
+import ast
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from building.models import Building
 from .models import Property
 from user.models import User, Profile, DeveloperProfile, AgentProfile
@@ -26,7 +28,33 @@ def create_property(request):
 def get_property(request, id):
     context = prepare_property_context(request, id)
     context["buildings"] = Building.objects.filter(is_active=True)
-    return render(request, "get_property.html", context)
+    response = render(request, "get_property.html", context)
+    property = context["property"]
+    
+    searched_places = request.COOKIES.get('searched_places')
+    if searched_places:
+        searched_places = ast.literal_eval(searched_places)
+    else:
+        searched_places = []
+
+    place = {
+        "building__province": property.building.province,
+        "building__district": property.building.district,
+        "building__sub_district": property.building.sub_district,
+    }
+
+    # Add place at the beginning of the list
+    if place in searched_places:
+        searched_places.remove(place)
+    searched_places.insert(0, place)
+    # Limit the list to only five elements
+    searched_places = searched_places[:5]
+
+    response.set_cookie("searched_places", searched_places, settings.COOKIE_EXPIRE_TIME)
+    response.set_cookie("number_of_bedroom", property.number_of_bedroom, settings.COOKIE_EXPIRE_TIME)
+    response.set_cookie("number_of_bathroom", property.number_of_bathroom, settings.COOKIE_EXPIRE_TIME)
+
+    return response
 
 
 @login_required
