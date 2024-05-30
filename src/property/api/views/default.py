@@ -21,7 +21,6 @@ from property.api.serializers import (
     PropertyVariousFeatureMinimalInfoSerializer,
     PropertyFacilitiesSerializer,
     SchedulePropertySerializer,
-    PropertySearchMapSerializer,
 )
 from property.api.filters import PropertyFilter
 from property.api.pagination import UserPropertyPagination
@@ -406,11 +405,6 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
         return Response(response_data, status=status.HTTP_200_OK)
 
-    @action(detail=False, methods=["get"])
-    def property_list_for_map_search(self, request):
-        serializer = PropertySearchMapSerializer(self.filter_queryset(self.get_queryset()), many=True)
-        return Response({"results": serializer.data}, status=200)
-
     @action(detail=True, methods=["get"])
     def nearby_property_list(self, request, pk):
         instance = self.get_object()
@@ -589,7 +583,6 @@ class PropertyViewSet(viewsets.ModelViewSet):
         )
 
         return self._get_paginated_response(property_qs, serializer_class, **serializer_context)
-
 
 @api_view(["GET"])
 def user_properties(request, user_id):

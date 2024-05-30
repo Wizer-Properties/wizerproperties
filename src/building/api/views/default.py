@@ -12,6 +12,7 @@ from building.api.serializers import (
     BuildingMediaSerializer,
     BuildingFacilitiesSerializer,
     ScheduleBuildingSerializer,
+    BuildingSearchMapSerializer
 )
 from building.api.filters import BuildingFilter
 from building.models import Building, BuildingMedia
@@ -163,3 +164,8 @@ class BuildingViewSet(viewsets.ModelViewSet):
         return Response(
             {"generated_building_description": generated_building_description}, status=status.HTTP_201_CREATED
         )
+    
+    @action(detail=False, methods=["get"])
+    def building_list_for_map_search(self, request):
+        serializer = BuildingSearchMapSerializer(self.filter_queryset(self.get_queryset()), many=True)
+        return Response({"results": serializer.data}, status=200)

@@ -216,7 +216,7 @@ $(document).ready(function(){
         };
         
         $.ajax({
-            url: '/property/api/property_list_for_map_search/',
+            url: '/building/api/building_list_for_map_search/',
             type: 'GET',
             data : search_param,
             headers: {
@@ -228,7 +228,7 @@ $(document).ready(function(){
 
                 data.results.forEach(function(item){
                     var marker = new google.maps.Marker({
-                        position: {lat: item.building_info.latitude, lng: item.building_info.longitude },
+                        position: {lat: item.latitude, lng: item.longitude },
                         map: search_page_map,
                         icon: {
                           url: markerIcon,
