@@ -1,0 +1,257 @@
+:root{
+    --result-width : 680px
+}
+
+#search-result-map-view{
+    display: flex;
+    gap: 10px;
+    padding-left: 10px;
+}
+
+#search-result-list{
+    width: var( --result-width);
+    min-width: var( --result-width);
+    display: block !important;
+}
+
+.search-map-wrapper{
+    width: calc(100% - var(--result-width));
+    height: 100vh;
+    position: sticky;
+    top: 0;
+}
+
+#search-map{
+    width: 100%;
+    height: 100%;
+}
+
+.search-box-title,
+.agent-company-name,
+.property-card-modal-btns button{
+    display: none !important;
+}
+
+.search-result-box-wrapper{
+    padding-bottom: 15px !important;
+}
+
+.search-result-box{
+    position: relative !important;
+    padding: 10px 25px !important;
+}
+
+
+.search-result-box h1{
+    font-size: 14px !important;
+    margin-top: 0 !important;
+}
+
+.search-result-box .property-value,
+.search-result-box .details, 
+.property-faciluties-list span {
+    font-size: 13px !important;
+}
+
+.property-short-info-box .material-symbols-outlined{
+    font-size: 17px !important;
+}
+
+.property-faciluties-list{
+    display: flex !important;
+}
+
+.property-faciluties-list{
+    gap: 3px;
+    max-height: initial;
+    margin: 0 !important;
+}
+
+.property-faciluties-list span{
+    flex-direction: row-reverse;
+}
+
+.search-result-box .details{
+    margin-top: 0 !important;
+    -webkit-line-clamp: 1;
+}
+
+.property-faciluties-list i::before{
+    content: '' !important;
+    width: 1.2px;
+    height: 14px;
+    background-color: #bbb;
+}
+
+.property-faciluties-list span:last-child i::before{
+    display: none !important;
+}
+
+.property-card-modal-btns a{
+    font-size: 13px;
+    padding: 6px 16px !important;
+    bottom: 15px;
+}
+
+.property-card-modal-btns{
+    margin-top: 10px !important;
+}
+
+.search-result-box-img,
+.search-result-box-img .skeleton-box{
+    height: 220px !important;
+}
+
+.property-card-down-area{
+    width: auto !important;
+    min-width: initial;
+    position: absolute !important;
+    left: 0;
+    bottom: 10px;
+    padding: 0 !important;
+    padding-left: 25px !important;
+}
+
+.search-result-box-wrapper{
+    padding: 0 !important;
+}
+
+.all-filter-option{
+    margin: 0 !important;
+    box-shadow: none;
+    padding: 0 !important;
+}
+
+.filter-box .container{
+    max-width: initial;
+    width: initial;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+header{
+    box-shadow: none !important;
+}
+
+.filter-box{
+    box-shadow: 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 3px 2px -2px rgba(0, 0, 0, .1);
+    margin-bottom: 15px;
+    padding-right: 3rem !important;
+    padding-left: 3rem !important;
+}
+
+.agency-contact-info {
+    position: absolute;
+    bottom: 15px;
+}
+
+.search-result-box-img img{
+    border-radius: 0 !important;
+}
+
+.search-result-box-img-splid,
+.search-list-add-btns{
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.buillding-agency-logo{
+    height: 40px !important;
+    margin: 0 !important;
+}
+
+.property-card-modal-btns{
+    padding-bottom : 2px;
+    background-color: #fff;
+}
+
+.pr-ml-images-area{
+    display: none !important;
+}
+
+@media screen and (max-width: 1360px) {
+    :root{
+        --result-width : 480px
+    }
+
+    .search-result-box-wrapper .col-lg-5, 
+    .search-result-box-wrapper .col-lg-7{
+        width: 100% !important;
+    }
+
+    .search-result-box{
+        padding: 10px !important;
+        padding-bottom: 60px !important;
+    }
+
+    .search-box-price{
+        padding: 0 !important;
+    }
+
+    .search-result-box-img-splid,
+    .search-list-add-btns{
+        border-top-right-radius: 10px !important;
+        border-bottom-left-radius: 0 !important;
+    }
+
+    .property-card-down-area{
+        padding-left: 10px !important;
+    }
+}
+
+
+@media screen and (max-width: 991px) {
+    :root{
+        --result-width : 380px
+    }
+
+    .search-result-content{
+        padding: 0 !important;
+    }
+
+    .filter-box{
+        padding-bottom: 10px !important;
+    }
+}
+
+
+@media screen and (max-width: 768px) {
+    #search-result-map-view{
+        flex-direction: column-reverse;
+        padding: 0 10px 40px !important;
+    }
+
+    .search-map-wrapper{
+        width: 100% !important;
+        height: 60vh;
+        min-height: 400px;
+        position: initial !important;
+    }
+
+    #search-result-list{
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        width: 100%;
+        margin: 0 !important;
+        gap: 20px;
+    }
+
+    .property-single-box{
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+}
+
+@media screen and (max-width: 620px){
+    #search-result-list{
+        grid-template-columns: 1fr !important;
+        min-width: auto !important;
+    }
+}
+
+@media screen and (max-width: 600px){
+    .filter-box{
+        padding: 10px !important;
+    }
+}

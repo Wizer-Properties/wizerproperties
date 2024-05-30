@@ -268,7 +268,7 @@
     }
 }
 
-.property-single-box[property-type="popular"]{
+.property-single-box[property-type="spotlight"]{
     .search-box-price,
     .search-result-box h1,
     .search-result-box .property-value,
@@ -301,7 +301,7 @@
     gap: 5px !important;
 }
 
-/* .property-single-box[property-type="popular"] */
+/* .property-single-box[property-type="spotlight"] */
 .property-short-info-box .material-symbols-outlined{
     color: #15C1B9 !important;
 }
@@ -541,7 +541,7 @@
     right: 0;
 }
 
-[property-type="popular"]
+[property-type="spotlight"]
 .search-result-box-img{
     height: 320px;
 }

@@ -4,7 +4,7 @@ from geopy.distance import geodesic
 from django.utils import timezone
 from django.conf import settings
 from urllib.parse import urlparse, parse_qs
-from django.db.models import OuterRef, Subquery, Value, F, CharField, Exists, BooleanField, Count, Value, Case, When
+from django.db.models import OuterRef, Subquery, Value, F, CharField, Count, Exists, BooleanField, Value, Case, When
 from django.db.models.functions import Concat
 from rest_framework import viewsets, status
 from rest_framework.decorators import action

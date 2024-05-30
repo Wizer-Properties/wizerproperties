@@ -277,40 +277,6 @@ $(document).ready(function(){
         prams_list[$(this).attr('name')] = $(this).val() == 'null' ? '' : $(this).val();
         next_property = 1;
         searching("filter");
-
-        var get_parent_label = $(this).parents('[label]')?.attr('label');
-        var button_dom = $(this).parents('[label]')?.find('button');
-
-        // max and minmum price dom >>>
-        if(get_parent_label == 'price'){
-            var min_val = formatNumber(prams_list?.min_price || 'Min')
-            var max_val = formatNumber(prams_list?.max_price || 'Max')
-
-            if(min_val == "Min" && max_val == "Max" ){
-                button_dom.html('Any Price  <i class="bi bi-chevron-down"></i>')
-                return;
-            }else{
-                min_val = '฿ ' + min_val;
-                max_val = '฿ ' + max_val;
-            };
-
-            button_dom.html(min_val+' - '+max_val+' <i class="bi bi-chevron-down"></i>')
-        };
-
-        // max and minmum unit area dom >>>
-        if(get_parent_label == 'unit_area'){
-            var min_val = formatNumber(prams_list?.min_unit_area || 'Min')
-            var max_val = formatNumber(prams_list?.max_unit_area || 'Max')
-
-            if(min_val == "Min" && max_val == "Max" ){
-                button_dom.html('Unit Area  <i class="bi bi-chevron-down"></i>')
-                return;
-            }else{
-                min_val = min_val + ' SqM';
-                max_val = max_val + ' SqM';
-            };
-            button_dom.html(min_val+' - '+max_val+' <i class="bi bi-chevron-down"></i>')
-        };
     });
 
 

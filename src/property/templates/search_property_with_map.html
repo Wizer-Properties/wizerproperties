@@ -3,9 +3,16 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Search property</title>
+<title>Map view property</title>
 
-<link rel="stylesheet" href="{% static '/css/search-page.css' %}?v=1.00" />
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet" />
+<link rel="stylesheet" href="{% static '/css/libraries/flip-countdown.css' %}" />
+<link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
+<link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
+<link rel="stylesheet" href="{% static '/css/search-page.css' %}?v=1.03" />
+<link rel="stylesheet" href="{% static '/css/new-search-page.css' %}?v=1.04" />
+<link rel="stylesheet" href="{% static '/css/search-with-map.css' %}?v=1.00" />
 
 <style>
     .property-search-map-detail-modal{
@@ -19,187 +26,48 @@
 
 {% block content %}
 
-<section class="filter-box mb-2">
-    <div class="w-100 px-5">
-        <div class="filter-categories">
+{% include "search-filter-box.html" %}
 
-            <div class="filter-categories-dropdown" label="Area">
-                <button class="filter-dropdown-btn">
-                    Area
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="filter-dropdown-field">
-                    <div class="filter-dropdown-buttons area-filter-buttons">
-                        <button name="nearby" value="2">+ 2 miles</button>
-                        <button name="nearby" value="5">+ 5 miles</button>
-                        <button name="nearby" value="10">+ 10 miles</button>
-                        <button name="nearby" value="15">+ 15 miles</button>
-                        <button name="nearby" value="20">+ 20 miles</button>
-                        <button name="nearby" value="30">+ 30 miles</button>
+
+
+
+<section id="search-result-map-view">
+    <div class="row" id="search-result-list">
+        <div class="col-lg-12 mb-5 searching-loader">
+            <div class="search-result-box-wrapper">
+                <div class="row">
+                    <div class="col-lg-5 col-xl-4">
+                        <div class="search-result-box-img">
+                            <span class="skeleton-box" style="width: 100%; height: 220px;"></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-xl-5">
+                        <div>
+                            <h1> <span class="skeleton-box" style="width: 100%; height: 20px;"></span> </h1>
+                            <div class="location">
+                                <span class="skeleton-box" style="width: 100%; height: 20px;"></span>
+                            </div>
+                            <p class="sub-title">
+                                <span class="skeleton-box" style="width: 100%; height: 21px;"></span>
+                            </p>
+
+                            <p class="details">
+                                <span class="skeleton-box" style="width: 100%; height: 40px;"></span>
+                            </p>
+                            <div class="d-flex">
+                                <span class="skeleton-box me-2" style="width: 40px; height: 30px;"></span>
+                                <span class="skeleton-box me-2" style="width: 40px; height: 30px;"></span>
+                                <span class="skeleton-box" style="width: 40px; height: 30px;"></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div class="filter-categories-dropdown" label="price">
-                <button class="filter-dropdown-btn">
-                    Any Price 
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="filter-dropdown-field">
-                    <div class="range-area">
-                        <select name="min_price">
-                            <option value="null">Min</option>
-                            <option value="500000"> ฿ 500,000</option>
-                            <option value="1000000"> ฿ 1,000,000</option>
-                            <option value="1500000"> ฿ 1,500,000</option>
-                            <option value="2000000"> ฿ 2,000,000</option>
-                            <option value="2500000"> ฿ 2,500,000</option>
-                            <option value="3000000"> ฿ 3,000,000</option>
-                        </select>
-                        <i class="bi bi-dash"></i>
-                        <select name="max_price">
-                            <option value="null">Max</option>
-                            <option value="500000"> ฿ 500,000</option>
-                            <option value="1000000"> ฿ 1,000,000</option>
-                            <option value="1500000"> ฿ 1,500,000</option>
-                            <option value="2000000"> ฿ 2,000,000</option>
-                            <option value="2500000"> ฿ 2,500,000</option>
-                            <option value="3000000"> ฿ 3,000,000</option>
-                            <option value="3500000"> ฿ 3,500,000</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="filter-categories-dropdown" label="unit_area">
-                <button class="filter-dropdown-btn">
-                    Unit Area
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="filter-dropdown-field">
-                    <div class="range-area">
-                        <select name="min_unit_area">
-                            <option value="null">Min</option>
-                            <option value="100"> 100 SqM</option>
-                            <option value="200"> 200 SqM</option>
-                            <option value="300"> 300 SqM</option>
-                            <option value="400"> 400 SqM</option>
-                            <option value="500"> 500 SqM</option>
-                        </select>
-                        <i class="bi bi-dash"></i>
-                        <select name="max_unit_area">
-                            <option value="null">Min</option>
-                            <option value="100"> 100 SqM</option>
-                            <option value="200"> 200 SqM</option>
-                            <option value="300"> 300 SqM</option>
-                            <option value="400"> 400 SqM</option>
-                            <option value="500"> 500 SqM</option>
-                            <option value="600"> 600 SqM</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="filter-categories-dropdown" label="Beds">
-                <button class="filter-dropdown-btn">
-                    Beds
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="filter-dropdown-field">
-                    <div class="filter-dropdown-buttons">
-                        <button name="number_of_bedroom" value="null" active="true">Any</button>
-                        <button name="number_of_bedroom" value="1">1</button>
-                        <button name="number_of_bedroom" value="2">2</button>
-                        <button name="number_of_bedroom" value="3">3</button>
-                        <button name="number_of_bedroom" value="4">4</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="filter-categories-dropdown" label="Baths">
-                <button class="filter-dropdown-btn">
-                    Baths
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="filter-dropdown-field">
-                    <div class="filter-dropdown-buttons">
-                        <button name="number_of_bathroom" value="null" active="true">Any</button>
-                        <button name="number_of_bathroom" value="1">1</button>
-                        <button name="number_of_bathroom" value="2">2</button>
-                        <button name="number_of_bathroom" value="3">3</button>
-                        <button name="number_of_bathroom" value="4">4</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="filter-categories-dropdown">
-                <button class="filter-dropdown-btn">
-                    Property Type
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="filter-dropdown-field">
-                    <div class="filter-dropdown-mtl-buttons" name="property-type">
-                        <button name="building__type" value="condos">Condos</button>
-                        <button name="building__type" value="house">House</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="filter-categories-dropdown">
-                <button class="filter-dropdown-btn">
-                    Property Quota
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="filter-dropdown-field">
-                    <div class="filter-dropdown-mtl-buttons" name="property-quota">
-                        <button name="building__quota" value="thai">Thai</button>
-                        <button name="building__quota" value="foreign">Foreign</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="filter-categories-dropdown">
-                <button class="filter-dropdown-btn">
-                    Property Furnishing
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="filter-dropdown-field">
-                    <div class="filter-dropdown-mtl-buttons" name="property-furnishing">
-                        <button name="building__furnishing" value="partly">Partly</button>
-                        <button name="building__furnishing" value="fully">Fully</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="filter-categories-dropdown">
-                <button class="filter-dropdown-btn">
-                    Features
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="filter-dropdown-field">
-                    <div class="filter-dropdown-mtl-buttons" name="features">
-                        <button value="building__have_sauna">Sauna</button>
-                        <button value="building__have_guard_house">Guard house</button>
-                        <button value="building__have_river_view">River view</button>
-                        <button value="building__have_fitness_area">GYM</button>
-                        <button value="building__have_sky_lounge">Sky lounge</button>
-                        <button value="building__have_grocery">Grocery</button>
-                    </div>
-                </div>
-            </div>
-
-            <button class="reset-btn">
-                Reset Search
-            </button>
         </div>
     </div>
-</section>
 
-<section id="search-result">
-    <div class="w-100">
-        <div>
-            <div id="search-map" style="width: 100%; height: 70vh;"></div>
-        </div>
+    <div class="search-map-wrapper">
+        <div id="search-map"></div>
     </div>
 </section>
 
@@ -217,6 +85,15 @@
 
 
 {% block extend_script %}
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static '/js/libraries/flip-countdown.js' %}"></script>
+<script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
-<script src="{% static '/js/property/search_with_map.js' %}?v=1.02"></script>
+<script src="{% static 'js/libraries/splide.min.js' %}"></script>
+<script src="{% static 'js/libraries/noframework.waypoints.min.js' %}"></script>
+<script src="{% static '/js/property/search.js' %}?v=1.01"></script>
+<script src="{% static '/js/property/compair-favorite.js' %}?v=1.00"></script>
+<script src="{% static '/js/property/search_with_map.js' %}?v=1.01"></script>
 {% endblock extend_script %}

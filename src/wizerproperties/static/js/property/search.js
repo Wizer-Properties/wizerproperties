@@ -5,6 +5,7 @@ $(document).ready(function(){
     $('#gm-search-input').val(place || '');
     $('.search-area').html(place || '');
     
+    $('[label-name="map-view-tag"]').attr("href", "/property/map-list/"+window.location.search)
 
     $(document).on('click', '.filter-dropdown-btn', function(){
         var target_area = 
@@ -435,7 +436,10 @@ $(document).ready(function(){
     function contact_button_position(){
         var single_box = $('.property-single-box');
         
-        if(window.innerWidth >= 1220){
+        if(
+            window.innerWidth >= 1220 &&
+            window.location.pathname != "/property/map-list/"
+        ){
             $('.agency-contact-info').css({
                 left : 'initial'
             })
