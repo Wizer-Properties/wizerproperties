@@ -14,6 +14,7 @@ class BuildingDetailsSerializer(BuildingSerializer):
             "highest_price",
             "latitude",
             "longitude",
+            "status",
             "construction_year",
             "default_images",
             "reviews",

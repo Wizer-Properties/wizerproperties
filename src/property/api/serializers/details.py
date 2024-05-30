@@ -6,6 +6,7 @@ from .media import PropertyMediaSerializer
 
 class PropertyDetailsSerializer(PropertySerializer):
     building_type = serializers.CharField(source="building.type", read_only=True)
+    building_status = serializers.CharField(source="building.status", read_only=True)
     address = serializers.CharField(source="building.address", read_only=True)
     latitude = serializers.CharField(source="building.latitude", read_only=True)
     longitude = serializers.CharField(source="building.longitude", read_only=True)
@@ -30,6 +31,7 @@ class PropertyDetailsSerializer(PropertySerializer):
             "is_active",
             "building_id",
             "building_type",
+            "building_status",
             "address",
             "latitude",
             "longitude",

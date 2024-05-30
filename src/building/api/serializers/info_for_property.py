@@ -12,6 +12,7 @@ class BuildingInfoForPropertySerializer(serializers.ModelSerializer):
             "title",
             "description",
             "type",
+            "status",
             "total_units_for_sale",
             "address",
             "project_total_area",

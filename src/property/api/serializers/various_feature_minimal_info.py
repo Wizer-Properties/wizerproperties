@@ -6,8 +6,9 @@ from property.models import Property
 # This serializer is designed to retrieve a list of properties with various attributes.
 class PropertyVariousFeatureMinimalInfoSerializer(serializers.ModelSerializer):
     type = serializers.CharField(source="building.type", read_only=True)
+    status = serializers.CharField(source="building.status", read_only=True)
     address = serializers.CharField(source="building.address", read_only=True)
 
     class Meta:
         model = Property
-        fields = ["id", "number_of_bedroom", "type", "address"]
+        fields = ["id", "number_of_bedroom", "type", "status", "address"]
