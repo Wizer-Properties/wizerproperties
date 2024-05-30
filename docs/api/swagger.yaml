@@ -477,101 +477,6 @@ paths:
         504:
           description: Taking more time to get a response
   
-  /building/api/list/popular/:
-    get:
-      tags:
-        - Building
-      summary: "Popular buildings list"
-      description: "**User type**: both"
-      operationId: Popular
-      produces:
-        - "application/json"
-      parameters:
-        - name: "page_size"
-          in: "query"
-          type: "number"
-        - name: "page"
-          in: "query"
-          type: "number"
-        - name: "towards"
-          description: "Its control page (e.g 'search' then show fields only for search page)"
-          in: "query"
-          type: "string"
-        - name: "lowest_price"
-          description: "Filtered by"
-          in: "query"
-          type: "number"
-        - name: "highest_price"
-          description: "Filtered by"
-          in: "query"
-          type: "number"
-        - name: "type"
-          description: "Filtered by and choice will be 'condos' or 'house'."
-          in: "query"
-          type: "string"
-        - name: "quota"
-          description: "Choice will be 'thai' or 'foreign'."
-          in: "query"
-          type: "string"
-        - name: "furnishing"
-          description: "Choice will be 'partly' or 'fully'."
-          in: "query"
-          type: "string"
-        - name: "have_freehold"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_leasehold"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_infinity_pool"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_pets_allowed"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_guard_house"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_sauna"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_sky_lounge"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_grocery"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-        - name: "have_fitness_area"
-          description: "Filtered by"
-          in: "query"
-          type: "boolean"
-      responses:
-        200:
-          description: Popular Buildings list
-          schema:
-            $ref: "#/definitions/BuildingVariousFeatureListResponse"
-        405:
-          description: Method not allowed(Method ain't supported by this URL)
-          schema:
-            $ref: "#/definitions/commonSingleErrorResponse"
-        500:
-          description: Internal Server Error(Something has gone wrong on the website's server)
-        501:
-          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
-        502:
-          description: Bad Gateway(Received an invalid response from the upstream server)
-        503:
-          description: Service Unavailable(Server is down for maintenance or overloaded)
-        504:
-          description: Taking more time to get a response
   
   /building/api/details/{building_id}/:
     get:
@@ -1405,7 +1310,7 @@ paths:
           in: "query"
           type: "string"
         - name: "ordering"
-          description: "Bydefault ordering by '-created_at'(latest). If you want 'Highest Price' then given value will be '-price' and 'Lowest Price' value will be 'price'"
+          description: "This is a sorting params that default sorting by '-visit_count'(popularity), also available sorting params 'created_at'(latest),'price'. (e.g if you want 'Highest Price' then given value will be '-price' and 'Lowest Price' value will be 'price')."
           in: "query"
           type: "string"
         - name: "min_price"

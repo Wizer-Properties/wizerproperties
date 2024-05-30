@@ -10,8 +10,6 @@ from building.api.serializers import (
     BuildingDetailsSerializer,
     BuildingCreateAndUpdateSerializer,
     BuildingMediaSerializer,
-    BuildingVariousFeatureSerializer,
-    BuildingVariousFeatureMinimalInfoSerializer,
     BuildingFacilitiesSerializer,
     ScheduleBuildingSerializer,
 )
@@ -24,25 +22,11 @@ from utils.general_func import get_chatgpt_response
 
 
 class BuildingViewSet(viewsets.ModelViewSet):
-    queryset = Building.objects.select_related("created_by").prefetch_related("media_files", "populars")
+    queryset = Building.objects.select_related("created_by").prefetch_related("media_files")
     serializer_class = BuildingSerializer
     permission_classes = [BuildingPermission]
     filterset_class = BuildingFilter
     ordering = ["-created_at"]  # Default ordering
-
-    def get_queryset(self):
-        queryset = self.queryset
-
-        if self.action in ["popular"]:
-            queryset = queryset.annotate(
-                default_image_url=Subquery(
-                    BuildingMedia.objects.filter(building=OuterRef("pk"), type="image")
-                    .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
-                    .values("full_file_url")[:1]
-                )
-            )
-
-        return queryset
 
     def get_serializer_class(self):
         serializer = self.serializer_class
@@ -106,7 +90,7 @@ class BuildingViewSet(viewsets.ModelViewSet):
         building = self.get_object()
         serializer = BuildingFacilitiesSerializer(building)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
     @action(detail=True, methods=["get"])
     def schedule(self, request, pk=None):
         building = self.get_object()
@@ -151,28 +135,6 @@ class BuildingViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @action(detail=False, methods=["get"])
-    def popular(self, request):
-        """
-        Retrieve a list of popular buildings with pagination.
-        """
-        queryset = self.get_queryset().filter(populars__isnull=False)
-        towards = request.GET.get("towards")
-
-        if towards == "search":
-            serializer_class = BuildingVariousFeatureMinimalInfoSerializer
-        else:
-            serializer_class = BuildingVariousFeatureSerializer
-
-        page = self.paginate_queryset(queryset)
-
-        if page is not None:
-            serializer = serializer_class(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = serializer_class(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
     @action(detail=False, methods=["post"])
     def generate_description(self, request):
         """
@@ -188,14 +150,14 @@ class BuildingViewSet(viewsets.ModelViewSet):
         return Response(
             {"generated_building_description": generated_building_description}, status=status.HTTP_201_CREATED
         )
-    
+
     @action(detail=False, methods=["post"])
     def re_generate_description(self, request):
         """
         Return an automated professional building description with ChatGPT
         """
-        content = request.data.get('content', None)
-        previous_response = request.data.get('previous_response', None)
+        content = request.data.get("content", None)
+        previous_response = request.data.get("previous_response", None)
         generated_building_description = get_chatgpt_response(content, previous_response)
 
         return Response(
