@@ -80,4 +80,25 @@ $(document).ready(function () {
             },
         });
     });
+
+    //  Project status and construction year related ------------------ start
+    var statusSelect = $('#status');
+    var constructionYearDiv = $('#constructionYearDiv');
+    var constructionYearInput = $('#construction_year');
+
+    function updateConstructionYearVisibility() {
+        if (statusSelect.val() === 'completed') {
+            constructionYearDiv.show();
+            constructionYearInput.prop('required', true);
+        } else {
+            constructionYearDiv.hide();
+            constructionYearInput.prop('required', false);
+            constructionYearInput.val(null); // Clear the value if hidden
+        }
+    }
+
+    updateConstructionYearVisibility();
+
+    statusSelect.on('change', updateConstructionYearVisibility);
+    // --------------------------------- end
 });

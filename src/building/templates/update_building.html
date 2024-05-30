@@ -103,9 +103,6 @@
                                 <div class="authlabelline authcompleteProfileLabe">Furnishing</div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row">
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
@@ -115,14 +112,36 @@
                                 <div class="authlabelline authcompleteProfileLabe">Total Units For Sale</div>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="row">
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="construction_year" type="number" class="authInput"
-                                    placeholder="Enter Year (1930 - current year)" min="1930"
-                                    value="{{ building.construction_year }}" required>
-                                <div class="authlabelline authcompleteProfileLabe">Construction Year (1930 -
-                                    currentyear)</div>
+                                <select id="status" name="status" type="text" class="authInput authSelectInput"
+                                    placeholder="Select Project Status" required>
+                                    <option value="">........</option>
+                                    <option value="to_be_commenced" {% if building.status == 'to_be_commenced' %}selected{% endif %}>
+                                        To Be Commenced
+                                    </option>
+                                    <option value="under_construction" {% if building.status == 'under_construction' %}selected{% endif %}>
+                                        Under Construction
+                                    </option>
+                                    <option value="completed" {% if building.status == 'completed' %}selected{% endif %}>
+                                        Completed
+                                    </option>
+                                </select>
+                                <div class="authlabelline authcompleteProfileLabe">Project Status</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div id="constructionYearDiv" class="authFormDiv">
+                                <!-- <span class="authErrorMessage">Message</span> -->
+                                <input id="construction_year" name="construction_year" type="number" class="authInput"
+                                    placeholder="Enter Year (2000 - current year)" min="2000"
+                                    value="{{ building.construction_year }}">
+                                <div class="authlabelline authcompleteProfileLabe">Construction Year (2000 -
+                                    Current Year)</div>
                             </div>
                         </div>
                     </div>
@@ -484,5 +503,5 @@
 <script type="text/javascript">
     var updateBuildingAPIUrl = "{% url 'building:api:update' building.id %}"
 </script>
-<script src="{% static 'js/building/update_building.js' %}?v=1.00"></script>
+<script src="{% static 'js/building/update_building.js' %}?v=1.01"></script>
 {% endblock extend_script %}

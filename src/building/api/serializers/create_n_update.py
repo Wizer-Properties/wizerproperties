@@ -41,6 +41,7 @@ class BuildingCreateAndUpdateSerializer(BuildingListSerializer):
         for field_name, field in self.fields.items():
             # These fields are not required while update
             if self.instance is not None and field_name in [
+                "construction_year",
                 "sub_district",
                 "images",
                 "floor_plans",
@@ -53,6 +54,7 @@ class BuildingCreateAndUpdateSerializer(BuildingListSerializer):
             else:
                 # These fields are not required while create
                 if field_name not in [
+                    "construction_year",
                     "sub_district",
                 ]:
                     field.required = True
@@ -71,6 +73,16 @@ class BuildingCreateAndUpdateSerializer(BuildingListSerializer):
             # Remove unwanted attributes from data for 'Building' instance
             for attr in self.skip_attributes:
                 data.pop(attr, None)
+
+            # Validate construction_year based on status
+            status = data.get("status")
+            construction_year = data.get("construction_year")
+
+            if status == "completed":
+                if construction_year is None:
+                    error_messages.update({"construction_year": "Construction Year is required."})
+            else:
+                data.pop("construction_year", None)
 
             instance = Building(**data)
             instance.created_by = self.request.user

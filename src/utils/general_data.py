@@ -6,6 +6,12 @@ UNIQUE_PROFILE_EMAIL_MESSAGE = "Profile with this email already exists."
 
 BUILDING_TYPES = (("condos", "Condos"), ("house", "House"))
 
+BUILDING_STATUS = (
+    ("to_be_commenced", "To Be Commenced"),
+    ("under_construction", "Under Construction"),
+    ("completed", "Completed"),
+)
+
 QUOTA_TYPES = (("thai", "Thai"), ("foreign", "Foreign"))
 
 FURNISHING_TYPES = (("partly", "Partly"), ("fully", "Fully"))
@@ -142,5 +148,5 @@ PRICE_RANGES = [
     (96000000, 97000000),
     (97000000, 98000000),
     (98000000, 99000000),
-    (99000000, 100000000)
+    (99000000, 100000000),
 ]
