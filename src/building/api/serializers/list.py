@@ -14,6 +14,7 @@ class BuildingListSerializer(BuildingSerializer):
             "province",
             "district",
             "sub_district",
+            "status",
             "construction_year",
             "quota",
             "furnishing",

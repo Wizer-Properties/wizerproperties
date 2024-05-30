@@ -830,9 +830,13 @@ paths:
           in: "formData"
           required: true
           type: "number"
-        - name: "construction_year"
+        - name: "status"
           in: "formData"
           required: true
+          type: "string"
+        - name: "construction_year"
+          description: "Required if status is completed"
+          in: "formData"
           type: "number"
         - name: "distance_from_location_to_BTS_or_MRT"
           in: "formData"
@@ -1015,9 +1019,13 @@ paths:
           in: "formData"
           required: true
           type: "number"
-        - name: "construction_year"
+        - name: "status"
           in: "formData"
           required: true
+          type: "string"
+        - name: "construction_year"
+          description: "Required if status is completed"
+          in: "formData"
           type: "number"
         - name: "distance_from_location_to_BTS_or_MRT"
           in: "formData"
@@ -3308,6 +3316,8 @@ definitions:
       district:
         type: "string"
       sub_district:
+        type: "string"
+      status:
         type: "string"
       construction_year:
         type: "number"

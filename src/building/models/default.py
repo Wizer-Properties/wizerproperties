@@ -1,7 +1,8 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
-from utils.general_data import BUILDING_TYPES, QUOTA_TYPES, FURNISHING_TYPES
+from utils.general_data import BUILDING_TYPES, BUILDING_STATUS, QUOTA_TYPES, FURNISHING_TYPES
+from utils.helper_func import validate_max_current_year
 from core.models import TimestampedModel
 
 
@@ -15,6 +16,10 @@ class Building(TimestampedModel):
         max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(0)]
     )
     type = models.CharField(max_length=100, choices=BUILDING_TYPES, null=True)
+    status = models.CharField(max_length=100, choices=BUILDING_STATUS, null=True)
+    construction_year = models.IntegerField(
+        default=2000, blank=True, null=True, validators=[MinValueValidator(2000), validate_max_current_year]
+    )
     total_units_for_sale = models.IntegerField(default=0, null=True, validators=[MinValueValidator(0)])
     province = models.CharField(max_length=500, null=True)
     district = models.CharField(max_length=500, null=True)
@@ -24,7 +29,6 @@ class Building(TimestampedModel):
     longitude = models.FloatField(null=True)
     project_total_area = models.FloatField(default=0, null=True, validators=[MinValueValidator(0)])
     total_floors = models.IntegerField(default=0, null=True, validators=[MinValueValidator(0)])
-    construction_year = models.IntegerField(default=1930, null=True, validators=[MinValueValidator(1930)])
     quota = models.CharField(max_length=100, choices=QUOTA_TYPES, null=True)
     furnishing = models.CharField(max_length=100, choices=FURNISHING_TYPES, null=True)
     distance_from_location_to_BTS_or_MRT = models.DecimalField(

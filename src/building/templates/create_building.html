@@ -91,9 +91,6 @@
                                 <div class="authlabelline authcompleteProfileLabe">Furnishing</div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row">
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
@@ -102,13 +99,29 @@
                                 <div class="authlabelline authcompleteProfileLabe">Total Units For Sale</div>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="row">
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="construction_year" type="number" class="authInput"
-                                    placeholder="Enter Year (1930 - current year)" min="1930" required>
-                                <div class="authlabelline authcompleteProfileLabe">Completion Date (1930 -
-                                    current year)</div>
+                                <select id="status" name="status" type="text" class="authInput authSelectInput"
+                                    placeholder="Select Project Status" required>
+                                    <option value="">........</option>
+                                    <option value="to_be_commenced">To Be Commenced</option>
+                                    <option value="under_construction">Under Construction</option>
+                                    <option value="completed">Completed</option>
+                                </select>
+                                <div class="authlabelline authcompleteProfileLabe">Project Status</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div id="constructionYearDiv" class="authFormDiv">
+                                <!-- <span class="authErrorMessage">Message</span> -->
+                                <input id="construction_year" name="construction_year" type="number" class="authInput"
+                                    placeholder="Enter Year (2000 - current year)" min="2000" required>
+                                <div class="authlabelline authcompleteProfileLabe">Completion Date (2000 -
+                                    Current Year)</div>
                             </div>
                         </div>
                     </div>
@@ -464,5 +477,5 @@
     var generateBuildingDescriptionAPIUrl = "{% url 'building:api:generate_description' %}"
     var reGenerateBuildingDescriptionAPIUrl = "{% url 'building:api:re_generate_description' %}"
 </script>
-<script src="{% static 'js/building/create_building.js' %}?v=1.03"></script>
+<script src="{% static 'js/building/create_building.js' %}?v=1.04"></script>
 {% endblock extend_script %}
