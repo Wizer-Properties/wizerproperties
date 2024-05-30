@@ -11,5 +11,5 @@ from .favorite import ProspectFavoritePropertySerializer
 from .comparisons_list import PropertyComparisonsListSerializer
 from .favorite_list import PropertyFavoriteListSerializer
 from .property_facilities import PropertyFacilitiesSerializer
-from .schedule_property import SchedulePropertySerializer
 from .search_map import PropertySearchMapSerializer
+from .schedule_property import SchedulePropertySerializer, ExtendPropertyFacilitiesSerializer
