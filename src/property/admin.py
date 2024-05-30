@@ -6,6 +6,7 @@ from .models import (
     ProspectFavoriteProperty,
     NewlyCreatedProperty,
     DiscountProperty,
+    SpotlightProperty,
 )
 
 
@@ -63,3 +64,8 @@ class NewlyCreatedPropertyAdmin(admin.ModelAdmin):
 @admin.register(DiscountProperty)
 class DiscountPropertyAdmin(admin.ModelAdmin):
     list_display = ["id", "property", "period", "created_at"]
+
+
+@admin.register(SpotlightProperty)
+class SpotlightPropertyAdmin(admin.ModelAdmin):
+    list_display = ["id", "property", "created_at"]

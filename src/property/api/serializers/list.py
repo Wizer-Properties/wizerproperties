@@ -104,8 +104,8 @@ class PropertyListSerializer(PropertySerializer):
         return ""
 
     def get_tag(self, obj):
-        if obj.populars.exists():
-            tag = "popular"
+        if obj.spotlights.exists():
+            tag = "spotlight"
         elif obj.newly_createds.exists():
             tag = "newly_created"
         elif obj.discounts.exists():
@@ -119,7 +119,7 @@ class PropertyListSerializer(PropertySerializer):
         request = self.context.get("request")
         platform = request.GET.get("platform")
 
-        if obj.populars.exists() or obj.newly_createds.exists() or obj.discounts.exists():
+        if obj.spotlights.exists() or obj.newly_createds.exists() or obj.discounts.exists():
             if platform == "web":
                 images = obj.media_files.filter(type="image")[1:4]
                 return PropertyMediaSerializer(images, many=True).data
