@@ -11,16 +11,15 @@ class BaseProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         abstract = True
-        fields = ["name", "email", "phone_number"]
+        fields = ["name", "email", "phone_number", "address", "latitude", "longitude"]
         extra_kwargs = {
             "company_logo": {"required": True, "allow_null": False},
             "company_name": {"required": True, "allow_null": False},
-            "company_address": {"required": True, "allow_null": False},
+            "address": {"required": True, "allow_null": False},
             "company_details": {"required": True, "allow_null": False},
             "first_name": {"required": True, "allow_null": False},
             "last_name": {"required": True, "allow_null": False},
             "gender": {"required": True, "allow_null": False},
-            "address": {"required": True, "allow_null": False},
         }
 
     def __init__(self, instance=None, *args, **kwargs):
@@ -54,7 +53,6 @@ class DeveloperProfileSerializer(BaseProfileSerializer):
         fields = BaseProfileSerializer.Meta.fields + [
             "company_logo",
             "company_name",
-            "company_address",
             "company_details",
         ]
 
@@ -65,7 +63,6 @@ class AgentProfileSerializer(BaseProfileSerializer):
         fields = BaseProfileSerializer.Meta.fields + [
             "company_logo",
             "company_name",
-            "company_address",
             "company_details",
         ]
 
@@ -77,7 +74,4 @@ class ProspectProfileSerializer(BaseProfileSerializer):
             "first_name",
             "last_name",
             "gender",
-            "address",
-            "latitude",
-            "longitude",
         ]

@@ -2339,7 +2339,7 @@
 									"type": "text"
 								},
 								{
-									"key": "company_address",
+									"key": "address",
 									"value": "boaif khasd jfoi",
 									"type": "text"
 								},
@@ -2409,7 +2409,7 @@
 									"type": "text"
 								},
 								{
-									"key": "company_address",
+									"key": "address",
 									"value": "boaif khasd jfoi",
 									"type": "text"
 								},
@@ -2480,7 +2480,7 @@
 									"type": "text"
 								},
 								{
-									"key": "company_address",
+									"key": "address",
 									"value": "boaif khasd jfoi",
 									"type": "text"
 								},
@@ -2550,7 +2550,7 @@
 									"type": "text"
 								},
 								{
-									"key": "company_address",
+									"key": "address",
 									"value": "zizac road",
 									"type": "text"
 								},

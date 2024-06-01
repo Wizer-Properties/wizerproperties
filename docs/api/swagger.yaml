@@ -30,7 +30,7 @@ paths:
           in: "formData"
           required: true
           type: "string"
-        - name: "company_address"
+        - name: "address"
           in: "formData"
           required: true
           type: "string"
@@ -95,7 +95,7 @@ paths:
           in: "formData"
           required: true
           type: "string"
-        - name: "company_address"
+        - name: "address"
           in: "formData"
           required: true
           type: "string"
@@ -156,7 +156,7 @@ paths:
           in: "formData"
           required: true
           type: "string"
-        - name: "company_address"
+        - name: "address"
           in: "formData"
           required: true
           type: "string"
@@ -221,7 +221,7 @@ paths:
           in: "formData"
           required: true
           type: "string"
-        - name: "company_address"
+        - name: "address"
           in: "formData"
           required: true
           type: "string"
@@ -3259,7 +3259,7 @@ definitions:
         type: "string"
       company_name:
         type: "string"
-      company_address:
+      address:
         type: "string"
       company_details:
         type: "string"
@@ -3557,7 +3557,7 @@ definitions:
         type: "string"
       company_name:
         type: "string"
-      company_address:
+      address:
         type: "string"
       company_details:
         type: "string"
@@ -4114,7 +4114,7 @@ definitions:
         type: "string"
       company_name:
         type: "string"
-      company_address:
+      address:
         type: "string"
       company_details:
         type: "string"
