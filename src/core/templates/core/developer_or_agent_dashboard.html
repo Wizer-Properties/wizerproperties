@@ -106,6 +106,7 @@
                                 <th>Address</th>
                                 <th>Project Total Area</th>
                                 <th>Total Floors</th>
+                                <th>Project Status</th>
                                 <th>Completion Date</th>
                                 <th>Status</th>
                                 <th class="th-edit-delete-see"> </th>
@@ -122,6 +123,7 @@
                                 <td>{{ building.address }}</td>
                                 <td>{{ building.project_total_area }}</td>
                                 <td>{{ building.total_floors }}</td>
+                                <td>{{ building.get_status_display }}</td>
                                 <td>{{ building.construction_year }}</td>
                                 <td>
                                     <label class="switch">

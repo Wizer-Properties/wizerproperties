@@ -347,6 +347,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
                         "address": building.address,
                         "project_total_area": building.project_total_area,
                         "total_floors": building.total_floors,
+                        "building_status": building.status,
                         "construction_year": building.construction_year,
                         "distance_from_location_to_BTS_or_MRT": building.distance_from_location_to_BTS_or_MRT,
                         "distance_from_location_to_ARL": building.distance_from_location_to_ARL,

@@ -3406,6 +3406,8 @@ definitions:
               type: "string"
             sub_district:
               type: "string"
+            status:
+              type: "string"
             construction_year:
               type: "number"
             quota:
@@ -3517,6 +3519,8 @@ definitions:
         type: "number"
       longitude:
         type: "number"
+      status:
+        type: "string"
       construction_year:
         type: "number"
       default_images:
@@ -3539,8 +3543,7 @@ definitions:
             type: "number"
           has_reviewed:
             type: "boolean"
-          
-  
+
   BuildingDeveloperInfoResponse:
     type: object
     properties:
@@ -3634,9 +3637,7 @@ definitions:
         type: "boolean"
       image_path:
         type: "string"
-          
-    
-  
+
   BuildingGeneratedDescriptionResponse:
     type: object
     properties:
@@ -3753,8 +3754,7 @@ definitions:
         type: "boolean"
       created_by:
         type: "string"
-      
-  
+
   PropertyListResponse:
     type: object
     properties:
@@ -3796,6 +3796,8 @@ definitions:
             building_id:
               type: "number"
             building_type:
+              type: "string"
+            building_status:
               type: "string"
             address:
               type: "string"
@@ -3896,7 +3898,9 @@ definitions:
               type: "number"
             building_type:
               type: "string"
-            building_address:
+            building_status:
+              type: "string"
+            address:
               type: "string"
             is_compared:
               type: "boolean"
@@ -3947,6 +3951,8 @@ definitions:
                 id:
                   type: "number"
                 type:
+                  type: "string"
+                status:
                   type: "string"
                 address:
                   type: "string"
@@ -3999,6 +4005,8 @@ definitions:
         number_of_bathroom:
           type: "number"
         building_type:
+          type: "string"
+        building_status:
           type: "string"
         building_address:
           type: "string"
@@ -4053,6 +4061,8 @@ definitions:
       building_id:
         type: "number"
       building_type:
+        type: "string"
+      building_status:
         type: "string"
       address:
         type: "string"
@@ -4120,6 +4130,8 @@ definitions:
         type: "string"
       type:
         type: "string"
+      status:
+        type: "string"
       total_units_for_sale:
         type: "number"
       address:
@@ -4161,6 +4173,8 @@ definitions:
           title:
             type: "string"
           type:
+            type: "string"
+          status:
             type: "string"
           address:
             type: "string"
@@ -4275,18 +4289,20 @@ definitions:
                   type: "number"
                 building_type:
                   type: "string"
+                building_status:
+                  type: "string"
                 address:
-                   type: "string"
+                  type: "string"
                 construction_year:
-                   type: "string"
+                  type: "string"
                 quota:
-                   type: "string"
+                  type: "string"
                 furnishing:
-                   type: "string"
+                  type: "string"
                 distance_from_location_to_BTS_or_MRT:
-                   type: "string"
+                  type: "string"
                 distance_from_location_to_ARL:
-                   type: "string"
+                  type: "string"
                 have_freehold:
                   type: "boolean"
                 have_leasehold:
@@ -4370,6 +4386,8 @@ definitions:
                 building_id:
                   type: "number"
                 building_type:
+                  type: "string"
+                building_status:
                   type: "string"
                 address:
                   type: "string"
