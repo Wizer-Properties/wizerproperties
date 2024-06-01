@@ -2,10 +2,9 @@ import ast
 import requests
 from geopy.distance import geodesic
 from django.utils import timezone
-from django.utils import timezone
 from django.conf import settings
 from urllib.parse import urlparse, parse_qs
-from django.db.models import OuterRef, Subquery, Value, F, CharField, Exists, BooleanField, Count, Value, Case, When
+from django.db.models import OuterRef, Subquery, Value, F, CharField, Count, Exists, BooleanField, Value, Case, When
 from django.db.models.functions import Concat
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -409,7 +408,37 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
         return Response(response_data, status=status.HTTP_200_OK)
 
-    @action(detail=False, methods=["get"])
+    @action(detail=True, methods=["get"])
+    def nearby_property_list(self, request, pk):
+        instance = self.get_object()
+
+        properties_within_given_distance = [
+            property.id
+            for property in Property.objects.filter(
+                building__latitude__isnull=False, building__longitude__isnull=False
+            ).exclude(id=instance.id)
+            # Calculate and get properties within the specified distance by geodesic (geopy package)
+            if geodesic(
+                (instance.building.latitude, instance.building.longitude),
+                (property.building.latitude, property.building.longitude),
+            ).miles
+            <= 20
+        ]
+
+        qs = Property.objects.filter(id__in=properties_within_given_distance).annotate(
+            # Annotate default_image_url with the URL of the first image for each property (if available)
+            default_image_url=Subquery(
+                PropertyMedia.objects.filter(property=OuterRef("pk"), type="image")
+                .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
+                .values("full_file_url")[:1]
+            ),
+            is_compared=Value(False),
+            is_favorited=Value(False),
+        )
+        serializer = PropertySerializer(qs, many=True)
+
+        return Response({"results": serializer.data}, status=200)
+
     def nearest(self, request):
         user = request.user
 
@@ -566,7 +595,6 @@ class PropertyViewSet(viewsets.ModelViewSet):
         )
 
         return self._get_paginated_response(property_qs, serializer_class, **serializer_context)
-
 
 @api_view(["GET"])
 def user_properties(request, user_id):

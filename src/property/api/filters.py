@@ -18,6 +18,7 @@ class PropertyFilter(django_filters.FilterSet):
         model = Property
         fields = [
             "building__type",
+            "building__id",
             "number_of_bathroom",
             "number_of_balcony",
             "number_of_car_parking",

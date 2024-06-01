@@ -764,6 +764,46 @@ $(document).ready(function(){
                 $('[label-name="address"').html(data?.address)
                 $('[label-name="phone_number"]').html('<a href="tel:'+data?.phone_number+'">'+data?.phone_number+'</a>')
                 $('[label-name="email"]').html('<a href="mailto:'+data?.email+'">'+data?.email+'</a>')
+
+                 // Phone number link
+                 if(!['', null, undefined].includes(data?.phone_number)) {
+                    $('[social-contact="contact_phone_number"').find('a').attr('href', "tel:" + data.phone_number)
+                    $('[label-name="contact_phone_number"]').html("Telephone")
+                } else {
+                    $('[social-contact="contact_phone_number"').remove()
+                }
+
+                // Email link
+                if(!['', null, undefined].includes(data?.email)) {
+                    $('[social-contact="contact_email"').find('a').attr('href', "mailto:" + data.email)
+                    $('[label-name="contact_email"]').html("Email")
+                } else {
+                    $('[social-contact="contact_email"').remove()
+                }
+
+                // Whats app link
+                if(!['', null, undefined].includes(data?.whats_app_link)) {
+                    $('[social-contact="whats_app_link"').find('a').attr('href', data.whats_app_link)
+                    $('[label-name="whats_app_link"]').html("WhatsApp")
+                } else {
+                    $('[social-contact="whats_app_link"').remove()
+                }
+
+                // Line link
+                if(!['', null, undefined].includes(data?.line_link)) {
+                    $('[social-contact="line_link"').find('a').attr('href', data.line_link)
+                    $('[label-name="line_link"]').html("Line")
+                } else {
+                    $('[social-contact="line_link"').remove()
+                }
+
+                // WeChat link
+                if(!['', null, undefined].includes(data?.we_chat_link)) {
+                    $('[social-contact="we_chat_link"').find('a').attr('href', data.we_chat_link)
+                    $('[label-name="we_chat_link"]').html("WeChat")
+                } else {
+                    $('[social-contact="we_chat_link"').remove()
+                }
             },
         })
     };

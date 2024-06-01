@@ -30,10 +30,15 @@ async function initializeMap() {
             }
         };
 
+        var redirectPath = "/property/search/"
+        if(window.location.pathname == "/property/map-list/"){
+            redirectPath = "/property/map-list/"
+        }
+
         if (place.geometry) {
             var latitude = place.geometry.location.lat();
             var longitude = place.geometry.location.lng();
-            window.location.href = '/property/search/'+
+            window.location.href = redirectPath +
                                     '?place='+search_input.value+
                                      '&latitude='+latitude+
                                     '&longitude='+longitude+
@@ -42,7 +47,7 @@ async function initializeMap() {
             return
         };
 
-        window.location.href = '/property/search/?place='+search_input.value
+        window.location.href = redirectPath + '?place='+search_input.value
     })
 
 
@@ -105,10 +110,7 @@ async function initializeMap() {
 
     let search_render_dom = document.getElementById('search-map');
 
-    if(
-        search_render_dom &&
-        window.innerWidth > 991
-    ){
+    if( search_render_dom ){
         
         async function init_map_circle (){
             var get_url = new URL(window.location.href);
@@ -126,7 +128,7 @@ async function initializeMap() {
 
             function circle_shape_void () {
                 search_page_map = new google.maps.Map(search_render_dom, {
-                    zoom: 9,
+                    zoom: 12,
                     center: center_option,
                     mapTypeId: "terrain",
                     zoomControl: false,
@@ -166,7 +168,7 @@ async function initializeMap() {
                 // }
 
                 search_page_map = new Map(search_render_dom, {
-                    zoom: 9,
+                    zoom: 10.5,
                     center: center_option,
                     mapId: 'b0addd8cbd8a8fc6',
                     zoomControl: false,

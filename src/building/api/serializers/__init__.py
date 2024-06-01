@@ -7,3 +7,4 @@ from .info_for_property import BuildingInfoForPropertySerializer
 from .review import BuildingReviewSerializer
 from .building_facilities import BuildingFacilitiesSerializer
 from .schedule_building import ScheduleBuildingSerializer
+from .search_map import BuildingSearchMapSerializer

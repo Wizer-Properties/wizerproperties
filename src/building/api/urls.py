@@ -36,4 +36,5 @@ urlpatterns = [
     # Review
     path("review/list/", BuildingReviewViewSet.as_view({"get": "list"}), name="review_list"),
     path("review/create/", BuildingReviewViewSet.as_view({"post": "create"}), name="review_create"),
+    path("building_list_for_map_search/", BuildingViewSet.as_view({"get": "building_list_for_map_search"}), name="building_list_for_map_search"),
 ]
