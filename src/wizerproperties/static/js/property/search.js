@@ -4,8 +4,10 @@ $(document).ready(function(){
     var place = url.searchParams.get("place");
     $('#gm-search-input').val(place || '');
     $('.search-area').html(place || '');
+
+    var path_name = page_view == "search" ? "map-list" : "search"
     
-    $('[label-name="map-view-tag"]').attr("href", "/property/map-list/"+window.location.search)
+    $('[label-name="view-tag"]').attr("href", "/property/"+path_name+"/"+window.location.search)
 
     $(document).on('click', '.filter-dropdown-btn', function(){
         var target_area = 
@@ -334,11 +336,12 @@ $(document).ready(function(){
         search : place || '',
         default_images_number : (window.innerWidth <= 768 ? 1 : 2),
         platform :  (window.innerWidth >= 768 ? 'web' : '') 
-    }
+    };
 
     var active_free_scrolling = false;
     var next_property = 1;
     var price_slider_filter = false;
+
 
     function searching(search_type){
         var search_param = prams_list;
@@ -420,8 +423,7 @@ $(document).ready(function(){
 
                 // showing sorting type dom
                 if(search_param.ordering) sorting_dom(search_param);
-
-                setTimeout(contact_button_position, 10); // responsive position for contact btn
+                setTimeout(contact_button_position, 100); // responsive position for contact btn
             },
             error: function (error) {
                 active_free_scrolling = false;
@@ -537,7 +539,6 @@ $(document).ready(function(){
                 $('[label-value="price"]').html("Bedrooms");
             }
         };
-
 
         // propety types dom >>>
         if(get_parent_label == 'property-type'){
@@ -935,6 +936,8 @@ $(document).ready(function(){
 
     */
 
+
+
     $('[aria-label="filter-button"]').click(function(){
         var is_modal_open = $('body').attr('filter-modal-open');
         if(is_modal_open == 'true'){
@@ -1111,7 +1114,109 @@ $(document).ready(function(){
     });
 
     
-    
 
+
+    // search with map code ==============================================================
+
+    var markers = [];
+    var markerIcon = "/static/media/icons/red-dot.png";
+    var markerSelectedAreaIcon = "/static/media/icons/home-dot.png";
+
+    function clearMarkers() {
+        markers.forEach(function(marker) {
+            marker.setMap(null);
+        });
+        markers = [];
+    }
+
+    function resetMarkerIcons() {
+        markers.forEach((marker) => {
+            marker.setIcon(markerIcon); // Reset icon of all markers
+        });
+    }
+
+
+    var prams_list = {
+        page_size : 5,
+        search : place || ''
+    }
+    var next_property = 1;
+
+    function map_building_list(){
+        var search_param = prams_list;
+        var get_url = new URL(window.location.href);
+        var get_params = new URLSearchParams(get_url.search);
+        var p_latitude = get_params.get('latitude');
+        var p_longitude = get_params.get('longitude');
+
+        if(p_latitude && p_longitude){
+            search_param.lat = p_latitude;
+            search_param.long = p_longitude;
+        };
+        
+        if(next_property) search_param.page = next_property;
+        if([null].includes(next_property)) return;
+
+        // removing search filter for nearby
+        if(
+            search_param?.hasOwnProperty("nearby") &&
+            search_param?.hasOwnProperty("search")
+        ){
+            delete search_param.search;
+        };
+        
+        $.ajax({
+            url: '/building/api/building_list_for_map_search/',
+            type: 'GET',
+            data : search_param,
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            success: function (data) {                
+                clearMarkers();
+
+                data.results.forEach(function(item){
+                    var marker = new google.maps.Marker({
+                        position: {lat: item.latitude, lng: item.longitude },
+                        map: search_page_map,
+                        icon: {
+                            url: markerIcon,
+                            labelOrigin: new google.maps.Point(75, 32),
+                            size: new google.maps.Size(32,32),
+                            anchor: new google.maps.Point(16,32),
+                        },
+                        id: "marker_id_" + item.id
+                    });
+
+                    markers.push(marker)
+        
+                    marker.addListener('click', function() {
+                        resetMarkerIcons();
+                        marker.setIcon(markerSelectedAreaIcon);
+                        next_property = 1;
+                        building_id_for_map = item.id
+                        prams_list.building__id = item.id
+
+                        if( prams_list?.hasOwnProperty("search") ){
+                            delete prams_list.search;
+                        };
+                        searching("filter"); // get property data under the building
+                    });
+                })
+            },
+            error: function (error) {
+            }
+        });
+    };
+
+    map_building_list();
+
+
+
+
+    // Onclick event handler on map click
+    google.maps.event.addListener(search_page_map, "click", function(event) {
+       console.log("==========")
+    });
 
 });

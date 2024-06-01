@@ -761,7 +761,7 @@ $(document).ready(function(){
                 $('[label-name="company_logo"]')
                 .html('<img src="'+data?.company_logo+'" alt="building img" loading="lazy"/>')
                 $('[label-name="company_name"').html(data?.company_name)
-                $('[label-name="company_address"').html(data?.company_address)
+                $('[label-name="address"').html(data?.address)
                 $('[label-name="phone_number"]').html('<a href="tel:'+data?.phone_number+'">'+data?.phone_number+'</a>')
                 $('[label-name="email"]').html('<a href="mailto:'+data?.email+'">'+data?.email+'</a>')
 

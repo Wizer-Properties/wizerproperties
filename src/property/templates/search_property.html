@@ -49,7 +49,7 @@
                 </div>
     
                 <div class="sorting-map-box">
-                    <a href="" label-name="map-view-tag">
+                    <a href="" label-name="view-tag">
                         <i class="bi bi-map"></i>
                         Map view
                     </a>
@@ -197,6 +197,9 @@
 
 
 {% block extend_script %}
+<script>
+    var page_view = "search";
+</script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{% static '/js/libraries/flip-countdown.js' %}"></script>

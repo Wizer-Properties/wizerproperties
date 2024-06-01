@@ -2,6 +2,10 @@
     --result-width : 680px
 }
 
+.search-box-price{
+    font-size: 20px !important;
+}
+
 #search-result-map-view{
     display: flex;
     gap: 10px;
@@ -169,6 +173,34 @@ header{
     display: none !important;
 }
 
+.map-button-info{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.map-button-info button{
+    border: none;
+}
+
+.map-button-info
+.section-scripts{
+    margin: 0 !important;
+}
+
+.search-list-redirect{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 999;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    color: #212529 !important;
+    font-size: 14px;
+}
+
 @media screen and (max-width: 1360px) {
     :root{
         --result-width : 480px
@@ -225,7 +257,7 @@ header{
         width: 100% !important;
         height: 60vh;
         min-height: 400px;
-        position: initial !important;
+        position: relative !important;
     }
 
     #search-result-list{

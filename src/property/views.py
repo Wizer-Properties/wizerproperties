@@ -94,14 +94,14 @@ def dev_agent_property_list(request, id):
 
     if developer_profile:
         company_info["company_name"] = developer_profile.company_name
-        company_info["company_address"] = developer_profile.company_address
+        company_info["address"] = developer_profile.address
         company_info["company_details"] = developer_profile.company_details
         company_info["phone_number"] = developer_profile.phone_number
         company_info["company_logo"] = developer_profile.company_logo.url if developer_profile.company_logo else None
 
     if agent_profile:
         company_info["company_name"] = agent_profile.company_name
-        company_info["company_address"] = agent_profile.company_address
+        company_info["address"] = agent_profile.address
         company_info["company_details"] = agent_profile.company_details
         company_info["phone_number"] = agent_profile.phone_number
         company_info["company_logo"] = agent_profile.company_logo.url if agent_profile.company_logo else None

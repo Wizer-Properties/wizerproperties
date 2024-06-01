@@ -27,16 +27,18 @@ from property.api.pagination import UserPropertyPagination
 from building.api.serializers import BuildingInfoForPropertySerializer, BuildingMediaSerializer
 from building.models import Building, BuildingMedia
 from property.models import Property, PropertyMedia, CompareProperty, ProspectFavoriteProperty
-from user.models import ProspectProfile
+from user.models import AgentProfile, DeveloperProfile, ProspectProfile
 from user.api.serializers import AgentProfileSerializer, DeveloperProfileSerializer
 from utils.general_func import get_chatgpt_response
 from utils.general_data import PRICE_RANGES
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
-    queryset = Property.objects.select_related("building", "created_by").prefetch_related(
-        "media_files", "discounts", "newly_createds", "spotlights"
-    ).annotate(spotlighted=Count("spotlights"))
+    queryset = (
+        Property.objects.select_related("building", "created_by")
+        .prefetch_related("media_files", "discounts", "newly_createds", "spotlights")
+        .annotate(spotlighted=Count("spotlights"))
+    )
 
     serializer_class = PropertySerializer
     permission_classes = [PropertyPermission]
@@ -438,10 +440,19 @@ class PropertyViewSet(viewsets.ModelViewSet):
         return Response({"results": serializer.data}, status=200)
 
     def nearest(self, request):
-        prospect_profile = ProspectProfile.objects.get(user=request.user)
+        user = request.user
+
+        if hasattr(user, "developerprofile"):
+            prospect_profile = DeveloperProfile.objects.get(user=user)
+        elif hasattr(user, "agentprofile"):
+            prospect_profile = AgentProfile.objects.get(user=user)
+        elif hasattr(user, "prospectprofile"):
+            prospect_profile = ProspectProfile.objects.get(user=user)
+        else:
+            prospect_profile = None
 
         # Get the prospect's location (latitude, longitude)
-        if prospect_profile.latitude is None or prospect_profile.longitude is None:
+        if not prospect_profile or prospect_profile.latitude is None or prospect_profile.longitude is None:
             return Response({"non_field_errors": ["Prospect location not set"]}, status=status.HTTP_400_BAD_REQUEST)
 
         prospect_location = (prospect_profile.latitude, prospect_profile.longitude)

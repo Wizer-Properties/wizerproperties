@@ -3,10 +3,19 @@ from rest_framework import permissions
 
 class PropertyPermission(permissions.BasePermission):
     def has_permission(self, request, view):
+        user = request.user
+
         if request.method in ["POST", "PUT", "PATCH", "DELETE"]:
-            return hasattr(request.user, "developerprofile") or hasattr(request.user, "agentprofile")
+            return hasattr(user, "developerprofile") or hasattr(user, "agentprofile")
         elif view.action in ["nearest"]:
-            return hasattr(request.user, "prospectprofile")
+            if user.is_authenticated:
+                return (
+                    hasattr(user, "developerprofile")
+                    or hasattr(user, "agentprofile")
+                    or hasattr(user, "prospectprofile")
+                )
+            else:
+                return True
 
         return True
 
