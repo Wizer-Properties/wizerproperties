@@ -29,7 +29,7 @@ from building.models import Building, BuildingMedia
 from property.models import Property, PropertyMedia, CompareProperty, ProspectFavoriteProperty
 from user.models import AgentProfile, DeveloperProfile, ProspectProfile
 from user.api.serializers import AgentProfileSerializer, DeveloperProfileSerializer
-from utils.general_func import get_chatgpt_response
+from utils.general_func import get_chatgpt_response, get_user_ip
 from utils.general_data import PRICE_RANGES
 
 
@@ -441,21 +441,46 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
     def nearest(self, request):
         user = request.user
+        if user.is_authenticated:
+            if hasattr(user, "developerprofile"):
+                profile = DeveloperProfile.objects.get(user=user)
+            elif hasattr(user, "agentprofile"):
+                profile = AgentProfile.objects.get(user=user)
+            elif hasattr(user, "prospectprofile"):
+                profile = ProspectProfile.objects.get(user=user)
+            else:
+                profile = None
 
-        if hasattr(user, "developerprofile"):
-            prospect_profile = DeveloperProfile.objects.get(user=user)
-        elif hasattr(user, "agentprofile"):
-            prospect_profile = AgentProfile.objects.get(user=user)
-        elif hasattr(user, "prospectprofile"):
-            prospect_profile = ProspectProfile.objects.get(user=user)
-        else:
-            prospect_profile = None
+            # Get the profile location (latitude, longitude)
+            if not profile or profile.latitude is None or profile.longitude is None:
+                return Response({"non_field_errors": ["Profile location not set"]}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Get the prospect's location (latitude, longitude)
-        if not prospect_profile or prospect_profile.latitude is None or prospect_profile.longitude is None:
-            return Response({"non_field_errors": ["Prospect location not set"]}, status=status.HTTP_400_BAD_REQUEST)
+            location = (profile.latitude, profile.longitude)
+        else:  # For non logged in user
+            location = (13.736717, 100.523186)  # Default location to Central Bangkok
+            user_ip = get_user_ip(request)
+            if user_ip is None:
+                raise ValueError("Unable to determine IP address")
 
-        prospect_location = (prospect_profile.latitude, prospect_profile.longitude)
+            # Use ipinfo.io to get location based on IP address
+            try:
+                response = requests.get(f"https://ipinfo.io/{user_ip}?token={settings.IPINFO_API_KEY}")
+                if response.status_code != 200:
+                    raise ValueError("Unable to determine location from IP")
+
+                data = response.json()
+                loc = data.get("loc")
+                if not loc:
+                    raise ValueError("Location information not available")
+                if data.get("country") != "TH":
+                    raise ValueError("Service restricted to Thailand")
+
+                location = data.get("loc").split(",")
+                location = (float(location[0]), float(location[1]))
+            except Exception as e:
+                pass
+                # Log the exception (optional)
+                # print(f"Error determining location: {e}")
 
         # Calculate the distance of each property from the prospect's location
         properties = self.get_queryset().filter(building__latitude__isnull=False, building__longitude__isnull=False)
@@ -463,7 +488,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
         for property in properties:
             building_location = (property.building.latitude, property.building.longitude)
-            distance = geodesic(prospect_location, building_location).kilometers
+            distance = geodesic(location, building_location).miles
             properties_with_distance.append((property, distance))
 
         # Sort properties by distance
@@ -595,6 +620,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
         )
 
         return self._get_paginated_response(property_qs, serializer_class, **serializer_context)
+
 
 @api_view(["GET"])
 def user_properties(request, user_id):

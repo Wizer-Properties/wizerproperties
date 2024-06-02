@@ -4008,7 +4008,7 @@ definitions:
           type: "string"
         building_status:
           type: "string"
-        building_address:
+        address:
           type: "string"
         is_compared:
           type: "boolean"

@@ -29,7 +29,7 @@ $(document).ready(function(){
                         '<div class="location">'+
                             '<div class="icon">'+
                                 '<i class="bi bi-geo-alt"></i>'+
-                                data?.building_address+
+                                data?.address+
                             '</div>'+
                         '</div>'+
                         '<p class="sub-title">'+
