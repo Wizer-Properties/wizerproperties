@@ -173,36 +173,6 @@ $(document).ready(function(){
 
 
 
-    var countdownInterval = null;
-    function countdown() {
-        var c_list = $('[date-count]');        
-        
-        function updateCountdown(targetDate, index) {
-            var [year, month, day] = targetDate.split('-').map(Number);
-            var target = new Date(year, month - 1, day);
-            var now = new Date();
-            var difference = target - now;
-            
-            if (difference <= 0) {
-                c_list[index].innerHTML = '00 : 00'
-            } else {
-                var days = Math.floor(difference / (1000 * 60 * 60 * 24));
-                var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = Math.floor((difference % (1000 * 60)) / 1000);
-                if(seconds < 10) seconds = '0'+seconds;
-                c_list[index].innerHTML = (days && '<count>'+days+'</count> : ')+
-                                            '<count>'+hours+'</count> : '+
-                                            '<count>'+minutes+'</count> : '+
-                                            '<count>'+seconds+'</count>';
-            }
-        };
-
-        for (let i = 0; i < c_list.length; i++) {
-            var targetDate = c_list[i].getAttribute('date-count')
-            updateCountdown(targetDate, i);
-        };
-    };
     
 
     function property_list_tmp(data, link){
@@ -236,16 +206,15 @@ $(document).ready(function(){
                                     '</div>'+
                                     (
                                         !['agent', 'developer'].includes(user_type) ?
-                                        '<div class="search-list-add-btns">'+
-                                            '<button class="building-agency-action-btn add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
-                                                '<i class="bi bi-arrow-left-right pe-2"></i>'+
-                                                '<i class="bi bi-check-circle-fill pe-2"></i>'+
-                                                    '<span> Add<added>ed</added> to Compare </span>'+
-                                            '</button>'+
-
-                                            '<button class="building-agency-action-btn add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'">'+
+                                        '<div class="compare-favorite-btn-area">'+
+                                            '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'">'+
                                                 '<i class="bi bi-heart-fill"></i>'+
-                                                '<i class="bi bi-heart"></i>'+
+                                                '<span> Favorite </span>'+
+                                            '</button>' +
+                                            '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
+                                                '<i class="bi bi-arrow-left-right"></i>'+
+                                                '<i class="bi bi-check2"></i>'+
+                                                '<span> Compare </span>'+
                                             '</button>'+
                                         '</div>' : ''
                                     )+
@@ -258,16 +227,14 @@ $(document).ready(function(){
                                     '<div class="search-result-content">'+
                                         '<a href="/property/details/'+data?.id+'/" class="d-block w-100">'+
                                             '<div class="search-box-title">'+
-                                                '<span> Only with us </span>'+
-                                                '<line></line>'+
+                                                '<span> '+data?.title+' </span>'+
                                                 ( data?.discount_period ? 
                                                     '<div date-count="'+data?.discount_period+'"></div>' : '') +
                                             '</div>'+
                                             '<div class="search-box-price">'+
                                                 '฿ '+ 
                                                 formatBalance(Math.floor(data?.price) || 0)+
-                                            '</div>'+
-                                            '<h1> '+data?.title+' </h1>'+                                       
+                                            '</div>'+                                    
                                             
                                             '<div class="property-contains">'+
                                             ' <div class="property-short-info-box">'+
@@ -287,8 +254,6 @@ $(document).ready(function(){
                                                     '<span class="property-value">'+ data?.floor_number +'</span>'+
                                                 '</div>'+
                                             '</div>'+
-
-                                            '<p class="details"> '+ data?.description +'</p>'+
 
                                             '<div class="property-faciluties-list mt-3">'+
                                                 property_facility_tmp(data)+
@@ -409,12 +374,10 @@ $(document).ready(function(){
                     $('#search-result-list').append(search_dom);
                 };
 
-                if(countdownInterval){
-                    clearInterval(countdownInterval)
-                };
 
-                countdown(); // offer duration time
-                countdownInterval = setInterval(countdown, 1000);
+                var timer = new Countdown() // for time countdown
+                timer.start()
+
                 installing_splide(); // init slider for image
 
                 active_free_scrolling = false;

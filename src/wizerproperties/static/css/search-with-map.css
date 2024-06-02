@@ -153,8 +153,7 @@ header{
     border-radius: 0 !important;
 }
 
-.search-result-box-img-splid,
-.search-list-add-btns{
+.search-result-box-img-splid{
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
 }
@@ -220,8 +219,7 @@ header{
         padding: 0 !important;
     }
 
-    .search-result-box-img-splid,
-    .search-list-add-btns{
+    .search-result-box-img-splid{
         border-top-right-radius: 10px !important;
         border-bottom-left-radius: 0 !important;
     }

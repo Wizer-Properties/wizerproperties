@@ -1,11 +1,10 @@
 $(document).ready(function(){
-    
     function countdown(endDate, id) {
         var flipper_dom = '<div'+ 
                             ' class="flipper _'+id+'" '+
                             ' data-datetime="'+endDate+' 23:59:59" '+
-                            ' data-template="ddd|HH|ii|ss"'+
-                            ' data-labels="Days|Hours|Minutes|Seconds" '+
+                            ' data-template="ddd|HH|ii"'+
+                            // ' data-labels="Days|Hours|Minutes|Seconds" '+
                             ' data-reverse="true">'+
                           '</div>';
         return flipper_dom;
@@ -14,20 +13,18 @@ $(document).ready(function(){
 
     function property_list_tmp(data){
         return  '<div class="property-single-box">'+
-                    '<div class="banner-action-button">'+
+                    '<div class="compare-favorite-btn-area">'+
                         (
                             !['agent', 'developer'].includes(user_type) ?
-                            '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
-                                '<i class="bi bi-arrow-left-right"></i>'+
-                                '<i class="bi bi-check-circle-fill"></i>'+
-                                ' Compare'+
-                            '</button>'+
-    
                             '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'">'+
                                 '<i class="bi bi-heart-fill"></i>'+
-                                '<i class="bi bi-heart"></i>'+
-                                ' Favorite'+
-                            '</button>' : ''
+                                '<span> Favorite </span>'+
+                            '</button>' +
+                            '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
+                                '<i class="bi bi-arrow-left-right"></i>'+
+                                '<i class="bi bi-check2"></i>'+
+                                '<span> Compare </span>'+
+                            '</button>': ''
                         ) +
                     '</div>'+
                     '<a href="/property/details/'+data?.id+'/" class="search-result-box-wrapper">'+
@@ -36,21 +33,13 @@ $(document).ready(function(){
                         '</div>'+
                         '<div class="search-result-box">'+
                             '<span class="price-tag"> ฿ '+formatBalance(Math.floor(data?.price) || 0)+' </span>'+
-                            // '<h1> '+data?.title+' </h1>'+
                             '<div class="location">'+
                                 '<div class="icon">'+
                                     '<i class="bi bi-geo-alt"></i>'+
                                     data?.address+
                                 '</div>'+
                             '</div>'+
-                            '<p class="sub-title">'+
-                            data?.number_of_bedroom+
-                            ' bedroom ' +
-                            data?.building_type+
-                            ' for sale at ' +
-                            data?.title+
-                            '</p>'+
-                            // '<p class="details"> '+ data?.description+' </p>'+
+                            '<h1> '+data?.title+' </h1>'+
 
                             '<div class="property-contains">'+
                                 '<div class="property-short-info-box">'+
@@ -89,24 +78,23 @@ $(document).ready(function(){
 
     function discount_property_list_tmp(data){
         return  '<div class="property-single-box discount_period">'+
-                    '<div class="banner-action-button">'+
+                    '<div class="compare-favorite-btn-area">'+
                         (
                             !['agent', 'developer'].includes(user_type) ?
-                            '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
-                                '<i class="bi bi-arrow-left-right"></i>'+
-                                '<i class="bi bi-check-circle-fill"></i>'+
-                                ' Compare'+
-                            '</button>'+
-    
                             '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'">'+
                                 '<i class="bi bi-heart-fill"></i>'+
-                                '<i class="bi bi-heart"></i>'+
-                                ' Favorite'+
-                            '</button>' : ''
+                                '<span> Favorite </span>'+
+                            '</button>' +
+                            '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
+                                '<i class="bi bi-arrow-left-right"></i>'+
+                                '<i class="bi bi-check2"></i>'+
+                                '<span> Compare </span>'+
+                            '</button>': ''
                         ) +
                     '</div>'+
                     '<a href="/property/details/'+data?.id+'/" class="search-result-box-wrapper">'+
-                        '<div class="property-discount link">'+countdown(data?.discount_period, data?.id)+'</div>'+
+                        '<h1 class="card-title">'+ data?.title +'</h1>'+
+                        '<div class="property-discount">'+countdown(data?.discount_period, data?.id)+'</div>'+
                         '<div class="search-result-box-img">'+
                             '<img src="'+data?.default_image+'" alt="'+data?.title+'" loading="lazy">' +
                         '</div>'+
@@ -119,14 +107,6 @@ $(document).ready(function(){
                                     data?.address+
                                 '</div>'+
                             '</div>'+
-                            '<p class="sub-title">'+
-                            data?.number_of_bedroom+
-                            ' bedroom ' +
-                            data?.building_type+
-                            ' for sale at ' +
-                            data?.title+
-                            '</p>'+
-                            // '<p class="details"> '+ data?.description+' </p>'+
 
                             '<div class="property-contains">'+
                                 '<div class="property-short-info-box">'+
@@ -772,28 +752,13 @@ $(document).ready(function(){
                         reels_iframe_tmp(data)+
                     '</div>'+
                     '<div class="reels-developer-info mt-2">'+
-                        '<p>'+
-                            '<span class="reel-details">'+
-                                data?.details +
-                            '</span>'+
-                            '<span class="reel-see-more-see-less"> See more </span>'+
-                        '</p>'+
+                        '<div class="reels-title"> This is reels title </div>'+
                         '<div class="reels-developer-logo">'+
                             '<div class="dev-logo">'+
                                 '<img src="'+company_data?.company_logo+'" alt="logo">'+
                             '</div>'+
-                            '<h1>'+company_data?.company_name+'</h1>'+
+                            '<h1 class="m-0">'+company_data?.company_name+'</h1>'+
                         '</div>'+
-        
-                        '<a href="mailto:'+data?.user?.email+'" class="reels-developer-contact mb-2">'+
-                            '<i class="bi bi-envelope"></i>'+
-                            '<span>'+data?.user?.email+'</span>'+
-                        '</a>'+
-        
-                        '<a href="tel:'+company_data?.phone_number+'" class="reels-developer-contact">'+
-                            '<i class="bi bi-telephone"></i>'+
-                            '<span>'+company_data?.phone_number+'</span>'+
-                        '</a>'+
         
                         '<div class="reels-visit-btn mt-3">'+
                             '<a href="/property/list/'+data?.user?.id+'/"> Visit </a>'+

@@ -140,7 +140,7 @@
 }
 
 .search-result-box-img {
-    height: 165px;
+    height: 220px;
     margin-bottom: 0px;
 }
 
@@ -256,11 +256,29 @@
     justify-content: initial;
 }
 
-.property-discount.link{
+.property-discount{
     display: flex;
     justify-content: center;
     background-color: #fff !important;
     margin-bottom: 5px;
+    position: absolute;
+    top: 54px;
+    left: 16px;
+    z-index: 1;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.property-discount .flipper *{
+    font-size: 20px !important;
+}
+
+.property-discount .flipper {
+    height: auto !important;
+}
+
+.property-discount .flipper-digit{
+    height: 28px !important;
 }
 
 .discount_period .banner-action-button{
@@ -400,6 +418,18 @@
     height: 520px !important;
 }
 
+.card-title,
+.reels-title{
+    font-size: 20px !important;
+    color: #212529;
+    margin-bottom: 15px !important;
+}
+
+.reels-title{
+    font-size: 18px !important;
+    font-weight: 500;
+    margin-bottom: 5px !important;
+}
 
 @media screen and (max-width: 991px) {
     .banner-title{
@@ -419,6 +449,15 @@
 
     .sign-in-note-box p{
         margin-bottom: 15px;
+    }
+
+    
+    .property-discount .flipper *{
+        font-size: 16px !important;
+    }
+
+    .property-discount .flipper-digit{
+        height: 22px !important;
     }
 }
 
@@ -462,6 +501,9 @@
         grid-area: 3 / 2 / 4 / 3; 
     }
 
+    .property-discount .flipper-digit{
+        height: 24px !important;
+    }
 }
 
 @media screen and (max-width: 560px){
@@ -479,5 +521,9 @@
 
     .search-result-box-img{
         padding: 0 !important;
+    }
+
+    .property-discount .flipper-digit {
+        height: 28px !important;
     }
 }

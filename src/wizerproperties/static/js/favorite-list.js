@@ -87,18 +87,16 @@ $(document).ready(function(){
         var data = value?.property_info;
 
         return  '<div class="col-sm-6 col-lg-4 col-xl-3 mb-4 property-single-box">'+
-                    '<div class="banner-action-button">'+
-                        '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
-                            '<i class="bi bi-arrow-left-right"></i>'+
-                            '<i class="bi bi-check-circle-fill"></i>'+
-                            ' Compare'+
-                        '</button>'+
-
-                        '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'">'+
-                            '<i class="bi bi-heart-fill"></i>'+
-                            '<i class="bi bi-heart"></i>'+
-                            ' Favorite'+
-                        '</button>'+
+                    '<div class="compare-favorite-btn-area">'+
+                    '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'">'+
+                        '<i class="bi bi-heart-fill"></i>'+
+                        '<span> Favorite </span>'+
+                    '</button>' +
+                    '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
+                        '<i class="bi bi-arrow-left-right"></i>'+
+                        '<i class="bi bi-check2"></i>'+
+                        '<span> Compare </span>'+
+                    '</button>'+
                     '</div>'+
                     '<a href="/property/details/'+data?.id+'/" class="search-result-box-wrapper">'+
                         '<div class="search-result-box-img">'+

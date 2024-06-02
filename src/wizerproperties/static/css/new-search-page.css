@@ -37,15 +37,6 @@
     padding-right: 10px;
 }
 
-.search-list-add-btns{
-    display: flex;
-    align-items: center;
-    color: #fff !important;
-    font-weight: 500;
-    font-size: 16px;
-    background-color: transparent;
-    border: none !important;
-}
 
 .building-agency-action-btn.add-to-favorite{
     font-size: 28px !important;
@@ -70,24 +61,6 @@
     padding-right: 0;
 }
 
-.search-list-add-btns{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: absolute;
-    top: 0px;
-    width: 100%;
-    left: 0;
-    padding-left: 20px;
-    padding-right: 10px;
-    z-index: 99;
-    background: linear-gradient(0deg, rgba(9,9,121,0) 0%, rgba(11,10,32, .7) 100%);
-    padding-top: 5px;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    min-height: 47px;
-}
-
 .search-result-box-img img{
     width: 100%;
     height: 100%;
@@ -102,6 +75,7 @@
     background: none;
     padding: 0 !important;
     min-height: auto !important;
+    margin-top: 0 !important;
 }
 
 .dev-phn-number{
@@ -319,6 +293,7 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
+    gap: 20px;
 }
 
 .search-box-title span{
@@ -350,7 +325,6 @@
     font-weight: 600;
     z-index: 1;
     background-color: #ffedfe;
-    padding-left: 10px;
 }
 
 .sorting-map-container{
@@ -508,7 +482,7 @@
 
 [active-filter="true"] .bi,
 [active-filter="true"] .material-symbols-outlined{
-    color: #EB5C5F !important;
+    color: #000 !important;
 }
 
 [active-filter="true"] .filter-label{
@@ -547,11 +521,15 @@
 }
 
 
-@media screen and (max-width : 991px){
-    .search-list-add-btns{
-        width: 100%;
-    }
+#search-result-list
+.compare-favorite-btn-area{
+    right: 10px;
+    top: 5px;
+    background:  radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0) 64%);
+}
 
+
+@media screen and (max-width : 991px){
     .search-result-content{
         padding: 0;
         padding-top: 20px;
@@ -695,14 +673,8 @@
         height: 50px;
     }
 
-    .search-list-add-btns 
-    .building-agency-action-btn .bi {
-        font-size: 20px;
-    }
-
     .search-box-price{
         font-size: 22px;
-        padding: 10px 0 !important;
     }
 
     .agency-company-info{
@@ -797,5 +769,10 @@
 
     .search-box-title{
         margin-bottom: 0;
+    }
+
+    .property-card-modal-btns button, 
+    .property-card-modal-btns a {
+        font-size: 12px;
     }
 }
