@@ -211,44 +211,43 @@ async function initializeMap() {
         
     };
 
-    $(document).on('click', '.area-filter-buttons button', function(){
-        if(window.innerWidth <= 991) return;
-        if(search_page_map_circle){
-            search_page_map_circle.setRadius( Number($(this).val()) * 1609.34);
-        }else{
-            var get_url = new URL(window.location.href);
-            var get_params = new URLSearchParams(get_url.search);
-            var p_latitude = get_params.get('latitude');
-            var p_longitude = get_params.get('longitude');
-            var center_option = {lat: 13.7563309, lng: 100.5017651 }
+    // $(document).on('change', 'select[name="nearby"]', function(){
+    //     if(search_page_map_circle){
+    //         search_page_map_circle.setRadius( Number($(this).val()) * 1609.34);
+    //     }else{
+    //         var get_url = new URL(window.location.href);
+    //         var get_params = new URLSearchParams(get_url.search);
+    //         var p_latitude = get_params.get('latitude');
+    //         var p_longitude = get_params.get('longitude');
+    //         var center_option = {lat: 13.7563309, lng: 100.5017651 }
         
-            if(p_latitude && p_longitude){
-                center_option.lat = Number(p_latitude);
-                center_option.lng = Number(p_longitude);
-            };
+    //         if(p_latitude && p_longitude){
+    //             center_option.lat = Number(p_latitude);
+    //             center_option.lng = Number(p_longitude);
+    //         };
 
-            search_page_map = null;
-            search_page_map = new google.maps.Map(search_render_dom, {
-                zoom: 9,
-                center: center_option,
-                mapTypeId: "terrain",
-                zoomControl: false,
-                mapTypeControl: false, 
-                fullscreenControl: false,
-            });
+    //         search_page_map = null;
+    //         search_page_map = new google.maps.Map(search_render_dom, {
+    //             zoom: 10,
+    //             center: center_option,
+    //             mapTypeId: "terrain",
+    //             zoomControl: false,
+    //             mapTypeControl: false, 
+    //             fullscreenControl: false,
+    //         });
             
-            search_page_map_circle = new google.maps.Circle({
-                strokeColor: "#FF0000",
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                fillColor: "#FF0000",
-                fillOpacity: 0.35,
-                map : search_page_map ,
-                center: center_option,
-                radius:  Number($(this).val()) * 1609.34,
-            });
-        }
-    });
+    //         search_page_map_circle = new google.maps.Circle({
+    //             strokeColor: "#FF0000",
+    //             strokeOpacity: 0.8,
+    //             strokeWeight: 2,
+    //             fillColor: "#FF0000",
+    //             fillOpacity: 0.35,
+    //             map : search_page_map ,
+    //             center: center_option,
+    //             radius:  Number($(this).val()) * 1609.34,
+    //         });
+    //     }
+    // });
 
 
 

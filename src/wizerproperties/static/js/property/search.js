@@ -1196,11 +1196,15 @@ $(document).ready(function(){
                         next_property = 1;
                         building_id_for_map = item.id
                         prams_list.building__id = item.id
+                        prams_list.default_images_number = window.innerWidth <= 768 ? 1 : 2
+                        prams_list.platform = window.innerWidth >= 768 ? 'web' : ''
 
                         if( prams_list?.hasOwnProperty("search") ){
                             delete prams_list.search;
                         };
                         searching("filter"); // get property data under the building
+
+                        $('.map-button-info button').show()
                     });
                 })
             },
@@ -1213,10 +1217,25 @@ $(document).ready(function(){
 
 
 
+    $('.reset-map').click(function(){
+        resetMarkerIcons();
+        next_property = 1;
+        building_id_for_map = null;
+        if( prams_list?.hasOwnProperty("building__id") ){
+            delete prams_list.building__id;
+        };
+        prams_list.place = place;
+        prams_list.default_images_number = window.innerWidth <= 768 ? 1 : 2
+        prams_list.platform = window.innerWidth >= 768 ? 'web' : ''
 
-    // Onclick event handler on map click
-    google.maps.event.addListener(search_page_map, "click", function(event) {
-       console.log("==========")
+        searching("filter");
+        $(this).hide()
     });
 
+    // Onclick event handler on map click
+    // google.maps.event.addListener(search_page_map, "click", function(event) {
+    //    console.log("==========")
+    // });
+
+    console.log("=============", google)
 });
