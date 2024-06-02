@@ -2939,9 +2939,9 @@ paths:
           in: "formData"
           type: "string"
           description: "active/inactive"
-        - name: "details"
+        - name: "property"
           in: "formData"
-          type: "string"
+          type: "number"
       responses:
         201:
           description: Reel created
@@ -3073,9 +3073,9 @@ paths:
           in: "formData"
           type: "string"
           description: "active/inactive"
-        - name: "details"
+        - name: "property"
           in: "formData"
-          type: "string"
+          type: "number"
       responses:
         200:
           description: Reel object
@@ -3133,9 +3133,9 @@ paths:
           in: "formData"
           type: "string"
           description: "active/inactive"
-        - name: "details"
+        - name: "property"
           in: "formData"
-          type: "string"
+          type: "number"
       responses:
         200:
           description: Reel object
@@ -4501,8 +4501,8 @@ definitions:
         type: "string"
       status:
           type: "string"
-      details:
-        type: "string"
+      property:
+        type: "number"
   
   ReelListResponse:
     type: object
@@ -4532,8 +4532,8 @@ definitions:
               type: "string"
             status:
               type: "string"
-            details:
-              type: "string"
+            property:
+              type: "number"
     
   ActiveReelListResponse:
     type: object
@@ -4563,8 +4563,8 @@ definitions:
               type: "string"
             status:
               type: "string"
-            details:
-              type: "string"
+            property:
+              type: "number"
             user:
               type: object
               properties:

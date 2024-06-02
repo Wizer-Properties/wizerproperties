@@ -3,6 +3,8 @@ from advertise.models import Reel
 
 
 class ReelSerializer(serializers.ModelSerializer):
+    property_title = serializers.CharField(source="property.title", read_only=True)
+
     class Meta:
         model = Reel
         fields = [
@@ -11,9 +13,10 @@ class ReelSerializer(serializers.ModelSerializer):
             "social_media",
             "category",
             "status",
-            "details",
+            "property",
+            "property_title",
         ]
-    
+
     def validate(self, attrs):
         """To check 'reel' validity needs 'user' instance but
         there is no 'user' instance in attrs"""
@@ -21,12 +24,10 @@ class ReelSerializer(serializers.ModelSerializer):
         user_obj = self.context["request"].user
         if hasattr(user_obj, "developerprofile") or hasattr(user_obj, "agentprofile"):
             attrs["created_by"] = user_obj
-        
-        if self.context["request"].method in ["PUT" ,"PATCH"]:
+
+        if self.context["request"].method in ["PUT", "PATCH"]:
             instance = self.instance
-            instance_order_dict = (
-                instance.__dict__
-            )  # 'reel' instance OrderDict(object's data as dict)
+            instance_order_dict = instance.__dict__  # 'reel' instance OrderDict(object's data as dict)
             attrs = instance_order_dict | attrs  # Updating 'instance' OrderDict value
 
             reel_object_fields = (
@@ -34,7 +35,7 @@ class ReelSerializer(serializers.ModelSerializer):
                 "social_media",
                 "category",
                 "status",
-                "details",
+                "property",
                 "created_by",
             )
 

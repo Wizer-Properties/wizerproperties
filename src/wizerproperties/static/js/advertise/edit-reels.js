@@ -12,7 +12,7 @@ $(document).ready(function(){
                 $('[name="url"]').val(data?.url);
                 $('[name="social_media"]').val(data?.social_media);
                 $('[name="category"]').val(data?.category);
-                $('[name="details"]').val(data?.details);
+                $('[name="property"]').val(data?.property);
 
                 console.log($('[name="social_media"]'))
             },

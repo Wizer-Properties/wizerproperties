@@ -22,7 +22,7 @@ class Reel(TimestampedModel):
     social_media = models.CharField(max_length=30, choices=SOCIAL_MEDIA_CHOICES, null=True)
     category = models.CharField(max_length=30, choices=CATEGORY_CHOICES, null=True)
     status = models.CharField(max_length=30, default="active")
-    details = models.TextField(max_length=3000, null=True, blank=True)
+    property = models.ForeignKey("property.Property", null=True, on_delete=models.SET_NULL, related_name="reels")
     created_by = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True)
 
     def __str__(self):

@@ -300,7 +300,7 @@ $(document).ready(function () {
                             the_results[i]?.id,
                             shared_reels_social_media(the_results[i]?.social_media),
                             the_results[i]?.category,
-                            '<div class="single-line-dots"> '+the_results[i]?.details+' </div>',
+                            '<div class="single-line-dots"> '+the_results[i]?.property_title+' </div>',
                             '<textarea readonly class="shared-reels-url">'+the_results[i]?.url+'</textarea>',
                             reels_checkbox_tmp(the_results[i]),
                             shared_reels_button_tmp(the_results[i])

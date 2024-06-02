@@ -54,10 +54,15 @@
                             </div>
                         </div>
 
-                        <div class="col-12">
-                            <div class="authFormDiv textarea">
-                                <textarea name="details" type="text" class="authInput profileCompanyDeatils" placeholder="details"></textarea>
-                                <div class="authlabelline authcompleteProfileLabe">Details</div>
+                        <div class="col-lg-6">
+                            <div class="authFormDiv">
+                                <select name="property" type="text" class="authInput authSelectInput" placeholder="Property" required>
+                                    <option value="">........</option>
+                                    {% for property in properties %}
+                                    <option value="{{ property.id }}">{{ property.title }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="authlabelline authcompleteProfileLabe">Property</div>
                             </div>
                         </div>
                     </div>

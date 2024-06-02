@@ -752,7 +752,7 @@ $(document).ready(function(){
                         reels_iframe_tmp(data)+
                     '</div>'+
                     '<div class="reels-developer-info mt-2">'+
-                        '<div class="reels-title"> This is reels title </div>'+
+                        '<div class="reels-title">'+ data?.property_title+'</div>'+
                         '<div class="reels-developer-logo">'+
                             '<div class="dev-logo">'+
                                 '<img src="'+company_data?.company_logo+'" alt="logo">'+
@@ -761,7 +761,7 @@ $(document).ready(function(){
                         '</div>'+
         
                         '<div class="reels-visit-btn mt-3">'+
-                            '<a href="/property/list/'+data?.user?.id+'/"> Visit </a>'+
+                            '<a href="/property/details/'+data?.property+'/"> Visit </a>'+
                         '</div>'+
                     '</div>'+
                 '</div>'
