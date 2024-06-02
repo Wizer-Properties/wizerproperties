@@ -638,11 +638,6 @@
 									]
 								},
 								{
-									"key": "floor_plans",
-									"type": "file",
-									"src": "/home/kazal/Pictures/IMG_20230808_191242.jpg"
-								},
-								{
 									"key": "unit_floor_plans",
 									"type": "file",
 									"src": "/home/kazal/Pictures/IMG_20230808_191307.jpg"
@@ -866,11 +861,6 @@
 									"key": "images",
 									"type": "file",
 									"src": "/home/kazal/Pictures/icons8-database-80.png"
-								},
-								{
-									"key": "floor_plans",
-									"type": "file",
-									"src": "/home/kazal/Pictures/icons8-html-480.png"
 								},
 								{
 									"key": "unit_floor_plans",

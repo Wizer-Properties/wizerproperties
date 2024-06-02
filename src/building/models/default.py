@@ -23,7 +23,7 @@ class Building(TimestampedModel):
     total_units_for_sale = models.IntegerField(default=0, null=True, validators=[MinValueValidator(0)])
     province = models.CharField(max_length=500, null=True)
     district = models.CharField(max_length=500, null=True)
-    sub_district = models.CharField(max_length=500, null=True)
+    sub_district = models.CharField(max_length=500, blank=True, null=True)
     address = models.CharField(max_length=500, null=True)
     latitude = models.FloatField(null=True)
     longitude = models.FloatField(null=True)

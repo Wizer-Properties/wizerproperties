@@ -889,10 +889,6 @@ paths:
           in: "formData"
           required: true
           type: "file"
-        - name: "floor_plans"
-          in: "formData"
-          required: true
-          type: "file"
         - name: "unit_floor_plans"
           in: "formData"
           required: true
@@ -1073,9 +1069,6 @@ paths:
           in: "formData"
           type: "boolean"
         - name: "images"
-          in: "formData"
-          type: "file"
-        - name: "floor_plans"
           in: "formData"
           type: "file"
         - name: "unit_floor_plans"

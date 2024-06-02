@@ -401,30 +401,6 @@
                             <div class="uploaded-file-with-view">
                                 <div class="authFormDiv">
                                     <!-- <span class="authErrorMessage">Message</span> -->
-                                    <input name="floor_plans" type="file" accept="image/*" class="authInput authFile"
-                                        multiple>
-                                    <div class="fileName"> Upload Building Floor Plan Images </div>
-                                </div>
-
-                                <div class="uploaded-file-view-area">
-                                    {% for floor_plan in floor_plans %}
-                                    {% if floor_plan.file %}
-                                    <div class="uploaded-file-view-img">
-                                        <button class="remove-image" data-id="{{ floor_plan.id }}"><i
-                                                class="bi bi-x"></i></button>
-                                        <img src="{{ floor_plan.file.url }}" alt="Building Image">
-                                    </div>
-                                    {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="col-lg-6">
-                            <div class="uploaded-file-with-view">
-                                <div class="authFormDiv">
-                                    <!-- <span class="authErrorMessage">Message</span> -->
                                     <input name="master_plans" type="file" accept="image/*" class="authInput authFile"
                                         multiple>
                                     <div class="fileName"> Upload Master Plan Images </div>

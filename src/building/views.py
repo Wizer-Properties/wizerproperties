@@ -5,7 +5,6 @@ from building.models import Building
 
 def prepare_building_context(building):
     images = building.media_files.filter(type="image")
-    floor_plans = building.media_files.filter(type="floor_plan")
     unit_floor_plans = building.media_files.filter(type="unit_floor_plan")
     master_plans = building.media_files.filter(type="master_plan")
     videos = building.media_files.filter(type="video")
@@ -13,7 +12,6 @@ def prepare_building_context(building):
     context = {
         "building": building,
         "images": images,
-        "floor_plans": floor_plans,
         "unit_floor_plans": unit_floor_plans,
         "master_plans": master_plans,
         "videos": videos,

@@ -7,7 +7,6 @@ from utils.general_func import show_custom_error_message
 
 class BuildingCreateAndUpdateSerializer(BuildingListSerializer):
     images = serializers.ImageField(allow_empty_file=False, write_only=True)
-    floor_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
     unit_floor_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
     master_plans = serializers.ImageField(allow_empty_file=False, write_only=True)
     videos = serializers.FileField(allow_empty_file=False, write_only=True)
@@ -16,7 +15,6 @@ class BuildingCreateAndUpdateSerializer(BuildingListSerializer):
     class Meta(BuildingListSerializer.Meta):
         fields = BuildingListSerializer.Meta.fields + [
             "images",
-            "floor_plans",
             "unit_floor_plans",
             "master_plans",
             "videos",
@@ -31,7 +29,6 @@ class BuildingCreateAndUpdateSerializer(BuildingListSerializer):
         self.skip_attributes = [
             "is_active",
             "images",
-            "floor_plans",
             "unit_floor_plans",
             "master_plans",
             "videos",
@@ -44,7 +41,6 @@ class BuildingCreateAndUpdateSerializer(BuildingListSerializer):
                 "construction_year",
                 "sub_district",
                 "images",
-                "floor_plans",
                 "unit_floor_plans",
                 "master_plans",
                 "videos",
@@ -99,7 +95,6 @@ class BuildingCreateAndUpdateSerializer(BuildingListSerializer):
     def get_media_files(self, request):
         return {
             "image": request.FILES.getlist("images"),
-            "floor_plan": request.FILES.getlist("floor_plans"),
             "unit_floor_plan": request.FILES.getlist("unit_floor_plans"),
             "master_plan": request.FILES.getlist("master_plans"),
             "video": request.FILES.getlist("videos"),
@@ -148,7 +143,6 @@ class BuildingCreateAndUpdateSerializer(BuildingListSerializer):
 
                 if (
                     "image" not in remaining_file_types
-                    or "floor_plan" not in remaining_file_types
                     or "unit_floor_plan" not in remaining_file_types
                     or "master_plan" not in remaining_file_types
                     or "video" not in remaining_file_types

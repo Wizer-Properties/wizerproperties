@@ -6,12 +6,12 @@ $(document).ready(function () {
         var enteredYear = $(this).val(); // Get the entered year value
 
         // Validate the entered year against the specified range
-        if (enteredYear >= 1930 && enteredYear <= new Date().getFullYear()) {
+        if (enteredYear >= 2000 && enteredYear <= new Date().getFullYear()) {
             $(".error-message").html("");
         } else {
             var errorMessages = "";
             errorMessages +=
-                "<span class='authErrorMessage'>Invalid construction year entered. Please enter a year between 1930 and" +
+                "<span class='authErrorMessage'>Invalid construction year entered. Please enter a year between 2000 and" +
                 new Date().getFullYear() +
                 "</span>";
 
@@ -28,6 +28,7 @@ $(document).ready(function () {
         var lowest_price = $("input[name='lowest_price']").val();
         var highest_price = $("input[name='highest_price']").val();
         var type = $("select[name='type']").val();
+        var status = $("select[name='status']").val();
         var quota = $("select[name='quota']").val();
         var furnishing = $("select[name='furnishing']").val();
         var total_units_for_sale = $(
@@ -37,7 +38,6 @@ $(document).ready(function () {
         var address = $("input[name='address']").val();
         var province = $("input[name='province']").val();
         var district = $("input[name='district']").val();
-        var sub_district = $("input[name='sub_district']").val();
         var project_total_area = $("input[name='project_total_area']").val();
         var total_floors = $("input[name='total_floors']").val();
         var distance_from_location_to_BTS_or_MRT = $(
@@ -66,11 +66,10 @@ $(document).ready(function () {
             quota,
             furnishing,
             total_units_for_sale,
-            construction_year,
+            status,
             address,
             province,
             district,
-            sub_district,
             project_total_area,
             total_floors,
             distance_from_location_to_BTS_or_MRT,
@@ -101,11 +100,11 @@ $(document).ready(function () {
             quota: quota,
             furnishing: furnishing,
             total_units_for_sale: total_units_for_sale,
+            status: status,
             construction_year: construction_year,
             address: address,
             province: province,
             district: district,
-            sub_district: sub_district,
             total_area: project_total_area + "sqm",
             total_floors: total_floors,
             distance_from_location_to_BTS_or_MRT:

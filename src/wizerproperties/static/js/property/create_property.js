@@ -106,11 +106,6 @@ $(document).ready(function () {
                 $(".error-message").html("");
                 $('body').attr('open-modal', 'property-description');
                 $('.created-description-textarea').val(response.generated_property_description);
-
-                // Redirect to the dashboard after 1 second
-                setTimeout(function () {
-                    window.location.href = "/dashboard";
-                }, 1000);
             },
             error: function (error) {
                 loadingSpinner.hide(); // Hide the spinner

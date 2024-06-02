@@ -139,9 +139,6 @@ $(document).ready(function(){
                 if(type_name == 'image'){
                     $('[label-name="media-files-image"] .details-gallery')
                     .html(append_data(data?.results));
-                }else if(type_name == 'floor_plan'){
-                    $('[label-name="media-files-floor-plan"] .details-gallery')
-                    .html(append_data(data?.results));
                 }else if(type_name == 'unit_floor_plan'){
                     $('[label-name="media-files-unit-floor-plan"] .details-gallery')
                     .html(append_data(data?.results));

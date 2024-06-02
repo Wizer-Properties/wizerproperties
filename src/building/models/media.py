@@ -9,7 +9,7 @@ from .default import Building
 class BuildingMedia(TimestampedModel):
     def upload_to(self, filename):
         # Handle upload path based on media type (image, video, etc.)
-        if self.type in ["image", "floor_plan", "unit_floor_plan", "master_plan"]:
+        if self.type in ["image", "unit_floor_plan", "master_plan"]:
             return "building/images/{}".format(filename)
         elif self.type in ["video", "aerial_drone_video"]:
             return "building/videos/{}".format(filename)
@@ -23,7 +23,7 @@ class BuildingMedia(TimestampedModel):
 
     def clean(self):
         allowed_extensions = None
-        if self.type in ["image", "floor_plan", "unit_floor_plan", "master_plan"]:
+        if self.type in ["image", "unit_floor_plan", "master_plan"]:
             allowed_extensions = ALLOWED_IMAGE_EXTENSIONS
         elif self.type in ["video", "aerial_drone_video"]:
             allowed_extensions = ALLOWED_VIDEO_EXTENSIONS

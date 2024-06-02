@@ -20,7 +20,6 @@ UNIT_POSITION_TYPES = (("left_corner", "Left Corner"), ("right_corner", "Right C
 
 BUILDING_MEDIA_TYPES = (
     ("image", "Image"),
-    ("floor_plan", "Floor plan"),
     ("unit_floor_plan", "Unit floor plan"),
     ("master_plan", "Master plan"),
     ("video", "Video"),
