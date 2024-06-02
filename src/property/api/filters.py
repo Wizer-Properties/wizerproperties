@@ -32,6 +32,7 @@ class PropertyFilter(django_filters.FilterSet):
             "have_duplex",
             "building__quota",
             "building__furnishing",
+            "building__status",
             "building__have_freehold",
             "building__have_leasehold",
             "building__have_infinity_pool",
