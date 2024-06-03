@@ -7,6 +7,7 @@ from .default import BuildingSerializer
 class BuildingDetailsSerializer(BuildingSerializer):
     default_images = serializers.SerializerMethodField()
     reviews = serializers.SerializerMethodField()
+    status = serializers.CharField(source="get_status_display", read_only=True)
 
     class Meta(BuildingSerializer.Meta):
         fields = BuildingSerializer.Meta.fields + [
@@ -30,15 +31,15 @@ class BuildingDetailsSerializer(BuildingSerializer):
             images = images[: int(default_images_number)]
 
         return BuildingMediaSerializer(images, many=True).data
-    
+
     def get_reviews(self, obj):
         request = self.context.get("request")
         reviews = obj.reviews.all()
         total_rating = reviews.count()
-        average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+        average_rating = reviews.aggregate(Avg("rating"))["rating__avg"]
         data = {
             "total_rating": total_rating,
-            "average_rating": round(average_rating, 2) if average_rating is not None else 0
+            "average_rating": round(average_rating, 2) if average_rating is not None else 0,
         }
         reviewed_by = request.GET.get("reviewed_by")
         if reviewed_by:

@@ -6,7 +6,7 @@ from .default import PropertySerializer
 # This serializer is designed to retrieve a list of properties with various attributes.
 class PropertyVariousFeatureSerializer(PropertySerializer):
     building_type = serializers.CharField(source="building.type", read_only=True)
-    building_status = serializers.CharField(source="building.status", read_only=True)
+    building_status = serializers.CharField(source="building.get_status_display", read_only=True)
     address = serializers.CharField(source="building.address", read_only=True)
     default_image = serializers.URLField(source="default_image_url", read_only=True)
     is_compared = serializers.BooleanField(read_only=True)

@@ -4,6 +4,7 @@ from building.models import Building
 
 class BuildingInfoForPropertySerializer(serializers.ModelSerializer):
     default_image = serializers.SerializerMethodField()
+    status = serializers.CharField(source="get_status_display", read_only=True)
 
     class Meta:
         model = Building

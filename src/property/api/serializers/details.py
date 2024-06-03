@@ -6,7 +6,7 @@ from .media import PropertyMediaSerializer
 
 class PropertyDetailsSerializer(PropertySerializer):
     building_type = serializers.CharField(source="building.type", read_only=True)
-    building_status = serializers.CharField(source="building.status", read_only=True)
+    building_status = serializers.CharField(source="building.get_status_display", read_only=True)
     address = serializers.CharField(source="building.address", read_only=True)
     latitude = serializers.CharField(source="building.latitude", read_only=True)
     longitude = serializers.CharField(source="building.longitude", read_only=True)
@@ -54,12 +54,12 @@ class PropertyDetailsSerializer(PropertySerializer):
             images = images[: int(default_images_number)]
 
         return PropertyMediaSerializer(images, many=True).data
-        
+
     def get_reviews(self, obj):
         request = self.context.get("request")
         reviews = obj.building.reviews.all()
         total_rating = reviews.count()
-        average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+        average_rating = reviews.aggregate(Avg("rating"))["rating__avg"]
         data = {
             "total_rating": total_rating,
             "average_rating": round(average_rating, 2) if average_rating is not None else 0,

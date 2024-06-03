@@ -4,7 +4,7 @@ from property.models import Property
 
 class PropertyComparisonsListSerializer(serializers.ModelSerializer):
     building_type = serializers.CharField(source="building.type", read_only=True)
-    building_status = serializers.CharField(source="building.status", read_only=True)
+    building_status = serializers.CharField(source="building.get_status_display", read_only=True)
     address = serializers.CharField(source="building.address", read_only=True)
     construction_year = serializers.IntegerField(source="building.construction_year", read_only=True)
     quota = serializers.CharField(source="building.quota", read_only=True)
