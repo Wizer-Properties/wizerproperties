@@ -45,7 +45,7 @@ $(document).ready(function(){
                                     data?.address+
                                 '</div>'+
                             '</div>'+
-                            '<h1> '+data?.title+' </h1>'+
+                            '<h1> '+data?.title+' at '+data?.building_title+' </h1>'+
 
                             '<div class="property-contains">'+
                                 '<div class="property-short-info-box">'+
@@ -99,7 +99,7 @@ $(document).ready(function(){
                         ) +
                     '</div>'+
                     '<a href="/property/details/'+data?.id+'/" class="search-result-box-wrapper">'+
-                        '<h1 class="card-title">'+ data?.title +'</h1>'+
+                        '<h1 class="card-title">'+data?.title+' at '+data?.building_title+'</h1>'+
                         '<div class="property-discount">'+countdown(data?.discount_period, data?.id)+'</div>'+
                         '<div class="search-result-box-img">'+
                             '<img src="'+data?.default_image+'" alt="'+data?.title+'" loading="lazy">' +

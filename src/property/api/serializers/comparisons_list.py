@@ -3,6 +3,7 @@ from property.models import Property
 
 
 class PropertyComparisonsListSerializer(serializers.ModelSerializer):
+    building_title = serializers.CharField(source="building.title", read_only=True)
     building_type = serializers.CharField(source="building.type", read_only=True)
     building_status = serializers.CharField(source="building.get_status_display", read_only=True)
     address = serializers.CharField(source="building.address", read_only=True)
@@ -49,6 +50,7 @@ class PropertyComparisonsListSerializer(serializers.ModelSerializer):
             "have_bathtub",
             "have_duplex",
             "building_id",
+            "building_title",
             "building_type",
             "building_status",
             "address",

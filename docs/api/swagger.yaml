@@ -3792,6 +3792,8 @@ definitions:
               type: "string"
             building_id:
               type: "number"
+            building_title:
+              type: "string"
             building_type:
               type: "string"
             building_status:
@@ -3893,6 +3895,8 @@ definitions:
               type: "number"
             number_of_bathroom:
               type: "number"
+            building_title:
+              type: "string"
             building_type:
               type: "string"
             building_status:
@@ -4001,6 +4005,8 @@ definitions:
           type: "number"
         number_of_bathroom:
           type: "number"
+        building_title:
+          type: "string"
         building_type:
           type: "string"
         building_status:
@@ -4057,6 +4063,8 @@ definitions:
         type: "boolean"
       building_id:
         type: "number"
+      building_title:
+        type: "string"
       building_type:
         type: "string"
       building_status:
@@ -4284,6 +4292,8 @@ definitions:
                   type: "boolean"
                 building_id:
                   type: "number"
+                building_title:
+                  type: "string"
                 building_type:
                   type: "string"
                 building_status:
@@ -4382,6 +4392,8 @@ definitions:
                   type: "number"
                 building_id:
                   type: "number"
+                building_title:
+                  type: "string"
                 building_type:
                   type: "string"
                 building_status:

@@ -5,6 +5,7 @@ from .default import PropertySerializer
 # Serializer for handling popular, newly added, and discounted properties.
 # This serializer is designed to retrieve a list of properties with various attributes.
 class PropertyVariousFeatureSerializer(PropertySerializer):
+    building_title = serializers.CharField(source="building.title", read_only=True)
     building_type = serializers.CharField(source="building.type", read_only=True)
     building_status = serializers.CharField(source="building.get_status_display", read_only=True)
     address = serializers.CharField(source="building.address", read_only=True)
@@ -14,6 +15,7 @@ class PropertyVariousFeatureSerializer(PropertySerializer):
 
     class Meta(PropertySerializer.Meta):
         fields = PropertySerializer.Meta.fields + [
+            "building_title",
             "building_type",
             "building_status",
             "address",
