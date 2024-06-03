@@ -367,9 +367,8 @@
     display: inline-block !important;
 }
 
-.add-to-favorite .bi-heart-fill{
+.add-to-favorite[added="true"] .bi-heart-fill{
     color: #e31b23;
-    display: none;
 }
 
 [added="true"].add-to-compare .bi-check2,

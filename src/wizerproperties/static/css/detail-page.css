@@ -620,6 +620,18 @@ body[img-gallery-open="true"] .img-gallery-dialog{
     object-fit: cover;
 }
 
+.side-add-banner-img{
+    width: 100%;
+    height: 220px;
+}
+
+.side-add-banner-img img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    padding: 0 30px;
+}
+
 @media screen and (max-width : 991px) {
     .details-gallery,
     .details-gallery-video,
@@ -651,7 +663,7 @@ body[img-gallery-open="true"] .img-gallery-dialog{
         height: 390px;
     }
 
-    .contact-info-side-box{
+    .side-add-banner-img{
         margin-bottom: 60px;
     }
 

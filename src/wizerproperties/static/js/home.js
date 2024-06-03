@@ -3,7 +3,7 @@ $(document).ready(function(){
         var flipper_dom = '<div'+ 
                             ' class="flipper _'+id+'" '+
                             ' data-datetime="'+endDate+' 23:59:59" '+
-                            ' data-template="ddd|HH|ii"'+
+                            ' data-template="ddd|HH|ii|ss"'+
                             // ' data-labels="Days|Hours|Minutes|Seconds" '+
                             ' data-reverse="true">'+
                           '</div>';
@@ -703,7 +703,6 @@ $(document).ready(function(){
                 calling_hot_properties = true;
             },
             success: function (data) {
-                console.log(data)
                 if(data?.count == 0){
                     $('#hot-properties').remove()
                     return

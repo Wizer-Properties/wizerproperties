@@ -259,26 +259,33 @@
 .property-discount{
     display: flex;
     justify-content: center;
-    background-color: #fff !important;
     margin-bottom: 5px;
     position: absolute;
     top: 54px;
     left: 16px;
     z-index: 1;
     border-radius: 20px;
-    padding: 10px;
+    padding: 5px 15px;
+    background-color: #7f1378 !important;
+}
+
+.property-discount *{
+    background-color: #7f1378 !important;
+    color: #fff !important;
 }
 
 .property-discount .flipper *{
-    font-size: 20px !important;
+    font-size: 12px !important;
 }
 
 .property-discount .flipper {
     height: auto !important;
+    display: flex !important;
+    align-items: center !important;
 }
 
 .property-discount .flipper-digit{
-    height: 28px !important;
+    height: 25px !important;
 }
 
 .discount_period .banner-action-button{
@@ -449,11 +456,6 @@
 
     .sign-in-note-box p{
         margin-bottom: 15px;
-    }
-
-    
-    .property-discount .flipper *{
-        font-size: 16px !important;
     }
 
     .property-discount .flipper-digit{
