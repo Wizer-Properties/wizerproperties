@@ -393,13 +393,13 @@
                 <span>More filter</span>
                 <button class="filter-done"> <i class="bi bi-x-lg"></i> </button>
             </div>
-            <div class="filter-modal-body">
+            <div class="filter-modal-body pt-0">
                 <div class="filter-categories">
             
-                    <div class="row">
+                    <div class="filter-categories-colums">
 
-                        <div class="col-lg-6 col-xl-4" display-view="small">
-                            <div class="filter-option-box-wrapper mb-4">
+                        <div class="filter-colum-box" display-view="small">
+                            <div class="filter-option-box-wrapper">
                                 <label> Radius </label>
                                 <select name="nearby">
                                     <option value="">Default</option>
@@ -414,8 +414,8 @@
                             </div>
                         </div>
                         
-                        <div class="col-lg-6 col-xl-4" display-view="small">
-                            <div class="filter-option-box-wrapper mb-4">
+                        <div class="filter-colum-box" display-view="small">
+                            <div class="filter-option-box-wrapper">
                                 <label> Price </label>
                                 <div class="range-area" dual-select>
                                     <select name="min_price" select-status="min">
@@ -631,8 +631,8 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-6 col-xl-4" display-view="small">
-                            <div class="filter-option-box-wrapper mb-4">
+                        <div class="filter-colum-box" display-view="small">
+                            <div class="filter-option-box-wrapper">
                                 <label> Bedrooms </label>
                                 <div class="range-area" dual-select>
                                     <select name="min_number_of_bedroom" select-status="min">
@@ -666,8 +666,8 @@
                             </div>
                         </div>
     
-                        <div class="col-lg-6 col-xl-4">
-                            <div class="filter-option-box-wrapper mb-4">
+                        <div class="filter-colum-box">
+                            <div class="filter-option-box-wrapper">
                                 <label> Unit Area </label>
                                 <div class="range-area" dual-select>
                                     <select name="min_unit_area" select-status="min">
@@ -692,8 +692,8 @@
                             </div>
                         </div>
     
-                        <div class="col-lg-6 col-xl-4">
-                            <div class="filter-option-box-wrapper mb-4">
+                        <div class="filter-colum-box">
+                            <div class="filter-option-box-wrapper">
                                 <label> Bathroom </label>
                                 <div class="filter-dropdown-buttons">
                                     <select name="number_of_bathroom">
@@ -707,8 +707,8 @@
                             </div>
                         </div>
     
-                        <div class="col-lg-6 col-xl-4" display-view="small">
-                            <div class="filter-option-box-wrapper mb-4">
+                        <div class="filter-colum-box" display-view="small">
+                            <div class="filter-option-box-wrapper">
                                 <label> Property Type </label>
                                 <div class="filter-dropdown-mtl-buttons" name="property-type">
                                     <button name="building__type" value="condos">Condos</button>
@@ -717,8 +717,8 @@
                             </div>
                         </div>
     
-                        <div class="col-lg-6 col-xl-4">
-                            <div class="filter-option-box-wrapper mb-4">
+                        <div class="filter-colum-box">
+                            <div class="filter-option-box-wrapper">
                                 <label> Property Quota </label>
                                 <div class="filter-dropdown-mtl-buttons" name="property-quota">
                                     <button name="building__quota" value="thai">Thai</button>
@@ -727,8 +727,8 @@
                             </div>
                         </div>
     
-                        <div class="col-lg-6 col-xl-4">
-                            <div class="filter-option-box-wrapper mb-4">
+                        <div class="filter-colum-box">
+                            <div class="filter-option-box-wrapper">
                                 <label> Property Furnishing </label>
                                 <div class="filter-dropdown-mtl-buttons" name="property-furnishing">
                                     <button name="building__furnishing" value="partly">Partly</button>
@@ -736,19 +736,30 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="filter-colum-box">
+                            <div class="filter-option-box-wrapper">
+                                <label> Ownership </label>
+                                <div class="filter-dropdown-mtl-buttons" name="ownership">
+                                    <button value="building__have_freehold">Freehold</button>
+                                    <button value="building__have_leasehold">Leasehold</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="filter-colum-box">
+                            <div class="filter-option-box-wrapper">
+                                <label> Project Status </label>
+                                <div class="filter-dropdown-mtl-buttons" name="project-status">
+                                    <button name="building__status" value="to_be_commenced">To Be Commenced</button>
+                                    <button name="building__status" value="under_construction">Under Construction</button>
+                                    <button  name="building__status" value="completed">Completed</button>
+                                </div>
+                            </div>
+                        </div>
+                        
                     </div>
     
-                    <div class="filter-option-box-wrapper">
-                        <label> Features </label>
-                        <div class="filter-dropdown-mtl-buttons" name="features">
-                            <button value="building__have_sauna">Sauna</button>
-                            <button value="building__have_guard_house">Guard house</button>
-                            <button value="building__have_river_view">River view</button>
-                            <button value="building__have_fitness_area">GYM</button>
-                            <button value="building__have_sky_lounge">Sky lounge</button>
-                            <button value="building__have_grocery">Grocery</button>
-                        </div>
-                    </div>
     
     
     

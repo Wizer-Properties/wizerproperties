@@ -242,6 +242,13 @@
     }
 }
 
+.building-status{
+    color: #6c757f;
+    text-transform: capitalize;
+    font-size: 14px;
+    font-weight: 700;
+}
+
 .property-single-box[property-type="spotlight"]{
     .search-box-price,
     .search-result-box h1,
@@ -251,7 +258,8 @@
     .property-card-down-area p,
     .dev-phn-number,
     .search-box-title span,
-    [date-count]{
+    [date-count],
+    .building-status{
         color: #fff !important;
     }
 
@@ -528,6 +536,21 @@
     background:  radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0) 64%);
 }
 
+.filter-categories-colums{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.filter-colum-box{
+    border-bottom: 1px solid #eee;
+    display: inline-block;
+    width: 100%;
+    padding: 30px 20px;
+}
+
+.filter-colum-box:nth-child(odd){
+    border-right: .5px solid #eee;
+}
 
 @media screen and (max-width : 991px){
     .search-result-content{
@@ -626,6 +649,14 @@
         padding: 0;
     }
 
+    .filter-categories-colums{
+        grid-template-columns: 1fr;
+    }
+
+    .filter-colum-box{
+        border-left: .5px solid #eee ;
+        border-right: .5px solid #eee;
+    }
 }
 
 
@@ -774,5 +805,16 @@
     .property-card-modal-btns button, 
     .property-card-modal-btns a {
         font-size: 12px;
+    }
+
+    .price-filter-select-box select, 
+    .search-pop-up-select-box select, 
+    .filter-option-box-wrapper select, 
+    .filter-dropdown-mtl-buttons button{
+        font-size: 13px;
+    }
+
+    .filter-colum-box{
+        padding: 10px 8px;
     }
 }

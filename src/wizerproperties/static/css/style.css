@@ -857,14 +857,25 @@ footer{
 }
 
 .price-tag {
-    display: block;
+    display: flex;
     color: #5b5481 !important;
     font-size: 18px;
     font-weight: 600;
-    padding: 6px 10px;
-    padding-bottom: 10px;
+    padding: 10px;
     background: #f9f9f9;
     margin-bottom: 3px;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px 2px;
+}
+
+.building-tag {
+    font-size: 12px;
+    background: #e5e3e3;
+    padding: 2px 7px;
+    border-radius: 15px;
+    font-weight: 400;
 }
 
 [pop-element]{
@@ -904,6 +915,10 @@ footer{
 [dual-select] option:disabled{
     color: #eee !important;
     display: none !important;
+}
+
+.building-tag{
+    font-size: 12px;
 }
 
 @media screen and (min-width: 991px){

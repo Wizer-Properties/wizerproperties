@@ -231,10 +231,15 @@ $(document).ready(function(){
                                                 ( data?.discount_period ? 
                                                     '<div date-count="'+data?.discount_period+'"></div>' : '') +
                                             '</div>'+
-                                            '<div class="search-box-price">'+
-                                                '฿ '+ 
-                                                formatBalance(Math.floor(data?.price) || 0)+
-                                            '</div>'+                                    
+                                            '<div class="d-flex justify-content-between align-items-center flex-wrap">'+
+                                                '<div class="search-box-price">'+
+                                                    '฿ '+ 
+                                                    formatBalance(Math.floor(data?.price) || 0)+
+                                                '</div>'+
+                                                '<div class="building-status">'+
+                                                    (data?.building_status || '')+
+                                                '</div>'+
+                                            '</div>'+
                                             
                                             '<div class="property-contains">'+
                                             ' <div class="property-short-info-box">'+
@@ -545,21 +550,35 @@ $(document).ready(function(){
     });
 
 
-    $(document).on('click', '[name="features"] button', function(){
+    $(document).on('click', '[name="ownership"] button', function(){
         filter_close_dropdown();
-        prams_list[$(this).val()] = !prams_list[$(this).val()];
-        $(this).attr('active', prams_list[$(this).val()]);
-
-        if(!prams_list[$(this).val()]){
+        $(this).parents('.filter-dropdown-mtl-buttons').find('button').attr('active', false);
+        var get_all_btn = $(this).parent().find('button');
+        
+        if(prams_list.hasOwnProperty($(this).val())){
             delete prams_list[$(this).val()];
+            next_property = 1;
+            searching("filter");
+            return
+        };
+        
+        for (let i = 0; i < get_all_btn.length; i++) {
+            var attr_val = get_all_btn[i].getAttribute('value');
+
+            if(prams_list.hasOwnProperty(attr_val)){
+                delete prams_list[attr_val];
+                break
+            }
         };
 
+        prams_list[$(this).val()] = true;
         next_property = 1;
         searching("filter");
+        $(this).attr('active', true);
     });
 
 
-    $(document).on('click', '[name="property-type"] button, [name="property-quota"] button, [name="property-furnishing"] button', function(){
+    $(document).on('click', '[name="property-type"] button, [name="property-quota"] button, [name="property-furnishing"] button, [name="project-status"] button', function(){
         filter_close_dropdown();
         $(this).parents('.filter-dropdown-mtl-buttons').find('button').attr('active', false);
 
@@ -934,7 +953,7 @@ $(document).ready(function(){
             var min_val = Number(ui.values[0]) + '000000';
             var max_val = Number(ui.values[1]) + '000000';
 
-            $('[name="min_price"]').val( ui.values[0] ? min_val : 'null');
+            $('[name="min_price"]').val( ui.values[0] ? min_val : '500000');
             $('[name="max_price"]').val( ui.values[1] ? max_val : 'null');
 
             prams_list.min_price = Number(min_val)
