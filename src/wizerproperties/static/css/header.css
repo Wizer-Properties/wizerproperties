@@ -49,7 +49,7 @@ header{
 }
 
 .active-nav{
-    background-color: #15C1B9 !important;
+    background-color: var(--th-color) !important;
     color: #fff !important;
 }
 
@@ -111,7 +111,7 @@ header{
     left: 5px;
     transform: translateY(-50%);
     font-size: 15px;
-    color: #ffd350;
+    color: var(--th-color);
 }
 
 .search-box input{
@@ -135,7 +135,7 @@ header{
 .mobile-menu span{
     height: 2px;
     display: block;
-    background-color: #ffd350;
+    background-color: var(--th-color);
     margin-bottom: 6px;
     transition: transform .3s;
 }

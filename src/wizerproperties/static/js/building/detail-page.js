@@ -635,6 +635,22 @@ $(document).ready(function(){
                 $('[label-name="address"').html(data?.address)
                 $('[label-name="phone_number"]').html('<a href="tel:'+data?.phone_number+'">'+data?.phone_number+'</a>')
                 $('[label-name="email"]').html('<a href="mailto:'+data?.email+'">'+data?.email+'</a>')
+
+                // Phone number link
+                if(!['', null, undefined].includes(data?.phone_number)) {
+                    $('[social-contact="contact_phone_number"').find('a').attr('href', "tel:" + data.phone_number)
+                    $('[label-name="contact_phone_number"]').html("Telephone")
+                } else {
+                    $('[social-contact="contact_phone_number"').remove()
+                }
+
+                // Email link
+                if(!['', null, undefined].includes(data?.email)) {
+                    $('[social-contact="contact_email"').find('a').attr('href', "mailto:" + data.email)
+                    $('[label-name="contact_email"]').html("Email")
+                } else {
+                    $('[social-contact="contact_email"').remove()
+                }
             },
         })
     };
@@ -659,34 +675,29 @@ $(document).ready(function(){
 
         function facilities_void(building_info){
             var facilities_dom = '';
+            var _icon = '<i class="bi bi-geo-alt"></i>'
     
             if(building_info?.have_fitness_area){
-                var _icon = '<i class="material-symbols-outlined"> exercise </i>';
                 facilities_dom += facilities_info_tmp('Fitness Area', _icon)
             };
     
             if(building_info?.have_guard_house){
-                var _icon = '<i class="material-symbols-outlined"> security </i>';
                 facilities_dom += facilities_info_tmp('Guard House', _icon)
             };
     
             if(building_info?.have_river_view){
-                var _icon = '<i class="material-symbols-outlined"> legend_toggle </i>';
                 facilities_dom += facilities_info_tmp('River View', _icon)
             };
     
             if(building_info?.have_sauna){
-                var _icon = '<i class="material-symbols-outlined"> sauna </i>';
                 facilities_dom += facilities_info_tmp('Sauna', _icon)
             };
     
             if(building_info?.have_sky_lounge){
-                var _icon = '<i class="material-symbols-outlined"> filter_drama </i>';
                 facilities_dom += facilities_info_tmp('Sky Lounge', _icon)
             };
     
             if(building_info?.have_grocery){
-                var _icon = '<i class="material-symbols-outlined"> shopping_cart </i>';
                 facilities_dom += facilities_info_tmp('Grocery', _icon)
             };
     
@@ -694,27 +705,22 @@ $(document).ready(function(){
                 building_info?.view &&
                 building_info?.view !== ''
             ){
-                var _icon = '<i class="material-symbols-outlined"> location_city </i>';
                 facilities_dom += facilities_info_tmp(building_info?.view , _icon)
             };
     
             if(building_info?.have_freehold){
-                var _icon = '<i class="material-symbols-outlined"> real_estate_agent </i>';
                 facilities_dom += facilities_info_tmp('Freehold Land', _icon)
             };
     
             if(building_info?.have_infinity_pool){
-                var _icon = '<i class="material-symbols-outlined"> pool </i>';
                 facilities_dom += facilities_info_tmp('Infinity Pool', _icon)
             };
     
             if(building_info?.have_leasehold){
-                var _icon = '<i class="material-symbols-outlined"> real_estate_agent </i>';
                 facilities_dom += facilities_info_tmp('Leasehold Land', _icon)
             };
     
             if(building_info?.have_pets_allowed){
-                var _icon = '<i class="material-symbols-outlined"> pets </i>';
                 facilities_dom += facilities_info_tmp('Pet Friendly', _icon)
             };
     
@@ -722,16 +728,16 @@ $(document).ready(function(){
                 building_info?.distance_from_location_to_BTS_or_MRT &&
                 building_info?.distance_from_location_to_BTS_or_MRT != ''
             ){
-                var _icon = '<i class="material-symbols-outlined"> train </i>';
-                facilities_dom += facilities_info_tmp(building_info?.distance_from_location_to_BTS_or_MRT, _icon)
+                var __text = "BTS or MRT "+ building_info?.distance_from_location_to_BTS_or_MRT + " KM";
+                facilities_dom += facilities_info_tmp(__text, _icon)
             };
     
             if(
                 building_info?.distance_from_location_to_ARL &&
                 building_info?.distance_from_location_to_ARL != ''
             ){
-                var _icon = '<i class="material-symbols-outlined"> train </i>';
-                facilities_dom += facilities_info_tmp(building_info?.distance_from_location_to_ARL, _icon)
+                var __text = "ARL "+ building_info?.distance_from_location_to_ARL + " KM";
+                facilities_dom += facilities_info_tmp(__text, _icon)
             };
     
             if(facilities_dom == ''){

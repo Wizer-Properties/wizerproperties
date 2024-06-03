@@ -3,6 +3,7 @@
 :root{
     --th-gradient-bg: linear-gradient(315deg, #140733 0%, #103bd4 54%);
     --th-bg-color : #103bd4;
+    --th-color : #15C1B9;
 }
 
 *{
@@ -92,9 +93,9 @@ input{
 
 .active>.page-link, 
 .page-link.active{
-    background: #ffd350 !important;
-    border-color: #ffd350 !important;
-    color: #212529 !important;
+    background: var(--th-color) !important;
+    border-color: var(--th-color)!important;
+    color: #fff !important;
 }
 
 .table-area{
@@ -149,8 +150,8 @@ table.dataTable.no-footer{
     font-size: 14px;
     padding: 5px 15px;
     border-radius: 5px;
-    background-color: #ffd350;
-    color: #212529 !important;
+    background-color: var(--th-color) !important;
+    color: #fff !important;
 }
 
 .link:hover{
@@ -444,7 +445,8 @@ footer{
 }
 
 .nav-tabs .nav-link.active{
-    background-color: #ffd350 !important;
+    background-color: var(--th-color) !important;
+    color: #fff !important;
 }
 
 .success-message,
@@ -532,9 +534,10 @@ footer{
 .property-expand-btn a{
     width: 140px;
     margin: auto;
-    background-color: #ffd350;
+    background-color: var(--th-color);
     font-size: 16px !important;
     text-align: center !important;
+    color: #fff;
 }
 
 .section-title{

@@ -47,6 +47,16 @@
 
 {% block content %}
 
+<div class="top-banner">
+    <div class="container">
+        <div class="col-xl-6 col-lg-7 col-md-8 col-11 mx-auto">
+            <div class="top-banner-img">
+                <img src="{% static '/media/demo_img/add-banner.png' %}" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+
 <section id="details-banner">
     <div class="container position-relative z-index-3">
         <nav class="nav-tab-wrapper">
@@ -295,18 +305,8 @@
                 </div>
 
                 <!-- 1 -->
-                <div class="about-area">
-                    <h1 class="section-title">About This Apartment</h1>
-                    <div class="section-scripts" label-name="building-description">
-                        <span class="skeleton-box" style="height: 200px;"></span>
-                    </div>
-                </div>
-
-
-
-                <!-- 4 -->
                 <div class="facilities-area">
-                    <h1 class="section-title">Available Facilities</h1>
+                    <h1 class="section-title">Building description & facilities</h1>
                     <div class="facilities-list">
                         <div class="row" label-name="facilities">
 
@@ -338,6 +338,10 @@
 
                         </div>
                     </div>
+
+                    <div class="section-scripts" label-name="building-description" style="font-weight: 500;">
+                        <span class="skeleton-box" style="height: 200px;"></span>
+                    </div>
                 </div>
 
             </div>
@@ -347,142 +351,52 @@
 
             <div class="col-lg-4">
                 <div class="side-box-info developer-info">
-                    {% if request.user.user_type == "prospect" %}
-                    <div class="contact-info-side-box">
-                        <h1 class="section-title">Schedule Viewing Building</h1>
-
-                        <div class="contact-info-list-btn">
-                            <a class="link" href="/schedule/create_schedule?type=building&id={{building.id}}"> Create Schedule Request </a>
-                            <div label-name="phone_number">
-                                <span class="skeleton-box" style="width: 100%; height: 40px;"></span>
-                            </div>
-
-                            <div label-name="email">
-                                <span class="skeleton-box" style="width: 100%; height: 40px;"></span>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
-
                     <div class="contact-info-side-box">
                         <h1 class="section-title">About The Developer</h1>
 
                         <div class="developer-co-info">
-                            <div class="row align-items-center">
-                                <div class="col-3">
-                                    <div class="developer-company-logo" label-name="company_logo">
-                                        <span class="skeleton-box" style="width: 100%; height: 70px;"></span>
-                                    </div>
-                                </div>
-                                <div class="col-9">
+                            <span class="developer-box-title"> Marketed By </span>
+                            <div class="d-flex gap-3 justify-content-between">
+                                <div>
                                     <h1 class="section-title" label-name="company_name">
                                         <span class="skeleton-box" style="width: 100%; height: 22px;"></span>
                                     </h1>
+                                    <address label-name="address"></address>
+                                </div>
+                                <div class="developer-company-logo" label-name="company_logo">
+                                    <span class="skeleton-box" style="width: 100%; height: 70px;"></span>
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-3"></div>
-                                <div class="col-9">
-                                    <div class="info-list developer-co-details-info-list">
-                                        <div class="info-list-box align-items-center">
-                                            <span class="info-list-label me-2">
-                                                <i class="material-symbols-outlined">
-                                                    location_on
-                                                </i>
-                                            </span>
-                                            <span class="info-list-data" label-name="address">
-                                                <span class="skeleton-box" style="width: 120px; height: 22px;"></span>
-                                            </span>
-                                        </div>
-                                        
-                                        <!-- <div class="info-list-box align-items-center">
-                                            <span class="info-list-label me-2">
-                                                <span class="material-symbols-outlined">
-                                                    auto_transmission
-                                                </span>
-                                            </span>
-                                            <span class="info-list-data">Life Rama 4 - Asoke</span>
-                                        </div> -->
-                                    </div>
+                            <div class="developer-contact-area mt-2">
+                                {% if request.user.user_type == "prospect" %}
+                                <a class="contact-info-list-data" href="/schedule/create_schedule?type=property&id={{property.id}}"> 
+                                    Create Schedule Request 
+                                </a>
+                                {% endif %}
+
+                                <div social-contact="contact_phone_number">
+                                    <a href="" target="_blank" class="contact-info-list-data">
+                                        <i class="bi bi-telephone"></i>
+                                        <span label-name="contact_phone_number">
+                                            <span class="skeleton-box" style="width: 80px; height: 22px;"></span>
+                                        </span>
+                                    </a>
                                 </div>
-                            </div>
-                            <div class="row social-icon">
-                                <div class="col-6" social-contact="contact_phone_number">
-                                    <div class="info-list developer-co-details-info-list">
-                                        <a href="" target="_blank">
-                                            <div class="info-list-box align-items-center">
-                                                <span class="info-list-label me-2">
-                                                    <i class="bi bi-telephone"></i>
-                                                </span>
-                                                <span class="info-list-data" label-name="contact_phone_number">
-                                                    <span class="skeleton-box" style="width: 80px; height: 22px;"></span>
-                                                </span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="col-6" social-contact="contact_email">
-                                    <div class="info-list developer-co-details-info-list">
-                                        <a href="" target="_blank">
-                                            <div class="info-list-box align-items-center">
-                                                <span class="info-list-label me-2">
-                                                    <i class="bi bi-envelope"></i>
-                                                </span>
-                                                <span class="info-list-data" label-name="contact_email">
-                                                    <span class="skeleton-box" style="width: 80px; height: 22px;"></span>
-                                                </span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="col-6" social-contact="whats_app_link">
-                                    <div class="info-list developer-co-details-info-list">
-                                        <a href="" target="_blank">
-                                            <div class="info-list-box align-items-center">
-                                                <span class="info-list-label me-2">
-                                                    <i class="bi bi-whatsapp"></i>
-                                                </span>
-                                                <span class="info-list-data" label-name="whats_app_link">
-                                                    <span class="skeleton-box" style="width: 80px; height: 22px;"></span>
-                                                </span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="col-6" social-contact="line_link">
-                                    <div class="info-list developer-co-details-info-list">
-                                        <a href="" target="_blank">
-                                            <div class="info-list-box align-items-center">
-                                                <span class="info-list-label me-2">
-                                                    <i class="bi bi-line"></i>
-                                                </span>
-                                                <span class="info-list-data" label-name="line_link">
-                                                    <span class="skeleton-box" style="width: 80px; height: 22px;"></span>
-                                                </span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="col-6" social-contact="we_chat_link">
-                                    <div class="info-list developer-co-details-info-list">
-                                        <a href="" target="_blank">
-                                            <div class="info-list-box align-items-center">
-                                                <span class="info-list-label me-2">
-                                                    <i class="bi bi-wechat"></i>
-                                                </span>
-                                                <span class="info-list-data" label-name="we_chat_link">
-                                                    <span class="skeleton-box" style="width: 80px; height: 22px;"></span>
-                                                </span>
-                                            </div>
-                                        </a>
-                                    </div>
+
+                                <div social-contact="contact_email">
+                                    <a href="" target="_blank" class="contact-info-list-data">
+                                        <i class="bi bi-envelope"></i>
+                                        <span label-name="contact_email">
+                                            <span class="skeleton-box" style="width: 80px; height: 22px;"></span>
+                                        </span>
+                                    </a>
                                 </div>
                             </div>
 
                         </div>
+
                     </div>
-                    
                 </div>
             </div>
 

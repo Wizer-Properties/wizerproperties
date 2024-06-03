@@ -182,18 +182,7 @@
     width: 35px;
     min-width: 35px;
     height: 35px;
-    background-color: #ffd350;
-    display: grid;
-    place-items: center;
-    color: #fff;
-    border-radius: 100%;
-}
-
-.facilities-box-icon{
-    background: #ffd350;
-    width: 35px;
-    min-width: 35px;
-    height: 35px;
+    background-color: var(--th-color);
     display: grid;
     place-items: center;
     color: #fff;
@@ -201,7 +190,7 @@
 }
 
 .facilities-box-icon i{
-    font-size: 22px;
+    font-size: 15px;
 }
 
 .facilities-box{
@@ -232,8 +221,8 @@
 }
 
 .contact-info-list-btn a.link{
-    background-color: #ffd350 !important;
-    border-color: #ffd350 !important;
+    background-color: var(--th-color) !important;
+    border-color: var(--th-color) !important;
 }
 
 .contact-info-side-box{
@@ -241,30 +230,39 @@
     box-shadow: 1px 2px 13px 5px rgba(0,0,0,.05);
     margin-bottom: 25px;
     border-radius: 5px;
+    background: #7f1378;
+
+    .section-title{
+        color: #fff !important;
+    }
 }
 
 .developer-company-logo{
-    height: 70px;
-    box-shadow: 0px 0px 8px 1px rgba(0,0,0,.05);
-    border-radius: 10px;
+    height: 80px;
     overflow: hidden;
+    width: 160px;
+    min-width: 160px;
+    background-color: #ffffff14;
 }
 
 .developer-company-logo img{
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .developer-co-info .section-title{
     margin: 0 !important;
-    color: #726E6E !important;
     font-size: 17px;
 }
 
 #available-units .page-link{
     color: #726E6E !important;
     cursor: pointer;
+}
+
+#available-units .active .page-link{
+    color: #fff !important;
 }
 
 .side-box-info{
@@ -452,7 +450,7 @@ body[img-gallery-open="true"] .img-gallery-dialog{
 
 .review-writing-area{
     padding: 15px;
-    border: 1px dashed #ffd350cc;
+    border: 1px dashed var(--th-color);
     border-radius: 5px;
 }
 
@@ -474,7 +472,7 @@ body[img-gallery-open="true"] .img-gallery-dialog{
 }
 
 [label-name="rating"] i{
-    color: #ffd350;
+    color: var(--th-color);
 }
 
 .review-submit-area{
@@ -486,7 +484,7 @@ body[img-gallery-open="true"] .img-gallery-dialog{
     justify-content: center;
     font-size: 32px;
     gap: 5px;
-    color: #ffd350;
+    color: var(--th-color);
 }
 
 .give-review{
@@ -517,7 +515,7 @@ body[img-gallery-open="true"] .img-gallery-dialog{
 .given-reviews-rate{
     display: flex;
     font-size: 16px;
-    color: #ffd350;
+    color: var(--th-color);
     margin-right: 5px;
 }
 
@@ -575,6 +573,53 @@ body[img-gallery-open="true"] .img-gallery-dialog{
     font-size: 24px;
 }
 
+.developer-contact-area{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.developer-box-title{
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #cecece;
+}
+
+.contact-info-list-data{
+    display: flex;
+    justify-content: center;
+    color: #484848 !important;
+    padding: 10px;
+    background: #00DEB6;
+    font-size: 14px;
+    gap: 10px;
+    align-items: center;
+    font-weight: 500;
+    border-radius: 5px;
+}
+
+.developer-co-info address{
+    font-size: 12px;
+    margin-top: 5px;
+    margin-bottom: 0 !important;
+    color: #dfdfdf;
+}
+
+.top-banner{
+    margin-top: 25px;
+}
+
+.top-banner-img{
+    width: 100%;
+    height: 90px;
+}
+
+.top-banner-img img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 @media screen and (max-width : 991px) {
     .details-gallery,
     .details-gallery-video,
@@ -607,11 +652,6 @@ body[img-gallery-open="true"] .img-gallery-dialog{
     }
 
     .contact-info-side-box{
-        box-shadow: none;
-        border: 1px dashed #ffd350cc;
-    }
-
-    .contact-info-side-box{
         margin-bottom: 60px;
     }
 
@@ -621,6 +661,10 @@ body[img-gallery-open="true"] .img-gallery-dialog{
 
     .property-address-price-info{
         padding-top: 25px;
+    }
+
+    .top-banner-img{
+        height: 75px;
     }
 }
 

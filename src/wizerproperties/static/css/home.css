@@ -67,7 +67,7 @@
 }
 
 [log-modal-btn].active-nav{
-    background: #15C1B9 !important;
+    background: var(--th-color) !important;
     color: #fff !important;
     margin: 0 !important;
 }
@@ -309,11 +309,11 @@
 }
 
 .reels-filter-btns button:hover{
-    border: 1px solid #15C1B9;
+    border: 1px solid var(--th-color);
 }
 
 .reels-filter-btns button.activate{
-    background-color: #15C1B9 !important;
+    background-color: var(--th-color) !important;
     color: #fff !important;
 }
 
@@ -369,7 +369,7 @@
 
 .reels-visit-btn a{
     padding: 7px 40px;
-    background-color: #15C1B9;
+    background-color: var(--th-color);
     color: #fff !important;
     font-weight: 500;
     border-radius: 3px;

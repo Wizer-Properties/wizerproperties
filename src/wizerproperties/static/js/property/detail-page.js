@@ -606,7 +606,7 @@ $(document).ready(function(){
                 $('[label-name="total_floors"]').html(data?.total_floors);
 
                 $('[label-name="building_details_button"]')
-                .html('<a href="/building/details/'+data?.id+'/" class="link"> View Building </a>')
+                .html('<a href="/building/details/'+data?.id+'/" class="link"> View Development </a>')
             },
         })
     };
@@ -631,34 +631,29 @@ $(document).ready(function(){
     function facilities_void(data){
         var facilities_dom = '';
         var building_info = data?.building;
+        var _icon = '<i class="bi bi-geo-alt"></i>'
 
         if(building_info?.have_fitness_area){
-            var _icon = '<i class="material-symbols-outlined"> exercise </i>';
             facilities_dom += facilities_info_tmp('Fitness Area', _icon)
         };
 
         if(building_info?.have_guard_house){
-            var _icon = '<i class="material-symbols-outlined"> security </i>';
             facilities_dom += facilities_info_tmp('Guard House', _icon)
         };
 
         if(building_info?.have_river_view){
-            var _icon = '<i class="material-symbols-outlined"> legend_toggle </i>';
             facilities_dom += facilities_info_tmp('River View', _icon)
         };
 
         if(building_info?.have_sauna){
-            var _icon = '<i class="material-symbols-outlined"> sauna </i>';
             facilities_dom += facilities_info_tmp('Sauna', _icon)
         };
 
         if(building_info?.have_sky_lounge){
-            var _icon = '<i class="material-symbols-outlined"> filter_drama </i>';
             facilities_dom += facilities_info_tmp('Sky Lounge', _icon)
         };
 
         if(building_info?.have_grocery){
-            var _icon = '<i class="material-symbols-outlined"> shopping_cart </i>';
             facilities_dom += facilities_info_tmp('Grocery', _icon)
         };
 
@@ -666,27 +661,22 @@ $(document).ready(function(){
             building_info?.view &&
             building_info?.view !== ''
         ){
-            var _icon = '<i class="material-symbols-outlined"> location_city </i>';
             facilities_dom += facilities_info_tmp(building_info?.view , _icon)
         };
 
         if(building_info?.have_freehold){
-            var _icon = '<i class="material-symbols-outlined"> real_estate_agent </i>';
             facilities_dom += facilities_info_tmp('Freehold Land', _icon)
         };
 
         if(building_info?.have_infinity_pool){
-            var _icon = '<i class="material-symbols-outlined"> pool </i>';
             facilities_dom += facilities_info_tmp('Infinity Pool', _icon)
         };
 
         if(building_info?.have_leasehold){
-            var _icon = '<i class="material-symbols-outlined"> real_estate_agent </i>';
             facilities_dom += facilities_info_tmp('Leasehold Land', _icon)
         };
 
         if(building_info?.have_pets_allowed){
-            var _icon = '<i class="material-symbols-outlined"> pets </i>';
             facilities_dom += facilities_info_tmp('Pet Friendly', _icon)
         };
 
@@ -694,16 +684,16 @@ $(document).ready(function(){
             building_info?.distance_from_location_to_BTS_or_MRT &&
             building_info?.distance_from_location_to_BTS_or_MRT != ''
         ){
-            var _icon = '<i class="material-symbols-outlined"> train </i>';
-            facilities_dom += facilities_info_tmp(building_info?.distance_from_location_to_BTS_or_MRT, _icon)
+            var __text = "BTS or MRT "+ building_info?.distance_from_location_to_BTS_or_MRT + " KM";
+            facilities_dom += facilities_info_tmp( __text, _icon)
         };
 
         if(
             building_info?.distance_from_location_to_ARL &&
             building_info?.distance_from_location_to_ARL != ''
         ){
-            var _icon = '<i class="material-symbols-outlined"> train </i>';
-            facilities_dom += facilities_info_tmp(building_info?.distance_from_location_to_ARL, _icon)
+            var __text = "ARL "+ building_info?.distance_from_location_to_BTS_or_MRT + " KM";
+            facilities_dom += facilities_info_tmp(__text, _icon)
         };
 
         if(facilities_dom == ''){
@@ -776,30 +766,6 @@ $(document).ready(function(){
                     $('[label-name="contact_email"]').html("Email")
                 } else {
                     $('[social-contact="contact_email"').remove()
-                }
-
-                // Whats app link
-                if(!['', null, undefined].includes(data?.whats_app_link)) {
-                    $('[social-contact="whats_app_link"').find('a').attr('href', data.whats_app_link)
-                    $('[label-name="whats_app_link"]').html("WhatsApp")
-                } else {
-                    $('[social-contact="whats_app_link"').remove()
-                }
-
-                // Line link
-                if(!['', null, undefined].includes(data?.line_link)) {
-                    $('[social-contact="line_link"').find('a').attr('href', data.line_link)
-                    $('[label-name="line_link"]').html("Line")
-                } else {
-                    $('[social-contact="line_link"').remove()
-                }
-
-                // WeChat link
-                if(!['', null, undefined].includes(data?.we_chat_link)) {
-                    $('[social-contact="we_chat_link"').find('a').attr('href', data.we_chat_link)
-                    $('[label-name="we_chat_link"]').html("WeChat")
-                } else {
-                    $('[social-contact="we_chat_link"').remove()
                 }
             },
         })

@@ -217,7 +217,7 @@
 
 .filter-dropdown-buttons button[active="true"],
 .filter-dropdown-mtl-buttons button[active="true"]{
-    background-color: #15C1B9;
+    background-color: var(--th-color);
     color: white;
 }
 
@@ -473,7 +473,7 @@
 
 .property-card-modal-btns button,
 .property-card-modal-btns a{
-    background: #15C1B9 !important;
+    background: var(--th-color) !important;
     color: #fff !important;
     padding: 8px 25px;
     font-size: 13px;
@@ -659,7 +659,7 @@
 }
 
 .filter-done{
-    background-color: #15C1B9 !important;
+    background-color: var(--th-color) !important;
     color: #fff !important;
     border: none;
     box-shadow: 2px 3px 7px 2px rgb(0 0 0 / 20%);

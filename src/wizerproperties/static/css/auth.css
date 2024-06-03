@@ -313,7 +313,7 @@ body{
     text-align: center;
     border: none;
     border-radius: 3px;
-    background-color: #15C1B9;
+    background-color: var(--th-color);
 }
 
 .password-view{
