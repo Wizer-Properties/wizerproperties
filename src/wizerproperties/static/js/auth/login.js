@@ -5,6 +5,15 @@ $(document).ready(function () {
                         '<span class="sr-only">Loading...</span>' +
                       '</div>'
 
+    // Function to get query parameters from URL
+    function getQueryParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    // Get the "next" parameter from URL
+    var nextUrl = getQueryParameter('next') || '/';
+
     $('[button-name="log-in"]').click(function () {
         if(sent_request) return;
         var email = $('[name="email"]').val();
@@ -38,7 +47,7 @@ $(document).ready(function () {
                 $('.auth-response-messages').html(msg_dom)
 
                 setTimeout(function () {
-                    window.location.href = "/";
+                    window.location.href = nextUrl || "/";
                 }, 1000);
             },
             error: function (error) {
