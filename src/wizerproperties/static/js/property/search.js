@@ -948,6 +948,11 @@ $(document).ready(function(){
         slide : function(event, ui){
             $('.before-li').css({ width : ui.values[0]+'%'  })
             $('.after-li').css({ width : (100 - ui.values[1])+'%'  })
+
+            var min_val = Number(ui.values[0]) + '000000';
+            var max_val = Number(ui.values[1]) + '000000';
+            $('[name="min_price"]').val( ui.values[0] ? min_val : '500000');
+            $('[name="max_price"]').val( ui.values[1] ? max_val : 'null');
         },
         stop: function(event, ui) {
             var min_val = Number(ui.values[0]) + '000000';
