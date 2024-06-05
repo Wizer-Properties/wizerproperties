@@ -498,7 +498,7 @@ footer{
 }
 
 .property-price-info span:first-child{
-    color: #c74444;
+    color: #5b5481 !important;
     font-size: 18px;
     font-weight: bold;
 }

@@ -226,7 +226,7 @@
 }
 
 .contact-info-side-box{
-    padding: 15px;
+    padding: 25px 35px;
     box-shadow: 1px 2px 13px 5px rgba(0,0,0,.05);
     margin-bottom: 25px;
     border-radius: 5px;
@@ -588,7 +588,7 @@ body[img-gallery-open="true"] .img-gallery-dialog{
 .contact-info-list-data{
     display: flex;
     justify-content: center;
-    color: #484848 !important;
+    color: #fff !important;
     padding: 10px;
     background: #00DEB6;
     font-size: 14px;
@@ -630,6 +630,11 @@ body[img-gallery-open="true"] .img-gallery-dialog{
     height: 100%;
     object-fit: cover;
     padding: 0 30px;
+}
+
+.section-title.details-side-title {
+    padding-bottom: 5px;
+    padding-top: 2px;
 }
 
 @media screen and (max-width : 991px) {

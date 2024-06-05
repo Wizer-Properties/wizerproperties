@@ -639,7 +639,7 @@ $(document).ready(function(){
                 // Phone number link
                 if(!['', null, undefined].includes(data?.phone_number)) {
                     $('[social-contact="contact_phone_number"').find('a').attr('href', "tel:" + data.phone_number)
-                    $('[label-name="contact_phone_number"]').html("Telephone")
+                    $('[label-name="contact_phone_number"]').html("Contact")
                 } else {
                     $('[social-contact="contact_phone_number"').remove()
                 }

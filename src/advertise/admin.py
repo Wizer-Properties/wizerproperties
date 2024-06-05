@@ -1,3 +1,5 @@
 from django.contrib import admin
+from advertise.models.default import Reel
 
-# Register your models here.
+
+admin.site.register([Reel])

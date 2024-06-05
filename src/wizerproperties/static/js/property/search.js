@@ -227,7 +227,7 @@ $(document).ready(function(){
                                     '<div class="search-result-content">'+
                                         '<a href="/property/details/'+data?.id+'/" class="d-block w-100">'+
                                             '<div class="search-box-title">'+
-                                                '<span> '+data?.title+' </span>'+
+                                                '<span> '+data?.building_title+' </span>'+
                                                 ( data?.discount_period ? 
                                                     '<div date-count="'+data?.discount_period+'"></div>' : '') +
                                             '</div>'+
