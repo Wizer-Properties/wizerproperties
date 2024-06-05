@@ -259,23 +259,36 @@
 .property-discount{
     display: flex;
     justify-content: center;
-    margin-bottom: 5px;
-    position: absolute;
-    top: 54px;
-    left: 16px;
-    z-index: 1;
-    border-radius: 20px;
-    padding: 5px 15px;
-    background-color: #7f1378 !important;
+    padding: 5px;
+    background-color: var(--th-color) !important;
+}
+
+.discount-card-header .card-title{
+    margin: 0 !important;
+}
+
+.discount-card-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
 }
 
 .property-discount *{
-    background-color: #7f1378 !important;
+    background-color: var(--th-color) !important;
     color: #fff !important;
 }
 
 .property-discount .flipper *{
-    font-size: 12px !important;
+    font-size: 15px !important;
+}
+
+.flipper-ddd,
+.flipper-HH,
+.flipper-ii{
+    border: 1px solid #fff;
+    display: flex;
+    justify-content: center;
 }
 
 .property-discount .flipper {
@@ -285,7 +298,11 @@
 }
 
 .property-discount .flipper-digit{
-    height: 25px !important;
+    height: 28px !important;
+}
+
+.property-discount .flipper label{
+    font-size: 10px !important;
 }
 
 .discount_period .banner-action-button{
@@ -458,9 +475,6 @@
         margin-bottom: 15px;
     }
 
-    .property-discount .flipper-digit{
-        height: 22px !important;
-    }
 }
 
 @media screen and (max-width: 768px) {
@@ -503,9 +517,6 @@
         grid-area: 3 / 2 / 4 / 3; 
     }
 
-    .property-discount .flipper-digit{
-        height: 24px !important;
-    }
 }
 
 @media screen and (max-width: 560px){
@@ -523,9 +534,5 @@
 
     .search-result-box-img{
         padding: 0 !important;
-    }
-
-    .property-discount .flipper-digit {
-        height: 28px !important;
     }
 }

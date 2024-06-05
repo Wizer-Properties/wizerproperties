@@ -1,7 +1,11 @@
+:root{
+    --company-image-width :  220px;
+}
+
 .property-card-down-area{
     border-radius: 15px;
-    width: 220px;
-    min-width: 220px;
+    width: var(--company-image-width);
+    min-width: var(--company-image-width);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -13,7 +17,8 @@
     gap: 10px;
     margin-bottom: 0;
     justify-content: space-between;
-    padding-right:calc((220px - 135.78px) / 2);
+    padding-right:calc((var(--company-image-width) - 185px) / 2);
+    align-items: flex-start;
 }
 
 .buillding-agency-logo img{
@@ -110,15 +115,20 @@
 }
 
 .agent-company-name{
-    text-align: center;
-    margin: 0;
-    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 10px;
+}
+
+.agent-company-name span{
+    display: block;
     font-size: 14px;
+    color: #212529;
 }
 
 .property-faciluties-list span .bi {
     font-size: 15px;
-    color: var(--th-color) !important;
 }
 
 .property-single-box 
@@ -259,7 +269,9 @@
     .dev-phn-number,
     .search-box-title span,
     [date-count],
-    .building-status{
+    .building-status,
+    .property-short-info-box .material-symbols-outlined,
+    .agent-company-name span{
         color: #fff !important;
     }
 
@@ -283,9 +295,8 @@
     gap: 5px !important;
 }
 
-/* .property-single-box[property-type="spotlight"] */
 .property-short-info-box .material-symbols-outlined{
-    color: var(--th-color) !important;
+    color: #212529 !important;
 }
 
 
@@ -552,6 +563,13 @@
     border-right: .5px solid #eee;
 }
 
+.property-schedule-contact-btn{
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
 @media screen and (max-width : 991px){
     .search-result-content{
         padding: 0;
@@ -663,7 +681,7 @@
 @media screen and (max-width : 1220px){
     .search-result-box-wrapper{
         position: relative;
-        padding-bottom: calc(78px + 15px);
+        padding-bottom: calc(115px + 15px);
     }
 
     .property-card-down-area{
@@ -678,16 +696,18 @@
         padding: 10px 15px;
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;
+        padding-bottom: 60px;
+    }
+
+    .property-schedule-contact-btn{
+        position: absolute;
+        bottom: 15px;
+        left: 15px;
+        flex-direction: row;
     }
 
     .property-card-modal-btns{
         padding-right: 0;
-    }
-
-    .agency-contact-info{
-        position: absolute;
-        bottom: 20px;
-        z-index: 99;
     }
 
     .dev-phn-number,
@@ -712,11 +732,6 @@
         display: flex;
         align-items: center;
         gap: 5px;
-        max-width: calc(100% - 135px);
-    }
-
-    .agent-company-name{
-        margin: 0 !important;
     }
 
     .property-single-box[effect="null"]:first-child 
@@ -760,6 +775,29 @@
     .sorting-map-box a{
         border-right: 1px solid #eee;
     }
+
+    .agent-company-name{
+        flex-direction: column;
+        align-items: initial;
+        gap: 0;
+    }
+
+    .buillding-agency-logo{
+        margin: 0 !important;
+        max-width: 40%;
+    }
+
+    .agent-company-name span{
+        font-size: 12px;
+    }
+
+    .search-result-box-wrapper {
+        padding-bottom: calc(90px + 15px);
+    }
+
+    .property-card-down-area{
+        padding-bottom: 50px;
+    }
 }
 
 
@@ -773,20 +811,6 @@
         padding: 5px 10px;
         border-radius: 5px;
     }
-
-    .buillding-agency-logo {
-        height: 40px;
-        min-width: max-content;
-    }
-
-    .search-result-box-wrapper{
-        padding-bottom: calc(70px + 15px);
-    }
-    
-    .agent-company-name{
-        display: none !important;
-    }
-
     
     .search-result-box {
         .property-value {

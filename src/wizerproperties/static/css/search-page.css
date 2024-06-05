@@ -275,7 +275,7 @@
     flex-direction: column;
     position: absolute;
     right: 17px;
-    top: 15px;
+    top: 60px;
     gap: 5px;
     display: flex;
     align-items: center;
@@ -347,12 +347,6 @@
 [added="false"] .bi-heart-fill{
     color: #212529d5 !important;
 }
-
-.discount_period 
-.compare-favorite-btn-area{
-    top: 55px;
-}
-
 
 .banner-action-button button img{
     width: 17px;

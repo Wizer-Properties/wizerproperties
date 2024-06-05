@@ -3,8 +3,8 @@ $(document).ready(function(){
         var flipper_dom = '<div'+ 
                             ' class="flipper _'+id+'" '+
                             ' data-datetime="'+endDate+' 23:59:59" '+
-                            ' data-template="ddd|HH|ii|ss"'+
-                            // ' data-labels="Days|Hours|Minutes|Seconds" '+
+                            ' data-template="ddd|HH|ii"'+
+                            ' data-labels="Days|Hours|Minutes" '+
                             ' data-reverse="true">'+
                           '</div>';
         return flipper_dom;
@@ -28,6 +28,7 @@ $(document).ready(function(){
                         ) +
                     '</div>'+
                     '<a href="/property/details/'+data?.id+'/" class="search-result-box-wrapper">'+
+                        '<h1 class="card-title">'+data?.building_title+'</h1>'+
                         '<div class="search-result-box-img">'+
                             '<img src="'+data?.default_image+'" alt="'+data?.building_title+'" loading="lazy">' +
                         '</div>'+
@@ -99,8 +100,10 @@ $(document).ready(function(){
                         ) +
                     '</div>'+
                     '<a href="/property/details/'+data?.id+'/" class="search-result-box-wrapper">'+
-                        '<h1 class="card-title">'+data?.building_title+'</h1>'+
-                        '<div class="property-discount">'+countdown(data?.discount_period, data?.id)+'</div>'+
+                        '<div class="discount-card-header">'+
+                            '<h1 class="card-title">'+data?.building_title+'</h1>'+
+                            '<div class="property-discount">'+countdown(data?.discount_period, data?.id)+'</div>'+
+                        '</div>'+
                         '<div class="search-result-box-img">'+
                             '<img src="'+data?.default_image+'" alt="'+data?.building_title+'" loading="lazy">' +
                         '</div>'+

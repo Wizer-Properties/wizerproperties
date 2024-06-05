@@ -231,7 +231,7 @@ $(document).ready(function(){
                                                 ( data?.discount_period ? 
                                                     '<div date-count="'+data?.discount_period+'"></div>' : '') +
                                             '</div>'+
-                                            '<div class="d-flex justify-content-between align-items-center flex-wrap">'+
+                                            '<div class="d-flex align-items-center flex-wrap gap-2">'+
                                                 '<div class="search-box-price">'+
                                                     '฿ '+ 
                                                     formatBalance(Math.floor(data?.price) || 0)+
@@ -269,8 +269,10 @@ $(document).ready(function(){
                                                 '<div class="buillding-agency-logo mb-2">'+
                                                     '<img src="'+ data?.developer_image +'" alt="company logo">'+
                                                 '</div>'+
-                                                '<p class="agent-company-name">'+ data?.developer_company_name +'</p>'+
-                                                '<p class="agent-company-name"> Added: '+ formattedDate +' </p>'+
+                                                '<div class="agent-company-name">'+
+                                                    '<span>'+ data?.developer_company_name +'</span>'+
+                                                    '<span> Added: '+ formattedDate +' </span>'+
+                                                '</div>'+
                                             '</div>'+
                                         '</div>'+
                                     '</div>'+
@@ -279,17 +281,23 @@ $(document).ready(function(){
                                         '<div class="d-flex gap-2">'+
                                             ( 
                                                 ![null, ''].includes(data?.interior_view) ?
-                                            '<button class="link border-0 open-3D-model" data-src="'+data?.interior_view+'" > Interior 3D View </button>' : ''
+                                                '<button class="link border-0 open-3D-model" data-src="'+data?.interior_view+'" > Interior 3D View </button>' : ''
                                             )+
                                             (
                                                 data?.ariel_view ?
-                                            '<button class="link border-0 open-drone-view" data-src="'+data?.ariel_view+'" > Ariel View </button>' : ''
+                                                '<button class="link border-0 open-drone-view" data-src="'+data?.ariel_view+'" > Ariel View </button>' : ''
                                             )+
                                         '</div>'+
 
-                                        '<a href="/schedule/create_schedule/?type=property&id='+data?.id+'" class="link border-0 agency-contact-info"'+
-                                            '<i class="bi bi-envelope"></i> Contact'+
-                                        '</a>'+
+                                        '<div class="property-schedule-contact-btn">'+
+                                            '<a href="/schedule/create_schedule/?type=property&id='+data?.id+'" class="link border-0"'+
+                                                '<i class="bi bi-envelope"></i> Create Schedule'+
+                                            '</a>'+
+                                            '<a href="mailto:'+data?.developer_email+'" class="link border-0"'+
+                                                '<i class="bi bi-envelope"></i> Contact'+
+                                            '</a>'+
+                                        '</div>'+
+
                                     '</div>'+
 
                                 '</div>'+
@@ -391,7 +399,7 @@ $(document).ready(function(){
 
                 // showing sorting type dom
                 if(search_param.ordering) sorting_dom(search_param);
-                setTimeout(contact_button_position, 100); // responsive position for contact btn
+                // setTimeout(contact_button_position, 100); // responsive position for contact btn
             },
             error: function (error) {
                 active_free_scrolling = false;
@@ -403,28 +411,28 @@ $(document).ready(function(){
 
     searching("search");
 
-    function contact_button_position(){
-        var single_box = $('.property-single-box');
+    // function contact_button_position(){
+    //     var single_box = $('.property-single-box');
         
-        if(
-            window.innerWidth >= 1220 &&
-            window.location.pathname != "/property/map-list/"
-        ){
-            $('.agency-contact-info').css({
-                left : 'initial'
-            })
-            return;
-        };
+    //     if(
+    //         window.innerWidth >= 1220 &&
+    //         window.location.pathname != "/property/map-list/"
+    //     ){
+    //         $('.agency-contact-info').css({
+    //             left : 'initial'
+    //         })
+    //         return;
+    //     };
 
-        for (let i = 0; i < single_box.length; i++) {
-            var info_width = single_box[i].querySelector('.agency-company-info')?.getBoundingClientRect().width;
-            single_box[i].querySelector('.agency-contact-info').style.left = 30+info_width+'px';
-        }
-    };
+    //     for (let i = 0; i < single_box.length; i++) {
+    //         var info_width = single_box[i].querySelector('.agency-company-info')?.getBoundingClientRect().width;
+    //         single_box[i].querySelector('.agency-contact-info').style.left = 30+info_width+'px';
+    //     }
+    // };
 
-    $(window).resize(function() {
-        contact_button_position();
-    });
+    // $(window).resize(function() {
+    //     contact_button_position();
+    // });
 
 
     function pop_up_filter_active(search_param){
