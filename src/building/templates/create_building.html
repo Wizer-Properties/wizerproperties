@@ -8,7 +8,8 @@
 <link rel="stylesheet" href="{% static '/css/auth.css' %}" />
 <style>
     [label-name="latitude"],
-    [label-name="longitude"] {
+    [label-name="longitude"], 
+    #sub_type_container {
         display: none;
     }
 </style>
@@ -61,10 +62,23 @@
                                 <select name="type" type="text" class="authInput authSelectInput"
                                     placeholder="Select Building Type" required>
                                     <option value="">........</option>
-                                    <option value="condos">Condos</option>
-                                    <option value="house">House</option>
+                                    <option value="residence">Residence</option>
+                                    <option value="commercial">Commercial</option>
                                 </select>
                                 <div class="authlabelline authcompleteProfileLabe">Type</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6" id="sub_type_container">
+                            <div class="authFormDiv">
+                                <!-- <span class="authErrorMessage">Message</span> -->
+                                <select name="sub_type" id="sub_type_select" type="text" class="authInput authSelectInput"
+                                    placeholder="Select Building Sub Type">
+                                    <option value="">........</option>
+                                    {% for value, label in sub_type %}
+                                        <option value="{{ value }}">{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="authlabelline authcompleteProfileLabe">Sub Type</div>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -91,17 +105,6 @@
                                 <div class="authlabelline authcompleteProfileLabe">Furnishing</div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="total_units_for_sale" type="number" min="0" class="authInput"
-                                    placeholder="Total Units For Sale" required>
-                                <div class="authlabelline authcompleteProfileLabe">Total Units For Sale</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
@@ -180,6 +183,14 @@
                                 <input name="total_floors" type="number" min="0" class="authInput"
                                     placeholder="Total Floor" required>
                                 <div class="authlabelline authcompleteProfileLabe">Total Floor</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="authFormDiv">
+                                <!-- <span class="authErrorMessage">Message</span> -->
+                                <input name="total_units_for_sale" type="number" min="0" class="authInput"
+                                    placeholder="Total Units For Sale" required>
+                                <div class="authlabelline authcompleteProfileLabe">Total Units For Sale</div>
                             </div>
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from building.models import Building
+from utils.general_data import COMMERCIAL_SUB_TYPES, RESIDENCE_SUB_TYPES
 
 
 def prepare_building_context(building):
@@ -22,7 +23,10 @@ def prepare_building_context(building):
 
 @login_required
 def create_building(request):
-    return render(request, "create_building.html")
+    context = {
+        "sub_type": RESIDENCE_SUB_TYPES + COMMERCIAL_SUB_TYPES,
+    }
+    return render(request, "create_building.html", context)
 
 
 def get_building(request, id):
@@ -35,4 +39,5 @@ def get_building(request, id):
 def update_building(request, id):
     building = get_object_or_404(Building, pk=id)
     context = prepare_building_context(building)
+    context["sub_type"] = RESIDENCE_SUB_TYPES + COMMERCIAL_SUB_TYPES
     return render(request, "update_building.html", context)

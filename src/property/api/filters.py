@@ -17,8 +17,6 @@ class PropertyFilter(django_filters.FilterSet):
     class Meta:
         model = Property
         fields = [
-            "building__type",
-            "building__id",
             "number_of_bathroom",
             "number_of_balcony",
             "number_of_car_parking",
@@ -30,6 +28,9 @@ class PropertyFilter(django_filters.FilterSet):
             "have_owner_occupied",
             "have_bathtub",
             "have_duplex",
+            "building__id",
+            "building__type",
+            "building__sub_type",
             "building__quota",
             "building__furnishing",
             "building__status",

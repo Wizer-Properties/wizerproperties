@@ -102,6 +102,7 @@
                                 <th>Title</th>
                                 <th>Price</th>
                                 <th>Type</th>
+                                <th>Sub Type</th>
                                 <th>Total Units For Sale</th>
                                 <th>Address</th>
                                 <th>Project Total Area</th>
@@ -118,7 +119,8 @@
                                 <td>{{ building.id }}</td>
                                 <td>{{ building.title }}</td>
                                 <td>{{ building.price }}</td>
-                                <td>{{ building.type }}</td>
+                                <td>{{ building.get_type_display }}</td>
+                                <td>{{ building.get_sub_type_display }}</td>
                                 <td>{{ building.total_units_for_sale }}</td>
                                 <td>{{ building.address }}</td>
                                 <td>{{ building.project_total_area }}</td>

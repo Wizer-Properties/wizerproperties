@@ -10,6 +10,7 @@ class BuildingAdmin(admin.ModelAdmin):
         "lowest_price",
         "highest_price",
         "type",
+        "sub_type",
         "status",
         "construction_year",
         "total_units_for_sale",

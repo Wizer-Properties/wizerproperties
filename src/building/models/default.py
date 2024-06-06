@@ -1,7 +1,14 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
-from utils.general_data import BUILDING_TYPES, BUILDING_STATUS, QUOTA_TYPES, FURNISHING_TYPES
+from utils.general_data import (
+    BUILDING_TYPES,
+    COMMERCIAL_SUB_TYPES,
+    RESIDENCE_SUB_TYPES,
+    BUILDING_STATUS,
+    QUOTA_TYPES,
+    FURNISHING_TYPES,
+)
 from utils.helper_func import validate_max_current_year
 from core.models import TimestampedModel
 
@@ -16,6 +23,13 @@ class Building(TimestampedModel):
         max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(0)]
     )
     type = models.CharField(max_length=100, choices=BUILDING_TYPES, null=True)
+    sub_type = models.CharField(
+        max_length=100,
+        choices=RESIDENCE_SUB_TYPES + COMMERCIAL_SUB_TYPES,
+        blank=True,
+        null=True,
+        help_text="Select a sub type based on the selected type.",
+    )
     status = models.CharField(max_length=100, choices=BUILDING_STATUS, null=True)
     construction_year = models.IntegerField(
         default=2000, blank=True, null=True, validators=[MinValueValidator(2000), validate_max_current_year]
@@ -56,6 +70,36 @@ class Building(TimestampedModel):
         return str(self.title) if self.title else str(self.id)
 
     def clean(self):
+        error_messages = {}
+
+        # Ensure lowest_price is less than highest_price
         if self.lowest_price is not None and self.highest_price is not None:
             if self.lowest_price >= self.highest_price:
-                raise ValidationError({"highest_price": "The highest price must be greater than the lowest price."})
+                error_messages.update({"highest_price": ["The highest price must be greater than the lowest price."]})
+
+        # Validate sub_type based on the selected type
+        if self.type:
+            if self.type == "residence":
+                # Check if sub_type is one of the valid residence sub-types
+                if self.sub_type not in dict(RESIDENCE_SUB_TYPES).keys():
+                    error_messages.update(
+                        {
+                            "sub_type": [
+                                f"Please select one of the following: {', '.join(dict(RESIDENCE_SUB_TYPES).values())}."
+                            ]
+                        }
+                    )
+            elif self.type == "commercial":
+                # Check if sub_type is one of the valid commercial sub-types
+                if self.sub_type not in dict(COMMERCIAL_SUB_TYPES).keys():
+                    error_messages.update(
+                        {
+                            "sub_type": [
+                                f"Please select one of the following: {', '.join(dict(COMMERCIAL_SUB_TYPES).values())}."
+                            ]
+                        }
+                    )
+
+        # Raise validation errors if any
+        if error_messages:
+            raise ValidationError(error_messages)

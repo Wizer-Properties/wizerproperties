@@ -10,6 +10,7 @@ class BuildingSerializer(serializers.ModelSerializer):
             "title",
             "description",
             "type",
+            "sub_type",
             "total_units_for_sale",
             "address",
             "project_total_area",

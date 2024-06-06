@@ -4,7 +4,6 @@ from .default import BuildingSerializer
 
 class BuildingListSerializer(BuildingSerializer):
     created_by = serializers.CharField(source="created_by.username", read_only=True)
-    status = serializers.CharField(source="get_status_display", read_only=True)
 
     class Meta(BuildingSerializer.Meta):
         fields = BuildingSerializer.Meta.fields + [
@@ -34,3 +33,9 @@ class BuildingListSerializer(BuildingSerializer):
             "is_active",
             "created_by",
         ]
+
+    def to_representation(self, instance):
+        """Customizes the output of the serializer during retrieval."""
+        ret = super().to_representation(instance)
+        ret["status"] = instance.get_status_display()
+        return ret

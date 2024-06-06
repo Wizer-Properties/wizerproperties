@@ -5,6 +5,7 @@ from property.models import Property
 class PropertyFavoriteListSerializer(serializers.ModelSerializer):
     building_title = serializers.CharField(source="building.title", read_only=True)
     building_type = serializers.CharField(source="building.type", read_only=True)
+    building_sub_type = serializers.CharField(source="building.get_sub_type_display", read_only=True)
     building_status = serializers.CharField(source="building.get_status_display", read_only=True)
     address = serializers.CharField(source="building.address", read_only=True)
     have_freehold = serializers.BooleanField(source="building.have_freehold", read_only=True)
@@ -35,6 +36,7 @@ class PropertyFavoriteListSerializer(serializers.ModelSerializer):
             "building_id",
             "building_title",
             "building_type",
+            "building_sub_type",
             "building_status",
             "address",
             "have_freehold",

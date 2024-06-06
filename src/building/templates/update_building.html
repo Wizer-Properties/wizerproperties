@@ -59,16 +59,29 @@
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
                                 <select name="type" type="text" class="authInput authSelectInput"
-                                    placeholder="Select Building Type" required>
+                                placeholder="Select Building Type" required>
                                     <option value="">........</option>
-                                    <option value="condos" {% if building.type == 'condos' %}selected{% endif %}>
-                                        Condos
+                                    <option value="residence" {% if building.type == 'residence' %}selected{% endif %}>
+                                        Residence
                                     </option>
-                                    <option value="house" {% if building.type == 'house' %}selected{% endif %}>
-                                        House
+                                    <option value="commercial" {% if building.type == 'commercial' %}selected{% endif %}>
+                                        Commercial
                                     </option>
                                 </select>
                                 <div class="authlabelline authcompleteProfileLabe">Type</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6" id="sub_type_container">
+                            <div class="authFormDiv">
+                                <!-- <span class="authErrorMessage">Message</span> -->
+                                <select name="sub_type" id="sub_type_select" type="text" class="authInput authSelectInput"
+                                    placeholder="Select Building Sub Type">
+                                    <option value="">........</option>
+                                    {% for value, label in sub_type %}
+                                        <option value="{{ value }}" {% if building.sub_type == value %}selected{% endif %}>{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="authlabelline authcompleteProfileLabe">Sub Type</div>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -101,15 +114,6 @@
                                     </option>
                                 </select>
                                 <div class="authlabelline authcompleteProfileLabe">Furnishing</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="total_units_for_sale" type="number" class="authInput"
-                                    placeholder="Total Units For Sale" value="{{ building.total_units_for_sale }}"
-                                    required>
-                                <div class="authlabelline authcompleteProfileLabe">Total Units For Sale</div>
                             </div>
                         </div>
                     </div>
@@ -202,6 +206,15 @@
                                 <input name="total_floors" type="number" class="authInput" placeholder="Total Floor"
                                     value="{{ building.total_floors }}" required>
                                 <div class="authlabelline authcompleteProfileLabe">Total Floor</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="authFormDiv">
+                                <!-- <span class="authErrorMessage">Message</span> -->
+                                <input name="total_units_for_sale" type="number" class="authInput"
+                                    placeholder="Total Units For Sale" value="{{ building.total_units_for_sale }}"
+                                    required>
+                                <div class="authlabelline authcompleteProfileLabe">Total Units For Sale</div>
                             </div>
                         </div>
                     </div>

@@ -10,6 +10,7 @@ class BuildingFilter(django_filters.FilterSet):
         model = Building
         fields = [
             "type",
+            "sub_type",
             "quota",
             "furnishing",
             "have_freehold",

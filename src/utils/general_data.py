@@ -4,7 +4,20 @@ GENDER = (("male", "Male"), ("female", "Female"))
 
 UNIQUE_PROFILE_EMAIL_MESSAGE = "Profile with this email already exists."
 
-BUILDING_TYPES = (("condos", "Condos"), ("house", "House"))
+BUILDING_TYPES = (("residence", "Residence"), ("commercial", "Commercial"))
+
+RESIDENCE_SUB_TYPES = (
+    ("condo", "Condo"),
+    ("single_house", "Single House"),
+    ("townhouse", "Townhouse"),
+    ("apartment", "Apartment"),
+)
+
+COMMERCIAL_SUB_TYPES = (
+    ("sales_area", "Sales area"),
+    ("office", "Office"),
+    ("warehouse_factory", "Warehouse-Factory"),
+)
 
 BUILDING_STATUS = (
     ("to_be_commenced", "To Be Commenced"),

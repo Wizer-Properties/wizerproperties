@@ -7,6 +7,7 @@ from .default import PropertySerializer
 class PropertyVariousFeatureSerializer(PropertySerializer):
     building_title = serializers.CharField(source="building.title", read_only=True)
     building_type = serializers.CharField(source="building.type", read_only=True)
+    building_sub_type = serializers.CharField(source="building.get_sub_type_display", read_only=True)
     building_status = serializers.CharField(source="building.get_status_display", read_only=True)
     address = serializers.CharField(source="building.address", read_only=True)
     default_image = serializers.URLField(source="default_image_url", read_only=True)
@@ -17,6 +18,7 @@ class PropertyVariousFeatureSerializer(PropertySerializer):
         fields = PropertySerializer.Meta.fields + [
             "building_title",
             "building_type",
+            "building_sub_type",
             "building_status",
             "address",
             "is_compared",

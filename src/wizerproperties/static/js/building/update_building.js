@@ -101,4 +101,20 @@ $(document).ready(function () {
 
     statusSelect.on('change', updateConstructionYearVisibility);
     // --------------------------------- end
+
+    // Sub type visibility ------------------------------ start
+    function toggleSubTypeVisibility() {
+        if ($('select[name="type"]').val()) {
+            $('#sub_type_container').show();
+            $('#sub_type_select').prop('required', true);
+        } else {
+            $('#sub_type_container').hide();
+            $('#sub_type_select').prop('required', false).val('');
+        }
+    }
+
+    toggleSubTypeVisibility();
+
+    $('select[name="type"]').on('change', toggleSubTypeVisibility);
+    // --------------------------------- end
 });
