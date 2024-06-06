@@ -938,6 +938,70 @@ footer{
     object-fit: cover;
 }
 
+.property-single-box 
+.add-to-favorite,
+.property-single-box 
+.add-to-compare{
+    position: relative;
+}
+
+
+
+[effect="null"] {
+    &.add-to-favorite:not([added="true"])::before,
+    &.add-to-favorite:not([added="true"])::after,
+    &.add-to-compare:not([added="true"])::before,
+    &.add-to-compare:not([added="true"])::after{
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        background-color: #8AF2ED;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        content: '';
+        border-radius: 100%;
+        opacity: .4;
+        z-index: 1;
+    }
+
+    &.add-to-favorite:hover::before,
+    &.add-to-compare:hover::before{
+        animation: before_after_play 10s normal forwards  ;
+    }
+
+    &.add-to-favorite:hover::after,
+    &.add-to-compare:hover::after{
+        animation: before_after_play 7s normal forwards  ;
+    }
+
+}
+
+@keyframes before_after_play {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+    }
+
+    25% {
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(.5);
+    }
+
+    75% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    100% {
+        transform: scale(0);
+    }
+}
+
+
+ 
+
 
 @media screen and (min-width: 991px){
     [pop-status="true"] body{

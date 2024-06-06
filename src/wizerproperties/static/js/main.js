@@ -69,6 +69,19 @@ $(document).ready(function(){
         $('body').attr('log-modal', $(this).attr('log-modal-btn'))
     });    
     
+
+    $(document).on('click', '.add-to-favorite', function(){
+        if(!user_type) return;
+        localStorage.setItem("favorite-effect", true);
+        $(this).attr('effect', true)
+    })
+
+    $(document).on('click', '.add-to-compare', function(){
+        if(!user_type) return;
+        localStorage.setItem("favorite-effect", true);
+        $(this).attr('effect', true)
+
+    });
 });
 
 

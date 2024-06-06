@@ -455,6 +455,34 @@
     margin-bottom: 5px !important;
 }
 
+.exclusive-deals-time .date-area{
+    display: flex;
+    align-items: center;
+    background: var(--th-color) !important ;
+    gap: 2px ;
+    padding: 5px;
+
+    *{
+        text-align: center;
+        color: #fff !important;
+    }
+
+    count{
+        font-size: 14px;
+    }
+
+    .date-tmp{
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #fff;
+        padding: 2px;
+    }
+
+    label {
+        font-size: 8px;
+    }
+}
+
 @media screen and (max-width: 991px) {
     .banner-title{
         font-size: 34px !important;

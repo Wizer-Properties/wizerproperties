@@ -1,4 +1,7 @@
 $(document).ready(function(){
+    var is_fav_effect = localStorage.getItem('favorite-effect');
+    $('.banner-action-button button').attr('effect', is_fav_effect ||"null" )
+
     function iframe_void(data){
         if(data){
             return '<iframe width="100%" height="100%" src="'+data+'" frameborder="0" allowfullscreen=""></iframe>'

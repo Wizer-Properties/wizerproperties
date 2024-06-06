@@ -1,26 +1,17 @@
 $(document).ready(function(){
-    function countdown(endDate, id) {
-        var flipper_dom = '<div'+ 
-                            ' class="flipper _'+id+'" '+
-                            ' data-datetime="'+endDate+' 23:59:59" '+
-                            ' data-template="ddd|HH|ii"'+
-                            ' data-labels="Days|Hours|Minutes" '+
-                            ' data-reverse="true">'+
-                          '</div>';
-        return flipper_dom;
-    };
-    
 
     function property_list_tmp(data){
+        var is_fav_effect = localStorage.getItem('favorite-effect');
+
         return  '<div class="property-single-box">'+
                     '<div class="compare-favorite-btn-area">'+
                         (
                             !['agent', 'developer'].includes(user_type) ?
-                            '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'">'+
+                            '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
                                 '<i class="bi bi-heart-fill"></i>'+
                                 '<span> Favorite </span>'+
                             '</button>' +
-                            '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
+                            '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
                                 '<i class="bi bi-arrow-left-right"></i>'+
                                 '<i class="bi bi-check2"></i>'+
                                 '<span> Compare </span>'+
@@ -84,15 +75,17 @@ $(document).ready(function(){
     };
 
     function discount_property_list_tmp(data){
+        var is_fav_effect = localStorage.getItem('favorite-effect');
+
         return  '<div class="property-single-box discount_period">'+
                     '<div class="compare-favorite-btn-area">'+
                         (
                             !['agent', 'developer'].includes(user_type) ?
-                            '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'">'+
+                            '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
                                 '<i class="bi bi-heart-fill"></i>'+
                                 '<span> Favorite </span>'+
                             '</button>' +
-                            '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
+                            '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
                                 '<i class="bi bi-arrow-left-right"></i>'+
                                 '<i class="bi bi-check2"></i>'+
                                 '<span> Compare </span>'+
@@ -102,7 +95,7 @@ $(document).ready(function(){
                     '<a href="/property/details/'+data?.id+'/" class="search-result-box-wrapper">'+
                         '<div class="discount-card-header">'+
                             '<h1 class="card-title">'+data?.building_title+'</h1>'+
-                            '<div class="property-discount">'+countdown(data?.discount_period, data?.id)+'</div>'+
+                            ( data?.discount_period ? '<div class="exclusive-deals-time" date-count="'+data?.discount_period+'"></div>' : '')+
                         '</div>'+
                         '<div class="search-result-box-img">'+
                             '<img src="'+data?.default_image+'" alt="'+data?.building_title+'" loading="lazy">' +
@@ -561,7 +554,12 @@ $(document).ready(function(){
                     };
                 };
 
-                discount_properties_next = data?.next
+                discount_properties_next = data?.next;
+                var timer = new Countdown({
+                    template : "dd|hh|mm",
+                    labels : "Day|Hour|Minute"
+                }) // for time countdown
+                timer.start()
             },
             error: function (error) {
                 calling_discount_properties = false;

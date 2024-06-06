@@ -105,10 +105,10 @@ $(document).ready(function () {
     // Sub type visibility ------------------------------ start
     function toggleSubTypeVisibility() {
         if ($('select[name="type"]').val()) {
-            $('#sub_type_container').show();
+            $('#sub_type_container .authFormDiv').show();
             $('#sub_type_select').prop('required', true);
         } else {
-            $('#sub_type_container').hide();
+            $('#sub_type_container .authFormDiv').hide();
             $('#sub_type_select').prop('required', false).val('');
         }
     }

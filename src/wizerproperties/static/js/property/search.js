@@ -185,11 +185,9 @@ $(document).ready(function(){
         };
 
         var is_fav_effect = localStorage.getItem('favorite-effect');
-
-
         // property-type value seted newly-created, popular in css
 
-        return  '<div class="col-12 mb-4 property-single-box" property-type="'+data?.tag+'" effect="'+is_fav_effect+'">'+
+        return  '<div class="col-12 mb-4 property-single-box" property-type="'+data?.tag+'">'+
                     '<div class="search-result-box-wrapper">'+
                         '<div class="row m-0">'+
 
@@ -207,11 +205,11 @@ $(document).ready(function(){
                                     (
                                         !['agent', 'developer'].includes(user_type) ?
                                         '<div class="compare-favorite-btn-area">'+
-                                            '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'">'+
+                                            '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
                                                 '<i class="bi bi-heart-fill"></i>'+
                                                 '<span> Favorite </span>'+
                                             '</button>' +
-                                            '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
+                                            '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
                                                 '<i class="bi bi-arrow-left-right"></i>'+
                                                 '<i class="bi bi-check2"></i>'+
                                                 '<span> Compare </span>'+
@@ -224,13 +222,15 @@ $(document).ready(function(){
 
                             '<div class="col-lg-7 col-xl-8 p-0">'+
                                 '<div class="search-result-box">'+
+                                    '<a href="/property/details/'+data?.id+'/" class="d-block w-100">'+
+                                        '<div class="search-box-title">'+
+                                            '<span> '+data?.building_title+' </span>'+
+                                            ( data?.discount_period ? 
+                                                '<div date-count="'+data?.discount_period+'"></div>' : '') +
+                                        '</div>'+
+                                    '</a>'+
                                     '<div class="search-result-content">'+
                                         '<a href="/property/details/'+data?.id+'/" class="d-block w-100">'+
-                                            '<div class="search-box-title">'+
-                                                '<span> '+data?.building_title+' </span>'+
-                                                ( data?.discount_period ? 
-                                                    '<div date-count="'+data?.discount_period+'"></div>' : '') +
-                                            '</div>'+
                                             '<div class="d-flex align-items-center flex-wrap gap-2">'+
                                                 '<div class="search-box-price">'+
                                                     '฿ '+ 
@@ -388,7 +388,9 @@ $(document).ready(function(){
                 };
 
 
-                var timer = new Countdown() // for time countdown
+                var timer = new Countdown({
+                    template : "dd|hh|mm|ss",
+                }) // for time countdown
                 timer.start()
 
                 installing_splide(); // init slider for image
@@ -975,19 +977,6 @@ $(document).ready(function(){
             price_slider_filter = true;
             searching("filter");
         }
-    });
-
-
-    $(document).on('click', '.add-to-favorite', function(){
-        if(!user_type) return;
-        localStorage.setItem("favorite-effect", true);
-        $('.property-single-box').attr('effect', true)
-    })
-
-    $(document).on('click', '.add-to-compare', function(){
-        if(!user_type) return;
-        localStorage.setItem("favorite-effect", true);
-        $('.property-single-box').attr('effect', true)
     });
 
 

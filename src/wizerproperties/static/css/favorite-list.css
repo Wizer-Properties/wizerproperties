@@ -18,3 +18,9 @@
 .search-result-box-wrapper{
     height: 100%;
 }
+
+#favorite-list
+.compare-favorite-btn-area{
+    right: 30px;
+    top: 15px;
+}

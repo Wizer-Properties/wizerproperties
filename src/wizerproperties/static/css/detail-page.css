@@ -417,6 +417,7 @@ body[img-gallery-open="true"] .img-gallery-dialog{
     min-width: 80px;
     gap: 3px;
     align-items: center;
+    position: relative;
 }
 
 .banner-action-button button img{

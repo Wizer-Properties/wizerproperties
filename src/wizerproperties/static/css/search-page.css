@@ -120,8 +120,8 @@
 }
 
 .property-faciluty span{
-    color: #726E6E;
-    background-color: #ffd350;
+    color: #fff;
+    background-color: var(--th-color);
     font-size: 13px;
     padding: 3px 7px;
     border-radius: 4px;
@@ -342,6 +342,11 @@
             height: 23px;
         }
     }
+}
+
+.discount_period
+.compare-favorite-btn-area{
+    top: 75px;
 }
 
 [added="false"] .bi-heart-fill{
