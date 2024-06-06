@@ -349,17 +349,53 @@
                 </div>
                 <div pop-element="property-type">
                     <div class="search-pop-up-box">
-                        <div class="search-pop-up-select-box" label="property-type">
-                            <div class="filter-dropdown-mtl-buttons" name="property-type">
-                                <button name="building__type" value="condos">
-                                    <i class="bi bi-buildings"></i>
-                                    Condos
-                                </button>
-                                <button name="building__type" value="house">
-                                    <i class="bi bi-house"></i>
-                                    House
-                                </button>
+
+                        <div class="property-type-filter" building-type-status="residential">
+                            <div class="property-type-list">
+                                <button name="residential" value="building__type"> Residential </button>
+                                <button name="commercial" value="building__sub_type"> Commercial </button>
                             </div>
+
+                            <div type-area-name="residential">
+                                <label class="custom-radio-checkbox">
+                                    <input value="condo" type="radio" name="residential_type"/>
+                                    <span class="bi"> Condo</span>
+                                </label>
+                                <label class="custom-radio-checkbox">
+                                    <input value="single_house" type="radio" name="residential_type"/>
+                                    <span class="bi"> Single house </span>
+                                </label>
+                                <label class="custom-radio-checkbox">
+                                    <input value="townhouse" type="radio" name="residential_type"/>
+                                    <span class="bi"> Townhouse </span>
+                                </label>
+                                <label class="custom-radio-checkbox">
+                                    <input value="apartment" type="radio" name="residential_type"/>
+                                    <span class="bi"> Apartment </span>
+                                </label>
+                            </div>
+
+
+                            <div type-area-name="commercial">
+                                <label class="custom-radio-checkbox">
+                                    <input value="sales_area" type="checkbox" name="commercial_sub_type"/>
+                                    <span class="bi"> Sales area </span>
+                                </label>
+                                <label class="custom-radio-checkbox">
+                                    <input value="office" type="checkbox" name="commercial_sub_type"/>
+                                    <span class="bi"> Office </span>
+                                </label>
+                                <label class="custom-radio-checkbox">
+                                    <input value="warehouse_factory" type="checkbox" name="commercial_sub_type"/>
+                                    <span class="bi"> Warehouse factory </span>
+                                </label>
+                            </div>
+
+                            <div class="property-type-action-btn">
+                                <button class="property-type-clear"> Clear </button>
+                                <button class="property-type-apply"> Apply </button>
+                            </div>
+
                         </div>
                     </div>
                 </div>

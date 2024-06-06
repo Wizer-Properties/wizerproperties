@@ -1000,6 +1000,54 @@ footer{
 }
 
 
+.custom-radio-checkbox {
+    position: relative;
+
+    input[type="radio"],
+    input[type="checkbox"]{
+        display: none;
+    }
+
+    span{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        position: relative;
+        z-index: 9;
+    }
+
+    input[type="checkbox"] + span::before{
+        content: '\F10B';  /* from bootstrap icon */
+    }
+
+    input[type="radio"] + span::before{
+        content: '\F28A';  /* from bootstrap icon */
+    }
+
+    input[type="checkbox"]:checked + span::before{
+        content: '\F26C';  /* from bootstrap icon */
+    }
+
+    input[type="radio"]:checked + span::before{
+        content: '\F26A';  /* from bootstrap icon */
+    }
+
+    input:checked + span::after {
+        position: absolute;
+        content: '';
+        width: 100%;
+        height: 100%;
+        background-color: var(--th-color);
+        left: 0;
+        top: 0;
+        z-index: -1;
+    }
+
+    input:checked + span,
+    input:checked + span::before{
+        color: #fff;
+    }
+}
  
 
 

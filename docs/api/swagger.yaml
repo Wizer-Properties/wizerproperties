@@ -1363,7 +1363,7 @@ paths:
           in: "query"
           type: "string"
         - name: "building__sub_type"
-          description: "Filtered by and choice will be ['condo', 'single_house', 'townhouse', 'apartment', 'sales_area', 'office', 'warehouse_factory']"
+          description: "Filtered by and choice will be for residence = ['condo', 'single_house', 'townhouse', 'apartment'], for commercial = ['sales_area', 'office', 'warehouse_factory']"
           in: "query"
           type: "string"
         - name: "building__quota"

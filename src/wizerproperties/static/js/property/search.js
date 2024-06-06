@@ -401,7 +401,6 @@ $(document).ready(function(){
 
                 // showing sorting type dom
                 if(search_param.ordering) sorting_dom(search_param);
-                // setTimeout(contact_button_position, 100); // responsive position for contact btn
             },
             error: function (error) {
                 active_free_scrolling = false;
@@ -412,29 +411,6 @@ $(document).ready(function(){
     };
 
     searching("search");
-
-    // function contact_button_position(){
-    //     var single_box = $('.property-single-box');
-        
-    //     if(
-    //         window.innerWidth >= 1220 &&
-    //         window.location.pathname != "/property/map-list/"
-    //     ){
-    //         $('.agency-contact-info').css({
-    //             left : 'initial'
-    //         })
-    //         return;
-    //     };
-
-    //     for (let i = 0; i < single_box.length; i++) {
-    //         var info_width = single_box[i].querySelector('.agency-company-info')?.getBoundingClientRect().width;
-    //         single_box[i].querySelector('.agency-contact-info').style.left = 30+info_width+'px';
-    //     }
-    // };
-
-    // $(window).resize(function() {
-    //     contact_button_position();
-    // });
 
 
     function pop_up_filter_active(search_param){
@@ -604,6 +580,72 @@ $(document).ready(function(){
         searching("filter");
         $(this).attr('active', true);
     });
+
+
+    // building type filter ========================= (start)
+    var building_type_props = '';
+    var building_sub_type_props = [];
+    
+    $(document).on('change', '.custom-radio-checkbox input', function(){
+        if($(this).attr('name') == 'residential_type'){
+            building_sub_type_props = [$(this).val()];
+            return
+        };
+
+        if(building_sub_type_props.includes($(this).val())){
+            _.remove(building_sub_type_props, (n) => n === $(this).val());
+            return
+        };
+        
+        building_sub_type_props.push($(this).val());
+    });
+
+
+    $(document).on('click', '.property-type-list button', function(){
+        $(this).parents('[building-type-status]').attr('building-type-status',$(this).attr('name'));
+        building_type_props = $(this).val();
+        building_sub_type_props = [];
+
+        if($(this).val() == "building__type"){
+            $('[type-area-name="commercial"] input').prop('checked', false);
+        }else{
+            $('[type-area-name="residential"] input').prop('checked', false);
+        };
+    });
+
+
+    $(document).on('click', '.property-type-apply', function(){
+        prams_list["building_type_props"] = building_type_props;
+        prams_list["building_sub_type_props"] = building_sub_type_props;
+        next_property = 1;
+        searching("filter");
+    });
+
+    $(document).on('click', '.property-type-clear', function(){
+        if(
+            building_type_props == '' &&
+            building_sub_type_props.length == 0
+        ) {
+            pop_dispatch()
+            return
+        };
+
+        building_type_props = '';
+        building_sub_type_props = [];
+
+        if( search_param?.hasOwnProperty("building_type_props") ){
+            delete search_param.building_type_props;
+        };
+
+        if( search_param?.hasOwnProperty("building_sub_type_props") ){
+            delete search_param.building_sub_type_props;
+        };
+        
+        next_property = 1;
+        searching("filter");
+    });
+
+    // building type filter ========================= (end)
 
 
     $('.reset-btn').click(function(){
