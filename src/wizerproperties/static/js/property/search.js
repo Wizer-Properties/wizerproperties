@@ -603,7 +603,7 @@ $(document).ready(function(){
 
     $(document).on('click', '.property-type-list button', function(){
         $(this).parents('[building-type-status]').attr('building-type-status',$(this).attr('name'));
-        building_type_props = $(this).val();
+        building_type_props = $(this).attr('name');
         building_sub_type_props = [];
 
         if($(this).val() == "building__type"){
@@ -640,7 +640,7 @@ $(document).ready(function(){
         if( search_param?.hasOwnProperty("building_sub_type_props") ){
             delete search_param.building_sub_type_props;
         };
-        
+
         next_property = 1;
         searching("filter");
     });

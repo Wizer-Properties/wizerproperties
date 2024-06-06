@@ -541,7 +541,7 @@
     display: none;
 }
 
-[building-type-status="residential"]
+[building-type-status="residence"]
 [type-area-name="residential"]{
     display: block;
 }
@@ -577,8 +577,8 @@
     box-shadow: 2px 3px 7px 2px rgb(0 0 0 / 20%);
 }
 
-[building-type-status="residential"]
-[name="residential"]{
+[building-type-status="residence"]
+[name="residence"]{
     background: #d5c3c3;
 }
 
