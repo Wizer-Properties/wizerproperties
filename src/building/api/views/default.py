@@ -1,4 +1,4 @@
-from django.db.models import OuterRef, Subquery, Value, F, CharField
+from django.db.models import OuterRef, Subquery, Value, F, CharField, Exists, BooleanField
 from django.db.models.functions import Concat
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -12,11 +12,11 @@ from building.api.serializers import (
     BuildingMediaSerializer,
     BuildingFacilitiesSerializer,
     ScheduleBuildingSerializer,
-    BuildingSearchMapSerializer
+    BuildingSearchMapSerializer,
 )
 from building.api.filters import BuildingFilter
-from building.models import Building, BuildingMedia
-from property.models import Property, PropertyMedia
+from building.models import Building
+from property.models import Property, PropertyMedia, CompareProperty, ProspectFavoriteProperty
 from property.api.serializers import PropertyAvailableUnitsSerializer
 from user.api.serializers import AgentProfileSerializer, DeveloperProfileSerializer
 from utils.general_func import get_chatgpt_response
@@ -109,13 +109,26 @@ class BuildingViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["get"])
     def available_units(self, request, pk=None):
         building = self.get_object()
+        user = self.request.user
 
         properties = Property.objects.filter(building=building, is_active=True).annotate(
             default_image_url=Subquery(
                 PropertyMedia.objects.filter(property=OuterRef("pk"), type="image")
                 .annotate(full_file_url=Concat(Value("/media/"), F("file"), output_field=CharField()))
                 .values("full_file_url")[:1]
-            )
+            ),
+            # Annotate is_compared based on whether the property is in the user's comparison list
+            is_compared=(
+                Exists(CompareProperty.objects.filter(user=user, property=OuterRef("pk")))
+                if user.is_authenticated and hasattr(user, "prospectprofile")
+                else Value(None, output_field=BooleanField())
+            ),
+            # Annotate is_favorited based on whether the property is in the user's favorite list
+            is_favorited=(
+                Exists(ProspectFavoriteProperty.objects.filter(prospect=user.prospectprofile, property=OuterRef("pk")))
+                if user.is_authenticated and hasattr(user, "prospectprofile")
+                else Value(None, output_field=BooleanField())
+            ),
         )
 
         property_id = request.query_params.get("property_id")
@@ -164,7 +177,7 @@ class BuildingViewSet(viewsets.ModelViewSet):
         return Response(
             {"generated_building_description": generated_building_description}, status=status.HTTP_201_CREATED
         )
-    
+
     @action(detail=False, methods=["get"])
     def building_list_for_map_search(self, request):
         serializer = BuildingSearchMapSerializer(self.filter_queryset(self.get_queryset()), many=True)

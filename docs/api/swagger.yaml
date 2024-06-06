@@ -3624,6 +3624,10 @@ definitions:
               type: "number"
             number_of_bathroom:
               type: "number"
+            is_compared:
+              type: "boolean"
+            is_favorited:
+              type: "boolean"
   
   BuildingScheduleResponse:
     type: object

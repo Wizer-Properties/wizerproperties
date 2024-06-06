@@ -4,6 +4,8 @@ from .default import PropertySerializer
 
 class PropertyAvailableUnitsSerializer(PropertySerializer):
     default_image = serializers.URLField(source="default_image_url", read_only=True)
+    is_compared = serializers.BooleanField(read_only=True)
+    is_favorited = serializers.BooleanField(read_only=True)
 
     class Meta(PropertySerializer.Meta):
-        fields = PropertySerializer.Meta.fields + ["default_image"]
+        fields = PropertySerializer.Meta.fields + ["default_image", "is_compared", "is_favorited"]
