@@ -24,7 +24,8 @@ def prepare_building_context(building):
 @login_required
 def create_building(request):
     context = {
-        "sub_type": RESIDENCE_SUB_TYPES + COMMERCIAL_SUB_TYPES,
+        "residence_sub_types": dict(RESIDENCE_SUB_TYPES),
+        "commercial_sub_types": dict(COMMERCIAL_SUB_TYPES),
     }
     return render(request, "create_building.html", context)
 
@@ -39,5 +40,6 @@ def get_building(request, id):
 def update_building(request, id):
     building = get_object_or_404(Building, pk=id)
     context = prepare_building_context(building)
-    context["sub_type"] = RESIDENCE_SUB_TYPES + COMMERCIAL_SUB_TYPES
+    context["residence_sub_types"] = dict(RESIDENCE_SUB_TYPES)
+    context["commercial_sub_types"] = dict(COMMERCIAL_SUB_TYPES)
     return render(request, "update_building.html", context)

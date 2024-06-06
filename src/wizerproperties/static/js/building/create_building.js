@@ -284,10 +284,27 @@ $(document).ready(function () {
     // --------------------------------- end
 
     // Sub type visibility ------------------------------ start
+    var subTypeSelect = $('#sub_type_select');
+
+    function updateSubTypeOptions(subTypes) {
+        subTypeSelect.empty();
+        subTypeSelect.append('<option value="">........</option>');
+        $.each(subTypes, function(value, label) {
+            subTypeSelect.append('<option value="' + value + '">' + label + '</option>');
+        });
+    }
+
     function toggleSubTypeVisibility() {
-        if ($('select[name="type"]').val()) {
+        var typeValue = $('#type_select').val();
+        if (typeValue) {
             $('#sub_type_container .authFormDiv').show();
             $('#sub_type_select').prop('required', true);
+
+            if (typeValue == 'residence') {
+                updateSubTypeOptions(residenceSubTypes);
+            } else if (typeValue == 'commercial') {
+                updateSubTypeOptions(commercialSubTypes);
+            }
         } else {
             $('#sub_type_container .authFormDiv').hide();
             $('#sub_type_select').prop('required', false).val('');

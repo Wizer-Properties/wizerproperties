@@ -58,7 +58,7 @@
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <select name="type" type="text" class="authInput authSelectInput"
+                                <select name="type" id="type_select" type="text" class="authInput authSelectInput"
                                 placeholder="Select Building Type" required>
                                     <option value="">........</option>
                                     <option value="residence" {% if building.type == 'residence' %}selected{% endif %}>
@@ -77,9 +77,15 @@
                                 <select name="sub_type" id="sub_type_select" type="text" class="authInput authSelectInput"
                                     placeholder="Select Building Sub Type">
                                     <option value="">........</option>
-                                    {% for value, label in sub_type %}
-                                        <option value="{{ value }}" {% if building.sub_type == value %}selected{% endif %}>{{ label }}</option>
-                                    {% endfor %}
+                                    {% if building.type == "residence" %}
+                                        {% for value, label in residence_sub_types.items %}
+                                            <option value="{{ value }}" {% if building.sub_type == value %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    {% elif building.type == "commercial" %}
+                                        {% for value, label in commercial_sub_types.items %}
+                                            <option value="{{ value }}" {% if building.sub_type == value %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    {% endif %}
                                 </select>
                                 <div class="authlabelline authcompleteProfileLabe">Sub Type</div>
                             </div>
@@ -491,6 +497,8 @@
 {% block extend_script %}
 <script type="text/javascript">
     var updateBuildingAPIUrl = "{% url 'building:api:update' building.id %}"
+    var residenceSubTypes = {{ residence_sub_types|safe }};
+    var commercialSubTypes = {{ commercial_sub_types|safe }};
 </script>
 <script src="{% static 'js/building/update_building.js' %}?v=1.01"></script>
 {% endblock extend_script %}

@@ -103,10 +103,33 @@ $(document).ready(function () {
     // --------------------------------- end
 
     // Sub type visibility ------------------------------ start
+    var subTypeSelect = $('#sub_type_select');
+
+    function updateSubTypeOptions(subTypes) {
+        var selectedValue = subTypeSelect.val();
+        subTypeSelect.empty();
+        subTypeSelect.append('<option value="">........</option>');
+        $.each(subTypes, function(value, label) {
+            subTypeSelect.append('<option value="' + value + '">' + label + '</option>');
+        });
+
+        // Restore selected option if it exists in the new options
+        if (selectedValue) {
+            subTypeSelect.val(selectedValue);
+        }
+    }
+
     function toggleSubTypeVisibility() {
-        if ($('select[name="type"]').val()) {
+        var typeValue = $('#type_select').val();
+        if (typeValue) {
             $('#sub_type_container .authFormDiv').show();
             $('#sub_type_select').prop('required', true);
+
+            if (typeValue == 'residence') {
+                updateSubTypeOptions(residenceSubTypes);
+            } else if (typeValue == 'commercial') {
+                updateSubTypeOptions(commercialSubTypes);
+            }
         } else {
             $('#sub_type_container .authFormDiv').hide();
             $('#sub_type_select').prop('required', false).val('');
@@ -115,6 +138,10 @@ $(document).ready(function () {
 
     toggleSubTypeVisibility();
 
-    $('select[name="type"]').on('change', toggleSubTypeVisibility);
+    $('#type_select').on('change', function() {
+        toggleSubTypeVisibility();
+        // Set sub-type value to empty string when type changes
+        subTypeSelect.val('');
+    });
     // --------------------------------- end
 });

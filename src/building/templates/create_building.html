@@ -58,7 +58,7 @@
                         <div class="col-lg-6">
                             <div class="authFormDiv">
                                 <!-- <span class="authErrorMessage">Message</span> -->
-                                <select name="type" type="text" class="authInput authSelectInput"
+                                <select name="type" id="type_select" type="text" class="authInput authSelectInput"
                                     placeholder="Select Building Type" required>
                                     <option value="">........</option>
                                     <option value="residence">Residence</option>
@@ -73,9 +73,6 @@
                                 <select name="sub_type" id="sub_type_select" type="text" class="authInput authSelectInput"
                                     placeholder="Select Building Sub Type">
                                     <option value="">........</option>
-                                    {% for value, label in sub_type %}
-                                        <option value="{{ value }}">{{ label }}</option>
-                                    {% endfor %}
                                 </select>
                                 <div class="authlabelline authcompleteProfileLabe">Sub Type</div>
                             </div>
@@ -470,6 +467,8 @@
     var createBuildingAPIUrl = "{% url 'building:api:create' %}"
     var generateBuildingDescriptionAPIUrl = "{% url 'building:api:generate_description' %}"
     var reGenerateBuildingDescriptionAPIUrl = "{% url 'building:api:re_generate_description' %}"
+    var residenceSubTypes = {{ residence_sub_types|safe }};
+    var commercialSubTypes = {{ commercial_sub_types|safe }};
 </script>
 <script src="{% static 'js/building/create_building.js' %}?v=1.04"></script>
 {% endblock extend_script %}
