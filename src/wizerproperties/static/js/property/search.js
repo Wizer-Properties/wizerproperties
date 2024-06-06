@@ -583,7 +583,7 @@ $(document).ready(function(){
 
 
     // building type filter ========================= (start)
-    var building__type_props = '';
+    var building_type_props = '';
     var building_sub_type_props = [];
     
     $(document).on('change', '.custom-radio-checkbox input', function(){
@@ -603,7 +603,7 @@ $(document).ready(function(){
 
     $(document).on('click', '.property-type-list button', function(){
         $(this).parents('[building-type-status]').attr('building-type-status',$(this).attr('name'));
-        building__type_props = $(this).attr('name');
+        building_type_props = $(this).attr('name');
         building_sub_type_props = [];
 
         if($(this).val() == "building__type"){
@@ -615,30 +615,30 @@ $(document).ready(function(){
 
 
     $(document).on('click', '.property-type-apply', function(){
-        prams_list["building__type_props"] = building__type_props;
-        prams_list["building_sub_type_props"] = building_sub_type_props;
+        prams_list["building__type"] = building_type_props;
+        prams_list["building__sub_type"] = building_sub_type_props;
         next_property = 1;
         searching("filter");
     });
 
     $(document).on('click', '.property-type-clear', function(){
         if(
-            building__type_props == '' &&
+            building_type_props == '' &&
             building_sub_type_props.length == 0
         ) {
             pop_dispatch()
             return
         };
 
-        building__type_props = '';
+        building_type_props = '';
         building_sub_type_props = [];
 
-        if( search_param?.hasOwnProperty("building__type_props") ){
-            delete search_param.building__type_props;
+        if( search_param?.hasOwnProperty("building__type") ){
+            delete search_param.building__type;
         };
 
-        if( search_param?.hasOwnProperty("building_sub_type_props") ){
-            delete search_param.building_sub_type_props;
+        if( search_param?.hasOwnProperty("building__sub_type") ){
+            delete search_param.building__sub_type;
         };
 
         next_property = 1;
