@@ -37,7 +37,6 @@ $(document).ready(function(){
                                     data?.address+
                                 '</div>'+
                             '</div>'+
-                            '<h1>'+data?.building_title+'</h1>'+
 
                             '<div class="property-contains">'+
                                 '<div class="property-short-info-box">'+
