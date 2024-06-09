@@ -420,7 +420,7 @@
 }
 
 [display-view="small"]{
-    display: none;
+    display: none !important;
 }
 
 .search-pop-up-box .filter-dropdown-mtl-buttons{
@@ -490,6 +490,19 @@
 .filter-categories-colums{
     display: grid;
     grid-template-columns: 1fr 1fr;
+    position: relative;
+}
+
+.filter-categories-colums::before{
+    content: '';
+    position: absolute;
+    width: 1px;
+    background-color: #eee;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 100%;
+    z-index: 1;
 }
 
 .filter-colum-box{
@@ -499,9 +512,6 @@
     padding: 30px 20px;
 }
 
-.filter-colum-box:nth-child(odd){
-    border-right: .5px solid #eee;
-}
 
 .property-schedule-contact-btn{
     gap: 10px;
@@ -542,7 +552,9 @@
 }
 
 [building-type-status="residence"]
-[type-area-name="residential"]{
+[type-area-name="residential"],
+[building-type-status="null"] 
+[type-area-name="residential"] {
     display: block;
 }
 
@@ -683,7 +695,11 @@
     }
 
     [display-view="small"]{
-        display: block;
+        display: inline-block !important;
+    }
+
+    .filter-categories-colums::before{
+        display: none;
     }
 
     .search-result-box {
@@ -697,6 +713,14 @@
     .filter-colum-box{
         border-left: .5px solid #eee ;
         border-right: .5px solid #eee;
+    }
+
+    [type-area-name] label span{
+        padding: 12px 20px;
+    }
+
+    .property-type-list{
+        padding: 0 20px;
     }
 }
 

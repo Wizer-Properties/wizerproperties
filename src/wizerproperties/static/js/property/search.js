@@ -614,14 +614,24 @@ $(document).ready(function(){
     });
 
 
-    $(document).on('click', '.property-type-apply', function(){
+    $(document).on('click', '.property-type-apply, .filter-done', function(){
+        if(
+            $(this).attr('class').includes('filter-done') &&
+            window.innerWidth > 991
+        ) return;
+
         prams_list["building__type"] = building_type_props;
         prams_list["building__sub_type"] = building_sub_type_props;
         next_property = 1;
         searching("filter");
     });
 
-    $(document).on('click', '.property-type-clear', function(){
+    $(document).on('click', '.property-type-clear, .reset-btn', function(){
+        if(
+            $(this).attr('class').includes('reset-btn') &&
+            window.innerWidth > 991
+        ) return;
+        
         if(
             building_type_props == '' &&
             building_sub_type_props.length == 0

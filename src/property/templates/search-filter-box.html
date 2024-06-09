@@ -743,16 +743,6 @@
                             </div>
                         </div>
     
-                        <div class="filter-colum-box" display-view="small">
-                            <div class="filter-option-box-wrapper">
-                                <label> Property Type </label>
-                                <div class="filter-dropdown-mtl-buttons" name="property-type">
-                                    <button name="building__type" value="condos">Condos</button>
-                                    <button name="building__type" value="house">House</button>
-                                </div>
-                            </div>
-                        </div>
-    
                         <div class="filter-colum-box">
                             <div class="filter-option-box-wrapper">
                                 <label> Property Quota </label>
@@ -791,6 +781,50 @@
                                     <button name="building__status" value="under_construction">Under Construction</button>
                                     <button  name="building__status" value="completed">Completed</button>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="filter-colum-box px-0" display-view="small">
+                            <div class="property-type-filter p-0" building-type-status="null">
+                                <div class="property-type-list">
+                                    <button name="residence" value="building__type"> Residential </button>
+                                    <button name="commercial" value="building__sub_type"> Commercial </button>
+                                </div>
+    
+                                <div type-area-name="residential">
+                                    <label class="custom-radio-checkbox">
+                                        <input value="condo" type="radio" name="residential_type"/>
+                                        <span class="bi"> Condo</span>
+                                    </label>
+                                    <label class="custom-radio-checkbox">
+                                        <input value="single_house" type="radio" name="residential_type"/>
+                                        <span class="bi"> Single house </span>
+                                    </label>
+                                    <label class="custom-radio-checkbox">
+                                        <input value="townhouse" type="radio" name="residential_type"/>
+                                        <span class="bi"> Townhouse </span>
+                                    </label>
+                                    <label class="custom-radio-checkbox">
+                                        <input value="apartment" type="radio" name="residential_type"/>
+                                        <span class="bi"> Apartment </span>
+                                    </label>
+                                </div>
+    
+    
+                                <div type-area-name="commercial">
+                                    <label class="custom-radio-checkbox">
+                                        <input value="sales_area" type="checkbox" name="commercial_sub_type"/>
+                                        <span class="bi"> Sales area </span>
+                                    </label>
+                                    <label class="custom-radio-checkbox">
+                                        <input value="office" type="checkbox" name="commercial_sub_type"/>
+                                        <span class="bi"> Office </span>
+                                    </label>
+                                    <label class="custom-radio-checkbox">
+                                        <input value="warehouse_factory" type="checkbox" name="commercial_sub_type"/>
+                                        <span class="bi"> Warehouse factory </span>
+                                    </label>
+                                </div>    
                             </div>
                         </div>
                         
