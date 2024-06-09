@@ -1,4 +1,6 @@
 $(document).ready(function(){
+    var is_fav_effect = localStorage.getItem('favorite-effect');
+    
     function iframe_void(data){
         if(data){
             return '<iframe width="100%" height="100%" src="'+data+'" frameborder="0" allowfullscreen=""></iframe>'
@@ -311,6 +313,20 @@ $(document).ready(function(){
     function available_units_tmp(data){
         return  '<div class="splide__slide">'+
                     '<div class="property-card">'+
+                        '<div class="compare-favorite-btn-area">'+
+                            (
+                                !['agent', 'developer'].includes(user_type) ?
+                                '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
+                                    '<i class="bi bi-heart-fill"></i>'+
+                                    '<span> Favorite </span>'+
+                                '</button>' +
+                                '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
+                                    '<i class="bi bi-arrow-left-right"></i>'+
+                                    '<i class="bi bi-check2"></i>'+
+                                    '<span> Compare </span>'+
+                                '</button>': ''
+                            ) +
+                        '</div>'+
                         '<div class="property-card-img">'+
                             '<img src="'+data?.default_image+'" alt="property image" loading="lazy">'+
                         '</div>'+

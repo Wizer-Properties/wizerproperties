@@ -623,6 +623,11 @@ body[img-gallery-open="true"] .img-gallery-dialog{
     padding-top: 2px;
 }
 
+.available-unitssplide-splide
+.compare-favorite-btn-area{
+    top: 5px !important;
+}
+
 @media screen and (max-width : 991px) {
     .details-gallery,
     .details-gallery-video,
