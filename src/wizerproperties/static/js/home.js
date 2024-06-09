@@ -556,7 +556,7 @@ $(document).ready(function(){
                 discount_properties_next = data?.next;
                 var timer = new Countdown({
                     template : "dd|hh|mm",
-                    labels : "Day|Hour|Minute"
+                    labels : "Days|Hours|Minutes"
                 }) // for time countdown
                 timer.start()
             },

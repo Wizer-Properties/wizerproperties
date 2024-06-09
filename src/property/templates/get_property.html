@@ -93,18 +93,8 @@
 
         <div class="tab-content" id="banner-nav-tabContent">
             {% if not user.is_authenticated or request.user.user_type == "prospect"  %}
-            <div class="banner-action-button">
-                <button class="add-to-compare" added="false">
-                    <i class="bi bi-arrow-left-right"></i>
-                    <i class="bi bi-check-circle-fill"></i>
-                    Compare
-                </button>
-
-                <button class="add-to-favorite" added="false">
-                    <i class="bi bi-heart-fill"></i>
-                    <i class="bi bi-heart"></i>
-                    Favorite
-                </button>
+            <div class="banner-action-button" label-name="fav-comp-button">
+                <!-- dom area -->
             </div>
             {% endif %} 
 

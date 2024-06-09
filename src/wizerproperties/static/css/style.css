@@ -875,10 +875,11 @@ footer{
 
 .building-tag {
     font-size: 12px;
-    background: #e5e3e3;
+    background: #7f1378;
     padding: 2px 7px;
     border-radius: 15px;
     font-weight: 400;
+    color: #fff;
 }
 
 [pop-element]{

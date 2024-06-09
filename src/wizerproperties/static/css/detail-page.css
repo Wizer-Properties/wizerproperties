@@ -397,11 +397,10 @@ body[img-gallery-open="true"] .img-gallery-dialog{
 .banner-action-button{
     display: flex;
     position: absolute;
-    left: -8px;
-    top: 10px;
+    left: 10px;
+    top: 30px;
     z-index: 9;
     justify-content: flex-start;
-    padding: 10px;
     flex-wrap: wrap;
 }
 
@@ -626,6 +625,27 @@ body[img-gallery-open="true"] .img-gallery-dialog{
 .available-unitssplide-splide
 .compare-favorite-btn-area{
     top: 5px !important;
+}
+
+#banner-nav-tabContent
+.compare-favorite-btn-area{
+    right: initial;
+    top: initial;
+    position: initial !important;
+    flex-direction: row;
+    gap: 10px;
+
+    span {
+        right: initial !important;
+        left: 40px;
+        z-index: 99;
+
+        &::before {
+            right: initial !important;
+            left: -9px;
+            clip-path: polygon(100% 0, 0 50%, 100% 100%) !important;
+        }
+    }
 }
 
 @media screen and (max-width : 991px) {

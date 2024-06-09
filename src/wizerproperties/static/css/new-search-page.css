@@ -178,17 +178,50 @@
         background-color: #EEFAFD;
     }
 
-    .search-box-title span,
-    [date-count]{
+    .search-box-title span{
         background-color: #EEFAFD;
     }
 }
 
+.search-result-box-wrapper .date-area{
+    display: flex;
+    align-items: center;
+    background: var(--th-color) !important ;
+    gap: 2px ;
+    padding: 8px;
+    border-radius: 5px;
+
+    *{
+        text-align: center;
+        color: #fff !important;
+    }
+
+    count{
+        font-size: 14px;
+    }
+
+    .date-tmp{
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #fff;
+        padding: 2px;
+    }
+
+    label {
+        font-size: 8px;
+    }
+}
+
 .building-status{
-    color: #6c757f;
+    background-color: var(--th-color) !important;
     text-transform: capitalize;
-    font-size: 14px;
-    font-weight: 700;
+    font-size: 12px;
+    font-weight: 500;
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 20px;
+    position: relative;
+    top: -2px;
 }
 
 .property-single-box[property-type="spotlight"]{
@@ -200,14 +233,12 @@
     .property-card-down-area p,
     .dev-phn-number,
     .search-box-title span,
-    [date-count],
     .building-status,
     .property-short-info-box .material-symbols-outlined,
     .agent-company-name span{
         color: #fff !important;
     }
 
-    [date-count],
     .property-faciluties-list span,
     .search-result-box .details{
         opacity: .8;
@@ -217,8 +248,7 @@
         background-color: #7f1377;
     }
 
-    .search-box-title span,
-    [date-count]{
+    .search-box-title span{
         background-color: #7f1377;
     }
 }
@@ -237,7 +267,7 @@
     position: relative;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 10px;
+    padding-bottom: 25px;
     flex-wrap: wrap;
     gap: 0 10px;
     padding-right: var(--card-pd-right);
@@ -273,17 +303,6 @@
     width: 100%;
     top: 50%;
     transform: translateY(-50%);
-}
-
-[date-count]{
-    display: flex;
-    color: #D34346 !important;
-    align-items: center;
-    font-size: 24px;
-    gap: 3px;
-    font-weight: 600;
-    z-index: 1;
-    background-color: #ffedfe;
 }
 
 .sorting-map-container{
@@ -613,10 +632,6 @@
 
     .search-box-title span{
         font-size: 24px;
-    }
-
-    [date-count]{
-        font-size: 20px;
     }
 
     .search-box-price {

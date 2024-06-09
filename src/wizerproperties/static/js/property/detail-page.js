@@ -1,6 +1,5 @@
 $(document).ready(function(){
     var is_fav_effect = localStorage.getItem('favorite-effect');
-    $('.banner-action-button button').attr('effect', is_fav_effect ||"null" )
 
     function iframe_void(data){
         if(data){
@@ -39,15 +38,15 @@ $(document).ready(function(){
                 $('[label-name="media-files-image"] .details-gallery').html(append_data(data?.default_images));
                 
                 // property info
-                $('.add-to-compare').attr('added', data?.is_compared);
-                $('.add-to-favorite').attr('added', data?.is_favorited);
-                $('.add-to-compare').attr('index', data?.id);
-                $('.add-to-favorite').attr('index', data?.id);
+                // $('.add-to-compare').attr('added', data?.is_compared);
+                // $('.add-to-favorite').attr('added', data?.is_favorited);
+                // $('.add-to-compare').attr('index', data?.id);
+                // $('.add-to-favorite').attr('index', data?.id);
 
-                if( ['agent', 'developer'].includes(user_type)){
-                    $('.add-to-compare').remove();
-                    $('.add-to-favorite').remove();
-                };
+                // if( ['agent', 'developer'].includes(user_type)){
+                //     $('.add-to-compare').remove();
+                //     $('.add-to-favorite').remove();
+                // };
 
                 $('[label-name="title"]').html(data?.title)
                 $('[label-name="unit_id"]').html(data?.unit_id)
@@ -65,6 +64,21 @@ $(document).ready(function(){
                 $('[label-name="location-video"] .details-gallery-3D-view').html( iframe_void(data?.location_view))
 
                 $('.review-writing-area').html(review_tmp(data?.reviews))
+
+
+                $('[label-name="fav-comp-button"]').html(
+                    '<div class="compare-favorite-btn-area">'+
+                        '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
+                            '<i class="bi bi-heart-fill"></i>'+
+                            '<span> Favorite </span>'+
+                        '</button>' +
+                        '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
+                            '<i class="bi bi-arrow-left-right"></i>'+
+                            '<i class="bi bi-check2"></i>'+
+                            '<span> Compare </span>'+
+                        '</button>' +
+                    '</div>'
+                )
             },
             error: function (error) {
                 console.log("error")

@@ -389,7 +389,8 @@ $(document).ready(function(){
 
 
                 var timer = new Countdown({
-                    template : "dd|hh|mm|ss",
+                    template : "dd|hh|mm",
+                    labels : "Days|Hours|Minutes"
                 }) // for time countdown
                 timer.start()
 
