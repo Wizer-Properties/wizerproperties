@@ -4,6 +4,7 @@
     --th-gradient-bg: linear-gradient(315deg, #140733 0%, #103bd4 54%);
     --th-bg-color : #103bd4;
     --th-color : #15C1B9;
+    --th-color-1 : #7f1377;
 }
 
 *{
@@ -194,7 +195,7 @@ table.dataTable.no-footer{
 }
 
 footer{
-    background-color: #7f1378;
+    background-color: var(--th-color-1);
     padding-top: 25px;
     padding-bottom: 10px;
 }
@@ -875,7 +876,7 @@ footer{
 
 .building-tag {
     font-size: 12px;
-    background: #7f1378;
+    background: var(--th-color-1);
     padding: 2px 7px;
     border-radius: 15px;
     font-weight: 400;

@@ -125,9 +125,6 @@
     opacity: .7;
 }
 
-.search-result-box .property-short-info-box{
-    padding-right: 15px !important;
-}
 
 .property-short-info-box:last-child{
     padding-right: 0 !important;
@@ -211,7 +208,7 @@
 }
 
 .sign-in-note-box{
-    background-color: #7F1377;
+    background-color: var(--th-color-1);
     display: flex;
     padding: 20px;
     border-radius: 10px;
@@ -245,14 +242,19 @@
 .property-contains .property-short-info-box{
     flex-direction: column !important;
     align-items: center;
+    flex-grow: 1;
 }
 
 .search-result-box .property-short-info-icon{
     margin: 0 !important;
 }
 
+.search-result-box .property-short-info-icon svg{
+    font-size: 20px;
+}
+
 .search-result-box{
-    min-height: 183px;
+    min-height: 160px;
     justify-content: initial;
 }
 
@@ -480,6 +482,27 @@
 
     label {
         font-size: 8px;
+    }
+}
+
+#discount-properties{
+    .search-result-box-wrapper{
+        background-color: var(--th-color-1);
+    }
+
+    .location,
+    .price-tag,
+    .card-title,
+    .property-contains *{
+        color: #fff !important;
+    }
+
+    .price-tag{
+        background-color: #ffffff17;
+    }
+
+    .building-tag{
+        background: var(--th-color) !important;
     }
 }
 

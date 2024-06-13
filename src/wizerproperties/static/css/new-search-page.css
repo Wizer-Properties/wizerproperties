@@ -12,6 +12,14 @@
     justify-content: space-between;
 }
 
+.search-date-count{
+    min-width: var(--company-image-width);
+}
+
+.search-date-count [date-count]{
+    display: inline-block;
+}
+
 .property-card-modal-btns{
     display: flex;
     margin-top: 20px;
@@ -245,11 +253,11 @@
     }
 
     .search-result-box-wrapper{
-        background-color: #7f1377;
+        background-color: var(--th-color-1);
     }
 
     .search-box-title span{
-        background-color: #7f1377;
+        background-color: var(--th-color-1);
     }
 }
 
@@ -270,7 +278,6 @@
     padding-bottom: 25px;
     flex-wrap: wrap;
     gap: 0 10px;
-    padding-right: var(--card-pd-right);
 }
 
 .search-result-content{
@@ -618,6 +625,22 @@
     background: #d5c3c3;
 }
 
+.flash-sale{
+    display: flex;
+    justify-content: center;
+}
+
+.flash-sale span{
+    color: #15c1b9 !important;
+    padding: 7px 25px;
+    font-size: 28px;
+    font-weight: 700;
+    border-radius: 5px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: #ffffff1c;
+}
+
 
 @media screen and (max-width : 991px){
     .search-result-content{
@@ -737,6 +760,19 @@
     .property-type-list{
         padding: 0 20px;
     }
+
+    .flash-sale{
+        top: 0;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .flash-sale span{
+        background: #fff;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
 }
 
 
@@ -803,6 +839,10 @@
         width: 70px;
         height: 70px;
     }
+
+    .search-date-count{
+        min-width: auto;
+    }
 }
 
 
@@ -860,6 +900,10 @@
     .property-card-down-area{
         padding-bottom: 50px;
     }
+
+    .flash-sale span{
+        font-size: 20px;
+    }
 }
 
 
@@ -902,5 +946,10 @@
 
     .filter-colum-box{
         padding: 10px 8px;
+    }
+
+    .flash-sale span{
+        font-size: 14px;
+        padding: 7px 20px;
     }
 }

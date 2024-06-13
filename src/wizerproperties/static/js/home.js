@@ -117,30 +117,22 @@ $(document).ready(function(){
 
                             '<div class="property-contains">'+
                                 '<div class="property-short-info-box">'+
-                                    '<div class="property-short-info-icon">'+
-                                        '<img src="/static/media/icons/bed.svg" alt="bed-icon">'+
-                                    '</div>'+
+                                    '<div class="property-short-info-icon">'+bed_icon+'</div>'+ // bed_icon call from icons.js file
                                     '<span class="property-value"> '+ data?.number_of_bedroom+' </span>'+
                                     '<span class="property-label">Beds</span>'+
                                 '</div>'+
                                 '<div class="property-short-info-box">'+
-                                    '<div class="property-short-info-icon">'+
-                                        '<img src="/static/media/icons/bath.svg" alt="bath-icon">'+
-                                    '</div>'+
+                                    '<div class="property-short-info-icon">'+bath_icon+'</div>'+ // bed_icon call from icons.js file
                                     '<span class="property-value"> '+ data?.number_of_bathroom +' </span>'+
                                     '<span class="property-label">Baths</span>'+
                                 '</div>'+
                                 '<div class="property-short-info-box">'+
-                                    '<div class="property-short-info-icon">'+
-                                        '<img src="/static/media/icons/plan-size.svg" alt="plan-size-icon">'+
-                                    '</div>'+
+                                    '<div class="property-short-info-icon">'+plan_icon+'</div>'+ // bed_icon call from icons.js file
                                     '<span class="property-value"> '+ data?.unit_area+ '</span>'+
                                     '<span class="property-label"> sqm </span>'+
                                 '</div>'+
                                 '<div class="property-short-info-box">'+
-                                    '<div class="property-short-info-icon">'+
-                                        '<img src="/static/media/icons/stairs.svg" alt="stairs-icon">'+
-                                    '</div>'+
+                                    '<div class="property-short-info-icon">'+stairs_icon+'</div>'+ // bed_icon call from icons.js file
                                     '<span class="property-value"> '+ data?.floor_number+' </span>'+
                                     '<span class="property-label">Floor</span>'+
                                 '</div>'+
@@ -539,10 +531,6 @@ $(document).ready(function(){
                 
                 for (let i = 0; i < data?.results.length; i++) {
                     discount_properties_slider.add(discount_property_list_tmp(data?.results[i]))
-
-                    jQuery(function ($) {
-                        $('.flipper'+'._'+data?.results[i]?.id).flipper('init');
-                    });
                 };
 
                 discount_properties_slider.remove('.discount-properties-slider .list_loader');

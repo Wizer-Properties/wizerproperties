@@ -223,10 +223,16 @@ $(document).ready(function(){
                             '<div class="col-lg-7 col-xl-8 p-0">'+
                                 '<div class="search-result-box">'+
                                     '<a href="/property/details/'+data?.id+'/" class="d-block w-100">'+
+                                        (
+                                            data?.tag == "spotlight" ?
+                                            '<div class="flash-sale"><span> Flash Sale </span></div>' : ''
+                                        )+
                                         '<div class="search-box-title">'+
                                             '<span> '+data?.building_title+' </span>'+
-                                            ( data?.discount_period ? 
-                                                '<div date-count="'+data?.discount_period+'"></div>' : '') +
+                                            (   data?.discount_period ? 
+                                                '<div class="search-date-count">'+
+                                                    '<div date-count="'+data?.discount_period+'"></div>' +
+                                                '</div>' : '') +
                                         '</div>'+
                                     '</a>'+
                                     '<div class="search-result-content">'+
