@@ -913,4 +913,99 @@ $(document).ready(function(){
 
 
 
+    var filter_value = {};
+
+    $(document).on('change', '.search-box-with-filter select', function(){
+        filter_value[$(this).attr('name')] = $(this).val();
+    });
+
+
+    var building_type_props = '';
+    var building_sub_type_props = [];
+    
+    $(document).on('change', '.custom-radio-checkbox input', function(){
+        if($(this).attr('name') == 'residential_type'){
+            building_sub_type_props = [$(this).val()];
+            return
+        };
+
+        if(building_sub_type_props.includes($(this).val())){
+            _.remove(building_sub_type_props, (n) => n === $(this).val());
+            return
+        };
+        
+        building_sub_type_props.push($(this).val());
+    });
+
+    $(document).on('click', '.property-type-list button', function(){
+        $(this).parents('[building-type-status]').attr('building-type-status',$(this).attr('name'));
+        building_type_props = $(this).attr('name');
+        building_sub_type_props = [];
+
+        if($(this).val() == "building__type"){
+            $('[type-area-name="commercial"] input').prop('checked', false);
+        }else{
+            $('[type-area-name="residential"] input').prop('checked', false);
+        };
+    });
+
+    
+    $(document).on('click', '.filter-clear', function(){
+        var for_type = $(this).attr('for');
+
+        if(for_type == "price"){
+            if(filter_value.hasOwnProperty('min_price')){
+                $('[name="min_price"]').val('null');
+                delete filter_value.min_price;
+            };
+            if(filter_value.hasOwnProperty('max_price')){
+                $('[name="max_price"]').val('null');
+                delete filter_value.max_price;
+            };
+        }else if(for_type == "beds"){
+            if(filter_value.hasOwnProperty('min_number_of_bedroom')){
+                $('[name="min_number_of_bedroom"]').val('null');
+                delete filter_value.min_number_of_bedroom;
+            };
+            if(filter_value.hasOwnProperty('max_number_of_bedroom')){
+                $('[name="max_number_of_bedroom"]').val('null');
+                delete filter_value.max_number_of_bedroom;
+            };
+        }else if(for_type == "property-type"){
+            building_type_props = '';
+            building_sub_type_props = [];
+        }
+    });
+
+
+    $(document).on('click', '#location-search-btn', function(){
+        var $search_input = $(this).parents('.search-box-with-filter').find('#gm-search-input')
+        var _latitude = $search_input.attr("latitude")
+        var _longitude = $search_input.attr("longitude")
+        var _place_id = $search_input.attr("place_id")
+        var _fature_type = $search_input.attr("fature_type")
+
+        if(!_latitude && !_longitude) return;
+
+        var filter_parms = '';
+        if(Object.values(filter_value).length > 0){
+            Object.entries(filter_value).forEach(([key, value]) => {
+                filter_parms += '&'+key+'='+value
+            });
+        };
+
+        if(building_type_props) filter_parms += '&building__type='+building_type_props;
+        if(building_sub_type_props.length > 0){
+            filter_parms +=  '&building__sub_type='+building_sub_type_props.join(",")
+        };
+
+        window.location.href = "/property/search/" +
+                               '?place='+$search_input.val()+
+                               '&latitude='+_latitude+
+                               '&longitude='+_longitude+
+                               '&place_id='+_place_id+
+                               '&fature_type='+_fature_type+
+                               filter_parms;
+
+    });
 });

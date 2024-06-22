@@ -38,6 +38,16 @@ async function initializeMap() {
         if (place.geometry) {
             var latitude = place.geometry.location.lat();
             var longitude = place.geometry.location.lng();
+
+            if(window.location.pathname == '/'){
+                search_input.setAttribute("latitude", latitude)
+                search_input.setAttribute("longitude", longitude)
+                search_input.setAttribute("place_id", place_id)
+                search_input.setAttribute("fature_type", fature_type)
+                return
+            };
+
+
             window.location.href = redirectPath +
                                     '?place='+search_input.value+
                                      '&latitude='+latitude+

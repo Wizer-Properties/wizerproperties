@@ -854,10 +854,7 @@ footer{
 }
 
 .to-to{
-    color: #fff;
     opacity: .6;
-    display: inline-block;
-    padding: 0 10px;
 }
 
 .price-tag {
@@ -947,7 +944,6 @@ footer{
 .add-to-compare{
     position: relative;
 }
-
 
 
 [effect="null"] {

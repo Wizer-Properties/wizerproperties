@@ -2,6 +2,29 @@ $(document).ready(function(){
     // Create a URL object
     var url = new URL(window.location.href);
     var place = url.searchParams.get("place");
+
+    // default value from url path
+    var d_min_price = url.searchParams.get("min_price");
+    var d_max_price = url.searchParams.get("max_price");
+    var d_min_number_of_bedroom = url.searchParams.get("min_number_of_bedroom");
+    var d_max_number_of_bedroom = url.searchParams.get("max_number_of_bedroom");
+    var d_building__type = url.searchParams.get("building__type");
+    var d_building__sub_type = null;
+
+    if(url.searchParams.get("building__sub_type")?.length > 0){
+        d_building__sub_type = url.searchParams.get("building__sub_type")?.split(",");
+    };
+
+
+    (function(){
+        $('[name="min_price"]').val(d_min_price || "null")
+        $('[name="max_price"]').val(d_max_price || "null")
+
+        $('[name="max_number_of_bedroom"]').val(d_max_number_of_bedroom)
+        $('[name="max_number_of_bedroom"]').val(d_max_number_of_bedroom)
+    })()
+
+
     $('#gm-search-input').val(place || '');
     $('.search-area').html(place || '');
 
@@ -171,8 +194,6 @@ $(document).ready(function(){
         )
     };
 
-
-
     
 
     function property_list_tmp(data, link){
@@ -315,11 +336,18 @@ $(document).ready(function(){
                 '</div>'
     }
 
+
     var prams_list = {
         page_size : 5,
         search : place || '',
         default_images_number : (window.innerWidth <= 768 ? 1 : 2),
-        platform :  (window.innerWidth >= 768 ? 'web' : '') 
+        platform :  (window.innerWidth >= 768 ? 'web' : ''),
+        min_price : d_min_price,
+        max_price : d_max_price,
+        min_number_of_bedroom : d_min_number_of_bedroom,
+        max_number_of_bedroom : d_max_number_of_bedroom,
+        building__type : d_building__type,
+        building__sub_type : d_building__sub_type
     };
 
     var active_free_scrolling = false;
@@ -590,8 +618,8 @@ $(document).ready(function(){
 
 
     // building type filter ========================= (start)
-    var building_type_props = '';
-    var building_sub_type_props = [];
+    var building_type_props = d_building__type;
+    var building_sub_type_props = d_building__sub_type || [];
     
     $(document).on('change', '.custom-radio-checkbox input', function(){
         if($(this).attr('name') == 'residential_type'){
@@ -834,158 +862,6 @@ $(document).ready(function(){
         );
     });
 
-
-
-
-    /*
-
-    function get_popular_properties_list(){
-        $.ajax({
-            url: '/property/api/list/popular/',
-            type: 'GET',
-            data : {
-                page_size : 5,
-                towards : 'search'
-            },
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            success: function (data) {
-                var gatheing_dom = '';
-                if(data?.results.length === 0){
-                    $('[sugested-type="popular-properties"]').remove();
-                    return;
-                }
-
-                $('[sugested-type="popular-properties"] .skeleton-box').remove();
-                for (let i = 0; i < data?.results.length; i++) {
-                    var data_result = data?.results[i];
-                    gatheing_dom += '<li> <a href="/property/details/'+data_result?.id+'/"> '+
-                                        data_result?.number_of_bedroom +
-                                        ' bedroom '+ data_result?.type +' for sale in '+
-                                        data_result?.address +
-                                    '</li>';
-                };
-                $('[sugested-type="popular-properties"]').append(gatheing_dom);
-            },
-            error : function () {
-                $('[sugested-type="popular-properties"]').remove();
-            }
-        });
-    };
-
-
-    function get_discount_properties_list(){
-        $.ajax({
-            url: '/property/api/list/discount/',
-            type: 'GET',
-            data : {
-                page_size : 5,
-                towards : 'search'
-            },
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            success: function (data) {
-                var gatheing_dom = '';
-                if(data?.results.length == 0){
-                    $('[sugested-type="discount-properties"]').remove();
-                };
-
-                $('[sugested-type="discount-properties"] .skeleton-box').remove();
-                for (let i = 0; i < data?.results.length; i++) {
-                    var data_result = data?.results[i];
-                    gatheing_dom += '<li> <a href="/property/details/'+data_result?.id+'/"> '+
-                                        data_result?.number_of_bedroom +
-                                        ' bedroom '+ data_result?.type +' for sale in '+
-                                        data_result?.address +
-                                    '</li>';
-                };
-                $('[sugested-type="discount-properties"]').append(gatheing_dom);
-            },
-            error : function () {
-                $('[sugested-type="discount-properties"]').remove();
-            }
-        });
-    };
-
-
-    function get_newly_properties_list(){
-        $.ajax({
-            url: '/property/api/list/newly-created/',
-            type: 'GET',
-            data : {
-                page_size : 5,
-                towards : 'search'
-            },
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            success: function (data) {
-                var gatheing_dom = '';
-                if(data?.results.length == 0){
-                    $('[sugested-type="new-properties"]').remove();
-                }
-                $('[sugested-type="new-properties"] .skeleton-box').remove();
-                for (let i = 0; i < data?.results.length; i++) {
-                    var data_result = data?.results[i];
-                    gatheing_dom += '<li> <a href="/property/details/'+data_result?.id+'/"> '+
-                                        data_result?.number_of_bedroom +
-                                        ' bedroom '+ data_result?.type +' for sale in '+
-                                        data_result?.address +
-                                    '</li>';
-                };
-                $('[sugested-type="new-properties"]').append(gatheing_dom);
-            },
-            error : function () {
-                $('[sugested-type="new-properties"]').remove();
-            }
-        });
-    };
-
-
-    function get_popular_building_list(){
-        $.ajax({
-            url: '/building/api/list/popular/',
-            type: 'GET',
-            data : {
-                page_size : 5,
-                towards : 'search'
-            },
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            success: function (data) {
-                var gatheing_dom = '';
-                if(data?.results.length == 0){
-                    $('[sugested-type="popular-buildings"]').remove();
-                }
-                $('[sugested-type="popular-buildings"] .skeleton-box').remove();
-                for (let i = 0; i < data?.results.length; i++) {
-                    var data_result = data?.results[i];
-                    gatheing_dom += '<li> <a href="/building/details/'+data_result?.id+'/"> '+
-                                        data_result?.total_units_for_sale +
-                                        ' units for sale at this building in '+
-                                        data_result?.address +
-                                    '</li>';
-                };
-                $('[sugested-type="popular-buildings"]').append(gatheing_dom);
-            },
-            error : function () {
-                $('[sugested-type="popular-buildings"]').remove();
-            }
-        });
-    };
-
-
-    if(window.innerWidth >= 991){
-        get_popular_properties_list()
-        get_discount_properties_list()
-        get_newly_properties_list()
-        get_popular_building_list()
-    };
-
-    */
 
 
 
@@ -1279,6 +1155,5 @@ $(document).ready(function(){
     // google.maps.event.addListener(search_page_map, "click", function(event) {
     //    console.log("==========")
     // });
-
-    console.log("=============", google)
+    
 });

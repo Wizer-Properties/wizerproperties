@@ -106,7 +106,9 @@ function positionFixedElement(el_obj) {
     var finalLeft = Math.min(Math.max(el_obj?.desiredLeft, 0), maxWidth);
     // const finalTop = Math.min(Math.max(el_obj?.desiredTop, 0), maxHeight);
 
-    el_obj.element.style.left = finalLeft+'px';
+    var g_offset_left = (window.innerWidth <= 400 && el_obj?.desiredLeft > 0) ? 5 : finalLeft;
+
+    el_obj.element.style.left = g_offset_left+'px';
     el_obj.element.style.top = el_obj.height+'px';
 };
 
@@ -121,6 +123,7 @@ $(document).on('click', '[pop-target]', function(){
 
     var rect = $(this)[0].getBoundingClientRect();
     var pop_top = rect.top  + window.pageXOffset + rect.height;
+
 
     var el_obj = {
         element : pop_element[0],

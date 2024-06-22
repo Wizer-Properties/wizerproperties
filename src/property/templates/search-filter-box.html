@@ -1,4 +1,6 @@
+{% load static %}
 
+<link rel="stylesheet" href="{% static '/css/search-filter.css' %}?v=1.03" />
 
 <section class="filter-box">
     <div class="container">
@@ -174,7 +176,7 @@
                                 <option value="99000000">฿ 99,000,000</option>
                                 <option value="100000000">฿ 100,000,000</option>
                             </select>
-                            <span class="to-to"> to </span>
+                            <i class="bi bi-dash to-to"></i>
                             <select name="max_price" select-status="max">
                                 <option value="null">Max Price</option>
                                 <option value="500000">฿ 500,000</option>
@@ -314,7 +316,7 @@
                                 <option value="10"> 10 bedrooms</option>
                                 <option value="null">No min</option>
                             </select>
-                            <span class="to-to"> to </span>
+                            <i class="bi bi-dash to-to"></i>
                             <select name="max_number_of_bedroom" select-status="max" select-name="bedroom">
                                 <option value="">No max</option>
                                 <option value="1"> 1 bedroom</option>
@@ -558,7 +560,7 @@
                                         <option value="99000000">฿ 99,000,000</option>
                                         <option value="100000000">฿ 100,000,000</option>
                                     </select>
-                                    <span class="to-to"> to </span>
+                                    <i class="bi bi-dash to-to"></i>
                                     <select name="max_price" select-status="max">
                                         <option value="null">Max Price</option>
                                         <option value="500000">฿ 500,000</option>
@@ -684,7 +686,7 @@
                                         <option value="9"> 7 bedrooms</option>
                                         <option value="10"> 8 bedrooms</option>
                                     </select>
-                                    <span class="to-to"> to </span>
+                                    <i class="bi bi-dash to-to"></i>
                                     <select name="max_number_of_bedroom" select-status="max">
                                         <option value="null">Max Bedroom</option>
                                         <option value="1"> 1 bedroom</option>
@@ -714,7 +716,7 @@
                                         <option value="400"> 400 SqM</option>
                                         <option value="500"> 500 SqM</option>
                                     </select>
-                                    <span class="to-to"> to </span>
+                                    <i class="bi bi-dash to-to"></i>
                                     <select name="max_unit_area" select-status="max">
                                         <option value="null">Max Unit Area</option>
                                         <option value="100"> 100 SqM</option>
