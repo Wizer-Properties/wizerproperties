@@ -1,5 +1,15 @@
 $(document).ready(function(){
 
+    new Splide( '.add-banner-slider', {
+        perPage: 1,
+        type: 'loop',
+        arrows: false,
+        pagination: false,
+        autoplay: 'playing',
+        interval: 3000
+    }).mount();
+
+
     function property_list_tmp(data){
         var is_fav_effect = localStorage.getItem('favorite-effect');
 
@@ -917,36 +927,55 @@ $(document).ready(function(){
 
     $(document).on('change', '.search-box-with-filter select', function(){
         filter_value[$(this).attr('name')] = $(this).val();
+
+        var testing = new FilterInit({
+            $min_dom : $('[name="min_price"]'),
+            $max_dom : $('[name="max_price"]'),
+            $show_value_dom : $('[filter-label-name="Price"]'),
+            value_type : "price"
+        })
+
+        testing.select_field()
     });
 
 
-    var building_type_props = '';
-    var building_sub_type_props = [];
-    
-    $(document).on('change', '.custom-radio-checkbox input', function(){
-        if($(this).attr('name') == 'residential_type'){
-            building_sub_type_props = [$(this).val()];
-            return
-        };
+    // var building_type_props = '';
+    // var building_sub_type_props = [];
+    var property_type = new FilterInit({
+        building__type : '',
+        building__sub_type : []
+    });
 
-        if(building_sub_type_props.includes($(this).val())){
-            _.remove(building_sub_type_props, (n) => n === $(this).val());
-            return
-        };
+    $(document).on('change', '.custom-radio-checkbox input', function(){
+        // if($(this).attr('name') == 'residential_type'){
+        //     building_sub_type_props = [$(this).val()];
+        //     return
+        // };
+
+        // if(building_sub_type_props.includes($(this).val())){
+        //     _.remove(building_sub_type_props, (n) => n === $(this).val());
+        //     return
+        // };
         
-        building_sub_type_props.push($(this).val());
+        // building_sub_type_props.push($(this).val());
+        // init_property_sub_type.property_sub_type()
     });
 
     $(document).on('click', '.property-type-list button', function(){
-        $(this).parents('[building-type-status]').attr('building-type-status',$(this).attr('name'));
-        building_type_props = $(this).attr('name');
-        building_sub_type_props = [];
+        // $(this).parents('[building-type-status]').attr('building-type-status',$(this).attr('name'));
+        // building_type_props = $(this).attr('name');
+        // building_sub_type_props = [];
 
-        if($(this).val() == "building__type"){
-            $('[type-area-name="commercial"] input').prop('checked', false);
-        }else{
-            $('[type-area-name="residential"] input').prop('checked', false);
-        };
+        // if($(this).val() == "building__type"){
+        //     $('[type-area-name="commercial"] input').prop('checked', false);
+        // }else{
+        //     $('[type-area-name="residential"] input').prop('checked', false);
+        // };
+
+        property_type.building_type = $(this).attr('value');
+        property_type.building_type_void();
+
+        console.log(property_type)
     });
 
     
@@ -972,8 +1001,8 @@ $(document).ready(function(){
                 delete filter_value.max_number_of_bedroom;
             };
         }else if(for_type == "property-type"){
-            building_type_props = '';
-            building_sub_type_props = [];
+            // building_type_props = '';
+            // building_sub_type_props = [];
         }
     });
 
@@ -994,10 +1023,10 @@ $(document).ready(function(){
             });
         };
 
-        if(building_type_props) filter_parms += '&building__type='+building_type_props;
-        if(building_sub_type_props.length > 0){
-            filter_parms +=  '&building__sub_type='+building_sub_type_props.join(",")
-        };
+        // if(building_type_props) filter_parms += '&building__type='+building_type_props;
+        // if(building_sub_type_props.length > 0){
+        //     filter_parms +=  '&building__sub_type='+building_sub_type_props.join(",")
+        // };
 
         window.location.href = "/property/search/" +
                                '?place='+$search_input.val()+

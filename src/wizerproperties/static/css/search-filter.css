@@ -31,6 +31,8 @@
 
 [building-type-status="residence"]
 [type-area-name="residential"],
+[building-type-status="residence"]
+[type-area-name="residence"],
 [building-type-status="null"] 
 [type-area-name="residential"] {
     display: block;
@@ -71,11 +73,15 @@
 }
 
 [building-type-status="residence"]
-[name="residence"]{
+[name="residence"],
+[building-type-status="residence"] 
+[value="residence"]{
     background: #d5c3c3;
 }
 
 [building-type-status="commercial"]
-[name="commercial"]{
+[name="commercial"],
+[building-type-status="commercial"]
+[value="commercial"]{
     background: #d5c3c3;
 }

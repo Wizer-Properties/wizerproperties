@@ -31,7 +31,7 @@
 
                 <div class="filter-single-box" pop-target="price-box" tag-name="price" filter-name="price-box" active-filter="false">
                     <button class="filter-label" label-value="price">
-                        <span>Price</span>
+                        <span filter-label-name="Price">Price</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
                 </div>
@@ -314,7 +314,7 @@
                 
                 <!-- =========================================== -->
 
-                <div class="filter-single-box" pop-target="property-type" filter-name="property-type" active-filter="false">
+                <div class="filter-single-box" pop-target="property-type">
                     <button class="filter-label" label-value="property-type">
                         <span>Property type</span>
                         <i class="bi bi-chevron-down"></i>
@@ -325,25 +325,25 @@
 
                         <div class="property-type-filter" building-type-status="residence">
                             <div class="property-type-list">
-                                <button name="residence" value="building__type"> Residential </button>
-                                <button name="commercial" value="building__sub_type"> Commercial </button>
+                                <button name="building__type" value="residence"> Residential </button>
+                                <button name="building__type" value="commercial"> Commercial </button>
                             </div>
 
-                            <div type-area-name="residential">
+                            <div type-area-name="residence">
                                 <label class="custom-radio-checkbox">
-                                    <input value="condo" type="radio" name="residential_type"/>
+                                    <input value="condo" type="radio" name="building__sub_type"/>
                                     <span class="bi"> Condo</span>
                                 </label>
                                 <label class="custom-radio-checkbox">
-                                    <input value="single_house" type="radio" name="residential_type"/>
+                                    <input value="single_house" type="radio" name="building__sub_type"/>
                                     <span class="bi"> Single house </span>
                                 </label>
                                 <label class="custom-radio-checkbox">
-                                    <input value="townhouse" type="radio" name="residential_type"/>
+                                    <input value="townhouse" type="radio" name="building__sub_type"/>
                                     <span class="bi"> Townhouse </span>
                                 </label>
                                 <label class="custom-radio-checkbox">
-                                    <input value="apartment" type="radio" name="residential_type"/>
+                                    <input value="apartment" type="radio" name="building__sub_type"/>
                                     <span class="bi"> Apartment </span>
                                 </label>
                             </div>
@@ -351,15 +351,15 @@
 
                             <div type-area-name="commercial">
                                 <label class="custom-radio-checkbox">
-                                    <input value="sales_area" type="checkbox" name="commercial_sub_type"/>
+                                    <input value="sales_area" type="checkbox" name="building__sub_type"/>
                                     <span class="bi"> Sales area </span>
                                 </label>
                                 <label class="custom-radio-checkbox">
-                                    <input value="office" type="checkbox" name="commercial_sub_type"/>
+                                    <input value="office" type="checkbox" name="building__sub_type"/>
                                     <span class="bi"> Office </span>
                                 </label>
                                 <label class="custom-radio-checkbox">
-                                    <input value="warehouse_factory" type="checkbox" name="commercial_sub_type"/>
+                                    <input value="warehouse_factory" type="checkbox" name="building__sub_type"/>
                                     <span class="bi"> Warehouse factory </span>
                                 </label>
                             </div>
@@ -404,9 +404,23 @@
 
 <div class="top-banner mt-0 mb-5">
     <div class="container">
-        <div class="col-xl-6 col-lg-7 col-md-8 col-11 mx-auto">
-            <div class="top-banner-img">
-                <img src="{% static '/media/demo_img/add-banner.png' %}" alt="">
+        <div class="col-lg-8 col-md-8 col-11 mx-auto">
+            <div class="splide add-banner-slider">
+                <div class="splide__track">
+                    <div class="splide__list">
+                        <div class="splide__slide top-banner-img">
+                            <img src="{% static '/media/demo_img/add-banner.png' %}" alt="">
+                        </div>
+    
+                        <div class="splide__slide top-banner-img">
+                            <img src="{% static '/media/demo_img/p1.png' %}" alt="">
+                        </div>
+    
+                        <div class="splide__slide top-banner-img">
+                            <img src="{% static '/media/demo_img/p2.png' %}" alt="">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -590,6 +604,7 @@
 <script src="{% static '/js/icons.js' %}?v=1.00"></script>
 <script src="{% static '/js/libraries/splide.min.js' %}"></script>
 <script src="{% static '/js/time-count-down.js' %}?v=1.00"></script>
+<script src="{% static '/js/filter-init.js' %}?v=1.00"></script>
 <script src="{% static '/js/home.js' %}?v=1.05"></script>
 <script src="{% static '/js/property/compair-favorite.js' %}?v=1.00"></script>
 <script src="{% static '/js/chatbot-gpt.js' %}?v=1.00"></script>
