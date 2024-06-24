@@ -922,38 +922,36 @@ $(document).ready(function(){
     });
 
 
-    var property_type = new FilterData();
+    var filter_data = new FilterData();
 
     $(document).on('change', '.search-box-with-filter select', function(){
-        property_type.set_value( $(this).attr('name'), $(this).val() )
+        filter_data.set_value( $(this).attr('name'), $(this).val() )
     });
 
     $(document).on('change', '.custom-radio-checkbox input', function(){
-        property_type.building_sub_type_void($(this).val());
+        filter_data.building_sub_type_void($(this).val());
     });
 
     $(document).on('click', '.property-type-list button', function(){
-        property_type.building__type = $(this).attr('value');
-        property_type.building_type_void();
-        console.log(property_type)
+        filter_data.building__type = $(this).attr('value');
+        filter_data.building_type_void();
     });
     
     $(document).on('click', '.filter-clear', function(){
         var for_type = $(this).attr('for');
-        console.log("===================================== clear function")
 
         if(for_type == "price"){
-            property_type.clear_price()
+            filter_data.clear_price()
         }else if(for_type == "beds"){
-            property_type.clear_bedroom()
+            filter_data.clear_bedroom()
         }else if(for_type == "property-type"){
-            property_type.clear_building_type()
+            filter_data.clear_building_type()
         }
     });
 
     $(document).on('click', '#location-search-btn', function(){
         var $search_input = $(this).parents('.search-box-with-filter').find('#gm-search-input')
-        var filter_value = property_type.only_has_value()
+        var filter_value = filter_data.only_has_value()
         var _latitude = $search_input.attr("latitude")
         var _longitude = $search_input.attr("longitude")
         var _place_id = $search_input.attr("place_id")

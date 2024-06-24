@@ -4,73 +4,29 @@ $(document).ready(function(){
     var place = url.searchParams.get("place");
 
     // default value from url path
-    var d_min_price = url.searchParams.get("min_price");
-    var d_max_price = url.searchParams.get("max_price");
-    var d_min_number_of_bedroom = url.searchParams.get("min_number_of_bedroom");
-    var d_max_number_of_bedroom = url.searchParams.get("max_number_of_bedroom");
-    var d_building__type = url.searchParams.get("building__type");
-    var d_building__sub_type = null;
-
+    var d_building__sub_type = [];
     if(url.searchParams.get("building__sub_type")?.length > 0){
         d_building__sub_type = url.searchParams.get("building__sub_type")?.split(",");
     };
 
-
-    (function(){
-        $('[name="min_price"]').val(d_min_price || "null")
-        $('[name="max_price"]').val(d_max_price || "null")
-
-        $('[name="max_number_of_bedroom"]').val(d_max_number_of_bedroom)
-        $('[name="max_number_of_bedroom"]').val(d_max_number_of_bedroom)
-    })()
+    var filter_data = new FilterData({
+        min_price : url.searchParams.get("min_price") || null,
+        max_price : url.searchParams.get("max_price") || null,
+        min_number_of_bedroom : url.searchParams.get("min_number_of_bedroom") || null,
+        max_number_of_bedroom : url.searchParams.get("max_number_of_bedroom") || null,
+        building__type : url.searchParams.get("building__type") || '',
+        building__sub_type : d_building__sub_type,
+    });
 
 
     $('#gm-search-input').val(place || '');
     $('.search-area').html(place || '');
-
     var path_name = page_view == "search" ? "map-list" : "search"
-    
     $('[label-name="view-tag"]').attr("href", "/property/"+path_name+"/"+window.location.search)
 
-    $(document).on('click', '.filter-dropdown-btn', function(){
-        var target_area = 
-            $(this)
-            .parents('.filter-categories-dropdown')
-            .find('.filter-dropdown-field')
 
-        target_area.slideToggle(200);
-
-        $('body').prepend('<div class="filter-overlay"></div>');
-
-        var target_position = target_area[0].getBoundingClientRect();
-        var widnow_w = window.innerWidth;
-        var total_el = target_position?.width + target_position?.x;
-
-        if(total_el + 10 > widnow_w){
-            target_area.css({
-                left : widnow_w - (total_el + 10)
-            })
-        }else{
-            target_area.css({
-                left : 0
-            })
-        };
-    });
     
 
-    function filter_close_dropdown(){
-        $('.filter-dropdown-field').slideUp(200)
-
-        setTimeout(() => {
-            $('.filter-dropdown-field').css({
-                left : 0
-            })
-            $('.filter-overlay').remove()
-        }, 200);
-    };
-
-
-    $(document).on('click', '.filter-overlay', filter_close_dropdown);
 
     function loader_tmp(){
         return '<div class="col-lg-12 mb-4 searching-loader">'+
@@ -342,13 +298,8 @@ $(document).ready(function(){
         search : place || '',
         default_images_number : (window.innerWidth <= 768 ? 1 : 2),
         platform :  (window.innerWidth >= 768 ? 'web' : ''),
-        min_price : d_min_price,
-        max_price : d_max_price,
-        min_number_of_bedroom : d_min_number_of_bedroom,
-        max_number_of_bedroom : d_max_number_of_bedroom,
-        building__type : d_building__type,
-        building__sub_type : d_building__sub_type
     };
+
 
     var active_free_scrolling = false;
     var next_property = 1;
@@ -356,7 +307,13 @@ $(document).ready(function(){
 
 
     function searching(search_type){
-        var search_param = prams_list;
+        var search_param = _.cloneDeep(prams_list);
+
+        var get_filter_data = filter_data.only_has_value();
+        for (var key in get_filter_data) {
+            search_param[key] = get_filter_data[key];
+        };
+
         var get_url = new URL(window.location.href);
         var get_params = new URLSearchParams(get_url.search);
         var p_latitude = get_params.get('latitude');
@@ -464,7 +421,6 @@ $(document).ready(function(){
 
 
     function sorting_dom(search_param){
-        console.log(typeof search_param.ordering)
         if(search_param.ordering == "-created_at") $('[label="sorting-type"]').html("Default");
         if(search_param.ordering == "-price" ) $('[label="sorting-type"]').html("Highest price");
         if(search_param.ordering == "price" ) $('[label="sorting-type"]').html("Lowest price");
@@ -487,165 +443,52 @@ $(document).ready(function(){
 
 
     $(document).on('change', 'select', function(){
-        filter_close_dropdown();
-        prams_list[$(this).attr('name')] = $(this).val() == 'null' ? '' : $(this).val();
+        filter_data.set_value( $(this).attr('name'), $(this).val() )
         next_property = 1;
         searching("filter");
-
-        var get_parent_label = $(this).parents('[label]')?.attr('label');
-
-        // max and minmum price dom >>>
-        if(get_parent_label == 'price'){
-            var min_val = formatNumber(prams_list?.min_price || 'Min')
-            var max_val = formatNumber(prams_list?.max_price || 'Max')
-
-            $('[label-value="price"]').html(min_val + ' - ' + max_val);
-
-            if(min_val == 'Min' && max_val == 'Max'){
-                $('[label-value="price"]').html("Price");
-            };
-
-            var newMinValue = prams_list?.min_price == "500000" ? 0 : Number(prams_list?.min_price || 0) / 1000000;
-            var newMaxValue = prams_list?.max_price == "500000" ? 0 : Number(prams_list?.max_price || 100000000) / 1000000;
-
-            $("#price-slider").slider("values", [newMinValue, newMaxValue]);
-            $('.before-li').css({ width : newMinValue+'%'  })
-            $('.after-li').css({ width : (100 - newMaxValue)+'%'  })
-        };
-
-        // max and minmum radius dom >>>
-        if(get_parent_label == 'radius'){
-            $('[label-value="radius"]').html( prams_list.nearby && prams_list.nearby +' Km'  || "Radius")
-        };
-
-        // max and minmum bedroom dom >>>
-        if(get_parent_label == 'beds'){
-            var min_beds = prams_list.min_number_of_bedroom || 'Min'
-            var max_beds = prams_list.max_number_of_bedroom || 'Max'
-            $('[label-value="beds"]').html(min_beds +'-'+max_beds )
-
-            if(min_beds == 'Min' && max_beds == 'Max'){
-                $('[label-value="price"]').html("Bedrooms");
-            }
-        };
-
-        // propety types dom >>>
-        if(get_parent_label == 'property-type'){
-            $('[label-value="property-type"]').html( prams_list.building__type || "Property type")
-        };
     });
-    
 
-
-    $(document).on('click', '.filter-dropdown-buttons button', function(){
-        var get_val =  $(this).val() == 'null' ? '' :  $(this).val();
-        filter_close_dropdown();
-
-        var render_btn_dom = get_val == '' ? '' : ' ('+get_val+') ';
-        if(prams_list[$(this).attr('name')] == get_val){
-            render_btn_dom = ''
-        };
-        var label_name = $(this).html();
-
-        $(this).parents('.filter-categories-dropdown').find('.filter-dropdown-btn')
-        .html( '<div class="d-flex flex-row gap-3">'+ label_name + ' <i class="bi bi-chevron-down"></i> </div>')
-
-        if(prams_list[$(this).attr('name')] == get_val){
-            $(this).parents('.filter-dropdown-buttons').find('button').attr('active', false);
-            prams_list[$(this).attr('name')] = '';
-            $(this).parents('.filter-dropdown-buttons').find('button[value="null"]').attr('active', true);
-            if(get_val != '') {
-                next_property = 1;
-                searching("filter");
-            }
-            
-            return;
-        };
-
-        prams_list[$(this).attr('name')] =  get_val;
+    $(document).on('click', '.apply-btn', function(){
         next_property = 1;
         searching("filter");
+    })
 
-        $(this).parents('.filter-dropdown-buttons').find('button').attr('active', false);
-        $(this).attr('active', true);
+    $(document).on('click', '.filter-clear', function(){
+        var for_type = $(this).attr('for');
+        if(for_type == "property-type") filter_data.clear_building_type();
+        next_property = 1;
+        searching("filter");
     });
 
 
     $(document).on('click', '[name="ownership"] button', function(){
-        filter_close_dropdown();
-        $(this).parents('.filter-dropdown-mtl-buttons').find('button').attr('active', false);
-        var get_all_btn = $(this).parent().find('button');
-        
-        if(prams_list.hasOwnProperty($(this).val())){
-            delete prams_list[$(this).val()];
-            next_property = 1;
-            searching("filter");
-            return
-        };
-        
-        for (let i = 0; i < get_all_btn.length; i++) {
-            var attr_val = get_all_btn[i].getAttribute('value');
-
-            if(prams_list.hasOwnProperty(attr_val)){
-                delete prams_list[attr_val];
-                break
-            }
-        };
-
-        prams_list[$(this).val()] = true;
+        $(this).parents('.filter-dropdown-mtl-buttons').find('button').attr('active', false);        
+        var active_status = filter_data.free_lease_hold_toggle_data($(this).attr("name"));
         next_property = 1;
         searching("filter");
-        $(this).attr('active', true);
+        $(this).attr('active', active_status);
     });
 
 
     $(document).on('click', '[name="property-type"] button, [name="property-quota"] button, [name="property-furnishing"] button, [name="project-status"] button', function(){
-        filter_close_dropdown();
         $(this).parents('.filter-dropdown-mtl-buttons').find('button').attr('active', false);
-
-        if(prams_list[$(this).attr('name')] == $(this).val()){
-            prams_list[$(this).attr('name')] = '';
-            next_property = 1;
-            searching("filter");
-            return
-        };
-
-        prams_list[$(this).attr('name')] =  $(this).val();
+        var active_status = filter_data.select_vai_button($(this).attr('name'), $(this).val())
         next_property = 1;
         searching("filter");
-        $(this).attr('active', true);
+        $(this).attr('active', active_status);
     });
 
 
     // building type filter ========================= (start)
-    var building_type_props = d_building__type;
-    var building_sub_type_props = d_building__sub_type || [];
     
     $(document).on('change', '.custom-radio-checkbox input', function(){
-        if($(this).attr('name') == 'residential_type'){
-            building_sub_type_props = [$(this).val()];
-            return
-        };
-
-        if(building_sub_type_props.includes($(this).val())){
-            _.remove(building_sub_type_props, (n) => n === $(this).val());
-            return
-        };
-        
-        building_sub_type_props.push($(this).val());
+        filter_data.building_sub_type_void($(this).val());
     });
 
 
     $(document).on('click', '.property-type-list button', function(){
-        $(this).parents('[building-type-status]').attr('building-type-status',$(this).attr('name'));
-        building_type_props = $(this).attr('name');
-        building_sub_type_props = [];
-
-        if($(this).val() == "building__type"){
-            $('[type-area-name="commercial"] input').prop('checked', false);
-        }else{
-            $('[type-area-name="residential"] input').prop('checked', false);
-        };
+        filter_data.building__type = $(this).attr('value');
+        filter_data.building_type_void();
     });
 
 
@@ -655,8 +498,6 @@ $(document).ready(function(){
             window.innerWidth > 991
         ) return;
 
-        prams_list["building__type"] = building_type_props;
-        prams_list["building__sub_type"] = building_sub_type_props;
         next_property = 1;
         searching("filter");
     });
@@ -666,26 +507,9 @@ $(document).ready(function(){
             $(this).attr('class').includes('reset-btn') &&
             window.innerWidth > 991
         ) return;
-        
-        if(
-            building_type_props == '' &&
-            building_sub_type_props.length == 0
-        ) {
-            pop_dispatch()
-            return
-        };
 
-        building_type_props = '';
-        building_sub_type_props = [];
 
-        if( search_param?.hasOwnProperty("building__type") ){
-            delete search_param.building__type;
-        };
-
-        if( search_param?.hasOwnProperty("building__sub_type") ){
-            delete search_param.building__sub_type;
-        };
-
+        pop_dispatch()
         next_property = 1;
         searching("filter");
     });
@@ -694,52 +518,19 @@ $(document).ready(function(){
 
 
     $('.reset-btn').click(function(){
-        if( Object.keys(prams_list).length > 1 ){
-            prams_list = {
-                search : place || ''
-            };
+        filter_data.clear_all();
+        prams_list = {
+            search : place || ''
+        };
 
-            next_property = 1;
-            searching("filter")
+        next_property = 1;
+        searching("filter");
 
-            $('[label-value="price"]').html('Price');
-            $('[label-value="radius"]').html("Radius");
-            $('[label-value="beds"]').html("Bedrooms");
-            $('[label-value="property-type"]').html("Property type");
-
-            $('.filter-dropdown-buttons button').attr('active', false);
-            $('.filter-dropdown-buttons [value="null"]').attr('active', true);
-            $('.filter-dropdown-mtl-buttons button').attr('active', false);
-            $('select').val('null')
-            $('[dual-select] option').prop("disabled", false);
-
-            $("#price-slider").slider("values", [0, 100]);
-            $('.before-li').css({ width : 0+'%'  })
-            $('.after-li').css({ width : 0+'%'  })
-        }
-
+        $('[label="sorting-type"]').html("Default");
         $('body').attr('filter-modal-open', 'false')
     });
 
 
-    function formatNumber(number) {
-        if(
-            Number(number) == NaN ||
-            [null, undefined, ''].includes(number)
-        ){
-            return number
-        }
-
-        if (number >= 1000000000) {
-            return (number / 1000000000).toFixed(1) + ' B';
-        } else if (number >= 1000000) {
-            return (number / 1000000).toFixed(1) + ' M';
-        } else if (number >= 1000) {
-            return (number / 1000).toFixed(1) + ' k';
-        } else {
-            return number.toString();
-        }
-    };
 
 
     function installing_splide(){
@@ -861,8 +652,6 @@ $(document).ready(function(){
             '</p>'
         );
     });
-
-
 
 
     $('[aria-label="filter-button"]').click(function(){
@@ -993,44 +782,7 @@ $(document).ready(function(){
     };
 
 
-    $(document).on('change', '[dual-select] select', function() {
-        var this_val = $(this).val();
-        var this_status = $(this).attr('select-status')
-        var shib_options = $(this).siblings('select').find('option');
-               
-        shib_options.prop("disabled", this_status == 'max');
-    
-        for (let i = 0; i < shib_options.length; i++) {
-            if(this_status == 'min'){
-                shib_options[i].disabled = true;
-                if(shib_options[i].getAttribute('value') == this_val) break;
-            };
 
-            if(this_status == 'max'){
-                if(shib_options[i].getAttribute('value') == this_val) break;
-                shib_options[i].disabled = false;
-            };
-        };
-
-        // how to apply (do not remove)
-        /*
-        parent attr is "dual-select"
-        child attr "select-status" value (min / max)
-        and make sure the option value not be repeated
-        
-        <div dual-select>
-            <select select-status="min">
-                <option value="any_value"> any_value</option>
-                ... more
-            </select>
-            
-            <select select-status="max">
-                <option value="any_value">  any_value</option>
-                ... more
-            </select>
-        </div>
-        */ 
-    });
 
     
 
@@ -1132,7 +884,9 @@ $(document).ready(function(){
         });
     };
 
-    map_building_list();
+    if(page_view == "map-list"){
+        map_building_list();
+    };
 
 
 

@@ -19,18 +19,25 @@ function BMKformatNumber(number) {
 
 class DisplayFilterValue{
     constructor({
+        $singleDom = null, // use jquery selector
         $min_dom = null, // use jquery selector
         $max_dom = null, // use jquery selector
         $show_value_dom = null, // use jquery selector
-        value_type = null, // options "price"
+        value_type = null, // options "price", "nearby"
     } = {} ){
         this.$min_dom = $min_dom;
         this.$max_dom = $max_dom;
         this.$show_value_dom = $show_value_dom;
         this.value_type = value_type;
+        this.$singleDom = $singleDom
     };
 
     select_field(){
+        if(this.$singleDom){
+            this.show_single_vlalue()
+            return
+        };
+
         var sub_options_min = this.$min_dom.find('option');
         var sub_options_max = this.$max_dom.find('option');
 
@@ -56,7 +63,6 @@ class DisplayFilterValue{
 
         this.show_select_value();
     };
-
 
     show_select_value(){
         var d_min_value = this.$min_dom.val();
@@ -91,6 +97,22 @@ class DisplayFilterValue{
             this.$show_value_dom.html(d_min_value + ' - Max')
         };
     };
+
+
+    show_single_vlalue(){
+        if(this.value_type == "nearby"){
+            if(['', 'null', 'undefined', null, undefined].includes(this.$singleDom.val())){
+                this.$show_value_dom.html(this.$show_value_dom.attr('filter-label-name'))
+                return
+            };
+
+            this.$show_value_dom.html(this.$singleDom.val()+ ' km')
+        };
+    };
+
+    select_button_display(){
+        console.log(this.$singleDom)
+    };
 };
 
 
@@ -111,8 +133,14 @@ class FilterData{
         // ===== unit area
         min_unit_area = null,
         max_unit_area = null,
-        // ===== bathroom
-        number_of_bathroom = null
+        // ===== 
+        number_of_bathroom = null,
+        building__have_freehold = false,
+        building__have_leasehold = false,
+        building__quota = null,
+        building__furnishing = null,
+        building__status = null,
+        nearby = null,
     } = {}){
         // ===== property type
         this.building__type = building__type;
@@ -128,6 +156,13 @@ class FilterData{
         this.max_unit_area = max_unit_area;
         // ===== bathroom
         this.number_of_bathroom = number_of_bathroom;
+        this.building__have_freehold = building__have_freehold;
+        this.building__have_leasehold = building__have_leasehold;
+        this.building__quota = building__quota;
+        this.building__furnishing = building__furnishing;
+        this.building__status = building__status;
+        this.nearby = nearby,
+
 
         this.default_value();
     };
@@ -141,12 +176,18 @@ class FilterData{
         };
 
         var init_option = {
+            $singleDom : null,
             $min_dom : null,
             $max_dom : null,
             $show_value_dom : null,
         };
 
         switch (true) {
+            case ["nearby"].includes(key):
+                init_option.$singleDom = $('[name="nearby"]')
+                init_option.$show_value_dom = $('[filter-label-name="Radius"]')
+                init_option.value_type = "nearby"
+                break;
             case ["min_price", "max_price"].includes(key):
                 init_option.$min_dom = $('[name="min_price"]')
                 init_option.$max_dom = $('[name="max_price"]')
@@ -162,7 +203,8 @@ class FilterData{
 
         if( 
             init_option.$min_dom || 
-            init_option.$max_dom
+            init_option.$max_dom ||
+            init_option.$singleDom
         ) new DisplayFilterValue(init_option).select_field()
     };
     
@@ -172,6 +214,7 @@ class FilterData{
         var has_value_obj = this.only_has_value();
 
         Object.entries(has_value_obj).forEach(function([key, value]){
+            console.log(key)
             if(key == "building__type") {
                 $('[building-type-status]').attr('building-type-status', value)
                 return
@@ -201,6 +244,36 @@ class FilterData{
         this.display_showing(key);
     };
 
+
+    select_vai_button(key, value){
+        if(["", null, undefined].includes(key)){
+            throw new Error("Params not set for key, value")
+            return;
+        };
+
+        if(this[key] == null){
+            this[key] = value;
+            return true
+        };
+        var $value_status = this[key] == value;
+        this[key] = !$value_status ? value : null;
+        return !$value_status;
+    };
+
+
+    free_lease_hold_toggle_data(key){
+        if(key == "building__have_freehold"){
+            this.building__have_leasehold = false
+        };
+
+        if(key == "building__have_leasehold"){
+            this.building__have_freehold = false
+        };
+
+        this[key] = !this[key];
+        return this[key];
+    };
+
     
     // ============================= property type start
     building_type_void(){
@@ -225,20 +298,34 @@ class FilterData{
     };
 
     // ============================= property type end
+
     
     // clear voids
     reset_dom_value(){
         var $this = this;
         var empty_value_obj = this.only_empty_value();
+        var button_type = [
+            "building__furnishing", 
+            "building__quota", 
+            "building__have_freehold", 
+            "building__have_leasehold", 
+            "building__status"
+        ]
 
         Object.entries(empty_value_obj).forEach(function([key, value]){
             if(key == "building__type") {
                 $('[building-type-status]').attr('building-type-status', "residence")
-                return
+                return;
             };
 
             if(key == "building__sub_type"){
                 $('[name="building__sub_type"]').prop('checked', false);
+                return;
+            };
+
+            if(button_type.includes(key)){
+                $('[name="'+key+'"]').attr("active", false);
+                return;
             };
 
             $('[name="'+key+'"]').val(value); // this part must be call 
@@ -265,20 +352,13 @@ class FilterData{
     };
 
     clear_all(){
+        for (let key in this) this[key] = null;
+        
         // ===== property type
-        this.building__type = null;
+        this.building__type = "";
         this.building__sub_type = [];
-        // ===== price
-        this.min_price = null;
-        this.max_price = null;
-        // ===== bedroom
-        this.min_number_of_bedroom = null;
-        this.max_number_of_bedroom = null;
-        // ===== unit area
-        this.min_unit_area = null;
-        this.max_unit_area = null;
-        // ===== bathroom
-        this.number_of_bathroom = null;
+        this.building__have_freehold = false;
+        this.building__have_leasehold = false;
 
         this.reset_dom_value();
     };
@@ -286,13 +366,14 @@ class FilterData{
 
     // general voids
     only_has_value(){
-        var result = Object.create(null);
+        var result = {};
         for (let key in this) {
             if (
                 this[key] != "" && 
                 this[key] != null && 
                 this[key] != undefined && 
                 this[key] != "null" &&
+                this[key] != false &&
                 !(Array.isArray(this[key]) && this[key].length === 0)
             ) {
                 result[key] = this[key];
@@ -302,13 +383,14 @@ class FilterData{
     };
 
     only_empty_value() {
-        const result =  Object.create(null);
+        const result =  {};
         for (let key in this) {
             if (
-                this[key] === '' ||
-                this[key] === null ||
-                this[key] === undefined ||
-                (Array.isArray(this[key]) && this[key].length === 0)
+                this[key] == '' ||
+                this[key] == null ||
+                this[key] == undefined ||
+                this[key] == false ||
+                (Array.isArray(this[key]) && this[key].length == 0)
             ) {
                 result[key] = this[key];
             }

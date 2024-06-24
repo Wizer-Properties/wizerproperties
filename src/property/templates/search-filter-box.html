@@ -24,7 +24,7 @@
                             <div class="filter-icon">
                                 <i class="bi bi-radar"></i>
                             </div>
-                            <div class="filter-label" label-value="radius">
+                            <div class="filter-label" filter-label-name="Radius">
                                 Radius
                             </div>
                         </div>
@@ -55,7 +55,7 @@
                             <div class="filter-icon">
                                 <i class="bi bi-tag"></i>
                             </div>
-                            <div class="filter-label" label-value="price">
+                            <div class="filter-label" filter-label-name="Price">
                                 Price
                             </div>
                         </div>
@@ -71,9 +71,9 @@
                             <div id="price-slider"></div>
                         </div>
                 
-                        <div class="price-filter-select-box" label="price" dual-select>
-                            <select name="min_price" select-status="min">
-                                <option value="null">Min Price</option>
+                        <div class="price-filter-select-box" label="price" >
+                            <select name="min_price">
+                                <option value="">Min Price</option>
                                 <option value="500000">฿ 500,000</option>
                                 <option value="1000000">฿ 1,000,000</option>
                                 <option value="2000000">฿ 2,000,000</option>
@@ -177,8 +177,8 @@
                                 <option value="100000000">฿ 100,000,000</option>
                             </select>
                             <i class="bi bi-dash to-to"></i>
-                            <select name="max_price" select-status="max">
-                                <option value="null">Max Price</option>
+                            <select name="max_price">
+                                <option value="">Max Price</option>
                                 <option value="500000">฿ 500,000</option>
                                 <option value="1000000">฿ 1,000,000</option>
                                 <option value="2000000">฿ 2,000,000</option>
@@ -293,7 +293,7 @@
                             <div class="filter-icon">
                                 <span class="material-symbols-outlined">bed</span>
                             </div>
-                            <div class="filter-label" label-value="beds">
+                            <div class="filter-label" filter-label-name="Bedrooms">
                                 Bedrooms
                             </div>
                         </div>
@@ -301,8 +301,8 @@
                 </div>
                 <div pop-element="bed-box">
                     <div class="search-pop-up-box">
-                        <div class="search-pop-up-select-box" label="beds" dual-select>
-                            <select name="min_number_of_bedroom" select-status="min" select-name="bedroom">
+                        <div class="search-pop-up-select-box" label="beds">
+                            <select name="min_number_of_bedroom">
                                 <option value="">No min</option>
                                 <option value="1"> 1 bedroom</option>
                                 <option value="2"> 2 bedrooms</option>
@@ -314,10 +314,10 @@
                                 <option value="8"> 8 bedrooms</option>
                                 <option value="9"> 9 bedrooms</option>
                                 <option value="10"> 10 bedrooms</option>
-                                <option value="null">No min</option>
+                                <option value="">No min</option>
                             </select>
                             <i class="bi bi-dash to-to"></i>
-                            <select name="max_number_of_bedroom" select-status="max" select-name="bedroom">
+                            <select name="max_number_of_bedroom">
                                 <option value="">No max</option>
                                 <option value="1"> 1 bedroom</option>
                                 <option value="2"> 2 bedrooms</option>
@@ -329,7 +329,7 @@
                                 <option value="8"> 8 bedrooms</option>
                                 <option value="9"> 9 bedrooms</option>
                                 <option value="10"> 10 bedrooms</option>
-                                <option value="null">No max</option>
+                                <option value="">No max</option>
                             </select>
                         </div>
                     </div>
@@ -337,7 +337,7 @@
 
                 <!-- =========================================== -->
 
-                <div class="filter-single-box" pop-target="property-type" filter-name="property-type" active-filter="false">
+                <div class="filter-single-box" pop-target="property-type" active-filter="false">
                     <div class="center">
                         <div>
                             <div class="filter-icon">
@@ -349,30 +349,31 @@
                         </div>
                     </div>
                 </div>
+
                 <div pop-element="property-type">
                     <div class="search-pop-up-box">
 
                         <div class="property-type-filter" building-type-status="residence">
                             <div class="property-type-list">
-                                <button name="residence" value="building__type"> Residential </button>
-                                <button name="commercial" value="building__sub_type"> Commercial </button>
+                                <button name="building__type" value="residence"> Residential </button>
+                                <button name="building__type" value="commercial"> Commercial </button>
                             </div>
 
-                            <div type-area-name="residential">
+                            <div type-area-name="residence">
                                 <label class="custom-radio-checkbox">
-                                    <input value="condo" type="radio" name="residential_type"/>
+                                    <input value="condo" type="radio" name="building__sub_type"/>
                                     <span class="bi"> Condo</span>
                                 </label>
                                 <label class="custom-radio-checkbox">
-                                    <input value="single_house" type="radio" name="residential_type"/>
+                                    <input value="single_house" type="radio" name="building__sub_type"/>
                                     <span class="bi"> Single house </span>
                                 </label>
                                 <label class="custom-radio-checkbox">
-                                    <input value="townhouse" type="radio" name="residential_type"/>
+                                    <input value="townhouse" type="radio" name="building__sub_type"/>
                                     <span class="bi"> Townhouse </span>
                                 </label>
                                 <label class="custom-radio-checkbox">
-                                    <input value="apartment" type="radio" name="residential_type"/>
+                                    <input value="apartment" type="radio" name="building__sub_type"/>
                                     <span class="bi"> Apartment </span>
                                 </label>
                             </div>
@@ -380,22 +381,22 @@
 
                             <div type-area-name="commercial">
                                 <label class="custom-radio-checkbox">
-                                    <input value="sales_area" type="checkbox" name="commercial_sub_type"/>
+                                    <input value="sales_area" type="checkbox" name="building__sub_type"/>
                                     <span class="bi"> Sales area </span>
                                 </label>
                                 <label class="custom-radio-checkbox">
-                                    <input value="office" type="checkbox" name="commercial_sub_type"/>
+                                    <input value="office" type="checkbox" name="building__sub_type"/>
                                     <span class="bi"> Office </span>
                                 </label>
                                 <label class="custom-radio-checkbox">
-                                    <input value="warehouse_factory" type="checkbox" name="commercial_sub_type"/>
+                                    <input value="warehouse_factory" type="checkbox" name="building__sub_type"/>
                                     <span class="bi"> Warehouse factory </span>
                                 </label>
                             </div>
 
                             <div class="property-type-action-btn">
-                                <button class="property-type-clear"> Clear </button>
-                                <button class="property-type-apply"> Apply </button>
+                                <button class="filter-clear" for="property-type" pop-dispatch> Clear </button>
+                                <button class="apply-btn" pop-dispatch> Apply </button>
                             </div>
 
                         </div>
@@ -455,9 +456,9 @@
                         <div class="filter-colum-box" display-view="small">
                             <div class="filter-option-box-wrapper">
                                 <label> Price </label>
-                                <div class="range-area" dual-select>
-                                    <select name="min_price" select-status="min">
-                                        <option value="null">Min Price</option>
+                                <div class="range-area">
+                                    <select name="min_price">
+                                        <option value="">Min Price</option>
                                         <option value="500000">฿ 500,000</option>
                                         <option value="1000000">฿ 1,000,000</option>
                                         <option value="2000000">฿ 2,000,000</option>
@@ -561,8 +562,8 @@
                                         <option value="100000000">฿ 100,000,000</option>
                                     </select>
                                     <i class="bi bi-dash to-to"></i>
-                                    <select name="max_price" select-status="max">
-                                        <option value="null">Max Price</option>
+                                    <select name="max_price">
+                                        <option value="">Max Price</option>
                                         <option value="500000">฿ 500,000</option>
                                         <option value="1000000">฿ 1,000,000</option>
                                         <option value="2000000">฿ 2,000,000</option>
@@ -672,9 +673,9 @@
                         <div class="filter-colum-box" display-view="small">
                             <div class="filter-option-box-wrapper">
                                 <label> Bedrooms </label>
-                                <div class="range-area" dual-select>
-                                    <select name="min_number_of_bedroom" select-status="min">
-                                        <option value="null">Min Bedroom</option>
+                                <div class="range-area">
+                                    <select name="min_number_of_bedroom">
+                                        <option value="">Min Bedroom</option>
                                         <option value="1"> 1 bedroom</option>
                                         <option value="2"> 3 bedrooms</option>
                                         <option value="3"> 3 bedrooms</option>
@@ -687,8 +688,8 @@
                                         <option value="10"> 8 bedrooms</option>
                                     </select>
                                     <i class="bi bi-dash to-to"></i>
-                                    <select name="max_number_of_bedroom" select-status="max">
-                                        <option value="null">Max Bedroom</option>
+                                    <select name="max_number_of_bedroom">
+                                        <option value="">Max Bedroom</option>
                                         <option value="1"> 1 bedroom</option>
                                         <option value="2"> 3 bedrooms</option>
                                         <option value="3"> 3 bedrooms</option>
@@ -707,9 +708,9 @@
                         <div class="filter-colum-box">
                             <div class="filter-option-box-wrapper">
                                 <label> Unit Area </label>
-                                <div class="range-area" dual-select>
-                                    <select name="min_unit_area" select-status="min">
-                                        <option value="null">Min Unit Area</option>
+                                <div class="range-area">
+                                    <select name="min_unit_area">
+                                        <option value="">Min Unit Area</option>
                                         <option value="100"> 100 SqM</option>
                                         <option value="200"> 200 SqM</option>
                                         <option value="300"> 300 SqM</option>
@@ -717,8 +718,8 @@
                                         <option value="500"> 500 SqM</option>
                                     </select>
                                     <i class="bi bi-dash to-to"></i>
-                                    <select name="max_unit_area" select-status="max">
-                                        <option value="null">Max Unit Area</option>
+                                    <select name="max_unit_area">
+                                        <option value="">Max Unit Area</option>
                                         <option value="100"> 100 SqM</option>
                                         <option value="200"> 200 SqM</option>
                                         <option value="300"> 300 SqM</option>
@@ -733,15 +734,13 @@
                         <div class="filter-colum-box">
                             <div class="filter-option-box-wrapper">
                                 <label> Bathroom </label>
-                                <div class="filter-dropdown-buttons">
-                                    <select name="number_of_bathroom">
-                                        <option value="null">Any</option>
-                                        <option value="1"> 1 Bath</option>
-                                        <option value="2"> 2 Bath</option>
-                                        <option value="3"> 3 Bath</option>
-                                        <option value="4"> 4 Bath</option>
-                                    </select>
-                                </div>
+                                <select name="number_of_bathroom">
+                                    <option value="">Any</option>
+                                    <option value="1"> 1 Bath</option>
+                                    <option value="2"> 2 Bath</option>
+                                    <option value="3"> 3 Bath</option>
+                                    <option value="4"> 4 Bath</option>
+                                </select>
                             </div>
                         </div>
     
@@ -769,8 +768,8 @@
                             <div class="filter-option-box-wrapper">
                                 <label> Ownership </label>
                                 <div class="filter-dropdown-mtl-buttons" name="ownership">
-                                    <button value="building__have_freehold">Freehold</button>
-                                    <button value="building__have_leasehold">Leasehold</button>
+                                    <button name="building__have_freehold">Freehold</button>
+                                    <button name="building__have_leasehold">Leasehold</button>
                                 </div>
                             </div>
                         </div>
@@ -787,7 +786,7 @@
                         </div>
 
                         <div class="filter-colum-box px-0" display-view="small">
-                            <div class="property-type-filter p-0" building-type-status="null">
+                            <div class="property-type-filter p-0" building-type-status="">
                                 <div class="property-type-list">
                                     <button name="residence" value="building__type"> Residential </button>
                                     <button name="commercial" value="building__sub_type"> Commercial </button>
