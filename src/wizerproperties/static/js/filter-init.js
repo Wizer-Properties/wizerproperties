@@ -214,7 +214,6 @@ class FilterData{
         var has_value_obj = this.only_has_value();
 
         Object.entries(has_value_obj).forEach(function([key, value]){
-            console.log(key)
             if(key == "building__type") {
                 $('[building-type-status]').attr('building-type-status', value)
                 return

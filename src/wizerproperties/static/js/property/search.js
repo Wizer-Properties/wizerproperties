@@ -444,9 +444,23 @@ $(document).ready(function(){
 
     $(document).on('change', 'select', function(){
         filter_data.set_value( $(this).attr('name'), $(this).val() )
+
+        if(["min_price", "max_price"].includes($(this).attr('name'))){
+            select_price_vai_slide()
+        }
+
         next_property = 1;
         searching("filter");
     });
+
+    function select_price_vai_slide(){
+        var newMinValue = filter_data.min_price == "500000" ? 0 : Number(filter_data.min_price || 0) / 1000000;
+        var newMaxValue = filter_data.max_price == "500000" ? 0 : Number(filter_data.max_price || 100000000) / 1000000;
+
+        $("#price-slider").slider("values", [newMinValue, newMaxValue]);
+        $('.before-li').css({ width : newMinValue+'%'  })
+        $('.after-li').css({ width : (100 - newMaxValue)+'%'  })
+    };
 
     $(document).on('click', '.apply-btn', function(){
         next_property = 1;
@@ -673,12 +687,30 @@ $(document).ready(function(){
     });
 
 
+    function default_price_range(){
+        var default_range = [0, 100];
+
+        if(Number(filter_data.min_price)){
+            var _rt = Number(filter_data.min_price) / 1000000;
+            default_range[0] = _rt;
+            $('.before-li').css({ width : _rt+'%'  })
+        };
+
+        if(Number(filter_data.max_price)){
+            var _rt = Number(filter_data.max_price) / 1000000
+            default_range[1] =  _rt;
+            $('.after-li').css({ width : (100 - _rt)+'%'  })
+        };
+
+        return default_range;
+    };
+
     $("#price-slider").slider({
         range: true, // Enable range
         min: 0,
         max: 100,
         step: 1,
-        values: [1, 100], // Initial range values
+        values: default_price_range(), // Initial range values
         slide : function(event, ui){
             $('.before-li').css({ width : ui.values[0]+'%'  })
             $('.after-li').css({ width : (100 - ui.values[1])+'%'  })
@@ -691,12 +723,9 @@ $(document).ready(function(){
         stop: function(event, ui) {
             var min_val = Number(ui.values[0]) + '000000';
             var max_val = Number(ui.values[1]) + '000000';
+            filter_data.set_value("min_price",  ui.values[0] ? Number(min_val) : '500000')
+            filter_data.set_value("max_price",  ui.values[1] ? Number(max_val) : '')
 
-            $('[name="min_price"]').val( ui.values[0] ? min_val : '500000');
-            $('[name="max_price"]').val( ui.values[1] ? max_val : 'null');
-
-            prams_list.min_price = Number(min_val)
-            prams_list.max_price = Number(max_val)
             next_property = 1;
             price_slider_filter = true;
             searching("filter");
@@ -749,6 +778,7 @@ $(document).ready(function(){
                     $('.price-rage-chart').append('<li style="height: '+sadf[i].heightPercentage+'%;"></li>')
                 };
                 $('.price-rage-chart').append('<div class="after-li"></div>');
+                default_price_range()
 
             },
             error: function (error) {
