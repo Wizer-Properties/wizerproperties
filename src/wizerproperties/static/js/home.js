@@ -922,93 +922,38 @@ $(document).ready(function(){
     });
 
 
-
-    var filter_value = {};
+    var property_type = new FilterData();
 
     $(document).on('change', '.search-box-with-filter select', function(){
-        filter_value[$(this).attr('name')] = $(this).val();
-
-        var testing = new FilterInit({
-            $min_dom : $('[name="min_price"]'),
-            $max_dom : $('[name="max_price"]'),
-            $show_value_dom : $('[filter-label-name="Price"]'),
-            value_type : "price"
-        })
-
-        testing.select_field()
-    });
-
-
-    // var building_type_props = '';
-    // var building_sub_type_props = [];
-    var property_type = new FilterInit({
-        building__type : '',
-        building__sub_type : []
+        property_type.set_value( $(this).attr('name'), $(this).val() )
     });
 
     $(document).on('change', '.custom-radio-checkbox input', function(){
-        // if($(this).attr('name') == 'residential_type'){
-        //     building_sub_type_props = [$(this).val()];
-        //     return
-        // };
-
-        // if(building_sub_type_props.includes($(this).val())){
-        //     _.remove(building_sub_type_props, (n) => n === $(this).val());
-        //     return
-        // };
-        
-        // building_sub_type_props.push($(this).val());
-        // init_property_sub_type.property_sub_type()
+        property_type.building_sub_type_void($(this).val());
     });
 
     $(document).on('click', '.property-type-list button', function(){
-        // $(this).parents('[building-type-status]').attr('building-type-status',$(this).attr('name'));
-        // building_type_props = $(this).attr('name');
-        // building_sub_type_props = [];
-
-        // if($(this).val() == "building__type"){
-        //     $('[type-area-name="commercial"] input').prop('checked', false);
-        // }else{
-        //     $('[type-area-name="residential"] input').prop('checked', false);
-        // };
-
-        property_type.building_type = $(this).attr('value');
+        property_type.building__type = $(this).attr('value');
         property_type.building_type_void();
-
         console.log(property_type)
     });
-
     
     $(document).on('click', '.filter-clear', function(){
         var for_type = $(this).attr('for');
+        console.log("===================================== clear function")
 
         if(for_type == "price"){
-            if(filter_value.hasOwnProperty('min_price')){
-                $('[name="min_price"]').val('null');
-                delete filter_value.min_price;
-            };
-            if(filter_value.hasOwnProperty('max_price')){
-                $('[name="max_price"]').val('null');
-                delete filter_value.max_price;
-            };
+            property_type.clear_price()
         }else if(for_type == "beds"){
-            if(filter_value.hasOwnProperty('min_number_of_bedroom')){
-                $('[name="min_number_of_bedroom"]').val('null');
-                delete filter_value.min_number_of_bedroom;
-            };
-            if(filter_value.hasOwnProperty('max_number_of_bedroom')){
-                $('[name="max_number_of_bedroom"]').val('null');
-                delete filter_value.max_number_of_bedroom;
-            };
+            property_type.clear_bedroom()
         }else if(for_type == "property-type"){
-            // building_type_props = '';
-            // building_sub_type_props = [];
+            property_type.clear_building_type()
         }
     });
 
-
     $(document).on('click', '#location-search-btn', function(){
         var $search_input = $(this).parents('.search-box-with-filter').find('#gm-search-input')
+        var filter_value = property_type.only_has_value()
         var _latitude = $search_input.attr("latitude")
         var _longitude = $search_input.attr("longitude")
         var _place_id = $search_input.attr("place_id")
@@ -1023,11 +968,6 @@ $(document).ready(function(){
             });
         };
 
-        // if(building_type_props) filter_parms += '&building__type='+building_type_props;
-        // if(building_sub_type_props.length > 0){
-        //     filter_parms +=  '&building__sub_type='+building_sub_type_props.join(",")
-        // };
-
         window.location.href = "/property/search/" +
                                '?place='+$search_input.val()+
                                '&latitude='+_latitude+
@@ -1035,6 +975,5 @@ $(document).ready(function(){
                                '&place_id='+_place_id+
                                '&fature_type='+_fature_type+
                                filter_parms;
-
     });
 });

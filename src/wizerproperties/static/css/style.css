@@ -913,8 +913,8 @@ footer{
     place-items: center;
 }
 
-[dual-select] option[disabled],
-[dual-select] option:disabled{
+option[disabled],
+option:disabled{
     color: #eee !important;
     display: none !important;
 }

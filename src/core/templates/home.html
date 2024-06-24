@@ -29,18 +29,18 @@
 
                 <!-- =================================== -->
 
-                <div class="filter-single-box" pop-target="price-box" tag-name="price" filter-name="price-box" active-filter="false">
-                    <button class="filter-label" label-value="price">
+                <div class="filter-single-box" pop-target="price-box" active-filter="false">
+                    <button class="filter-label">
                         <span filter-label-name="Price">Price</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
                 </div>
                 <div pop-element="price-box">
-                    <div class="price-filter-box">                
-                        <div class="price-filter-select-box" label="price" dual-select>
+                    <div class="price-filter-box">
+                        <div class="price-filter-select-box">
                             <div class="d-flex gap-2 mb-4 align-items-center">
-                                <select name="min_price" select-status="min">
-                                    <option value="null">Min Price</option>
+                                <select name="min_price">
+                                    <option value="">Min Price</option>
                                     <option value="500000">฿ 500,000</option>
                                     <option value="1000000">฿ 1,000,000</option>
                                     <option value="2000000">฿ 2,000,000</option>
@@ -142,10 +142,11 @@
                                     <option value="98000000">฿ 98,000,000</option>
                                     <option value="99000000">฿ 99,000,000</option>
                                     <option value="100000000">฿ 100,000,000</option>
+                                    <option value="null">Min Price</option>
                                 </select>
                                 <i class="bi bi-dash to-to"></i>
-                                <select name="max_price" select-status="max">
-                                    <option value="null">Max Price</option>
+                                <select name="max_price">
+                                    <option value="">Max Price</option>
                                     <option value="500000">฿ 500,000</option>
                                     <option value="1000000">฿ 1,000,000</option>
                                     <option value="2000000">฿ 2,000,000</option>
@@ -247,6 +248,7 @@
                                     <option value="98000000">฿ 98,000,000</option>
                                     <option value="99000000">฿ 99,000,000</option>
                                     <option value="100000000">฿ 100,000,000</option>
+                                    <option value="null">Max Price</option>
                                 </select>
                             </div>
 
@@ -260,17 +262,17 @@
 
                 <!-- =========================================== -->
 
-                <div class="filter-single-box" pop-target="bed-box" filter-name="bed-box" active-filter="false">
-                    <button class="filter-label" label-value="beds">
-                        <span>Bedrooms</span>
+                <div class="filter-single-box" pop-target="bed-box" active-filter="false">
+                    <button class="filter-label">
+                        <span filter-label-name="Bedrooms">Bedrooms</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
                 </div>
                 <div pop-element="bed-box">
                     <div class="search-pop-up-box">
-                        <div class="search-pop-up-select-box" label="beds" dual-select>
+                        <div class="search-pop-up-select-box">
                             <div class="d-flex gap-2 mb-4 align-items-center">
-                                <select name="min_number_of_bedroom" select-status="min" select-name="bedroom">
+                                <select name="min_number_of_bedroom">
                                     <option value="">No min</option>
                                     <option value="1"> 1 bedroom</option>
                                     <option value="2"> 2 bedrooms</option>
@@ -285,7 +287,7 @@
                                     <option value="null">No min</option>
                                 </select>
                                 <i class="bi bi-dash to-to"></i>
-                                <select name="max_number_of_bedroom" select-status="max" select-name="bedroom">
+                                <select name="max_number_of_bedroom">
                                     <option value="">No max</option>
                                     <option value="1"> 1 bedroom</option>
                                     <option value="2"> 2 bedrooms</option>
@@ -315,7 +317,7 @@
                 <!-- =========================================== -->
 
                 <div class="filter-single-box" pop-target="property-type">
-                    <button class="filter-label" label-value="property-type">
+                    <button class="filter-label">
                         <span>Property type</span>
                         <i class="bi bi-chevron-down"></i>
                     </button>
@@ -525,35 +527,6 @@
         </div>
     </div>
 </section>
-
-
-<!-- <section id="popular-buildings">
-    <div class="container">
-        <h1 class="slider-title"> Popular Buildings </h1>
-
-
-        <div class="splide popular-buildings-slider">
-            <div class="splide__track">
-                  <div class="splide__list">
-                  </div>
-            </div>
-        </div>
-    </div>
-</section> -->
-
-<!-- <div class="container p-relative">
-    <div 
-        class="flipper" 
-        data-datetime="2024-03-02 00:00:00" 
-        data-template="ddd|HH|ii|ss"
-        data-labels="Days|Hours|Minutes|Seconds" 
-        data-reverse="true"
-    >
-    </div>
-
-</div>
-</div> -->
-
 
 
 <section id="popular-city">
