@@ -14,6 +14,9 @@
 
 .search-date-count{
     min-width: var(--company-image-width);
+    width: var(--company-image-width);
+    display: flex;
+    justify-content: center;
 }
 
 .search-date-count [date-count]{
@@ -26,7 +29,6 @@
     gap: 10px;
     margin-bottom: 0;
     justify-content: space-between;
-    padding-right:var(--card-pd-right);
     align-items: flex-start;
 }
 
@@ -48,7 +50,7 @@
 .search-result-box{
     display: block;
     padding: 0 25px;
-    padding-right: 10px;
+    padding-right: 0;
 }
 
 
@@ -181,15 +183,7 @@
 }
 
 
-.property-single-box[property-type="newly_created"]{
-    .search-result-box-wrapper{
-        background-color: #EEFAFD;
-    }
 
-    .search-box-title span{
-        background-color: #EEFAFD;
-    }
-}
 
 .search-result-box-wrapper .date-area{
     display: flex;
@@ -232,7 +226,8 @@
     top: -2px;
 }
 
-.property-single-box[property-type="spotlight"]{
+.property-single-box[property-type="spotlight"],
+.property-single-box[property-type="feature"]{
     .search-box-price,
     .search-result-box h1,
     .search-result-box .property-value,
@@ -258,6 +253,20 @@
 
     .search-box-title span{
         background-color: var(--th-color-1);
+    }
+}
+
+.property-single-box[property-type="feature"]{
+    .search-result-box-wrapper,
+    .search-box-title span{
+        background: var(--th-color) !important;
+    }
+
+    .property-card-modal-btns button, 
+    .property-card-modal-btns a,
+    .building-status,
+    .search-result-box-wrapper .date-area{
+        background: var(--th-color-1) !important;
     }
 }
 
@@ -544,6 +553,7 @@
     display: flex;
     flex-direction: column;
     text-align: center;
+    width: var(--company-image-width);
 }
 
 
@@ -724,10 +734,7 @@
         bottom: 15px;
         left: 15px;
         flex-direction: row;
-    }
-
-    .property-card-modal-btns{
-        padding-right: 0;
+        width: auto ;
     }
 
     .dev-phn-number,
@@ -764,6 +771,8 @@
 
     .search-date-count{
         min-width: auto;
+        width: auto;
+        display: block;
     }
 }
 

@@ -274,7 +274,7 @@ $(document).ready(function(){
 
                                         '<div class="property-schedule-contact-btn">'+
                                             '<a href="/schedule/create_schedule/?type=property&id='+data?.id+'" class="link border-0"'+
-                                                '<i class="bi bi-envelope"></i> Create Schedule'+
+                                                '<i class="bi bi-envelope"></i>Schedule Viewing'+
                                             '</a>'+
                                             '<a href="mailto:'+data?.developer_email+'" class="link border-0"'+
                                                 '<i class="bi bi-envelope"></i> Contact'+
