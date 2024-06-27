@@ -69,7 +69,7 @@
     border-radius: 15px;
     padding: 15px;
     border: none;
-    background: #ffedfe;
+    background: #f7f7f7;
 }
 
 .image-area-with-add-btns{
@@ -268,6 +268,10 @@
     .search-result-box-wrapper .date-area{
         background: var(--th-color-1) !important;
     }
+
+    .special-sale span{
+        color: var(--th-color-1) !important;
+    }
 }
 
 .property-contains .property-short-info-box{
@@ -287,6 +291,7 @@
     padding-bottom: 25px;
     flex-wrap: wrap;
     gap: 0 10px;
+    margin-top: 5px;
 }
 
 .search-result-content{
@@ -302,7 +307,6 @@
     font-weight: 500;
     display: block;
     z-index: 1;
-    background-color: #ffedfe;
     padding-right: 10px;
     display: -webkit-box;
     -webkit-line-clamp: 1;
@@ -510,6 +514,8 @@
 }
 
 [property-type="spotlight"]
+.search-result-box-img,
+[property-type="feature"]
 .search-result-box-img{
     height: 320px;
 }
@@ -557,15 +563,15 @@
 }
 
 
-.flash-sale{
+.special-sale{
     display: flex;
     justify-content: center;
 }
 
-.flash-sale span{
+.special-sale span{
     color: #15c1b9 !important;
     padding: 7px 25px;
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 700;
     border-radius: 5px;
     text-transform: uppercase;
@@ -693,17 +699,18 @@
         padding: 0 20px;
     }
 
-    .flash-sale{
+    .special-sale{
         top: 0;
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
     }
 
-    .flash-sale span{
+    .special-sale span{
         background: #fff;
         border-top-left-radius: 0;
         border-top-right-radius: 0;
+        font-size: 22px;
     }
 }
 
@@ -832,8 +839,8 @@
         padding-bottom: 50px;
     }
 
-    .flash-sale span{
-        font-size: 20px;
+    .special-sale span{
+        font-size: 16px;
     }
 }
 
@@ -879,7 +886,7 @@
         padding: 10px 8px;
     }
 
-    .flash-sale span{
+    .special-sale span{
         font-size: 14px;
         padding: 7px 20px;
     }

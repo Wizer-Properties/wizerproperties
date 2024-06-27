@@ -202,7 +202,11 @@ $(document).ready(function(){
                                     '<a href="/property/details/'+data?.id+'/" class="d-block w-100">'+
                                         (
                                             data?.tag == "spotlight" ?
-                                            '<div class="flash-sale"><span> Flash Sale </span></div>' : ''
+                                            '<div class="special-sale"><span> Flash Sale </span></div>' : ''
+                                        )+
+                                        (
+                                            data?.tag == "feature" ?
+                                            '<div class="special-sale"><span> Featured Listing </span></div>' : ''
                                         )+
                                         '<div class="search-box-title">'+
                                             '<span> '+data?.building_title+' </span>'+
