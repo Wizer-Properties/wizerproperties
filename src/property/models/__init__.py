@@ -5,3 +5,4 @@ from .favorite import ProspectFavoriteProperty
 from .newly_created import NewlyCreatedProperty
 from .discount import DiscountProperty
 from .spotlight import SpotlightProperty
+from .feature import FeatureProperty

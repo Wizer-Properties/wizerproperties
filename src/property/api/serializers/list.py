@@ -110,8 +110,14 @@ class PropertyListSerializer(PropertySerializer):
         return ""
 
     def get_tag(self, obj):
+        """The ordering of tag is important. Depending of tag value we are providing
+        instance custom style
+        """
+
         if obj.spotlights.exists():
             tag = "spotlight"
+        elif obj.features.exists():
+            tag = "feature"
         elif obj.newly_createds.exists():
             tag = "newly_created"
         elif obj.discounts.exists():
