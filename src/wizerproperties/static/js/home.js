@@ -957,7 +957,14 @@ $(document).ready(function(){
         var _place_id = $search_input.attr("place_id")
         var _fature_type = $search_input.attr("fature_type")
 
-        if(!_latitude && !_longitude) return;
+        if(!_latitude && !_longitude) {
+            $(this).parents('.search-box-with-filter').prepend(' <p class="location-search-error"> Select from the suggest list !!! </p> ');
+
+            setTimeout(() => {
+                $('.location-search-error').remove()
+            }, 5000);
+            return;
+        };
 
         var filter_parms = '';
         if(Object.values(filter_value).length > 0){

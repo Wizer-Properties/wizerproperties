@@ -1175,7 +1175,15 @@ option:disabled{
     display: none;
 }
 
+[load-google="false"]{
+    display: none !important;
+}
 
+.location-search-error{
+    font-size: 14px;
+    color: #ff6c6c;
+    margin-bottom: 5px !important;
+}
 
 @media screen and (min-width: 991px){
     [pop-status="true"] body{

@@ -3,6 +3,14 @@ var search_page_map;
 var search_page_map_circle;
 
 async function initializeMap() {
+    var google_load = document?.querySelectorAll('[load-google]');
+
+    if(google_load.length > 0){
+        for (let i = 0; i < google_load.length; i++) {
+            google_load[i].setAttribute('load-google', true)
+        }
+    }
+
     var options = {
         componentRestrictions: {
             country: "th"
