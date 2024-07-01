@@ -115,7 +115,7 @@ class PropertyListSerializer(PropertySerializer):
         """
 
         if obj.discounts.exists():
-            tag = "discount"
+            tag = "spotlight"
         elif obj.features.exists():
             tag = "feature"
         elif obj.newly_createds.exists():

@@ -16,9 +16,7 @@ class DiscountProperty(TimestampedModel):
             models.UniqueConstraint(fields=['property'], name='unique_discount_property')
         ]
 
-    def clean(self):
-        super().clean()
-        
+    def clean(self):        
         error_messages = {}     # Error message will append here
 
         # Check if the property is already associated with a FeatureProperty
