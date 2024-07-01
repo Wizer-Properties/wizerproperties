@@ -36,8 +36,8 @@ from utils.general_data import PRICE_RANGES
 class PropertyViewSet(viewsets.ModelViewSet):
     queryset = (
         Property.objects.select_related("building", "created_by")
-        .prefetch_related("media_files", "discounts", "newly_createds", "spotlights", "features")
-        .annotate(spotlighted=Count("spotlights"))
+        .prefetch_related("media_files", "discounts", "newly_createds", "features")
+        .annotate(discounted=Count("discounts"))
         .annotate(featured=Count("features"))
     )
 
@@ -117,9 +117,9 @@ class PropertyViewSet(viewsets.ModelViewSet):
         # If popularity is not explicitly requested in the ordering,
         # then maintain popularity-based ordering as primary
         if ordering:
-            queryset = queryset.order_by("-spotlighted", "-featured", ordering)
+            queryset = queryset.order_by("-discounted", "-featured", ordering)
         else:
-            queryset = queryset.order_by("-spotlighted", "-featured")
+            queryset = queryset.order_by("-discounted", "-featured")
 
         return queryset
 

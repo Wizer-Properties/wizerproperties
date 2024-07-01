@@ -12,21 +12,22 @@ class DiscountProperty(TimestampedModel):
 
     class Meta:
         verbose_name_plural = "Discount properties"
+        constraints = [
+            models.UniqueConstraint(fields=['property'], name='unique_discount_property')
+        ]
 
     def clean(self):
-        error_messages = {}
+        super().clean()
+        
+        error_messages = {}     # Error message will append here
 
-        # Check if there is already an object with the same property
-        existing_objects = self.__class__.objects.filter(property=self.property)
-        if self.id:
-            existing_objects = existing_objects.exclude(id=self.id)  # Exclude the current object for updates
-
-        if existing_objects.exists():
-            error_messages.update({"property": "The property have already in discount list."})
+        # Check if the property is already associated with a FeatureProperty
+        if self.property and self.property.features.exists():
+            error_messages.update({"property": "The property is already in the feature list."})
 
         # Period will be future date
         if self.period and self.period < timezone.now().date():
             error_messages.update({"period": "Period date must be greater than or equal to today."})
-
+        
         if error_messages:
             raise ValidationError(error_messages)

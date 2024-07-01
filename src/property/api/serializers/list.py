@@ -114,14 +114,12 @@ class PropertyListSerializer(PropertySerializer):
         instance custom style
         """
 
-        if obj.spotlights.exists():
-            tag = "spotlight"
+        if obj.discounts.exists():
+            tag = "discount"
         elif obj.features.exists():
             tag = "feature"
         elif obj.newly_createds.exists():
             tag = "newly_created"
-        elif obj.discounts.exists():
-            tag = "discount"
         else:
             tag = ""
 
@@ -131,7 +129,7 @@ class PropertyListSerializer(PropertySerializer):
         request = self.context.get("request")
         platform = request.GET.get("platform")
 
-        if obj.spotlights.exists() or obj.newly_createds.exists() or obj.discounts.exists():
+        if obj.features.exists() or obj.newly_createds.exists() or obj.discounts.exists():
             if platform == "web":
                 images = obj.media_files.filter(type="image")[1:4]
                 return PropertyMediaSerializer(images, many=True).data

@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib import admin
 from .models import (
     Property,
@@ -6,7 +7,6 @@ from .models import (
     ProspectFavoriteProperty,
     NewlyCreatedProperty,
     DiscountProperty,
-    SpotlightProperty,
     FeatureProperty
 )
 
@@ -62,16 +62,52 @@ class NewlyCreatedPropertyAdmin(admin.ModelAdmin):
     list_display = ["id", "property", "created_at"]
 
 
+class DiscountPropertyForm(forms.ModelForm):
+    class Meta:
+        model = DiscountProperty
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Query properties that are not already associated with FeatureProperty or DiscountProperty
+        queryset = Property.objects.exclude(
+            discounts__isnull=False
+        ).exclude(
+            features__isnull=False
+        )
+
+        if self.instance and self.instance.property:
+            # Adding the current properties with queryset
+            queryset = queryset | Property.objects.filter(pk=self.instance.property.pk)
+
+        self.fields['property'].queryset = queryset
+
 @admin.register(DiscountProperty)
 class DiscountPropertyAdmin(admin.ModelAdmin):
     list_display = ["id", "property", "period", "created_at"]
+    form = DiscountPropertyForm
 
+class FeaturePropertyForm(forms.ModelForm):
+    class Meta:
+        model = FeatureProperty
+        fields = '__all__'
 
-@admin.register(SpotlightProperty)
-class SpotlightPropertyAdmin(admin.ModelAdmin):
-    list_display = ["id", "property", "created_at"]
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Query properties that are not already associated with FeatureProperty or DiscountProperty
+        queryset = Property.objects.exclude(
+            discounts__isnull=False
+        ).exclude(
+            features__isnull=False
+        )
 
+        if self.instance and self.instance.property:
+            # Adding the current properties with queryset
+            queryset = queryset | Property.objects.filter(pk=self.instance.property.pk)
+
+        self.fields['property'].queryset = queryset
 
 @admin.register(FeatureProperty)
 class FeaturePropertyAdmin(admin.ModelAdmin):
     list_display = ["id", "property", "created_at"]
+    form = FeaturePropertyForm
