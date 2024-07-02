@@ -129,7 +129,7 @@ class PropertyListSerializer(PropertySerializer):
         request = self.context.get("request")
         platform = request.GET.get("platform")
 
-        if obj.features.exists() or obj.newly_createds.exists() or obj.discounts.exists():
+        if obj.features.exists() or obj.discounts.exists():
             if platform == "web":
                 images = obj.media_files.filter(type="image")[1:4]
                 return PropertyMediaSerializer(images, many=True).data
