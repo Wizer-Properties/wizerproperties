@@ -161,8 +161,8 @@ class FilterData{
         this.building__quota = building__quota;
         this.building__furnishing = building__furnishing;
         this.building__status = building__status;
-        this.nearby = nearby,
-
+        this.nearby = nearby;
+        this.platform = (window.innerWidth >= 768 ? 'web' : '');
 
         this.default_value();
     };

@@ -300,8 +300,6 @@ $(document).ready(function(){
     var prams_list = {
         page_size : 5,
         search : place || '',
-        default_images_number : (window.innerWidth <= 768 ? 1 : 2),
-        platform :  (window.innerWidth >= 768 ? 'web' : ''),
     };
 
 
