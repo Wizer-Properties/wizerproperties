@@ -331,39 +331,12 @@
                                 <button name="building__type" value="commercial"> Commercial </button>
                             </div>
 
-                            <div type-area-name="residence">
-                                <label class="custom-radio-checkbox">
-                                    <input value="condo" type="radio" name="building__sub_type"/>
-                                    <span class="bi"> Condo</span>
-                                </label>
-                                <label class="custom-radio-checkbox">
-                                    <input value="single_house" type="radio" name="building__sub_type"/>
-                                    <span class="bi"> Single house </span>
-                                </label>
-                                <label class="custom-radio-checkbox">
-                                    <input value="townhouse" type="radio" name="building__sub_type"/>
-                                    <span class="bi"> Townhouse </span>
-                                </label>
-                                <label class="custom-radio-checkbox">
-                                    <input value="apartment" type="radio" name="building__sub_type"/>
-                                    <span class="bi"> Apartment </span>
-                                </label>
+                            <div type-area-name="residence" type-init="RESIDENCE_SUB_TYPES">
+                                <!-- from dom base on type-init -->
                             </div>
 
-
-                            <div type-area-name="commercial">
-                                <label class="custom-radio-checkbox">
-                                    <input value="sales_area" type="checkbox" name="building__sub_type"/>
-                                    <span class="bi"> Sales area </span>
-                                </label>
-                                <label class="custom-radio-checkbox">
-                                    <input value="office" type="checkbox" name="building__sub_type"/>
-                                    <span class="bi"> Office </span>
-                                </label>
-                                <label class="custom-radio-checkbox">
-                                    <input value="warehouse_factory" type="checkbox" name="building__sub_type"/>
-                                    <span class="bi"> Warehouse factory </span>
-                                </label>
+                            <div type-area-name="commercial" type-init="COMMERCIAL_SUB_TYPES">
+                                <!-- from dom base on type-init -->
                             </div>
 
                             <div class="property-type-action-btn">

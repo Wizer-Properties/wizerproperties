@@ -223,9 +223,12 @@ $(document).ready(function(){
                                                     '฿ '+ 
                                                     formatBalance(Math.floor(data?.price) || 0)+
                                                 '</div>'+
-                                                '<div class="building-status">'+
-                                                    (data?.building_status || '')+
-                                                '</div>'+
+                                                (
+                                                    data?.building_status ? 
+                                                    '<div class="building-status">'+
+                                                        data?.building_status +
+                                                    '</div>' : ''
+                                                )+
                                             '</div>'+
                                             
                                             '<div class="property-contains">'+

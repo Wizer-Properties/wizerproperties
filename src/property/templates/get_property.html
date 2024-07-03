@@ -575,8 +575,6 @@
             <div class="col-lg-4">
                 <div class="side-box-info developer-info">
                     <div class="contact-info-side-box">
-                        <h1 class="section-title details-side-title">Schedule Viewing</h1>
-
                          <!--<div class="developer-co-info">
                             <span class="developer-box-title"> Marketed By </span>
                             <div class="d-flex gap-3 justify-content-between">
@@ -594,7 +592,7 @@
                             <div class="developer-contact-area mt-2">
                                 {% if not request.user.is_authenticated or request.user.user_type == "prospect" %}
                                 <a class="contact-info-list-data" href="/schedule/create_schedule?type=property&id={{property.id}}"> 
-                                    Create Schedule Request 
+                                    Schedule Viewing
                                 </a>
                                 {% endif %}
                                 

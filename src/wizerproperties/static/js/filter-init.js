@@ -398,3 +398,78 @@ class FilterData{
     }
     
 };
+
+
+var RESIDENCE_SUB_TYPES = [
+    {
+        name : "Bungalow/Villa",
+        value : "bungalow_villa"
+    },
+    {
+        name : "Apartment/Conod/Service Residence",
+        value : "apartment_conod_service_residence"
+    },
+    {
+        name : "Semi-Detached House",
+        value : "semi_detached_house"
+    },
+    {
+        name : "Terrace/Link House",
+        value : "terrace_link_house"
+    },
+    {
+        name : "Residentail Land",
+        value : "residentail_land"
+    }
+];
+
+var COMMERCIAL_SUB_TYPES = [
+    {
+        name : "Commercial",
+        value : "commercial"
+    },
+    {
+        name : "Industrial",
+        value : "industrial"
+    },
+    {
+        name : "Aqricultural Land",
+        value : "aqricultural_land"
+    },
+    {
+        name : "Other",
+        value : "other"
+    }
+];
+
+
+$(document).ready(function(){
+
+    function res_comer_dom(data, type){
+        return(
+            '<label class="custom-radio-checkbox">'+
+                '<input value="'+data?.value+'" type="'+type+'" name="building__sub_type"/>'+
+                '<span class="bi">'+data?.name+'</span>'+
+            '</label>'
+        )
+    };
+
+    var residence_colleting_dom = '';
+    var commercial_colleting_dom = '';
+
+    for (let r = 0; r < RESIDENCE_SUB_TYPES.length; r++) {
+        residence_colleting_dom += res_comer_dom(RESIDENCE_SUB_TYPES[r], 'radio')
+    };
+
+    for (let r = 0; r < COMMERCIAL_SUB_TYPES.length; r++) {
+        commercial_colleting_dom += res_comer_dom(COMMERCIAL_SUB_TYPES[r], 'checkbox')
+    };
+
+    if($('[type-init="RESIDENCE_SUB_TYPES"]').length > 0){
+        $('[type-init="RESIDENCE_SUB_TYPES"]').html(residence_colleting_dom)
+    };
+
+    if($('[type-init="COMMERCIAL_SUB_TYPES"]').length > 0){
+        $('[type-init="COMMERCIAL_SUB_TYPES"]').html(commercial_colleting_dom)
+    };
+});

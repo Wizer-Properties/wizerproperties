@@ -7,16 +7,18 @@ UNIQUE_PROFILE_EMAIL_MESSAGE = "Profile with this email already exists."
 BUILDING_TYPES = (("residence", "Residence"), ("commercial", "Commercial"))
 
 RESIDENCE_SUB_TYPES = (
-    ("condo", "Condo"),
-    ("single_house", "Single House"),
-    ("townhouse", "Townhouse"),
-    ("apartment", "Apartment"),
+    ("bungalow_villa", "Bungalow/Villa"),
+    ("apartment_conod_service_residence", "Apartment/Conod/Service Residence"),
+    ("semi_detached_house", "Semi-Detached House"),
+    ("terrace_link_house", "Terrace/Link House"),
+    ("residentail_land", "Residentail Land"),
 )
 
 COMMERCIAL_SUB_TYPES = (
-    ("sales_area", "Sales area"),
-    ("office", "Office"),
-    ("warehouse_factory", "Warehouse-Factory"),
+    ("commercial", "Commercial"),
+    ("industrial", "Industrial"),
+    ("aqricultural_land", "Aqricultural Land"),
+    ("other", "Other"),
 )
 
 BUILDING_STATUS = (
