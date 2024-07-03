@@ -502,6 +502,14 @@ $(document).ready(function(){
     
     $(document).on('change', '.custom-radio-checkbox input', function(){
         filter_data.building_sub_type_void($(this).val());
+
+        if( $(this).parents('[type-init]').attr('type-init') == 'RESIDENCE_SUB_TYPES' ){
+            filter_data.set_value( 'building__type', 'residence' )
+        };
+
+        if( $(this).parents('[type-init]').attr('type-init') == 'COMMERCIAL_SUB_TYPES' ){
+            filter_data.set_value( 'building__type', 'commercial' )
+        };
     });
 
 
