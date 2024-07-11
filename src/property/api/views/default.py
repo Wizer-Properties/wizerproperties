@@ -161,9 +161,21 @@ class PropertyViewSet(viewsets.ModelViewSet):
         return response
 
     def _store_filter_data_in_cookies(self, response):
+        """We are storing search perameter is cookie"""
         query_params = self._get_query_params()
-        self._set_cookie_if_present(response, "number_of_bedroom", query_params.get("number_of_bedroom", [""])[0])
-        self._set_cookie_if_present(response, "number_of_bathroom", query_params.get("number_of_bathroom", [""])[0])
+
+        if query_params.get("building__type", None):
+            response.set_cookie("building__type", query_params.get("building__type")[0], settings.COOKIE_EXPIRE_TIME)
+        if query_params.get("building__sub_type[]", None):
+            response.set_cookie("building__sub_type", query_params.get("building__sub_type[]"), settings.COOKIE_EXPIRE_TIME)
+        if query_params.get("min_price", None):
+            response.set_cookie("min_price", query_params.get("min_price")[0], settings.COOKIE_EXPIRE_TIME)
+        if query_params.get("max_price", None):
+            response.set_cookie("max_price", query_params.get("max_price")[0], settings.COOKIE_EXPIRE_TIME)
+        if query_params.get("min_number_of_bedroom", None):
+            response.set_cookie("min_number_of_bedroom", query_params.get("min_number_of_bedroom")[0], settings.COOKIE_EXPIRE_TIME)
+        if query_params.get("max_number_of_bedroom", None):
+            response.set_cookie("max_number_of_bedroom", query_params.get("max_number_of_bedroom")[0], settings.COOKIE_EXPIRE_TIME)
 
     def _get_query_params(self):
         full_path = self.request.get_full_path()
@@ -198,11 +210,11 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
             place = {}
             if building__province:
-                place.update({"building__province": building__sub_district})
+                place.update({"building__province": building__province})
             if building__district:
                 place.update({"building__district": building__district})
             if building__sub_district:
-                place.update({"building__sub_district": building__province})
+                place.update({"building__sub_district": building__sub_district})
 
             searched_places = ast.literal_eval(self.request.COOKIES.get("searched_places", "[]"))
             if place in searched_places:
@@ -516,19 +528,35 @@ class PropertyViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=["get"])
     def suggested_properties(self, request):
         searched_places = request.COOKIES.get("searched_places")
-        number_of_bedroom = request.COOKIES.get("number_of_bedroom")
-        number_of_bathroom = request.COOKIES.get("number_of_bathroom")
-
-        query_params = {}
-        if number_of_bedroom:
-            number_of_bedroom = ast.literal_eval(number_of_bedroom)
-            query_params.update({"number_of_bedroom": number_of_bedroom})
-        if number_of_bathroom:
-            number_of_bathroom = ast.literal_eval(number_of_bathroom)
-            query_params.update({"number_of_bathroom": number_of_bathroom})
-
+        building__type = request.COOKIES.get("building__type")
+        building__sub_type = request.COOKIES.get("building__sub_type")
+        min_price = request.COOKIES.get("min_price")
+        max_price = request.COOKIES.get("max_price")
+        min_number_of_bedroom = request.COOKIES.get("min_number_of_bedroom")
+        max_number_of_bedroom = request.COOKIES.get("max_number_of_bedroom")
+        
         if searched_places:
             searched_places = ast.literal_eval(searched_places)
+        
+        qurey_perams = {}
+        if building__type:
+            building__type = ast.literal_eval(building__type)
+            qurey_perams.update({"building__type": building__type})
+        if building__sub_type:
+            building__sub_type = ast.literal_eval(building__sub_type)
+            qurey_perams.update({"building__sub_type__in": building__sub_type})
+        if min_price:
+            min_price = ast.literal_eval(min_price)
+            qurey_perams.update({"price__gte": min_price})
+        if max_price:
+            max_price = ast.literal_eval(max_price)
+            qurey_perams.update({"price__lte": max_price})
+        if min_number_of_bedroom:
+            min_number_of_bedroom = ast.literal_eval(min_number_of_bedroom)
+            qurey_perams.update({"number_of_bedroom__gte": min_number_of_bedroom})
+        if max_number_of_bedroom:
+            max_number_of_bedroom = ast.literal_eval(max_number_of_bedroom)
+            qurey_perams.update({"number_of_bedroom__lte": max_number_of_bedroom})
 
         property_qs = self.get_queryset().select_related("building")
 
@@ -537,10 +565,10 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
         if searched_places:
             for place in searched_places:
-                if query_params:
+                if qurey_perams:
                     if place.get("building__sub_district"):
                         property_sub_qs = property_qs.filter(
-                            **query_params, building__sub_district=place["building__sub_district"]
+                            **qurey_perams, building__sub_district=place["building__sub_district"]
                         )
                         unique_property_ids.extend(
                             value
@@ -552,7 +580,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
                     if len(unique_property_ids) < 15 and place.get("building__district"):
                         property_sub_qs = property_qs.filter(
-                            **query_params, building__district=place["building__district"]
+                            **qurey_perams, building__district=place["building__district"]
                         )
                         unique_property_ids.extend(
                             value
@@ -564,7 +592,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
                     if len(unique_property_ids) < 15 and place.get("building__province"):
                         property_sub_qs = property_qs.filter(
-                            **query_params, building__province=place["building__province"]
+                            **qurey_perams, building__province=place["building__province"]
                         )
                         unique_property_ids.extend(
                             value
