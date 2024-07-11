@@ -1,4 +1,5 @@
 import ast
+from itertools import combinations
 from collections import OrderedDict
 from rest_framework import viewsets, status
 from rest_framework.response import Response
@@ -55,65 +56,72 @@ class ReelViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=["get"], url_path="suggested")
     def suggested_reels(self, request):
         property_qs = Property.objects.all().select_related("building")
-        searched_places = request.COOKIES.get("searched_places")
-        building__type = request.COOKIES.get("building__type")
-        building__sub_type = request.COOKIES.get("building__sub_type")
-        min_price = request.COOKIES.get("min_price")
-        max_price = request.COOKIES.get("max_price")
-        min_number_of_bedroom = request.COOKIES.get("min_number_of_bedroom")
-        max_number_of_bedroom = request.COOKIES.get("max_number_of_bedroom")
         
+        # Helper function to parse the cookie values
+        def parse_cookie_value(value):
+            try:
+                return ast.literal_eval(value)
+            except (ValueError, SyntaxError):
+                return value
+
+        # Extract cookie values
+        building__type = parse_cookie_value(request.COOKIES.get("building__type"))
+        building__sub_type = parse_cookie_value(request.COOKIES.get("building__sub_type"))
+        min_price = parse_cookie_value(request.COOKIES.get("min_price"))
+        max_price = parse_cookie_value(request.COOKIES.get("max_price"))
+        min_number_of_bedroom = parse_cookie_value(request.COOKIES.get("min_number_of_bedroom"))
+        max_number_of_bedroom = parse_cookie_value(request.COOKIES.get("max_number_of_bedroom"))
+        
+        searched_places = request.COOKIES.get("searched_places")
         if searched_places:
             searched_places = ast.literal_eval(searched_places)
 
-        qurey_perams = {}
-        if building__type:
-            building__type = ast.literal_eval(building__type)
-            qurey_perams.update({"building__type": building__type})
-        if building__sub_type:
-            building__sub_type = ast.literal_eval(building__sub_type)
-            qurey_perams.update({"building__sub_type__in": building__sub_type})
-        if min_price:
-            min_price = ast.literal_eval(min_price)
-            qurey_perams.update({"price__gte": min_price})
-        if max_price:
-            max_price = ast.literal_eval(max_price)
-            qurey_perams.update({"price__lte": max_price})
-        if min_number_of_bedroom:
-            min_number_of_bedroom = ast.literal_eval(min_number_of_bedroom)
-            qurey_perams.update({"number_of_bedroom__gte": min_number_of_bedroom})
-        if max_number_of_bedroom:
-            max_number_of_bedroom = ast.literal_eval(max_number_of_bedroom)
-            qurey_perams.update({"number_of_bedroom__lte": max_number_of_bedroom})
+        # Create initial query parameters dictionary
+        query_params = {
+            "building__type": building__type,
+            "building__sub_type__in": building__sub_type,
+            "price__gte": min_price,
+            "price__lte": max_price,
+            "number_of_bedroom__gte": min_number_of_bedroom,
+            "number_of_bedroom__lte": max_number_of_bedroom,
+        }
+
+        # Filter out None values
+        query_params = {k: v for k, v in query_params.items() if v is not None}
+
+        # Get all possible combinations of query parameters in descending order of their length
+        query_param_combinations = []
+        for i in range(len(query_params), 0, -1):
+            query_param_combinations.extend(combinations(query_params.items(), i))
 
         unique_property_ids = OrderedDict()  # Defined in the outer scope
 
+        # Function to add property IDs to unique_property_ids
         def filter_and_add_ids(filters):
-            nonlocal unique_property_ids  # Refers to the unique_property_ids in the outer scope
-            property_sub_qs = property_qs.filter(**filters)  # Apply filters to the property queryset
-            for prop_id in property_sub_qs.values_list("id", flat=True):  # Iterate through the filtered property IDs
+            nonlocal unique_property_ids  # Allows modification of the unique_property_ids variable defined in the enclosing scope
+            property_sub_qs = property_qs.filter(**filters)
+            for prop_id in property_sub_qs.values_list("id", flat=True):
                 unique_property_ids[prop_id] = None  # Add each property ID to unique_property_ids
+                # Using OrderedDict to preserve the insertion order and ensure IDs are unique
 
-        # The outer function continues...
+        # Process each searched place with each combination of query parameters
         if searched_places:
             for place in searched_places:
-                current_place = place.copy()
-                
-                if qurey_perams:
-                    filter_and_add_ids({**qurey_perams, **current_place})
-                filter_and_add_ids(current_place)
+                for combo in query_param_combinations:
+                    filters = dict(combo)  # Convert the combination tuple to a dictionary
+                    filters.update(place)  # Add place-specific filters
+                    filter_and_add_ids(filters)  # Filter properties and add their IDs to unique_property_ids
 
-                if "building__sub_district" in current_place:
-                    current_place.pop("building__sub_district")
-                    if qurey_perams:
-                        filter_and_add_ids({**qurey_perams, **current_place})
-                    filter_and_add_ids(current_place)
+                # Also handle place alone after removing specific levels of granularity
+                for key in ["building__sub_district", "building__district"]:
+                    if key in place:
+                        place_copy = place.copy()  # Make a copy of the place dictionary
+                        place_copy.pop(key)  # Remove the specified key to create a less granular filter
 
-                if "building__district" in current_place:
-                    current_place.pop("building__district")
-                    if qurey_perams:
-                        filter_and_add_ids({**qurey_perams, **current_place})
-                    filter_and_add_ids(current_place)
+                        for combo in query_param_combinations:
+                            filters = dict(combo)  # Convert the combination tuple to a dictionary
+                            filters.update(place_copy)  # Add the less granular place-specific filters
+                            filter_and_add_ids(filters)  # Filter properties and add their IDs to unique_property_ids
 
         # Convert OrderedDict keys to list to get unique property IDs in the original order
         unique_property_ids = list(unique_property_ids.keys())
