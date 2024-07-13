@@ -406,8 +406,8 @@ var RESIDENCE_SUB_TYPES = [
         value : "bungalow_villa"
     },
     {
-        name : "Apartment/Conod/Service Residence",
-        value : "apartment_conod_service_residence"
+        name : "Apartment/Condo/Service Residence",
+        value : "apartment_condo_service_residence"
     },
     {
         name : "Semi-Detached House",
@@ -418,8 +418,8 @@ var RESIDENCE_SUB_TYPES = [
         value : "terrace_link_house"
     },
     {
-        name : "Residentail Land",
-        value : "residentail_land"
+        name : "Residential Land",
+        value : "residential_land"
     }
 ];
 
@@ -433,8 +433,8 @@ var COMMERCIAL_SUB_TYPES = [
         value : "industrial"
     },
     {
-        name : "Aqricultural Land",
-        value : "aqricultural_land"
+        name : "Agricultural Land",
+        value : "agricultural_land"
     },
     {
         name : "Other",

@@ -8,16 +8,16 @@ BUILDING_TYPES = (("residence", "Residence"), ("commercial", "Commercial"))
 
 RESIDENCE_SUB_TYPES = (
     ("bungalow_villa", "Bungalow/Villa"),
-    ("apartment_conod_service_residence", "Apartment/Conod/Service Residence"),
+    ("apartment_condo_service_residence", "Apartment/Condo/Service Residence"),
     ("semi_detached_house", "Semi-Detached House"),
     ("terrace_link_house", "Terrace/Link House"),
-    ("residentail_land", "Residentail Land"),
+    ("residential_land", "Residential Land"),
 )
 
 COMMERCIAL_SUB_TYPES = (
     ("commercial", "Commercial"),
     ("industrial", "Industrial"),
-    ("aqricultural_land", "Aqricultural Land"),
+    ("agricultural_land", "Agricultural Land"),
     ("other", "Other"),
 )
 

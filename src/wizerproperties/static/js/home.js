@@ -231,7 +231,7 @@ $(document).ready(function(){
     // ======================== new-properties-slider
 
 
-    var new_properties_slider = new Splide( '.new-properties-slider', {
+    /*var new_properties_slider = new Splide( '.new-properties-slider', {
         perPage: 4,
         gap : 10,
         pagination: false,
@@ -308,7 +308,7 @@ $(document).ready(function(){
     new_properties_slider.on( 'moved', (e) => {
         if(newly_properties_next == null) return;
         get_newly_properties_list(newly_properties_next);
-    });
+    });*/
 
 
 
