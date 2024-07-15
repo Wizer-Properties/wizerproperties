@@ -5,6 +5,7 @@ from django.conf import settings
 from building.models import Building
 from .models import Property
 from user.models import User, Profile, DeveloperProfile, AgentProfile
+from advertise.models import Advertisement
 
 
 def prepare_property_context(request, id=None):
@@ -30,6 +31,12 @@ def get_property(request, id):
     property = get_object_or_404(Property, pk=id)
     property.visit_count += 1  # Increment the visit count
     property.save()
+    
+    if request.GET.get("ad_id", None):
+        ad_obj = Advertisement.objects.filter(id=request.GET.get("ad_id")).first()
+        if ad_obj:
+            ad_obj.number_of_clicked += 1 # Increasing the ad click count
+            ad_obj.save()
 
     context = prepare_property_context(request, id)
     context["buildings"] = Building.objects.filter(is_active=True)
@@ -54,10 +61,7 @@ def get_property(request, id):
     searched_places.insert(0, place)
     # Limit the list to only five elements
     searched_places = searched_places[:5]
-
     response.set_cookie("searched_places", searched_places, settings.COOKIE_EXPIRE_TIME)
-    response.set_cookie("number_of_bedroom", property.number_of_bedroom, settings.COOKIE_EXPIRE_TIME)
-    response.set_cookie("number_of_bathroom", property.number_of_bathroom, settings.COOKIE_EXPIRE_TIME)
 
     return response
 

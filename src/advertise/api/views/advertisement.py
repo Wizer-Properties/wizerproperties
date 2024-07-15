@@ -1,68 +1,48 @@
 import ast
 from itertools import combinations
 from collections import OrderedDict
+from rest_framework.decorators import action
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.decorators import action
-from django.shortcuts import get_object_or_404
 from django.db.models import Case, When
-from advertise.models import Reel
+from datetime import timedelta
+
+from advertise.models import Advertisement
 from property.models import Property
-from advertise.api.serializers import ReelSerializer, ActiveReelSerializer
-from advertise.api.permissions import ReelPermission
-from advertise.api.pagination import ReelPagination
+from advertise.api.serializers import AdvertisementSerializer
+from advertise.api.pagination import AdvertisementPagination
 
 
-class ReelViewSet(viewsets.ModelViewSet):
-    serializer_class = ReelSerializer
-    permission_classes = [ReelPermission]
-    pagination_class = ReelPagination
-    queryset = Reel.objects.all()
+class AdvertisementViewSet(viewsets.ModelViewSet):
+    serializer_class = AdvertisementSerializer
+    pagination_class = AdvertisementPagination
+    queryset = Advertisement.objects.all()
     ordering = ["-created_at"]  # Default ordering
-
-    def list(self, request):
-        # Returns Agent/Developer Reels
-        queryset = self.get_queryset().filter(created_by=request.user).order_by("-created_at")
-        serializer = self.serializer_class(queryset, many=True)
-        return Response(serializer.data)
-
-    def retrieve(self, request, pk=None):
-        reel_obj = get_object_or_404(self.get_queryset(), pk=pk)
-        serializer = self.serializer_class(reel_obj)
-        if reel_obj.status == "active":
-            return Response(serializer.data)
-        
-        if request.user.is_authenticated and reel_obj.created_by == request.user:
-            return Response(serializer.data)
-        
-        return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
-
-    @action(detail=False, methods=["get"], url_path="active")
-    def active_reels(self, request):
-        # Returns active reels and filter reels if category provides
-
-        category = request.query_params.get("category", None)
-        query_params = {}   # Query parameter will append here
-        if category:
-            query_params.update({"category": category})
-
-        active_reels = self.get_queryset().filter(**query_params, status="active").order_by("-created_at")
-        paginator = self.pagination_class()
-        paginated_queryset = paginator.paginate_queryset(active_reels, request)
-        serializer = ActiveReelSerializer(paginated_queryset, many=True)
-        return paginator.get_paginated_response(serializer.data)
     
+    @action(detail=True, methods=["patch"], url_path="manage-view-time")
+    def manage_advertisement_view_time(self, request, pk=None):
+        ad_obj = self.get_object()
+        time_spent = request.data.get("time_spent")
+        time_spent = time_spent / 1000  # Converting milliseconds into seconds
+        ad_obj.view_time += timedelta(seconds=time_spent)
+        ad_obj.save()
+        
+        serializer = self.serializer_class(ad_obj)
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=["get"], url_path="suggested")
-    def suggested_reels(self, request):
-        # Helper function to parse cookie values
+    def suggested_advertisement(self, request):
+        property_qs = Property.objects.all().select_related("building")
+        
+        # Helper function to parse the cookie values
         def parse_cookie_value(value):
             try:
                 return ast.literal_eval(value)
             except (ValueError, SyntaxError):
                 return value
 
-        # Extract and parse cookie values
+        # Extract cookie values
         building__type = parse_cookie_value(request.COOKIES.get("building__type"))
         building__sub_type = parse_cookie_value(request.COOKIES.get("building__sub_type"))
         min_price = parse_cookie_value(request.COOKIES.get("min_price"))
@@ -94,9 +74,8 @@ class ReelViewSet(viewsets.ModelViewSet):
         for i in range(len(query_params), 0, -1):
             query_param_combinations.extend(combinations(query_params.items(), i))
 
-        property_qs = Property.objects.all().select_related("building")
-
         unique_property_ids = OrderedDict()  # Defined in the outer scope
+
         # Function to add property IDs to unique_property_ids
         def filter_and_add_ids(filters):
             nonlocal unique_property_ids  # Allows modification of the unique_property_ids variable defined in the enclosing scope
@@ -113,7 +92,7 @@ class ReelViewSet(viewsets.ModelViewSet):
                         filters = dict(combo)  # Convert the combination tuple to a dictionary
                         filter_and_add_ids({**place, **filters})  # Filter properties and add their IDs to unique_property_ids
                 
-                filter_and_add_ids(place)
+                filter_and_add_ids(place)  # Filter properties and add their IDs to unique_property_ids
 
                 # Also handle place alone after removing specific levels of granularity
                 for key in ["building__sub_district", "building__district"]:
@@ -125,7 +104,7 @@ class ReelViewSet(viewsets.ModelViewSet):
                                 filters = dict(combo)  # Convert the combination tuple to a dictionary
                                 filter_and_add_ids({**place, **filters})  # Filter properties and add their IDs to unique_property_ids
                         
-                        filter_and_add_ids(place)
+                        filter_and_add_ids(place)  # Filter properties and add their IDs to unique_property_ids
 
         # Convert OrderedDict keys to list to get unique property IDs in the original order
         unique_property_ids = list(unique_property_ids.keys())
@@ -137,9 +116,9 @@ class ReelViewSet(viewsets.ModelViewSet):
         # Create a Case expression to order the properties based on their IDs
         order = Case(*[When(property__id=id, then=pos) for pos, id in enumerate(property_ids)])
         # Filter the queryset for active reels and order them according to the Case expression
-        reels_qs = self.get_queryset().filter(property_id__in=property_ids, status="active").order_by(order)
+        advertisement_qs = self.get_queryset().filter(property_id__in=property_ids).order_by(order)
         paginator = self.pagination_class()
-        paginated_queryset = paginator.paginate_queryset(reels_qs, request)
-        serializer = ActiveReelSerializer(paginated_queryset, many=True)
+        paginated_queryset = paginator.paginate_queryset(advertisement_qs, request)
+        serializer = self.serializer_class(paginated_queryset, many=True)
 
         return paginator.get_paginated_response(serializer.data)
