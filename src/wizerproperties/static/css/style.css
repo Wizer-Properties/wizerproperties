@@ -177,7 +177,8 @@ table.dataTable.no-footer{
     color: #fff  !important;
 }
 
-.edit-button{
+.edit-button,
+.view-button{
     color: #fff !important;
     background: #417e41 !important;
 }
