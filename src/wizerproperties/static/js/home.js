@@ -810,7 +810,7 @@ $(document).ready(function(){
         if(window.innerWidth <= 460) page_size = 1;
 
         $.ajax({
-            url: '/advertise/api/reel/active/',
+            url: '/advertise/api/reel/suggested/',
             type: 'GET',
             data : {
                 page_size : page_size,
