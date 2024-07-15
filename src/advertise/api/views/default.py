@@ -55,16 +55,14 @@ class ReelViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=["get"], url_path="suggested")
     def suggested_reels(self, request):
-        property_qs = Property.objects.all().select_related("building")
-        
-        # Helper function to parse the cookie values
+        # Helper function to parse cookie values
         def parse_cookie_value(value):
             try:
                 return ast.literal_eval(value)
             except (ValueError, SyntaxError):
                 return value
 
-        # Extract cookie values
+        # Extract and parse cookie values
         building__type = parse_cookie_value(request.COOKIES.get("building__type"))
         building__sub_type = parse_cookie_value(request.COOKIES.get("building__sub_type"))
         min_price = parse_cookie_value(request.COOKIES.get("min_price"))
@@ -74,17 +72,22 @@ class ReelViewSet(viewsets.ModelViewSet):
         
         searched_places = request.COOKIES.get("searched_places")
         if searched_places:
-            searched_places = ast.literal_eval(searched_places)
+            searched_places = parse_cookie_value(searched_places)
 
         # Create initial query parameters dictionary
-        query_params = {
-            "building__type": building__type,
-            "building__sub_type__in": building__sub_type,
-            "price__gte": min_price,
-            "price__lte": max_price,
-            "number_of_bedroom__gte": min_number_of_bedroom,
-            "number_of_bedroom__lte": max_number_of_bedroom,
-        }
+        query_params = {}
+        if building__type is not None:
+            query_params["building__type"] = building__type
+        if building__sub_type is not None:
+            query_params["building__sub_type__in"] = building__sub_type
+        if min_price is not None:
+            query_params["price__gte"] = min_price
+        if max_price is not None:
+            query_params["price__lte"] = max_price
+        if min_number_of_bedroom is not None:
+            query_params["number_of_bedroom__gte"] = min_number_of_bedroom
+        if max_number_of_bedroom is not None:
+            query_params["number_of_bedroom__lte"] = max_number_of_bedroom
 
         # Filter out None values
         query_params = {k: v for k, v in query_params.items() if v is not None}
@@ -94,8 +97,9 @@ class ReelViewSet(viewsets.ModelViewSet):
         for i in range(len(query_params), 0, -1):
             query_param_combinations.extend(combinations(query_params.items(), i))
 
-        unique_property_ids = OrderedDict()  # Defined in the outer scope
+        property_qs = Property.objects.all().select_related("building")
 
+        unique_property_ids = OrderedDict()  # Defined in the outer scope
         # Function to add property IDs to unique_property_ids
         def filter_and_add_ids(filters):
             nonlocal unique_property_ids  # Allows modification of the unique_property_ids variable defined in the enclosing scope
@@ -107,10 +111,12 @@ class ReelViewSet(viewsets.ModelViewSet):
         # Process each searched place with each combination of query parameters
         if searched_places:
             for place in searched_places:
-                for combo in query_param_combinations:
-                    filters = dict(combo)  # Convert the combination tuple to a dictionary
-                    filters.update(place)  # Add place-specific filters
-                    filter_and_add_ids(filters)  # Filter properties and add their IDs to unique_property_ids
+                if query_param_combinations:
+                    for combo in query_param_combinations:
+                        filters = dict(combo)  # Convert the combination tuple to a dictionary
+                        filter_and_add_ids({**place, **filters})  # Filter properties and add their IDs to unique_property_ids
+                
+                filter_and_add_ids(place)
 
                 # Also handle place alone after removing specific levels of granularity
                 for key in ["building__sub_district", "building__district"]:
@@ -118,10 +124,12 @@ class ReelViewSet(viewsets.ModelViewSet):
                         place_copy = place.copy()  # Make a copy of the place dictionary
                         place_copy.pop(key)  # Remove the specified key to create a less granular filter
 
-                        for combo in query_param_combinations:
-                            filters = dict(combo)  # Convert the combination tuple to a dictionary
-                            filters.update(place_copy)  # Add the less granular place-specific filters
-                            filter_and_add_ids(filters)  # Filter properties and add their IDs to unique_property_ids
+                        if query_param_combinations:
+                            for combo in query_param_combinations:
+                                filters = dict(combo)  # Convert the combination tuple to a dictionary
+                                filter_and_add_ids({**place_copy, **filters})  # Filter properties and add their IDs to unique_property_ids
+                        
+                        filter_and_add_ids(place_copy)
 
         # Convert OrderedDict keys to list to get unique property IDs in the original order
         unique_property_ids = list(unique_property_ids.keys())
