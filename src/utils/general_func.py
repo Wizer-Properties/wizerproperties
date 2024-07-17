@@ -1,9 +1,12 @@
+import requests
+from datetime import datetime, timedelta
 from django.utils import timezone
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.template.loader import render_to_string
 from openai import OpenAI
+from ipdata.models import IPData
 
 
 def send_email(subject, to_email, html_content, text_content="", context={}):
@@ -103,7 +106,6 @@ def get_chatgpt_response(content, previous_response=None):
 
 
 def get_user_ip(request):
-
     x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
 
     if x_forwarded_for:
@@ -112,3 +114,55 @@ def get_user_ip(request):
         ip = request.META.get("REMOTE_ADDR")
 
     return ip
+
+
+def get_user_location(request):
+    ip = get_user_ip(request)
+
+    if not ip:
+        return None
+    
+    ip_data_obj, created = IPData.objects.get_or_create(ip=ip)
+    
+    has_proxycheck_time_passed = False
+    if ip_data_obj.last_time_checked_by_proxycheck:
+        expected_time_interval = timezone.now() - timedelta(days=settings.PROXYCHECK_REQUEST_TIME_INTERVEL)
+        if expected_time_interval > ip_data_obj.last_time_checked_by_proxycheck:
+            has_proxycheck_time_passed = True
+    else:
+        has_proxycheck_time_passed = True
+    
+    if has_proxycheck_time_passed:
+        if settings.PROXYCHECK_API_KEY:
+            response =requests.get('https://proxycheck.io/v2/{ip}?key={key}?vpn=1&asn=1'.format(ip=ip, key=settings.PROXYCHECK_API_KEY))
+        else:
+            response = requests.get('https://proxycheck.io/v2/{ip}?vpn=1&asn=1'.format(ip=ip))
+
+        ip_data_obj.last_time_checked_by_proxycheck = timezone.now()
+        ip_details = response.json()
+        api_key_status = ip_details['status']
+        
+        country, region, city = "", "", ""
+
+        if api_key_status == 'error':
+            return None
+        else:
+            if 'country' in ip_details[ip]:
+                country = ip_details[ip]['country']
+            if 'region' in ip_details[ip]:
+                region = ip_details[ip]['region']
+            if 'city' in ip_details[ip]:
+                city = ip_details[ip]['city']
+        
+            address = ""
+            if city:
+                address += city
+            if region:
+                address += f", {region}"
+            if country:
+                address += f", {country}"
+        
+        ip_data_obj.address = address
+        ip_data_obj.save()
+        
+    return ip_data_obj.address

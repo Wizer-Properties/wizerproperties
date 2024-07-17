@@ -726,6 +726,7 @@
     var PROPERTY_ID = '{{property.id}}';
     var RELATED_BUILDING_ID = '{{property.building.id}}';
     var USER_ID = '{{ user.id }}';
+    var CSRF_TOKEN = '{{ csrf_token }}'
 </script>
 
 <script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
@@ -734,6 +735,6 @@
 <script src="{% static 'js/libraries/noframework.waypoints.min.js' %}"></script>
 <script src="{% static 'js/property/detail-page.js' %}?v=1.01"></script>
 <script src="{% static '/js/property/compair-favorite.js' %}?v=1.00"></script>
-<script src="{% static '/js/advertise/manage-ad-view-time.js' %}?v=1.00"></script>
+<script src="{% static '/js/advertise/manage-ad-view-time.js' %}?v=1.01"></script>
 
 {% endblock extend_script %}

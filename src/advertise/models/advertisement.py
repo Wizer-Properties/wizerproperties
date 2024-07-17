@@ -1,7 +1,11 @@
 from django.db import models
+from django.apps import apps
 from datetime import timedelta
+from django.contrib.contenttypes.models import ContentType
 from core.models import TimestampedModel
 from property.models import Property
+from schedule.models import VisitingSchedule
+from user.models import User
 
 
 class Advertisement(TimestampedModel):
@@ -13,10 +17,60 @@ class Advertisement(TimestampedModel):
 
     type = models.CharField(max_length=25, choices=TYPE_CHOICES, null=True)
     position = models.PositiveIntegerField(default=0)
-    property = models.ForeignKey(Property, on_delete=models.SET_NULL, null=True)
+    property = models.ForeignKey(Property, on_delete=models.CASCADE)
     run_time = models.DurationField(default=timedelta(seconds=0), help_text='In seconds')
     number_of_clicked = models.PositiveIntegerField(default=0)  # How many times this ad has been clicked
     view_time = models.DurationField(default=timedelta(seconds=0), help_text='In seconds')
         
     def __str__(self) -> str:
         return super().__str__()
+    
+    def conversion_rate(self) -> float:
+        if self.number_of_clicked == 0:
+            return 0.0
+        
+        property_content_type = ContentType.objects.get_for_model(Property)
+        # Filter VisitingSchedule objects for the specific property
+        visiting_schedule_count = VisitingSchedule.objects.filter(
+            content_type=property_content_type,
+            object_id=self.property.id
+        ).count()
+        conversion_rate = round((visiting_schedule_count/self.number_of_clicked) * 100, 2)
+        
+        return conversion_rate
+
+    def manage_ad_analytics(self, user=None, location=None):
+        self.number_of_clicked += 1     # Increasing the ad click count
+        self.save()
+        
+        # Creating AD log
+        AdvertisementLog.objects.create(
+            property=self.property,
+            advertisement=self,
+            user_obj=user,
+            location=location
+        )
+        
+        if user and hasattr(user, "prospectprofile"):
+            if user.prospectprofile.gender ==  "male":
+                self.addemography.male_visitors += 1
+            elif user.prospectprofile.gender ==  "female":
+                self.addemography.female_visitors += 1
+            
+            self.addemography.save()
+        
+        AdViewerLocation = apps.get_model("advertise.AdViewerLocation")
+        ad_viewer_location_obj, created = AdViewerLocation.objects.get_or_create(
+            property = self.property,
+            advertisement = self,
+            address = location
+        )
+        ad_viewer_location_obj.view_from_this_location += 1
+        ad_viewer_location_obj.save()
+            
+
+class AdvertisementLog(TimestampedModel):
+    property = models.ForeignKey(Property, on_delete=models.SET_NULL, null=True)
+    advertisement = models.ForeignKey(Advertisement, on_delete=models.SET_NULL, null=True)
+    user_obj = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    location = models.CharField(max_length=500, null=True)

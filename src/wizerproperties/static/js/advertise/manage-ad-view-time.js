@@ -28,10 +28,9 @@ $(document).ready(function(){
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
+                    'X-CSRFToken': CSRF_TOKEN
                 },
                 body: JSON.stringify({
-                    property_id: '{{ property.id }}',
                     time_spent: timeSpent
                 })
             });

@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "user",
     "schedule",
     "advertise",
+    "ipdata",
 ]
 
 MIDDLEWARE = [
@@ -149,8 +150,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "user.User"
 
-SITE_HOST = config("SITE_HOST", "http://localhost:8000")
-
+SITE_HOST = config("SITE_HOST", default="http://localhost:8000")
 
 # EMAIL
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
@@ -191,3 +191,6 @@ os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 COOKIE_EXPIRE_TIME = 7*24*60*60  #7days in seconds
 
 IPINFO_API_KEY = config("IPINFO_API_KEY", "")
+
+PROXYCHECK_API_KEY = config("PROXYCHECK_API_KEY", "")
+PROXYCHECK_REQUEST_TIME_INTERVEL = config("PROXYCHECK_REQUEST_TIME_INTERVEL", default=7, cast=int)  # Number of days

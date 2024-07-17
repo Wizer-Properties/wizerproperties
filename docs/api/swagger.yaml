@@ -2616,6 +2616,7 @@ paths:
         504:
           description: Taking more time to get a response
   
+  
   /schedule/api/:
     post:
       tags:
@@ -3275,6 +3276,81 @@ paths:
           description: Service Unavailable(Server is down for maintenance or overloaded)
         504:
           description: Taking more time to get a response  
+
+
+  /advertise/api/advertisement/suggested/:
+    get:
+      tags:
+        - Advertisement
+      summary: "Get suggested advertisement"
+      description: "**User type**: Any"
+      operationId: Get suggested advertisement list
+      responses:
+        200:
+          description: Advertisement List
+          schema:
+            $ref: "#/definitions/AdvertisementListResponse"
+        404:
+          description: Object not Found
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  
+  /advertise/api/advertisement/{id}/analytics/:
+    get:
+      tags:
+        - Advertisement
+      summary: "Get advertisement analytics"
+      description: "**User type**: Any"
+      operationId: Get advertisement analytics
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "number"
+        - name: "query_for"
+          type: "string"
+          required: true
+          in: "query"
+          description: "Choices are: 'total-clicks', 'view-time', 'gender', 'locations'"
+      responses:
+        200:
+          description: Advertisement Analytics
+          schema:
+            $ref: "#/definitions/AdvertisementAnalyticsResponse"
+        404:
+          description: Object not Found
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
   
 
 definitions:
@@ -4679,7 +4755,78 @@ definitions:
                       type: "string"
                     company_name:
                       type: "string"
-
+  
+  AdvertisementListResponse:
+    type: object
+    properties:
+      total_page:
+        type: "number"
+      page_size:
+        type: "number"
+      count:
+        type: "number"
+      next:
+        type: "number"
+      previous:
+        type: "number"
+      results:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: "number"
+            type:
+              type: "string"
+            position:
+              type: "number"
+            property:
+              type: "number"
+            property_title:
+              type: "string"
+            run_time:
+              type: "string"
+            number_of_clicked:
+              type: "number"
+            view_time:
+              type: "string"
+            conversion_rate:
+              type: "number"
+  
+  AdvertisementAnalyticsResponse:
+    type: object
+    properties:
+      id:
+        type: "number"
+      property:
+        type: "string"
+      property_title:
+        type: "string"
+      number_of_clicked:
+        type: "number"
+      view_time:
+        type: "string"
+      addemography:
+        type: object
+        properties:
+          id:
+            type: "number"
+          male_visitors:
+            type: "number"
+          female_visitors:
+            type: "number"
+      adviewerlocation:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: "number"
+            address:
+              type: "string"
+            view_from_this_location:
+              type: "number"
+          
 
 # Added by API Auto Mocking Plugin
 host: localhost:8000

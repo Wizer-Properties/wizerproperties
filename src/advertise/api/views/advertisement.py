@@ -9,7 +9,8 @@ from datetime import timedelta
 
 from advertise.models import Advertisement
 from property.models import Property
-from advertise.api.serializers import AdvertisementSerializer
+from advertise.api.serializers import AdvertisementSerializer, AdAnalyticsClickSerializer, \
+    AdAnalyticsViewTimeSerializer, AdAnalyticsGenderSerializer, AdAnalyticsLocationSerializer
 from advertise.api.pagination import AdvertisementPagination
 
 
@@ -21,15 +22,33 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=["patch"], url_path="manage-view-time")
     def manage_advertisement_view_time(self, request, pk=None):
+        # Updates Ad total view time
         ad_obj = self.get_object()
-        time_spent = request.data.get("time_spent")
-        time_spent = time_spent / 1000  # Converting milliseconds into seconds
-        ad_obj.view_time += timedelta(seconds=time_spent)
-        ad_obj.save()
-        
+        time_spent = request.data.get("time_spent", None)
+        if time_spent:
+            time_spent = time_spent / 1000  # Converting milliseconds into seconds
+            ad_obj.view_time += timedelta(seconds=time_spent)
+            ad_obj.save()
         serializer = self.serializer_class(ad_obj)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    @action(detail=True, methods=["get"], url_path="analytics")
+    def advertisement_analytics(self, request, pk=None):
+        ad_obj = self.get_object()
+        query_for = request.GET.get("query_for", None)
+        if query_for == "total-clicks":
+            serializer = AdAnalyticsClickSerializer(ad_obj)
+        elif query_for == "view-time":
+            serializer = AdAnalyticsViewTimeSerializer(ad_obj)
+        elif query_for == "gender":
+            serializer = AdAnalyticsGenderSerializer(ad_obj)
+        elif query_for == "locations":
+            serializer = AdAnalyticsLocationSerializer(ad_obj)
+        else:
+            serializer = self.serializer_class(ad_obj)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
     @action(detail=False, methods=["get"], url_path="suggested")
     def suggested_advertisement(self, request):
