@@ -2,29 +2,6 @@ from rest_framework import serializers
 from advertise.models import Advertisement, AdDemography, AdViewerLocation
 
 
-class AdAnalyticsClickSerializer(serializers.ModelSerializer):
-    property_title = serializers.CharField(source="property.title", read_only=True)
-
-    class Meta:
-        model = Advertisement
-        fields = [
-            "id",
-            "property",
-            "property_title",
-            "number_of_clicked",
-        ]
-class AdAnalyticsViewTimeSerializer(serializers.ModelSerializer):
-    property_title = serializers.CharField(source="property.title", read_only=True)
-
-    class Meta:
-        model = Advertisement
-        fields = [
-            "id",
-            "property",
-            "property_title",
-            "view_time",
-        ]
-
 class AdDemographySerializer(serializers.ModelSerializer):
     
     class Meta:
@@ -36,19 +13,6 @@ class AdDemographySerializer(serializers.ModelSerializer):
         ]
 
 
-class AdAnalyticsGenderSerializer(serializers.ModelSerializer):
-    property_title = serializers.CharField(source="property.title", read_only=True)
-    addemography = AdDemographySerializer(read_only=True)
-
-    class Meta:
-        model = Advertisement
-        fields = [
-            "id",
-            "property",
-            "property_title",
-            "addemography",
-        ]
-
 class AdViewerLocationSerializer(serializers.ModelSerializer):
     
     class Meta:
@@ -59,8 +23,10 @@ class AdViewerLocationSerializer(serializers.ModelSerializer):
             "view_from_this_location",
         ]
 
-class AdAnalyticsLocationSerializer(serializers.ModelSerializer):
+class AdAnalyticsSerializer(serializers.ModelSerializer):
     property_title = serializers.CharField(source="property.title", read_only=True)
+    conversion_rate = serializers.SerializerMethodField()
+    addemography = AdDemographySerializer(read_only=True)
     adviewerlocation = AdViewerLocationSerializer(source="adviewerlocation_set", many=True, read_only=True)
 
     class Meta:
@@ -69,5 +35,12 @@ class AdAnalyticsLocationSerializer(serializers.ModelSerializer):
             "id",
             "property",
             "property_title",
+            "number_of_clicked",
+            "view_time",
+            "conversion_rate",
+            "addemography",
             "adviewerlocation",
         ]
+    
+    def get_conversion_rate(self, obj):
+        return obj.conversion_rate()

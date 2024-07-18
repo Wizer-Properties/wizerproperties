@@ -9,8 +9,7 @@ from datetime import timedelta
 
 from advertise.models import Advertisement
 from property.models import Property
-from advertise.api.serializers import AdvertisementSerializer, AdAnalyticsClickSerializer, \
-    AdAnalyticsViewTimeSerializer, AdAnalyticsGenderSerializer, AdAnalyticsLocationSerializer
+from advertise.api.serializers import AdAnalyticsSerializer, AdvertisementSerializer
 from advertise.api.pagination import AdvertisementPagination
 
 
@@ -36,17 +35,7 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["get"], url_path="analytics")
     def advertisement_analytics(self, request, pk=None):
         ad_obj = self.get_object()
-        query_for = request.GET.get("query_for", None)
-        if query_for == "total-clicks":
-            serializer = AdAnalyticsClickSerializer(ad_obj)
-        elif query_for == "view-time":
-            serializer = AdAnalyticsViewTimeSerializer(ad_obj)
-        elif query_for == "gender":
-            serializer = AdAnalyticsGenderSerializer(ad_obj)
-        elif query_for == "locations":
-            serializer = AdAnalyticsLocationSerializer(ad_obj)
-        else:
-            serializer = self.serializer_class(ad_obj)
+        serializer = AdAnalyticsSerializer(ad_obj)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 

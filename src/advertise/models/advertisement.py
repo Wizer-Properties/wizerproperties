@@ -21,6 +21,7 @@ class Advertisement(TimestampedModel):
     run_time = models.DurationField(default=timedelta(seconds=0), help_text='In seconds')
     number_of_clicked = models.PositiveIntegerField(default=0)  # How many times this ad has been clicked
     view_time = models.DurationField(default=timedelta(seconds=0), help_text='In seconds')
+    end_at = models.DateTimeField(null=True, blank=True)
         
     def __str__(self) -> str:
         return super().__str__()

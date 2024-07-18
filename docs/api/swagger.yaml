@@ -3322,11 +3322,6 @@ paths:
           in: "path"
           required: true
           type: "number"
-        - name: "query_for"
-          type: "string"
-          required: true
-          in: "query"
-          description: "Choices are: 'total-clicks', 'view-time', 'gender', 'locations'"
       responses:
         200:
           description: Advertisement Analytics
@@ -4776,22 +4771,12 @@ definitions:
           properties:
             id:
               type: "number"
-            type:
-              type: "string"
-            position:
-              type: "number"
-            property:
-              type: "number"
             property_title:
               type: "string"
-            run_time:
+            created_at:
               type: "string"
-            number_of_clicked:
-              type: "number"
-            view_time:
+            end_at:
               type: "string"
-            conversion_rate:
-              type: "number"
   
   AdvertisementAnalyticsResponse:
     type: object
