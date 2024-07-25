@@ -11,11 +11,13 @@ from advertise.models import Advertisement
 from property.models import Property
 from advertise.api.serializers import AdAnalyticsSerializer, AdvertisementSerializer
 from advertise.api.pagination import AdvertisementPagination
+from advertise.api.permissions import AdvertisementPermission
 
 
 class AdvertisementViewSet(viewsets.ModelViewSet):
     serializer_class = AdvertisementSerializer
     pagination_class = AdvertisementPagination
+    permission_classes = [AdvertisementPermission]
     queryset = Advertisement.objects.all()
     ordering = ["-created_at"]  # Default ordering
     
@@ -31,12 +33,26 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_class(ad_obj)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
+
     @action(detail=True, methods=["get"], url_path="analytics")
     def advertisement_analytics(self, request, pk=None):
+        """Returns analytics of an advertisement"""
+
         ad_obj = self.get_object()
         serializer = AdAnalyticsSerializer(ad_obj)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+    @action(detail=False, methods=["get"], url_path="list")
+    def advertisement_list(self, request):
+        """Returns agent/developer advertisement list"""
+        
+        advertisement_qs = self.get_queryset().filter(property__created_by=request.user)
+        paginator = self.pagination_class()
+        paginated_queryset = paginator.paginate_queryset(advertisement_qs, request)
+        serializer = self.serializer_class(paginated_queryset, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
 
     @action(detail=False, methods=["get"], url_path="suggested")

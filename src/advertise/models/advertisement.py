@@ -18,15 +18,17 @@ class Advertisement(TimestampedModel):
     type = models.CharField(max_length=25, choices=TYPE_CHOICES, null=True)
     position = models.PositiveIntegerField(default=0)
     property = models.ForeignKey(Property, on_delete=models.CASCADE)
-    run_time = models.DurationField(default=timedelta(seconds=0), help_text='In seconds')
+    run_time = models.DurationField(default=timedelta(seconds=0))   # How long the ad will run
     number_of_clicked = models.PositiveIntegerField(default=0)  # How many times this ad has been clicked
-    view_time = models.DurationField(default=timedelta(seconds=0), help_text='In seconds')
-    end_at = models.DateTimeField(null=True, blank=True)
+    view_time = models.DurationField(default=timedelta(seconds=0))  # How long the viewers view this advertisement
+    end_at = models.DateTimeField(null=True)
         
     def __str__(self) -> str:
         return super().__str__()
     
     def conversion_rate(self) -> float:
+        """Returns advertisement conversion rate"""
+
         if self.number_of_clicked == 0:
             return 0.0
         

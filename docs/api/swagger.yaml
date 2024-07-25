@@ -3310,12 +3310,48 @@ paths:
           description: Taking more time to get a response
   
   
+  /advertise/api/advertisement/list/:
+    get:
+      tags:
+        - Advertisement
+      summary: "Get user's advertisement list"
+      description: "**User type**: Agent/developer"
+      operationId: Get user's advertisement list
+      responses:
+        200:
+          description: Advertisement List
+          schema:
+            $ref: "#/definitions/AdvertisementListResponse"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        404:
+          description: Object not Found
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+  
+  
   /advertise/api/advertisement/{id}/analytics/:
     get:
       tags:
         - Advertisement
       summary: "Get advertisement analytics"
-      description: "**User type**: Any"
+      description: "**User type**: Agent/Developer"
       operationId: Get advertisement analytics
       parameters:
         - name: "id"
@@ -3327,6 +3363,10 @@ paths:
           description: Advertisement Analytics
           schema:
             $ref: "#/definitions/AdvertisementAnalyticsResponse"
+        403:
+          description: permission denied
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
         404:
           description: Object not Found
           schema:
@@ -4790,6 +4830,8 @@ definitions:
       number_of_clicked:
         type: "number"
       view_time:
+        type: "string"
+      conversion_rate:
         type: "string"
       addemography:
         type: object
