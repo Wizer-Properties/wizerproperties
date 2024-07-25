@@ -1,9 +1,10 @@
 from django.urls import include, path
-from .views import create_reels, edit_reels, advertise_analytics
+from .views import create_reels, edit_reels, advertise_analytics, advertise_performance
 
 urlpatterns = [
     path("create-reels/", create_reels, name="create_reels"),
     path("edit-reels/<int:id>/", edit_reels, name="create_reels"),
     path("analytics/", advertise_analytics, name="analytics"),
+    path("performance/", advertise_performance, name="performance"),
     path("api/", include(("advertise.api.urls", "advertise"), namespace="api")),
 ]

@@ -1,128 +1,65 @@
 $(document).ready(function(){
-    $("#advertise-table").DataTable({
-        ordering: false,
-        lengthChange: false,
-        info: false,
-    });
+    var property_dom = document.getElementById('property_view');
+    var propertyChart = echarts.init(property_dom);
+    var propertyOption;
 
-    $("#location-table").DataTable({
-        ordering: false,
-        lengthChange: false,
-        info: false,
-    });
-    
-
-    $(document).on('click', '#advertise-table .view-button', function(){
-        $('#analytics-details').modal('show');
-    });
-
-    $(document).on('click', '.close-analytics-modal', function(){
-        $('#analytics-details').modal('hide');
-    })
-
-
-    // gender analytics data ============================
-    var chartDom = document.getElementById('gender-analytics');
-    var myChart = echarts.init(chartDom);
-    var getnder_option;
-
-    getnder_option = {
+    propertyOption = {
+        title: {
+            text: 'Property View'
+        },
         tooltip: {
-            trigger: 'item'
+            trigger: 'axis'
         },
         legend: {
-            top: '5%',
-            left: 'center'
+            data: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine']
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        toolbox: {
+            feature: {
+            saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+            type: 'value'
         },
         series: [
             {
-            name: 'Gender',
-            type: 'pie',
-            radius: ['40%', '70%'],
-            avoidLabelOverlap: false,
-            itemStyle: {
-                borderRadius: 10,
-                borderColor: '#fff',
-                borderWidth: 2
+            name: 'Email',
+            type: 'line',
+            stack: 'Total',
+            data: [120, 132, 101, 134, 90, 230, 210]
             },
-            label: {
-                show: false,
-                position: 'center'
-            },
-            emphasis: {
-                label: {
-                show: true,
-                fontSize: 18,
-                fontWeight: 'bold'
-                }
-            },
-            labelLine: {
-                show: false
-            },
-            data: [
-                { value: 484, name: 'Male' },
-                { value: 100, name: 'Female' }
-            ]
+            {
+            name: 'Union Ads',
+            type: 'line',
+            stack: 'Total',
+            data: [220, 182, 191, 234, 290, 330, 310]
             }
         ]
     };
 
-    getnder_option && myChart.setOption(getnder_option);
+    propertyOption && propertyChart.setOption(propertyOption);
 
-
-    // age analytics data ============================
-    var age_chartDom = document.getElementById('age-analytics');
-    var age_myChart = echarts.init(age_chartDom);
-    var age_getnder_option;
-
-    age_getnder_option = {
-        tooltip: {
-            trigger: 'item'
-        },
-        legend: {
-            top: '5%',
-            left: 'center'
-        },
-        series: [
-            {
-            name: 'Age Analytics',
-            type: 'pie',
-            radius: ['40%', '70%'],
-            avoidLabelOverlap: false,
-            itemStyle: {
-                borderRadius: 10,
-                borderColor: '#fff',
-                borderWidth: 2
-            },
-            label: {
-                show: false,
-                position: 'center'
-            },
-            emphasis: {
-                label: {
-                    show: true,
-                    fontSize: 18,
-                    fontWeight: 'bold'
-                }
-            },
-            labelLine: {
-                show: false
-            },
-            data: [
-                    { value: 44, name: '30 year' },
-                    { value: 20, name: '40 year' },
-                    { value: 10, name: '50 year' },
-                    { value: 20, name: '60 year' },
-                ]
-            }
-        ]
-    };
-
-    age_getnder_option && age_myChart.setOption(age_getnder_option);
 
     window.addEventListener('resize', function() {
-        myChart.resize();
-        age_myChart.resize();
+        propertyChart.resize();
     });
 
-});
+
+
+    $(".dashboard-data-table").DataTable({
+        ordering: false,
+        lengthChange: false,
+        info: false,
+    });
+})

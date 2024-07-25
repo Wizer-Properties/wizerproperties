@@ -32,6 +32,7 @@
         {% url 'property:favorite_list' as favorite_list_property_url %}
         {% url 'advertise:create_reels' as create_reels_url %}
         {% url 'advertise:analytics' as ads_analytics_url %}
+        {% url 'advertise:performance' as ads_performance_url %}
 
         <header class="wip-header">
             <div class="w-100 px-5">
@@ -111,7 +112,9 @@
                                 
                                 {% if request.user.user_type == "developer" or request.user.user_type == "agent" %}
                                 <a class="nav-link {% if request.path == ads_analytics_url %}active-nav{% endif %}"
-                                    href="{{ ads_analytics_url }}">Ads Analytics</a>
+                                    href="{{ads_analytics_url}}">Ads Analytics</a>
+                                <a class="nav-link {% if request.path == ads_performance_url %}active-nav{% endif %}"
+                                    href="{{ ads_performance_url }}">Ads Performance</a>
                                 {% endif %}
 
                                 <a class="nav-link" href="{% url 'user:logout' %}">Log out</a>

@@ -27,3 +27,8 @@ def edit_reels(request, id):
 @developer_or_agent_required
 def advertise_analytics(request):
     return render(request, "advertise-analytics.html")
+
+
+@developer_or_agent_required
+def advertise_performance(request):
+    return render(request, "advertise-performance.html")

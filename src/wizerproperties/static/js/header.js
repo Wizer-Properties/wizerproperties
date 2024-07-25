@@ -67,7 +67,7 @@ $(document).ready(function(){
             if(!incert_nav) return;
             for (let i = 0; i < dropdown_nav_links.length; i++) {
                 $('.navigations').append(dropdown_nav_links[i]);
-                if(i == (dropdown_nav_links.length - 4)) break; // get 3 nav inside dropdown
+                if(i == (dropdown_nav_links.length - 5)) break; // get 4 nav inside dropdown
             };
             incert_nav = false;
         };

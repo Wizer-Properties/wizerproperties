@@ -144,5 +144,4 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
         paginator = self.pagination_class()
         paginated_queryset = paginator.paginate_queryset(advertisement_qs, request)
         serializer = self.serializer_class(paginated_queryset, many=True)
-
-        return paginator.get_paginated_response(serializer.data)
+        return Response(serializer.data)
