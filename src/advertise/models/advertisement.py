@@ -2,6 +2,7 @@ from django.db import models
 from django.apps import apps
 from datetime import timedelta
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ValidationError
 from core.models import TimestampedModel
 from property.models import Property
 from schedule.models import VisitingSchedule
@@ -14,17 +15,40 @@ class Advertisement(TimestampedModel):
         ('search', 'Search'),
         ('details', 'Details')
     )
+    STATUS = (
+        ('running', 'Running'),
+        ('stopped', 'Stopped'),
+    )
 
     type = models.CharField(max_length=25, choices=TYPE_CHOICES, null=True)
     position = models.PositiveIntegerField(default=0)
+    status = models.CharField(max_length=25, choices=STATUS, default='running')
     property = models.ForeignKey(Property, on_delete=models.CASCADE)
-    run_time = models.DurationField(default=timedelta(seconds=0))   # How long the ad will run
+    ad_run_duration = models.PositiveIntegerField(default=0, help_text='How many days this ad will run')
     number_of_clicked = models.PositiveIntegerField(default=0)  # How many times this ad has been clicked
     view_time = models.DurationField(default=timedelta(seconds=0))  # How long the viewers view this advertisement
-    end_at = models.DateTimeField(null=True)
         
     def __str__(self) -> str:
         return super().__str__()
+    
+    def clean(self):
+        """To check some field validation manually we are modifying the default clean method"""
+        
+        error_messages = {} # Error messages will append here
+        
+        if self.status == 'running':
+            if Advertisement.objects.filter(type=self.type, position=self.position, status='running').exclude(id=self.id).exists():
+                error_messages.update({'position': ['An advertisement with this type and position is already running']})
+        
+        # Raise validation errors if any
+        if error_messages:
+            raise ValidationError(error_messages)
+    
+    def end_at(self) -> str:
+        """Returns Ad finishing time"""
+
+        end_at = self.created_at + timedelta(days=self.ad_run_duration)
+        return end_at
     
     def conversion_rate(self) -> float:
         """Returns advertisement conversion rate"""
@@ -42,7 +66,9 @@ class Advertisement(TimestampedModel):
         
         return conversion_rate
 
-    def manage_ad_analytics(self, user=None, location=None):
+    def manage_ad_analytics(self, user=None, location=None) -> None:
+        """Depending on view of an ad we are upending it's associates analytics value"""
+        
         self.number_of_clicked += 1     # Increasing the ad click count
         self.save()
         
