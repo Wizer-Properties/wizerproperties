@@ -5,8 +5,8 @@ admin.site.register([Reel])
 
 @admin.register(Advertisement)
 class AdvertisementAdmin(admin.ModelAdmin):
-    list_display = ["id", "type", "position", "property", "ad_run_duration", "number_of_clicked", "view_time", "created_at"]
-    list_editable = ["type", "position"]
+    list_display = ["id", "ad_location", "position", "property", "ad_run_duration", "number_of_clicked", "view_time", "created_at"]
+    list_editable = ["ad_location", "position"]
 
 @admin.register(AdDemography)
 class AdDemographyAdmin(admin.ModelAdmin):

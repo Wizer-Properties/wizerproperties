@@ -132,15 +132,29 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
 
         # Convert OrderedDict keys to list to get unique property IDs in the original order
         unique_property_ids = list(unique_property_ids.keys())
-        # Get the queryset of the rest of the properties excluding the ones in unique_property_ids
-        rest_of_the_property_qs = property_qs.exclude(id__in=unique_property_ids).order_by("-created_at").values_list("id", flat=True)        
-        # Combine the unique property IDs with the rest, maintaining the original order first
-        property_ids = unique_property_ids + list(rest_of_the_property_qs)
+
+        if unique_property_ids:
+            # Get the queryset of the rest of the properties excluding the ones in unique_property_ids
+            rest_of_the_property_ids = property_qs.exclude(id__in=unique_property_ids).order_by("-created_at").values_list("id", flat=True)        
+            # Combine the unique property IDs with the rest, maintaining the original order first
+            property_id_list = unique_property_ids + list(rest_of_the_property_ids)
+            # Create a Case expression to order the properties based on their IDs
+            order_by = Case(*[When(property__id=id, then=pos) for pos, id in enumerate(property_id_list)])
+        else:
+            property_ids = property_qs.order_by("-created_at").values_list("id", flat=True)
+            property_id_list = list(property_ids)
+            # If their is no cookie we will order them by position
+            order_by = "position"
+        
+        ad_query_params = {
+            "property_id__in": property_id_list,
+        }
+        ad_location = request.GET.get("ad-location", None)
+        if ad_location:
+            ad_query_params["ad_location"] = ad_location
        
-        # Create a Case expression to order the properties based on their IDs
-        order = Case(*[When(property__id=id, then=pos) for pos, id in enumerate(property_ids)])
         # Filter the queryset for active reels and order them according to the Case expression
-        advertisement_qs = self.get_queryset().filter(property_id__in=property_ids).order_by(order)
+        advertisement_qs = self.get_queryset().filter(**ad_query_params).order_by(order_by)
         paginator = self.pagination_class()
         paginated_queryset = paginator.paginate_queryset(advertisement_qs, request)
         serializer = self.serializer_class(paginated_queryset, many=True)

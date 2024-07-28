@@ -20,7 +20,7 @@ class Advertisement(TimestampedModel):
         ('stopped', 'Stopped'),
     )
 
-    type = models.CharField(max_length=25, choices=TYPE_CHOICES, null=True)
+    ad_location = models.CharField(max_length=25, choices=TYPE_CHOICES, null=True)
     position = models.PositiveIntegerField(default=0)
     status = models.CharField(max_length=25, choices=STATUS, default='running')
     property = models.ForeignKey(Property, on_delete=models.CASCADE)
@@ -37,8 +37,8 @@ class Advertisement(TimestampedModel):
         error_messages = {} # Error messages will append here
         
         if self.status == 'running':
-            if Advertisement.objects.filter(type=self.type, position=self.position, status='running').exclude(id=self.id).exists():
-                error_messages.update({'position': ['An advertisement with this type and position is already running']})
+            if Advertisement.objects.filter(ad_location=self.ad_location, position=self.position, status='running').exclude(id=self.id).exists():
+                error_messages.update({'position': ['An advertisement with this ad location and position is already running']})
         
         # Raise validation errors if any
         if error_messages:

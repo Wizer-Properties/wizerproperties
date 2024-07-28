@@ -4811,12 +4811,10 @@ definitions:
           properties:
             id:
               type: "number"
-            property_title:
+            property_image:
               type: "string"
-            created_at:
-              type: "string"
-            end_at:
-              type: "string"
+            property_id:
+              type: "number"
   
   AdvertisementAnalyticsResponse:
     type: object
