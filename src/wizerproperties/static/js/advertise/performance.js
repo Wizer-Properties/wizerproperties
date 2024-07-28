@@ -22,6 +22,7 @@ $(document).ready(function(){
 
                     advertise_list.row.add([
                         data[i]?.property_title,
+                        data[i]?.ad_location,
                         created_at,
                         end_at,
                         '<div class="td-edit-delete-see">'+
@@ -131,7 +132,7 @@ $(document).ready(function(){
             success: function (data) {
                 $('[label-name="number_of_clicked"]').html(data?.number_of_clicked)
                 $('[label-name="view_time"]').html(data?.view_time)
-                $('[label-name="conversion_rate"]').html(data?.conversion_rate)
+                $('[label-name="conversion_rate"]').html(data?.conversion_rate+' %')
 
                 var addemography_value = [
                     { value: data?.addemography?.male_visitors || 0, name: 'Male' },

@@ -66,10 +66,10 @@
 
 #advertise-table_wrapper
 .dashboard-data-table{
-    min-width: 600px !important;
+    min-width: 700px !important;
 
     td{
-        min-width: calc(600px / 4);
+        min-width: calc(700px / 5);
     }
 }
 
