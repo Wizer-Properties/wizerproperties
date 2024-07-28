@@ -12,6 +12,7 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "property_title",
+            "ad_location",
             "created_at",
             "end_at",
         ]

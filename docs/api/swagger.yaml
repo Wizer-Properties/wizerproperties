@@ -4828,10 +4828,14 @@ definitions:
       properties:
         id:
           type: "number"
-        property_image:
+        property_title:
           type: "string"
-        property_id:
-          type: "number"
+        ad_location:
+          type: "string"
+        created_at:
+          type: "string"
+        end_at:
+          type: "string"
   
   
   AdvertisementAnalyticsResponse:
