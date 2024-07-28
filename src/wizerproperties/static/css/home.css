@@ -1,4 +1,3 @@
-.banner,
 .container-wrapper,
 #new-properties,
 #popular-properties,
@@ -252,6 +251,7 @@
     justify-content: space-between;
     margin-bottom: 55px;
     align-items: center;
+    margin-top: 55px;
 }
 
 .sign-in-note-box h1{

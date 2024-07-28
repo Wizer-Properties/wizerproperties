@@ -46,15 +46,20 @@
 
 {% block content %}
 
-<div class="top-banner">
+<div class="top-banner mb-5">
     <div class="container">
-        <div class="col-xl-6 col-lg-7 col-md-8 col-11 mx-auto">
-            <div class="top-banner-img">
-                <img src="{% static '/media/demo_img/add-banner.png' %}" alt="">
+        <div class="col-lg-8 col-md-8 col-11 mx-auto">
+            <div class="splide ads-banner-slider">
+                <div class="splide__track">
+                    <div class="splide__list">
+                        <!-- from dom -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 
 
 <section id="details-banner">
@@ -727,6 +732,8 @@
     var RELATED_BUILDING_ID = '{{property.building.id}}';
     var USER_ID = '{{ user.id }}';
     var CSRF_TOKEN = '{{ csrf_token }}'
+    var ADS_SUGGEST_URL = '/advertise/api/advertisement/suggested/'
+    var ADS_LOCATION_PARAM = 'details'
 </script>
 
 <script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
@@ -736,5 +743,5 @@
 <script src="{% static 'js/property/detail-page.js' %}?v=1.01"></script>
 <script src="{% static '/js/property/compair-favorite.js' %}?v=1.00"></script>
 <script src="{% static '/js/advertise/manage-ad-view-time.js' %}?v=1.01"></script>
-
+<script src="{% static '/js/ads.js' %}?v=1.00"></script>
 {% endblock extend_script %}

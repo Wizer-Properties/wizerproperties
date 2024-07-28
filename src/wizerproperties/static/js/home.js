@@ -1,15 +1,5 @@
 $(document).ready(function(){
 
-    new Splide( '.add-banner-slider', {
-        perPage: 1,
-        type: 'loop',
-        arrows: false,
-        pagination: false,
-        autoplay: 'playing',
-        interval: 3000
-    }).mount();
-
-
     function property_list_tmp(data){
         var is_fav_effect = localStorage.getItem('favorite-effect');
 

@@ -112,7 +112,7 @@
                                 
                                 {% if request.user.user_type == "developer" or request.user.user_type == "agent" %}
                                 <a class="nav-link {% if request.path == ads_analytics_url %}active-nav{% endif %}"
-                                    href="{{ads_analytics_url}}">Ads Analytics</a>
+                                    href="{{ads_analytics_url}}">Analytics</a>
                                 <a class="nav-link {% if request.path == ads_performance_url %}active-nav{% endif %}"
                                     href="{{ ads_performance_url }}">Ads Performance</a>
                                 {% endif %}
