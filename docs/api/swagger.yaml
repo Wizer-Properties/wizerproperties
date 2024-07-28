@@ -3285,6 +3285,11 @@ paths:
       summary: "Get suggested advertisement"
       description: "**User type**: Any"
       operationId: Get suggested advertisement list
+      parameters:
+        - name: "ad-location"
+          in: "query"
+          type: "string"
+          description: "Choices are: 'home', 'search', 'details'"
       responses:
         200:
           description: Advertisement List
