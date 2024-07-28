@@ -3326,7 +3326,7 @@ paths:
         200:
           description: Advertisement List
           schema:
-            $ref: "#/definitions/AdvertisementListResponse"
+            $ref: "#/definitions/UserAdvertisementListResponse"
         403:
           description: permission denied
           schema:
@@ -4820,6 +4820,19 @@ definitions:
               type: "string"
             property_id:
               type: "number"
+  
+  UserAdvertisementListResponse:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: "number"
+        property_image:
+          type: "string"
+        property_id:
+          type: "number"
+  
   
   AdvertisementAnalyticsResponse:
     type: object

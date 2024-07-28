@@ -9,7 +9,7 @@ from datetime import timedelta
 
 from advertise.models import Advertisement
 from property.models import Property
-from advertise.api.serializers import AdAnalyticsSerializer, AdvertisementSerializer
+from advertise.api.serializers import AdAnalyticsSerializer, AdvertisementSerializer, AdvertisementSuggestionSerializer
 from advertise.api.pagination import AdvertisementPagination
 from advertise.api.permissions import AdvertisementPermission
 
@@ -49,10 +49,8 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
         """Returns agent/developer advertisement list"""
         
         advertisement_qs = self.get_queryset().filter(property__created_by=request.user)
-        paginator = self.pagination_class()
-        paginated_queryset = paginator.paginate_queryset(advertisement_qs, request)
-        serializer = self.serializer_class(paginated_queryset, many=True)
-        return paginator.get_paginated_response(serializer.data)
+        serializer = self.serializer_class(advertisement_qs, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
     @action(detail=False, methods=["get"], url_path="suggested")
@@ -157,5 +155,5 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
         advertisement_qs = self.get_queryset().filter(**ad_query_params).order_by(order_by)
         paginator = self.pagination_class()
         paginated_queryset = paginator.paginate_queryset(advertisement_qs, request)
-        serializer = self.serializer_class(paginated_queryset, many=True)
+        serializer = AdvertisementSuggestionSerializer(paginated_queryset, many=True)
         return Response(serializer.data)
