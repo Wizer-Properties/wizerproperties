@@ -131,7 +131,7 @@ $(document).ready(function(){
             },
             success: function (data) {
                 $('[label-name="number_of_clicked"]').html(data?.number_of_clicked)
-                $('[label-name="view_time"]').html(data?.view_time)
+                $('[label-name="formatted_view_time"]').html(data?.formatted_view_time)
                 $('[label-name="conversion_rate"]').html(data?.conversion_rate+' %')
 
                 var addemography_value = [
