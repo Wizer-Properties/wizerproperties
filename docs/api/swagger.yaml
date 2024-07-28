@@ -4845,7 +4845,7 @@ definitions:
         type: "string"
       number_of_clicked:
         type: "number"
-      view_time:
+      formatted_view_time:
         type: "string"
       conversion_rate:
         type: "string"

@@ -26,6 +26,7 @@ class AdViewerLocationSerializer(serializers.ModelSerializer):
 class AdAnalyticsSerializer(serializers.ModelSerializer):
     property_title = serializers.CharField(source="property.title", read_only=True)
     conversion_rate = serializers.SerializerMethodField()
+    formatted_view_time = serializers.SerializerMethodField()
     addemography = AdDemographySerializer(read_only=True)
     adviewerlocation = AdViewerLocationSerializer(source="adviewerlocation_set", many=True, read_only=True)
 
@@ -36,7 +37,7 @@ class AdAnalyticsSerializer(serializers.ModelSerializer):
             "property",
             "property_title",
             "number_of_clicked",
-            "view_time",
+            "formatted_view_time",
             "conversion_rate",
             "addemography",
             "adviewerlocation",
@@ -44,3 +45,6 @@ class AdAnalyticsSerializer(serializers.ModelSerializer):
     
     def get_conversion_rate(self, obj):
         return obj.conversion_rate()
+    
+    def get_formatted_view_time(self, obj):
+        return obj.view_time_without_milliseconds()

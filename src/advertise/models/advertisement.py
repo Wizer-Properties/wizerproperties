@@ -7,6 +7,7 @@ from core.models import TimestampedModel
 from property.models import Property
 from schedule.models import VisitingSchedule
 from user.models import User
+from utils.general_func import get_duration_without_milliseconds
 
 
 class Advertisement(TimestampedModel):
@@ -96,6 +97,10 @@ class Advertisement(TimestampedModel):
         )
         ad_viewer_location_obj.view_from_this_location += 1
         ad_viewer_location_obj.save()
+    
+    def view_time_without_milliseconds(self):
+        view_time = get_duration_without_milliseconds(self.view_time)
+        return view_time
             
 
 class AdvertisementLog(TimestampedModel):

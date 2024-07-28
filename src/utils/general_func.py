@@ -166,3 +166,19 @@ def get_user_location(request):
         ip_data_obj.save()
         
     return ip_data_obj.address
+
+
+def get_duration_without_milliseconds(duration):
+    # Format duration to remove microseconds and keep the format `days hours:minutes:seconds`
+
+    if isinstance(duration, timedelta):
+        total_seconds = int(duration.total_seconds())
+        days, remainder = divmod(total_seconds, 86400)
+        hours, remainder = divmod(remainder, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        if days > 0:
+            return f"{days} {hours:02}:{minutes:02}:{seconds:02}"
+        else:
+            return f"{hours:02}:{minutes:02}:{seconds:02}"
+
+    return duration
