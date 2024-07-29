@@ -606,6 +606,26 @@
 }
 
 
+@media screen and (max-width: 991px) {
+    .sorting-map-box a {
+        font-weight: 500;
+    }
+    .sorting-btn span {
+        font-weight: 500;
+    }
+
+    .search-box-title span {
+        font-size: 20px;
+    }
+    .search-box-price {
+        font-size: 18px;
+    }
+    .building-status {
+        font-size: 10px;
+    }
+}
+
+
 @media screen and (max-width : 768px){
     #search-result .banner-action-button{
         width: 130px;

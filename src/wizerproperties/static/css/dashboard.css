@@ -196,3 +196,18 @@
         margin-bottom: 15px;
     }
 }
+
+
+
+/************** Dashboad page  **************/
+@media screen and (max-width: 991px) {
+    .table-area  {
+        margin-bottom: 0px;
+    }
+}
+
+@media screen and (max-width: 560px){
+    .single-card-value span  {
+        font-size: 20px;
+    }
+}

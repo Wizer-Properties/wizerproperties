@@ -90,10 +90,23 @@
     .search-result-box-img {
         height: 100% !important;
     }
+    .create-schedule-title{
+        font-size: 22px !important;
+    }
+}
+
+@media screen and (max-wdith: 768px) {
+    .create-schedule-title{
+        font-size: 20px !important;
+    }
 }
 
 @media screen and (max-width: 576px){
     .search-result-box-img {
         height: 180px !important;
+    }
+
+    .create-schedule-title{
+        font-size: 18px !important;
     }
 }

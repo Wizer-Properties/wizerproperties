@@ -1213,14 +1213,65 @@ option:disabled{
     [pop-status="true"] body{
         padding-right: 17px;
     }
+   
 }
 
 @-moz-document url-prefix() {
     [pop-status="true"] body{
         padding-right: 0px !important;
     }
-}
 
+}
+@media screen and (max-width: 991px) {
+    #privacy-about-page .title {
+        font-size: 22px;
+    }
+
+    .card-title {
+        font-size: 16px !important;
+    }
+
+    .price-tag {
+        font-size: 16px;
+    }
+
+    .banner, .container-wrapper, #new-properties, #popular-properties, #popular-buildings, #open-ai-chat-box, #discount-properties, #popular-city, #recommended-search, #hot-properties {
+        margin-bottom: 40px;
+    }
+
+    .filter-label {
+        font-weight: 500 !important;
+        font-size: 14px;
+    }
+
+    .form-title {
+        font-size: 22px;
+    }
+
+    .authForm span {
+        font-size: 14px;
+    }
+
+    .section-title {
+        font-size: 18px;
+    }
+
+    .property-price-info span:first-child {
+        font-size: 16px ;
+    }
+
+    .property-price-info span:last-child {
+        font-size: 14px ;
+    }
+    
+    .property-short-info, .building-details, .facilities-area, #available-units, .property-info-area, #review {
+        margin-bottom: 40px;
+    }
+
+    .dataTables_wrapper .dataTables_paginate  {
+        margin-bottom: 2rem;
+    }
+}
 @media screen and (max-width: 768px) {
     .table-title{
         position: initial !important;
@@ -1245,6 +1296,17 @@ option:disabled{
     .about-page-bg-images{
         height: 260px;
     }
+
+    #privacy-about-page .title {
+        font-size: 20px;
+    }
+
+    .form-title {
+        font-size: 20px;
+    }
+    .comparison-wrapping-box .splide__arrow {
+        top: 25%;
+    }
 }
 
 
@@ -1255,6 +1317,34 @@ option:disabled{
 
     .ai-generate-description-body textarea{
         height: 300px;
+    }
+    #privacy-about-page .title {
+        font-size: 18px;
+    }
+
+    .top-banner-img {
+        height: 100px;
+    }
+
+    .filter-label {
+        font-weight: 400;
+        font-size: 13px !important;
+    }
+
+    .search-result-box-img  {
+        height: 200px;
+    }
+
+
+    table.dataTable thead th {
+        font-weight: 500;
+    }
+    .form-title {
+        font-size: 18px;
+    }
+
+    .authForm span {
+        font-size: 12px;
     }
 }
 

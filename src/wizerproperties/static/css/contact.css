@@ -143,3 +143,22 @@
         padding-right: 30px !important;
     }
 }
+
+@media screen and (max-width: 991px){
+    .contact-us-area h1 {
+        font-size: 20px;
+    }
+
+    .contact-info-in-details span  {
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 768px){
+    .contact-us-area h1 {
+        font-size: 18px;
+    }
+    .contact-info-in-details span  {
+        font-size: 14px;
+    }
+}

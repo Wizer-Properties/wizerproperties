@@ -32,7 +32,7 @@
 
     .search-box input{
         padding: 12px 10px !important;
-        font-size: 16px !important;
+        font-size: 16px;
     }
 
     .search-box{
@@ -568,16 +568,29 @@
 }
 
 @media screen and (max-width: 991px) {
-    .banner-title{
-        font-size: 34px !important;
+    .banner {
+        height: 320px;
+    }
+    .banner-title {
+        font-size: 24px !important;
     }
 
     .search-box input {
         padding: 10px !important;
         padding-left: 50px !important;
-        font-size: 16px !important;
+        font-size: 15px !important;
     }
 
+    .slider-title {
+        font-size: 18px;
+    }
+    .reels-title {
+        font-size: 16px !important;
+    }
+    .reels-iframe-and-data{
+        height: 400px;
+    }
+  
     .sign-in-note-box{
         flex-direction: column;
         text-align: center;
@@ -590,6 +603,10 @@
 }
 
 @media screen and (max-width: 768px) {
+    .banner-title {
+        font-size: 22px !important;
+    }
+
     .contact-cart-info-position{
         min-height: auto;
     }
@@ -639,17 +656,40 @@
 
 @media screen and (max-width: 560px){
     .banner {
-        height: 320px;
+        height: 280px;
     }
 
     .banner-title {
-        font-size: 25px !important;
+        font-size: 20px !important;
+    }
+
+    .reels-iframe-and-data{
+        height: 320px;
+    }
+
+    .reels-title {
+        font-size: 15px !important;
+    }
+
+    .reels-developer-logo .dev-logo {
+        width: 50px;
+        height: 50px;
+        min-width: 50px;
+    }
+    .reels-developer-logo h1 {
+        font-size: 14px;
+    }
+    .popular-cities-gallery  {
+        grid-template-rows: repeat(1, 1fr);
+    }
+
+    .popular-cities-gallery-card a span {
+        font-weight: 500;
     }
     
     .discount_period .banner-action-button{
         top: 70px !important;
     }
-
     .search-result-box-img{
         padding: 0 !important;
     }
@@ -678,6 +718,20 @@
         width: calc(100% - 20px) !important;
         padding: 20px !important;
         border-radius: 10px !important;
+    }
+
+    .sign-in-note-box h1 {
+        font-size: 18px;
+    }
+
+    .sign-in-note-box p {
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    .sign-in-note-box a {
+        font-size: 14px;
+        font-weight: 600;
     }
 
 }

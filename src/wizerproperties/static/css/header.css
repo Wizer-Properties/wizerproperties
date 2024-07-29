@@ -286,6 +286,12 @@ header{
 
 }
 
+@media screen and (max-width: 991px) {
+    .wip-logo {
+        height: 30px;
+    }
+}    
+
 @media screen and (max-width: 600px) {
     .wip-header .w-100.px-5{
         padding: 5px 10px !important;
