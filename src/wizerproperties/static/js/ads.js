@@ -58,5 +58,4 @@ $(document).ready(function(){
 
     get_ads_list()
 
-    console.log("hello", ADS_SUGGEST_URL, ADS_LOCATION_PARAM)
 });

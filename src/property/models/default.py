@@ -1,9 +1,12 @@
 from django.utils import timezone
 from django.db import models
+from datetime import timedelta
+from django.apps import apps
 from core.models import TimestampedModel
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from utils.general_data import UNIT_POSITION_TYPES
+from user.models import User
 
 
 class Property(TimestampedModel):
@@ -35,7 +38,11 @@ class Property(TimestampedModel):
     have_duplex = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     created_by = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True, related_name="properties")
-    visit_count = models.IntegerField(default=0, validators=[MinValueValidator(0)])  # To track the number of visits
+    visit_count = models.PositiveIntegerField(default=0)  # Number of visit by the user
+    view_time = models.DurationField(default=timedelta(seconds=0))  # How long the viewers view this property
+    search_appearance = models.PositiveIntegerField(default=0)  # Number to time it appear in search
+    male_visitors = models.PositiveIntegerField(default=0)  # Number of men visit this property
+    female_visitors = models.PositiveIntegerField(default=0)  # Number of women visit this property
 
     class Meta:
         verbose_name_plural = "properties"
@@ -48,3 +55,38 @@ class Property(TimestampedModel):
             raise ValidationError(
                 {"tenant_occupied_validity": "Tenant occupied validity date must be greater than or equal to today."}
             )
+    
+    def manage_property_analytics(self, user=None, location=None) -> None:
+        """Depending on view of a property we are upending it's associates analytical value"""
+        
+        if user and hasattr(user, "prospectprofile"):
+            if user.prospectprofile.gender ==  "male":
+                self.male_visitors += 1
+            elif user.prospectprofile.gender ==  "female":
+                self.female_visitors += 1
+            
+        self.visit_count += 1     # Increasing the number of view count
+        self.save()
+        
+        if location:
+            # Creating Property visiting log
+            PropertyVisitLog.objects.create(
+                property=self,
+                user_obj=user,
+                location=location
+            )
+
+            # Saving property viewer location
+            PropertyVisitorLocation = apps.get_model("property.PropertyVisitorLocation")
+            property_viewer_location_obj, created = PropertyVisitorLocation.objects.get_or_create(
+                property = self,
+                address = location
+            )
+            property_viewer_location_obj.view_from_this_location += 1
+            property_viewer_location_obj.save()
+ 
+
+class PropertyVisitLog(TimestampedModel):
+    property = models.ForeignKey(Property, on_delete=models.SET_NULL, null=True)
+    user_obj = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    location = models.CharField(max_length=500, null=True)

@@ -48,6 +48,11 @@ urlpatterns = [
         PropertyViewSet.as_view({"delete": "destroy"}),
         name="delete",
     ),
+    path(
+        "details/<int:pk>/manage-property-view-time/", 
+        PropertyViewSet.as_view({"patch": "manage_property_view_time"}), 
+        name="manage_property_view_time"
+    ),
     path("compare/list/", ComparePropertyViewSet.as_view({"get": "list"}), name="compare_list"),
     path("compare/create/", ComparePropertyViewSet.as_view({"post": "create"}), name="compare_create"),
     path(

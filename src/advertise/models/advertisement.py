@@ -73,14 +73,6 @@ class Advertisement(TimestampedModel):
         self.number_of_clicked += 1     # Increasing the ad click count
         self.save()
         
-        # Creating AD log
-        AdvertisementLog.objects.create(
-            property=self.property,
-            advertisement=self,
-            user_obj=user,
-            location=location
-        )
-        
         if user and hasattr(user, "prospectprofile"):
             if user.prospectprofile.gender ==  "male":
                 self.addemography.male_visitors += 1
@@ -89,14 +81,24 @@ class Advertisement(TimestampedModel):
             
             self.addemography.save()
         
-        AdViewerLocation = apps.get_model("advertise.AdViewerLocation")
-        ad_viewer_location_obj, created = AdViewerLocation.objects.get_or_create(
-            property = self.property,
-            advertisement = self,
-            address = location
-        )
-        ad_viewer_location_obj.view_from_this_location += 1
-        ad_viewer_location_obj.save()
+        if location:
+            # Creating AD log
+            AdvertisementLog.objects.create(
+                property=self.property,
+                advertisement=self,
+                user_obj=user,
+                location=location
+            )
+
+            # Saving ad viewer location
+            AdViewerLocation = apps.get_model("advertise.AdViewerLocation")
+            ad_viewer_location_obj, created = AdViewerLocation.objects.get_or_create(
+                property = self.property,
+                advertisement = self,
+                address = location
+            )
+            ad_viewer_location_obj.view_from_this_location += 1
+            ad_viewer_location_obj.save()
     
     def view_time_without_milliseconds(self):
         view_time = get_duration_without_milliseconds(self.view_time)

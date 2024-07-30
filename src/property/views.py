@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from building.models import Building
-from .models import Property
+from property.models import Property, PropertyPriceRange
 from user.models import User, Profile, DeveloperProfile, AgentProfile
 from advertise.models import Advertisement
 from utils.general_func import get_user_location
@@ -30,28 +30,30 @@ def create_property(request):
 
 def get_property(request, id):
     property = get_object_or_404(Property, pk=id)
-    property.visit_count += 1  # Increment the visit count
-    property.save()
-        
+    
+    """When people visit a property, we are storing that user's location and gender"""
+    user = None
+    location = None
+    if request.user.is_authenticated:
+        user = request.user
+        if hasattr(user, "developerprofile"):
+            location = user.developerprofile.address
+        elif hasattr(user, "agentprofile"):
+            location = user.agentprofile.address
+        elif hasattr(user, "prospectprofile"):
+            location = user.prospectprofile.address
+    else:
+        location = get_user_location(request)
+
     # If this property is visited through AD then we are creating some log on that AD
     if request.GET.get("ad_id", None):
         ad_obj = Advertisement.objects.filter(id=request.GET.get("ad_id")).first()
-        if ad_obj:
-            location = None
-            if request.user.is_authenticated:
-                user = request.user
-                if hasattr(request.user, "developerprofile"):
-                    location = request.user.developerprofile.address
-                elif hasattr(request.user, "agentprofile"):
-                    location = request.user.agentprofile.address
-                elif hasattr(request.user, "prospectprofile"):
-                    location = request.user.prospectprofile.address
-            else:
-                user = None
-                location = get_user_location(request)
-                
-            ad_obj.manage_ad_analytics(user, location)
+        if ad_obj:        
+            ad_obj.manage_ad_analytics(user, location)  # Updating ad analytics value
+    
+    property.manage_property_analytics(user, location)  # Updating property analytics value
 
+    """Storing search related cookie"""
     context = prepare_property_context(request, id)
     context["buildings"] = Building.objects.filter(is_active=True)
     response = render(request, "get_property.html", context)
@@ -88,6 +90,17 @@ def update_property(request, id):
 
 
 def search_property(request):
+
+    """We are saving property search price ranges"""
+    if request.GET.get("min_price") or request.GET.get("max_price"):
+        min_price = request.GET.get("min_price", "0")
+        max_price = request.GET.get("max_price", "infinity")
+        price_range = f"{min_price}-{max_price}"
+        
+        price_range_obj, created = PropertyPriceRange.objects.get_or_create(range=price_range)
+        price_range_obj.search_appearance += 1
+        price_range_obj.save()
+
     return render(request, "search_property.html")
 
 def search_property_with_map(request):

@@ -10,6 +10,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from datetime import timedelta
 from property.api.permissions import PropertyPermission
 from property.api.serializers import (
     PropertySerializer,
@@ -110,6 +111,10 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
     def filter_queryset(self, queryset):
         queryset = super().filter_queryset(queryset)
+
+        # If object appearance in search we will updating
+        # property objects search appearance by 1
+        queryset.update(search_appearance=F("search_appearance") + 1)
 
         # Retrieve the ordering parameter from the request
         ordering = self.request.query_params.get("ordering", None)
@@ -652,6 +657,20 @@ class PropertyViewSet(viewsets.ModelViewSet):
         )
 
         return self._get_paginated_response(property_qs, serializer_class, **serializer_context)
+    
+
+    @action(detail=True, methods=["patch"])
+    def manage_property_view_time(self, request, pk=None):
+        # Updates Ad total view time
+        property_obj = self.get_object()
+        time_spent = request.data.get("time_spent", None)
+        if time_spent:
+            time_spent = time_spent / 1000  # Converting milliseconds into seconds
+            property_obj.view_time += timedelta(seconds=time_spent)
+            property_obj.save()
+        serializer = self.serializer_class(property_obj)
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(["GET"])

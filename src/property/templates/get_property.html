@@ -734,6 +734,12 @@
     var CSRF_TOKEN = '{{ csrf_token }}'
     var ADS_SUGGEST_URL = '/advertise/api/advertisement/suggested/'
     var ADS_LOCATION_PARAM = 'details'
+    var property_view_time_url_func = function(property_id) {
+        var view_time_url = '{% url "property:api:manage_property_view_time" "0" %}'
+        view_time_url = view_time_url.replace(0, property_id);    //to remove demo value '0' from url
+        return view_time_url 
+    }
+    var property_view_time_url = property_view_time_url_func(PROPERTY_ID)
 </script>
 
 <script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
@@ -742,6 +748,7 @@
 <script src="{% static 'js/libraries/noframework.waypoints.min.js' %}"></script>
 <script src="{% static 'js/property/detail-page.js' %}?v=1.01"></script>
 <script src="{% static '/js/property/compair-favorite.js' %}?v=1.00"></script>
+<script src="{% static '/js/property/manage-property-view-time.js' %}?v=1.00"></script>
 <script src="{% static '/js/advertise/manage-ad-view-time.js' %}?v=1.01"></script>
 <script src="{% static '/js/ads.js' %}?v=1.00"></script>
 {% endblock extend_script %}

@@ -6,6 +6,8 @@ class PropertyPermission(permissions.BasePermission):
         user = request.user
 
         if request.method in ["POST", "PUT", "PATCH", "DELETE"]:
+            if view.action == "manage_property_view_time":
+                return True
             return hasattr(user, "developerprofile") or hasattr(user, "agentprofile")
         elif view.action in ["nearest"]:
             if user.is_authenticated:
@@ -21,6 +23,8 @@ class PropertyPermission(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         if request.method in ["PUT", "PATCH", "DELETE"]:
+            if view.action == "manage_property_view_time":
+                return True
             return obj.created_by == request.user
 
         return True
