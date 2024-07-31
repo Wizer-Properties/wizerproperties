@@ -46,11 +46,11 @@ $(document).ready(function () {
     });
     
 
-    function prospect_schedule_button_tmp (data, url_link, index){
+    function prospect_schedule_button_tmp (data, url_link, index, has_visiting_time_passed){
         return '<div index='+index+' class="td-edit-delete-see">' +
                     (
-                        data?.status == "Pending" ?
-                        '<a href="schedule/create_schedule/?type='+data?.content_type+'&id='+data?.object_id+'&edit=true&schedule-id='+data?.id+'"'+
+                        data?.status == "Pending" && !has_visiting_time_passed ?
+                        '<a href="/schedule/create_schedule/?type='+data?.content_type+'&id='+data?.object_id+'&edit=true&schedule-id='+data?.id+'"'+
                             'class="link link-succes-btn  edit-schedule-id"> Edit </a>' : ''
                     )+
                     (data?.status == "Pending" ? '<button cancel-schedule-id="'+data?.id+'" class="link delete-building delete-button"> Cancel </button>' : '') +
@@ -82,13 +82,19 @@ $(document).ready(function () {
                                     '/building/details/'+the_results[i]?.object_id+'/' : 
                                     '/property/details/'+ the_results[i]?.object_id+'/';
 
-                        var button_tmp = user_type == 'prospect' ?
-                                            prospect_schedule_button_tmp(the_results[i], url_link, i) :
-                                            dev_agent_schedule_button_tmp(the_results[i], url_link, i);
-
                         var visition_date = new Date(the_results[i]?.visiting_time)
                         visition_date.setHours(visition_date.getHours() - 7);
                         var edited_date = dayjs(visition_date).format('dddd DD MMM, h:mm A (YYYY)');
+                        var now_time = new Date()
+                        var has_visiting_time_passed = false
+                        if (now_time > visition_date){
+                            has_visiting_time_passed = true
+                        }
+
+                        var button_tmp = user_type == 'prospect' ?
+                                            prospect_schedule_button_tmp(the_results[i], url_link, i, has_visiting_time_passed) :
+                                            dev_agent_schedule_button_tmp(the_results[i], url_link, i);
+
 
                         schedule_table.row.add([
                             the_results[i]?.id,
