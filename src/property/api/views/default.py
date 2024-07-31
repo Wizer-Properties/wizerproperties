@@ -665,7 +665,6 @@ class PropertyViewSet(viewsets.ModelViewSet):
         property_obj = self.get_object()
         time_spent = request.data.get("time_spent", None)
         if time_spent:
-            time_spent = time_spent / 1000  # Converting milliseconds into seconds
             property_obj.view_time += timedelta(seconds=time_spent)
             property_obj.save()
         serializer = self.serializer_class(property_obj)

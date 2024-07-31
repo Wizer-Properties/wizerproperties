@@ -1,27 +1,29 @@
 $(document).ready(function(){
-    let startTime;
-    
-    // Record the time when the user loads the page
-    window.onload = function() {
-        startTime = new Date().getTime();
-    };
+    TimeMe.initialize({
+        idleTimeoutInSeconds: 120, // stop recording time due to inactivity
+    });
 
     // Send the time spent on the page to the server when the user leaves
-    window.onbeforeunload = function() {
-        const endTime = new Date().getTime();
-        const timeSpent = endTime - startTime;
-        console.log("timeSpent", timeSpent)
+    window.addEventListener('beforeunload', function(event) {
+        let timeSpentOnPage = TimeMe.getTimeOnCurrentPageInSeconds();
 
-        // Send the data to the server using fetch
+        // Create the request payload
+        const payload = {
+            time_spent: timeSpentOnPage,
+            csrfmiddlewaretoken: CSRF_TOKEN
+        };
+
+        // Use fetch with keepalive option
         fetch(property_view_time_url, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': CSRF_TOKEN
             },
-            body: JSON.stringify({
-                time_spent: timeSpent
-            })
+            body: JSON.stringify(payload),
+            keepalive: true // Ensure the request can complete during page unload
+        }).catch((error) => {
+            console.error('Error sending time spent:', error);
         });
-    };
+    });
 });

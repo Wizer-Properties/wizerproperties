@@ -27,7 +27,6 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
         ad_obj = self.get_object()
         time_spent = request.data.get("time_spent", None)
         if time_spent:
-            time_spent = time_spent / 1000  # Converting milliseconds into seconds
             ad_obj.view_time += timedelta(seconds=time_spent)
             ad_obj.save()
         serializer = self.serializer_class(ad_obj)
