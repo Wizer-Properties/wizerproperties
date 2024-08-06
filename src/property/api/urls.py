@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import PropertyViewSet, ComparePropertyViewSet, ProspectFavoritePropertyViewSet, user_properties
+from .views import PropertyViewSet, ComparePropertyViewSet, \
+    ProspectFavoritePropertyViewSet, user_properties, PropertiesAnalyticsView
 
 
 urlpatterns = [
@@ -77,4 +78,6 @@ urlpatterns = [
         name="remove_prospect_favorite_property",
     ),
     path("user-properties/<int:user_id>/", user_properties, name="user_properties"),
+    path("top-ranked-properties/", PropertiesAnalyticsView.as_view({"get": "top_ranked_properties"}), name="top_ranked_properties"),
+    path("maximum-viewing-time-properties/", PropertiesAnalyticsView.as_view({"get": "maximum_viewing_time_properties"}), name="maximum_viewing_time_properties"),
 ]
