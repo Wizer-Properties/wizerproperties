@@ -7,9 +7,12 @@ from .models import (
     ProspectFavoriteProperty,
     NewlyCreatedProperty,
     DiscountProperty,
-    FeatureProperty
+    FeatureProperty,
+    PropertyVisitorLocation,
+    PropertyPriceRange
 )
 
+admin.site.register([PropertyVisitorLocation, PropertyPriceRange])
 
 @admin.register(Property)
 class PropertyAdmin(admin.ModelAdmin):

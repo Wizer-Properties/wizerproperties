@@ -78,6 +78,12 @@ urlpatterns = [
         name="remove_prospect_favorite_property",
     ),
     path("user-properties/<int:user_id>/", user_properties, name="user_properties"),
+    
     path("top-ranked-properties/", PropertiesAnalyticsView.as_view({"get": "top_ranked_properties"}), name="top_ranked_properties"),
     path("maximum-viewing-time-properties/", PropertiesAnalyticsView.as_view({"get": "maximum_viewing_time_properties"}), name="maximum_viewing_time_properties"),
+    path("highest-search-appearances-properties/", PropertiesAnalyticsView.as_view({"get": "highest_search_appearances_properties"}), name="highest_search_appearances_properties"),
+    path("popular-search-location-properties/", PropertiesAnalyticsView.as_view({"get": "popular_search_location_properties"}), name="popular_search_location_properties"),
+    path("user-analytics-properties/", PropertiesAnalyticsView.as_view({"get": "user_analytics_properties"}), name="user_analytics_properties"),
+    path("most-in-demand-price-range/", PropertiesAnalyticsView.as_view({"get": "most_in_demand_price_range"}), name="most_in_demand_price_range"),
+    
 ]
