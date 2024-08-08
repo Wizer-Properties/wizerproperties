@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
 from django.db.models import Count, F, IntegerField, ExpressionWrapper, OuterRef, Subquery, \
-    Value, When, Case, Avg, FloatField
+    Value, When, Case, Avg, FloatField, Sum
 from django.db.models.functions import Coalesce
 from rest_framework.response import Response
 from django.contrib.contenttypes.models import ContentType
@@ -119,4 +119,22 @@ class PropertiesAnalyticsView(viewsets.ModelViewSet):
         
         return Response(properties, status=status.HTTP_200_OK)
     
+    @action(detail=False, methods=['get'])
+    def most_favorite_properties(self, request):
+        properties = Property.objects.filter(building__created_by=request.user).annotate(
+            favorite_count=Coalesce(Count('favorites'), Value(0),  output_field=IntegerField())
+        ).order_by("-favorite_count")
+        
+        properties = list(properties.values("title", "favorite_count"))
+        
+        return Response(properties, status=status.HTTP_200_OK)
     
+    @action(detail=False, methods=['get'])
+    def most_appeared_on_the_compare_list(self, request):
+        properties = Property.objects.filter(building__created_by=request.user).annotate(
+            compare_count=Coalesce(Count('compares'), Value(0),  output_field=IntegerField())
+        ).order_by("-compare_count")
+        
+        properties = list(properties.values("title", "compare_count"))
+        
+        return Response(properties, status=status.HTTP_200_OK)
