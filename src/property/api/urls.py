@@ -85,5 +85,8 @@ urlpatterns = [
     path("popular-search-location-properties/", PropertiesAnalyticsView.as_view({"get": "popular_search_location_properties"}), name="popular_search_location_properties"),
     path("user-analytics-properties/", PropertiesAnalyticsView.as_view({"get": "user_analytics_properties"}), name="user_analytics_properties"),
     path("most-in-demand-price-range/", PropertiesAnalyticsView.as_view({"get": "most_in_demand_price_range"}), name="most_in_demand_price_range"),
+    path("top-performing-properties-by-conversion/", PropertiesAnalyticsView.as_view({"get": "top_performing_properties_by_conversion"}), name="top_performing_properties_by_conversion"),
+    path("top-rated-buildings/", PropertiesAnalyticsView.as_view({"get": "top_rated_buildings"}), name="top_rated_buildings"),
     
 ]
+
