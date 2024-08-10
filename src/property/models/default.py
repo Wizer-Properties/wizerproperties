@@ -7,6 +7,8 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from utils.general_data import UNIT_POSITION_TYPES
 from user.models import User
+from django.db.models import Sum
+from django.utils.timezone import now
 
 
 class Property(TimestampedModel):
@@ -38,7 +40,6 @@ class Property(TimestampedModel):
     have_duplex = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     created_by = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True, related_name="properties")
-    visit_count = models.PositiveIntegerField(default=0)  # Number of visit by the user
     view_time = models.DurationField(default=timedelta(seconds=0))  # How long the viewers view this property
     search_appearance = models.PositiveIntegerField(default=0)  # Number to time it appear in search
     male_visitors = models.PositiveIntegerField(default=0)  # Number of men visit this property
@@ -65,8 +66,8 @@ class Property(TimestampedModel):
             elif user.prospectprofile.gender ==  "female":
                 self.female_visitors += 1
             
-        self.visit_count += 1     # Increasing the number of view count
         self.save()
+        self.update_visit_count()
         
         if location:
             # Creating Property visiting log
@@ -86,7 +87,27 @@ class Property(TimestampedModel):
             property_viewer_location_obj.save()
  
 
+    # update how many user visited this property
+    def update_visit_count(self):
+        today = now().date()  # Get the current date
+        click_logs_today = PropertyClickLog.objects.filter(property=self, created_at__date=today)
+        
+        if click_logs_today.exists():
+            # If click logs exist for today, update the count
+            for click_log in click_logs_today:
+                click_log.number_of_clicked += 1  # Increment the number_of_clicked by 1
+                click_log.save()
+        else:
+            # If no click logs exist for today, create a new one
+            PropertyClickLog.objects.create(property=self, number_of_clicked=1)
+
+
 class PropertyVisitLog(TimestampedModel):
     property = models.ForeignKey(Property, on_delete=models.SET_NULL, null=True)
     user_obj = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     location = models.CharField(max_length=500, null=True)
+
+
+class PropertyClickLog(TimestampedModel):
+    property = models.ForeignKey(Property, on_delete=models.SET_NULL, null=True)
+    number_of_clicked = models.PositiveIntegerField(default=0)

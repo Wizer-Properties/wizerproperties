@@ -4,7 +4,7 @@ from geopy.distance import geodesic
 from django.utils import timezone
 from django.conf import settings
 from urllib.parse import urlparse, parse_qs
-from django.db.models import OuterRef, Subquery, Value, F, CharField, Count, Exists, BooleanField, Value, Case, When
+from django.db.models import OuterRef, Subquery, Value, F, CharField, Count, Exists, BooleanField, Case, When, Sum
 from django.db.models.functions import Concat
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -32,16 +32,9 @@ from user.models import AgentProfile, DeveloperProfile, ProspectProfile
 from user.api.serializers import AgentProfileSerializer, DeveloperProfileSerializer
 from utils.general_func import get_chatgpt_response, get_user_ip
 from utils.general_data import PRICE_RANGES
-
+from django.db.models.functions import Coalesce
 
 class PropertyViewSet(viewsets.ModelViewSet):
-    queryset = (
-        Property.objects.select_related("building", "created_by")
-        .prefetch_related("media_files", "discounts", "newly_createds", "features")
-        .annotate(discounted=Count("discounts"))
-        .annotate(featured=Count("features"))
-    )
-
     serializer_class = PropertySerializer
     permission_classes = [PropertyPermission]
     filterset_class = PropertyFilter
@@ -52,10 +45,17 @@ class PropertyViewSet(viewsets.ModelViewSet):
         "building__sub_district",
     ]
     ordering_fields = ["created_at", "price", "visit_count"]
-    ordering = ["-visit_count"]  # Default ordering
+    # ordering = ["-visit_count"]  # Default ordering
 
     def get_queryset(self):
-        queryset = self.queryset
+        queryset = (
+            Property.objects.select_related("building", "created_by")
+            .prefetch_related("media_files", "discounts", "newly_createds", "features")
+            .annotate(discounted=Count("discounts"))
+            .annotate(featured=Count("features"))
+            .annotate(visit_count=Coalesce(Sum("propertyclicklog__number_of_clicked"), Value(0)))
+        )
+
         user = self.request.user
 
         if self.action in [
@@ -106,7 +106,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
                         .values("full_file_url")[:1]
                     ),
                 )
-
+        
         return queryset
 
     def filter_queryset(self, queryset):

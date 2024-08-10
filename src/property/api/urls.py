@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import PropertyViewSet, ComparePropertyViewSet, \
-    ProspectFavoritePropertyViewSet, user_properties, PropertiesAnalyticsView
+    ProspectFavoritePropertyViewSet, user_properties, PropertiesAnalyticsView, \
+    PropertyVisitAnalytics
 
 
 urlpatterns = [
@@ -88,5 +89,6 @@ urlpatterns = [
     path("analytics/top-performing-properties-by-conversion/", PropertiesAnalyticsView.as_view({"get": "top_performing_properties_by_conversion"}), name="top_performing_properties_by_conversion"),
     path("analytics/top-rated-buildings/", PropertiesAnalyticsView.as_view({"get": "top_rated_buildings"}), name="top_rated_buildings"),
     path("analytics/most-favorite-properties/", PropertiesAnalyticsView.as_view({"get": "most_favorite_properties"}), name="most_favorite_properties"),
-    path("analytics/most-appeared-on-the-compare-list/", PropertiesAnalyticsView.as_view({"get": "most_appeared_on_the_compare_list"}), name="most_appeared_on_the_compare_list"),   
+    path("analytics/most-appeared-on-the-compare-list/", PropertiesAnalyticsView.as_view({"get": "most_appeared_on_the_compare_list"}), name="most_appeared_on_the_compare_list"), 
+    path('visit-analytics/', PropertyVisitAnalytics.as_view(), name='visit-analytics'),
 ]

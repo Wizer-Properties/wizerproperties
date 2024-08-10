@@ -2615,6 +2615,40 @@ paths:
           description: Service Unavailable(Server is down for maintenance or overloaded)
         504:
           description: Taking more time to get a response
+
+  /property/api/visit-analytics/:
+    get:
+      tags:
+        - Property
+      summary: "Properties analyticds"
+      description: "**User type**: bdoth"
+      operationId: properties-analytdics
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "query"
+          required: true
+          type: "number"
+      responses:
+        200:
+          description: Properties list
+          schema:
+            $ref: "#/definitions/PropertyVisitAnalyticsResponse"
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+          schema:
+            $ref: "#/definitions/commonSingleErrorResponse"
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
   
   
   /schedule/api/:
@@ -4874,7 +4908,25 @@ definitions:
             view_from_this_location:
               type: "number"
           
-
+  PropertyVisitAnalyticsResponse:
+    type: object
+    properties:
+      pagination:
+        type: object
+        properties:
+          next:
+            type: "string"
+          previous:
+            type: "string"
+      visit_data:
+        type: array
+        items:
+          type: string
+      label_list:
+        type: array
+        items:
+          type: string
+      
 # Added by API Auto Mocking Plugin
 host: localhost:8000
 

@@ -1,4 +1,4 @@
-from .default import Property, PropertyVisitLog
+from .default import Property, PropertyVisitLog, PropertyClickLog
 from .media import PropertyMedia
 from .compare import CompareProperty
 from .favorite import ProspectFavoriteProperty
