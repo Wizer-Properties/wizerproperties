@@ -10,16 +10,16 @@ from .models import (
     FeatureProperty,
     PropertyVisitorLocation,
     PropertyPriceRange,
-    PropertyClickLog
+    PropertyClicksLog
 )
 
 admin.site.register([PropertyVisitorLocation, PropertyPriceRange])
 
-class PropertyClickLogAdmin(admin.ModelAdmin):
+class PropertyClicksLogAdmin(admin.ModelAdmin):
     # readonly_fields = ('created_at')
     list_display = ('property', 'number_of_clicked', 'created_at')
 
-admin.site.register(PropertyClickLog, PropertyClickLogAdmin)
+admin.site.register(PropertyClicksLog, PropertyClicksLogAdmin)
 
 
 @admin.register(Property)

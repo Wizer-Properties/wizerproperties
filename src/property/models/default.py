@@ -90,7 +90,7 @@ class Property(TimestampedModel):
     # update how many user visited this property
     def update_visit_count(self):
         today = now().date()  # Get the current date
-        click_logs_today = PropertyClickLog.objects.filter(property=self, created_at__date=today)
+        click_logs_today = PropertyClicksLog.objects.filter(property=self, created_at__date=today)
         
         if click_logs_today.exists():
             # If click logs exist for today, update the count
@@ -99,7 +99,7 @@ class Property(TimestampedModel):
                 click_log.save()
         else:
             # If no click logs exist for today, create a new one
-            PropertyClickLog.objects.create(property=self, number_of_clicked=1)
+            PropertyClicksLog.objects.create(property=self, number_of_clicked=1)
 
 
 class PropertyVisitLog(TimestampedModel):
@@ -108,6 +108,6 @@ class PropertyVisitLog(TimestampedModel):
     location = models.CharField(max_length=500, null=True)
 
 
-class PropertyClickLog(TimestampedModel):
+class PropertyClicksLog(TimestampedModel):
     property = models.ForeignKey(Property, on_delete=models.SET_NULL, null=True)
     number_of_clicked = models.PositiveIntegerField(default=0)

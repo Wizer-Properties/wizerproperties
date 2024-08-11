@@ -53,7 +53,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
             .prefetch_related("media_files", "discounts", "newly_createds", "features")
             .annotate(discounted=Count("discounts"))
             .annotate(featured=Count("features"))
-            .annotate(visit_count=Coalesce(Sum("propertyclicklog__number_of_clicked"), Value(0)))
+            .annotate(visit_count=Coalesce(Sum("propertyclickslog__number_of_clicked"), Value(0)))
         )
 
         user = self.request.user

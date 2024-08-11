@@ -8,12 +8,15 @@ from django.db.models.functions import Coalesce, TruncMonth
 from rest_framework.response import Response
 from django.contrib.contenttypes.models import ContentType
 from property.models import Property, PropertyVisitorLocation, PropertyVisitLog, \
-    PropertyPriceRange, PropertyClickLog
+    PropertyPriceRange, PropertyClicksLog
 from schedule.models import VisitingSchedule
 from building.models import Building
 from rest_framework.views import APIView
 from django.utils.dateparse import parse_date
 from datetime import datetime, timedelta, date
+from utils.user_required import developer_or_agent_required
+# from django.utils.decorators import 
+from django.utils.decorators import method_decorator
 
 
 class PropertiesAnalyticsView(viewsets.ModelViewSet):
@@ -155,7 +158,20 @@ class PropertyVisitAnalytics(APIView):
             return "th"
         else:
             return ["st", "nd", "rd"][day % 10 - 1]
+        
+    def safe_parse_date(self, date_str):
+        """Safely parse a date string into a datetime.date object."""
+        if not date_str or date_str.lower() in ['false', 'none']:
+            return datetime.today().date()
+        try:
+            parsed_date = parse_date(date_str)
+            if parsed_date is None:
+                raise ValueError("Invalid date format")
+            return parsed_date
+        except (ValueError, TypeError):
+            return datetime.today().date()
     
+    # generate labesl name for charts
     def generate_labels(self, filter_type, start_date, end_date):
         labels = []
         if filter_type == 'weekly':
@@ -171,23 +187,27 @@ class PropertyVisitAnalytics(APIView):
         return labels
         
 
+    # filter and calculations 
+    # calculate from start_date (oldest date) to end_date (newer date)
+    # fow weekly, we start calculating from "Monday" to "Sunday"
+    # fow year, the start date is 1st Jan and last is 31 Dec 
     def filter_visited_logs(self, filter_type, start_date, end_date):
         data = []
         today = date.today()
         user_properties = Property.objects.filter(building__created_by=self.request.user)
-        visited_logs = PropertyClickLog.objects.filter(
+        visited_logs = PropertyClicksLog.objects.filter(
             property__in=user_properties,
             created_at__range=(start_date, end_date)
         )
 
-        propertylog_min_max = PropertyClickLog.objects.filter(property__in=user_properties) \
+        propertylog_min_max = PropertyClicksLog.objects.filter(property__in=user_properties) \
                         .aggregate(min_date=Min('created_at'))
         
         min_date = propertylog_min_max['min_date'].date()
         self.pagination["previous"] = start_date if min_date < start_date else False
         self.pagination["next"] = end_date
 
- 
+        # get data by each day
         if filter_type in ["weekly", "monthly"]:
             current_date = start_date
             while current_date <= end_date:
@@ -219,25 +239,25 @@ class PropertyVisitAnalytics(APIView):
             for data_list in monthly_data:
                 month_number = data_list['month'].month - 1
                 data[month_number] = data_list['total']
-
-        print( start_date, "===============", end_date)
         return data
     
-
+    @method_decorator(developer_or_agent_required)
     def get(self, request):
         filter_type = request.query_params.get('filter_type', 'weekly')
-        get_start_date = request.query_params.get('next')
-        get_end_date = request.query_params.get('previous')
+        # Retrieve and parse date strings
+        next_param = request.query_params.get('next')
+        previous_param = request.query_params.get('previous')
 
-        start_date = parse_date(request.query_params.get('next', datetime.today().strftime('%Y-%m-%d')))
-        end_date = parse_date(request.query_params.get('previous', datetime.today().strftime('%Y-%m-%d')))
+        # Use safe_parse_date to handle falsy values and date parsing
+        start_date = self.safe_parse_date(next_param)
+        end_date = self.safe_parse_date(previous_param)
         
         if filter_type == "weekly":
-            if get_start_date:
+            if next_param:
                 start_of_week = start_date + timedelta(days=1 + start_date.weekday())
                 end_date = start_of_week
                 start_date = start_of_week - timedelta(days=6)
-            elif get_end_date:
+            elif previous_param:
                 end_of_week = end_date - timedelta(days=(1 - end_date.weekday()))
                 end_date = end_of_week
                 start_date = end_of_week - timedelta(days=6)
@@ -247,12 +267,12 @@ class PropertyVisitAnalytics(APIView):
                 end_date = start_of_week + timedelta(days=6)
 
         elif filter_type == "monthly":
-            if get_start_date:
+            if next_param:
                 start_date = start_date.replace(day=1) + timedelta(days=31)
                 start_date = start_date.replace(day=1)
                 end_date = start_date + timedelta(days=31)
                 end_date = end_date.replace(day=1) - timedelta(days=1)
-            elif get_end_date:
+            elif previous_param:
                 end_date = end_date.replace(day=1)
                 start_date = end_date - timedelta(days=1)
                 start_date = start_date.replace(day=1)
@@ -262,10 +282,10 @@ class PropertyVisitAnalytics(APIView):
                 end_date = next_month - timedelta(days=next_month.day)
 
         elif filter_type == "yearly":
-            if get_start_date:
+            if next_param:
                 start_date = start_date.replace(year=start_date.year + 1, month=1, day=1)
                 end_date = start_date.replace(year=start_date.year, month=12, day=31)
-            elif get_end_date:
+            elif previous_param:
                 end_date = end_date.replace(year=end_date.year - 1, month=12, day=31)
                 start_date = end_date.replace(year=end_date.year, month=1, day=1)
             else:
@@ -273,11 +293,9 @@ class PropertyVisitAnalytics(APIView):
                 start_date = datetime(current_year, 1, 1).date()
                 end_date = datetime(current_year, 12, 31).date()
 
-
         visit_data = self.filter_visited_logs(filter_type, start_date, end_date)
         label_list = self.generate_labels(filter_type, start_date, end_date)
         
-
         return Response({
             "pagination" : self.pagination,
             "visit_data" : visit_data,
