@@ -42,6 +42,12 @@ $(document).ready(function(){
         filter_type : 'weekly'
     }
 
+    function modal_preloader(){
+        return  '<div class="modal-preloader">'+
+                    '<img src="/static/media/loader.gif" alt="loading">'+
+                '</div>'
+    }
+
 
     function get_visite_analytic_data(){
         $.ajax({
@@ -52,7 +58,7 @@ $(document).ready(function(){
                 'X-CSRFToken': csrfToken,
             },
             beforeSend: function() {
-                
+                $('[label-name="visit-analytics"]').append(modal_preloader())
             },
             success: function (data) {
                 propertyOption.series[0].data = data?.visit_data
@@ -73,6 +79,9 @@ $(document).ready(function(){
             },
             error: function (error) {
                 console.log(error)
+            },
+            complete : function(){
+                $('[label-name="visit-analytics"] .modal-preloader').remove()
             }
         });
     };
