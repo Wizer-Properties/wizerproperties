@@ -267,18 +267,18 @@ class PropertyVisitAnalytics(APIView):
 
         elif filter_type == "monthly":
             if next_param:
-                start_date = start_date.replace(day=1) + timedelta(days=31)
-                start_date = start_date.replace(day=1)
-                end_date = start_date + timedelta(days=31)
-                end_date = end_date.replace(day=1) - timedelta(days=1)
+                next_month_start = (start_date.replace(day=1) + timedelta(days=31)).replace(day=1)
+                start_date = next_month_start
+                next_month_end = (next_month_start + timedelta(days=31)).replace(day=1) - timedelta(days=1)
+                end_date = next_month_end
             elif previous_param:
-                end_date = end_date.replace(day=1)
-                start_date = end_date - timedelta(days=1)
-                start_date = start_date.replace(day=1)
+                current_month_start = end_date.replace(day=1)
+                end_date = current_month_start - timedelta(days=1)
+                start_date = end_date.replace(day=1)
             else:
                 start_date = start_date.replace(day=1)
-                next_month = start_date.replace(day=28) + timedelta(days=4)
-                end_date = next_month - timedelta(days=next_month.day)
+                next_month_start = (start_date + timedelta(days=31)).replace(day=1)
+                end_date = next_month_start - timedelta(days=1)
 
         elif filter_type == "yearly":
             if next_param:
