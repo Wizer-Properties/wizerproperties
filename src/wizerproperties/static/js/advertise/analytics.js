@@ -12,7 +12,8 @@ $(document).ready(function(){
             data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
         },
         yAxis: {
-            type: 'value'
+            type: 'value',
+            minInterval: 1,
         },
         series: [
             {
