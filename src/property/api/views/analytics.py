@@ -197,7 +197,7 @@ class PropertyVisitAnalytics(APIView):
         user_properties = Property.objects.filter(building__created_by=self.request.user)
         visited_logs = PropertyClicksLog.objects.filter(
             property__in=user_properties,
-            created_at__range=(start_date, end_date)
+            created_at__range=(start_date, end_date+timedelta(days=1))
         )
 
         propertylog_min_max = PropertyClicksLog.objects.filter(property__in=user_properties) \
@@ -206,18 +206,17 @@ class PropertyVisitAnalytics(APIView):
         min_date = propertylog_min_max['min_date'].date()
         self.pagination["previous"] = start_date if min_date < start_date else False
         self.pagination["next"] = end_date
-
+       
         # get data by each day
         if filter_type in ["weekly", "monthly"]:
             current_date = start_date
             while current_date <= end_date:
-                if today < current_date:
-                    self.pagination["next"] = start_date if today > current_date else False
-                    break
-
                 weekly_clicked = visited_logs.filter(created_at__date=current_date) \
                                 .aggregate(total=Sum('number_of_clicked'))['total'] or 0
                 data.append(weekly_clicked)
+                if today <= current_date:
+                    self.pagination["next"] = start_date if today > current_date else False
+                    break
                 current_date += timedelta(days=1)
 
         elif filter_type == "yearly":
@@ -297,6 +296,8 @@ class PropertyVisitAnalytics(APIView):
         label_list = self.generate_labels(filter_type, start_date, end_date)
         
         return Response({
+            "start_date" : start_date,
+            "end_date" : end_date,
             "pagination" : self.pagination,
             "visit_data" : visit_data,
             "label_list" : label_list,

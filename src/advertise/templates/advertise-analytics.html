@@ -17,11 +17,23 @@
 <section>
     <div class="container mt-5">
         <div class="box-area">
-            <div class="chart-filter-button">
-                <button active="true"> Weekly </button>
-                <button> Monthly </button>
-                <button> Yearly </button>
+            <div class="chart-filter-btn-area">
+                <div class="chart-filter-button">
+                    <button label-name="filter-type" value="weekly" active="true"> Weekly </button>
+                    <button label-name="filter-type" value="monthly"> Monthly </button>
+                    <button label-name="filter-type" value="yearly"> Yearly </button>
+                </div>
+
+                <div class="chart-filter-button">
+                    <button label-name="pagination" name="previous" value="false"> Previous </button>
+                    <button label-name="pagination" name="next" value="false"> Next </button>
+                </div>
             </div>
+
+            <p class="date-range" label-name="date-range">
+                <!-- from dom -->
+            </p>
+
             <div id="property_view"></div>
         </div>
     </div>
@@ -298,6 +310,10 @@
 
 
 {% block extend_script %}
+<script>
+    var VISITE_ANALYTCS = '/property/api/visit-analytics/'
+</script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 <script src="{% static '/js/libraries/dataTables.min.js' %}?v=1.00"></script>
 <script src="{% static '/js/libraries/echarts.min.js' %}?v=1.00"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" 
