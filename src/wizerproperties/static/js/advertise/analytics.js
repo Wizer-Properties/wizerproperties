@@ -1,4 +1,15 @@
 $(document).ready(function(){
+
+    function time_convert(seconds ){
+        var days = Math.floor(seconds / 86400);
+        var hours = Math.floor((seconds % 86400) / 3600);
+        var minutes = Math.floor((seconds % 3600) / 60);
+        var secs = Math.floor(seconds % 60);
+
+        // Format the output
+        return days+'d : '+hours+'h : '+minutes+'m : '+secs+'s';
+    }
+
     var property_dom = document.getElementById('property_view');
     var propertyChart = echarts.init(property_dom);
     var propertyOption;
@@ -29,15 +40,6 @@ $(document).ready(function(){
     window.addEventListener('resize', function() {
         propertyChart.resize();
     });
-
-
-
-    $(".dashboard-data-table").DataTable({
-        ordering: false,
-        lengthChange: false,
-        info: false,
-    });
-
 
     var analytic_params = {
         filter_type : 'weekly'
@@ -111,8 +113,148 @@ $(document).ready(function(){
             analytic_params[$(this).attr('name')] = label_value;
             get_visite_analytic_data();
             return
-        };
+        };        
+    });
 
+
+
+    // ================================== chart end
+    // ================================== chart end
+    // ================================== chart end
+    // ================================== chart end
+    // ================================== chart end
+
+
+    function analytic_table_data({
+        url, target_table, data_table_void
+    }){
         
-    })
+        var init_table = target_table.DataTable({
+            ordering: false,
+            lengthChange: false,
+            info: false,
+            pageLength: 5,
+        });
+
+        $.ajax({
+            url,
+            type: 'GET',
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            beforeSend: function() {
+            },
+            success: function (data) {
+                console.log(url)
+                console.log(data)
+                data_table_void({
+                    data, 
+                    init_table,
+                })
+            },
+            error: function (error) {
+                console.log(error)
+            },
+            complete : function(){
+                // $('[label-name="visit-analytics"] .modal-preloader').remove()
+            }
+        });
+    };
+
+    analytic_table_data({
+        url : MAXIMUM_VIEWING_TIME_PROPERTIES,
+        target_table : $('[table-name="maximum_viewing_time_properties"]'),
+        data_table_void : function (e){
+            for (let i = 0; i < e.data.length; i++) {
+                e.init_table.row.add([
+                    e.data[i]?.title,
+                    time_convert(e.data[i]?.view_time),
+                ]).draw(false).node();
+            };
+        }
+    });
+
+    analytic_table_data({
+        url : POPULAR_SEARCH_LOCATION_PROPERTIES,
+        target_table : $('[table-name="popular_search_location_properties"]'),
+        data_table_void : function (e){
+            for (let i = 0; i < e.data.length; i++) {
+                e.init_table.row.add([
+                    e.data[i]?.address,
+                    e.data[i]?.view_from_this_location,
+                ]).draw(false).node();
+            };
+        }
+    });
+
+    analytic_table_data({
+        url : HIGHEST_SEARCH_APPEARANCES_PROPERTIES,
+        target_table : $('[table-name="highest_search_appearances_properties"]'),
+        data_table_void : function (e){
+            for (let i = 0; i < e.data.length; i++) {
+                e.init_table.row.add([
+                    e.data[i]?.title,
+                    e.data[i]?.search_appearance,
+                ]).draw(false).node();
+            };
+        }
+    });
+
+    // analytic_table_data({
+    //     url : USER_ANALYTICS_PROPERTIES,
+    //     target_table : $('[table-name="user_analytics_properties"]') // left
+    // });
+
+    analytic_table_data({
+        url : MOST_IN_DEMAND_PRICE_RANGE,
+        target_table : $('[table-name="most_in_demand_price_range"]'),
+        data_table_void : function (e){
+            for (let i = 0; i < e.data.length; i++) {
+                e.init_table.row.add([
+                    e.data[i]?.range,
+                    e.data[i]?.search_appearance,
+                ]).draw(false).node();
+            };
+        }
+    });
+
+    analytic_table_data({
+        url : TOP_RATED_BUILDINGS,
+        target_table : $('[table-name="top_rated_buildings"]'),
+        data_table_void : function (e){
+            for (let i = 0; i < e.data.length; i++) {
+                e.init_table.row.add([
+                    e.data[i]?.title,
+                    e.data[i]?.average_rating,
+                ]).draw(false).node();
+            };
+        }
+    });
+
+    analytic_table_data({
+        url : MOST_FAVORITE_PROPERTIES,
+        target_table : $('[table-name="most_favorite_properties"]'),
+        data_table_void : function (e){
+            for (let i = 0; i < e.data.length; i++) {
+                e.init_table.row.add([
+                    e.data[i]?.title,
+                    e.data[i]?.favorite_count,
+                ]).draw(false).node();
+            };
+        }
+    });
+
+    analytic_table_data({
+        url : MOST_APPEARED_ON_THE_COMPARE_LIST,
+        target_table : $('[table-name="most_appeared_on_the_compare_list"]'),
+        data_table_void : function (e){
+            for (let i = 0; i < e.data.length; i++) {
+                e.init_table.row.add([
+                    e.data[i]?.title,
+                    e.data[i]?.compare_count,
+                ]).draw(false).node();
+            };
+        }
+    });
+
 })

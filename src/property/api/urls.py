@@ -80,13 +80,13 @@ urlpatterns = [
     ),
     path("user-properties/<int:user_id>/", user_properties, name="user_properties"),
     
-    path("analytics/top-ranked-properties/", PropertiesAnalyticsView.as_view({"get": "top_ranked_properties"}), name="top_ranked_properties"),
+    path("analytics/top-ranked-properties/", PropertiesAnalyticsView.as_view({"get": "top_ranked_properties"}), name="top_ranked_properties"), # problem
     path("analytics/maximum-viewing-time-properties/", PropertiesAnalyticsView.as_view({"get": "maximum_viewing_time_properties"}), name="maximum_viewing_time_properties"),
     path("analytics/highest-search-appearances-properties/", PropertiesAnalyticsView.as_view({"get": "highest_search_appearances_properties"}), name="highest_search_appearances_properties"),
     path("analytics/popular-search-location-properties/", PropertiesAnalyticsView.as_view({"get": "popular_search_location_properties"}), name="popular_search_location_properties"),
     path("analytics/user-analytics-properties/", PropertiesAnalyticsView.as_view({"get": "user_analytics_properties"}), name="user_analytics_properties"),
     path("analytics/most-in-demand-price-range/", PropertiesAnalyticsView.as_view({"get": "most_in_demand_price_range"}), name="most_in_demand_price_range"),
-    path("analytics/top-performing-properties-by-conversion/", PropertiesAnalyticsView.as_view({"get": "top_performing_properties_by_conversion"}), name="top_performing_properties_by_conversion"),
+    path("analytics/top-performing-properties-by-conversion/", PropertiesAnalyticsView.as_view({"get": "top_performing_properties_by_conversion"}), name="top_performing_properties_by_conversion"), # problem
     path("analytics/top-rated-buildings/", PropertiesAnalyticsView.as_view({"get": "top_rated_buildings"}), name="top_rated_buildings"),
     path("analytics/most-favorite-properties/", PropertiesAnalyticsView.as_view({"get": "most_favorite_properties"}), name="most_favorite_properties"),
     path("analytics/most-appeared-on-the-compare-list/", PropertiesAnalyticsView.as_view({"get": "most_appeared_on_the_compare_list"}), name="most_appeared_on_the_compare_list"), 
