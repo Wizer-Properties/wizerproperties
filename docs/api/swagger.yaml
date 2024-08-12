@@ -1,4 +1,4 @@
-swagger: "2.0"
+openapi: 3.0.0
 info:
   version: 1.0.0
   title: Wizerproperties
@@ -3424,8 +3424,257 @@ paths:
           description: Service Unavailable(Server is down for maintenance or overloaded)
         504:
           description: Taking more time to get a response
+          
+  /property/api/analytics/top-ranked-properties/:
+    get:
+      tags:
+        - Analytics
+      description: "**User type**: Agent/Developer"
+      responses:
+        200:
+          description: Top Ranked Properties
+        403:
+          description: permission denied
+        404:
+          description: Object not Found
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
   
+  /property/api/analytics/maximum-viewing-time-properties/:
+    get:
+      tags:
+        - Analytics
+      description: "**User type**: Agent/Developer"
+      responses:
+        200:
+          description: Maximum Viewing Time Properties
+        403:
+          description: permission denied
+        404:
+          description: Object not Found
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+          
+  /property/analytics/highest-search-appearances-properties/:
+    get:
+      tags:
+        - Analytics
+      description: "**User type**: Agent/Developer"
+      responses:
+        200:
+          description: Heighest Search Appearnces Properties
+        403:
+          description: permission denied
+        404:
+          description: Object not Found
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
   
+  /property/analytics/popular-search-location-properties/:
+    get:
+      tags:
+        - Analytics
+      description: "**User type**: Agent/Developer"
+      responses:
+        200:
+          description: Popular Search Location Properties
+        403:
+          description: permission denied
+        404:
+          description: Object not Found
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+          
+  /property/analytics/user-analytics-properties/:
+    get:
+      tags:
+        - Analytics
+      description: "**User type**: Agent/Developer"
+      responses:
+        200:
+          description: User Analytics Properties
+        403:
+          description: permission denied
+        404:
+          description: Object not Found
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+          
+  /property/analytics/most-in-demand-price-range/:
+    get:
+      tags:
+        - Analytics
+      description: "**User type**: Agent/Developer"
+      responses:
+        200:
+          description: Most in demand price range
+        403:
+          description: permission denied
+        404:
+          description: Object not Found
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+          
+  /property/analytics/top-performing-properties-by-conversion/:
+    get:
+      tags:
+        - Analytics
+      description: "**User type**: Agent/Developer"
+      responses:
+        200:
+          description: Top performing properties by conversion
+        403:
+          description: permission denied
+        404:
+          description: Object not Found
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+          
+  /property/analytics/top-rated-buildings/:
+    get:
+      tags:
+        - Analytics
+      description: "**User type**: Agent/Developer"
+      responses:
+        200:
+          description: Top rated buildings
+        403:
+          description: permission denied
+        404:
+          description: Object not Found
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+          
+  /property/analytics/most-favorite-properties/:
+    get:
+      tags:
+        - Analytics
+      description: "**User type**: Agent/Developer"
+      responses:
+        200:
+          description: Most favorite properties
+        403:
+          description: permission denied
+        404:
+          description: Object not Found
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+          
+  /property/analytics/most-appeared-on-the-compare-list/:
+    get:
+      tags:
+        - Analytics
+      description: "**User type**: Agent/Developer"
+      responses:
+        200:
+          description: Most appeared on the compare list
+        403:
+          description: permission denied
+        404:
+          description: Object not Found
+        405:
+          description: Method not allowed(Method ain't supported by this URL)
+        500:
+          description: Internal Server Error(Something has gone wrong on the website's server)
+        501:
+          description: Not Implemented(Web server does not support the functionality required for access and does not recognize the request method.)
+        502:
+          description: Bad Gateway(Received an invalid response from the upstream server)
+        503:
+          description: Service Unavailable(Server is down for maintenance or overloaded)
+        504:
+          description: Taking more time to get a response
+
 
 definitions:
   commonSingleErrorResponse:
@@ -4934,3 +5183,4 @@ host: localhost:8000
 schemes:
   - https
   - http
+  
