@@ -124,6 +124,10 @@ $(document).ready(function(){
     // ================================== chart end
     // ================================== chart end
 
+    function skeleton(){
+        return '<span class="skeleton-box" style="width: 100%; height: 100%;"></span> '
+    }
+
 
     function analytic_table_data({
         url, target_table, data_table_void
@@ -143,6 +147,7 @@ $(document).ready(function(){
                 'X-CSRFToken': csrfToken,
             },
             beforeSend: function() {
+                target_table.parents('.table-area').append(skeleton())
             },
             success: function (data) {
                 console.log(url)
@@ -156,10 +161,24 @@ $(document).ready(function(){
                 console.log(error)
             },
             complete : function(){
-                // $('[label-name="visit-analytics"] .modal-preloader').remove()
+                target_table.parents('.table-area').find('.skeleton-box').remove()
             }
         });
     };
+
+
+    analytic_table_data({
+        url : TOP_PERFORMING_PROPERTIES_BY_CONVERSION,
+        target_table : $('[table-name="top_performing_properties_by_conversion"]'),
+        data_table_void : function (e){
+            for (let i = 0; i < e.data.length; i++) {
+                e.init_table.row.add([
+                    e.data[i]?.title,
+                    e.data[i]?.conversion_rate,
+                ]).draw(false).node();
+            };
+        }
+    });
 
     analytic_table_data({
         url : MAXIMUM_VIEWING_TIME_PROPERTIES,
@@ -213,6 +232,19 @@ $(document).ready(function(){
                 e.init_table.row.add([
                     e.data[i]?.range,
                     e.data[i]?.search_appearance,
+                ]).draw(false).node();
+            };
+        }
+    });
+
+    analytic_table_data({
+        url : TOP_RANKED_PROPERTIES,
+        target_table : $('[table-name="top_ranked_properties"]'),
+        data_table_void : function (e){
+            for (let i = 0; i < e.data.length; i++) {
+                e.init_table.row.add([
+                    e.data[i]?.title,
+                    e.data[i]?.visit_count,
                 ]).draw(false).node();
             };
         }

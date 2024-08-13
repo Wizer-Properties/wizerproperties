@@ -12,6 +12,26 @@
     .table-area{
         height: 100% !important;
         margin: 0 !important;
+        position: relative;
+
+        .skeleton-box{
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    }
+
+    .dashboard-data-table thead th{
+        width: initial !important;
+    }
+
+    .dashboard-data-table tr th:last-child,
+    .dashboard-data-table tr td:last-child{
+        text-align: end !important;
+    }
+
+    .dashboard-data-table tr td.dataTables_empty{
+        text-align: center !important;
     }
 </style>
 {% endblock extend_head %}
@@ -57,11 +77,11 @@
                         Top Performing Properties by Conversion
                     </h1>
 
-                    <table class="dashboard-data-table">
+                    <table class="dashboard-data-table" table-name="top_performing_properties_by_conversion">
                         <thead>
                             <tr>
-                                <th>Ads name</th>
-                                <th>Create time</th>
+                                <th>Title</th>
+                                <th>Conversion Rate</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -75,7 +95,28 @@
             <div class="col-xl-4 col-md-6 mb-4">
                 <div class="table-area">
                     <h1 class="table-title">
-                        Top-Ranked Properties by Views
+                        Top-Ranked Properties
+                    </h1>
+
+                    <table class="dashboard-data-table" table-name="top_ranked_properties">
+                        <thead>
+                            <tr>
+                                <th>Ads name</th>
+                                <th>Average Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="col-xl-4 col-md-6 mb-4">
+                <div class="table-area">
+                    <h1 class="table-title">
+                        Top-Rated Buildings
                     </h1>
 
                     <table class="dashboard-data-table" table-name="top_rated_buildings">
@@ -288,14 +329,16 @@
 {% block extend_script %}
 <script>
     var VISITE_ANALYTCS = '/property/api/visit-analytics/';
-    var MAXIMUM_VIEWING_TIME_PROPERTIES = '/property/api/analytics/maximum-viewing-time-properties/';
-    var POPULAR_SEARCH_LOCATION_PROPERTIES = '/property/api/analytics/popular-search-location-properties/';
-    var HIGHEST_SEARCH_APPEARANCES_PROPERTIES = '/property/api/analytics/highest-search-appearances-properties/';
+    var TOP_RATED_BUILDINGS = '/property/api/analytics/top-rated-buildings/';
+    var TOP_RANKED_PROPERTIES = '/property/api/analytics/top-ranked-properties/';
+    var MOST_FAVORITE_PROPERTIES = '/property/api/analytics/most-favorite-properties/';
     var USER_ANALYTICS_PROPERTIES = '/property/api/analytics/user-analytics-properties/';
     var MOST_IN_DEMAND_PRICE_RANGE = '/property/api/analytics/most-in-demand-price-range/';
-    var TOP_RATED_BUILDINGS = '/property/api/analytics/top-rated-buildings/';
-    var MOST_FAVORITE_PROPERTIES = '/property/api/analytics/most-favorite-properties/';
+    var MAXIMUM_VIEWING_TIME_PROPERTIES = '/property/api/analytics/maximum-viewing-time-properties/';
     var MOST_APPEARED_ON_THE_COMPARE_LIST = '/property/api/analytics/most-appeared-on-the-compare-list/';
+    var POPULAR_SEARCH_LOCATION_PROPERTIES = '/property/api/analytics/popular-search-location-properties/';
+    var HIGHEST_SEARCH_APPEARANCES_PROPERTIES = '/property/api/analytics/highest-search-appearances-properties/';
+    var TOP_PERFORMING_PROPERTIES_BY_CONVERSION = '/property/api/analytics/top-performing-properties-by-conversion/'
 </script>
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 <script src="{% static '/js/libraries/dataTables.min.js' %}?v=1.00"></script>
