@@ -25,10 +25,21 @@ class PropertiesAnalyticsView(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def top_ranked_properties(self, request):
-        properties = Property.objects.filter(building__created_by=request.user).values(
-            "title", "visit_count").order_by("-visit_count")
+        visited_logs_subquery = PropertyClicksLog.objects.filter(
+            property=OuterRef('pk')
+        ).values('property').annotate(
+            visit_count=Sum('number_of_clicked')
+        ).values('visit_count')
+
+        # Main query to get properties with visit counts
+        properties = Property.objects.filter(
+            building__created_by=request.user
+        ).annotate(
+            visit_count=Coalesce(Subquery(visited_logs_subquery), 0)
+        ).values('visit_count', 'title').order_by("-visit_count")
         
         return Response(properties, status=status.HTTP_200_OK)
+    
     
     @action(detail=False, methods=['get'])
     def maximum_viewing_time_properties(self, request):
@@ -94,9 +105,15 @@ class PropertiesAnalyticsView(viewsets.ModelViewSet):
             object_id=OuterRef('pk'),
         ).values('object_id').annotate(total_schedules=Count('id')).values('total_schedules')
         
+        visited_logs_subquery = PropertyClicksLog.objects.filter(
+            property=OuterRef('pk')
+        ).values('property').annotate(
+            visit_count=Sum('number_of_clicked')
+        ).values('visit_count')
+
         # Annotate properties with the count of views and schedules
         properties = Property.objects.filter(building__created_by=request.user).annotate(
-            total_views=F('visit_count'),
+            total_views=Coalesce(Subquery(visited_logs_subquery), Value(0)),
             total_schedules=Coalesce(Subquery(schedules_subquery, output_field=IntegerField()), Value(0))
         ).annotate(
             conversion_rate=Case(
@@ -108,11 +125,9 @@ class PropertiesAnalyticsView(viewsets.ModelViewSet):
                 default=Value(0),
                 output_field=IntegerField()
             )
-        ).order_by('-conversion_rate')  # Order by conversion rate in descending order
-        
-        properties = list(properties.values("title", "conversion_rate"))
+        ).values("title", "conversion_rate").order_by('-conversion_rate')  # Order by conversion rate in descending order
 
-        return Response(properties)
+        return Response(properties, status=status.HTTP_200_OK)
     
     @action(detail=False, methods=['get'])
     def top_rated_buildings(self, request):
