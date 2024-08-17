@@ -64,28 +64,39 @@ class PropertiesAnalyticsView(viewsets.ModelViewSet):
         return Response(properties, status=status.HTTP_200_OK)
     
     @action(detail=False, methods=['get'])
-    def user_analytics_properties(self, request):
+    def user_properties_locations(self, request):
+        location_list = list(PropertyVisitLog.objects.filter(user_obj=request.user).values_list("location", flat=True))
+        
+        return Response(location_list, status=status.HTTP_200_OK)
+    
+    @action(detail=False, methods=['get'])
+    def user_gender_ratio(self, request):
         properties = Property.objects.filter(building__created_by=request.user)
         
-        properties_list = []
-        for property in properties:
-            total_visitors = property.male_visitors + property.female_visitors
-            male_percentage = 0
-            female_percentage = 0
-            
-            if total_visitors > 0:
-                male_percentage = (property.male_visitors / total_visitors) * 100
-                female_percentage = (property.female_visitors / total_visitors) * 100
-            
-            properties_list.append({
-                "gender_ratio":{
-                    "male": male_percentage,
-                    "female": female_percentage,
-                },
-                "location_list": list(PropertyVisitLog.objects.filter(property=property).values_list("location", flat=True))
-            })
+        # Aggregate the total number of male and female visitors
+        totals = properties.aggregate(
+            total_male_visitors=Sum('male_visitors'),
+            total_female_visitors=Sum('female_visitors')
+        )
+        # Extract the totals
+        total_male_visitors = totals['total_male_visitors'] or 0
+        total_female_visitors = totals['total_female_visitors'] or 0
+
+        # Calculate the total number of visitors
+        total_visitors = total_male_visitors + total_female_visitors
         
-        return Response(properties_list, status=status.HTTP_200_OK)
+        # Calculate the percentages
+        if total_visitors > 0:
+            male_percentage = (total_male_visitors / total_visitors) * 100
+            female_percentage = (total_female_visitors / total_visitors) * 100
+        else:
+            male_percentage = female_percentage = 0
+            
+        gender_ration = {
+            "male": round(male_percentage),
+            "female": round(female_percentage),
+        }        
+        return Response(gender_ration, status=status.HTTP_200_OK)
     
     @action(detail=False, methods=['get'])
     def most_in_demand_price_range(self, request):

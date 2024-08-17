@@ -10,10 +10,11 @@ from .models import (
     FeatureProperty,
     PropertyVisitorLocation,
     PropertyPriceRange,
-    PropertyClicksLog
+    PropertyClicksLog,
+    PropertyVisitLog
 )
 
-admin.site.register([PropertyVisitorLocation, PropertyPriceRange])
+admin.site.register([PropertyVisitorLocation, PropertyPriceRange, PropertyVisitLog])
 
 class PropertyClicksLogAdmin(admin.ModelAdmin):
     # readonly_fields = ('created_at')
