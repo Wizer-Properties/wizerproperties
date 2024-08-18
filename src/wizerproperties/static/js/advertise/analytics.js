@@ -345,7 +345,7 @@ $(document).ready(function(){
                 // $('#gender-analytics').html(skeleton())
             },
             success: function (data) {
-                gender_option_data.series.data = [
+                gender_option_data.series[0].data = [
                     { value: data?.male, name: 'Male' },
                     { value: data?.female, name: 'Female' }
                 ]
