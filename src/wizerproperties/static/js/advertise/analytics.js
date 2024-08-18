@@ -1,13 +1,12 @@
 $(document).ready(function(){
 
     function time_convert(seconds ){
-        var days = Math.floor(seconds / 86400);
         var hours = Math.floor((seconds % 86400) / 3600);
         var minutes = Math.floor((seconds % 3600) / 60);
         var secs = Math.floor(seconds % 60);
 
         // Format the output
-        return days+'d : '+hours+'h : '+minutes+'m : '+secs+'s';
+        return hours+'h : '+minutes+'m : '+secs+'s';
     }
 
     var property_dom = document.getElementById('property_view');
@@ -174,7 +173,7 @@ $(document).ready(function(){
             for (let i = 0; i < e.data.length; i++) {
                 e.init_table.row.add([
                     e.data[i]?.title,
-                    e.data[i]?.conversion_rate,
+                    e.data[i]?.conversion_rate + ' %',
                 ]).draw(false).node();
             };
         }
@@ -218,11 +217,6 @@ $(document).ready(function(){
             };
         }
     });
-
-    // analytic_table_data({
-    //     url : USER_ANALYTICS_PROPERTIES,
-    //     target_table : $('[table-name="user_analytics_properties"]') // left
-    // });
 
     analytic_table_data({
         url : MOST_IN_DEMAND_PRICE_RANGE,
@@ -289,4 +283,82 @@ $(document).ready(function(){
         }
     });
 
+
+    
+    // analytic_table_data({
+    //     url : USER_PROPERTIES_LOCATIONS,
+    //     target_table : $('[table-name="user_properties_locations"]')
+    // });
+
+    var gender_analytics_chart_dom = document.getElementById('gender-analytics');
+    var gender_analytics_chart = echarts.init(gender_analytics_chart_dom);
+    var gender_option_data = {
+        tooltip: {
+            trigger: 'item'
+        },
+        legend: {
+            top: '5%',
+            left: 'center'
+        },
+        series: [
+            {
+                name: 'Gender',
+                type: 'pie',
+                radius: ['40%', '70%'],
+                avoidLabelOverlap: false,
+                itemStyle: {
+                    borderRadius: 10,
+                    borderColor: '#fff',
+                    borderWidth: 2
+                },
+                label: {
+                    show: false,
+                    position: 'center'
+                },
+                emphasis: {
+                    label: {
+                        show: true,
+                        fontSize: 18,
+                        fontWeight: 'bold'
+                    }
+                },
+                labelLine: {
+                    show: false
+                },
+                data: [
+                    { value: 0, name: 'Male' },
+                    { value: 0, name: 'Female' }
+                ]
+            }
+        ]
+    };
+
+
+    function gender_ratio_data(){
+        $.ajax({
+            url: USER_GENDER_RATIO,
+            type: 'GET',
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            beforeSend: function() {
+                // $('#gender-analytics').html(skeleton())
+            },
+            success: function (data) {
+                gender_option_data.series.data = [
+                    { value: data?.male, name: 'Male' },
+                    { value: data?.female, name: 'Female' }
+                ]
+                gender_option_data && gender_analytics_chart.setOption(gender_option_data);
+            },
+            error: function (error) {
+                console.log(error)
+            },
+            complete : function(){
+                // $('#gender-analytics').find('.skeleton-box').remove();
+            }
+        });
+    };
+
+    gender_ratio_data()
 })
