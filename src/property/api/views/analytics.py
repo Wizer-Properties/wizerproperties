@@ -35,23 +35,29 @@ class PropertiesAnalyticsView(viewsets.ModelViewSet):
         properties = Property.objects.filter(
             building__created_by=request.user
         ).annotate(
-            visit_count=Coalesce(Subquery(visited_logs_subquery), 0)
-        ).values('visit_count', 'title').order_by("-visit_count")
+            visit_count=Coalesce(Subquery(visited_logs_subquery), 0),
+            building_name=F("building__title"),
+            building_location=F("building__address")
+        ).values('id', 'visit_count', 'title', 'building_name', 'building_location').order_by("-visit_count")
         
         return Response(properties, status=status.HTTP_200_OK)
     
     
     @action(detail=False, methods=['get'])
     def maximum_viewing_time_properties(self, request):
-        properties = Property.objects.filter(building__created_by=request.user).values(
-            "title", "view_time").order_by("-view_time")
+        properties = Property.objects.filter(building__created_by=request.user).annotate(
+            building_name=F("building__title"),
+            building_location=F("building__address")).values(
+            "id", "title", "view_time", "building_name", "building_location").order_by("-view_time")
         
         return Response(properties, status=status.HTTP_200_OK)
     
     @action(detail=False, methods=['get'])
     def highest_search_appearances_properties(self, request):
-        properties = Property.objects.filter(building__created_by=request.user).values(
-            "title", "search_appearance").order_by("-search_appearance")
+        properties = Property.objects.filter(building__created_by=request.user).annotate(
+            building_name=F("building__title"),
+            building_location=F("building__address")).values(
+            "id", "title", "search_appearance", "building_name", "building_location").order_by("-search_appearance")
         
         return Response(properties, status=status.HTTP_200_OK)
     
@@ -135,8 +141,11 @@ class PropertiesAnalyticsView(viewsets.ModelViewSet):
                 ),
                 default=Value(0),
                 output_field=IntegerField()
-            )
-        ).values("title", "conversion_rate").order_by('-conversion_rate')  # Order by conversion rate in descending order
+            ),
+            building_name=F("building__title"),
+            building_location=F("building__address")
+        ).values("id", "title", "conversion_rate", "building_name", "building_location"
+        ).order_by('-conversion_rate')  # Order by conversion rate in descending order
 
         return Response(properties, status=status.HTTP_200_OK)
     
@@ -147,27 +156,31 @@ class PropertiesAnalyticsView(viewsets.ModelViewSet):
             review_count=Coalesce(Count('reviews'), Value(0),  output_field=IntegerField())
         ).order_by('-average_rating', "-review_count")
         
-        properties = list(properties.values("title", "average_rating"))
+        properties = list(properties.values("id", "title", "address", "average_rating"))
         
         return Response(properties, status=status.HTTP_200_OK)
     
     @action(detail=False, methods=['get'])
     def most_favorite_properties(self, request):
         properties = Property.objects.filter(building__created_by=request.user).annotate(
-            favorite_count=Coalesce(Count('favorites'), Value(0),  output_field=IntegerField())
+            favorite_count=Coalesce(Count('favorites'), Value(0),  output_field=IntegerField()),
+            building_name=F("building__title"),
+            building_location=F("building__address")
         ).order_by("-favorite_count")
         
-        properties = list(properties.values("title", "favorite_count"))
+        properties = list(properties.values("id", "title", "favorite_count", "building_name", "building_location"))
         
         return Response(properties, status=status.HTTP_200_OK)
     
     @action(detail=False, methods=['get'])
     def most_appeared_on_the_compare_list(self, request):
         properties = Property.objects.filter(building__created_by=request.user).annotate(
-            compare_count=Coalesce(Count('compares'), Value(0),  output_field=IntegerField())
+            compare_count=Coalesce(Count('compares'), Value(0),  output_field=IntegerField()),
+            building_name=F("building__title"),
+            building_location=F("building__address")
         ).order_by("-compare_count")
         
-        properties = list(properties.values("title", "compare_count"))
+        properties = list(properties.values("id", "title", "compare_count", "building_name", "building_location"))
         
         return Response(properties, status=status.HTTP_200_OK)
 
