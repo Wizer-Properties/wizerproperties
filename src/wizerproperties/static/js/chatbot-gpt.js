@@ -29,6 +29,9 @@ $(function(){
         $.ajax({
             url: "/core/api/chatbot-gpt-api/",
             method: "POST",
+            headers: {
+                "X-CSRFToken": csrfToken
+            },
             data: {
                 content: content
             },
