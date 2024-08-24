@@ -24,7 +24,7 @@ from property.api.serializers import (
     SchedulePropertySerializer,
 )
 from property.api.filters import PropertyFilter
-from property.api.pagination import UserPropertyPagination
+from property.api.pagination import UserPropertyPagination, PropertySearchPagination
 from building.api.serializers import BuildingInfoForPropertySerializer, BuildingMediaSerializer
 from building.models import Building, BuildingMedia
 from property.models import Property, PropertyMedia, CompareProperty, ProspectFavoriteProperty
@@ -112,10 +112,6 @@ class PropertyViewSet(viewsets.ModelViewSet):
     def filter_queryset(self, queryset):
         queryset = super().filter_queryset(queryset)
 
-        # If object appearance in search we will updating
-        # property objects search appearance by 1
-        queryset.update(search_appearance=F("search_appearance") + 1)
-
         # Retrieve the ordering parameter from the request
         ordering = self.request.query_params.get("ordering", None)
 
@@ -160,9 +156,26 @@ class PropertyViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def list(self, request, *args, **kwargs):
-        response = super().list(request, *args, **kwargs)
-        self._store_filter_data_in_cookies(response)
-        self._store_searched_places_in_cookies(response)
+        # Check if it's a search request (you can define this based on your logic)
+        is_search_request = self.request.query_params.get("search", None) is not None
+
+        if is_search_request:
+            # Apply the filter queryset logic with custom pagination
+            queryset = self.filter_queryset(self.get_queryset())
+
+            # Apply custom pagination to the filtered queryset
+            custom_paginator = PropertySearchPagination()
+            paginated_queryset = custom_paginator.paginate_queryset(queryset, request)
+
+            # Serialize the data
+            serializer = self.get_serializer(paginated_queryset, many=True)
+
+            # Generate custom paginated response
+            response = custom_paginator.get_paginated_response(serializer.data)
+        else:
+            # Use the default list implementation with default pagination
+            response = super().list(request, *args, **kwargs)
+
         return response
 
     def _store_filter_data_in_cookies(self, response):

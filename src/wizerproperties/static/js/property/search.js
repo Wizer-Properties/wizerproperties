@@ -300,7 +300,7 @@ $(document).ready(function(){
     }
 
 
-    var prams_list = {
+    var search_prams_list = {
         page_size : 5,
         search : place || '',
     };
@@ -312,7 +312,7 @@ $(document).ready(function(){
 
 
     function searching(search_type){
-        var search_param = _.cloneDeep(prams_list);
+        var search_param = _.cloneDeep(search_prams_list);
 
         var get_filter_data = filter_data.only_has_value();
         for (var key in get_filter_data) {
