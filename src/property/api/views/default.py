@@ -27,7 +27,8 @@ from property.api.filters import PropertyFilter
 from property.api.pagination import UserPropertyPagination, PropertySearchPagination
 from building.api.serializers import BuildingInfoForPropertySerializer, BuildingMediaSerializer
 from building.models import Building, BuildingMedia
-from property.models import Property, PropertyMedia, CompareProperty, ProspectFavoriteProperty
+from property.models import Property, PropertyMedia, CompareProperty, ProspectFavoriteProperty, \
+    PropertyPriceRange
 from user.models import AgentProfile, DeveloperProfile, ProspectProfile
 from user.api.serializers import AgentProfileSerializer, DeveloperProfileSerializer
 from utils.general_func import get_chatgpt_response, get_user_ip
@@ -175,8 +176,29 @@ class PropertyViewSet(viewsets.ModelViewSet):
         else:
             # Use the default list implementation with default pagination
             response = super().list(request, *args, **kwargs)
+        
+        # Storing query value in cookie
+        self._store_filter_data_in_cookies(response)
+        self._store_searched_places_in_cookies(response)
+        self._save_query_filter_prize_range()
 
         return response
+    
+
+    def _save_query_filter_prize_range(self):
+        """We are storing price ranges"""
+
+        query_params = self._get_query_params()
+        if query_params.get("min_price", None) or query_params.get("max_price", None):
+            min_price = query_params.get("min_price", ["0"])[0]
+            max_price = query_params.get("max_price", ["infinity"])[0]
+            price_range = f"{min_price}-{max_price}"
+            
+            # If range is not exists we create a price range object with at range
+            # Otherwise, we will increase the search appearance number
+            price_range_obj, created = PropertyPriceRange.objects.get_or_create(range=price_range)
+            price_range_obj.search_appearance += 1
+            price_range_obj.save()
 
     def _store_filter_data_in_cookies(self, response):
         """We are storing search parameter is cookie"""

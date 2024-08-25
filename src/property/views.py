@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from building.models import Building
-from property.models import Property, PropertyPriceRange
+from property.models import Property
 from user.models import User, Profile, DeveloperProfile, AgentProfile
 from advertise.models import Advertisement
 from utils.general_func import get_user_location
@@ -90,17 +90,6 @@ def update_property(request, id):
 
 
 def search_property(request):
-
-    """We are saving property search price ranges"""
-    if request.GET.get("min_price") or request.GET.get("max_price"):
-        min_price = request.GET.get("min_price", "0")
-        max_price = request.GET.get("max_price", "infinity")
-        price_range = f"{min_price}-{max_price}"
-        
-        price_range_obj, created = PropertyPriceRange.objects.get_or_create(range=price_range)
-        price_range_obj.search_appearance += 1
-        price_range_obj.save()
-
     return render(request, "search_property.html")
 
 def search_property_with_map(request):
