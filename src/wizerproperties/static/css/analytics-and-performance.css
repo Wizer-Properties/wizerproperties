@@ -105,6 +105,10 @@
     padding: 20px;
     margin-bottom: 20px;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 .analytics-cards h1{
@@ -113,11 +117,14 @@
     overflow-wrap: anywhere;
     font-weight: 600;
     color: #fff;
+    text-align: center;
 }
 
 .analytics-cards span{
     font-size: 14px;
     color: #fff;
+    display: block;
+    text-align: center;
 }
 
 .modal .table-area{
@@ -166,39 +173,54 @@
 
 [target-modal="top_performing_properties_by_conversion"]{
     background: linear-gradient(135deg, #d38312 0%, #d595bc 100%);
+    height: 280px;
 }
 
 [target-modal="top_ranked_properties"]{
-    background: linear-gradient(135deg, #17a2b8 0%, #007bff 100%);
+    background: linear-gradient(135deg, #67d343 0%, #649b99 100%);
+    height: 360px;
 }
 
 [target-modal="most_in_demand_price_range"]{
     background: linear-gradient(135deg, #f78ca0 0%, #f9748f 100%);
+    height: 200px;
 }
 
 [target-modal="top_rated_buildings"]{
     background: linear-gradient(135deg, #ff9966 0%, #ff5e62 100%);
+    height: 320px;
 }
 
 [target-modal="maximum_viewing_time_properties"]{
     background: linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%);
+    height: 280px;
 }
 
 [target-modal="most_favorite_properties"]{
     background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+    height: 400px;
 }
 
 [target-modal="popular_search_location_properties"]{
     background: linear-gradient(135deg, #626097 0%, #f05053 100%);
+    height: 320px;
 }
 
 [target-modal="most_appeared_on_the_compare_list"]{
     background: linear-gradient(135deg, #df8b9c 0%, #3f5efb 100%);
+    height: 200px;
 }
 
 [target-modal="highest_search_appearances_properties"]{
     background: linear-gradient(135deg, #a8a8ff 0%, #f5af19 100%);
+    height: 340px;
 }
+
+[target-modal="example"]{
+    background: linear-gradient(135deg, #75994e 22%, #1bd6e1 100%);
+    height: 260px;
+}
+
 
 
 
@@ -230,6 +252,47 @@
 
     .analytics-cards{
         padding: 15px;
+    }
+
+
+    [target-modal="top_performing_properties_by_conversion"]{
+        height: 240px;
+    }
+    
+    [target-modal="top_ranked_properties"]{
+        height: 260px;
+    }
+    
+    [target-modal="most_in_demand_price_range"]{
+        height: 220px;
+    }
+    
+    [target-modal="top_rated_buildings"]{
+        height: 260px;
+    }
+    
+    [target-modal="maximum_viewing_time_properties"]{
+        height: 200px;
+    }
+    
+    [target-modal="most_favorite_properties"]{
+        height: 180px;
+    }
+    
+    [target-modal="popular_search_location_properties"]{
+        height: 230px;
+    }
+    
+    [target-modal="most_appeared_on_the_compare_list"]{
+        height: 200px;
+    }
+    
+    [target-modal="highest_search_appearances_properties"]{
+        height: 240px;
+    }
+    
+    [target-modal="example"]{
+        height: 240px;
     }
 }
 
