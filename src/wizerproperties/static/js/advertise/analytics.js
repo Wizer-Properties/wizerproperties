@@ -1,5 +1,10 @@
 $(document).ready(function(){
 
+    $('[target-modal]').click(function(){
+        var modal_name = $(this).attr('target-modal')
+        $('[modal-name="'+modal_name+'"]').modal("show");
+    })
+
     function time_convert(seconds ){
         var hours = Math.floor((seconds % 86400) / 3600);
         var minutes = Math.floor((seconds % 3600) / 60);
@@ -129,8 +134,10 @@ $(document).ready(function(){
 
 
     function analytic_table_data({
-        url, target_table, data_table_void
+        url, target_attr_name, data_table_void
     }){
+
+        var target_table = $('[table-name='+target_attr_name+']')
         
         var init_table = target_table.DataTable({
             ordering: false,
@@ -149,12 +156,14 @@ $(document).ready(function(){
                 target_table.parents('.table-area').append(skeleton())
             },
             success: function (data) {
-                console.log(url)
-                console.log(data)
+                // console.log(url)
+                // console.log(data)
                 data_table_void({
                     data, 
                     init_table,
                 })
+
+                $('[target-modal='+target_attr_name+'] [label-name="total-data"]').html('Total data : ' + data?.length || 0)
             },
             error: function (error) {
                 console.log(error)
@@ -168,7 +177,7 @@ $(document).ready(function(){
 
     analytic_table_data({
         url : TOP_PERFORMING_PROPERTIES_BY_CONVERSION,
-        target_table : $('[table-name="top_performing_properties_by_conversion"]'),
+        target_attr_name : 'top_performing_properties_by_conversion',
         data_table_void : function (e){
             for (let i = 0; i < e.data.length; i++) {
                 e.init_table.row.add([
@@ -181,7 +190,7 @@ $(document).ready(function(){
 
     analytic_table_data({
         url : MAXIMUM_VIEWING_TIME_PROPERTIES,
-        target_table : $('[table-name="maximum_viewing_time_properties"]'),
+        target_attr_name : 'maximum_viewing_time_properties',
         data_table_void : function (e){
             for (let i = 0; i < e.data.length; i++) {
                 e.init_table.row.add([
@@ -194,7 +203,7 @@ $(document).ready(function(){
 
     analytic_table_data({
         url : POPULAR_SEARCH_LOCATION_PROPERTIES,
-        target_table : $('[table-name="popular_search_location_properties"]'),
+        target_attr_name : 'popular_search_location_properties',
         data_table_void : function (e){
             for (let i = 0; i < e.data.length; i++) {
                 e.init_table.row.add([
@@ -207,7 +216,7 @@ $(document).ready(function(){
 
     analytic_table_data({
         url : HIGHEST_SEARCH_APPEARANCES_PROPERTIES,
-        target_table : $('[table-name="highest_search_appearances_properties"]'),
+        target_attr_name : 'highest_search_appearances_properties',
         data_table_void : function (e){
             for (let i = 0; i < e.data.length; i++) {
                 e.init_table.row.add([
@@ -220,7 +229,7 @@ $(document).ready(function(){
 
     analytic_table_data({
         url : MOST_IN_DEMAND_PRICE_RANGE,
-        target_table : $('[table-name="most_in_demand_price_range"]'),
+        target_attr_name : 'most_in_demand_price_range',
         data_table_void : function (e){
             for (let i = 0; i < e.data.length; i++) {
                 e.init_table.row.add([
@@ -233,7 +242,7 @@ $(document).ready(function(){
 
     analytic_table_data({
         url : TOP_RANKED_PROPERTIES,
-        target_table : $('[table-name="top_ranked_properties"]'),
+        target_attr_name : 'top_ranked_properties',
         data_table_void : function (e){
             for (let i = 0; i < e.data.length; i++) {
                 e.init_table.row.add([
@@ -246,7 +255,7 @@ $(document).ready(function(){
 
     analytic_table_data({
         url : TOP_RATED_BUILDINGS,
-        target_table : $('[table-name="top_rated_buildings"]'),
+        target_attr_name : 'top_rated_buildings',
         data_table_void : function (e){
             for (let i = 0; i < e.data.length; i++) {
                 e.init_table.row.add([
@@ -259,7 +268,7 @@ $(document).ready(function(){
 
     analytic_table_data({
         url : MOST_FAVORITE_PROPERTIES,
-        target_table : $('[table-name="most_favorite_properties"]'),
+        target_attr_name : 'most_favorite_properties',
         data_table_void : function (e){
             for (let i = 0; i < e.data.length; i++) {
                 e.init_table.row.add([
@@ -272,7 +281,7 @@ $(document).ready(function(){
 
     analytic_table_data({
         url : MOST_APPEARED_ON_THE_COMPARE_LIST,
-        target_table : $('[table-name="most_appeared_on_the_compare_list"]'),
+        target_attr_name : 'most_appeared_on_the_compare_list',
         data_table_void : function (e){
             for (let i = 0; i < e.data.length; i++) {
                 e.init_table.row.add([
@@ -287,7 +296,7 @@ $(document).ready(function(){
     
     // analytic_table_data({
     //     url : USER_PROPERTIES_LOCATIONS,
-    //     target_table : $('[table-name="user_properties_locations"]')
+    //     target_attr_name : 'user_properties_locations'
     // });
 
     var gender_analytics_chart_dom = document.getElementById('gender-analytics');

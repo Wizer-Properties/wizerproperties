@@ -48,11 +48,15 @@
     color: #fff !important;
 }
 
-.analytics-tables .dashboard-data-table{
+.analytics-overview{
+    margin-bottom: 35px;
+}
+
+.analytics-overview .dashboard-data-table{
     min-width: 300px !important;
 }
 
-.analytics-tables .table-title,
+.analytics-overview .table-title,
 .analytics-card-title{
     position: initial !important;
     margin-bottom: 20px !important;
@@ -61,7 +65,7 @@
     font-size: 14px !important;
 }
 
-.analytics-tables{
+.analytics-overview{
     margin-top: 35px;
 }
 
@@ -96,6 +100,109 @@
     height: 400px;
 }
 
+.analytics-cards {
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.analytics-cards h1{
+    font-size: 18px;
+    margin-bottom: 10px;
+    overflow-wrap: anywhere;
+    font-weight: 600;
+    color: #fff;
+}
+
+.analytics-cards span{
+    font-size: 14px;
+    color: #fff;
+}
+
+.modal .table-area{
+    box-shadow: none !important;
+}
+
+.modal .table-title{
+    position: initial !important;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px ;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.modal .table-title button{
+    display: grid;
+    place-items: center;
+    height: 30px;
+    width: 30px;
+    border: none;
+    font-size: 16px;
+    background: #15C1B9 !important;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.analytics-overview-title h1{
+    font-size: 18px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.analytics-overview-title p{
+    font-size: 13px;
+    margin: 0;
+}
+
+.analytics-overview-title{
+    margin-bottom: 15px;
+}
+
+.analytics-overview .box-area{
+    padding: 20px !important;
+}
+
+[target-modal="top_performing_properties_by_conversion"]{
+    background: linear-gradient(135deg, #d38312 0%, #d595bc 100%);
+}
+
+[target-modal="top_ranked_properties"]{
+    background: linear-gradient(135deg, #17a2b8 0%, #007bff 100%);
+}
+
+[target-modal="most_in_demand_price_range"]{
+    background: linear-gradient(135deg, #f78ca0 0%, #f9748f 100%);
+}
+
+[target-modal="top_rated_buildings"]{
+    background: linear-gradient(135deg, #ff9966 0%, #ff5e62 100%);
+}
+
+[target-modal="maximum_viewing_time_properties"]{
+    background: linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%);
+}
+
+[target-modal="most_favorite_properties"]{
+    background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+}
+
+[target-modal="popular_search_location_properties"]{
+    background: linear-gradient(135deg, #626097 0%, #f05053 100%);
+}
+
+[target-modal="most_appeared_on_the_compare_list"]{
+    background: linear-gradient(135deg, #df8b9c 0%, #3f5efb 100%);
+}
+
+[target-modal="highest_search_appearances_properties"]{
+    background: linear-gradient(135deg, #a8a8ff 0%, #f5af19 100%);
+}
+
+
+
+
 @media screen and (max-width: 991px) {
     .advertise_gender_analytics{
         margin-top: 35px;
@@ -115,6 +222,14 @@
         flex-direction: column;
         align-items: end;
         gap: 10px;
+    }
+
+    .analytics-cards h1{
+        font-size: 16px;
+    }
+
+    .analytics-cards{
+        padding: 15px;
     }
 }
 

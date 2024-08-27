@@ -79,259 +79,390 @@
 </section>
 
 
-<section class="analytics-tables">
+<section class="analytics-overview">
     <div class="container">
-        <div class="row">
-
-
-            <div class="col-xl-4 col-md-6 mb-4">
-                <div class="table-area">
-                    <h1 class="table-title">
-                        Top Performing Properties by Conversion
-                    </h1>
-
-                    <table class="dashboard-data-table" table-name="top_performing_properties_by_conversion">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Conversion Rate</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                        </tbody>
-                    </table>
-                </div>
+        <div class="box-area position-relative">
+            <div class="analytics-overview-title">
+                <h1> Analytics overview </h1>
+                <p> Click on card to see more information. </p>
             </div>
 
-
-            <div class="col-xl-4 col-md-6 mb-4">
-                <div class="table-area">
-                    <h1 class="table-title">
-                        Top-Ranked Properties By View
-                    </h1>
-
-                    <table class="dashboard-data-table" table-name="top_ranked_properties">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>View</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+            <div class="row">
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="analytics-cards" target-modal="top_performing_properties_by_conversion">
+                                <h1> Top Performing Properties by Conversion </h1>
+                                <span label-name="total-data"> Total data : -- </span>
+                            </div>
                             
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-
-            <div class="col-xl-4 col-md-6 mb-4">
-                <div class="table-area">
-                    <h1 class="table-title">
-                        Top-Rated Buildings
-                    </h1>
-
-                    <table class="dashboard-data-table" table-name="top_rated_buildings">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Average Rating</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                            <div class="analytics-cards" target-modal="top_ranked_properties">
+                                <h1> Top-Ranked Properties By View </h1>
+                                <span label-name="total-data"> Total data : -- </span>
+                            </div>
+    
+                            <div class="analytics-cards" target-modal="most_in_demand_price_range">
+                                <h1> Most In Demand Price Range </h1>
+                                <span label-name="total-data"> Total data : -- </span>
+                            </div>
+                        </div>
+        
+                        <div class="col-lg-6">
+                            <div class="analytics-cards" target-modal="top_rated_buildings">
+                                <h1> Top-Rated Buildings </h1>
+                                <span label-name="total-data"> Total data : -- </span>
+                            </div>
                             
-                        </tbody>
-                    </table>
+                            <div class="analytics-cards" target-modal="maximum_viewing_time_properties">
+                                <h1> Properties with Maximum Viewing Time </h1>
+                                <span label-name="total-data"> Total data : -- </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-
-            <div class="col-xl-4 col-md-6 mb-4">
-                <div class="table-area">
-                    <h1 class="table-title">
-                        Properties with Maximum Viewing Time
-                    </h1>
-
-                    <table class="dashboard-data-table" table-name="maximum_viewing_time_properties">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>View time</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                        </tbody>
-                    </table>
+    
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <!-- <div class="analytics-cards" target-modal="top_rated_buildings">
+                                <h1> Most Top-Rated Properties </h1>
+                                <span label-name="total-data"> Total data : -- </span>
+                            </div> -->
+            
+                            <div class="analytics-cards" target-modal="most_favorite_properties">
+                                <h1> Most User Favorites </h1>
+                                <span label-name="total-data"> Total data : -- </span>
+                            </div>
+    
+                            <div class="analytics-cards" target-modal="popular_search_location_properties">
+                                <h1> Most Popular Search locations </h1>
+                                <span label-name="total-data"> Total data : -- </span>
+                            </div>
+                        </div>
+        
+                        <div class="col-lg-6">
+                            <div class="analytics-cards" target-modal="most_appeared_on_the_compare_list">
+                                <h1> Most Appeared on the Compare List </h1>
+                                <span label-name="total-data"> Total data : -- </span>
+                            </div>
+            
+                            <div class="analytics-cards" target-modal="highest_search_appearances_properties">
+                                <h1> Properties with highest search appearances </h1>
+                                <span label-name="total-data"> Total data : -- </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+    
+    
             </div>
-
-
-
-            <div class="col-xl-4 col-md-6 mb-4">
-                <div class="table-area">
-                    <h1 class="table-title">
-                        Most Top-Rated Properties
-                    </h1>
-
-                    <table class="dashboard-data-table" table-name="top_rated_buildings">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Create time</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-
-            <div class="col-xl-4 col-md-6 mb-4">
-                <div class="table-area">
-                    <h1 class="table-title">
-                        Most User Favorites
-                    </h1>
-
-                    <table class="dashboard-data-table" table-name="most_favorite_properties">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-
-
-            <div class="col-xl-4 col-md-6 mb-4">
-                <div class="table-area">
-                    <h1 class="table-title">
-                        Most Appeared on the Compare List
-                    </h1>
-
-                    <table class="dashboard-data-table" table-name="most_appeared_on_the_compare_list">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-
         </div>
+
     </div>
 </section>
 
 
 
-<section class="analytics-tables">
-    <div class="container">
-        <div class="row">
 
 
-            <!-- <div class="col-12">
-                <div class="table-area">
-                    <h1 class="table-title">
-                        Location
-                    </h1>
+<div class="modal fade" modal-name="top_performing_properties_by_conversion" tabindex="-1" role="dialog"
+aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content p-3 pb-2">
+            <h1 class="table-title">
+                Top Performing Properties by Conversion
 
-                    <table class="dashboard-data-table" table-name="user_properties_locations">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Create time</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                        </tbody>
-                    </table>
-                </div>
-            </div> -->
+                <button class="close-analytics-modal">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </h1>
 
-
-            <div class="col-xl-4 col-md-6 mb-4">
-                <div class="table-area">
-                    <h1 class="table-title">
-                        Properties with highest search appearances
-                    </h1>
-
-                    <table class="dashboard-data-table" table-name="highest_search_appearances_properties">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Create time</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                        </tbody>
-                    </table>
-                </div>
+            <div class="table-area">
+                <table class="dashboard-data-table" table-name="top_performing_properties_by_conversion">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Conversion Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
             </div>
-
-
-            <div class="col-xl-4 col-md-6 mb-4">
-                <div class="table-area">
-                    <h1 class="table-title">
-                        Most Popular Search locations 
-                    </h1>
-
-                    <table class="dashboard-data-table" table-name="popular_search_location_properties">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Appearance</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-
-
-            <div class="col-xl-4 col-md-6 mb-4">
-                <div class="table-area">
-                    <h1 class="table-title">
-                        Most In Demand Price Range
-                    </h1>
-
-                    <table class="dashboard-data-table" table-name="most_in_demand_price_range">
-                        <thead>
-                            <tr>
-                                <th>Price Range</th>
-                                <th>Appearance</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-
         </div>
     </div>
-</section>
+</div>
+
+
+<div class="modal fade" modal-name="top_ranked_properties" tabindex="-1" role="dialog"
+aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content p-3 pb-2">
+            <h1 class="table-title">
+                Top-Ranked Properties By View 
+
+                <button class="close-analytics-modal">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </h1>
+
+            <div class="table-area">
+                <table class="dashboard-data-table" table-name="top_ranked_properties">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" modal-name="most_in_demand_price_range" tabindex="-1" role="dialog"
+aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content p-3 pb-2">
+            <h1 class="table-title">
+                Most In Demand Price Range
+
+                <button class="close-analytics-modal">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </h1>
+
+            <div class="table-area">
+                <table class="dashboard-data-table" table-name="most_in_demand_price_range">
+                    <thead>
+                        <tr>
+                            <th>Price Range</th>
+                            <th>Appearance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" modal-name="top_rated_buildings" tabindex="-1" role="dialog"
+aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content p-3 pb-2">
+            <h1 class="table-title">
+                Top-Rated Buildings
+
+                <button class="close-analytics-modal">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </h1>
+
+            <div class="table-area">
+                <table class="dashboard-data-table" table-name="top_rated_buildings">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Average Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" modal-name="maximum_viewing_time_properties" tabindex="-1" role="dialog"
+aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content p-3 pb-2">
+            <h1 class="table-title">
+                Properties with Maximum Viewing Time
+
+                <button class="close-analytics-modal">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </h1>
+
+            <div class="table-area">
+                <table class="dashboard-data-table" table-name="maximum_viewing_time_properties">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>View time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" modal-name="most_favorite_properties" tabindex="-1" role="dialog"
+aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content p-3 pb-2">
+            <h1 class="table-title">
+                Most User Favorites
+
+                <button class="close-analytics-modal">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </h1>
+
+            <div class="table-area">
+                <table class="dashboard-data-table" table-name="most_favorite_properties">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" modal-name="popular_search_location_properties" tabindex="-1" role="dialog"
+aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content p-3 pb-2">
+            <h1 class="table-title">
+                Most Popular Search locations
+
+                <button class="close-analytics-modal">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </h1>
+
+            <div class="table-area">
+                <table class="dashboard-data-table" table-name="popular_search_location_properties">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Appearance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" modal-name="most_appeared_on_the_compare_list" tabindex="-1" role="dialog"
+aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content p-3 pb-2">
+            <h1 class="table-title">
+                Most Appeared on the Compare List
+
+                <button class="close-analytics-modal">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </h1>
+
+            <div class="table-area">
+                <table class="dashboard-data-table" table-name="most_appeared_on_the_compare_list">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" modal-name="highest_search_appearances_properties" tabindex="-1" role="dialog"
+aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content p-3 pb-2">
+            <h1 class="table-title">
+                Properties with highest search appearances
+
+                <button class="close-analytics-modal">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </h1>
+
+            <div class="table-area">
+                <table class="dashboard-data-table" table-name="highest_search_appearances_properties">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Create time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- <div class="modal fade" modal-name="top_rated_buildings" tabindex="-1" role="dialog"
+aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content p-3 pb-2">
+            <h1 class="table-title">
+                Properties with highest search appearances
+
+                <button class="close-analytics-modal">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </h1>
+
+            <div class="table-area">
+                <table class="dashboard-data-table" table-name="highest_search_appearances_properties">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Create time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div> -->
 
 {% endblock %}
 
@@ -346,14 +477,14 @@
     var TOP_RATED_BUILDINGS = '/property/api/analytics/top-rated-buildings/';
     var TOP_RANKED_PROPERTIES = '/property/api/analytics/top-ranked-properties/';
     var MOST_FAVORITE_PROPERTIES = '/property/api/analytics/most-favorite-properties/';
-    var USER_PROPERTIES_LOCATIONS = '/property/api/analytics/user-properties-locations';
-    var USER_ANALYTICS_PROPERTIES = '/property/api/analytics/user-analytics-properties/';
+    var USER_PROPERTIES_LOCATIONS = '/property/api/analytics/user-properties-locations/'; // not used
+    var USER_ANALYTICS_PROPERTIES = '/property/api/analytics/user-analytics-properties/'; // not used
     var MOST_IN_DEMAND_PRICE_RANGE = '/property/api/analytics/most-in-demand-price-range/';
     var MAXIMUM_VIEWING_TIME_PROPERTIES = '/property/api/analytics/maximum-viewing-time-properties/';
     var MOST_APPEARED_ON_THE_COMPARE_LIST = '/property/api/analytics/most-appeared-on-the-compare-list/';
     var POPULAR_SEARCH_LOCATION_PROPERTIES = '/property/api/analytics/popular-search-location-properties/';
     var HIGHEST_SEARCH_APPEARANCES_PROPERTIES = '/property/api/analytics/highest-search-appearances-properties/';
-    var TOP_PERFORMING_PROPERTIES_BY_CONVERSION = '/property/api/analytics/top-performing-properties-by-conversion/'
+    var TOP_PERFORMING_PROPERTIES_BY_CONVERSION = '/property/api/analytics/top-performing-properties-by-conversion/';
 </script>
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 <script src="{% static '/js/libraries/dataTables.min.js' %}?v=1.00"></script>
