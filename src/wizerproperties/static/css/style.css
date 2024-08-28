@@ -244,11 +244,11 @@ table.dataTable.no-footer{
 }
 
 table.dataTable>thead>tr>th, table.dataTable>thead>tr>td{
-    padding: 15px 10px !important;
+    padding: 15px !important;
 }
 
 table.dataTable tbody th, table.dataTable tbody td{
-    padding: 15px 10px !important;
+    padding: 15px !important;
 }
 
 footer{
