@@ -118,6 +118,7 @@
     font-weight: 600;
     color: #fff;
     text-align: center;
+    text-transform: capitalize;
 }
 
 .analytics-cards span{

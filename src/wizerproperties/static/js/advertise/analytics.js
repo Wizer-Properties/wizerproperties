@@ -182,6 +182,8 @@ $(document).ready(function(){
             for (let i = 0; i < e.data.length; i++) {
                 e.init_table.row.add([
                     e.data[i]?.title,
+                    e.data[i]?.building_name,
+                    e.data[i]?.building_location,
                     e.data[i]?.conversion_rate + ' %',
                 ]).draw(false).node();
             };
@@ -195,6 +197,8 @@ $(document).ready(function(){
             for (let i = 0; i < e.data.length; i++) {
                 e.init_table.row.add([
                     e.data[i]?.title,
+                    e.data[i]?.building_name,
+                    e.data[i]?.building_location,
                     time_convert(e.data[i]?.view_time),
                 ]).draw(false).node();
             };
@@ -221,6 +225,8 @@ $(document).ready(function(){
             for (let i = 0; i < e.data.length; i++) {
                 e.init_table.row.add([
                     e.data[i]?.title,
+                    e.data[i]?.building_name,
+                    e.data[i]?.building_location,
                     e.data[i]?.search_appearance,
                 ]).draw(false).node();
             };
@@ -234,6 +240,8 @@ $(document).ready(function(){
             for (let i = 0; i < e.data.length; i++) {
                 e.init_table.row.add([
                     e.data[i]?.range,
+                    e.data[i]?.building_name,
+                    e.data[i]?.building_location,
                     e.data[i]?.search_appearance,
                 ]).draw(false).node();
             };
@@ -247,6 +255,8 @@ $(document).ready(function(){
             for (let i = 0; i < e.data.length; i++) {
                 e.init_table.row.add([
                     e.data[i]?.title,
+                    e.data[i]?.building_name,
+                    e.data[i]?.building_location,
                     e.data[i]?.visit_count,
                 ]).draw(false).node();
             };
@@ -260,6 +270,7 @@ $(document).ready(function(){
             for (let i = 0; i < e.data.length; i++) {
                 e.init_table.row.add([
                     e.data[i]?.title,
+                    e.data[i]?.address,
                     e.data[i]?.average_rating,
                 ]).draw(false).node();
             };
@@ -273,6 +284,8 @@ $(document).ready(function(){
             for (let i = 0; i < e.data.length; i++) {
                 e.init_table.row.add([
                     e.data[i]?.title,
+                    e.data[i]?.building_name,
+                    e.data[i]?.building_location,
                     e.data[i]?.favorite_count,
                 ]).draw(false).node();
             };
@@ -286,6 +299,8 @@ $(document).ready(function(){
             for (let i = 0; i < e.data.length; i++) {
                 e.init_table.row.add([
                     e.data[i]?.title,
+                    e.data[i]?.building_name,
+                    e.data[i]?.building_location,
                     e.data[i]?.compare_count,
                 ]).draw(false).node();
             };
