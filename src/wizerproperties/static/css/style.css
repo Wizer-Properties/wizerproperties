@@ -101,10 +101,14 @@ input{
 
 .table-area,
 .box-area{
-    box-shadow: 0 4px 10px 2px rgba(0,0,0,.2);
+    box-shadow: #919eab33 0 0 2px, #919eab29 0 6px 10px 3px;
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 20px;
     padding-top: 0 !important;
+}
+
+.table-area{
+    padding: 0 !important;
 }
 
 .box-area{
@@ -117,19 +121,36 @@ input{
     font-size: 14px;
 }
 
+.dataTable{
+    margin-top: 10px !important;
+}
+
+.dataTable thead{
+    background: #F4F6F8;
+}
+
 .table-area th{
-    color: #3c4349;
-    border-bottom : 1px solid #e9e9e9 !important;
+    color: #7793a1 !important;
+    font-weight: 500 !important;
+    border-bottom : none !important;
 }
 
 table.dataTable.no-footer{
-    border-bottom : 1px solid #e9e9e9 !important;
+    border-bottom : none !important;
+}
 
+.dataTables_wrapper .dataTables_paginate{
+    float: initial !important;
+    display: flex;
+    justify-content: center;
+    padding: 10px 15px;
+    gap: 5px;
 }
 
 
 .table-area td{
-    color: #677583;
+    color: #3c4349;
+    border-bottom : 1px solid #fff3f3 !important;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button{
@@ -140,16 +161,35 @@ table.dataTable.no-footer{
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover{
-    background: #ffd35038 !important;
+    background: #15c1b947 !important;
     color: #212529 !important;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current{
-    background: #ffd350 !important;
+    background: var(--th-color) !important;
     border: none !important;
     padding: 4px 10px;
+    color: #fff !important;
 }
 
+
+.dataTables_filter{
+    display: flex !important;
+    justify-content: flex-end !important;
+    float: initial !important;
+    padding-right: 15px !important;
+}
+
+.dataTables_filter label{
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.dataTables_wrapper .dataTables_filter input{
+    border-radius: 10px;
+    padding: 7px 15px;
+    font-weight: 400;
+}
 
 .link{
     display: inline-block;
@@ -174,6 +214,9 @@ table.dataTable.no-footer{
     margin: 0;
     position: relative;
     top: 28px;
+    z-index: 99;
+    max-width: calc(100% - 260px);
+    padding: 0 15px;
 }
 
 .delete-button{
@@ -198,6 +241,14 @@ table.dataTable.no-footer{
 .td-edit-delete-see button{
     display: inline-block !important;
     margin-left: 5px;
+}
+
+table.dataTable>thead>tr>th, table.dataTable>thead>tr>td{
+    padding: 15px 10px !important;
+}
+
+table.dataTable tbody th, table.dataTable tbody td{
+    padding: 15px 10px !important;
 }
 
 footer{
@@ -1276,6 +1327,7 @@ option:disabled{
     .table-title{
         position: initial !important;
         padding: 10px 0 !important;
+        max-width: none;
     }
 
     .uploaded-file-view-img {

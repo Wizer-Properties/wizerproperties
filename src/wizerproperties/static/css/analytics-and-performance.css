@@ -139,6 +139,7 @@
     margin-bottom: 20px ;
     justify-content: space-between;
     align-items: flex-start;
+    max-width: none !important;
 }
 
 .modal .table-title button{

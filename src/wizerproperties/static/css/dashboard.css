@@ -7,7 +7,7 @@
     border-radius: 10px;
     color: #fff;
     height: 100%;
-    box-shadow: 0 4px 10px 2px rgba(0,0,0,.2);
+    box-shadow: 0 4px 10px 2px rgba(0,0,0,.08);
     transition: box-shadow .5s;
     cursor: context-menu;
 }
