@@ -240,8 +240,6 @@ $(document).ready(function(){
             for (let i = 0; i < e.data.length; i++) {
                 e.init_table.row.add([
                     e.data[i]?.range,
-                    e.data[i]?.building_name,
-                    e.data[i]?.building_location,
                     e.data[i]?.search_appearance,
                 ]).draw(false).node();
             };
