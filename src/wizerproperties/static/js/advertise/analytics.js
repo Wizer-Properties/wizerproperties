@@ -144,7 +144,16 @@ $(document).ready(function(){
             lengthChange: false,
             info: false,
             pageLength: 5,
+            initComplete: function () {
+                // $("#property-table").parents(".table-area").find(".dataTables_filter").prepend('<h1 class="table-title">Property</h1> ');
+                var get_table_title = target_table.attr("table-title");
+                if(get_table_title){
+                    var table_title_dom = '<h1 class="table-title">'+get_table_title+'</h1>'
+                    target_table.parents('.table-area').find('.dataTables_filter').prepend(table_title_dom)
+                };
+            }
         });
+
 
         $.ajax({
             url,

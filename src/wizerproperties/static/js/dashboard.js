@@ -1,9 +1,24 @@
 $(document).ready(function () {
-    $(".dashboard-data-table").DataTable({
+    $("#building-table").DataTable({
         ordering: false,
         lengthChange: false,
         info: false,
+        initComplete: function () {
+            $("#building-table").parents(".table-area").find(".dataTables_filter").prepend('<h1 class="table-title">Buildings</h1> ');
+        }
     });
+
+
+    $("#property-table").DataTable({
+        ordering: false,
+        lengthChange: false,
+        info: false,
+        initComplete: function () {
+            $("#property-table").parents(".table-area").find(".dataTables_filter").prepend('<h1 class="table-title">Property</h1> ');
+        }
+    });
+
+
 
     function table_height(_table) {
         var table_tr = _table.find("tbody tr");
@@ -42,7 +57,10 @@ $(document).ready(function () {
         ordering: false,
         lengthChange: false,
         info: false,
-        pageLength : 5
+        pageLength : 5,
+        initComplete: function () {
+            $("#property-visit-schedule").parents(".table-area").find(".dataTables_filter").prepend('<h1 class="table-title">Scheduled Tours</h1> ');
+        }
     });
     
 
@@ -263,7 +281,10 @@ $(document).ready(function () {
         ordering: false,
         lengthChange: false,
         info: false,
-        pageLength : 5
+        pageLength : 5,
+        initComplete: function () {
+            $("#shared-reels-table").parents(".table-area").find(".dataTables_filter").prepend('<h1 class="table-title">Shared Reels</h1> ');
+        }
     });
 
     function shared_reels_button_tmp (data){

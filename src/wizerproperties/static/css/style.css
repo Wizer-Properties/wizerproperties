@@ -175,9 +175,13 @@ table.dataTable.no-footer{
 
 .dataTables_filter{
     display: flex !important;
-    justify-content: flex-end !important;
+    justify-content: space-between !important;
     float: initial !important;
-    padding-right: 15px !important;
+    padding: 0 15px !important;
+    padding-top: 20px !important;
+    align-items: center;
+    text-align: start !important;
+    flex-wrap: nowrap !important;
 }
 
 .dataTables_filter label{
@@ -212,11 +216,6 @@ table.dataTable.no-footer{
     font-size: 18px;
     color: #212529;
     margin: 0;
-    position: relative;
-    top: 28px;
-    z-index: 99;
-    max-width: calc(100% - 260px);
-    padding: 0 15px;
 }
 
 .delete-button{
@@ -1358,6 +1357,12 @@ option:disabled{
     }
     .comparison-wrapping-box .splide__arrow {
         top: 25%;
+    }
+
+    .dataTables_filter{
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
     }
 }
 
