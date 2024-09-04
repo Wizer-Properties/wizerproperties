@@ -130,11 +130,12 @@ class BuildingCreateAndUpdateSerializer(BuildingListSerializer):
                             "video",
                             "aerial_drone_video",
                         ]:
-                            instance.media_files.filter(type=media_type).update(file=file)
-                        else:
-                            media_file = BuildingMedia(type=media_type, file=file)
-                            media_file.save()
-                            instance.media_files.add(media_file)
+                            # Delete existing video files.
+                            instance.media_files.filter(type=media_type).delete()
+                        
+                        media_file = BuildingMedia(type=media_type, file=file)
+                        media_file.save()
+                        instance.media_files.add(media_file)
 
                 # Check if all deleted_images are deletable
                 remaining_file_types = instance.media_files.exclude(id__in=deleted_images).values_list(

@@ -451,7 +451,7 @@
                                 <div class="uploaded-file-view-area">
                                     {% for video in videos %}
                                     {% if video.file %}
-                                    <a href="{{ video.file.url }}" alt="Building Video">{{ video.file.url }}</a>
+                                        <a href="{{ video.file.url }}" target="_blank" alt="Building Video">{{ video.file.url }}</a>
                                     {% endif %}
                                     {% endfor %}
                                 </div>
@@ -470,7 +470,7 @@
                                 <div class="uploaded-file-view-area">
                                     {% for aerial_drone_video in aerial_drone_videos %}
                                     {% if aerial_drone_video.file %}
-                                    <a href="{{ aerial_drone_video.file.url }}" alt="Building aerial drone video">
+                                    <a href="{{ aerial_drone_video.file.url }}" target="_blank" alt="Building aerial drone video">
                                         {{ aerial_drone_video.file.url }}
                                     </a>
                                     {% endif %}
@@ -500,5 +500,5 @@
     var residenceSubTypes = {{ residence_sub_types|safe }};
     var commercialSubTypes = {{ commercial_sub_types|safe }};
 </script>
-<script src="{% static 'js/building/update_building.js' %}?v=1.01"></script>
+<script src="{% static 'js/building/update_building.js' %}?v=1.02"></script>
 {% endblock extend_script %}

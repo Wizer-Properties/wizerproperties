@@ -286,7 +286,7 @@
                                 <div class="uploaded-file-view-area">
                                     {% for video in videos %}
                                     {% if video.file %}
-                                    <a href="{{ video.file.url }}" alt="Property Video">{{ video.file.url }}</a>
+                                    <a href="{{ video.file.url }}" target="_blank" alt="Property Video">{{ video.file.url }}</a>
                                     {% endif %}
                                     {% endfor %}
                                 </div>
