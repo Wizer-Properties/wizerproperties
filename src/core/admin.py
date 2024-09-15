@@ -4,4 +4,4 @@ from core.models import Contact
 
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
-    list_display = ["id", "email", "subject", "created_at"]
+    list_display = ["email", "subject", "created_at"]

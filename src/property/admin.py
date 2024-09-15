@@ -14,13 +14,13 @@ from .models import (
     PropertyVisitLog
 )
 
-admin.site.register([PropertyVisitorLocation, PropertyPriceRange, PropertyVisitLog])
+#admin.site.register([PropertyVisitorLocation, PropertyPriceRange, PropertyVisitLog])
 
-class PropertyClicksLogAdmin(admin.ModelAdmin):
-    # readonly_fields = ('created_at')
-    list_display = ('property', 'number_of_clicked', 'created_at')
+# class PropertyClicksLogAdmin(admin.ModelAdmin):
+#     # readonly_fields = ('created_at')
+#     list_display = ('property', 'number_of_clicked', 'created_at')
 
-admin.site.register(PropertyClicksLog, PropertyClicksLogAdmin)
+# admin.site.register(PropertyClicksLog, PropertyClicksLogAdmin)
 
 
 @admin.register(Property)
@@ -34,44 +34,32 @@ class PropertyAdmin(admin.ModelAdmin):
         "price_per_sqm",
         "floor_number",
         "unit_area",
-        "interior_view",
         "number_of_bedroom",
         "number_of_bathroom",
         "number_of_balcony",
         "number_of_car_parking",
-        "balcony_direction",
-        "main_door_direction",
-        "unit_position",
-        "have_tenant_occupied",
-        "tenant_occupied_validity",
-        "have_vacant",
-        "have_owner_occupied",
-        "have_bathtub",
-        "have_duplex",
         "is_active",
-        "created_by",
-        "created_at",
     ]
 
 
-@admin.register(PropertyMedia)
-class PropertyMediaAdmin(admin.ModelAdmin):
-    list_display = ["id", "type", "property", "created_at"]
+# @admin.register(PropertyMedia)
+# class PropertyMediaAdmin(admin.ModelAdmin):
+#     list_display = ["id", "type", "property", "created_at"]
 
 
-@admin.register(CompareProperty)
-class ComparePropertyAdmin(admin.ModelAdmin):
-    list_display = ["id", "user", "property", "created_at"]
+# @admin.register(CompareProperty)
+# class ComparePropertyAdmin(admin.ModelAdmin):
+#     list_display = ["id", "user", "property", "created_at"]
 
 
-@admin.register(ProspectFavoriteProperty)
-class ProspectFavoritePropertyAdmin(admin.ModelAdmin):
-    list_display = ["id", "prospect", "property", "created_at"]
+# @admin.register(ProspectFavoriteProperty)
+# class ProspectFavoritePropertyAdmin(admin.ModelAdmin):
+#     list_display = ["id", "prospect", "property", "created_at"]
 
 
-@admin.register(NewlyCreatedProperty)
-class NewlyCreatedPropertyAdmin(admin.ModelAdmin):
-    list_display = ["id", "property", "created_at"]
+# @admin.register(NewlyCreatedProperty)
+# class NewlyCreatedPropertyAdmin(admin.ModelAdmin):
+#     list_display = ["id", "property", "created_at"]
 
 
 class DiscountPropertyForm(forms.ModelForm):

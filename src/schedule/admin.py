@@ -9,9 +9,5 @@ class VisitingScheduleAdmin(admin.ModelAdmin):
         "visiting_time",
         "status",
         "prospect",
-        "content_type",
-        "object_id",
-        "content_object",
         "created_at",
-        "updated_at",
     ]
