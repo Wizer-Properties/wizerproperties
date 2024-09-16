@@ -2,9 +2,10 @@ from django.contrib import admin
 from advertise.models import Reel, Advertisement, AdDemography, AdvertisementLog
 from django.urls import reverse
 from django.utils.html import format_html
+from core.admin import custom_admin_site
 
 
-@admin.register(Advertisement)
+@admin.register(Advertisement, site=custom_admin_site)
 class AdvertisementAdmin(admin.ModelAdmin):
     list_display = ["id", "_building", "_property", "ad_location", "position", "ad_run_duration", "number_of_clicked", "view_time", "created_at"]
     list_editable = ["ad_location", "position"]
@@ -22,7 +23,7 @@ class AdvertisementAdmin(admin.ModelAdmin):
         return "--"
 
 
-@admin.register(Reel)
+@admin.register(Reel, site=custom_admin_site)
 class ReelAdmin(admin.ModelAdmin):
     list_display = ["id", "_building", "_property", "url", "social_media", "category", "status", "created_by"]
     

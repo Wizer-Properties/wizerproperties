@@ -1,9 +1,10 @@
 from django.contrib import admin
 from .models import Building, BuildingMedia, BuildingReview
 from django.utils.html import format_html
+from core.admin import custom_admin_site
 
 
-@admin.register(Building)
+@admin.register(Building, site=custom_admin_site)
 class BuildingAdmin(admin.ModelAdmin):
     change_list_template = 'admin/building_detail_change_list.html'
     list_display = [

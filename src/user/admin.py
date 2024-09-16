@@ -1,10 +1,10 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
 from user.models.auth import User, ConfirmationCode, DeveloperProfile, AgentProfile, ProspectProfile
+from core.admin import custom_admin_site
 
-admin.site.unregister(Group)
 
-@admin.register(User)
+@admin.register(User, site=custom_admin_site)
 class UserAdmin(admin.ModelAdmin):
     list_display = [
         "id",
@@ -31,7 +31,7 @@ class UserAdmin(admin.ModelAdmin):
 #     ]
 
 
-@admin.register(DeveloperProfile)
+@admin.register(DeveloperProfile, site=custom_admin_site)
 class DeveloperProfileAdmin(admin.ModelAdmin):
     list_display = [
         "id",
@@ -43,7 +43,7 @@ class DeveloperProfileAdmin(admin.ModelAdmin):
     ]
 
 
-@admin.register(AgentProfile)
+@admin.register(AgentProfile, site=custom_admin_site)
 class AgentProfileAdmin(admin.ModelAdmin):
     list_display = [
         "id",
@@ -55,7 +55,7 @@ class AgentProfileAdmin(admin.ModelAdmin):
     ]
 
 
-@admin.register(ProspectProfile)
+@admin.register(ProspectProfile, site=custom_admin_site)
 class ProspectProfileAdmin(admin.ModelAdmin):
     list_display = [
         "id",

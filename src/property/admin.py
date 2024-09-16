@@ -13,14 +13,15 @@ from .models import (
     PropertyClicksLog,
     PropertyVisitLog
 )
+from core.admin import custom_admin_site
 
-#admin.site.register([PropertyVisitorLocation, PropertyPriceRange, PropertyVisitLog])
+#custom_admin_site.register([PropertyVisitorLocation, PropertyPriceRange, PropertyVisitLog])
 
 # class PropertyClicksLogAdmin(admin.ModelAdmin):
 #     # readonly_fields = ('created_at')
 #     list_display = ('property', 'number_of_clicked', 'created_at')
 
-# admin.site.register(PropertyClicksLog, PropertyClicksLogAdmin)
+# custom_admin_site.register(PropertyClicksLog, PropertyClicksLogAdmin)
 
 
 @admin.register(Property)
@@ -82,7 +83,7 @@ class DiscountPropertyForm(forms.ModelForm):
 
         self.fields['property'].queryset = queryset
 
-@admin.register(DiscountProperty)
+@admin.register(DiscountProperty, site=custom_admin_site)
 class DiscountPropertyAdmin(admin.ModelAdmin):
     list_display = ["id", "property", "period", "created_at"]
     form = DiscountPropertyForm
@@ -107,7 +108,9 @@ class FeaturePropertyForm(forms.ModelForm):
 
         self.fields['property'].queryset = queryset
 
-@admin.register(FeatureProperty)
+@admin.register(FeatureProperty, site=custom_admin_site)
 class FeaturePropertyAdmin(admin.ModelAdmin):
     list_display = ["id", "property", "created_at"]
     form = FeaturePropertyForm
+
+
