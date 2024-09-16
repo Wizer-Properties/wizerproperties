@@ -91,3 +91,30 @@ sudo docker compose run --rm certbot certonly --webroot --webroot-path /var/www/
 ```
 sudo docker compose run --rm certbot renew
 ```
+## Admin Customization
+
+In our project, we use a custom admin site. When registering models in the Django admin, follow these rules to ensure consistency and proper integration.
+
+### Normal Model Registration
+
+For models that do not require additional customization, use the following format to register them with the `custom_admin_site`:
+
+```python
+from core.admin import custom_admin_site
+
+### Registering a model with the custom admin site
+custom_admin_site.register(ModelName)
+```
+>Note: Replace ModelName with the actual model class being registered.
+
+### Model Registration with Admin Customization
+For models that require custom admin options (e.g., `list_display`, `search_fields`), use the `@admin.register` decorator with the `custom_admin_site`:
+```python
+from django.contrib import admin
+from core.admin import custom_admin_site
+
+@admin.register(ModelName, site=custom_admin_site)
+class ModelNameAdmin(admin.ModelAdmin):
+    pass  # Add your custom admin configurations here (optional)
+```
+>Note: Replace ModelName with the actual model class being registered.
