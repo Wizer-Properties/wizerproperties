@@ -7,6 +7,7 @@ urlpatterns = [
     path("details/<int:pk>/", BuildingViewSet.as_view({"get": "retrieve"}), name="details"),
     path("details/<int:pk>/media-files/", BuildingViewSet.as_view({"get": "media_files"}), name="media_files"),
     path("details/<int:pk>/developer-info/", BuildingViewSet.as_view({"get": "developer_info"}), name="developer_info"),
+    path("details/<int:pk>/information/", BuildingViewSet.as_view({"get": "building_info"}), name="building_info"),
     path(
         "details/<int:pk>/available-facilities/",
         BuildingViewSet.as_view({"get": "available_facilities"}),

@@ -1,5 +1,5 @@
 from .media import BuildingMediaSerializer
-from .default import BuildingSerializer
+from .default import BuildingSerializer,BuildingInfoSerializerRead
 from .list import BuildingListSerializer
 from .create_n_update import BuildingCreateAndUpdateSerializer
 from .details import BuildingDetailsSerializer
