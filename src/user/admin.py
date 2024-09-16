@@ -1,5 +1,7 @@
 from django.contrib import admin
-from django.contrib.auth.models import Group
+from django.urls import reverse
+from django.utils.html import format_html
+
 from user.models.auth import User, ConfirmationCode, DeveloperProfile, AgentProfile, ProspectProfile
 from core.admin import custom_admin_site
 
@@ -47,12 +49,36 @@ class DeveloperProfileAdmin(admin.ModelAdmin):
 class AgentProfileAdmin(admin.ModelAdmin):
     list_display = [
         "id",
-        "user",
+        "_user",
         "company_name",
         "address",
         "company_details",
         "created_at",
     ]
+    
+    def _user(self, obj):
+        if obj.user:
+            link = reverse("admin:user_user_change", args=[obj.user.id])
+            return format_html('<a href="{}" target="_blank">{}</a>', link, obj.user.username)
+        return "--"
+    
+    def has_add_permission(self, request):
+        return False
+    
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        # Add extra context to disable the "Save and add another" button
+        extra_context = extra_context or {}
+        extra_context['show_save_and_continue'] = False
+        extra_context['show_save_and_add_another'] = False
+        extra_context['show_delete'] = False
+        return super(AgentProfileAdmin, self).change_view(request, object_id, form_url, extra_context=extra_context)
+    
+    def add_view(self, request, form_url='', extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['show_save_and_continue'] = False
+        extra_context['show_save_and_add_another'] = False
+        extra_context['show_delete'] = False
+        return super(AgentProfileAdmin, self).add_view(request, form_url, extra_context=extra_context)
 
 
 @admin.register(ProspectProfile, site=custom_admin_site)
