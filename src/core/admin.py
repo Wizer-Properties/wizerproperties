@@ -18,7 +18,7 @@ class CustomAdminSite(admin.AdminSite):
 
 
 # Replace the default admin site with the custom one
-custom_admin_site = CustomAdminSite(name='admin')
+custom_admin_site = CustomAdminSite(name='custom_admin')
 
 
 @admin.register(Contact, site=custom_admin_site)

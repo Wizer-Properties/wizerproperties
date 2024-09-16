@@ -1,5 +1,5 @@
 from .media import PropertyMediaSerializer
-from .default import PropertySerializer
+from .default import PropertySerializer, PropertySerializerRead
 from .list import PropertyListSerializer
 from .details import PropertyDetailsSerializer
 from .create_n_update import PropertyCreateAndUpdateSerializer

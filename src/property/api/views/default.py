@@ -22,6 +22,7 @@ from property.api.serializers import (
     PropertyVariousFeatureMinimalInfoSerializer,
     PropertyFacilitiesSerializer,
     SchedulePropertySerializer,
+    PropertySerializerRead
 )
 from property.api.filters import PropertyFilter
 from property.api.pagination import UserPropertyPagination, PropertySearchPagination
@@ -706,6 +707,12 @@ class PropertyViewSet(viewsets.ModelViewSet):
         
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @action(detail=True, methods=["get"])
+    def property_info(self, request, pk=None):
+        property = self.get_object()
+        serializer = PropertySerializerRead(property)
+        return Response(serializer.data, status=200)
+    
 
 @api_view(["GET"])
 def user_properties(request, user_id):

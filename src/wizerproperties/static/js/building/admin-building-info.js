@@ -1,7 +1,4 @@
 $(function(){
-
-    // $('#building-info-modal').modal("show");
-
     // On-click events on details button
     $(document).on("click", ".building-detail-view-admin-modal-button", function(){
         fetchBuildingInfo($(this).data("id"))
