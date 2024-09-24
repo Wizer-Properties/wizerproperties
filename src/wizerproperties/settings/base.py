@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "schedule",
     "advertise",
     "ipdata",
+    "blog",
 ]
 
 MIDDLEWARE = [
