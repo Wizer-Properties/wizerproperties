@@ -1,8 +1,9 @@
 from django.db import models
-from  core.models import TimestampedModel
+from core.models import TimestampedModel
 from ckeditor.fields import RichTextField
 
 from user.models import User
+from advertise.models import Advertisement
 
 
 class Post(TimestampedModel):
@@ -36,4 +37,3 @@ class Category(TimestampedModel):
 
     def __str__(self):
         return self.name
-

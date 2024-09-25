@@ -14,7 +14,8 @@ class Advertisement(TimestampedModel):
     TYPE_CHOICES = (
         ('home', 'Home'),
         ('search', 'Search'),
-        ('details', 'Details')
+        ('details', 'Details'),
+        ('blog', 'Blog'),
     )
     STATUS = (
         ('running', 'Running'),
