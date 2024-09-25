@@ -19,3 +19,20 @@ class PostListSerializer(serializers.ModelSerializer):
             "name": obj.creator.get_full_name(),
         }
 
+
+class RelatedPostSerializer(serializers.ModelSerializer):
+    creator_info = serializers.SerializerMethodField()
+    category_name = serializers.CharField(source='category.name', read_only=True)
+    created_at = serializers.DateTimeField(format='%d %b, %Y %H:%M %p')
+    
+    class Meta:
+        model = Post
+        fields = [
+            'id', 'title', 'creator_info', 
+            'banner_image', 'category_name', 'created_at'
+        ]
+        
+    def get_creator_info(self, obj):
+        return {
+            "name": obj.creator.get_full_name(),
+        }
