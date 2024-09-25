@@ -22,6 +22,9 @@ class Post(TimestampedModel):
     categories = models.ManyToManyField('Category', related_name='posts')
     total_read_count = models.IntegerField(default=0)
     total_likes = models.IntegerField(default=0)
+    
+    class Meta:
+        ordering = ['-created_at']
 
     def __str__(self):
         return self.title
