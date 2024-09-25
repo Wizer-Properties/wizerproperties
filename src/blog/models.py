@@ -1,9 +1,8 @@
 from django.db import models
 from core.models import TimestampedModel
 from ckeditor.fields import RichTextField
-
+from datetime import timedelta
 from user.models import User
-from advertise.models import Advertisement
 
 
 class Post(TimestampedModel):
@@ -21,14 +20,21 @@ class Post(TimestampedModel):
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     banner_image = models.ImageField(upload_to='blog/banner_images/', null=True)
     categories = models.ManyToManyField('Category', related_name='posts')
+    estimated_read_time = models.IntegerField(default=0)
+    total_read_time = models.DurationField(default=timedelta(seconds=0))
     total_read_count = models.IntegerField(default=0)
     total_likes = models.IntegerField(default=0)
+    total_dislikes = models.IntegerField(default=0)
     
     class Meta:
         ordering = ['-created_at']
 
     def __str__(self):
         return self.title
+    
+    def save(self, *args, **kwargs):
+        self.estimated_read_time = len(self.description.split()) / 200
+        super().save(*args, **kwargs)
 
 
 class Category(TimestampedModel):
