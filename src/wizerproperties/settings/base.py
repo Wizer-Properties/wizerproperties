@@ -40,11 +40,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    
     # Third parties libraries
     "rest_framework",
     "django_filters",
     "widget_tweaks",
     "phonenumber_field",
+    "ckeditor",
+    
     # Custom apps
     "building",
     "core",
