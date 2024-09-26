@@ -1,19 +1,330 @@
 {% extends "base.html" %}
 {% load static %}
-
 {% block extend_head %}
 <title>Blog list</title>
 <!-- all css here -->
+
+    <link rel="stylesheet" href="{% static '/css/new-search-page.css' %}?v=1.04" />
+    <link rel="stylesheet" href="{% static '/css/search-page.css' %}?v=1.03" />
+    <link rel="stylesheet" href="{% static '/css/blog-page.css' %}?v=1.0"/>
+    <link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
+    <link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
 {% endblock extend_head %}
 
 
 {% block content %}
+<!-- adds  -->
 <section>
-    list
+    <div class="top-banner  mb-5">
+        <div class="container">
+            <div class="col-lg-8 col-md-8 col-11 mx-auto">
+                <div class="splide ads-banner-slider">
+                    <div class="splide__track">
+                        <div class="splide__list ">
+                            <!-- from dom -->
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <!-- filter -->
+        <div class="all-filter-option">
+            <div class="filter-option-area">
+                <div class="filter-single-box category-filter" pop-target="A" filter-name="" active-filter="false">
+                    <div class="center">
+                        <div>
+                            <div class="filter-icon">
+                                <i class="bi bi-border-all"></i>
+                            </div>
+                            <div class="filter-label" filter-label-name="category">
+                                Category
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div pop-element="A">
+                    <div class="search-pop-up-box">
+                        <div class="search-pop-up-select-box" label="category">
+                            <select name="nearby">
+                                <option value="">Catagory</option>
+                                <option value="0">Beauty</option>
+                                <option value="2">Dog</option>
+                                <option value="5">Cat</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- =========================================== -->
+
+                <div class="filter-single-box most-readed-filter" pop-target="price-box" tag-name="price" filter-name="most-readed" active-filter="false">
+                    <div class="center">
+                        <div>
+                            <div class="filter-icon">
+                                <i class="bi bi-book"></i>
+                                <i class="bi bi-book-fill"></i>
+                            </div>
+                            <div class="filter-label" filter-label-name="most-read">
+                                Most Readed
+                            </div>
+                        </div>
+                    </div>
+                </div>
+           
+
+                  <!-- =========================================== -->
+
+                <div class="filter-single-box most-liked-filter" pop-target="property-type" active-filter="false" filter-name="most-liked">
+                    <div class="center">
+                        <div>
+                            <div class="filter-icon">
+                                <i class="bi bi-hand-thumbs-up"></i>
+                                <i class="bi bi-hand-thumbs-up-fill"></i>
+
+                            </div>
+                            <div class="filter-label" label-value="property-type">
+                                Most Liked
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- =========================================== -->
+
+                <div class="filter-single-box most-recent-filter" pop-target="bed-box" filter-name="most-recent" active-filter="false">
+                    <div class="center">
+                        <div>
+                            <div class="filter-icon">
+                                <i class="bi bi-clock"></i>
+                                <i class="bi bi-clock-fill"></i>
+                            </div>
+                            <div class="filter-label" filter-label-name="most-recent">
+                                Most Recent
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- blogs cards -->
+        <div class="row blog-cards mt-5">
+            <div class="col-md-6 col-lg-4 ">
+                <a href="#">
+                    <div class="blog-card mb-5">
+                        <div class="blog-img">
+                            <img src="https://stories.botble.com/storage/news/2.jpg" alt=""/>
+                        </div>
+                        <div class="blog-content">
+                            <span class="blog-category">Fashon</span>
+                            <h5 class="blog-title">Put Yourself in Your Customer Shoes</h5>
+                            <p class="blog-excerpt mt-3">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex dolore, optio, sapiente facere distinctio placeat ipsum repellat sunt esse dignissimos facilis ratione deleniti blanditiis excepturi rerum soluta non neque a.
+                            </p>
+                            <div class="blog-info mt-4">
+                                <span class="blog-likes">10k likes</span>
+                                <span class="blog-views">12.5k views</span>
+                                <span class="blog-read-time">10 Mins Read</span>
+                                <span class="blog-create-date">12 June</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+
+            <div class="col-md-6 col-lg-4 ">
+                <a href="#">
+                    <div class="blog-card mb-5">
+                        <div class="blog-img">
+                            <img src="https://stories.botble.com/storage/news/3.jpg" alt=""/>
+                        </div>
+                        <div class="blog-content">
+                            <span class="blog-category">Travel</span>
+                            <h5 class="blog-title">Life and Death in the Empire of the Tiger</h5>
+                            <p class="blog-excerpt mt-3">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex dolore, optio, sapiente facere distinctio placeat ipsum repellat sunt esse dignissimos facilis ratione deleniti blanditiis excepturi rerum soluta non neque a.
+                            </p>
+                            <div class="blog-info mt-4">
+                                <span class="blog-likes">10k likes</span>
+                                <span class="blog-views">12.5k views</span>
+                                <span class="blog-read-time">10 Mins Read</span>
+                                <span class="blog-create-date">12 June</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+
+            <div class="col-md-6 col-lg-4">
+                <a>
+                    <div class="blog-card mb-5">
+                        <div class="blog-img">
+                            <img src="https://media-cdn.tripadvisor.com/media/attractions-splice-spp-674x446/11/7e/5b/24.jpg" alt=""/>
+                        </div>
+                        <div class="blog-content">
+                            <span class="blog-category">Life Style</span>
+                            <h5 class="blog-title">When Two Wheels Are Better Then Four</h5>
+                            <p class="blog-excerpt mt-3">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex dolore, optio, sapiente facere distinctio placeat ipsum repellat sunt esse dignissimos facilis ratione deleniti blanditiis excepturi rerum soluta non neque a.
+                            </p>
+
+                            <div class="blog-info mt-4">
+                                <span class="blog-likes">10k likes</span>
+                                <span class="blog-views">12.5k views</span>
+                                <span class="blog-read-time">10 Mins Read</span>
+                                <span class="blog-create-date">12 June</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+
+
+            <!-- extra cards  -->
+
+            <div class="col-md-6 col-lg-4 ">
+                <a href="#">
+                    <div class="blog-card mb-5">
+                        <div class="blog-img">
+                            <img src="https://stories.botble.com/storage/news/2.jpg" alt=""/>
+                        </div>
+                        <div class="blog-content">
+                            <span class="blog-category">Fashon</span>
+                            <h5 class="blog-title">Put Yourself in Your Customer Shoes</h5>
+                            <p class="blog-excerpt mt-3">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex dolore, optio, sapiente facere distinctio placeat ipsum repellat sunt esse dignissimos facilis ratione deleniti blanditiis excepturi rerum soluta non neque a.
+                            </p>
+                            <div class="blog-info mt-4">
+                                <span class="blog-likes">10k likes</span>
+                                <span class="blog-views">12.5k views</span>
+                                <span class="blog-read-time">10 Mins Read</span>
+                                <span class="blog-create-date">12 June</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+
+            <div class="col-md-6 col-lg-4 ">
+                <a href="#">
+                    <div class="blog-card mb-5">
+                        <div class="blog-img">
+                            <img src="https://stories.botble.com/storage/news/3.jpg" alt=""/>
+                        </div>
+                        <div class="blog-content">
+                            <span class="blog-category">Travel</span>
+                            <h5 class="blog-title">Life and Death in the Empire of the Tiger</h5>
+                            <p class="blog-excerpt mt-3">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex dolore, optio, sapiente facere distinctio placeat ipsum repellat sunt esse dignissimos facilis ratione deleniti blanditiis excepturi rerum soluta non neque a.
+                            </p>
+                            <div class="blog-info mt-4">
+                                <span class="blog-likes">10k likes</span>
+                                <span class="blog-views">12.5k views</span>
+                                <span class="blog-read-time">10 Mins Read</span>
+                                <span class="blog-create-date">12 June</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+
+            <div class="col-md-6 col-lg-4">
+                <a href="">
+                    <div class="blog-card mb-5">
+                        <div class="blog-img">
+                            <img src="https://media-cdn.tripadvisor.com/media/attractions-splice-spp-674x446/11/7e/5b/24.jpg" alt=""/>
+                        </div>
+                        <div class="blog-content">
+                            <span class="blog-category">Life Style</span>
+                            <h5 class="blog-title">When Two Wheels Are Better Then Four</h5>
+                            <p class="blog-excerpt mt-3">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex dolore, optio, sapiente facere distinctio placeat ipsum repellat sunt esse dignissimos facilis ratione deleniti blanditiis excepturi rerum soluta non neque a.
+                            </p>
+
+                            <div class="blog-info mt-4">
+                                <span class="blog-likes">10k likes</span>
+                                <span class="blog-views">12.5k views</span>
+                                <span class="blog-read-time">10 Mins Read</span>
+                                <span class="blog-create-date">12 June</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    </div>
 </section>
 {% endblock %}
 
 
 {% block extend_script %}
 <!-- all js here -->
+ <script src="{% static '/js/libraries/splide.min.js' %}"></script>
+ <script src="{% static '/js/blog-page.js' %}"></script>
+
+ <script>
+    $(document).ready(function(){
+
+        var data = [
+            {
+                property_id: 10,
+                id: 9,
+                property_image: "https://wizerproperties.com/media/property/images/Screenshot_from_2024-05-29_10-13-27.png"
+            },
+            {
+                property_id: 4,
+                id: 8,
+                property_image: "https://wizerproperties.com/media/property/images/Screenshot_from_2024-03-04_10-19-21.png"
+            }
+            
+        ];
+
+        // Initialize the Splide slider
+        var ads_banner_slider = new Splide('.ads-banner-slider', {
+            perPage: 1,
+            type: 'loop',
+            arrows: false,
+            pagination: false,
+            autoplay: 'playing',
+            interval: 3000
+        });
+
+        // Function to generate the ad banner HTML
+        function ads_tmp(data) {
+            return '<li class="splide__slide">' +
+                    '<div class="top-banner-img">' +
+                        '<a href="/property/details/' + data?.property_id + '/?ad_id=' + data?.id + '">' +
+                            '<img src="' + data?.property_image + '" alt="wip-ads">' +
+                        '</a>' +
+                    '</div>' +
+                '</li>';
+        }
+
+        // Get the slider's track element
+        var ads_slider_list = document.querySelector('.ads-banner-slider .splide__list');
+
+        // Loop through the data and append each image to the slider
+        data.forEach(function(item) {
+            ads_slider_list.innerHTML += ads_tmp(item);
+        });
+
+        // Mount the slider after all images are added
+        ads_banner_slider.mount();
+
+});
+ </script>
+ 
 {% endblock extend_script %}
