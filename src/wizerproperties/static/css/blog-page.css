@@ -51,14 +51,21 @@
     display: none !important;
 }
 
+.blog-list-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
 
+.loader {
+    width: 70px;
+    height: 70px;
+}
 
-
-
-/* blog list  */
 
 .blog-cards {
-    justify-content: space-between !important;
+    justify-content: center !important;
     padding: initial !important;
 }
 
@@ -96,6 +103,7 @@
     font-weight: 700;
     color: #3bb6b4;
     position: relative;
+    margin-right: 13px;
 }
 
 .blog-category::after {
