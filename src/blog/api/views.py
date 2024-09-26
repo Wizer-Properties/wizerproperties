@@ -1,10 +1,8 @@
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
-from django.db.models import Q, Count
-from blog.models import Post, Category
+from blog.models import Post
 from blog.api.serializers import PostListSerializer, RelatedPostSerializer
 from blog.api.paginations import CustomPagination
-from blog.api.filters import PostFilter
 
 
 class PostListView(generics.ListAPIView):
@@ -12,13 +10,34 @@ class PostListView(generics.ListAPIView):
     serializer_class = PostListSerializer
     pagination_class = CustomPagination
     filter_backends = [DjangoFilterBackend]
-    filterset_class = PostFilter
     ordering_fields = ['total_read_count', 'total_likes', 'created_at']
     ordering = ['-created_at']  # Default ordering
     http_method_names = ['get']
     
     def get_queryset(self):
-        return self.queryset
+        queryset = self.queryset
+        
+        # Filter by category
+        category = self.request.query_params.get('category')
+        if category:
+            queryset = queryset.filter(categories__name=category)
+        
+        # Filter by most read
+        most_read = self.request.query_params.get('most_read')
+        if most_read == 'true':
+            queryset = queryset.order_by('-total_read_count')
+        
+        # Filter by most liked
+        most_liked = self.request.query_params.get('most_liked')
+        if most_liked == 'true':
+            queryset = queryset.order_by('-total_likes')
+        
+        # Filter by most recent
+        most_recent = self.request.query_params.get('most_recent')
+        if most_recent == 'true':
+            queryset = queryset.order_by('-created_at')
+        
+        return queryset
 
 
 class RelatedPostListView(generics.ListAPIView):

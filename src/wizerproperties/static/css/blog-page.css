@@ -5,28 +5,28 @@
     border: initial !important;
 }
 
-.most-readed-filter[active-filter="false"] .filter-icon i:last-child,
+.most-read-filter[active-filter="false"] .filter-icon i:last-child,
 .most-liked-filter[active-filter="false"] .filter-icon i:last-child,
 .most-recent-filter[active-filter="false"] .filter-icon i:last-child {
     display: none !important;
 }
 
 
-.most-readed-filter[active-filter="true"] .filter-icon i:last-child,
+.most-read-filter[active-filter="true"] .filter-icon i:last-child,
 .most-liked-filter[active-filter="true"] .filter-icon i:last-child,
 .most-recent-filter[active-filter="true"] .filter-icon i:last-child {
     display: block !important;
 }
 
 
-.most-readed-filter[active-filter="true"] .filter-icon i:first-child,
+.most-read-filter[active-filter="true"] .filter-icon i:first-child,
 .most-liked-filter[active-filter="true"] .filter-icon i:first-child,
 .most-recent-filter[active-filter="true"] .filter-icon i:first-child {
     display: none !important;
 }
 
 
-.most-readed-filter[active-filter="fasle"] .filter-icon i:first-child,
+.most-read-filter[active-filter="fasle"] .filter-icon i:first-child,
 .most-liked-filter[active-filter="fasle"] .filter-icon i:first-child,
 .most-recent-filter[active-filter="fasle"] .filter-icon i:first-child {
     display: block !important;
@@ -38,14 +38,14 @@
 
 
 .category-filter:hover .filter-icon i,
-.most-readed-filter[active-filter="false"]:hover .filter-icon i:last-child,
+.most-read-filter[active-filter="false"]:hover .filter-icon i:last-child,
 .most-liked-filter[active-filter="false"]:hover .filter-icon i:last-child,
 .most-recent-filter[active-filter="false"]:hover .filter-icon i:last-child {
     display: block !important;
     color: #000;
 }
 
-.most-readed-filter[active-filter="false"]:hover .filter-icon i:first-child,
+.most-read-filter[active-filter="false"]:hover .filter-icon i:first-child,
 .most-liked-filter[active-filter="false"]:hover .filter-icon i:first-child,
 .most-recent-filter[active-filter="false"]:hover .filter-icon i:first-child {
     display: none !important;

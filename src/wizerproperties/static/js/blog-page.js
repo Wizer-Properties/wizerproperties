@@ -1,14 +1,45 @@
 // filter icon //
 $(document).ready(function () {
-    $('.most-readed-filter, .most-liked-filter, .most-recent-filter').click(function () {
-        var isActive = $(this).attr('active-filter') === 'true';
-        $(this).attr('active-filter', isActive ? 'false' : 'true');
-    });
 
     var blogContainer = $('.blog-content-container');
     var loader = $('.blog-list-loader img');
     var currentPage = 1;
     var isLoading = false;
+
+    // Filter click event
+    $('.most-read-filter, .most-liked-filter, .most-recent-filter, .blog-category-select-filter').click(function () {
+
+        // Remove active class from all filters
+        var isActive = $(this).attr('active-filter') === 'true';
+        $(this).attr('active-filter', isActive ? 'false' : 'true');
+
+        // Filter data
+        var filterData = {}
+
+        // Get category filter value
+        if ($(".blog-category-select-filter").attr('filter-name') === 'category') {
+            filterData.category = $(".blog-category-select-filter").val();
+        }
+
+        // Get most read filter value
+        if ($(".most-read-filter").attr('filter-name') === 'most-read') {
+            filterData.most_read = $(".most-read-filter").attr('active-filter') === 'true' ? true : false;
+        }
+
+        // Get most liked filter value
+        if ($(".most-liked-filter").attr('filter-name') === 'most-liked') {
+            filterData.most_liked = $(".most-liked-filter").attr('active-filter') === 'true' ? true : false;
+        }
+
+        // Get most recent filter value
+        if ($(".most-recent-filter").attr('filter-name') === 'most-recent') {
+            filterData.most_recent = $(".most-recent-filter").attr('active-filter') === 'true' ? true : false;
+        }
+
+        // Fetch blog posts
+        currentPage = 1;
+        fetchBlogPosts(filterData);
+    });
 
     function fetchBlogPosts(params = {}) {
         if (isLoading) return;

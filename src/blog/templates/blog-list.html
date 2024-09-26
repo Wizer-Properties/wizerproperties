@@ -52,11 +52,11 @@
                 <div pop-element="A">
                     <div class="search-pop-up-box">
                         <div class="search-pop-up-select-box" label="category">
-                            <select name="nearby">
-                                <option value="">Catagory</option>
-                                <option value="0">Beauty</option>
-                                <option value="2">Dog</option>
-                                <option value="5">Cat</option>
+                            <select name="nearby" class="blog-category-select-filter" filter-name="category">
+                                <option value="">All</option>
+                                {% for category in categories %}
+                                    <option value="{{ category.name }}">{{ category.name }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
@@ -64,7 +64,7 @@
 
                 <!-- =========================================== -->
 
-                <div class="filter-single-box most-readed-filter" pop-target="price-box" tag-name="price" filter-name="most-readed" active-filter="false">
+                <div class="filter-single-box most-read-filter" pop-target="price-box" tag-name="price" filter-name="most-read" active-filter="false">
                     <div class="center">
                         <div>
                             <div class="filter-icon">
@@ -72,7 +72,7 @@
                                 <i class="bi bi-book-fill"></i>
                             </div>
                             <div class="filter-label" filter-label-name="most-read">
-                                Most Readed
+                                Most read
                             </div>
                         </div>
                     </div>

@@ -1,9 +1,10 @@
 from django.shortcuts import render
+from .models import Category
 
-# Create your views here.
 
 def blog_list(request):
-    return render(request, "blog-list.html")
+    categories = Category.objects.filter(is_active=True)
+    return render(request, "blog-list.html", {"categories": categories})
 
 
 def blog_details(request, title):
