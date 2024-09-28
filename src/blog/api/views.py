@@ -45,19 +45,21 @@ class PostListView(generics.ListAPIView):
 
 class RelatedPostListView(generics.ListAPIView):
     serializer_class = RelatedPostSerializer
-    http_method_names = ['get']
+    pagination_class = None
+    
 
     def get_queryset(self):
-        read_post_ids = self.request.query_params.get('read_posts', '').split(',')
-        read_post_ids = [int(id) for id in read_post_ids if id.isdigit()]
+        read_posts_id = self.request.GET.getlist('read_posts_id')
+        read_posts_id = [int(id) for id in read_posts_id if id.isdigit()]
 
-        read_categories = self.request.query_params.get('categories', '').split(',')
+        read_categories = self.request.GET.getlist('post_categories_name')
         read_categories = [cat.strip() for cat in read_categories if cat.strip()]
 
-        current_post_id = self.request.query_params.get('current_post_id')
+        current_post_id = self.request.GET.get('current_post_id')
         current_post_id = int(current_post_id) if current_post_id and current_post_id.isdigit() else None
 
-        queryset = Post.objects.filter(status='published').exclude(id__in=read_post_ids)
+        queryset = Post.objects.filter(status='published').exclude(id__in=read_posts_id)
+                
 
         try:
             if read_categories:
@@ -69,7 +71,7 @@ class RelatedPostListView(generics.ListAPIView):
 
             # If not enough related posts, add popular and recent posts
             if queryset.count() < 5:
-                popular_posts = Post.objects.filter(status='published').exclude(id__in=read_post_ids).order_by('-total_read_count', '-total_likes', '-created_at')
+                popular_posts = Post.objects.filter(status='published').exclude(id__in=read_posts_id).order_by('-total_read_count', '-total_likes', '-created_at')
                 queryset = queryset | popular_posts
 
             # Order by popularity (read count) and recency

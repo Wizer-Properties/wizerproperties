@@ -20,7 +20,7 @@ class PostListSerializer(serializers.ModelSerializer):
 
     def get_creator_info(self, obj):
         return {
-            "name": obj.creator.get_full_name,
+            "name": obj.creator.full_name,
         }
 
 
@@ -41,5 +41,5 @@ class RelatedPostSerializer(serializers.ModelSerializer):
         
     def get_creator_info(self, obj):
         return {
-            "name": obj.creator.get_full_name(),
+            "name": obj.creator.full_name,
         }

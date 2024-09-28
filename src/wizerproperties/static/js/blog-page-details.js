@@ -79,5 +79,78 @@ $(function(){
         }
     }
 
+    // Related posts
+    function fetchRelatedPosts(){
+        var relatedBlogsContainer = $('.related-blogs');
+
+        // Get read posts id and post categories name from local storage
+        var read_posts_id = localStorage.getItem('read_posts_id') || [];
+        var post_categories_name = localStorage.getItem('post_categories_name') || [];
+        var current_postId = relatedBlogsContainer.attr('post-id');
+
+        $.ajax({
+            url: `/blogs/api/posts/related-posts/`,
+            type: 'GET',
+            data: {
+                current_post_id: current_postId,
+                read_posts_id: read_posts_id,
+                post_categories_name: post_categories_name
+            },
+            success: function (response) {
+                renderRelatedPosts(response);
+            },
+            error: function (error) {}
+        });
+    }
+
+    // Initial load
+    fetchRelatedPosts()
+
+
+    function renderRelatedPosts(posts) {
+
+        // Render blog categories
+        function blogCategories(post){
+            var categories = '';
+            post.categories.forEach(category => {
+                categories += `<span class="blog-category">${category}</span>`;
+            });
+            return categories;
+        }
+
+        var relatedBlogsContainer = $('.related-blogs');
+        var relatedBlogsList = relatedBlogsContainer.find('.related-blog-list');
+        var relatedBlogsListHtml = '';
+
+        posts.forEach(post => {
+            relatedBlogsListHtml += `<a href="/blogs/${post.slug}/">
+                        <div class="row pt-3">
+                        <div class="col-md-4">
+                            <div class="realted-blog-card-img">
+                                <img src="${post.banner_image}" alt="${post.title}">
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="related-blog-card-info">
+                                <div class="blog-categories">
+                                    ${blogCategories(post)}
+                                </div>
+                                <h5 class="blog-title">${post.title}</h5>
+
+                                <div class="blog-info mt-3">
+                                    <span class="blog-likes">${post.total_likes} likes</span>
+                                    <span class="blog-views">${post.total_read_count} views</span>
+                                    <span class="blog-read-time">${post.estimated_read_time} Mins Read</span>
+                                    <span class="blog-create-date">${post.created_at}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>`
+        });
+
+        relatedBlogsList.html(relatedBlogsListHtml);
+    }
+
 
 })

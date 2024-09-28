@@ -2,11 +2,11 @@
 {% load static %}
 
 {% block extend_head %}
-<title>blog details</title>
+<title>Blog Details</title>
 <!-- all css here -->
     <link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
     <link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
-    <link rel="stylesheet" href="{% static '/css/blog-page.css' %}?v=1.0"/>
+    <link rel="stylesheet" href="{% static '/css/blog-page.css' %}?v=1.01"/>
 {% endblock extend_head %}
 
 
@@ -49,7 +49,7 @@
                                         </div>
                                         <div class="blog-others-details">
                                             <p class="blog-creator-name">
-                                                <span>By</span>{{ post.creator.get_full_name }} 
+                                                <span>By</span>{{ post.creator.full_name }} 
                                             </p>
                                             <div class="blog-date-and-read-time">
                                                 <span class="blog-create-time">
@@ -175,55 +175,9 @@
                         </div>
                     </div>
 
-                    <div class="related-blogs mt-3 pt-4 pb-5">
+                    <div class="related-blogs mt-3 pt-4 pb-5" post-id="{{ post.id }}">
                         <p class="related-blog-title"><span>related</span> blog</p>
-
-                        <a href="">
-                            <div class="row pt-3">
-                                <div class="col-md-4">
-                                    <div class="realted-blog-card-img">
-                                        <img src="https://media-cdn.tripadvisor.com/media/attractions-splice-spp-674x446/11/7e/5b/24.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="related-blog-card-info">
-                                        <span class="blog-category">Travel</span>
-                                        <h5 class="blog-title">Life and Death in the Empire of the Tiger</h5>
-
-                                        <div class="blog-info mt-3">
-                                            <span class="blog-likes">10k likes</span>
-                                            <span class="blog-views">12.5k views</span>
-                                            <span class="blog-read-time">10 Mins Read</span>
-                                            <span class="blog-create-date">12 June</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </a>
-
-                        <a href="blog-name">
-                            <div class="row pt-3 mt-4">
-                                <div class="col-md-4">
-                                    <div class="realted-blog-card-img">
-                                        <img loading="lazy" src="https://stories.botble.com/storage/news/3.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="related-blog-card-info">
-                                        <span class="blog-category">Life Style</span>
-                                        <h5 class="blog-title">When Two Wheels Are Better Then Four</h5>
-
-                                        <div class="blog-info mt-3">
-                                            <span class="blog-likes">10k likes</span>
-                                            <span class="blog-views">12.5k views</span>
-                                            <span class="blog-read-time">10 Mins Read</span>
-                                            <span class="blog-create-date">12 June</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a> 
-
+                        <div class="related-blog-list"></div>
                     </div>
                     
                     
