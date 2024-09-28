@@ -36,8 +36,9 @@ $(document).ready(function () {
             filterData.most_recent = $(".most-recent-filter").attr('active-filter') === 'true' ? true : false;
         }
 
+        filterData.page = 1
+
         // Fetch blog posts
-        currentPage = 1;
         fetchBlogPosts(filterData);
     });
 
@@ -53,7 +54,7 @@ $(document).ready(function () {
         $.ajax({
             url: '/blogs/api/posts/',
             type: 'GET',
-            data: { ...params, page: currentPage },
+            data: { page: currentPage, ...params },
             success: function (response) {
                 var blogCards = '';
 
@@ -61,7 +62,7 @@ $(document).ready(function () {
                     blogCards += renderBlogCards(post);
                 });
                 
-                if (currentPage === 1) {
+                if (currentPage === 1 || params.page === 1) {
                     blogContainer.html(blogCards);
                 } else {
                     blogContainer.append(blogCards);
@@ -71,7 +72,7 @@ $(document).ready(function () {
                 
                 // Check if there are more pages to load
                 if (!response.links.next) {
-                    console.log("No more pages to load");
+                    $('.no-more-blogs').removeClass('d-none');
                     $(window).off('scroll', scrollHandler);
                 }
             },
@@ -100,7 +101,7 @@ $(document).ready(function () {
         // Render blog card
         return `
             <div class="col-md-6 col-lg-4">
-                <a href="${post.url}">
+                <a href="/blogs/${post.slug}">
                     <div class="blog-card mb-5">
                         <div class="blog-img">
                             <img loading="lazy" src="${post.banner_image}" alt="${post.title}"/>

@@ -3,6 +3,8 @@ from core.models import TimestampedModel
 from django_ckeditor_5.fields import CKEditor5Field
 from datetime import timedelta
 from user.models import User
+from django.utils.text import slugify
+import uuid
 
 
 class Post(TimestampedModel):
@@ -13,6 +15,7 @@ class Post(TimestampedModel):
         ('archived', 'Archived'),
     )
     
+    slug = models.SlugField(unique=True, null=True, blank=True)
     title = models.CharField(max_length=250, null=True)
     status = models.CharField(max_length=20, default="draft", choices=STATUS)
     subtitle = models.CharField(max_length=200, null=True)
@@ -34,6 +37,14 @@ class Post(TimestampedModel):
     
     def save(self, *args, **kwargs):
         self.estimated_read_time = round(len(self.description.split()) / 200)
+        
+        if not self.slug:
+            base_slug = slugify(self.title[:40])
+            unique_slug = base_slug
+            while Post.objects.filter(slug=unique_slug).exists():
+                unique_slug = f"{base_slug}-{str(uuid.uuid4())[:5]}"
+            self.slug = unique_slug
+        
         super().save(*args, **kwargs)
 
 

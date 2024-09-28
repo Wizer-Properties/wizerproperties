@@ -64,3 +64,13 @@ class User(TimestampedModel, AbstractUser):
             if not self.username:
                 self.username = self.email.split("@")[0]
         super().save(*args, **kwargs)
+        
+    @property
+    def get_full_name(self):
+        if self.first_name and self.last_name:
+            return f"{self.first_name} {self.last_name}"
+        elif self.first_name:
+            return self.first_name
+        elif self.last_name:
+            return self.last_name
+        return self.username

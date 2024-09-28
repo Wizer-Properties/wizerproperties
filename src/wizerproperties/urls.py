@@ -18,7 +18,7 @@ Including another URLconf
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from core.views import dashboard, contact_page, home_page, privacy_page, about_us_page
+from core.views import dashboard, contact_page, home_page, privacy_page, about_us_page, custom_404
 from core.admin import custom_admin_site
 
 
@@ -36,6 +36,7 @@ urlpatterns = [
     path("blogs/", include(("blog.urls", "blog"), namespace="blogs")),
     path('about-us/', about_us_page, name='about-us'),
     path('privacy/', privacy_page, name='privacy'),
+    path('404/', custom_404, name='custom_404'),
 ]
 
 if settings.DEBUG:

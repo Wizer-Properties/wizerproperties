@@ -14,3 +14,7 @@ def about_us_page(request):
 
 def privacy_page(request):
     return render(request, "privacy.html")
+
+
+def custom_404(request):
+    return render(request, "404.html")

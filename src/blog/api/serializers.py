@@ -11,7 +11,7 @@ class PostListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = [
-            'id', 'title', 'subtitle', 'creator_info', 'banner_image', 'categories', 
+            'id', 'slug', 'title', 'subtitle', 'creator_info', 'banner_image', 'categories', 
             'total_read_count', 'estimated_read_time', 'total_likes', 'created_at',
         ]
 
@@ -20,7 +20,7 @@ class PostListSerializer(serializers.ModelSerializer):
 
     def get_creator_info(self, obj):
         return {
-            "name": obj.creator.get_full_name(),
+            "name": obj.creator.get_full_name,
         }
 
 
@@ -32,7 +32,7 @@ class RelatedPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = [
-            'id', 'title', 'subtitle', 'creator_info', 'banner_image', 'categories', 
+            'id', 'slug',  'title', 'subtitle', 'creator_info', 'banner_image', 'categories', 
             'total_read_count', 'estimated_read_time', 'total_likes', 'created_at',
         ]
         

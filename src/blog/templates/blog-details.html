@@ -38,7 +38,7 @@
                 <div class="blog-details">
                     <div class="blog-entry-header">
                          <h1 class="blog-entry-title">
-                            The effect of livestock on the physiological condition of roe dear is modulated 
+                            {{ post.title }}
                         </h1>
                         <div class="blog-details-info">
                             <div class="row">
@@ -49,16 +49,18 @@
                                         </div>
                                         <div class="blog-others-details">
                                             <p class="blog-creator-name">
-                                                <span>By</span>Barbara Charter 
+                                                <span>By</span>{{ post.creator.get_full_name }} 
                                             </p>
                                             <div class="blog-date-and-read-time">
                                                 <span class="blog-create-time">
-                                                    12 April 2022
+                                                    {{ post.created_at|date:"d F Y" }}
                                                 </span>
                                                 <span class="blog-read-time">
-                                                    20 mins read
+                                                    {{ post.estimated_read_time }} mins read
                                                 </span>
-                                                <span class="blog-likes">10k likes</span>
+                                                <span class="blog-likes">
+                                                    {{ post.total_likes }} likes
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -102,27 +104,25 @@
                     <!-- blog banner  -->
 
                     <div class="blog-banner">
-                        <img  loading="lazy" src="https://static.india.com/wp-content/uploads/2021/09/pexels-dmitry-zvolskiy-4108278.jpg?impolicy=Medium_Widthonly&w=700">
+                        <img  loading="lazy" src="{{ post.banner_image.url }}">
                     </div>
 
                     <p class="blog-subtitle">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque eum sed et voluptatum ad doloribus necessitatibus ea quidem illum magni!
+                        {{ post.subtitle }}
                     </p>
 
                     <!-- article  -->
                     <article class="blog-article">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam,  Lorem ipsum dolor sum excepturi laborum. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error sequi natus neque repellat aspernatur dolorum architecto voluptatum, vitae voluptatibus saepe ad sunt voluptates ducimus hic impedit est placeat eveniet a nihil! Reiciendis, vitae illum temporibus nobis alias labore qui praesentium ex iusto voluptas fugiat est quis! Eveniet adipisci minima tenetur quidem rem aliquam optio libero cumque vel! Dolorum nulla dolorem non itaque consequuntur ea, officiis adipisci id dicta autem unde qui quisquam. Assumenda magni praesentium blanditiis similique ullam voluptatibus labore. Libero magni est repellendus neque ullam cum quam ut velit sint obcaecati, similique, accusantium corporis odit facilis ducimus, iure quod? <br> <br>
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi quo vero exercitationem assumenda quas natus? Natus fugiat esse tempore quis velit molestiae consectetur perferendis praesentium officiis error sint cumque pariatur, nihil corrupti tempora ducimus nesciunt commodi, repellat rem nobis hic delectus dolore quod? Explicabo consectetur ab molestias expedita et dolorem deleniti dicta ipsa qui inventore, iusto minima eum animi, itaque aperiam necessitatibus? Temporibus repellendus repudiandae aspernatur, minima laboriosam tempore, nihil sequi ratione corporis quam odio iure quisquam magnam nesciunt vel dolorem obcaecatLorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ad vitae aliquam, earum nulla voluptatem debitis esse quibusdam sequi sapiente, molestias, veniam saepe consequuntur. Vero accusantium magnam nisi quod minus, fuga, et pariatur tempore aliquid placeat eveniet. Asperiores, unde totam deserunt cum odit ab voluptatibus cumque consectetur voluptas necessitatibus libero qui quod, quis nemo at. Quas, accusantium consequuntur. Aliquam porro optio, dolore ab placeat maiores veniam commodi voluptas vel soluta. Magni vitae unde quia <br> <br> velit consequatur praesentium, fuga iure ducimus quos culpa asperiores cum adipisci incidunt ipsam quam voluptate sapiente provident aliquid totam, dolor quaerat voluptates laudantium laborum ipsum? Ullam ad debitis perspiciatis enim. Expedita, vel magni. Iste officia accusantium deleniti rem dicta vel eligendi inventore et necessitatibus quaerat blanditiis, nisi consequuntur? Quaerat ex rem nostrum, error perspiciatis dicta vero nisi, quisquam repellendus fuga temporibus architecto! Corporis ipsa provident deserunt doloribus, omnis aliquid! Repellendus amet aspernatur porro temporibus distinctio est maiores nihil. Beatae distinctio maxime totam odit sint consectetur ab architecto doloribus, sapiente officia eveniet explicabo provident voluptatum cum, fuga asperiores quam? Laboriosam, mollitia illum id ipsum eveniet vitae consectetur atque deserunt maiores dolorem rem sunt hic excepturi impedit corporis vel minus distinctio, sapiente laudantium quod dicta! Quae, ad aut.<br> <br>
-                        i vitae unde ipsa numquam asperiores nisi perferendis? Iste nobis at expedita asperiores ullam quas provident eum aut cumque. <br> <br>
+                       {{ post.description|safe }}
                     </article>
 
                     <!-- blog tag or category -->
 
                     <div class="blog-categorys-and-tag mt-4">
                         <span>Tags:</span>
-                        <p>Deer</p>
-                        <p>Nature</p>
-                        <p>Sea</p>
+                        {% for category in post.categories.all %}
+                            <p>{{ category.name }}</p>
+                        {% endfor %}
                     </div>
 
                     <!-- blog footer -->
@@ -198,8 +198,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </a>
+                                </div>
+                            </a>
 
                         <a href="blog-name">
                             <div class="row pt-3 mt-4">
