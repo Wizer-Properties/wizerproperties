@@ -1,7 +1,10 @@
 from django.contrib import admin
 
-from .models import Post, Category
+from .models import Post, Category, PostInteraction
 from core.admin import custom_admin_site
+
+
+custom_admin_site.register(PostInteraction)
 
 
 @admin.register(Post, site=custom_admin_site)

@@ -17,4 +17,18 @@ def blog_details(request, slug):
     except Post.DoesNotExist:
         return render(request, '404.html', status=404)
     
-    return render(request, "blog-details.html", {"post": post})
+    # Is liked by user or Is disliked by user
+    if request.user.is_authenticated:
+        is_liked = post.interactions.filter(interaction_type='like', user=request.user).exists()
+        is_disliked = post.interactions.filter(interaction_type='dislike', user=request.user).exists()
+    else:
+        is_liked = post.interactions.filter(interaction_type='like', ip_address=request.META.get('REMOTE_ADDR')).exists()
+        is_disliked = post.interactions.filter(interaction_type='dislike', ip_address=request.META.get('REMOTE_ADDR')).exists() 
+    
+    context = {
+        "post": post,
+        "is_liked": "true" if is_liked else "false",
+        "is_disliked": "true" if is_disliked else "false",
+    }
+    
+    return render(request, "blog-details.html", context)

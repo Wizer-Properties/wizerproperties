@@ -1,9 +1,12 @@
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.response import Response
 from blog.models import Post
 from blog.api.serializers import PostListSerializer, RelatedPostSerializer
 from blog.api.paginations import CustomPagination
-
+from blog.models import PostInteraction
+from rest_framework.views import APIView
+from rest_framework import status
 
 class PostListView(generics.ListAPIView):
     queryset = Post.objects.filter(status='published')
@@ -12,7 +15,7 @@ class PostListView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend]
     ordering_fields = ['total_read_count', 'total_likes', 'created_at']
     ordering = ['-created_at']  # Default ordering
-    http_method_names = ['get']
+    # http_method_names = ['get', 'de']
     
     def get_queryset(self):
         queryset = self.queryset
@@ -75,3 +78,37 @@ class RelatedPostListView(generics.ListAPIView):
             return Post.objects.none()  # Return an empty queryset instead of a list
 
         return queryset[:5]  # Limit to 5 posts
+
+
+class PostLikeDislikeView(APIView):
+
+    def post(self, request, *args, **kwargs):
+        post_id = request.data.get('post_id')
+        interaction_type = request.data.get('interaction_type')  # either 'like' or 'dislike'
+        ip_address = request.META.get('REMOTE_ADDR')
+                
+        try:
+            post = Post.objects.get(id=post_id)
+        except Post.DoesNotExist:
+            return Response({'error': 'Post not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Remove any existing interaction from the user or IP address
+        if request.user.is_authenticated:
+            PostInteraction.objects.filter(post=post, user=request.user).delete()
+        else:
+            PostInteraction.objects.filter(post=post, ip_address=ip_address).delete()
+
+        # Create new interaction
+        if interaction_type in ['like', 'dislike']:
+            if request.user.is_authenticated:
+                PostInteraction.objects.create(post=post, user=request.user, interaction_type=interaction_type)
+            else:
+                PostInteraction.objects.create(post=post, ip_address=ip_address, interaction_type=interaction_type)
+
+        # Update the total like/dislike counts
+        post.total_likes = post.interactions.filter(interaction_type='like').count()
+        post.total_dislikes = post.interactions.filter(interaction_type='dislike').count()
+        post.save()
+
+        return Response({'status': 'success'}, status=status.HTTP_200_OK)
+

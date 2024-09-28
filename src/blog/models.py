@@ -54,3 +54,19 @@ class Category(TimestampedModel):
 
     def __str__(self):
         return self.name
+
+class PostInteraction(TimestampedModel):
+    INTERACTION_TYPES = (
+        ('like', 'Like'),
+        ('dislike', 'Dislike'),
+    )
+    
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='interactions')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    interaction_type = models.CharField(max_length=10, choices=INTERACTION_TYPES)
+
+    def __str__(self):
+        identifier = self.user.username if self.user else self.ip_address
+        interaction = 'liked' if self.interaction_type == 'like' else 'disliked'
+        return f"{identifier} - {self.post.title} - {interaction}"

@@ -130,12 +130,12 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="blog-informations">
-                                    <button class="blog-like-btn" like-done="false">
+                                    <button class="blog-like-btn" like-done="{{ is_liked }}" post-id="{{ post.id }}">
                                         <i class="bi bi-hand-thumbs-up"></i>
                                         <i class="bi bi-hand-thumbs-up-fill"></i>
                                     </button>
 
-                                    <button class="blog-unlike-btn" unlike-done="false">
+                                    <button class="blog-unlike-btn" unlike-done="{{ is_disliked }}" post-id="{{ post.id }}">
                                         <i class="bi bi-hand-thumbs-down"></i>
                                         <i class="bi bi-hand-thumbs-down-fill"></i>
                                     </button>
@@ -242,7 +242,11 @@
 
 
 {% block extend_script %}
+<script>
+    csrf_token = '{{ csrf_token }}'
+</script>
 <!-- all js here -->
   <script src="{% static '/js/libraries/splide.min.js' %}"></script>
-  <script src="{% static '/js/blog-page.js' %}"></script>
+  <script src="{% static '/js/blog-page-details.js' %}?v=1.02"></script>
+  <script src="{% static '/js/blog-ads.js' %}?v=1.01"></script>
 {% endblock extend_script %}
