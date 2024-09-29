@@ -9,6 +9,8 @@ from blog.models import PostInteraction
 from django.db.models import Q
 from rest_framework.views import APIView
 from rest_framework import status
+from advertise.models import Advertisement
+from advertise.api.serializers import AdvertisementSuggestionSerializer
 
 class PostListView(generics.ListAPIView):
     queryset = Post.objects.filter(status='published')
@@ -144,3 +146,13 @@ class SaveReadTimeView(APIView):
             return Response({'status': 'success'}, status=status.HTTP_200_OK)
         except Post.DoesNotExist:
             return Response({'error': 'Post not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class BlogAdvertisementView(generics.ListAPIView):
+    queryset = Advertisement.objects.all()
+    serializer_class = AdvertisementSuggestionSerializer
+    pagination_class = None
+    
+    def get_queryset(self):
+        queryset = self.queryset.filter(ad_location='blog')
+        return queryset

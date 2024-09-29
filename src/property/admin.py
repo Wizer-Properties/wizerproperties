@@ -76,9 +76,9 @@ class PropertyAdmin(admin.ModelAdmin):
         return super(PropertyAdmin, self).add_view(request, form_url, extra_context=extra_context)
 
 
-# @admin.register(PropertyMedia)
-# class PropertyMediaAdmin(admin.ModelAdmin):
-#     list_display = ["id", "type", "property", "created_at"]
+@admin.register(PropertyMedia, site=custom_admin_site)
+class PropertyMediaAdmin(admin.ModelAdmin):
+    list_display = ["id", "type", "property", "created_at"]
 
 
 # @admin.register(CompareProperty)

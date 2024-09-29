@@ -1,18 +1,26 @@
 $(function(){
-    // ads //
-    var data = [
-        {
-            property_id: 10,
-            id: 9,
-            property_image: "https://wizerproperties.com/media/property/images/Screenshot_from_2024-05-29_10-13-27.png"
-        },
-        {
-            property_id: 4,
-            id: 8,
-            property_image: "https://wizerproperties.com/media/property/images/Screenshot_from_2024-03-04_10-19-21.png"
-        }
+    // Get the slider's track element
+    var ads_slider_list = document.querySelector('.ads-banner-slider .splide__list');
 
-    ];
+    // Fetch ads from the API
+    function fetchAds() {
+        $.ajax({
+            url: '/blogs/api/advertisement/',
+            type: 'GET',
+            success: function(data) {
+                // Loop through the data and append each image to the slider
+                data.forEach(function (item) {
+                    ads_slider_list.innerHTML += ads_tmp(item);
+                });
+
+                // Mount the slider after all images are added
+                ads_banner_slider.mount();
+            },
+            error: function(err) {}
+        });
+    }
+
+    fetchAds();
 
     // Initialize the Splide slider
     var ads_banner_slider = new Splide('.ads-banner-slider', {
@@ -25,24 +33,13 @@ $(function(){
     });
 
     // Function to generate the ad banner HTML
-    function ads_tmp(data) {
+    function ads_tmp(item) {
         return '<li class="splide__slide">' +
             '<div class="top-banner-img">' +
-            '<a href="/property/details/' + data?.property_id + '/?ad_id=' + data?.id + '">' +
-            '<img src="' + data?.property_image + '" alt="wip-ads">' +
+            '<a href="/property/details/' + item?.property_id + '/?ad_id=' + item?.id + '">' +
+            '<img src="' + item?.property_image + '" alt="wip-ads">' +
             '</a>' +
             '</div>' +
             '</li>';
     }
-
-    // Get the slider's track element
-    var ads_slider_list = document.querySelector('.ads-banner-slider .splide__list');
-
-    // Loop through the data and append each image to the slider
-    data.forEach(function (item) {
-        ads_slider_list.innerHTML += ads_tmp(item);
-    });
-
-    // Mount the slider after all images are added
-    ads_banner_slider.mount();
 })
