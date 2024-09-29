@@ -152,5 +152,37 @@ $(function(){
         relatedBlogsList.html(relatedBlogsListHtml);
     }
 
+    // Store read post id and categories name in local storage
+    function storeReadPostsIdAndCategoriesName(post_id, post_categories) {
+        // Retrieve read_posts_id and post_categories_name from localStorage, or use empty arrays if not found
+        var read_posts_id = JSON.parse(localStorage.getItem('read_posts_id')) || [];
+        var post_categories_name = JSON.parse(localStorage.getItem('post_categories_name')) || [];
+
+        // Check if post_id is already in read_posts_id
+        if (!read_posts_id.includes(post_id)) {
+            read_posts_id.push(post_id);
+        }
+
+        // Check if post_categories is an array and if categories are already in post_categories_name
+        post_categories.forEach(function(category) {
+            if (!post_categories_name.includes(category)) {
+                post_categories_name.push(category);
+            }
+        });
+
+        // Only store latest 10 posts id and categories name
+        if (read_posts_id.length > 10) {
+            read_posts_id.shift();
+        }
+        if (post_categories_name.length > 10) {
+            post_categories_name.shift();
+        }
+
+        // Store updated arrays back in localStorage (convert arrays to JSON strings)
+        localStorage.setItem('read_posts_id', JSON.stringify(read_posts_id));
+        localStorage.setItem('post_categories_name', JSON.stringify(post_categories_name));
+    }
+
+    storeReadPostsIdAndCategoriesName(post_id, post_categories);
 
 })

@@ -5,6 +5,7 @@ from blog.models import Post
 from blog.api.serializers import PostListSerializer, RelatedPostSerializer
 from blog.api.paginations import CustomPagination
 from blog.models import PostInteraction
+from django.db.models import Q
 from rest_framework.views import APIView
 from rest_framework import status
 
@@ -59,7 +60,7 @@ class RelatedPostListView(generics.ListAPIView):
         current_post_id = int(current_post_id) if current_post_id and current_post_id.isdigit() else None
 
         queryset = Post.objects.filter(status='published').exclude(id__in=read_posts_id)
-                
+                        
 
         try:
             if read_categories:
@@ -69,13 +70,16 @@ class RelatedPostListView(generics.ListAPIView):
                 if current_post and current_post.categories.exists():
                     queryset = queryset.filter(categories__in=current_post.categories.all())
 
-            # If not enough related posts, add popular and recent posts
-            if queryset.count() < 5:
-                popular_posts = Post.objects.filter(status='published').exclude(id__in=read_posts_id).order_by('-total_read_count', '-total_likes', '-created_at')
-                queryset = queryset | popular_posts
-
             # Order by popularity (read count) and recency
             queryset = queryset.order_by('-total_read_count', '-total_likes', '-created_at').exclude(id=current_post_id).distinct()
+            
+            # If not enough related posts, add popular and recent posts
+            if queryset.count() < 5:
+                popular_posts = Post.objects.filter(Q(status='published')).exclude(
+                    Q(id__in=read_posts_id) | Q(id=current_post_id)
+                ).order_by('-total_read_count', '-total_likes', '-created_at').distinct()
+                queryset = queryset | popular_posts
+                
         except Exception as e:
             return Post.objects.none()  # Return an empty queryset instead of a list
 

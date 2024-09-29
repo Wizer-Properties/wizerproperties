@@ -23,7 +23,7 @@ def blog_details(request, slug):
         is_disliked = post.interactions.filter(interaction_type='dislike', user=request.user).exists()
     else:
         is_liked = post.interactions.filter(interaction_type='like', ip_address=request.META.get('REMOTE_ADDR')).exists()
-        is_disliked = post.interactions.filter(interaction_type='dislike', ip_address=request.META.get('REMOTE_ADDR')).exists() 
+        is_disliked = post.interactions.filter(interaction_type='dislike', ip_address=request.META.get('REMOTE_ADDR')).exists()
     
     context = {
         "post": post,

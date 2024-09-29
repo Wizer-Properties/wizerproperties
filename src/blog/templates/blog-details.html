@@ -198,6 +198,8 @@
 {% block extend_script %}
 <script>
     csrf_token = '{{ csrf_token }}'
+    post_id = '{{ post.id }}'
+    post_categories = [{% for category in post.categories.all %}"{{ category.name }}"{% if not forloop.last %}, {% endif %}{% endfor %}];
 </script>
 <!-- all js here -->
   <script src="{% static '/js/libraries/splide.min.js' %}"></script>
