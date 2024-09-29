@@ -1,3 +1,4 @@
+from datetime import timedelta
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
@@ -118,3 +119,28 @@ class PostLikeDislikeView(APIView):
 
         return Response({'status': 'success'}, status=status.HTTP_200_OK)
 
+
+
+class SaveReadTimeView(APIView):
+
+    def post(self, request, *args, **kwargs):
+        time_spent = request.data.get('time_spent')
+        post_id = request.data.get('post_id')
+
+        try:
+            post = Post.objects.get(id=post_id)
+            
+            # Update the total read time
+            # Convert time_spent from seconds to duration
+            time_spent_duration = timedelta(seconds=int(time_spent))
+            
+            # Add the new time_spent to the existing total_read_time
+            if post.total_read_time:
+                post.total_read_time += time_spent_duration
+            else:
+                post.total_read_time = time_spent_duration
+                
+            post.save()            
+            return Response({'status': 'success'}, status=status.HTTP_200_OK)
+        except Post.DoesNotExist:
+            return Response({'error': 'Post not found'}, status=status.HTTP_404_NOT_FOUND)

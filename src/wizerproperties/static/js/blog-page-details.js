@@ -1,6 +1,6 @@
 $(function(){
 
-     // Like button click event
+     // ===================== Like button click event ===================== 
      $('.blog-like-btn').click(function () {
         var likeDone = $(this).attr('like-done') === 'true';
         var postId = $(this).attr('post-id');
@@ -29,7 +29,7 @@ $(function(){
         });
     });
 
-    // Unlike button click event
+    // ===================== Unlike button click event =====================
     $('.blog-unlike-btn').click(function () {
         var unlikeDone = $(this).attr('unlike-done') === 'true';
         var postId = $(this).attr('post-id');
@@ -58,7 +58,7 @@ $(function(){
         });
     });
 
-    // Function to update the icons based on the state of like-done and unlike-done
+    //  ===================== Update the icons based on the state of like-done and unlike-done =====================
     function updateIcons() {
         // Handle like button icons
         if ($('.blog-like-btn').attr('like-done') === 'true') {
@@ -79,7 +79,7 @@ $(function(){
         }
     }
 
-    // Related posts
+    // ===================== Fetch related posts =====================
     function fetchRelatedPosts(){
         var relatedBlogsContainer = $('.related-blogs');
 
@@ -106,7 +106,7 @@ $(function(){
     // Initial load
     fetchRelatedPosts()
 
-
+    // ===================== Render related posts =====================
     function renderRelatedPosts(posts) {
 
         // Render blog categories
@@ -152,7 +152,7 @@ $(function(){
         relatedBlogsList.html(relatedBlogsListHtml);
     }
 
-    // Store read post id and categories name in local storage
+    // ===================== Store read post id and categories name in local storage =====================  
     function storeReadPostsIdAndCategoriesName(post_id, post_categories) {
         // Retrieve read_posts_id and post_categories_name from localStorage, or use empty arrays if not found
         var read_posts_id = JSON.parse(localStorage.getItem('read_posts_id')) || [];
@@ -184,5 +184,34 @@ $(function(){
     }
 
     storeReadPostsIdAndCategoriesName(post_id, post_categories);
+
+    // ===================== Calculate total read time of users =====================
+    let startTime = new Date().getTime();
+
+    // Function to calculate time spent on the page
+    function calculateTimeSpent() {
+        let endTime = new Date().getTime();
+        let timeSpent = Math.round((endTime - startTime) / 1000); // in seconds
+        return timeSpent;
+    }
+
+    // Event when user leaves the page or closes the tab
+    window.addEventListener("beforeunload", function () {
+        let timeSpent = calculateTimeSpent();
+
+        $.ajax({
+            url: `/blogs/api/posts/save-read-time/`,
+            type: 'POST',
+            headers: {
+                'X-CSRFToken': csrf_token
+            },
+            data: {
+                time_spent: timeSpent,
+                post_id: post_id
+            },
+            success: function (response) {},
+            error: function (error) {}
+        });
+    });
 
 })

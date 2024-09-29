@@ -7,7 +7,7 @@ $(document).ready(function () {
     var currentPage = 1;
     var isLoading = false;
 
-    // Filter click event
+    // ===================== Filter click event =====================   
     $('  .most-read-filter, .most-liked-filter, .most-recent-filter, .blog-category-select-filter').click(function () { 
         // Remove active class from all filter    
         var isActive = $(this).attr('active-filter') === 'true';
@@ -42,7 +42,7 @@ $(document).ready(function () {
         fetchBlogPosts(filterData);
     });
 
-
+    // ===================== Fetch blog posts ===================== 
     function fetchBlogPosts(params = {}) {
         if (isLoading) return;
         isLoading = true;
@@ -87,6 +87,7 @@ $(document).ready(function () {
         });
     }
 
+    // ===================== Render blog cards =====================     
     function renderBlogCards(post) {
 
         // Render blog categories
@@ -123,15 +124,16 @@ $(document).ready(function () {
         `
     }
 
+    // ===================== Scroll handler ===================== 
     function scrollHandler() {
         if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
             fetchBlogPosts();
         }
     }
 
-    // Initial load
+    // ===================== Initial load ===================== 
     fetchBlogPosts();
-
+        
     // Attach scroll event handler
     $(window).on('scroll', scrollHandler);
 });
