@@ -2,8 +2,32 @@
 {% load static %}
 
 {% block extend_head %}
-<title>Blog Details</title>
-<!-- all css here -->
+    <title>Blog Details</title>
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="{{ post.title }}">
+    <meta name="description" content="{{ post.subtitle }}">
+    <meta name="keywords" content="{{ post.categories.all|join:', ' }}">
+    <meta name="author" content="{{ post.creator.full_name }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Open Graph / Facebook / LinkedIn -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:title" content="{{ post.title }}">
+    <meta property="og:description" content="{{ post.subtitle }}">
+    <meta property="og:image" content="{{ post.banner_image.url }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ request.build_absolute_uri }}">
+    <meta name="twitter:title" content="{{ post.title }}">
+    <meta name="twitter:description" content="{{ post.subtitle }}">
+    <meta name="twitter:image" content="{{ post.banner_image.url }}">
+    
+    <!-- all css here -->
     <link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
     <link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
     <link rel="stylesheet" href="{% static '/css/blog-page.css' %}?v=1.01"/>
@@ -65,37 +89,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="share-option">
-                                        <p>Share this:</p>
-                                        <div class="facebook">
-                                            <a href="facebook.com">
-                                                <img loading="lazy" src="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" alt="facebook-icon">
-                                            </a>
-                                        </div>
-                                        <div class="twitter-x">
-                                            <a href="x.com">
-                                                <img loading="lazy" src="https://cdn-icons-png.flaticon.com/512/5969/5969020.png " alt="twitter-x-icon">
-                                            </a>
-                                        </div>
-                                        <div class="whatsapp">
-                                            <a href="whastapp.com">
-                                                <img loading="lazy" src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="whastapp-icon">
-                                            </a>
-                                            
-                                        </div>
-                                        <div class="linkd-in">
-                                            <a href="linkedin.com">
-                                                <img loading="lazy" src="https://cdn-icons-png.flaticon.com/512/145/145807.png" alt="linkd-in-icon">
-                                            </a>
-                                        </div>
-                                        <div class="line">
-                                            <a href="line">
-                                                <img loading="lazy" src="https://cdn-icons-png.flaticon.com/512/3670/3670089.png" alt="line">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -145,32 +138,32 @@
                                 <div class="share-option">
                                     <p>Share this:</p>
                                     <div class="facebook">
-                                        <a href="facebook.com">
-                                            <img src="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" alt="facebook-icon">
+                                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
+                                            <img loading="lazy" src="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" alt="facebook-icon">
                                         </a>
                                     </div>
                                     <div class="twitter-x">
-                                        <a href="x.com">
-                                            <img src="https://cdn-icons-png.flaticon.com/512/5969/5969020.png " alt="twitter-x-icon">
+                                        <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ post.title|urlencode }}" target="_blank">
+                                            <img loading="lazy" src="https://cdn-icons-png.flaticon.com/512/5969/5969020.png" alt="twitter-x-icon">
                                         </a>
                                     </div>
                                     <div class="whatsapp">
-                                        <a href="whastapp.com">
-                                            <img src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="whastapp-icon">
+                                        <a href="https://api.whatsapp.com/send?text={{ post.title|urlencode }}%20{{ request.build_absolute_uri|urlencode }}" target="_blank">
+                                            <img loading="lazy" src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="whatsapp-icon">
                                         </a>
-                                        
                                     </div>
-                                    <div class="linkd-in">
-                                        <a href="linkedin.com">
-                                            <img src="https://cdn-icons-png.flaticon.com/512/145/145807.png" alt="linkd-in-icon">
+                                    <div class="linkedin">
+                                        <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ post.title|urlencode }}&summary=YOUR_SUMMARY" target="_blank">
+                                            <img loading="lazy" src="https://cdn-icons-png.flaticon.com/512/145/145807.png" alt="linkedin-icon">
                                         </a>
                                     </div>
                                     <div class="line">
-                                        <a href="line">
-                                            <img src="https://cdn-icons-png.flaticon.com/512/3670/3670089.png" alt="line">
+                                        <a href="https://social-plugins.line.me/lineit/share?url={{ request.build_absolute_uri }}" target="_blank">
+                                            <img loading="lazy" src="https://cdn-icons-png.flaticon.com/512/3670/3670089.png" alt="line-icon">
                                         </a>
                                     </div>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>
