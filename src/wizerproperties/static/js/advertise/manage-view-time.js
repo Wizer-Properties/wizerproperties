@@ -6,10 +6,23 @@ $(document).ready(function(){
         const results = regex.exec(location.search);
         return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
     };
-    
+
+    // Managing discount property view-time
+    const discounted = getUrlParameter('discounted');
+
+    if (discounted) {
+        property_view_time_url = property_view_time_url + '?discounted=True'
+    }
+    // Managing property view time
+    manageViewTime(property_view_time_url, 'PATCH')
+
+    // Managing ad view-time
     const adId = getUrlParameter('ad_id');
-    
     if (adId) {
+        manageViewTime(`/advertise/api/advertisement/${adId}/manage-view-time/`, "PATCH")
+    };
+
+    function manageViewTime(url, request_method='POST') {
         TimeMe.initialize({
             idleTimeoutInSeconds: 120, // stop recording time due to inactivity
         });
@@ -25,8 +38,8 @@ $(document).ready(function(){
             };
     
             // Use fetch with keepalive option
-            fetch(`/advertise/api/advertisement/${adId}/manage-view-time/`, {
-                method: 'PATCH',
+            fetch(url, {
+                method: request_method,
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': CSRF_TOKEN

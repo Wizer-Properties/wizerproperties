@@ -185,6 +185,21 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
         return response
     
+    @action(detail=True, methods=["get"])
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        
+        # Check if 'discounted=True' is in the URL
+        is_discounted = request.query_params.get('discounted', False)
+        if is_discounted:
+            # Increment the number_of_clicked for the associated DiscountProperty
+            discount_property = instance.discounts.first()
+            today = timezone.now().date()
+            if discount_property and discount_property.period >= today:
+                discount_property.increase_total_view_count()
+        
+        return Response(serializer.data)
 
     def _save_query_filter_prize_range(self):
         """We are storing price ranges"""
@@ -697,13 +712,23 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["patch"])
     def manage_property_view_time(self, request, pk=None):
-        # Updates Ad total view time
+        # Managing Property and discount property view time
         property_obj = self.get_object()
+        serializer = self.serializer_class(property_obj)
+
         time_spent = request.data.get("time_spent", None)
         if time_spent:
             property_obj.view_time += timedelta(seconds=time_spent)
             property_obj.save()
-        serializer = self.serializer_class(property_obj)
+            
+            # Check if 'discounted=True' is in the URL
+            is_discounted = request.query_params.get('discounted', False)
+            if is_discounted:
+                # Increment the viewing for the associated DiscountProperty
+                discount_property = property_obj.discounts.first()
+                today = timezone.now().date()
+                if discount_property and discount_property.period >= today:
+                    discount_property.increase_view_time(time_spent=time_spent)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
 

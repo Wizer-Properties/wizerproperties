@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from datetime import timedelta
 
 from core.models import TimestampedModel
 from property.models import Property
@@ -9,6 +10,8 @@ from property.models import Property
 class DiscountProperty(TimestampedModel):
     property = models.ForeignKey(Property, null=True, on_delete=models.SET_NULL, related_name="discounts")
     period = models.DateField(null=True)
+    number_of_clicked = models.PositiveIntegerField(default=0)  # How many times user has view this property
+    view_time = models.DurationField(default=timedelta(seconds=0))  # How long the viewers view this property
 
     class Meta:
         verbose_name_plural = "Discount properties"
@@ -29,3 +32,13 @@ class DiscountProperty(TimestampedModel):
         
         if error_messages:
             raise ValidationError(error_messages)
+    
+    def increase_total_view_count(self):
+        # Increasing view count by 1
+        self.number_of_clicked += 1
+        self.save()
+    
+    def increase_view_time(self, time_spent):
+        # Increasing viewing time
+        self.view_time += timedelta(seconds=time_spent)
+        self.save()

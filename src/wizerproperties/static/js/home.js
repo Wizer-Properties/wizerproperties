@@ -91,7 +91,7 @@ $(document).ready(function(){
                             '</button>': ''
                         ) +
                     '</div>'+
-                    '<a href="/property/details/'+data?.id+'/" class="search-result-box-wrapper">'+
+                    '<a href="/property/details/'+data?.id+'/?discounted=True" class="search-result-box-wrapper">'+
                         '<div class="discount-card-header">'+
                             '<h1 class="card-title">'+data?.building_title+'</h1>'+
                             ( data?.discount_period ? '<div class="exclusive-deals-time" date-count="'+data?.discount_period+'"></div>' : '')+

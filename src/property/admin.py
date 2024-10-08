@@ -118,7 +118,7 @@ class DiscountPropertyForm(forms.ModelForm):
 
 @admin.register(DiscountProperty, site=custom_admin_site)
 class DiscountPropertyAdmin(admin.ModelAdmin):
-    list_display = ["id", "_building", "_property", "period", "created_at", "_status"]
+    list_display = ["id", "_building", "_property", "period", "number_of_clicked", "view_time", "created_at", "_status"]
     form = DiscountPropertyForm
     
     def _property(self, obj):
