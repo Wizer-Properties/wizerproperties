@@ -185,22 +185,6 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
         return response
     
-    @action(detail=True, methods=["get"])
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        
-        # Check if 'discounted=True' is in the URL
-        is_discounted = request.query_params.get('discounted', False)
-        if is_discounted:
-            # Increment the number_of_clicked for the associated DiscountProperty
-            discount_property = instance.discounts.first()
-            today = timezone.now().date()
-            if discount_property and discount_property.period >= today:
-                discount_property.increase_total_view_count()
-        
-        return Response(serializer.data)
-
     def _save_query_filter_prize_range(self):
         """We are storing price ranges"""
 
@@ -729,6 +713,14 @@ class PropertyViewSet(viewsets.ModelViewSet):
                 today = timezone.now().date()
                 if discount_property and discount_property.period >= today:
                     discount_property.increase_view_time(time_spent=time_spent)
+
+            # Check if 'featured=True' is in the URL
+            is_featured = request.query_params.get('featured', False)
+            if is_featured:
+                # Increment the viewing for the associated DiscountProperty
+                feature_property = property_obj.features.first()
+                if feature_property:
+                    feature_property.increase_view_time(time_spent=time_spent)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
 

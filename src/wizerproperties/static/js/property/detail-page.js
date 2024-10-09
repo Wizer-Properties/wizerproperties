@@ -31,17 +31,6 @@ $(document).ready(function(){
         return gallery_dom;
     };
 
-    // Function to get URL parameter
-    function getUrlParameter(name) {
-        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-        const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-        const results = regex.exec(location.search);
-        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-    };
-
-    // Managing discount property view-time
-    const discounted = getUrlParameter('discounted');
-
     function get_asset_details(){
         $.ajax({
             url: ASSET_API_URL,
@@ -49,7 +38,6 @@ $(document).ready(function(){
             data : {
                 default_images_number : 5,
                 reviewed_by : USER_ID,
-                discounted: discounted,
             },
             headers: {
                 'X-CSRFToken': csrfToken,

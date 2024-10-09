@@ -2,6 +2,7 @@ import ast
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.utils import timezone
 from building.models import Building
 from property.models import Property
 from user.models import User, Profile, DeveloperProfile, AgentProfile
@@ -52,6 +53,23 @@ def get_property(request, id):
             ad_obj.manage_ad_analytics(user, location)  # Updating ad analytics value
     
     property.manage_property_analytics(user, location)  # Updating property analytics value
+
+    # Check if 'discounted=True' is in the URL
+    is_discounted = request.GET.get('discounted', False)
+    if is_discounted:
+        # Increasing the number_of_clicked for the associated DiscountProperty
+        discount_property = property.discounts.first()
+        today = timezone.now().date()
+        if discount_property and discount_property.period >= today:
+            discount_property.increase_total_view_count()
+    
+    # Check if 'featured=True' is in the URL
+    is_featured = request.GET.get('featured', False)
+    if is_featured:
+        # Increasing the number_of_clicked for the associated FeatureProperty
+        feature_property = property.features.first()
+        if feature_property:
+            feature_property.increase_total_view_count()
 
     """Storing search related cookie"""
     context = prepare_property_context(request, id)

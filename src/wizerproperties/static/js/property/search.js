@@ -161,6 +161,16 @@ $(document).ready(function(){
             $('.add-to-favorite').remove();
         };
 
+        function detail_page_url() {
+            let url = '/property/details/'+data?.id+'/'
+            if (data?.tag == 'spotlight') {
+                url = url + '?discounted=True'
+            } else if (data?.tag == 'feature') {
+                url = url + '?featured=True'
+            }
+            return url
+        }
+
         var is_fav_effect = localStorage.getItem('favorite-effect');
         // property-type value seted newly-created, popular in css
 
@@ -199,9 +209,9 @@ $(document).ready(function(){
 
                             '<div class="col-lg-7 col-xl-8 p-0">'+
                                 '<div class="search-result-box">'+
-                                    '<a href="/property/details/'+data?.id+'/" class="d-block w-100">'+
+                                    '<a href="'+detail_page_url()+'" class="d-block w-100">'+
                                         (
-                                            data?.tag == "spotlight" ?
+                                            data?.tag == "spotlight" ?  // 'DiscountProperty' consider as 'spotlight'  
                                             '<div class="special-sale"><span> Flash Sale </span></div>' : ''
                                         )+
                                         (

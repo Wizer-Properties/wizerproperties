@@ -161,7 +161,7 @@ class FeaturePropertyForm(forms.ModelForm):
 
 @admin.register(FeatureProperty, site=custom_admin_site)
 class FeaturePropertyAdmin(admin.ModelAdmin):
-    list_display = ["id", "_building", "_property", "created_at"]
+    list_display = ["id", "_building", "_property", "number_of_clicked", "view_time", "created_at"]
     form = FeaturePropertyForm
     
     def _property(self, obj):

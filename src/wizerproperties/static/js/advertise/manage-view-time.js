@@ -9,9 +9,12 @@ $(document).ready(function(){
 
     // Managing discount property view-time
     const discounted = getUrlParameter('discounted');
+    const featured = getUrlParameter('featured');
 
     if (discounted) {
         property_view_time_url = property_view_time_url + '?discounted=True'
+    } else if (featured) {
+        property_view_time_url = property_view_time_url + '?featured=True'
     }
     // Managing property view time
     manageViewTime(property_view_time_url, 'PATCH')
