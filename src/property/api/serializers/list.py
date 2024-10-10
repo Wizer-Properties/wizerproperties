@@ -115,9 +115,9 @@ class PropertyListSerializer(PropertySerializer):
         """
 
         if obj.discounts.exists():
-            first_discount = obj.discounts.first()
-            if first_discount and first_discount.period > timezone.now().date():
-                tag = "spotlight"
+            #first_discount = obj.discounts.first()
+            #if first_discount and first_discount.period > timezone.now().date():
+            tag = "spotlight"
         elif obj.features.exists():
             tag = "feature"
         elif obj.newly_createds.exists():
