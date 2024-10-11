@@ -18,7 +18,7 @@ class Post(TimestampedModel):
     slug = models.SlugField(unique=True, null=True, blank=True)
     title = models.CharField(max_length=250, null=True)
     status = models.CharField(max_length=20, default="draft", choices=STATUS)
-    subtitle = models.CharField(max_length=200, null=True)
+    subtitle = models.CharField(max_length=2000, null=True)
     description = CKEditor5Field(null=True)
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     banner_image = models.ImageField(upload_to='blog/banner_images/', null=True)

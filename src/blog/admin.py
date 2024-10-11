@@ -10,7 +10,7 @@ custom_admin_site.register(PostInteraction)
 @admin.register(Post, site=custom_admin_site)
 class PostAdmin(admin.ModelAdmin):
     list_display = (
-        'title', 'subtitle', 'status',  
+        'title', 'status',  
         'total_likes', 'total_dislikes', 'total_read_count', 'estimated_read_time', 
         'categories_list', 'creator', 'created_at', 'updated_at',
      )
