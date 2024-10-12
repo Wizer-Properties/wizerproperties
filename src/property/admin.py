@@ -118,7 +118,7 @@ class DiscountPropertyForm(forms.ModelForm):
 
 @admin.register(DiscountProperty, site=custom_admin_site)
 class DiscountPropertyAdmin(admin.ModelAdmin):
-    list_display = ["id", "_building", "_property", "period", "number_of_clicked", "view_time", "created_at", "_status"]
+    list_display = ["id", "_building", "_property", "period", "number_of_clicked", "_view_time", "created_at", "_status"]
     form = DiscountPropertyForm
     
     def _property(self, obj):
@@ -137,6 +137,9 @@ class DiscountPropertyAdmin(admin.ModelAdmin):
         if obj.period >= timezone.now().date():
             return "Active"
         return "Inactive"
+    
+    def _view_time(self, obj):
+        return obj.duration_without_microseconds()
 
 class FeaturePropertyForm(forms.ModelForm):
     class Meta:
@@ -161,7 +164,7 @@ class FeaturePropertyForm(forms.ModelForm):
 
 @admin.register(FeatureProperty, site=custom_admin_site)
 class FeaturePropertyAdmin(admin.ModelAdmin):
-    list_display = ["id", "_building", "_property", "number_of_clicked", "view_time", "created_at"]
+    list_display = ["id", "_building", "_property", "number_of_clicked", "_view_time", "created_at"]
     form = FeaturePropertyForm
     
     def _property(self, obj):
@@ -175,5 +178,8 @@ class FeaturePropertyAdmin(admin.ModelAdmin):
             link = reverse("admin:building_building_change", args=[obj.property.building.id])
             return format_html('<a href="{}" target="_blank">{}</a>', link, obj.property.building.title)
         return "--"
+    
+    def _view_time(self, obj):
+        return obj.duration_without_microseconds()
 
 

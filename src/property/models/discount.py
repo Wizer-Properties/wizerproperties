@@ -33,6 +33,13 @@ class DiscountProperty(TimestampedModel):
         if error_messages:
             raise ValidationError(error_messages)
     
+    def duration_without_microseconds(self):
+        if self.view_time:
+            # Remove microseconds by subtracting them
+            duration_without_microseconds = self.view_time - timedelta(microseconds=self.view_time.microseconds)
+            return str(duration_without_microseconds)
+        return "0:00:00"
+    
     def increase_total_view_count(self):
         # Increasing view count by 1
         self.number_of_clicked += 1

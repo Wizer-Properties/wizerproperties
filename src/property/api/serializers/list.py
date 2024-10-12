@@ -113,17 +113,13 @@ class PropertyListSerializer(PropertySerializer):
         """The ordering of tag is important. Depending of tag value we are providing
         instance custom style
         """
-
-        if obj.discounts.exists():
-            #first_discount = obj.discounts.first()
-            #if first_discount and first_discount.period > timezone.now().date():
+        tag = ""
+        if obj.discounted:
             tag = "spotlight"
-        elif obj.features.exists():
+        elif obj.featured:
             tag = "feature"
         elif obj.newly_createds.exists():
             tag = "newly_created"
-        else:
-            tag = ""
 
         return tag
 
@@ -131,7 +127,7 @@ class PropertyListSerializer(PropertySerializer):
         request = self.context.get("request")
         platform = request.GET.get("platform")
 
-        if obj.features.exists() or obj.discounts.exists():
+        if obj.featured or obj.discounted:
             if platform == "web":
                 images = obj.media_files.filter(type="image")[1:4]
                 return PropertyMediaSerializer(images, many=True).data
@@ -139,8 +135,7 @@ class PropertyListSerializer(PropertySerializer):
         return []
 
     def get_discount_period(self, obj):
-        if obj.discounts.exists():
+        if obj.discounted:
             first_discount = obj.discounts.first()
-            if first_discount and first_discount.period > timezone.now().date():
-                return first_discount.period
+            return first_discount.period
         return None

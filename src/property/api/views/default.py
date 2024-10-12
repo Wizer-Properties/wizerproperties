@@ -4,7 +4,8 @@ from geopy.distance import geodesic
 from django.utils import timezone
 from django.conf import settings
 from urllib.parse import urlparse, parse_qs
-from django.db.models import OuterRef, Subquery, Value, F, CharField, Count, Exists, BooleanField, Case, When, Sum
+from django.db.models import OuterRef, Subquery, Value, F, CharField, \
+    Prefetch, Count, Exists, BooleanField, Case, When, Sum, Q
 from django.db.models.functions import Concat
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -29,7 +30,7 @@ from property.api.pagination import UserPropertyPagination, PropertySearchPagina
 from building.api.serializers import BuildingInfoForPropertySerializer, BuildingMediaSerializer
 from building.models import Building, BuildingMedia
 from property.models import Property, PropertyMedia, CompareProperty, ProspectFavoriteProperty, \
-    PropertyPriceRange
+    PropertyPriceRange, DiscountProperty, FeatureProperty
 from user.models import AgentProfile, DeveloperProfile, ProspectProfile
 from user.api.serializers import AgentProfileSerializer, DeveloperProfileSerializer
 from utils.general_func import get_chatgpt_response, get_user_ip
@@ -50,11 +51,22 @@ class PropertyViewSet(viewsets.ModelViewSet):
     # ordering = ["-visit_count"]  # Default ordering
 
     def get_queryset(self):
+        current_date = timezone.now().date()
+        
+        # Create subqueries for DiscountProperty and FeatureProperty
+        discount_property_exists = DiscountProperty.objects.filter(
+            property=OuterRef('pk'), 
+            period__gte=timezone.now().date()  # Check if period is greater than or equal today
+        )
+        feature_property_exists = FeatureProperty.objects.filter(
+            property=OuterRef('pk')
+        )
+
         queryset = (
             Property.objects.select_related("building", "created_by")
-            .prefetch_related("media_files", "discounts", "newly_createds", "features")
-            .annotate(discounted=Count("discounts"))
-            .annotate(featured=Count("features"))
+            .prefetch_related("media_files", "newly_createds")
+            .annotate(discounted=Exists(discount_property_exists))
+            .annotate(featured=Exists(feature_property_exists))
             .annotate(visit_count=Coalesce(Sum("propertyclickslog__number_of_clicked"), Value(0)))
         )
 
