@@ -9,16 +9,19 @@ def complete_profile(request):
 
     # Check if the user has a complete profile.
     if not request.user.is_complete_profile:
-        # Depending on the user's user_type, redirect to their specific profile page.
-        if request.user.user_type == "developer":
-            to_return = complete_developer_profile(request)
-        elif request.user.user_type == "agent":
-            to_return = complete_agent_profile(request)
-        elif request.user.user_type == "prospect":
-            to_return = complete_prospect_profile(request)
+        
+        # # Depending on the user's user_type, redirect to their specific profile page.
+        # if request.user.user_type == "developer":
+        #     to_return = complete_developer_profile(request)
+        # elif request.user.user_type == "agent":
+        #     to_return = complete_agent_profile(request)
+        # elif request.user.user_type == "prospect":
+        #     to_return = complete_prospect_profile(request)
         # If the user is a superuser or staff, redirect them to the admin index page.
-        elif request.user.is_superuser or request.user.is_staff:
+        if request.user.is_superuser or request.user.is_staff:
             to_return = redirect(reverse("admin:index"))
+        else:
+            to_return = render(request, "auth/complete_profile.html")   
 
     return to_return
 

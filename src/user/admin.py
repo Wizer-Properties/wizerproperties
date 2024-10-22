@@ -13,6 +13,7 @@ class UserAdmin(admin.ModelAdmin):
         "username",
         "email",
         "user_type",
+        "auth_type",
         "email_verification_status",
         "is_complete_profile",
         "created_at",

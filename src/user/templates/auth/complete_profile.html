@@ -56,12 +56,56 @@
                     <div class="w-100">
                         <form id="complete-profile-form" method="post">
                             {% csrf_token %}
-                            {% block profile %}
-                            {% endblock %}
+
+                            <!--- Complete Profile Form Start --->
+
+                            <div class="success-message">
+                                <!-- <span class="authSuccessMessage"></span> -->
+                            </div>
+                            <div class="error-message">
+                                <!-- <span class="authErrorMessage"></span> -->
+                            </div>
+
+                            <div class="auth-input-wrapper">
+                                <label>User email</label>
+                                <input type="email" name="email" value="{{ request.user.email }}" readonly>
+                            </div>
+
+                            <div class="auth-input-wrapper">
+                                <label>Phone Number</label>
+                            
+                                <div class="d-flex gap-2">
+                                    <select name="phone_code" placeholder="Code" required style="width: 100px;">
+                                        <option value="+66">+66</option>
+                                    </select>
+                                    <input type="tel" name="phone_number" placeholder="Phone Number" required>
+                                </div>
+                            </div>
+
+                            <div class="auth-input-wrapper">
+                                <label>User type</label>
+                                <select name="user_type" value="{{ request.user.user_type }}" required>
+                                    <option value="">Select User Type</option>
+                                    <option value="agent">Agent</option>
+                                    <option value="developer">Developer</option>
+                                    <option value="prospect">Prospect</option>
+                                </select>
+                            </div>
+
+                            <div form-for="complete-profile">
+                                <!-- from complete profile js -->
+                            </div>
+
+                            <div class="auth-response-messages"></div>
+                            <button type="submit" class="auth-form-btn mt-4" button-name="complete-profile">
+                                Complete Profile
+                            </button>
                         </form>
     
                         <div class="extra-auth-link">
-                            <p> <a href="{% url 'user:forgot_password' %}">Forgot Password?</a> </p>
+                            {% if request.user.auth_type == "email" %}
+                                <p> <a href="{% url 'user:forgot_password' %}">Forgot Password?</a> </p>
+                            {% endif %}
                             <p> <a  href="{% url 'user:logout' %}">Logout</a> </p>
                         </div>
                     </div>
@@ -74,19 +118,16 @@
 {% endblock %}
 {% block extend_script %}
 <script type="text/javascript">
-    var userType = "{{ request.user.user_type }}"
-    var profileCreateUrl = "";
-    if (userType == "developer") {
-        profileCreateUrl = "{% url 'user:api:developer_create' %}"
-    } else if (userType == "agent") {
-        profileCreateUrl = "{% url 'user:api:agent_create' %}"
-    } else if (userType == "prospect") {
-        profileCreateUrl = "{% url 'user:api:prospect_create' %}"
-    }
+    var user_first_name = "{{ request.user.first_name }}"
+    var user_last_name = "{{ request.user.last_name }}"
+
+    var DEVELOPER_CREATE_URL = "{% url 'user:api:developer_create' %}"
+    var AGENT_CREATE_URL = "{% url 'user:api:agent_create' %}"
+    var PROSPECT_CREATE_URL = "{% url 'user:api:prospect_create' %}"
 </script>
 <script async
     src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_API_KEY }}&libraries=places&callback=initializeMap">
     </script>
 <script src="{% static 'js/g_map.js' %}?v=1.00"></script>
-<script src="{% static 'js/auth/complete_profile.js' %}?v=1.02"></script>
+<script src="{% static 'js/auth/complete_profile.js' %}?v=1.03"></script>
 {% endblock extend_script %}

@@ -30,8 +30,6 @@ class DeveloperOrAgentMixin(Profile):
     class Meta:
         abstract = True
 
-    class Meta:
-        abstract = True
 
 
 class DeveloperProfile(DeveloperOrAgentMixin):

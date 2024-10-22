@@ -7,11 +7,12 @@ from utils.general_func import show_custom_error_message
 class BaseProfileSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source="user.username", read_only=True)
     email = serializers.EmailField(source="user.email", read_only=True)
+    user_type = serializers.CharField(source="user.user_type", read_only=True)
     phone_number = PhoneNumberField(required=True)
 
     class Meta:
         abstract = True
-        fields = ["name", "email", "phone_number", "address", "latitude", "longitude"]
+        fields = ["name", "email", "user_type", "phone_number", "address", "latitude", "longitude"]
         extra_kwargs = {
             "company_logo": {"required": True, "allow_null": False},
             "company_name": {"required": True, "allow_null": False},
@@ -28,21 +29,29 @@ class BaseProfileSerializer(serializers.ModelSerializer):
             if self.instance.user.user_type in ["developer", "agent"]:
                 self.fields["company_logo"].required = False
         show_custom_error_message(self.fields)
-
     def validate(self, data):
         user = self.context["user"]
+        user_type = self.context.get("user_type")
+        
+        if not user_type:
+            raise serializers.ValidationError("User type is required.")
+
         existing_profile = self.Meta.model.objects.filter(user=user).first()
 
         if existing_profile and not self.instance:
             raise serializers.ValidationError("A profile already exists for this user.")
 
         data["user"] = user
+        data["user_type"] = user_type
         return data
 
     def create(self, validated_data):
+        user_type = validated_data.pop("user_type")
         profile_instance = self.Meta.model.objects.create(**validated_data)
         user = validated_data.get("user")
+        
         user.is_complete_profile = True
+        user.user_type = user_type
         user.save()
         return profile_instance
 

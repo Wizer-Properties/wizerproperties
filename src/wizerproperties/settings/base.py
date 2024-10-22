@@ -33,6 +33,7 @@ CSRF_TRUSTED_ORIGINS = [
 
 # Application definition
 
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -40,6 +41,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+    # Django apps
+    'django.contrib.sites',
+
+    # all auth apps
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     
     # Third parties libraries
     "rest_framework",
@@ -67,6 +77,10 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
+    # django all auth middleware
+    "allauth.account.middleware.AccountMiddleware",
+
     # Custom middleware
     "utils.custom.middlewares.CustomMiddleware",
 ]
@@ -283,6 +297,29 @@ CKEDITOR_5_CONFIGS = {
             'styles': 'true',
             'startIndex': 'true',
             'reversed': 'true',
+        }
+    }
+}
+
+
+
+# Redirects after login
+LOGIN_REDIRECT_URL = '/user/google-auth-success/'
+LOGOUT_REDIRECT_URL = '/'
+SITE_ID = 1
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE' : [
+            'profile',
+            'email'
+        ],
+        'APP': {
+            'client_id': config('GOOGLE_AUTH_CLIENT_ID'),
+            'secret': config('GOOGLE_AUTH_CLIENT_SECRET'),
+        },
+        'AUTH_PARAMS': {
+            'access_type':'online',
         }
     }
 }

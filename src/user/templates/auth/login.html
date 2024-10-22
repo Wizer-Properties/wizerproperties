@@ -4,7 +4,7 @@
 
 {% block extend_head %}
 <title>Login</title>
-<link rel="stylesheet" href="{% static '/css/auth.css' %}?v=1.04" />
+<link rel="stylesheet" href="{% static '/css/auth.css' %}?v=1.05" />
 {% endblock extend_head %} 
 
 {% block content %}
@@ -52,6 +52,14 @@
                         <button type="submit" class="auth-form-btn" button-name="log-in">
                             Login
                         </button>
+
+                        <form class="mt-3" action="{% url 'google_login' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="auth-form-btn">
+                                <img width="20" src=" {% static 'media/icons/google_icon.webp' %}" alt="Google">
+                                <span class="ps-2"> Google Login </span>
+                            </button>
+                        </form>
         
                         <div class="extra-auth-link">
                             <p> New Here? <a href="{% url 'user:signup' %}">Sign Up</a> </p>
