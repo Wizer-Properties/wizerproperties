@@ -103,7 +103,7 @@
 }
 
 [log-modal-btn].active-nav{
-    background: var(--th-color) !important;
+    background: var(--th-color-1) !important;
     color: #fff !important;
     margin: 0 !important;
 }

@@ -5,7 +5,7 @@
 
 {% block extend_head %}
 <title>Register</title>
-<link rel="stylesheet" href="{% static '/css/auth.css' %}?v=1.03" />
+<link rel="stylesheet" href="{% static '/css/auth.css' %}?v=1.04" />
 
 {% endblock extend_head %}
 
@@ -99,11 +99,17 @@
                     </div>
                 </form>
 
-                <form class="mt-3" action="{% url 'google_login' %}" method="post">
+                <div class="or-line">
+                    <span></span>
+                    OR
+                    <span></span>
+                </div>
+
+                <form action="{% url 'google_login' %}" method="post">
                     {% csrf_token %}
                     <button type="submit" class="auth-form-btn">
                         <img width="20" src=" {% static 'media/icons/google_icon.webp' %}" alt="Google">
-                        <span class="ps-2"> Google Sign Up </span>
+                        <span class="ps-2"> Sign Up with Google </span>
                     </button>
                 </form>
 

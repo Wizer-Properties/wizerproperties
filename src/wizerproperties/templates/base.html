@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{% static 'css/libraries/fontawesome-all.min.css' %}" />
 
     {% block extend_head %}{% endblock extend_head %}
-    <link rel="stylesheet" href="{% static '/css/auth.css' %}?v=1.01" />
+    <link rel="stylesheet" href="{% static '/css/auth.css' %}?v=1.02" />
     <link rel="stylesheet" href="{% static 'css/header.css' %}?v=1.02" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.03" />
     <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet">
@@ -197,11 +197,17 @@
                     Login
                 </button>
 
-                <form class="mt-3" action="{% url 'google_login' %}" method="post">
+                <div class="or-line">
+                    <span></span>
+                    OR
+                    <span></span>
+                </div>
+
+                <form action="{% url 'google_login' %}" method="post">
                     {% csrf_token %}
                     <button type="submit" class="auth-form-btn">
                         <img width="20" src=" {% static 'media/icons/google_icon.webp' %}" alt="Google">
-                        <span class="ps-2"> Google Login </span>
+                        <span class="ps-2"> Login with Google </span>
                     </button>
                 </form>
             </div>
