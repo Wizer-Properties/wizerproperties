@@ -71,21 +71,6 @@ $(document).ready(function () {
             '<input name="longitude" label="longitude" label-name="longitude" type="text" class="authInput" placeholder="Longitude">' +
             
             '<div class="auth-input-wrapper">' +
-                '<label>WhatsApp Link</label>' +
-                '<input type="text" name="whats_app_link" placeholder="WhatsApp Link">' +
-            '</div>' +
-            
-            '<div class="auth-input-wrapper">' +
-                '<label>Line Link</label>' +
-                '<input type="text" name="line_link" placeholder="Line Link">' +
-            '</div>' +
-            
-            '<div class="auth-input-wrapper">' +
-                '<label>WeChat Link</label>' +
-                '<input type="text" name="we_chat_link" placeholder="WeChat Link">' +
-            '</div>' +
-            
-            '<div class="auth-input-wrapper">' +
                 '<label>Company details</label>' +
                 '<textarea rows="5" name="company_details" placeholder="Company details" required></textarea>' +
             '</div>'
