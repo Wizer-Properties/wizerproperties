@@ -12,7 +12,7 @@ from .views.auth import (
     update_password,
     forgot_password_verification,
 )
-from .views.auth.google_auth import google_auth_success
+
 
 urlpatterns = [
     path("get-started/", SignupView.as_view(), name="signup"),
@@ -25,6 +25,5 @@ urlpatterns = [
     path("update-password/", update_password, name="update_password"),
     path("forgot-password-verify/", forgot_password_verification, name="forgot_password_verify"),
     path("verify-link/", verify_link, name="verify_link"),
-    path("google-auth-success/", google_auth_success, name="google_auth_success"),
     path("api/", include(("user.api.urls", "user"), namespace="api")),
 ]

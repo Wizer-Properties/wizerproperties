@@ -36,8 +36,7 @@ urlpatterns = [
     path("blogs/", include(("blog.urls", "blog"), namespace="blogs")),
     path('about-us/', about_us_page, name='about-us'),
     path('privacy/', privacy_page, name='privacy'),
-    
-    # path('accounts/google/logout/', oauth2_logout, name='google_logout'),
+    # google auth
     path('accounts/google/login/', oauth2_login, name='google_login'),  # Login with Google
     path('accounts/google/login/callback/', oauth2_callback, name='google_callback'),  # Callback
     path('404/', custom_404, name='custom_404'),

@@ -304,9 +304,11 @@ CKEDITOR_5_CONFIGS = {
 
 
 # Redirects after login
-LOGIN_REDIRECT_URL = '/user/google-auth-success/'
+ACCOUNT_SIGNUP_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL= '/'
 LOGOUT_REDIRECT_URL = '/'
 SITE_ID = 1
+SOCIALACCOUNT_ADAPTER = 'user.adapters.CustomAccountAdapter'
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
