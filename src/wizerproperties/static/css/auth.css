@@ -401,6 +401,10 @@ body{
     line-height: 30px;
 }
 
+.auth-error-message{
+    color: #db0000d4 !important;
+}
+
 .or-line{
     text-align: center;
     margin: 20px 0;

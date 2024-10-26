@@ -54,7 +54,7 @@ class User(TimestampedModel, AbstractUser):
 
     username = models.CharField(max_length=50)
     email = models.EmailField(db_collation="case_insensitive", unique=True)
-    user_type = models.CharField(max_length=50, choices=USER_TYPE)
+    user_type = models.CharField(max_length=50, choices=USER_TYPE, blank=True)
     email_verification_status = models.BooleanField(default=False)
     is_complete_profile = models.BooleanField(default=False)  # To track profile completion
     auth_type = models.CharField(max_length=50, choices=AUTH_TYPE, default='email')

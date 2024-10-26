@@ -41,9 +41,8 @@
             <div class="col-sm-6 px-3 py-5">
                 <div class="auth-form-area">
                     <div class="w-100">
-                        <h1 class="auth-notes">
-                            We send a verification link to your email ({{ email}}). 
-                            Check your email and verify your account. If you haven't received it yet, you can resend.
+                        <h1 class="auth-notes {% if status == 'error' %}auth-error-message{% endif %}">
+                            {{ message }}
                         </h1>
 
                         <div class="extra-auth-link mt-5">
