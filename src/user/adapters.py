@@ -8,5 +8,6 @@ class CustomAccountAdapter(DefaultSocialAccountAdapter):
     def save_user(self, request, sociallogin, form=None):
         user = super().save_user(request, sociallogin, form)
         user.email_verification_status = True
+        user.auth_type = 'google'
         user.save()
         return user
