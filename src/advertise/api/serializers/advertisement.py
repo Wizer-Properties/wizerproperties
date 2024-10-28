@@ -39,6 +39,6 @@ class AdvertisementSuggestionSerializer(serializers.ModelSerializer):
         # Returns property image
         image = obj.property.media_files.filter(type="image").first()
         if image:
-            return f"{settings.SITE_HOST}{image.file.url}"
+            return image.file.url
 
         return None

@@ -49,7 +49,7 @@ header{
 }
 
 .active-nav{
-    background-color: var(--th-color) !important;
+    background-color: var(--th-color-1) !important;
     color: #fff !important;
 }
 
