@@ -1,13 +1,4 @@
 $(document).ready(function(){
-    new Splide( '.side-add-banner-slider', {
-        perPage: 1,
-        type: 'loop',
-        arrows: false,
-        pagination: false,
-        autoplay: 'playing',
-        interval: 3000
-    }).mount();
-
     var is_fav_effect = localStorage.getItem('favorite-effect');
     
     function iframe_void(data){

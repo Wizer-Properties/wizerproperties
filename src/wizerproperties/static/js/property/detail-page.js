@@ -1,15 +1,6 @@
 $(document).ready(function(){
     var is_fav_effect = localStorage.getItem('favorite-effect');
 
-    new Splide( '.side-add-banner-slider', {
-        perPage: 1,
-        type: 'loop',
-        arrows: false,
-        pagination: false,
-        autoplay: 'playing',
-        interval: 3000
-    }).mount();
-
     function iframe_void(data){
         if(data){
             return '<iframe width="100%" height="100%" src="'+data+'" frameborder="0" allowfullscreen=""></iframe>'

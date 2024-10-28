@@ -404,17 +404,7 @@
                     <div class="splide side-add-banner-slider">
                         <div class="splide__track">
                             <div class="splide__list">
-                                <div class="splide__slide side-add-banner-img">
-                                    <img src="{% static '/media/demo_img/a5.jpg' %}" alt="">
-                                </div>
-            
-                                <div class="splide__slide side-add-banner-img">
-                                    <img src="{% static '/media/demo_img/p1.png' %}" alt="">
-                                </div>
-            
-                                <div class="splide__slide side-add-banner-img">
-                                    <img src="{% static '/media/demo_img/p2.png' %}" alt="">
-                                </div>
+                                <!-- from ads.js -->
                             </div>
                         </div>
                     </div>
@@ -505,7 +495,7 @@
     var BUILDING_ID = '{{building.id}}';
     var USER_ID = '{{ user.id }}';
     var ADS_SUGGEST_URL = '/advertise/api/advertisement/suggested/'
-    var ADS_LOCATION_PARAM = 'details'
+    var ADS_LOCATION_PARAM = ['details_sidebar', 'details_topbar']
 </script>
 
 <script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
@@ -513,6 +503,6 @@
 <script src="{% static 'js/libraries/splide.min.js' %}"></script>
 <script src="{% static 'js/libraries/noframework.waypoints.min.js' %}"></script>
 <script src="{% static 'js/building/detail-page.js' %}"></script>
-<script src="{% static '/js/ads.js' %}?v=1.00"></script>
+<script src="{% static '/js/ads.js' %}?v=1.01"></script>
 
 {% endblock extend_script %}
