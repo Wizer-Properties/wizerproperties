@@ -73,7 +73,7 @@ $(document).ready(function(){
                 '</div>'
     };
 
-    function discount_property_list_tmp(data){
+ function discount_property_list_tmp(data){
         var is_fav_effect = localStorage.getItem('favorite-effect');
 
         return  '<div class="property-single-box discount_period">'+
@@ -91,32 +91,28 @@ $(document).ready(function(){
                             '</button>': ''
                         ) +
                     '</div>'+
+
+                    '<div class="location">'+
+                    '<div class="icon">'+
+                        '<i class="bi bi-geo-alt me-1"></i>'+
+                        data?.address+
+                    '</div>'+
+                '</div>'+
                     '<a href="/property/details/'+data?.id+'/?discounted=True" class="search-result-box-wrapper">'+
-                        '<div class="discount-card-header">'+
-                            '<h1 class="card-title">'+data?.building_title+'</h1>'+
-                            ( data?.discount_period ? '<div class="exclusive-deals-time" date-count="'+data?.discount_period+'"></div>' : '')+
-                        '</div>'+
+                        // '<div class="discount-card-header">'+
+                      
+                        //     ( data?.discount_period ? '<div class="exclusive-deals-time" date-count="'+data?.discount_period+'"></div>' : '')+
+                        // '</div>'+
                         '<div class="search-result-box-img">'+
                             '<img src="'+data?.default_image+'" alt="'+data?.building_title+'" loading="lazy">' +
                         '</div>'+
-                        '<div class="search-result-box">'+
-                            '<div class="price-tag">'+
-                                '<span> ฿ '+formatBalance(Math.floor(data?.price) || 0)+ '</span>'+
-                                (
-                                    data?.building_status ?
-                                    '<span class="building-tag">'+ data?.building_status + '</span>' : ''
-                                )+
-                            '</div>'+
-                            // '<h1> '+data?.building_title+' </h1>'+
-                            '<div class="location">'+
-                                '<div class="icon">'+
-                                    '<i class="bi bi-geo-alt"></i>'+
-                                    data?.address+
-                                '</div>'+
-                            '</div>'+
+                        '<div class="search-result-box bg-white px-3 pt-0 pb-2">'+
+                                '<h1 class="card-title mt-3">'+data?.building_title+'</h1>'+
+                            
+                           
 
-                            '<div class="property-contains">'+
-                                '<div class="property-short-info-box">'+
+                            '<div class="property-contains mb-3">'+
+                                '<div class="property-short-info-box d-flex">'+
                                     '<div class="property-short-info-icon">'+bed_icon+'</div>'+ // bed_icon call from icons.js file
                                     '<span class="property-value"> '+ data?.number_of_bedroom+' </span>'+
                                     '<span class="property-label">Beds</span>'+
@@ -137,6 +133,15 @@ $(document).ready(function(){
                                     '<span class="property-label">Floor</span>'+
                                 '</div>'+
                             '</div>'+
+
+                            '<div class="price-tag px-0 border-top">'+
+                                '<span> ฿ '+formatBalance(Math.floor(data?.price) || 0)+ '</span>'+
+                                (
+                                    data?.building_status ?
+                                    '<span class="building-tag">'+ data?.building_status + '</span>' : ''
+                                )+
+                            '</div>'+
+                            
                         '</div>'+
                     '</a>'+
                 '</div>'
@@ -479,15 +484,15 @@ $(document).ready(function(){
 
 
     var discount_properties_slider = new Splide( '.discount-properties-slider', {
-        perPage: 4,
-        gap : 10,
+        perPage: 3,
+        gap : 30,
         pagination: false,
         breakpoints: {
             1200: {
-                perPage: 3,
+                perPage: 2,
             },
             780: {
-                perPage: 2,
+                perPage: 1,
             },
             460: {
                 perPage: 1,

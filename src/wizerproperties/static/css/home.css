@@ -546,26 +546,77 @@
     }
 }
 
-#discount-properties{
-    .search-result-box-wrapper{
-        background-color: var(--th-color-1);
-    }
-
-    .location,
+#discount-properties {
     .price-tag,
     .card-title,
-    .property-contains *{
-        color: #fff !important;
+    .property-contains * {
+        color: #000000 !important;
     }
 
-    .price-tag{
+    .price-tag {
         background-color: #ffffff17;
     }
 
-    .building-tag{
+    .building-tag {
         background: var(--th-color) !important;
     }
 }
+
+/* NEW DISCOUNT PROPERTIES SLIDER CARD DESIGN */
+
+#discount-properties .location {
+    color: #fff !important;
+}
+
+#discount-properties .card-title {
+    font-size: 18px !important;
+}
+
+.property-single-box {
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #e4e4e4;
+    position: relative;
+    background-color: transparent !important;
+}
+
+.discount_period .search-result-box-wrapper {
+    background: #fff !important;
+    color: #000 !important;
+    padding: initial !important;
+    border-radius: initial !important;
+    border: 0px !important;
+}
+
+.discount_period .compare-favorite-btn-area {
+    top: 16px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 10px !important;
+}
+
+.discount_period .location {
+    position: absolute !important;
+    color: #000 !important;
+    z-index: 999;
+    top: 52%;
+    font-size: 14px;
+    left: 20px;
+    right: 20px;
+}
+
+/* .search-result-box-img {
+    transition: all 0.3s ease;
+    overflow: hidden !important;
+}
+
+.discount_period:hover .search-result-box-img {
+    transition: all 0.3s ease;
+    transform: scale(1.05);
+    
+} */
 
 @media screen and (max-width: 991px) {
     .banner {
@@ -590,7 +641,6 @@
     .reels-iframe-and-data{
         height: 400px;
     }
-  
     .sign-in-note-box{
         flex-direction: column;
         text-align: center;
