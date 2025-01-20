@@ -18,7 +18,7 @@ ENV GDAL_LIBRARY_PATH /usr/lib/libgdal.so
 
 # Copy the poetry.lock and pyproject.toml files and install dependencies
 COPY poetry.lock pyproject.toml /app/
-RUN pip install poetry && poetry config virtualenvs.create false && poetry install
+RUN pip install poetry && poetry config virtualenvs.create false && poetry install --no-root
 
 # Copy the project files into the container
 COPY . /app/
