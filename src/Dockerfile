@@ -16,7 +16,9 @@ RUN apt-get update && apt-get install -y \
 
 ENV GDAL_LIBRARY_PATH /usr/lib/libgdal.so
 
-# Copy the poetry.lock and pyproject.toml files and install dependencies
+# Copy the poetry.lock and pyproject.toml files and install dependencies without root
+# package-mode = false in pyproject.toml file
+# To avoid this error: The current project could not be installed: Readme path `/app/README.md` does not exist.
 COPY poetry.lock pyproject.toml /app/
 RUN pip install poetry && poetry config virtualenvs.create false && poetry install --no-root
 
