@@ -304,4 +304,8 @@ header{
     body[menu="open"] .side-nav{
         width: 260px;
     }
+
+    .wip-logo {
+        margin: initial !important;
+    }
 }

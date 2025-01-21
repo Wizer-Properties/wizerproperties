@@ -1259,6 +1259,76 @@ option:disabled{
     width: 80px;
 }
 
+/* it's for google translate  */
+.skiptranslate  .VIpgJd-ZVi9od-ORHb-OEVmcd{
+    display: none !important;
+}
+body {
+    top: 0px !important;
+}
+
+.goog-te-gadget-simple img {
+    display: none !important;
+}
+
+.goog-te-gadget-simple {
+    border: none !important;
+}
+
+.VIpgJd-ZVi9od-xl07Ob-lTBxed span[style*="border-left"] {
+    border-left: none !important;
+}
+
+.VIpgJd-ZVi9od-xl07Ob-lTBxed span:last-child {
+    color: #000000 !important;
+    padding-left: 5px;
+}
+
+.trans-drop button {
+    text-transform: uppercase;
+    font-size: 14px !important;
+}
+
+.lang-list {
+    text-transform: capitalize;
+    font-size: 14px;
+    border: 1px solid rgb(202, 200, 209);
+    box-shadow: #919eab33 0 0 2px, #919eab29 0 6px 10px 3px;
+    position: relative;
+    transform: translate(-128px, 42px) !important;
+    /* width: 180px; */
+    padding-block: 0px !important;
+}
+
+.lang-list .triangle-icon {
+    position: absolute;
+    top: -32px;
+    right: 12px;
+    transform: rotate(180deg);
+}
+
+.lang-list .dropdown-item.active {
+    background-color: #91F3EE !important; /* Replace with your desired color */
+    color: #000; /* Optional: Adjust text color for better contrast */
+}
+
+.lang-list li a {
+    padding-block: 9px !important;
+}
+
+main {
+    min-height: 88vh;
+}
+
+@media (max-width: 1180px) {
+    body[menu="open"] .trans-box-main {
+        padding-left: 10px;
+        margin-left: 10px;
+    }
+}
+
+
+
 @media screen and (min-width: 991px){
     [pop-status="true"] body{
         padding-right: 17px;
