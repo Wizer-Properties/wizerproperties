@@ -930,10 +930,11 @@ footer{
 .building-tag {
     font-size: 12px;
     background: var(--th-color-1);
-    padding: 2px 7px;
-    border-radius: 15px;
-    font-weight: 400;
+    padding: 0px 10px;
+    border-radius: 10vmax;
+    font-weight: 500;
     color: #fff;
+    line-height: 28px;
 }
 
 [pop-element]{
