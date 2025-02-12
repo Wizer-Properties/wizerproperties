@@ -31,25 +31,19 @@
 
     // Utility to get the value of a cookie
     function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-        return null;
+        var value = `; ${document.cookie}`; // Get all cookies as a single string
+        var parts = value.split(`; ${name}=`); // Split by the requested cookie name
+        if (parts.length === 2) return parts.pop().split(';').shift(); // Extract and return the cookie value
+        return null; // Return null if the cookie does not exist
     }
 
     // Utility to set Google Translate cookies properly
     function setGoogleTranslateCookie(selectedLang) {
-        const cookieValue = selectedLang === "en" ? "null" : `/${selectedLang}`;
-        const expires = new Date();
+        var cookieValue = selectedLang === "en" ? "null" : `/${selectedLang}`;
+        var expires = new Date();
         expires.setFullYear(expires.getFullYear() + 1); // 1-year expiry
-
-        // Set cookie for the domain (ensure correct domain for live server)
-        const domain = window.location.hostname.includes('localhost') ? "" : ".example.com"; // Change .example.com to your live domain
-
-        // Set new cookie
-        document.cookie = `googtrans=/en${cookieValue}; path=/; domain=${domain}; expires=${expires.toUTCString()}; Secure; SameSite=None`;
+        
         document.cookie = `googtrans=/en${cookieValue}; path=/; expires=${expires.toUTCString()}; Secure; SameSite=None`;
-        console.log("Updated googtrans cookie:", `/en${cookieValue}`);
     }
 
     // Function to handle language selection
