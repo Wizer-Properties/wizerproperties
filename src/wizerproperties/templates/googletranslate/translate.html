@@ -1,0 +1,24 @@
+<!-- google translate -->
+<div id="google_translate_element" class="d-none"></div>
+<div class="d-flex align-items-center gap-2 trans-box-main">
+    <i class="bi bi-globe"></i>
+    <div class="dropdown trans-drop">
+        <button class="bg-transparent border-0 dropdown-toggle notranslate" type="button" id="custom_translate_dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            EN
+        </button>
+        <ul class="dropdown-menu lang-list" aria-labelledby="custom_translate_dropdown">
+            <div class="triangle-icon">
+                <img src="../static/media/icons/triangle.svg">
+            </div>
+            <li>
+                <a class="dropdown-item notranslate" href="#" onclick="setLanguage('en', 'EN', this)">English</a>
+            </li>
+            <li>
+                <a class="dropdown-item notranslate" href="#" onclick="setLanguage('th', 'TH', this)">Thai</a>
+            </li>
+            <li>
+                <a class="dropdown-item notranslate" href="#" onclick="setLanguage('zh-CN', 'ZH', this)">Chinese</a>
+            </li>
+        </ul>
+    </div>
+</div>
