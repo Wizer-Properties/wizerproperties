@@ -1,4 +1,3 @@
-
     // Initialize Google Translate
     function googleTranslateElementInit() {
         if (typeof google !== 'undefined' && google.translate && google.translate.TranslateElement) {
@@ -37,13 +36,17 @@
         return null; // Return null if the cookie does not exist
     }
 
-    // Utility to set Google Translate cookies properly
     function setGoogleTranslateCookie(selectedLang) {
         var cookieValue = selectedLang === "en" ? "null" : `/${selectedLang}`;
         var expires = new Date();
         expires.setFullYear(expires.getFullYear() + 1); // 1-year expiry
-        
-        document.cookie = `googtrans=/en${cookieValue}; path=/; expires=${expires.toUTCString()}; Secure; SameSite=None`;
+
+        // Clear any existing duplicate cookies
+        document.cookie = "googtrans=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; Secure; SameSite=Lax";
+        document.cookie = "googtrans=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; Secure; SameSite=Lax"; // For subdomains
+
+        // Set the cookie
+        document.cookie = `googtrans=/en${cookieValue}; path=/; expires=${expires.toUTCString()}; Secure; SameSite=Lax`;
     }
 
     // Function to handle language selection
@@ -74,8 +77,10 @@
         setTimeout(function () {
             $("#custom_translate_dropdown").addClass("notranslate");
 
-            let selectedLang = sessionStorage.getItem("selectedLang"); // First, check session storage
+            // Get the selected language from sessionStorage
+            let selectedLang = sessionStorage.getItem("selectedLang");
 
+            // If no language is selected, check the cookie
             if (!selectedLang) {
                 const googtrans = getCookie("googtrans");
                 console.log("Detected googtrans cookie:", googtrans); // Debugging output
@@ -88,8 +93,10 @@
                 "zh-CN": "ZH",
             };
 
+            // Update the dropdown text
             $("#custom_translate_dropdown").text(langMap[selectedLang] || "EN");
 
+            // Highlight the active language in the dropdown
             $(".lang-list .dropdown-item").removeClass("active");
             $(`.lang-list .dropdown-item[onclick*="'${selectedLang}'"]`).addClass("active");
 
