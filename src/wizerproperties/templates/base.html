@@ -129,34 +129,37 @@
                             <a class="nav-link" href="#">International</a>
                         </div>
 
-                        <hr>
+                        {% if request.user.is_authenticated %}
+                            <hr>
 
-                        <div class="nav-group">
-                            <a class="nav-link {% if request.path == profile_settings_url %}active-nav{% endif %}"
-                                href="{{ profile_settings_url }}">Profile settings</a>
-        
-                            {% if request.user.user_type == "prospect" %}
-                            <a 
-                                class="nav-link {% if request.path == comparison_property_url %}active-nav{% endif %}" 
-                                href="{{ comparison_property_url }}">
-                                Comparison
-                            </a>
-        
-                            <a 
-                                class="nav-link {% if request.path == favorite_list_property_url %}active-nav{% endif %}" 
-                                href="{{ favorite_list_property_url }}">
-                                Favorite List
-                            </a>
-                            {% endif %}
-                            
-                            {% if request.user.user_type == "developer" or request.user.user_type == "agent" %}
-                            <a class="nav-link {% if request.path == ads_analytics_url %}active-nav{% endif %}"
-                                href="{{ads_analytics_url}}">Analytics</a>
-                            <a class="nav-link {% if request.path == ads_performance_url %}active-nav{% endif %}"
-                                href="{{ ads_performance_url }}">Ads Performance</a>
-                            {% endif %}
-        
-                            <a class="nav-link" href="{% url 'user:logout' %}">Log out</a>
+                            <div class="nav-group">
+                                <a class="nav-link {% if request.path == profile_settings_url %}active-nav{% endif %}"
+                                    href="{{ profile_settings_url }}">Profile settings</a>
+            
+                                {% if request.user.user_type == "prospect" %}
+                                <a 
+                                    class="nav-link {% if request.path == comparison_property_url %}active-nav{% endif %}" 
+                                    href="{{ comparison_property_url }}">
+                                    Comparison
+                                </a>
+            
+                                <a 
+                                    class="nav-link {% if request.path == favorite_list_property_url %}active-nav{% endif %}" 
+                                    href="{{ favorite_list_property_url }}">
+                                    Favorite List
+                                </a>
+                                {% endif %}
+                                
+                                {% if request.user.user_type == "developer" or request.user.user_type == "agent" %}
+                                <a class="nav-link {% if request.path == ads_analytics_url %}active-nav{% endif %}"
+                                    href="{{ads_analytics_url}}">Analytics</a>
+                                <a class="nav-link {% if request.path == ads_performance_url %}active-nav{% endif %}"
+                                    href="{{ ads_performance_url }}">Ads Performance</a>
+                                {% endif %}
+            
+                                <a class="nav-link" href="{% url 'user:logout' %}">Log out</a>
+                        {% endif %}
+
                         </div>
                     </div>
                 </div>

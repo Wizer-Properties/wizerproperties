@@ -959,7 +959,7 @@ $(document).ready(function(){
         var _fature_type = $search_input.attr("fature_type")
 
         if(!_latitude && !_longitude) {
-            $(this).parents('.search-box-with-filter').prepend(' <p class="location-search-error"> Select from the suggest list !!! </p> ');
+            $(this).parents('.search-box-with-filter-content').prepend(' <p class="location-search-error"> Select from the suggest list !!! </p> ');
 
             setTimeout(() => {
                 $('.location-search-error').remove()
