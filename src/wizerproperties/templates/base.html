@@ -68,10 +68,11 @@
                 <div class="header-box header-right-box position-relative">
                     
                     <div class="d-flex gap-4">
+                        {% if not request.user.is_authenticated %}
                         <a href="{% url 'user:login' %}" class="header-box-link">
                             Sign in/Register
                         </a>
-
+                        {% endif %}
                         {% include 'googletranslate/translate.html' %}
 
                         <div class="menu-box {% if user.is_authenticated %}menu-box-user{% endif %}">

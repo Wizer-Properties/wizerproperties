@@ -280,7 +280,7 @@
 }
 
 .sign-in-note-box{
-    background-color: var(--th-color-1);
+    background-color: #202021;
     display: flex;
     padding: 30px 80px;
     justify-content: space-between;
@@ -308,6 +308,8 @@
     color: #002A2D;
     border-radius: 5px;
     font-weight: bold;
+    text-align: center;
+    white-space: nowrap;
 }
 
 .property-contains .property-short-info-box{
