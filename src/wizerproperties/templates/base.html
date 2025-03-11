@@ -36,7 +36,6 @@
 
 <body>
     <main>
-        
 
         {% url 'user:profile_settings' as profile_settings_url %}
         {% url 'building:create' as create_building_url %}
@@ -47,55 +46,37 @@
         {% url 'advertise:analytics' as ads_analytics_url %}
         {% url 'advertise:performance' as ads_performance_url %}
 
-        <header class="wip-header">
-            <div class="w-100 px-5">
-                <div class="header">
+
+        <!-- {{ request.user.username }} -->
+
+        <header class="wip-header {% if not request.path == '/' %}other-page-header{% endif %}">
+            <div class="header">
+                <div class="header-box header-left-box">
+                    <a href="#" class="header-box-link">
+                        Find Developer
+                    </a>
+                </div>
+
+                <div class="header-box header-middle-box">
                     <div class="wip-logo">
                         <a href="/">
                             <img src="{% static 'media/logo.png' %}" alt="logo">
                         </a>
                     </div>
+                </div>
+
+                <div class="header-box header-right-box position-relative">
                     
-                    <div class="navigations">
-                        {% if user.is_authenticated and user.is_complete_profile %}
-                            <a class="nav-link {% if request.path == '/dashboard/' %}active-nav{% endif %}"
-                                href="/dashboard">Dashboard</a>
-                            {% if request.user.user_type == "developer" or request.user.user_type == "agent" %}
-                            <a class="nav-link {% if request.path == create_building_url %}active-nav{% endif %}"
-                                href="{{ create_building_url }}">Building</a>
-                            <a class="nav-link {% if request.path == create_property_url %}active-nav{% endif %}"
-                                href="{{ create_property_url }}">Property</a>
+                    <div class="d-flex gap-4">
+                        <a href="{% url 'user:login' %}" class="header-box-link">
+                            Sign in/Register
+                        </a>
 
-                            <a class="nav-link {% if request.path == create_reels_url %}active-nav{% endif %}"
-                                href="{{ create_reels_url }}">Reels</a>
-                            {% endif %}
+                        {% include 'googletranslate/translate.html' %}
 
-                            {% if request.user.user_type == "prospect" %}
-                            <a class="nav-link {% if request.path == comparison_property_url %}active-nav{% endif %}" 
-                                href="{{ comparison_property_url }}">
-                                Comparison
-                            </a>
-                            
-                            <a class="nav-link {% if request.path == favorite_list_property_url %}active-nav{% endif %}" 
-                                href="{{ favorite_list_property_url }}">
-                                Favorite List
-                            </a>
-                            {% endif %} 
-                        {% endif %}
-
-                        <a class="nav-link" href="#">Mortgages</a>
-                        <a class="nav-link" href="#">Prices And Trends</a>
-                        <a class="nav-link" href="#">Find A Developer</a>
-                        <a class="nav-link" href="#">Commercial</a>
-                        <a class="nav-link" href="#">International</a>
-                    </div>
-
-                    <div class="d-flex">
-                    {% if user.is_authenticated and user.is_complete_profile %}
-
-                    <div class="navigation-right-side d-flex align-items-center gap-3">
-                        <div class="profile-dropdown">
-                            <div class="profile-dropdown-img">
+                        <div class="menu-box {% if user.is_authenticated %}menu-box-user{% endif %}">
+                            {% if user.is_authenticated %}
+                            <div class="menu-box-img">
                                 {% if request.user.user_type == "developer" %}
                                 <img src="{{ request.user.developerprofile.company_logo.url }}" alt="Company Logo">
                                 {% elif request.user.user_type == "agent" %}
@@ -104,74 +85,88 @@
                                 <img src="{% static 'media/default-avatar.jpg' %}" alt="">
                                 {% endif %}
                             </div>
-                            <span>{{ request.user.username }}</span>
-
-                            <div class="profile-dropdown-area">
-                                <a class="nav-link {% if request.path == profile_settings_url %}active-nav{% endif %}"
-                                    href="{{ profile_settings_url }}">Profile settings</a>
-
-                                {% if request.user.user_type == "prospect" %}
-                                <a 
-                                    class="nav-link {% if request.path == comparison_property_url %}active-nav{% endif %}" 
-                                    href="{{ comparison_property_url }}">
-                                    Comparison
-                                </a>
-
-                                <a 
-                                    class="nav-link {% if request.path == favorite_list_property_url %}active-nav{% endif %}" 
-                                    href="{{ favorite_list_property_url }}">
-                                    Favorite List
-                                </a>
-                                {% endif %}
-                                
-                                {% if request.user.user_type == "developer" or request.user.user_type == "agent" %}
-                                <a class="nav-link {% if request.path == ads_analytics_url %}active-nav{% endif %}"
-                                    href="{{ads_analytics_url}}">Analytics</a>
-                                <a class="nav-link {% if request.path == ads_performance_url %}active-nav{% endif %}"
-                                    href="{{ ads_performance_url }}">Ads Performance</a>
-                                {% endif %}
-
-                                <a class="nav-link" href="{% url 'user:logout' %}">Log out</a>
+                            {% endif %}
+                            <div class="mobile-menu">
+                                <span></span>
+                                <span></span>
+                                <span></span>
                             </div>
-                        </div>
-
-                        <!-- google translate  -->
-                        {% include 'googletranslate/translate.html' %}
-
-                        <div class="mobile-menu">
-                            <span></span>
-                            <span></span>
-                            <span></span>
                         </div>
                     </div>
 
-                    {% endif %}
-
-                    {% if not user.is_authenticated %}
-                        <div class="d-flex">
-                            <a class="nav-link sign-up-btn" href="/user/get-started/">Sign Up</a>
-                            <button class="nav-link active-nav" log-modal-btn="open">Login</button>
-
-                            <!-- google translate -->
-                            <div class="ms-2 d-flex align-items-center">
-                                {% include 'googletranslate/translate.html' %}
-                            </div>
+                    <div class="header-side-nav">
+                        <div class="nav-group">
+                            {% if user.is_authenticated and user.is_complete_profile %}
+                                <a class="nav-link {% if request.path == '/dashboard/' %}active-nav{% endif %}"
+                                    href="/dashboard">Dashboard</a>
+                                {% if request.user.user_type == "developer" or request.user.user_type == "agent" %}
+                                <a class="nav-link {% if request.path == create_building_url %}active-nav{% endif %}"
+                                    href="{{ create_building_url }}">Building</a>
+                                <a class="nav-link {% if request.path == create_property_url %}active-nav{% endif %}"
+                                    href="{{ create_property_url }}">Property</a>
+        
+                                <a class="nav-link {% if request.path == create_reels_url %}active-nav{% endif %}"
+                                    href="{{ create_reels_url }}">Reels</a>
+                                {% endif %}
+        
+                                {% if request.user.user_type == "prospect" %}
+                                <a class="nav-link {% if request.path == comparison_property_url %}active-nav{% endif %}" 
+                                    href="{{ comparison_property_url }}">
+                                    Comparison
+                                </a>
+                                
+                                <a class="nav-link {% if request.path == favorite_list_property_url %}active-nav{% endif %}" 
+                                    href="{{ favorite_list_property_url }}">
+                                    Favorite List
+                                </a>
+                                {% endif %} 
+                            {% endif %}
+        
+                            <a class="nav-link" href="#">Mortgages</a>
+                            <a class="nav-link" href="#">Prices And Trends</a>
+                            <a class="nav-link" href="#">Find A Developer</a>
+                            <a class="nav-link" href="#">Commercial</a>
+                            <a class="nav-link" href="#">International</a>
                         </div>
-                    {% endif %}
 
+                        <hr>
+
+                        <div class="nav-group">
+                            <a class="nav-link {% if request.path == profile_settings_url %}active-nav{% endif %}"
+                                href="{{ profile_settings_url }}">Profile settings</a>
+        
+                            {% if request.user.user_type == "prospect" %}
+                            <a 
+                                class="nav-link {% if request.path == comparison_property_url %}active-nav{% endif %}" 
+                                href="{{ comparison_property_url }}">
+                                Comparison
+                            </a>
+        
+                            <a 
+                                class="nav-link {% if request.path == favorite_list_property_url %}active-nav{% endif %}" 
+                                href="{{ favorite_list_property_url }}">
+                                Favorite List
+                            </a>
+                            {% endif %}
+                            
+                            {% if request.user.user_type == "developer" or request.user.user_type == "agent" %}
+                            <a class="nav-link {% if request.path == ads_analytics_url %}active-nav{% endif %}"
+                                href="{{ads_analytics_url}}">Analytics</a>
+                            <a class="nav-link {% if request.path == ads_performance_url %}active-nav{% endif %}"
+                                href="{{ ads_performance_url }}">Ads Performance</a>
+                            {% endif %}
+        
+                            <a class="nav-link" href="{% url 'user:logout' %}">Log out</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="side-nav-overflow"></div>
-            <div class="side-nav"></div>
+            </div>
         </header>
         
 
 
-
         {% block content %}{% endblock %}
-
-
     </main>
 
 

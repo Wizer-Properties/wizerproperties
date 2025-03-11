@@ -35,10 +35,6 @@
     z-index: 9999 !important;
 }
 
-header{
-    background-color: #fff;
-}
-
 .skeleton-box {
     display: inline-block;
     height: 1em;
@@ -937,11 +933,6 @@ footer{
     line-height: 28px;
 }
 
-[pop-element]{
-    position: fixed;
-    display: none;
-    z-index: 9999;
-}
 
 .pop-default-box{
     min-width: 200px;
@@ -957,8 +948,15 @@ footer{
     height: 100vh;
     left: 0;
     top: 0;
-    z-index: 9991;
+    z-index: 19;
 }
+
+[pop-element]{
+    position: fixed;
+    display: none;
+    z-index: 9999;
+}
+
 
 [pop-status="true"],
 [pop-status="true"] body{

@@ -1,10 +1,5 @@
-header{
-    box-shadow: 0 5px 20px 0 rgba(0,0,0,.05);
-}
-
 .wip-logo{
     height: 48px;
-    margin-right: 30px;
     margin-top: 7px;
     margin-bottom: 7px;
 }
@@ -12,7 +7,6 @@ header{
 
 .wip-header{
     display: flex;
-    padding: 5px 0;
 }
 
 .wip-logo img{
@@ -22,18 +16,24 @@ header{
 .header{
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    width: 100%;
+    padding: 5px 25px;
+    position: relative;
+    z-index: 991;
 }
 
-.navigations{
+.header-box{
+    flex: 1;
+}
+
+.header-middle-box{
     display: flex;
-    align-items: center;
-    width: auto;
+    justify-content: center;
 }
 
-.header .nav-link{
-    white-space: nowrap;
-    font-weight: 600;
+.header-right-box{
+    display: flex;
+    justify-content: flex-end;
 }
 
 .header button.nav-link{
@@ -42,10 +42,18 @@ header{
 
 .nav-link{
     display: block;
-    margin-right: 10px;
     font-size: 15px;
-    padding: 7px 10px;
-    border-radius: 5px;
+    padding: 7px 16px;
+    border-radius: 7px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.nav-group{
+    padding: 0 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .active-nav{
@@ -126,28 +134,90 @@ header{
 }
 
 .mobile-menu{
-    display: none;
     flex-direction: column;
-    width: 30px;
+    width: 25px;
+}
+
+.menu-box{
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 3px;
+    border-radius: 15px;
+}
+
+.menu-box-user:hover{
+    background: #00000056;
 }
 
 .mobile-menu span{
     height: 2px;
     display: block;
-    background-color: var(--th-color);
+    background-color: #fff;
     margin-bottom: 6px;
     transition: transform .3s;
+}
+
+.trans-box-main,
+.trans-box-main button{
+    color: #fff;
+}
+
+.menu-box-user:hover span{
+    background-color: #fff !important;
 }
 
 .mobile-menu span:last-child{
     margin: 0;
 }
 
-.side-nav,
 .side-nav-overflow{
     display: none;
     position: fixed;
+}
+
+.header-box-link{
+    border: 2px solid #fff;
+    padding: 8px 15px;
+    border-radius: 25px;
+    color: #fff !important;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.header-box-link:hover{
+    opacity: .8;
+}
+
+.header-left-box .header-box-link{
+    border: none !important;
+}
+
+.header-side-nav{
+    position: absolute;
+    right: 0;
+    top: 40px;
+    z-index: 99;
+    width: 300px;
+    background-color: #fff;
+    box-shadow: 0 0 #000, 0 0 #000, 0 0 #000, 0 0 9px rgba(0,0,0,.1),0 0 9px rgba(0,0,0,.01);
+    border-radius: 15px;
+    padding: 20px 0;
+    display: none;
+}
+
+.menu-box-img{
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+.menu-box-img img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .profile-dropdown-area{
@@ -161,9 +231,6 @@ header{
     z-index: 99;
 }
 
-.profile-dropdown-area .nav-link {
-    margin: 0 !important;
-}
 
 .profile-dropdown-overlay{
     position: fixed;
@@ -174,56 +241,21 @@ header{
     z-index: 7;
 }
 
+.other-page-header .header-box-link{
+    border-color: var(--th-color-1) !important;
+    color: var(--th-color-1) !important;
+}
+
+.other-page-header .trans-box-main,
+.other-page-header .trans-box-main button{
+    color: var(--th-color-1) !important;
+}
+
+.other-page-header .mobile-menu span{
+    background-color: var(--th-color-1) !important;
+}
+
 @media screen and (max-width: 1180px) {
-    .mobile-menu{
-        display: flex;
-    }
-
-    body[menu="open"] .side-nav .nav-link{
-        margin: 0 10px ;
-    }
-
-    body[menu="open"] .mobile-menu{
-        position: relative;
-        z-index: 9992;
-        top: -10px;
-    }
-
-    body[menu="open"] .mobile-menu span:first-child{
-        transform: translate(0px, 5px) rotate(45deg);
-    }
-
-    body[menu="open"] .mobile-menu span:last-child{
-        transform: translate(0px, -10px) rotate(315deg);
-    }
-
-    body[menu="open"] .mobile-menu span:nth-child(2){
-        opacity: 0;
-    }
-    
-
-    body[menu="open"] .side-nav,
-    body[menu="open"] .side-nav-overflow{
-        display: block;
-        right: 0;
-        top: 0;
-        z-index: 9991;
-        width: 340px;
-        height: 100vh;
-        background-color: #fcfcfc;
-    }
-
-    body[menu="open"] .side-nav-overflow{
-        z-index: 999;
-        width: 100vw;
-        background-color: #00000024;
-        left: 0;
-    }
-
-    .navigations{
-        width: 360px;
-    }
-
     .profile-dropdown span{
         display: none;
     }
@@ -237,75 +269,53 @@ header{
         align-items: center;
     }
 
-    .navigations .nav-link{
-        display: none;
-    }
-
     .navigation-right-side .profile-dropdown-area,
     .profile-dropdown-overlay{
         display: none !important;
-    }
-
-    body[menu="open"] .side-nav{
-        padding-top: 50px;
-    }
-
-    .side-nav .mobile-menu,
-    .side-nav .wip-logo,
-    .side-nav .search-box{
-        display: none !important;
-    }
-
-    .side-nav .profile-dropdown span{
-        display: -webkit-box !important;
-        position: absolute;
-        top: 20px;
-        left: 65px;
-        width: 100%;
-    }
-
-    .side-nav .profile-dropdown{
-        background-color: #fff !important;
-        display: block;
-        width: calc(100% - 20px);
-        margin: auto;
-        margin-bottom: 10px;
-        box-shadow: 0px 0px 7px 0 rgba(0,0,0,.05);
-        padding: 10px 5px;
-    }
-
-    .side-nav .profile-dropdown-area{
-        box-shadow: none;
-    }
-
-    .side-nav .profile-dropdown-area{
-        position: initial !important;
-        width: auto !important;
-        margin-top: 10px;
     }
 
 }
 
 @media screen and (max-width: 991px) {
     .wip-logo {
-        height: 30px;
+        height: 40px;
+    }
+
+    .header-left-box{
+        display: none;
+    }
+
+    .header-middle-box{
+        justify-content: flex-start !important;
+    }
+
+    .header{
+        padding: 10px !important;
     }
 }    
 
 @media screen and (max-width: 600px) {
-    .wip-header .w-100.px-5{
-        padding: 5px 10px !important;
-    }
-
     .search-box{
         width: 65%;
     }
 
-    body[menu="open"] .side-nav{
-        width: 260px;
-    }
-
     .wip-logo {
         margin: initial !important;
+    }
+
+    .header-right-box .header-box-link{
+        display: none;
+    }
+
+    .header-side-nav{
+        top: 50px !important;
+        position: fixed !important;
+        width: 100% !important;
+        height: calc(100vh - 50px);
+        overflow-y: auto;
+    }
+
+    [is-menu-open="true"]{
+        overflow: hidden;
     }
 }
