@@ -1198,6 +1198,11 @@ option:disabled{
     top: 75px;
 }
 
+.discount_period{
+    border: 3px solid var(--th-color-1);
+    padding: 3px;
+}
+
 [added="false"] .bi-heart-fill{
     color: #212529d5 !important;
 }

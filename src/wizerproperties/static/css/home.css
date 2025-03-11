@@ -280,7 +280,7 @@
 }
 
 .sign-in-note-box{
-    background-color: #202021;
+    background-color: #212529;
     display: flex;
     padding: 30px 80px;
     justify-content: space-between;
@@ -618,9 +618,6 @@
 #discount-properties {
     .price-tag,
     .card-title,
-    .property-contains * {
-        color: #fff !important;
-    }
 
     .price-tag {
         background-color: #ffffff17;
@@ -640,10 +637,7 @@
     font-size: 18px !important;
 }
 
-.discount_period .search-result-box {
-    background-color: var(--th-color-1) !important;
-    color: #fff !important;
-}
+
 
 #discount-properties .property-value {
     top: initial !important;

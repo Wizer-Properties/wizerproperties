@@ -354,7 +354,8 @@
         
                     </div>
                 </div>
-    
+
+                {% if not request.user.is_authenticated %}
                 <div class="sign-in-note-box">
                     <div class="sign-in-side-note">
                         <h1>
@@ -368,6 +369,7 @@
         
                     <a href="/user/login/"> Sign in or create an account </a>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>

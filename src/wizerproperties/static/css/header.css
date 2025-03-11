@@ -241,6 +241,10 @@
     z-index: 7;
 }
 
+.other-page-header{
+    border-bottom: 1px solid #2125291a;
+}
+
 .other-page-header .header-box-link{
     border-color: var(--th-color-1) !important;
     color: var(--th-color-1) !important;
