@@ -75,6 +75,8 @@
 .image-area-with-add-btns{
     position: relative;
     padding-right: 0;
+    display: flex;
+    gap: 10px;
 }
 
 .search-result-box-img img{
@@ -82,6 +84,7 @@
     height: 100%;
     object-fit: cover;
     border-radius: 10px;
+    border: 1px solid #eee;
 }
 
 .search-box-price{
@@ -144,15 +147,37 @@
 
 
 .pr-ml-images-area{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 10px;
+    min-width: 100px;
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.property-single-box[property-type="spotlight"]
+.card-identity-area,
+.property-single-box[property-type="feature"]
+.card-identity-area{
+    width: 100%;
+    height: 80px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.property-single-box[property-type="spotlight"]
+.card-identity-area{
+    background: var(--th-color-1);
+}
+
+.property-single-box[property-type="feature"]
+.card-identity-area{
+    background: var(--th-color);
 }
 
 .pr-ml-image{
     width: 100%;
     height: 85px;
-    margin-top: 10px;
 }
 
 .pr-ml-image img{
@@ -160,6 +185,7 @@
     height: 100%;
     object-fit: cover;
     border-radius: 10px;
+    border: 1px solid #eee;
 }
 
 .search-result-box .details,
@@ -226,52 +252,15 @@
     top: -2px;
 }
 
-.property-single-box[property-type="spotlight"],
-.property-single-box[property-type="feature"]{
-    .search-box-price,
-    .search-result-box h1,
-    .search-result-box .property-value,
-    .property-faciluties-list span,
-    .search-result-box .details,
-    .property-card-down-area p,
-    .dev-phn-number,
-    .search-box-title span,
-    .building-status,
-    .property-short-info-box .material-symbols-outlined,
-    .agent-company-name span{
-        color: #fff !important;
-    }
-
-    .property-faciluties-list span,
-    .search-result-box .details{
-        opacity: .8;
-    }
-
-    .search-result-box-wrapper{
-        background-color: var(--th-color-1);
-    }
-
-    .search-box-title span{
-        background-color: var(--th-color-1);
-    }
+.property-single-box[property-type="spotlight"]
+.search-result-box-wrapper{
+    border: 2px solid var(--th-color-1);
 }
 
-.property-single-box[property-type="feature"]{
-    .search-result-box-wrapper,
-    .search-box-title span{
-        background: var(--th-color) !important;
-    }
 
-    .property-card-modal-btns button, 
-    .property-card-modal-btns a,
-    .building-status,
-    .search-result-box-wrapper .date-area{
-        background: var(--th-color-1) !important;
-    }
-
-    .special-sale span{
-        color: var(--th-color-1) !important;
-    }
+.property-single-box[property-type="feature"]
+.search-result-box-wrapper{
+    border: 2px solid var(--th-color);
 }
 
 .property-contains .property-short-info-box{

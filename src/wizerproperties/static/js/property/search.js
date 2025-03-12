@@ -205,6 +205,7 @@ $(document).ready(function(){
                                     )+
                                     property_multiple_images(data?.images, data?.id) +
                                 '</div>'+
+                                '<div class="card-identity-area"></div>'+
                             '</div>'+
 
                             '<div class="col-lg-7 col-xl-8 p-0">'+

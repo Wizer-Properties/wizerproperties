@@ -30,7 +30,6 @@
     background-color: #fff;
     margin: auto;
     overflow: hidden;
-    width: calc(100% - 200px);
     
 
     .search-box .bi-search{
@@ -77,14 +76,16 @@
 
 
 .banner{
-    height: calc(100vh - 130px);
+    height: calc(100vh - 200px);
+    min-height: 800px;
+    max-height: 1000px;
     position: relative;
     background-image: url('/static/media/background/home-page-bg.webp');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-    display: grid;
-    place-items: center;
+    display: flex;
+    justify-content: center;
     position: relative;
     top: -80px;
 }
@@ -120,11 +121,13 @@
     color: #fff;
     z-index: 1;
     padding: 0 15px;
-    margin-bottom: 120px !important;
+    margin-bottom: 110px !important;
+    font-weight: 600;
 }
 
 .banner-content{
-    margin-top: 180px;
+    margin-top: 170px;
+    padding: 0 120px;
 }
 
 .sign-up-btn{
@@ -738,6 +741,13 @@
     margin-bottom: 40px;
 }
 
+@media screen and (max-width: 1200px) {
+    .banner-content{
+        padding: 0;
+    }
+}
+
+
 @media screen and (max-width: 991px) {
     .banner-title {
         font-size: 44px !important;
@@ -772,16 +782,15 @@
         margin-bottom: 30px;
     }
 
-    .search-box-with-filter{
-        width: 100% !important;
+    .banner{
+        min-height: 560px;
     }
-
 }
 
 @media screen and (max-width: 768px) {
     .banner-title {
         font-size: 32px !important;
-        margin-bottom: 40px !important;
+        margin-bottom: 70px !important;
     }
 
     .contact-cart-info-position{
@@ -820,7 +829,6 @@
     }
 
     .search-box-with-filter{
-        width: 100% !important;
 
         .price-filter-select-box, 
         .search-pop-up-select-box{
@@ -839,7 +847,7 @@
     }
 
     .banner-content {
-        margin-top: 120px;
+        margin-top: 145px;
     }
 
 }
@@ -851,7 +859,7 @@
     }
 
     .banner-title {
-        font-size: 20px !important;
+        font-size: 28px !important;
     }
 
     .reels-iframe-and-data{
