@@ -49,8 +49,8 @@
 
 .search-result-box{
     display: block;
-    padding: 0 25px;
-    padding-right: 0;
+    padding: 10px 10px 10px 25px;
+    /* padding-right: 0; */
 }
 
 
@@ -67,9 +67,10 @@
     border-radius: 5px;
     box-shadow: 0 0 5px #0000000f;
     border-radius: 15px;
-    padding: 15px;
+    padding: 0;
     border: none;
     background: #fff;
+    overflow: hidden;
 }
 
 .image-area-with-add-btns{
@@ -130,8 +131,9 @@
 
 .agent-company-name{
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
     padding: 0 10px;
 }
 
@@ -161,8 +163,9 @@
 .card-identity-area{
     width: 100%;
     height: 80px;
-    border-radius: 10px;
-    margin-top: 10px;
+    border-radius: 2px;
+    display: grid;
+    place-items: center;
 }
 
 .property-single-box[property-type="spotlight"]
@@ -214,14 +217,15 @@
 .search-result-box-wrapper .date-area{
     display: flex;
     align-items: center;
-    background: var(--th-color) !important ;
+    background: #fff !important ;
     gap: 2px ;
     padding: 8px;
     border-radius: 5px;
+    border: 1px solid #eee;
 
     *{
         text-align: center;
-        color: #fff !important;
+        color: #000 !important;
     }
 
     count{
@@ -558,14 +562,17 @@
 }
 
 .special-sale span{
-    color: #15c1b9 !important;
-    padding: 7px 25px;
-    font-size: 26px;
+    color: #fff !important;
+    font-size: 22px;
     font-weight: 700;
     border-radius: 5px;
     text-transform: uppercase;
     letter-spacing: 2px;
-    background: #ffffff1c;
+}
+
+.open-drone-view,
+.open-3D-model{
+    padding: 8px 25px !important;
 }
 
 
@@ -575,7 +582,6 @@
     }
 
     .search-box-title{
-        padding-top: 20px;
         padding-bottom: 5px;
         padding-right: 0 ;
     }
@@ -673,7 +679,7 @@
     }
 
     .search-result-box {
-        padding: 0;
+        padding: 20px;
     }
 
     .filter-categories-colums{
@@ -693,49 +699,37 @@
         padding: 0 20px;
     }
 
-    .special-sale{
-        top: 0;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    .special-sale span{
-        background: #fff;
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-        font-size: 22px;
-    }
 }
 
 
-@media screen and (max-width : 1220px){
-    .search-result-box-wrapper{
-        position: relative;
-        padding-bottom: calc(115px + 15px);
+@media screen and (max-width : 1220px){    
+    .property-card-down-area{
+        width: 100%;
     }
 
-    .property-card-down-area{
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        left: 0;
-        right: 0;
-        flex-direction: row;
-        justify-content: space-between;
-        border-radius: 0;
-        padding: 10px 15px;
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
-        padding-bottom: 60px;
+    .search-result-content{
+        gap: 30px;
+    }
+
+    .agent-company-name{
+        align-items: flex-start;
+    }
+
+    .card-identity-area{
+        height: 95px !important;
+    }
+
+    .property-card-modal-btns{
+        margin-top: 10px;
     }
 
     .property-schedule-contact-btn{
-        position: absolute;
-        bottom: 15px;
-        left: 15px;
         flex-direction: row;
         width: auto ;
+    }
+
+    .search-result-content{
+        flex-direction: column;
     }
 
     .dev-phn-number,
@@ -825,16 +819,12 @@
         font-size: 12px;
     }
 
-    .search-result-box-wrapper {
-        padding-bottom: calc(90px + 15px);
-    }
-
-    .property-card-down-area{
-        padding-bottom: 50px;
-    }
-
     .special-sale span{
-        font-size: 16px;
+        font-size: 18px;
+    }
+
+    .card-identity-area{
+        height: 65px !important;
     }
 }
 
@@ -878,11 +868,6 @@
 
     .filter-colum-box{
         padding: 10px 8px;
-    }
-
-    .special-sale span{
-        font-size: 14px;
-        padding: 7px 20px;
     }
 }
 

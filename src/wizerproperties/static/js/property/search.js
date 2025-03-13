@@ -178,7 +178,7 @@ $(document).ready(function(){
                     '<div class="search-result-box-wrapper">'+
                         '<div class="row m-0">'+
 
-                            '<div class="col-lg-5 col-xl-4 p-0">'+
+                            '<div class="col-lg-6 col-xl-6 p-0">'+
                                 '<div class="image-area-with-add-btns">'+
                                     '<div class="splide search-result-box-img-splid"'+
                                         'property-id="'+data?.id+'" images-next-page="'+(window.innerWidth <= 768 ? 2 : 3)+'"'+
@@ -205,20 +205,21 @@ $(document).ready(function(){
                                     )+
                                     property_multiple_images(data?.images, data?.id) +
                                 '</div>'+
-                                '<div class="card-identity-area"></div>'+
+                                '<div class="card-identity-area">'+
+                                    (
+                                        data?.tag == "spotlight" ?  // 'DiscountProperty' consider as 'spotlight'  
+                                        '<div class="special-sale"><span> Flash Sale </span></div>' : ''
+                                    )+
+                                    (
+                                        data?.tag == "feature" ?
+                                        '<div class="special-sale"><span> Featured Listing </span></div>' : ''
+                                    )+
+                                '</div>'+
                             '</div>'+
 
-                            '<div class="col-lg-7 col-xl-8 p-0">'+
+                            '<div class="col-lg-6 col-xl-6 p-0">'+
                                 '<div class="search-result-box">'+
                                     '<a href="'+detail_page_url()+'" class="d-block w-100">'+
-                                        (
-                                            data?.tag == "spotlight" ?  // 'DiscountProperty' consider as 'spotlight'  
-                                            '<div class="special-sale"><span> Flash Sale </span></div>' : ''
-                                        )+
-                                        (
-                                            data?.tag == "feature" ?
-                                            '<div class="special-sale"><span> Featured Listing </span></div>' : ''
-                                        )+
                                         '<div class="search-box-title">'+
                                             '<span> '+data?.building_title+' </span>'+
                                             (   data?.discount_period ? 
@@ -228,43 +229,57 @@ $(document).ready(function(){
                                         '</div>'+
                                     '</a>'+
                                     '<div class="search-result-content">'+
-                                        '<a href="/property/details/'+data?.id+'/" class="d-block w-100">'+
-                                            '<div class="d-flex align-items-center flex-wrap gap-2">'+
-                                                '<div class="search-box-price">'+
-                                                    '฿ '+ 
-                                                    formatBalance(Math.floor(data?.price) || 0)+
+                                        '<div>'+
+                                            '<a href="/property/details/'+data?.id+'/" class="d-block w-100">'+
+                                                '<div class="d-flex align-items-center flex-wrap gap-2">'+
+                                                    '<div class="search-box-price">'+
+                                                        '฿ '+ 
+                                                        formatBalance(Math.floor(data?.price) || 0)+
+                                                    '</div>'+
+                                                    (
+                                                        data?.building_status ? 
+                                                        '<div class="building-status">'+
+                                                            data?.building_status +
+                                                        '</div>' : ''
+                                                    )+
                                                 '</div>'+
+                                                
+                                                '<div class="property-contains">'+
+                                                ' <div class="property-short-info-box">'+
+                                                        '<span class="material-symbols-outlined">bed</span>'+
+                                                        '<span class="property-value"> '+ data?.number_of_bedroom +' </span>'+
+                                                    '</div>'+
+                                                    '<div class="property-short-info-box">'+
+                                                        '<span class="material-symbols-outlined"> bathtub </span>' +
+                                                        '<span class="property-value">'+ data?.number_of_bathroom +'</span>'+
+                                                    '</div>'+
+                                                    '<div class="property-short-info-box">'+
+                                                        '<span class="material-symbols-outlined">apartment</span>' +
+                                                        '<span class="property-value">'+ data?.unit_area +' sqm </span>'+
+                                                    '</div>'+
+                                                    '<div class="property-short-info-box">'+
+                                                        '<span class="material-symbols-outlined">stairs</span>'+
+                                                        '<span class="property-value">'+ data?.floor_number +'</span>'+
+                                                    '</div>'+
+                                                '</div>'+
+
+                                                '<div class="property-faciluties-list mt-3">'+
+                                                    property_facility_tmp(data)+
+                                                '</div>'+
+                                            '</a>'+
+
+                                            '<div class="d-flex gap-2 mt-3">'+
+                                                ( 
+                                                    ![null, ''].includes(data?.interior_view) ?
+                                                    '<button class="link border-0 open-3D-model" data-src="'+data?.interior_view+'" > Interior 3D View </button>' : ''
+                                                )+
                                                 (
-                                                    data?.building_status ? 
-                                                    '<div class="building-status">'+
-                                                        data?.building_status +
-                                                    '</div>' : ''
+                                                    data?.ariel_view ?
+                                                    '<button class="link border-0 open-drone-view" data-src="'+data?.ariel_view+'" > Ariel View </button>' : ''
                                                 )+
                                             '</div>'+
-                                            
-                                            '<div class="property-contains">'+
-                                            ' <div class="property-short-info-box">'+
-                                                    '<span class="material-symbols-outlined">bed</span>'+
-                                                    '<span class="property-value"> '+ data?.number_of_bedroom +' </span>'+
-                                                '</div>'+
-                                                '<div class="property-short-info-box">'+
-                                                    '<span class="material-symbols-outlined"> bathtub </span>' +
-                                                    '<span class="property-value">'+ data?.number_of_bathroom +'</span>'+
-                                                '</div>'+
-                                                '<div class="property-short-info-box">'+
-                                                    '<span class="material-symbols-outlined">apartment</span>' +
-                                                    '<span class="property-value">'+ data?.unit_area +' sqm </span>'+
-                                                '</div>'+
-                                                '<div class="property-short-info-box">'+
-                                                    '<span class="material-symbols-outlined">stairs</span>'+
-                                                    '<span class="property-value">'+ data?.floor_number +'</span>'+
-                                                '</div>'+
-                                            '</div>'+
+                                        '</div>'+
 
-                                            '<div class="property-faciluties-list mt-3">'+
-                                                property_facility_tmp(data)+
-                                            '</div>'+
-                                        '</a>'+
                                         '<div class="property-card-down-area">'+
                                             '<div class="agency-company-info">'+
                                                 '<div class="buillding-agency-logo mb-2">'+
@@ -275,35 +290,22 @@ $(document).ready(function(){
                                                     '<span> Added: '+ formattedDate +' </span>'+
                                                 '</div>'+
                                             '</div>'+
-                                        '</div>'+
-                                    '</div>'+
 
-                                    '<div class="property-card-modal-btns gap-2">'+
-                                        '<div class="d-flex gap-2">'+
-                                            ( 
-                                                ![null, ''].includes(data?.interior_view) ?
-                                                '<button class="link border-0 open-3D-model" data-src="'+data?.interior_view+'" > Interior 3D View </button>' : ''
-                                            )+
-                                            (
-                                                data?.ariel_view ?
-                                                '<button class="link border-0 open-drone-view" data-src="'+data?.ariel_view+'" > Ariel View </button>' : ''
-                                            )+
+                                            '<div class="property-card-modal-btns gap-2">'+
+                                                '<div class="property-schedule-contact-btn">'+
+                                                    '<a href="/schedule/create_schedule/?type=property&id='+data?.id+'" class="link border-0"'+
+                                                        '<i class="bi bi-envelope"></i>Schedule Viewing'+
+                                                    '</a>'+
+                                                    '<a href="mailto:'+data?.developer_email+'" class="link border-0"'+
+                                                        '<i class="bi bi-envelope"></i> Contact'+
+                                                    '</a>'+
+                                                '</div>'+
+                                            '</div>'+
                                         '</div>'+
-
-                                        '<div class="property-schedule-contact-btn">'+
-                                            '<a href="/schedule/create_schedule/?type=property&id='+data?.id+'" class="link border-0"'+
-                                                '<i class="bi bi-envelope"></i>Schedule Viewing'+
-                                            '</a>'+
-                                            '<a href="mailto:'+data?.developer_email+'" class="link border-0"'+
-                                                '<i class="bi bi-envelope"></i> Contact'+
-                                            '</a>'+
-                                        '</div>'+
-
                                     '</div>'+
 
                                 '</div>'+
                             '</div>'+
-
 
                         '</div>'+
                     '</div>'+

@@ -76,8 +76,7 @@
 
 
 .banner{
-    height: calc(100vh - 200px);
-    min-height: 800px;
+    height: calc(100vh - 120px);
     max-height: 1000px;
     position: relative;
     background-image: url('/static/media/background/home-page-bg.webp');
@@ -100,7 +99,7 @@
     left: 0;
     position: absolute;
     right: 0;
-    bottom: 0;
+    bottom: -1px;
     background-image: url('/static/media/curve.svg');
 }
 
@@ -784,6 +783,8 @@
 
     .banner{
         min-height: 560px;
+        height: initial;
+        max-height: initial;
     }
 }
 
