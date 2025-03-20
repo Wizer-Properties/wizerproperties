@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 from core.views import dashboard, contact_page, home_page, privacy_page, about_us_page, custom_404
 from core.admin import custom_admin_site
 from allauth.socialaccount.providers.google.views import oauth2_login, oauth2_callback
+from advertise.views import reels
 
 urlpatterns = [
     path("admin/", custom_admin_site.urls),
@@ -36,6 +37,7 @@ urlpatterns = [
     path("blogs/", include(("blog.urls", "blog"), namespace="blogs")),
     path('about-us/', about_us_page, name='about-us'),
     path('privacy/', privacy_page, name='privacy'),
+    path('reels/', reels, name='reels'),
     # google auth
     path('accounts/google/login/', oauth2_login, name='google_login'),  # Login with Google
     path('accounts/google/login/callback/', oauth2_callback, name='google_callback'),  # Callback

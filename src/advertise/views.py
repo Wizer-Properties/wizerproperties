@@ -32,3 +32,8 @@ def advertise_analytics(request):
 @developer_or_agent_required
 def advertise_performance(request):
     return render(request, "advertise-performance.html")
+
+
+
+def reels(request):
+    return render(request, "reels.html")

@@ -875,7 +875,8 @@ footer{
 }
 
 .privacy-page-bg-images,
-.about-page-bg-images{
+.about-page-bg-images,
+.other-page-bg-images{
     height: 360px;
     background-position: center;
     background-repeat: no-repeat;
@@ -1418,7 +1419,8 @@ main {
     }
 
     .privacy-page-bg-images,
-    .about-page-bg-images{
+    .about-page-bg-images,
+    .other-page-bg-images{
         height: 260px;
     }
 

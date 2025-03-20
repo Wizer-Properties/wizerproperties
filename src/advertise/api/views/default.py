@@ -55,6 +55,7 @@ class ReelViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=["get"], url_path="suggested")
     def suggested_reels(self, request):
+        category_type = request.GET.get("category")
         # Helper function to parse cookie values
         def parse_cookie_value(value):
             try:
@@ -138,6 +139,8 @@ class ReelViewSet(viewsets.ModelViewSet):
         order = Case(*[When(property__id=id, then=pos) for pos, id in enumerate(property_ids)])
         # Filter the queryset for active reels and order them according to the Case expression
         reels_qs = self.get_queryset().filter(property_id__in=property_ids, status="active").order_by(order)
+        if category_type:
+            reels_qs = reels_qs.filter(category=category_type)
         paginator = self.pagination_class()
         paginated_queryset = paginator.paginate_queryset(reels_qs, request)
         serializer = ActiveReelSerializer(paginated_queryset, many=True)

@@ -45,7 +45,7 @@
         {% url 'advertise:create_reels' as create_reels_url %}
         {% url 'advertise:analytics' as ads_analytics_url %}
         {% url 'advertise:performance' as ads_performance_url %}
-
+        {% url 'reels' as reels_url %}
 
         <header class="wip-header {% if not request.path == '/' %}other-page-header{% endif %}">
             <div class="header">
@@ -121,6 +121,7 @@
                                 {% endif %} 
                             {% endif %}
         
+                            <a class="nav-link {% if request.path == reels_url %}active-nav{% endif %}" href="{% url 'reels' %}">Reels</a>
                             <a class="nav-link" href="#">Mortgages</a>
                             <a class="nav-link" href="#">Prices And Trends</a>
                             <a class="nav-link" href="#">Find A Developer</a>

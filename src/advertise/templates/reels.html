@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block extend_head %}
+<title>Reels</title>
+<link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
+<link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
+<link rel="stylesheet" href="{% static '/css/home.css' %}?v=1.06" />
+<style>
+    .other-page-bg-images{
+        background-image: url("{% static '/media/background/wp-night-view.png' %}");
+    }
+
+    .reels-slider {
+        min-height: 750px;
+    }
+
+    .blog-excerpt{
+        font-size: 16px;
+        color: #687385;
+    }
+</style>
+{% endblock extend_head %}
+
+{% block content %}
+<section id="reels-page">
+    <div class="other-page-bg-images"></div>
+    <div class="container">
+        <div class="my-5">
+            <h1 class="title text-center"> Reels </h1>
+
+            <div class="col-md-8 mx-auto pb-4">
+                <p class="blog-excerpt text-center">
+                    Explore stunning apartments and properties through short video reels.
+                    Get a closer look at interiors, exteriors, and neighborhood highlights.
+                    Find your dream home with ease and convenience.
+                    Start browsing and discover your perfect property today!
+            </p>
+        </div>
+    </div>
+</section>
+
+<section id="engaging-reels" class="container-wrapper">
+    <div class="container">
+        <h1 class="slider-title">Most Engaging And Informative Reels</h1>
+
+        <div class="reels-filter-btns mb-4">
+            <button value="" class="activate"> All </button>
+            <button value="advice"> Advice </button>
+            <button value="info"> Info </button>
+            <button value="tour"> Tour </button>
+        </div>
+
+        <div class="no-reels"></div>
+        
+        <div class="splide reels-slider">
+            <div class="splide__track">
+                <div class="splide__list">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+
+{% block extend_script %}
+<script>
+    var ADS_SUGGEST_URL = '/advertise/api/advertisement/suggested/'
+    var ADS_LOCATION_PARAM = ['home']
+    csrfToken = "{{ csrf_token }}";
+</script>
+<script src="{% static '/js/libraries/splide.min.js' %}"></script>
+<script src="{% static 'js/reels.js' %}?v=1.00"></script>
+{% endblock extend_script %}
