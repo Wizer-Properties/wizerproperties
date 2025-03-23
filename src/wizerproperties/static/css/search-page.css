@@ -332,23 +332,26 @@
 .property-card-modal-btns button,
 .property-card-modal-btns a,
 .open-3D-model,
-.open-drone-view{
-    background: var(--th-color) !important;
-    color: #fff !important;
-    padding: 8px 25px;
-    font-size: 13px;
-    box-shadow: 2px 3px 11px 4px rgb(0 0 0 / 8%);
-    transition:  box-shadow .3s;
+.open-drone-view,
+.search-result-box .link{
+    background: #fff !important;
+    color: #212529 !important;
+    padding: 12px 20px !important;
+    font-size: 14px;
     font-weight: 600;
-    letter-spacing: .6px;
+    border-radius: 10px;
+    border: 1px solid var(--th-color) !important;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
 }
 
 .property-card-modal-btns button:hover,
 .property-card-modal-btns a:hover,
 .open-3D-model:hover,
 .open-drone-view:hover{
-    opacity: .9;
-    box-shadow : none;
+    color: var(--th-color) !important;
 }
 
 .property-card-down-area{

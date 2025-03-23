@@ -271,11 +271,17 @@ $(document).ready(function(){
                                             '<div class="d-flex gap-2 mt-3">'+
                                                 ( 
                                                     ![null, ''].includes(data?.interior_view) ?
-                                                    '<button class="link border-0 open-3D-model" data-src="'+data?.interior_view+'" > Interior 3D View </button>' : ''
+                                                    '<button class="link border-0 open-3D-model" data-src="'+data?.interior_view+'" > '+
+                                                        '<i class="bi bi-box-arrow-up-right"></i>'+
+                                                        ' Interior 3D View '+
+                                                    '</button>' : ''
                                                 )+
                                                 (
                                                     data?.ariel_view ?
-                                                    '<button class="link border-0 open-drone-view" data-src="'+data?.ariel_view+'" > Ariel View </button>' : ''
+                                                    '<button class="link border-0 open-drone-view" data-src="'+data?.ariel_view+'" > '+
+                                                        '<i class="bi bi-box-arrow-up-right"></i>'+
+                                                        ' Ariel View '+
+                                                    '</button>' : ''
                                                 )+
                                             '</div>'+
                                         '</div>'+
@@ -293,11 +299,13 @@ $(document).ready(function(){
 
                                             '<div class="property-card-modal-btns gap-2">'+
                                                 '<div class="property-schedule-contact-btn">'+
-                                                    '<a href="/schedule/create_schedule/?type=property&id='+data?.id+'" class="link border-0"'+
-                                                        '<i class="bi bi-envelope"></i>Schedule Viewing'+
+                                                    '<a href="/schedule/create_schedule/?type=property&id='+data?.id+'" class="link border-0">'+
+                                                        '<i class="bi bi-box-arrow-up-right"></i>'+
+                                                        'Schedule Viewing'+
                                                     '</a>'+
-                                                    '<a href="mailto:'+data?.developer_email+'" class="link border-0"'+
-                                                        '<i class="bi bi-envelope"></i> Contact'+
+                                                    '<a href="mailto:'+data?.developer_email+'" class="link border-0">'+
+                                                        '<i class="bi bi-box-arrow-up-right"></i>'+
+                                                        'Contact'+
                                                     '</a>'+
                                                 '</div>'+
                                             '</div>'+
