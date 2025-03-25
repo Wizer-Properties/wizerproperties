@@ -1319,6 +1319,7 @@ body {
 
 .lang-list li span {
     padding-block: 9px !important;
+    cursor: pointer;
 }
 
 main {
