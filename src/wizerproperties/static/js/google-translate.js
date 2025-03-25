@@ -127,18 +127,27 @@ function googleTranslateCookie() {
   }
 
   $('#custom_translate_dropdown').text(langShot);
-  console.log(getLang);
 }
 
 googleTranslateCookie()
 
 $(document).ready(function() {
-    $('.dropdown-item').click(function() {
-        var language = $(this).data('language');
-        Cookies.set('googtrans', language);
+  $('.dropdown-item').click(function() {
+    var getLang = Cookies.get('googtrans');
+    
+    if (![null, undefined].includes(getLang)) {
+      Cookies.remove('googtrans');
+    }
 
-        setTimeout(function() {
-            window.location.reload();
-        }, 500);
+    var language = $(this).data('language');
+
+    Cookies.set('googtrans', language, { 
+      domain: '.wizerproperties.com', // Use the leading dot here
+      path: '/' // Ensure the cookie is available across all paths
     });
+
+    setTimeout(function() {
+        window.location.reload();
+    }, 500);
+  });
 });
