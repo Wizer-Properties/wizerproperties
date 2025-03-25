@@ -134,19 +134,20 @@ googleTranslateCookie()
 $(document).ready(function() {
   $('.dropdown-item').click(function() {
     var getLang = Cookies.get('googtrans');
-    
+
     if (![null, undefined].includes(getLang)) {
       Cookies.remove('googtrans');
+      Cookies.remove('googtrans', { domain: '.wizerproperties.com' });
+      Cookies.remove('googtrans', { domain: 'wizerproperties.com' });
     }
 
     var language = $(this).data('language');
 
-    Cookies.set('googtrans', language, { 
-      domain: '.wizerproperties.com', // Use the leading dot here
-      path: '/' // Ensure the cookie is available across all paths
-    });
-
+    
     setTimeout(function() {
+      Cookies.set('googtrans', language);
+      Cookies.set('googtrans', language, { domain: '.wizerproperties.com' });
+      Cookies.set('googtrans', language, { domain: 'wizerproperties.com' });
         window.location.reload();
     }, 500);
   });
