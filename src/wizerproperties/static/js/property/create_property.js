@@ -27,25 +27,27 @@ $(document).ready(function () {
         var building_id = $("select[name='building']").val();
         var title = $("input[name='title']").val();
         var price = $("input[name='price']").val();
-        // var price_per_sqm = $("input[name='price_per_sqm']").val();
-        // var unit_id = $("input[name='unit_id']").val();
-        // var floor_number = $("input[name='floor_number']").val();
-        // var unit_area = $("input[name='unit_area']").val();
-        // var interior_view = $("input[name='interior_view']").val();
-        // var number_of_bathroom = $("input[name='number_of_bathroom']").val();
-        // var number_of_bedroom = $("input[name='number_of_bedroom']").val();
-        // var number_of_balcony = $("input[name='number_of_balcony']").val();
-        // var number_of_car_parking = $("input[name='number_of_car_parking']").val();
-        // var balcony_direction = $("input[name='balcony_direction']").val();
-        // var main_door_direction = $("input[name='main_door_direction']").val();
+        var price_per_sqm = $("input[name='price_per_sqm']").val();
+        var unit_id = $("input[name='unit_id']").val();
+        var floor_number = $("input[name='floor_number']").val();
+        var unit_area = $("input[name='unit_area']").val();
+        var interior_view = $("input[name='interior_view']").val();
+        var number_of_bathroom = $("input[name='number_of_bathroom']").val();
+        var number_of_bedroom = $("input[name='number_of_bedroom']").val();
+        var number_of_balcony = $("input[name='number_of_balcony']").val();
+        var number_of_car_parking = $("input[name='number_of_car_parking']").val();
+        var balcony_direction = $("input[name='balcony_direction']").val();
+        var main_door_direction = $("input[name='main_door_direction']").val();
+        var unit_position = $("select[name='unit_position']").val();
 
+        var have_vacant = $("#vacant").prop("checked");
+        var have_owner_occupied = $("#owner_occupied").prop("checked");
+        var have_bathtub = $("#bathtub").prop("checked");
+        var have_duplex = $("#duplex").prop("checked");
+        var have_pets_allowed = $("#pets_allowed").prop("checked");
 
         // Check for empty input values
-        // var required_fields = [building_id, title, price, price_per_sqm, unit_id, floor_number, unit_area, 
-        //     number_of_bathroom, number_of_bedroom, number_of_balcony, number_of_car_parking, 
-        //     balcony_direction, main_door_direction];
-
-        var required_fields = [building_id, title, price];
+        var required_fields = [title, price];
 
         for (var i = 0; i < required_fields.length; i++) {
             if (required_fields[i] === "") {
@@ -66,23 +68,23 @@ $(document).ready(function () {
             "building_id": building_id,
             "title": title,
             "price": price,
-            // "price_per_sqm": price_per_sqm,
-            // "unit_id": unit_id,
-            // "floor_number": floor_number,
-            // "unit_area": unit_area,
-            // "interior_view": interior_view,
-            // "number_of_bathroom": number_of_bathroom,
-            // "number_of_bedroom": number_of_bedroom,
-            // "number_of_balcony": number_of_balcony,
-            // "number_of_car_parking": number_of_car_parking,
-            // "balcony_direction": balcony_direction,
-            // "main_door_direction": main_door_direction,
-            // "unit_position": unit_position,
-            // "have_vacant": have_vacant,
-            // "have_owner_occupied": have_owner_occupied,
-            // "have_bathtub": have_bathtub,
-            // "have_duplex": have_duplex,
-            // "have_pets_allowed": have_pets_allowed,
+            "price_per_sqm": price_per_sqm,
+            "unit_id": unit_id,
+            "floor_number": floor_number || null,
+            "unit_area": unit_area || null,
+            "interior_view": interior_view || null,
+            "number_of_bathroom": number_of_bathroom || null,
+            "number_of_bedroom": number_of_bedroom || null,
+            "number_of_balcony": number_of_balcony || null,
+            "number_of_car_parking": number_of_car_parking || null,
+            "balcony_direction": balcony_direction || null,
+            "main_door_direction": main_door_direction || null,
+            "unit_position": unit_position || null,
+            "have_vacant": have_vacant || null,
+            "have_owner_occupied": have_owner_occupied || null,
+            "have_bathtub": have_bathtub || null,
+            "have_duplex": have_duplex || null,
+            "have_pets_allowed": have_pets_allowed || null,
         };
 
         generatePropertyDescription.hide(); // Hide the text

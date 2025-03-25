@@ -27,52 +27,38 @@ $(document).ready(function () {
         var title = $("input[name='title']").val();
         var lowest_price = $("input[name='lowest_price']").val();
         var highest_price = $("input[name='highest_price']").val();
-        // var type = $("select[name='type']").val();
+        var type = $("select[name='type']").val();
         var status = $("select[name='status']").val();
-        // var quota = $("select[name='quota']").val();
-        // var furnishing = $("select[name='furnishing']").val();
-        // var total_units_for_sale = $("input[name='total_units_for_sale']").val();
-        // var construction_year = $("input[name='construction_year']").val();
+        var quota = $("select[name='quota']").val();
+        var furnishing = $("select[name='furnishing']").val();
+        var total_units_for_sale = $("input[name='total_units_for_sale']").val();
+        var construction_year = $("input[name='construction_year']").val();
         var address = $("input[name='address']").val();
         var province = $("input[name='province']").val();
         var district = $("input[name='district']").val();
-        // var project_total_area = $("input[name='project_total_area']").val();
-        // var total_floors = $("input[name='total_floors']").val();
-        // var distance_from_location_to_BTS_or_MRT = $(
-        //     "input[name='distance_from_location_to_BTS_or_MRT']"
-        // ).val();
-        // var distance_from_location_to_ARL = $(
-        //     "input[name='distance_from_location_to_ARL']"
-        // ).val();
-        // var view = $("input[name='view']").val();
+        var project_total_area = $("input[name='project_total_area']").val();
+        var total_floors = $("input[name='total_floors']").val();
+        var distance_from_location_to_BTS_or_MRT = $("input[name='distance_from_location_to_BTS_or_MRT']").val();
+        var distance_from_location_to_ARL = $("input[name='distance_from_location_to_ARL']").val();
+        var view = $("input[name='view']").val();
 
-        // var have_freehold = $("#freehold").prop("checked");
-        // var have_leasehold = $("#leasehold").prop("checked");
-        // var have_infinity_pool = $("#infinity_pool").prop("checked");
-        // var have_pets_allowed = $("#pets_allowed").prop("checked");
-        // var have_sauna = $("#sauna").prop("checked");
-        // var have_rooftop_pool = $("#rooftop_pool").prop("checked");
-        // var have_fitness_area = $("#fitness_area").prop("checked");
-        // var have_grocery = $("#grocery").prop("checked");
+        var have_freehold = $("#freehold").prop("checked");
+        var have_leasehold = $("#leasehold").prop("checked");
+        var have_infinity_pool = $("#infinity_pool").prop("checked");
+        var have_pets_allowed = $("#pets_allowed").prop("checked");
+        var have_sauna = $("#sauna").prop("checked");
+        var have_rooftop_pool = $("#rooftop_pool").prop("checked");
+        var have_fitness_area = $("#fitness_area").prop("checked");
+        var have_grocery = $("#grocery").prop("checked");
 
         // Check for empty input values
         var required_fields = [
             title,
             lowest_price,
             highest_price,
-            // type,
-            // quota,
-            // furnishing,
-            // total_units_for_sale,
-            // status,
             address,
             province,
             district,
-            // project_total_area,
-            // total_floors,
-            // distance_from_location_to_BTS_or_MRT,
-            // distance_from_location_to_ARL,
-            // view,
         ];
 
         for (var i = 0; i < required_fields.length; i++) {
@@ -82,7 +68,6 @@ $(document).ready(function () {
                         "To generate description please fill in all required fields without title, price, address, province and district" +
                         "</span>"
                 );
-                $("html, body").animate({ scrollTop: 0 }, "slow");
                 return; // Stop execution if any input is empty
             }
         }
@@ -95,30 +80,30 @@ $(document).ready(function () {
             title: title,
             lowest_price: lowest_price,
             highest_price: highest_price,
-            // type: type,
-            // quota: quota,
-            // furnishing: furnishing,
-            // total_units_for_sale: total_units_for_sale,
-            // status: status,
-            // construction_year: construction_year,
+            type: type,
+            quota: quota || null,
+            furnishing: furnishing || null,
+            total_units_for_sale: total_units_for_sale || null,
+            status: status || null,
+            construction_year: construction_year || null,
             address: address,
             province: province,
             district: district,
-            // total_area: project_total_area + "sqm",
-            // total_floors: total_floors,
-            // distance_from_location_to_BTS_or_MRT:
-            //     distance_from_location_to_BTS_or_MRT + "mile",
-            // distance_from_location_to_ARL:
-            //     distance_from_location_to_ARL + "mile",
-            // view: view,
-            // have_freehold: have_freehold,
-            // have_leasehold: have_leasehold,
-            // have_infinity_pool: have_infinity_pool,
-            // have_pets_allowed: have_pets_allowed,
-            // have_sauna: have_sauna,
-            // have_rooftop_pool: have_rooftop_pool,
-            // have_fitness_area: have_fitness_area,
-            // have_grocery: have_grocery,
+            total_area: project_total_area + "sqm",
+            total_floors: total_floors || null,
+            distance_from_location_to_BTS_or_MRT:
+                distance_from_location_to_BTS_or_MRT + "mile",
+            distance_from_location_to_ARL:
+                distance_from_location_to_ARL + "mile",
+            view: view,
+            have_freehold: have_freehold || null,
+            have_leasehold: have_leasehold || null,
+            have_infinity_pool: have_infinity_pool || null,
+            have_pets_allowed: have_pets_allowed || null,
+            have_sauna: have_sauna || null,
+            have_rooftop_pool: have_rooftop_pool || null,
+            have_fitness_area: have_fitness_area || null,
+            have_grocery: have_grocery || null,
         };
 
         generateBuildingDescription.hide(); // Hide the text
