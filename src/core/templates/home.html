@@ -9,13 +9,46 @@
 <link rel="stylesheet" href="{% static '/css/search-page.css' %}?v=1.01" />
 <link rel="stylesheet" href="{% static '/css/favorite-list.css' %}?v=1.00" />
 <link rel="stylesheet" href="{% static '/css/search-filter.css' %}?v=1.03" />
-<link rel="stylesheet" href="{% static '/css/home.css' %}?v=1.06" />
+<link rel="stylesheet" href="{% static '/css/home.css' %}?v=1.07" />
 <link rel="stylesheet" href="{% static '/css/blog-page.css' %}?v=1.01"/>
+
+<style>
+    .header{
+        max-width: 1080px;
+        margin: 0 auto;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .search-result-box[show-compare-favorite="true"]{
+        padding-top: 45px !important;
+    }
+
+    @media screen and (max-width: 1200px){
+        .header{
+            max-width: calc(100% - 80px) !important;
+        }
+    }
+
+    @media screen and (max-width: 560px){
+        .header{
+            max-width: calc(100% - 40px) !important;
+        }
+    }
+</style>
 {% endblock extend_head %}
+
+
 
 {% block content %}
 <section class="banner">
-    <div class="container">
+    <div class="container-hm position-relative">
+
+        <div class="banner-img">
+            <img src="{% static '/media/background/home-page-bg.webp' %}" alt="wizerproperties">
+        </div>
+
+
         <div class="banner-content">
             <h1 class="banner-title"> Find a home in a neighborhood you love </h1>
         
@@ -355,30 +388,36 @@
                     </div>
                 </div>
 
-                {% if not request.user.is_authenticated %}
-                <div class="sign-in-note-box">
-                    <div class="sign-in-side-note">
-                        <h1>
-                            <i class="bi bi-envelope-paper-heart pe-2"></i>
-                            Sign in to access our exclusive virtual tours and comparisons
-                        </h1>
-                        <p>
-                            Let us help you find your ideal property and put you in contact with sellers
-                        </p>
-                    </div>
-        
-                    <a href="/user/login/"> Sign in or create an account </a>
-                </div>
-                {% endif %}
             </div>
         </div>
     </div>
 </section>
 
+{% if not request.user.is_authenticated %}
+<section class="mb-5">
+    <div class="container-hm">
+        <div class="banner-content pt-0">
+            <div class="sign-in-note-box">
+                <div class="sign-in-side-note">
+                    <h1>
+                        Sign in to access our exclusive virtual tours and comparisons
+                    </h1>
+                    <p>
+                        Let us help you find your ideal property and put you in contact with sellers
+                    </p>
+                </div>
+            
+                <a href="/user/login/"> Sign in or create an account </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
 
 {% if not request.user.is_authenticated %}
 <section>
-    <div class="container">
+    <div class="container-hm">
 
     </div>
 </section>
@@ -386,7 +425,7 @@
 
 
 <div class="top-banner mb-5">
-    <div class="container">
+    <div class="container-hm">
         <div class="col-lg-8 col-md-8 col-11 mx-auto">
             <div class="splide ads-banner-slider">
                 <div class="splide__track">
@@ -403,7 +442,7 @@
 
 
 <section id="discount-properties">
-    <div class="container">
+    <div class="container-hm">
         <h1 class="slider-title">Developers Exclusive Deals- Last Chance to Buy!</h1>
 
         <div class="splide discount-properties-slider">
@@ -417,7 +456,7 @@
 
 
 <section id="recommended-search">
-    <div class="container">
+    <div class="container-hm">
         <h1 class="slider-title"> Recommended For You- Suggested By Your Search </h1>
 
 
@@ -433,7 +472,7 @@
 
 
 <section id="hot-properties">
-    <div class="container">
+    <div class="container-hm">
         <h1 class="slider-title"> Hot Properties For Sale- Near You! </h1>
 
 
@@ -448,7 +487,7 @@
 
 
 <section id="popular-properties">
-    <div class="container">
+    <div class="container-hm">
         <h1 class="slider-title">Trending Developments- The Most Searched</h1>
 
 
@@ -463,7 +502,7 @@
 
 
 <!-- <section id="new-properties">
-    <div class="container">
+    <div class="container-hm">
         <h1 class="slider-title">New Homes Exclusive- Off Plan Opportunities</h1>
 
 
@@ -478,7 +517,7 @@
 
 <!-- popular city -->
 <section id="popular-city">
-    <div class="container secion-space">
+    <div class="container-hm secion-space">
         <h1 class="slider-title">Most Popular Places</h1>
         <div class="popular-cities-gallery">
             <div class="popular-cities-gallery-card">
@@ -524,10 +563,10 @@
 <!-- blogs  -->
 <section class="secion-space">
      <!-- blogs cards -->
-    <div class="container">
+    <div class="container-hm">
         <h1 class="slider-title">From Our Blogs </h1>
         <div class="blog-cards">
-            <div class="row blog-content-container">
+            <div class="row blog-content-container-hm">
                 <div class="col-md-6 col-lg-4">
                     <a href="/blogs/can-foreigners-buy-property-in-thailand-6b5d8">
                         <div class="blog-card mb-5">
@@ -612,7 +651,7 @@
 <script src="{% static '/js/libraries/splide.min.js' %}"></script>
 <script src="{% static '/js/time-count-down.js' %}?v=1.00"></script>
 <script src="{% static '/js/filter-init.js' %}?v=1.01"></script>
-<script src="{% static '/js/home.js' %}?v=1.08"></script>
+<script src="{% static '/js/home.js' %}?v=1.09"></script>
 <script src="{% static '/js/property/compair-favorite.js' %}?v=1.00"></script>
 <script src="{% static '/js/chatbot-gpt.js' %}?v=1.01"></script>
 <script src="{% static '/js/ads.js' %}?v=1.01"></script>

@@ -20,8 +20,8 @@
 }
 
 .search-box-with-filter-content{
-    padding: 10px 80px;
-    padding-top: 40px;
+    padding: 10px 20px;
+    padding-top: 25px;
 }
     
 .search-box-with-filter{
@@ -39,7 +39,7 @@
 
     .search-box input{
         padding: 12px 10px !important;
-        font-size: 16px;
+        font-size: 14px !important;
     }
 
     .search-box{
@@ -76,57 +76,43 @@
 
 
 .banner{
-    height: calc(100vh - 120px);
-    max-height: 1000px;
     position: relative;
-    background-image: url('/static/media/background/home-page-bg.webp');
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    display: flex;
-    justify-content: center;
-    position: relative;
-    top: -80px;
+    margin-top: 10px;
+    min-height: 400px;
+    margin-bottom: 45px;
 }
 
-.banner::before{    
-    background-position: bottom;
-    background-repeat: no-repeat;
-    background-size: cover;
-    content: "";
-    display: block;
-    height: 100%;
-    left: 0;
-    position: absolute;
-    right: 0;
-    bottom: -1px;
-    background-image: url('/static/media/curve.svg');
-}
 
-.banner::after{
+.banner-img{
     position: absolute;
-    width: 100%;
-    height: 200px;
     top: 0;
-    background: linear-gradient(180deg,#000,rgba(0,0,0,.9) 12%,transparent 60%);
-    content: '';
-    opacity: .4;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 400px;
+}
+
+.banner-img img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
 }
 
 .banner-title{
     position: relative;
     text-align: center;
-    font-size: 54px;
+    font-size: 34px;
     color: #fff;
     z-index: 1;
     padding: 0 15px;
-    margin-bottom: 110px !important;
+    margin-bottom: 50px !important;
     font-weight: 600;
 }
 
 .banner-content{
-    margin-top: 170px;
-    padding: 0 120px;
+    padding: 0 140px;
+    padding-top: 120px;
 }
 
 .sign-up-btn{
@@ -282,33 +268,36 @@
 }
 
 .sign-in-note-box{
-    background-color: #212529;
+    background-color: #E5F1EE;
     display: flex;
-    padding: 30px 80px;
+    padding: 20px;
     justify-content: space-between;
     align-items: center;
     gap: 10px 30px;
+    border-radius: 20px !important;
 }
 
 .sign-in-note-box h1{
-    font-size: 22px;
-    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    color: #000433;
 }
 
 .sign-in-note-box p{
     margin: 0;
-    font-size: 16px;
-    font-weight: bold;
-    color: #ffffffc9;
+    font-size: 14px;
+    font-weight: 500;
+    color: #000433;
 }
 
 .sign-in-note-box a{
     display: block;
     background-color: #fff;
-    font-size: 16px;
-    padding: 8px 15px;
+    font-size: 14px;
+    padding: 10px;
     color: #002A2D;
-    border-radius: 5px;
+    border: 2px solid #000433;
+    border-radius: 10px;
     font-weight: bold;
     text-align: center;
     white-space: nowrap;
@@ -571,7 +560,7 @@
         display: flex;
         align-items: center;
         gap: 5px;
-        padding: 13px 0;
+        padding: 5px 0;
         font-weight: 600;
         cursor: pointer;
         background-color: #fff;
@@ -585,14 +574,14 @@
 
 .exclusive-deals-time {
     top: 20px;
-    left: 20px;
+    right: 20px;
     z-index: 999;
 }
 
 .exclusive-deals-time .date-area{
     display: flex;
     align-items: center;
-    background: #7f13788f !important;
+    background: var(--th-color) !important;
     gap: 2px ;
     padding: 5px;
     border-radius: 8px;
@@ -624,11 +613,15 @@
     .price-tag {
         background-color: #ffffff17;
     }
-    .building-tag {
-        background: var(--th-color) !important;
-    }
 }
 
+.building-tag {
+    background: var(--th-color) !important;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    color: #fff !important;
+}
 /* NEW DISCOUNT PROPERTIES SLIDER CARD DESIGN */
 
 .location .icon {
@@ -685,7 +678,6 @@
     flex-direction: column;
     border-radius: 16px;
     overflow: hidden;
-    border: 1px solid #e4e4e4;
     position: relative;
     background-color: transparent !important;
 }
@@ -740,19 +732,18 @@
     margin-bottom: 40px;
 }
 
+.top-banner{
+    margin-top: 0px !important;
+}
+
 @media screen and (max-width: 1200px) {
-    .banner-content{
-        padding: 0;
+    .container-hm{
+        max-width: calc(100% - 80px) !important;
     }
 }
 
 
 @media screen and (max-width: 991px) {
-    .banner-title {
-        font-size: 44px !important;
-        margin-bottom: 100px !important;
-    }
-
     .search-box input {
         padding: 10px !important;
         padding-left: 50px !important;
@@ -780,20 +771,9 @@
     .secion-space {
         margin-bottom: 30px;
     }
-
-    .banner{
-        min-height: 560px;
-        height: initial;
-        max-height: initial;
-    }
 }
 
 @media screen and (max-width: 768px) {
-    .banner-title {
-        font-size: 32px !important;
-        margin-bottom: 70px !important;
-    }
-
     .contact-cart-info-position{
         min-height: auto;
     }
@@ -847,20 +827,29 @@
         padding-right: 20px !important;
     }
 
+
     .banner-content {
-        margin-top: 145px;
+        padding: 0 40px;
+        padding-top: 65px;
     }
 
+    .banner-title{
+        font-size: 24px !important;
+    }
+
+    .header-box{
+        flex: initial !important;
+    }
+
+    .header{
+        justify-content: space-between !important;
+    }
 }
 
 @media screen and (max-width: 560px){
 
     .secion-space {
         margin-bottom: 10px;
-    }
-
-    .banner-title {
-        font-size: 28px !important;
     }
 
     .reels-iframe-and-data{
@@ -926,6 +915,15 @@
     .sign-in-note-box a {
         font-size: 14px;
         font-weight: 600;
+    }
+
+    .container-hm{
+        max-width: calc(100% - 20px) !important;
+    }
+
+    .banner-content{
+        padding-left: 5px !important;
+        padding-right: 5px !important;
     }
 
 }

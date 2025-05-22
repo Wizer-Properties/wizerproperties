@@ -4,21 +4,7 @@ $(document).ready(function(){
         var is_fav_effect = localStorage.getItem('favorite-effect');
 
         return  '<div class="property-single-box secion-space">'+
-                    '<div class="compare-favorite-btn-area">'+
-                        (
-                            !['agent', 'developer'].includes(user_type) ?
-                            '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
-                                '<i class="bi bi-heart-fill"></i>'+
-                                '<span> Favorite </span>'+
-                            '</button>' +
-                            '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
-                                '<i class="bi bi-arrow-left-right"></i>'+
-                                '<i class="bi bi-check2"></i>'+
-                                '<span> Compare </span>'+
-                            '</button>': ''
-                        ) +
-                    '</div>'+
-                    '<a href="/property/details/'+data?.id+'/" class="search-result-box-wrapper">'+ 
+                    '<div class="search-result-box-wrapper">'+ 
 
                         '<div class="home-slider-img-wrapper position-relative">'+
 
@@ -34,7 +20,23 @@ $(document).ready(function(){
                             '</div>'+
                         '</div>'+
 
-                        '<div class="search-result-box">'+
+                        '<div class="search-result-box position-relative" show-compare-favorite="'+!['agent', 'developer'].includes(user_type)+'">'+
+                            '<div class="compare-favorite-btn-area">'+
+                                (
+                                    !['agent', 'developer'].includes(user_type) ?
+                                    '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
+                                        '<i class="bi bi-heart-fill"></i>'+
+                                        '<span> Favorite </span>'+
+                                    '</button>' +
+                                    '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
+                                        '<i class="bi bi-arrow-left-right"></i>'+
+                                        '<i class="bi bi-check2"></i>'+
+                                        '<span> Compare </span>'+
+                                    '</button>': ''
+                                ) +
+                            '</div>'+
+
+
                             '<h1 class="card-title">'+data?.building_title+'</h1>'+
 
                             '<div class="property-contains mb-3">'+
@@ -64,37 +66,21 @@ $(document).ready(function(){
 
                             '<div class="price-tag px-0 bg-transparent border-top">'+
                                 '<span class="home-slider-price"> ฿ '+formatBalance(Math.floor(data?.price) || 0)+ '</span>'+
-                                (
-                                    data?.building_status ?
-                                    '<span class="building-tag">'+ data?.building_status + '</span>' : ''
-                                )+
+                                '<a href="/property/details/'+data?.id+'/" class="building-tag">'+
+                                    'View Homes <i class="bi bi-box-arrow-up-right"></i>' +
+                                '</a>' +
                             '</div>'+
                             
                         '</div>'+
-                    '</a>'+
+                    '</div>'+
                 '</div>'
     };
 
     function discount_property_list_tmp(data){
         var is_fav_effect = localStorage.getItem('favorite-effect');
 
-        return  '<div class="property-single-box discount_period secion-space">'+
-                    '<div class="compare-favorite-btn-area">'+
-                        (
-                            !['agent', 'developer'].includes(user_type) ?
-                            '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
-                                '<i class="bi bi-heart-fill"></i>'+
-                                '<span> Favorite </span>'+
-                            '</button>' +
-                            '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
-                                '<i class="bi bi-arrow-left-right"></i>'+
-                                '<i class="bi bi-check2"></i>'+
-                                '<span> Compare </span>'+
-                            '</button>': ''
-                        ) +
-                    '</div>'+
-                
-                    '<a href="/property/details/'+data?.id+'/?discounted=True" class="search-result-box-wrapper">'+
+        return  '<div class="property-single-box discount_period secion-space">'+                
+                    '<div class="search-result-box-wrapper">'+
                         '<div class="home-slider-img-wrapper position-relative">'+
 
                             ( data?.discount_period ? '<div class="exclusive-deals-time position-absolute" date-count="'+data?.discount_period+'"></div>' : '')+
@@ -110,7 +96,21 @@ $(document).ready(function(){
                                 '<img src="'+data?.default_image+'" alt="'+data?.building_title+'" loading="lazy">' +
                             '</div>'+
                         '</div>'+
-                        '<div class="search-result-box pt-0">'+
+                        '<div class="search-result-box position-relative pt-0" show-compare-favorite="'+!['agent', 'developer'].includes(user_type)+'">'+
+                            '<div class="compare-favorite-btn-area">'+
+                                (
+                                    !['agent', 'developer'].includes(user_type) ?
+                                    '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
+                                        '<i class="bi bi-heart-fill"></i>'+
+                                        '<span> Favorite </span>'+
+                                    '</button>' +
+                                    '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
+                                        '<i class="bi bi-arrow-left-right"></i>'+
+                                        '<i class="bi bi-check2"></i>'+
+                                        '<span> Compare </span>'+
+                                    '</button>': ''
+                                ) +
+                            '</div>'+
                             '<h1 class="card-title mt-2 mb-2">'+data?.building_title+'</h1>'+
 
                             '<div class="property-contains mb-3">'+
@@ -133,14 +133,13 @@ $(document).ready(function(){
 
                             '<div class="price-tag px-0 border-top bg-transparent">'+
                                 '<span> ฿ '+formatBalance(Math.floor(data?.price) || 0)+ '</span>'+
-                                (
-                                    data?.building_status ?
-                                    '<span class="building-tag">'+ data?.building_status + '</span>' : ''
-                                )+
+                                '<a href="/property/details/'+data?.id+'/?discounted=True" class="building-tag">'+
+                                    'View Homes <i class="bi bi-box-arrow-up-right"></i>' +
+                                '</a>' +
                             '</div>'+
                             
                         '</div>'+
-                    '</a>'+
+                    '</div>'+
                 '</div>'
     };
 

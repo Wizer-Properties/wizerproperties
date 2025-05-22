@@ -4,7 +4,7 @@
     --th-gradient-bg: linear-gradient(315deg, #140733 0%, #103bd4 54%);
     --th-bg-color : #103bd4;
     --th-color : #15C1B9;
-    --th-color-1 : #B21A5F;
+    --th-color-1 : #7F1377;
 }
 
 *{
@@ -485,10 +485,6 @@ footer{
 
 .nav-tabs{
     border: none;
-}
-
-.nav-tabs .nav-link:hover{
-    background-color: #ffffff3f !important;
 }
 
 .nav-tabs .nav-link{
@@ -1324,6 +1320,11 @@ body {
 
 main {
     min-height: 88vh;
+}
+
+.container-hm{
+    max-width: 1080px;
+    margin: 0 auto;
 }
 
 @media (max-width: 1180px) {

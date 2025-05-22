@@ -171,7 +171,7 @@ AUTH_USER_MODEL = "user.User"
 SITE_HOST = config("SITE_HOST", default="http://localhost:8000")
 
 # EMAIL
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_HOST = config("EMAIL_HOST", default="smtp.gmail.com")
 EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)
 EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="emailorproviderusername")

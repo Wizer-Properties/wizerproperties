@@ -17,8 +17,8 @@
 
     {% block extend_head %}{% endblock extend_head %}
     <link rel="stylesheet" href="{% static '/css/auth.css' %}?v=1.02" />
-    <link rel="stylesheet" href="{% static 'css/header.css' %}?v=1.03" />
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.05" />
+    <link rel="stylesheet" href="{% static 'css/header.css' %}?v=1.04" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.07" />
     <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet">
 
 
@@ -50,17 +50,15 @@
         <header class="wip-header {% if not request.path == '/' %}other-page-header{% endif %}">
             <div class="header">
                 <div class="header-box header-left-box">
-                    <!-- <a href="#" class="header-box-link">
-                        Find Developer
-                    </a> -->
-                </div>
-
-                <div class="header-box header-middle-box">
                     <div class="wip-logo">
                         <a href="/">
                             <img src="{% static 'media/logo.png' %}" alt="logo">
                         </a>
                     </div>
+                </div>
+
+                <div class="header-box header-middle-box">
+                    <!-- empty -->
                 </div>
 
                 <div class="header-box header-right-box position-relative">

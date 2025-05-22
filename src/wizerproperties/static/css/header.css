@@ -1,9 +1,8 @@
 .wip-logo{
-    height: 48px;
+    height: 38px;
     margin-top: 7px;
     margin-bottom: 7px;
 }
-
 
 .wip-header{
     display: flex;
@@ -59,10 +58,6 @@
 .active-nav{
     background-color: var(--th-color-1) !important;
     color: #fff !important;
-}
-
-.nav-link:hover{
-    background-color: #91F3EE;
 }
 
 .profile-dropdown-img{
@@ -153,14 +148,14 @@
 .mobile-menu span{
     height: 2px;
     display: block;
-    background-color: #fff;
+    background-color: #000;
     margin-bottom: 6px;
     transition: transform .3s;
 }
 
 .trans-box-main,
 .trans-box-main button{
-    color: #fff;
+    color: #000;
 }
 
 .menu-box-user:hover span{
@@ -177,10 +172,10 @@
 }
 
 .header-box-link{
-    border: 2px solid #fff;
+    border: 2px solid #000;
     padding: 8px 15px;
     border-radius: 25px;
-    color: #fff !important;
+    color: #000 !important;
     font-size: 14px;
     font-weight: 500;
 }
@@ -281,20 +276,9 @@
 }
 
 @media screen and (max-width: 991px) {
-    .wip-logo {
-        height: 40px;
-    }
-
-    .header-left-box{
-        display: none;
-    }
 
     .header-middle-box{
-        justify-content: flex-start !important;
-    }
-
-    .header{
-        padding: 10px !important;
+        display: none;
     }
 }    
 
