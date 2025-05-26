@@ -5,16 +5,7 @@ $(document).ready(function(){
 
         return  '<div class="property-single-box secion-space">'+
                     '<div class="search-result-box-wrapper">'+ 
-
                         '<div class="home-slider-img-wrapper position-relative">'+
-
-                            '<div class="location">'+
-                            '<div class="icon">'+
-                                '<i class="bi bi-geo-alt me-1"></i>'+
-                                data?.address+
-                            '</div>'+
-                            '</div>'+ 
-
                             '<div class="search-result-box-img">'+
                                 '<img src="'+data?.default_image+'" alt="'+data?.building_title+'" loading="lazy">' +
                             '</div>'+
@@ -39,30 +30,36 @@ $(document).ready(function(){
 
                             '<h1 class="card-title">'+data?.building_title+'</h1>'+
 
-                            '<div class="property-contains mb-3">'+
-                            '<div class="property-short-info-box d-flex align-items-center">'+
-                                '<div class="property-short-info-icon">'+
-                                    '<img src="/static/media/icons/bed.svg" alt="bed-icon">'+
+                            '<div class="property-contains">'+
+                                '<div class="property-short-info-box d-flex align-items-center">'+
+                                    '<div class="property-short-info-icon">'+
+                                        '<img src="/static/media/icons/bed.svg" alt="bed-icon">'+
+                                    '</div>'+
+                                    '<span class="property-label">Beds:</span>'+
+                                    '<span class="property-value"> '+ data?.number_of_bedroom+' </span>'+
                                 '</div>'+
-                                '<span class="property-label">Beds:</span>'+
-                                '<span class="property-value"> '+ data?.number_of_bedroom+' </span>'+
-                            '</div>'+
-                            '<div class="property-short-info-box">'+
-                                '<div class="property-short-info-icon">'+
-                                    '<img src="/static/media/icons/bath.svg" alt="bath-icon">'+
+                                '<div class="property-short-info-box">'+
+                                    '<div class="property-short-info-icon">'+
+                                        '<img src="/static/media/icons/bath.svg" alt="bath-icon">'+
+                                    '</div>'+
+                                    '<span class="property-label">Baths:</span>'+
+                                    '<span class="property-value"> '+ data?.number_of_bathroom +' </span>'+
                                 '</div>'+
-                                '<span class="property-label">Baths:</span>'+
-                                '<span class="property-value"> '+ data?.number_of_bathroom +' </span>'+
-                            '</div>'+
-                            '<div class="property-short-info-box">'+
-                                '<div class="property-short-info-icon">'+
-                                    '<img src="/static/media/icons/plan-size.svg" alt="plan-size-icon">'+
+                                '<div class="property-short-info-box">'+
+                                    '<div class="property-short-info-icon">'+
+                                        '<img src="/static/media/icons/plan-size.svg" alt="plan-size-icon">'+
+                                    '</div>'+
+                                    '<span class="property-label">sqm:</span>'+
+                                    '<span class="property-value"> '+ data?.unit_area+ '</span>'+
                                 '</div>'+
-                                '<span class="property-label">sqm:</span>'+
-                                '<span class="property-value"> '+ data?.unit_area+ '</span>'+
-                            '</div>'+
                             '</div>'+
 
+                            '<div class="location mb-3">'+
+                                '<div class="icon">'+
+                                    '<i class="bi bi-geo-alt me-1"></i>'+
+                                    data?.address+
+                                '</div>'+
+                            '</div>'+ 
 
                             '<div class="price-tag px-0 bg-transparent border-top">'+
                                 '<span class="home-slider-price"> ฿ '+formatBalance(Math.floor(data?.price) || 0)+ '</span>'+
@@ -82,16 +79,7 @@ $(document).ready(function(){
         return  '<div class="property-single-box discount_period secion-space">'+                
                     '<div class="search-result-box-wrapper">'+
                         '<div class="home-slider-img-wrapper position-relative">'+
-
                             ( data?.discount_period ? '<div class="exclusive-deals-time position-absolute" date-count="'+data?.discount_period+'"></div>' : '')+
-
-                            '<div class="location">'+
-                            '<div class="icon">'+
-                                '<i class="bi bi-geo-alt me-1"></i>'+
-                                data?.address+ 
-                            '</div>'+
-                            '</div>'+
-
                             '<div class="search-result-box-img">'+
                                 '<img src="'+data?.default_image+'" alt="'+data?.building_title+'" loading="lazy">' +
                             '</div>'+
@@ -113,7 +101,7 @@ $(document).ready(function(){
                             '</div>'+
                             '<h1 class="card-title mt-2 mb-2">'+data?.building_title+'</h1>'+
 
-                            '<div class="property-contains mb-3">'+
+                            '<div class="property-contains">'+
                                 '<div class="property-short-info-box">'+
                                     '<div class="property-short-info-icon">'+bed_icon+'</div>'+ // bed_icon call from icons.js file
                                     '<span class="property-label">Beds:</span>'+
@@ -129,7 +117,14 @@ $(document).ready(function(){
                                     '<span class="property-label">sqm:</span>'+
                                     '<span class="property-value"> '+ data?.unit_area+ '</span>'+
                                 '</div>'+
-                            '</div>'+    
+                            '</div>'+
+
+                            '<div class="location mb-3">'+
+                                '<div class="icon">'+
+                                    '<i class="bi bi-geo-alt me-1"></i>'+
+                                    data?.address+ 
+                                '</div>'+
+                            '</div>'+
 
                             '<div class="price-tag px-0 border-top bg-transparent">'+
                                 '<span> ฿ '+formatBalance(Math.floor(data?.price) || 0)+ '</span>'+

@@ -622,11 +622,6 @@
     align-items: center;
     color: #fff !important;
 }
-/* NEW DISCOUNT PROPERTIES SLIDER CARD DESIGN */
-
-.location .icon {
-    color: #fff !important;
-}
 
 .card-title {
     font-size: 18px !important;
@@ -698,14 +693,11 @@
 }
 
 .location {
-    position: absolute !important;
     color: #000 !important;
-    z-index: 999;
-    bottom: 12px;
     font-size: 14px;
-    left: 20px;
-    right: 20px;
 }
+
+
 
 .splide__slide img {
     vertical-align: middle;
