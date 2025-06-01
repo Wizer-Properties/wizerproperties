@@ -18,6 +18,7 @@
         margin: 0 auto;
         padding-left: 0 !important;
         padding-right: 0 !important;
+        padding-top: 20px !important;
     }
 
     .search-result-box[show-compare-favorite="true"]{
@@ -40,7 +41,21 @@
 
 
 
+
+
 {% block content %}
+
+<div class="top-banner mb-5 home-top-banner">
+    <div class="splide ads-banner-slider">
+        <div class="splide__track">
+            <div class="splide__list">
+                <!-- from dom -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <section class="banner">
     <div class="container-hm position-relative">
 
@@ -424,19 +439,7 @@
 {% endif %}
 
 
-<div class="top-banner mb-5">
-    <div class="container-hm">
-        <div class="col-lg-8 col-md-8 col-11 mx-auto">
-            <div class="splide ads-banner-slider">
-                <div class="splide__track">
-                    <div class="splide__list">
-                        <!-- from dom -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 {% include 'chat.html' %}
 

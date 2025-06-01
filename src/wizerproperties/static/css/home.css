@@ -735,6 +735,20 @@
 }
 
 
+.home-top-banner{
+    position: absolute;
+    top: 5px;
+    left: calc(50% - 85px);
+    transform: translateX(-50%);
+    width: 480px;
+    z-index: 999;
+}
+
+.home-top-banner
+.top-banner-img{
+    height: 75px !important;
+}
+
 @media screen and (max-width: 991px) {
     .search-box input {
         padding: 10px !important;
@@ -762,6 +776,10 @@
 
     .secion-space {
         margin-bottom: 30px;
+    }
+
+    .home-top-banner{
+        display: none !important;
     }
 }
 
