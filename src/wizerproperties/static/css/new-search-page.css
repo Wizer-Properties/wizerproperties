@@ -3,34 +3,23 @@
     --card-pd-right : calc((220px - 185px) / 2);
 }
 
-.property-card-down-area{
-    border-radius: 15px;
-    width: var(--company-image-width);
-    min-width: var(--company-image-width);
+
+.search-date-count[date-count]{
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 }
 
-.search-date-count{
-    min-width: var(--company-image-width);
-    width: var(--company-image-width);
+.search-date-count
+.date-tmp{
     display: flex;
-    justify-content: center;
+    flex-direction: row !important;
+    align-items: flex-end;
+    gap: 5px !important;
 }
 
-.search-date-count [date-count]{
-    display: inline-block;
+.search-date-count label{
+    font-size: 13px !important;
 }
 
-.property-card-modal-btns{
-    display: flex;
-    margin-top: 20px;
-    gap: 10px;
-    margin-bottom: 0;
-    justify-content: space-between;
-    align-items: flex-start;
-}
 
 .buillding-agency-logo img{
     width: 100%;
@@ -39,18 +28,17 @@
 }
 
 .buillding-agency-logo{
-    display: flex;
-    justify-content: center;
-    height: 60px;
-    max-width: none;
-    margin: 0;
+    height: 45px;
+    width: 80px;
 }
 
 
 .search-result-box{
-    display: block;
-    padding: 10px 10px 10px 25px;
-    /* padding-right: 0; */
+    padding: 13px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 }
 
 
@@ -70,14 +58,6 @@
     padding: 0;
     border: none;
     background: #fff;
-    overflow: hidden;
-}
-
-.image-area-with-add-btns{
-    position: relative;
-    padding-right: 0;
-    display: flex;
-    gap: 3px;
 }
 
 .search-result-box-img img{
@@ -87,15 +67,7 @@
     border: 1px solid #eee;
 }
 
-.search-box-price{
-    color: #212529;
-    font-size: 24px;
-    font-weight: 600;
-    background: none;
-    padding: 0 !important;
-    min-height: auto !important;
-    margin-top: 0 !important;
-}
+
 
 .dev-phn-number{
     text-align: center;
@@ -126,14 +98,12 @@
 .agent-company-name{
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    padding: 0 10px;
+    gap: 2px;
 }
 
 .agent-company-name span{
     display: block;
-    font-size: 14px;
+    font-size: 13px;
     color: #212529;
 }
 
@@ -143,23 +113,20 @@
 
 
 .pr-ml-images-area{
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 3px;
-    min-width: 180px;
-    max-height: 320px;
-    overflow-y: auto;
+    border-top-left-radius: 15px;
+    overflow: hidden;
 }
 
-.property-single-box[property-type="spotlight"]
-.card-identity-area,
-.property-single-box[property-type="feature"]
 .card-identity-area{
-    width: 100%;
-    height: 80px;
-    border-radius: 2px;
-    display: grid;
-    place-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding: 2px 20px 5px 20px;
 }
 
 .property-single-box[property-type="spotlight"]
@@ -172,14 +139,10 @@
     background: var(--th-color);
 }
 
-.pr-ml-image{
-    width: 100%;
-    height: 103px;
-}
 
-.pr-ml-image img{
+.pr-ml-images-area img{
     width: 100%;
-    height: 100%;
+    height: 200px;
     object-fit: cover;
     border: 1px solid #eee;
 }
@@ -200,7 +163,7 @@
 }
 
 .search-result-box .property-value {
-    font-size: 16px !important;
+    font-size: 15px !important;
     top: 0px !important;
 }
 
@@ -209,31 +172,17 @@
 
 .search-result-box-wrapper .date-area{
     display: flex;
-    align-items: center;
-    background: #fff !important ;
-    gap: 2px ;
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #eee;
-
-    *{
-        text-align: center;
-        color: #000 !important;
-    }
 
     count{
         font-size: 14px;
     }
 
-    .date-tmp{
-        display: flex;
-        flex-direction: column;
-        border: 1px solid #fff;
-        padding: 2px;
+    prime{
+        padding: 0 5px;
     }
-
-    label {
-        font-size: 8px;
+    
+    *{
+        color: #fff !important;
     }
 }
 
@@ -266,29 +215,12 @@
 
 .property-short-info-box .material-symbols-outlined{
     color: #212529 !important;
+    font-size: 22px !important;
 }
 
 
 .search-box-title{
-    display: flex;
-    position: relative;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 25px;
-    flex-wrap: wrap;
-    gap: 0 10px;
-    margin-top: 5px;
-}
-
-.search-result-content{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-}
-
-.search-box-title span{
-    font-size: 28px;
+    font-size: 18px;
     color: #003D7A !important;
     font-weight: 500;
     display: block;
@@ -301,15 +233,6 @@
     text-overflow: ellipsis;
 }
 
-.search-box-title line{
-    height: 2px;
-    background-color: #D34346;
-    display: block;
-    position: absolute;
-    width: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-}
 
 .sorting-map-container{
     display: flex;
@@ -509,8 +432,8 @@
 
 #search-result-list
 .compare-favorite-btn-area{
-    right: 10px;
-    top: 5px;
+    right: 0px;
+    top: 0px;
     background:  radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0) 64%);
 }
 
@@ -541,13 +464,10 @@
 
 
 .property-schedule-contact-btn{
-    gap: 10px;
+    gap: 30px;
     display: flex;
-    flex-direction: column;
     text-align: center;
-    width: var(--company-image-width);
 }
-
 
 .special-sale{
     display: flex;
@@ -556,7 +476,7 @@
 
 .special-sale span{
     color: #fff !important;
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 700;
     border-radius: 5px;
     text-transform: uppercase;
@@ -568,37 +488,81 @@
     padding: 8px 25px !important;
 }
 
+.property-price-area{
+    display: flex;
+    flex-direction: column;
+    padding: 10px 15px;
+    border-bottom-left-radius: 12px;
+}
+
+.property-price{
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.property-price-per-sqm{
+    font-size: 14px;
+}
+
+.agency-company-info{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.property-card-down-area{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.property-card-modal-btns
+.property-schedule-contact-btn a{
+    padding: 0 !important;
+    border: none !important;
+    gap: 7px !important;
+}
+
+.property-schedule-contact-btn a
+.bi-box-arrow-up-right{
+    font-size: 18px !important;
+}
+
+.property-schedule-contact-btn a
+.bi-envelope{
+    font-size: 24px !important;
+    position: relative;
+    /* top: 2px; */
+}
+
+[property-type="spotlight"]
+.property-price-area{
+    color: #fff !important;
+    background-color: var(--th-color-1) !important;
+}
+
+[property-type="feature"]
+.property-price-area{
+    color: #fff !important;
+    background-color: var(--th-color) !important;
+}
+
+[property-type="feature"]
+.pr-ml-images-area,
+[property-type="spotlight"]
+.pr-ml-images-area{
+    border-radius: 0 !important;
+}
+
+.search-result-box-content{
+    position: relative;
+    padding-right: 35px;
+}
 
 @media screen and (max-width : 991px){
-    .search-result-content{
-        padding: 0;
-    }
-
-    .search-box-title{
-        padding-bottom: 5px;
-        padding-right: 0 ;
-    }
-
-    .search-box-title span{
-        font-size: 24px;
-    }
-
-    .search-box-price {
-        font-size: 20px;
-        margin-bottom: 0;
-    }
-
-    .search-result-box h1{
-        font-size: 15px;
-    }
 
     .search-result-box .details, 
     .property-faciluties-list span {
-        font-size: 14px;
-    }
-
-    .property-card-modal-btns button,
-    .property-card-modal-btns a {
         font-size: 14px;
     }
 
@@ -672,7 +636,7 @@
     }
 
     .search-result-box {
-        padding: 20px;
+        padding: 10px;
     }
 
     .filter-categories-colums{
@@ -692,39 +656,17 @@
         padding: 0 20px;
     }
 
+    .property-price-area{
+        border-radius: 0 !important;
+    }
+
+    .property-card-down-area{
+        margin-top: 10px;
+    }
 }
 
 
-@media screen and (max-width : 1220px){    
-    .property-card-down-area{
-        width: 100%;
-    }
-
-    .search-result-content{
-        gap: 30px;
-    }
-
-    .agent-company-name{
-        align-items: flex-start;
-    }
-
-    .card-identity-area{
-        height: 95px !important;
-    }
-
-    .property-card-modal-btns{
-        margin-top: 10px;
-    }
-
-    .property-schedule-contact-btn{
-        flex-direction: row;
-        width: auto ;
-    }
-
-    .search-result-content{
-        flex-direction: column;
-    }
-
+@media screen and (max-width : 1220px){
     .dev-phn-number,
     .dev-to-contact{
         margin: 0;
@@ -735,20 +677,6 @@
         padding: 2px 15px;
     }
 
-    .buillding-agency-logo{
-        height: 50px;
-    }
-
-    .search-box-price{
-        font-size: 22px;
-    }
-
-    .agency-company-info{
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-
     .property-single-box[effect="null"]:first-child 
     .add-to-favorite:not([added="true"])::before,
     .property-single-box[effect="null"]:first-child 
@@ -757,12 +685,19 @@
         height: 70px;
     }
 
-    .search-date-count{
-        min-width: auto;
-        width: auto;
-        display: block;
+    .property-schedule-contact-btn{
+        flex-direction: column-reverse;
+        gap: 10px;
     }
 }
+
+@media screen and (max-width : 1220px){
+    .property-schedule-contact-btn{
+        flex-direction: row;
+        gap: 30px;
+    }
+}
+
 
 
 @media screen and (max-width : 768px){
@@ -797,27 +732,15 @@
         border-right: 1px solid #eee;
     }
 
-    .agent-company-name{
+    .property-card-down-area{
         flex-direction: column;
+        gap: 5px;
         align-items: initial;
-        gap: 0;
+        margin-top: 20px;
     }
-
-    .buillding-agency-logo{
-        margin: 0 !important;
-        max-width: 40%;
-    }
-
-    .agent-company-name span{
-        font-size: 12px;
-    }
-
-    .special-sale span{
-        font-size: 18px;
-    }
-
-    .card-identity-area{
-        height: 65px !important;
+    
+    .pr-ml-images-area{
+        display: flex;
     }
 }
 
@@ -843,14 +766,6 @@
         }
     }
 
-    .search-box-title{
-        margin-bottom: 0;
-    }
-
-    .property-card-modal-btns button, 
-    .property-card-modal-btns a {
-        font-size: 12px;
-    }
 
     .price-filter-select-box select, 
     .search-pop-up-select-box select, 
@@ -863,8 +778,8 @@
         padding: 10px 8px;
     }
 
-    .pr-ml-images-area{
-        width: 120px;
+    .card-identity-area{
+        flex-direction: column;
     }
 }
 

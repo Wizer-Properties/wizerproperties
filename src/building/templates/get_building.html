@@ -487,7 +487,7 @@
 {% endblock %}
 
 {% block extend_script %}
-<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+<script src="{% static 'js/libraries/lodash.min.js' %}"></script>
 <script>
     var ASSET_API_URL = '/building/api/details/{{building.id}}/';
     var GELLERY_API_URL = '/building/api/details/{{building.id}}/media-files/';
@@ -498,7 +498,7 @@
     var ADS_LOCATION_PARAM = ['details_sidebar', 'details_topbar']
 </script>
 
-<script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script>
+<script src="{% static 'js/libraries/video.min.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 <script src="{% static 'js/libraries/splide.min.js' %}"></script>
 <script src="{% static 'js/libraries/noframework.waypoints.min.js' %}"></script>

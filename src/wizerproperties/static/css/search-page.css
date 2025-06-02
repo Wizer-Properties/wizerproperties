@@ -19,12 +19,6 @@
     object-fit: cover;
 }
 
-.search-result-box h1{
-    font-size: 18px;
-    color: #212529 !important;
-    margin: 5px 0;
-    font-weight: 600;
-}
 
 .search-result-box .location{
     display: flex;
@@ -34,7 +28,6 @@
 }
 
 .search-result-box .location .icon,
-.search-result-box h1,
 .search-result-box .sub-title,
 .card-title,
 .reels-title{
@@ -135,15 +128,6 @@
     border-radius: 5px;
 }
 
-.search-box-price{
-    background: #F4F4F5;
-    color: #484848;
-    font-size: 24px;
-    padding: 10px 25px;
-    font-weight: 500;
-    min-height: 68px;
-    margin-bottom: 5px;
-}
 
 .filter-categories-dropdown{
     position: relative;
@@ -258,16 +242,6 @@
     gap: 10px;
 }
 
-.buillding-agency-logo img{
-    height: 30px;
-}
-
-.buillding-agency-logo{
-    max-width: 110px;
-    overflow: hidden;
-    margin-right: 10px;
-}
-
 .buillding-agency-tel{
     display: flex;
     flex-direction: column;
@@ -322,12 +296,6 @@
     grid-template-columns: 120px 120px;
 }
 
-.property-card-modal-btns{
-    display: flex;
-    margin: 10px 0;
-    margin-bottom: 20px;
-    gap: 10px;
-}
 
 .property-card-modal-btns button,
 .property-card-modal-btns a,
@@ -336,13 +304,13 @@
 .search-result-box .link{
     background: #fff !important;
     color: #212529 !important;
-    padding: 12px 20px !important;
-    font-size: 14px;
+    padding: 5px 10px !important;
+    font-size: 13px;
     font-weight: 600;
-    border-radius: 10px;
+    border-radius: 7px;
     border: 1px solid var(--th-color) !important;
     display: flex;
-    gap: 10px;
+    gap: 4px;
     justify-content: center;
     align-items: center;
 }
@@ -352,11 +320,6 @@
 .open-3D-model:hover,
 .open-drone-view:hover{
     color: var(--th-color) !important;
-}
-
-.property-card-down-area{
-    display: flex;
-    flex-direction: column;
 }
 
 .suggested-properties{
@@ -621,12 +584,6 @@
         font-weight: 500;
     }
 
-    .search-box-title span {
-        font-size: 20px;
-    }
-    .search-box-price {
-        font-size: 18px;
-    }
     .building-status {
         font-size: 10px;
     }
@@ -685,8 +642,4 @@
         height: 220px;
     }
 
-    .search-box-price{
-        min-height: auto;
-        font-size: 18px;
-    }
 }

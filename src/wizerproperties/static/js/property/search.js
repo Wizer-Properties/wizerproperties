@@ -139,7 +139,7 @@ $(document).ready(function(){
 
         for (let i = 0; i < data.length; i++) {
             image_list += (
-                '<div  class="pr-ml-image"> <img src="'+data[i]?.file+'" alt="img" loading="lazy"> </div>'
+                '<img src="'+data[i]?.file+'" alt="img" loading="lazy">'
             )
         };
 
@@ -176,76 +176,71 @@ $(document).ready(function(){
 
         return  '<div class="col-12 mb-4 property-single-box" property-type="'+data?.tag+'">'+
                     '<div class="search-result-box-wrapper">'+
-                        '<div class="row m-0">'+
+                        (
+                            ["spotlight", "feature"].includes(data?.tag) || Boolean(data?.discount_period) ?
+                            '<div class="card-identity-area">'+
+                                (
+                                    data?.tag == "spotlight" ?  // 'DiscountProperty' consider as 'spotlight'  
+                                    '<div class="special-sale"><span> Flash Sale </span></div>' : ''
+                                )+
+                                (
+                                    data?.tag == "feature" ?
+                                    '<div class="special-sale"><span> Featured Listing </span></div>' : ''
+                                )+
+                                (
+                                    data?.discount_period ? 
+                                    '<div class="search-date-count">'+
+                                        '<div date-count="'+data?.discount_period+'"></div>' + // date-count is handle the date count
+                                    '</div>' : ''
+                                ) +
+                            '</div>': ''
+                        ) +
 
+                        '<div class="row m-0">'+
                             '<div class="col-lg-6 col-xl-6 p-0">'+
-                                '<div class="image-area-with-add-btns">'+
-                                    '<div class="splide search-result-box-img-splid"'+
-                                        'property-id="'+data?.id+'" images-next-page="'+(window.innerWidth <= 768 ? 2 : 3)+'"'+
-                                        'loading moved-page="0" total-images="'+data?.total_default_images+'">'+
-                                        '<div class="splide__track">'+
-                                            '<div class="splide__list">'+
-                                                property_image_tmp(data?.default_images, data?.total_default_images)+
-                                            '</div>'+
-                                        '</div>'+
+                                '<div class="position-relative">'+
+                                    '<div class="search-result-box-img-splid" >'+
+                                        property_multiple_images(data?.default_images, data?.id) +
                                     '</div>'+
-                                    (
-                                        !['agent', 'developer'].includes(user_type) ?
-                                        '<div class="compare-favorite-btn-area">'+
-                                            '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
-                                                '<i class="bi bi-heart-fill"></i>'+
-                                                '<span> Favorite </span>'+
-                                            '</button>' +
-                                            '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
-                                                '<i class="bi bi-arrow-left-right"></i>'+
-                                                '<i class="bi bi-check2"></i>'+
-                                                '<span> Compare </span>'+
-                                            '</button>'+
-                                        '</div>' : ''
-                                    )+
-                                    property_multiple_images(data?.images, data?.id) +
                                 '</div>'+
-                                '<div class="card-identity-area">'+
-                                    (
-                                        data?.tag == "spotlight" ?  // 'DiscountProperty' consider as 'spotlight'  
-                                        '<div class="special-sale"><span> Flash Sale </span></div>' : ''
-                                    )+
-                                    (
-                                        data?.tag == "feature" ?
-                                        '<div class="special-sale"><span> Featured Listing </span></div>' : ''
-                                    )+
+                                '<div class="property-price-area">'+
+                                    '<span class="property-price">'+
+                                        '฿ '+ 
+                                        formatBalance(Math.floor(data?.price) || 0)+
+                                    '</span>'+
+                                    '<span class="property-price-per-sqm">'+
+                                        '฿ '+ 
+                                        formatBalance(Math.floor(data?.price_per_sqm) || 0)+
+                                        ' sqm' +
+                                    '</span>'+
                                 '</div>'+
+                               
                             '</div>'+
 
                             '<div class="col-lg-6 col-xl-6 p-0">'+
                                 '<div class="search-result-box">'+
-                                    '<a href="'+detail_page_url()+'" class="d-block w-100">'+
-                                        '<div class="search-box-title">'+
-                                            '<span> '+data?.building_title+' </span>'+
-                                            (   data?.discount_period ? 
-                                                '<div class="search-date-count">'+
-                                                    '<div date-count="'+data?.discount_period+'"></div>' +
-                                                '</div>' : '') +
-                                        '</div>'+
-                                    '</a>'+
-                                    '<div class="search-result-content">'+
+                                    '<div class="search-result-box-content">'+
+                                        (
+                                            !['agent', 'developer'].includes(user_type) ?
+                                            '<div class="compare-favorite-btn-area">'+
+                                                '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
+                                                    '<i class="bi bi-heart-fill"></i>'+
+                                                    '<span> Favorite </span>'+
+                                                '</button>' +
+                                                '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
+                                                    '<i class="bi bi-arrow-left-right"></i>'+
+                                                    '<i class="bi bi-check2"></i>'+
+                                                    '<span> Compare </span>'+
+                                                '</button>'+
+                                            '</div>' : ''
+                                        )+
+                                        '<a href="'+detail_page_url()+'" class="d-block w-100">'+
+                                            '<h1 class="search-box-title">'+data?.building_title+'</h1>'+
+                                        '</a>'+
                                         '<div>'+
                                             '<a href="/property/details/'+data?.id+'/" class="d-block w-100">'+
-                                                '<div class="d-flex align-items-center flex-wrap gap-2">'+
-                                                    '<div class="search-box-price">'+
-                                                        '฿ '+ 
-                                                        formatBalance(Math.floor(data?.price) || 0)+
-                                                    '</div>'+
-                                                    (
-                                                        data?.building_status ? 
-                                                        '<div class="building-status">'+
-                                                            data?.building_status +
-                                                        '</div>' : ''
-                                                    )+
-                                                '</div>'+
-                                                
                                                 '<div class="property-contains">'+
-                                                ' <div class="property-short-info-box">'+
+                                                    '<div class="property-short-info-box">'+
                                                         '<span class="material-symbols-outlined">bed</span>'+
                                                         '<span class="property-value"> '+ data?.number_of_bedroom +' </span>'+
                                                     '</div>'+
@@ -285,33 +280,32 @@ $(document).ready(function(){
                                                 )+
                                             '</div>'+
                                         '</div>'+
+                                    '</div>'+
 
-                                        '<div class="property-card-down-area">'+
-                                            '<div class="agency-company-info">'+
-                                                '<div class="buillding-agency-logo mb-2">'+
-                                                    '<img src="'+ data?.developer_image +'" alt="company logo">'+
-                                                '</div>'+
-                                                '<div class="agent-company-name">'+
-                                                    '<span>'+ data?.developer_company_name +'</span>'+
-                                                    '<span> Added: '+ formattedDate +' </span>'+
-                                                '</div>'+
+                                    '<div class="property-card-down-area">'+
+                                        '<div class="agency-company-info">'+
+                                            '<div class="buillding-agency-logo">'+
+                                                '<img src="'+ data?.developer_image +'" alt="company logo">'+
                                             '</div>'+
+                                            '<div class="agent-company-name">'+
+                                                '<span>'+ data?.developer_company_name +'</span>'+
+                                                '<span> Added: '+ formattedDate +' </span>'+
+                                            '</div>'+
+                                        '</div>'+
 
-                                            '<div class="property-card-modal-btns gap-2">'+
-                                                '<div class="property-schedule-contact-btn">'+
-                                                    '<a href="/schedule/create_schedule/?type=property&id='+data?.id+'" class="link border-0">'+
-                                                        '<i class="bi bi-box-arrow-up-right"></i>'+
-                                                        'Schedule Viewing'+
-                                                    '</a>'+
-                                                    '<a href="mailto:'+data?.developer_email+'" class="link border-0">'+
-                                                        '<i class="bi bi-box-arrow-up-right"></i>'+
-                                                        'Contact'+
-                                                    '</a>'+
-                                                '</div>'+
+                                        '<div class="property-card-modal-btns gap-2">'+
+                                            '<div class="property-schedule-contact-btn">'+
+                                                '<a href="/schedule/create_schedule/?type=property&id='+data?.id+'" class="link border-0">'+
+                                                    '<i class="bi bi-box-arrow-up-right"></i>'+
+                                                    'Schedule Viewing'+
+                                                '</a>'+
+                                                '<a href="mailto:'+data?.developer_email+'" class="link border-0">'+
+                                                    '<i class="bi bi-envelope"></i>'+
+                                                    'Contact'+
+                                                '</a>'+
                                             '</div>'+
                                         '</div>'+
                                     '</div>'+
-
                                 '</div>'+
                             '</div>'+
 
@@ -324,6 +318,7 @@ $(document).ready(function(){
     var search_prams_list = {
         page_size : 5,
         search : place || '',
+        default_images_number : window.innerWidth <= 768 ? 1 : 2
     };
 
 
@@ -411,7 +406,7 @@ $(document).ready(function(){
                 }) // for time countdown
                 timer.start()
 
-                installing_splide(); // init slider for image
+                // installing_splide(); // init slider for image
 
                 active_free_scrolling = false;
                 last_property_box = $('.property-single-box').last();
