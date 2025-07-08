@@ -7,8 +7,10 @@ from core.admin import custom_admin_site
 
 @admin.register(Advertisement, site=custom_admin_site)
 class AdvertisementAdmin(admin.ModelAdmin):
-    list_display = ["id", "_building", "_property", "ad_location", "position", "ad_run_duration", "number_of_clicked", "view_time", "created_at"]
+    list_display = ["id", "_building", "_property", "ad_location", "position", "ad_run_duration", "number_of_clicked", "_view_time", "created_at"]
     list_editable = ["ad_location", "position"]
+    readonly_fields = ['_view_time']  # Add to instance details view
+    exclude = ['view_time']  # Exclude from the add/edit form
     
     def _property(self, obj):
         if obj.property:
@@ -21,6 +23,10 @@ class AdvertisementAdmin(admin.ModelAdmin):
             link = reverse("admin:building_building_change", args=[obj.property.building.id])
             return format_html('<a href="{}" target="_blank">{}</a>', link, obj.property.building.title)
         return "--"
+    
+    @admin.display(description='View time (HH:MM:SS)')
+    def _view_time(self, obj):
+        return obj.view_time_without_milliseconds()
 
 
 @admin.register(Reel, site=custom_admin_site)

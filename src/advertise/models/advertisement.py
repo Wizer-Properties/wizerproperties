@@ -20,8 +20,8 @@ class Advertisement(TimestampedModel):
         ('blog', 'Blog'),
     )
     STATUS = (
-        ('running', 'Running'),
-        ('stopped', 'Stopped'),
+        ('running', 'Active'),
+        ('stopped', 'Inactive'),
     )
 
     ad_location = models.CharField(max_length=25, choices=TYPE_CHOICES, null=True)
@@ -29,7 +29,7 @@ class Advertisement(TimestampedModel):
     status = models.CharField(max_length=25, choices=STATUS, default='running')
     property = models.ForeignKey(Property, on_delete=models.CASCADE)
     ad_run_duration = models.PositiveIntegerField(default=0, help_text='How many days this ad will run')
-    number_of_clicked = models.PositiveIntegerField(default=0)  # How many times this ad has been clicked
+    number_of_clicked = models.PositiveIntegerField("Number of clicks", default=0)  # How many times this ad has been clicked
     view_time = models.DurationField(default=timedelta(seconds=0))  # How long the viewers view this advertisement
         
     def __str__(self) -> str:
