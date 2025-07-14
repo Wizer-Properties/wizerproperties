@@ -724,9 +724,7 @@
     margin-bottom: 40px;
 }
 
-.top-banner{
-    margin-top: 0px !important;
-}
+
 
 @media screen and (max-width: 1200px) {
     .container-hm{
@@ -736,17 +734,17 @@
 
 
 .home-top-banner{
-    position: absolute;
-    top: 5px;
-    left: calc(50% - 85px);
-    transform: translateX(-50%);
-    width: 480px;
-    z-index: 999;
+    margin: 20px auto;
 }
 
 .home-top-banner
 .top-banner-img{
-    height: 75px !important;
+    height: 120px !important;
+}
+
+.home-top-banner
+.top-banner-img img{
+    border-radius: 2px;
 }
 
 @media screen and (max-width: 991px) {
@@ -778,8 +776,8 @@
         margin-bottom: 30px;
     }
 
-    .home-top-banner{
-        display: none !important;
+    .home-top-banner .top-banner-img {
+        height: 100px !important;
     }
 }
 
