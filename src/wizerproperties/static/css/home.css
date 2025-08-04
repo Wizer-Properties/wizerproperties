@@ -739,7 +739,7 @@
 
 .home-top-banner
 .top-banner-img{
-    height: 120px !important;
+    height: 170px !important;
 }
 
 .home-top-banner
@@ -776,9 +776,6 @@
         margin-bottom: 30px;
     }
 
-    .home-top-banner .top-banner-img {
-        height: 100px !important;
-    }
 }
 
 @media screen and (max-width: 768px) {
@@ -851,6 +848,11 @@
 
     .header{
         justify-content: space-between !important;
+    }
+
+    .home-top-banner 
+    .top-banner-img{
+        height: 135px !important;
     }
 }
 
