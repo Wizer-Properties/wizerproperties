@@ -980,14 +980,14 @@ option:disabled{
 }
 
 .top-banner-img{
-    width: 100%;
-    height: 120px;
+    height: 170px !important;
 }
 
 .top-banner-img img{
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 2px;
 }
 
 .property-single-box 
@@ -1442,6 +1442,10 @@ main {
         align-items: flex-start !important;
         justify-content: flex-start !important;
     }
+
+    .top-banner-img{
+        height: 135px !important;
+    }
 }
 
 
@@ -1455,10 +1459,6 @@ main {
     }
     #privacy-about-page .title {
         font-size: 18px;
-    }
-
-    .top-banner-img {
-        height: 100px;
     }
 
     .filter-label {

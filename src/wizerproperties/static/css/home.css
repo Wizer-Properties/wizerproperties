@@ -737,15 +737,7 @@
     margin: 20px auto;
 }
 
-.home-top-banner
-.top-banner-img{
-    height: 170px !important;
-}
 
-.home-top-banner
-.top-banner-img img{
-    border-radius: 2px;
-}
 
 @media screen and (max-width: 991px) {
     .search-box input {
@@ -850,10 +842,6 @@
         justify-content: space-between !important;
     }
 
-    .home-top-banner 
-    .top-banner-img{
-        height: 135px !important;
-    }
 }
 
 @media screen and (max-width: 560px){
