@@ -37,7 +37,7 @@ $(function(){
         return '<li class="splide__slide">' +
             '<div class="top-banner-img">' +
             '<a href="/property/details/' + item?.property_id + '/?ad_id=' + item?.id + '">' +
-            '<img src="' + item?.property_image + '" alt="wip-ads">' +
+            '<img src="' + item?.banner_image + '" alt="wip-ads">' +
             '</a>' +
             '</div>' +
             '</li>';

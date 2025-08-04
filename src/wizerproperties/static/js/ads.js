@@ -28,7 +28,7 @@ $(document).ready(function(){
     function ads_tmp(data){
         return  '<div class="top-banner-img">'+
                     '<a href="/property/details/'+data?.property_id+'/?ad_id='+data?.id+'">'+
-                        '<img src="'+data?.property_image+'" alt="wip-ads">'+
+                        '<img src="'+data?.banner_image+'" alt="wip-ads">'+
                     '</a>'+
                 '</div>'
     };
@@ -37,7 +37,7 @@ $(document).ready(function(){
     function side_ads_tmp(data){
         return  '<div class="side-add-banner-img">'+
                     '<a href="/property/details/'+data?.property_id+'/?ad_id='+data?.id+'">'+
-                        '<img src="'+data?.property_image+'" alt="wip-ads">'+
+                        '<img src="'+data?.banner_image+'" alt="wip-ads">'+
                     '</a>'+
                 '</div>'
     };

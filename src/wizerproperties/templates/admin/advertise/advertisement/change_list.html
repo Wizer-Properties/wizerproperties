@@ -1,0 +1,96 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/analytics_modal.css' %}">
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    
+    <!-- Analytics Modal -->
+    <div id="analyticsModal" class="analytics-modal">
+        <div class="analytics-modal-content">
+            <div class="analytics-modal-header">
+                <h2>Advertisement Analytics</h2>
+                <span class="analytics-close">&times;</span>
+            </div>
+            <div class="analytics-modal-body">
+                <div class="analytics-loading">
+                    <div class="spinner"></div>
+                    <p>Loading analytics data...</p>
+                </div>
+                <div class="analytics-content" style="display: none;">
+                    <div class="analytics-grid">
+                        <!-- Basic Stats -->
+                        <div class="analytics-card">
+                            <h3>📊 Basic Statistics</h3>
+                            <div class="stat-item">
+                                <span class="stat-label">Property:</span>
+                                <span class="stat-value" id="property-title">-</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Ad Clicks:</span>
+                                <span class="stat-value" id="ad-clicks">-</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">View Time:</span>
+                                <span class="stat-value" id="view-time">-</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Conversion Rate:</span>
+                                <span class="stat-value" id="conversion-rate">-</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Demographics -->
+                        <div class="analytics-card">
+                            <h3>👥 Demographics</h3>
+                            <div class="stat-item">
+                                <span class="stat-label">Male Visitors:</span>
+                                <span class="stat-value">
+                                    <span id="male-visitors">-</span> 
+                                </span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Female Visitors:</span>
+                                <span class="stat-value">
+                                    <span id="female-visitors">-</span> 
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <!-- Location Analytics -->
+                        <div class="analytics-card full-width">
+                            <h3>📍 Location Analytics</h3>
+                            <div class="location-table-container">
+                                <table class="location-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Location</th>
+                                            <th>Number of Views</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="location-data">
+                                        <tr>
+                                            <td colspan="2" class="no-data">No location data available</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="analytics-error" style="display: none;">
+                    <p class="error-message">Failed to load analytics data. Please try again.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extrajs %}
+    {{ block.super }}
+    <script src="{% static 'admin/js/analytics_modal.js' %}"></script>
+{% endblock %}

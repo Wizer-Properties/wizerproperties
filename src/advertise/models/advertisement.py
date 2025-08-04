@@ -26,6 +26,7 @@ class Advertisement(TimestampedModel):
 
     ad_location = models.CharField(max_length=25, choices=TYPE_CHOICES, null=True)
     position = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1)], help_text='Position of the advertisement in the ad location')
+    banner = models.ImageField(upload_to='advertisement/banner/', null=True)
     status = models.CharField(max_length=25, choices=STATUS, default='running')
     property = models.ForeignKey(Property, on_delete=models.CASCADE)
     ad_run_duration = models.PositiveIntegerField(default=0, help_text='How many days this ad will run')

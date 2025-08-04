@@ -69,8 +69,8 @@ class DeveloperProfileAdmin(admin.ModelAdmin):
             return format_html('<a href="{}" target="_blank">{}</a>', link, obj.user.username)
         return "--"
     
-    def has_add_permission(self, request):
-        return False
+    # def has_add_permission(self, request):
+    #     return False
     
     def change_view(self, request, object_id, form_url='', extra_context=None):
         # Add extra context to disable the "Save and add another" button

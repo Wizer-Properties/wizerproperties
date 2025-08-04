@@ -24,21 +24,20 @@ class AdvertisementSerializer(serializers.ModelSerializer):
 
 
 class AdvertisementSuggestionSerializer(serializers.ModelSerializer):
-    property_image = serializers.SerializerMethodField()
+    banner_image = serializers.SerializerMethodField()
     property_id = serializers.IntegerField(source="property.id", read_only=True)
 
     class Meta:
         model = Advertisement
         fields = [
             "id",
-            "property_image",
+            "banner_image",
             "property_id",
         ]
     
-    def get_property_image(self, obj):
-        # Returns property image
-        image = obj.property.media_files.filter(type="image").first()
-        if image:
-            return image.file.url
+    def get_banner_image(self, obj):
+        # Returns banner image
+        if obj.banner:
+            return obj.banner.url
 
         return None

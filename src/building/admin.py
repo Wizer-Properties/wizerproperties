@@ -25,8 +25,8 @@ class BuildingAdmin(admin.ModelAdmin):
     def _(self, obj):
         return format_html('<a href="#/" class="building-detail-view-admin-modal-button" data-id="{}">Detail</a>', obj.id)
     
-    def has_add_permission(self, request):
-        return False
+    # def has_add_permission(self, request):
+    #     return False
     
     def change_view(self, request, object_id, form_url='', extra_context=None):
         # Add extra context to disable the "Save and add another" button
