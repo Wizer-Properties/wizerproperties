@@ -10,7 +10,7 @@ class AdDemography(TimestampedModel):
     female_visitors = models.PositiveIntegerField(default=0)
 
     class Meta:
-        verbose_name_plural = "Advertisement Demographies"
+        verbose_name_plural = "Advertisement Demographic"
 
 
 class AdViewerLocation(TimestampedModel):
