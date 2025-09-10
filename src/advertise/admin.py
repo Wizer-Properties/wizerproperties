@@ -9,7 +9,7 @@ from advertise.api.serializers import AdAnalyticsSerializer
 
 @admin.register(Advertisement, site=custom_admin_site)
 class AdvertisementAdmin(admin.ModelAdmin):
-    list_display = ["id", "_building", "_property", "ad_location", "position", "ad_run_duration", "number_of_clicked", "_view_time", "_analytics_button", "created_at"]
+    list_display = ["id", "content_object", "ad_location", "position", "ad_run_duration", "number_of_clicked", "_view_time", "_analytics_button", "created_at"]
     list_editable = ["ad_location", "position"]
     readonly_fields = ['_view_time']  # Add to instance details view
     exclude = ['view_time']  # Exclude from the add/edit form
@@ -20,18 +20,6 @@ class AdvertisementAdmin(admin.ModelAdmin):
             'all': ('admin/css/analytics_modal.css',)
         }
         js = ('admin/js/analytics_modal.js',)
-    
-    def _property(self, obj):
-        if obj.property:
-            link = reverse("admin:property_property_change", args=[obj.property.id]) 
-            return format_html('<a href="{}" target="_blank">{}</a>', link, obj.property.title)
-        return "--"
-    
-    def _building(self, obj):
-        if obj.property and obj.property.building:
-            link = reverse("admin:building_building_change", args=[obj.property.building.id])
-            return format_html('<a href="{}" target="_blank">{}</a>', link, obj.property.building.title)
-        return "--"
     
     @admin.display(description='View time (HH:MM:SS)')
     def _view_time(self, obj):

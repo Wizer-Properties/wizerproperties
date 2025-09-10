@@ -9,6 +9,8 @@ from schedule.models import VisitingSchedule
 from user.models import User
 from utils.general_func import get_duration_without_milliseconds
 from django.core.validators import MinValueValidator
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.db.models import Q
 
 
 class Advertisement(TimestampedModel):
@@ -28,7 +30,20 @@ class Advertisement(TimestampedModel):
     position = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1)], help_text='Position of the advertisement in the ad location')
     banner = models.ImageField(upload_to='advertisement/banner/', null=True)
     status = models.CharField(max_length=25, choices=STATUS, default='running')
-    property = models.ForeignKey(Property, on_delete=models.CASCADE)
+
+    # Generic relation to either Property or Building model. Both fields can be null.
+    content_type = models.ForeignKey(
+        ContentType,
+        on_delete=models.SET_NULL,
+		null=True,
+		limit_choices_to=Q(
+            Q(app_label='building', model='building') |
+            Q(app_label='property', model='property')
+        )
+    )
+    object_id = models.PositiveIntegerField(null=True, blank=True)
+    content_object = GenericForeignKey('content_type', 'object_id')  # renamed from `property` to `content`
+
     ad_run_duration = models.PositiveIntegerField(default=0, help_text='How many days this ad will run')
     number_of_clicked = models.PositiveIntegerField("Number of clicks", default=0)  # How many times this ad has been clicked
     view_time = models.DurationField(default=timedelta(seconds=0))  # How long the viewers view this advertisement
