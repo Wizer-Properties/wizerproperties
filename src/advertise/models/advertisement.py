@@ -32,6 +32,7 @@ class Advertisement(TimestampedModel):
     ad_run_duration = models.PositiveIntegerField(default=0, help_text='How many days this ad will run')
     number_of_clicked = models.PositiveIntegerField("Number of clicks", default=0)  # How many times this ad has been clicked
     view_time = models.DurationField(default=timedelta(seconds=0))  # How long the viewers view this advertisement
+    expired_at = models.DateTimeField(null=True, blank=True) # When the ad is set to expire
         
     def __str__(self) -> str:
         return super().__str__()

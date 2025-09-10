@@ -5,6 +5,7 @@ from datetime import timedelta
 from user.models import User
 from django.utils.text import slugify
 import uuid
+from django.core.exceptions import ValidationError
 
 
 class Post(TimestampedModel):
@@ -20,7 +21,11 @@ class Post(TimestampedModel):
     status = models.CharField(max_length=20, default="draft", choices=STATUS)
     subtitle = models.CharField(max_length=2000, null=True)
     description = CKEditor5Field(null=True)
-    creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    creator = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        limit_choices_to={'is_superuser': True}
+    )
     banner_image = models.ImageField(upload_to='blog/banner_images/', null=True)
     categories = models.ManyToManyField('Category', related_name='posts')
     estimated_read_time = models.IntegerField(default=0)
@@ -34,10 +39,20 @@ class Post(TimestampedModel):
 
     def __str__(self):
         return self.title
+
+    def clean(self):
+        # import here to avoid changing top-of-file imports
+        super().clean()
+        if self.creator and not self.creator.is_superuser:
+            raise ValidationError({'creator': 'Creator must be an admin user.'})
     
     def save(self, *args, **kwargs):
-        self.estimated_read_time = round(len(self.description.split()) / 200)
-        
+        # validate that creator is superuser (and other field validation)
+        self.full_clean()
+
+        # estimate read time (guard if description is None)
+        self.estimated_read_time = round(len((self.description or '').split()) / 200)
+
         if not self.slug:
             base_slug = slugify(self.title[:40])
             unique_slug = base_slug

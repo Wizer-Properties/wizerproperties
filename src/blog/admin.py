@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from .models import Post, Category, PostInteraction
 from core.admin import custom_admin_site
+from django.contrib.auth import get_user_model
 
 
 custom_admin_site.register(PostInteraction)
@@ -10,17 +11,19 @@ custom_admin_site.register(PostInteraction)
 @admin.register(Post, site=custom_admin_site)
 class PostAdmin(admin.ModelAdmin):
     list_display = (
-        'title', 'status',  
-        'total_likes', 'total_dislikes', 'total_read_count', 'estimated_read_time', 
-        'categories_list', 'creator', 'created_at', 'updated_at',
-     )
+        'title', 'status', 'estimated_read_time', 'total_read_count',
+        'categories_list', '_created_at',
+    )
     list_filter = ('status', 'categories__name')
     search_fields = ('title', 'description',)
     ordering = ('-created_at',)
     list_editable = ('status',)
-    
+
     def categories_list(self, obj):
         return ", ".join([category.name for category in obj.categories.all()])
+
+    def _created_at(self, obj):
+        return obj.created_at.strftime("%d-%m-%Y %H:%M%p")
     
 @admin.register(Category, site=custom_admin_site)
 class CategoryAdmin(admin.ModelAdmin):
