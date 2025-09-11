@@ -35,8 +35,9 @@ class Advertisement(TimestampedModel):
     content_type = models.ForeignKey(
         ContentType,
         on_delete=models.SET_NULL,
-		null=True,
-		limit_choices_to=Q(
+        null=True,
+        blank=True,
+        limit_choices_to=Q(
             Q(app_label='building', model='building') |
             Q(app_label='property', model='property')
         )
@@ -56,6 +57,10 @@ class Advertisement(TimestampedModel):
         """To check some field validation manually we are modifying the default clean method"""
         
         error_messages = {} # Error messages will append here
+
+        # If content_type cleared, also clear object_id to avoid dangling references
+        if not self.content_type:
+            self.object_id = None
         
         if self.status == 'running':
             if Advertisement.objects.filter(ad_location=self.ad_location, position=self.position, status='running').exclude(id=self.id).exists():
