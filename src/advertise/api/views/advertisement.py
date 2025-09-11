@@ -4,11 +4,14 @@ from collections import OrderedDict
 from rest_framework.decorators import action
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from django.db.models import Case, When
+from django.db.models import Case, When, Value, IntegerField
 from datetime import timedelta
 
 from advertise.models import Advertisement
+from django.contrib.contenttypes.models import ContentType
+from django.db.models import Q
 from property.models import Property
+from building.models import Building
 from advertise.api.serializers import AdAnalyticsSerializer, AdvertisementSerializer, AdvertisementSuggestionSerializer
 from advertise.api.pagination import AdvertisementPagination
 from advertise.api.permissions import AdvertisementPermission
@@ -45,25 +48,45 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=["get"], url_path="list")
     def advertisement_list(self, request):
-        """Returns agent/developer advertisement list"""
-        
-        advertisement_qs = self.get_queryset().filter(property__created_by=request.user)
+        """Returns agent/developer advertisement list.
+        Previously filtered by property__created_by. Now we must derive this through the generic relation.
+        We'll include only advertisements whose content_object (if it's a Property) was created by the user.
+        Other content types (e.g., Building) are included only if they expose a created_by attribute matching the user.
+        """
+
+        user = request.user
+        # Collect IDs for Property & Building content the user owns
+        property_ct = ContentType.objects.get_for_model(Property)
+        building_ct = ContentType.objects.get_for_model(Building)
+        property_ids = list(Property.objects.filter(created_by=user).values_list("id", flat=True))
+        building_ids = list(Building.objects.filter(created_by=user).values_list("id", flat=True))
+
+        # Filter advertisements for owned Property or Building objects
+        advertisement_qs = self.get_queryset().filter(
+            Q(content_type=property_ct, object_id__in=property_ids) |
+            Q(content_type=building_ct, object_id__in=building_ids)
+        )
         serializer = self.serializer_class(advertisement_qs, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
     @action(detail=False, methods=["get"], url_path="suggested")
     def suggested_advertisement(self, request):
+        """Suggest advertisements for both Property & Building targets.
+        Strategy:
+          1. Build ordered list of candidate Property IDs using cookie filters & place combinations.
+          2. Build ordered list of candidate Building IDs using mapped place filters.
+          3. Merge and fetch Advertisement objects (generic relation) preserving relative order.
+        """
         property_qs = Property.objects.all().select_related("building")
-        
-        # Helper function to parse the cookie values
+        building_qs = Building.objects.all()
+
         def parse_cookie_value(value):
             try:
                 return ast.literal_eval(value)
-            except (ValueError, SyntaxError):
+            except Exception:
                 return value
 
-        # Extract cookie values
         building__type = parse_cookie_value(request.COOKIES.get("building__type"))
         building__sub_type = parse_cookie_value(request.COOKIES.get("building__sub_type"))
         min_price = parse_cookie_value(request.COOKIES.get("min_price"))
@@ -72,7 +95,6 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
         max_number_of_bedroom = parse_cookie_value(request.COOKIES.get("max_number_of_bedroom"))
         searched_places = parse_cookie_value(request.COOKIES.get("searched_places"))
 
-        # Create initial query parameters dictionary
         query_params = {}
         if building__type is not None:
             query_params["building__type"] = building__type
@@ -86,73 +108,101 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
             query_params["number_of_bedroom__gte"] = min_number_of_bedroom
         if max_number_of_bedroom is not None:
             query_params["number_of_bedroom__lte"] = max_number_of_bedroom
-
-        # Filter out None values
         query_params = {k: v for k, v in query_params.items() if v is not None}
 
-        # Get all possible combinations of query parameters in descending order of their length
         query_param_combinations = []
         for i in range(len(query_params), 0, -1):
             query_param_combinations.extend(combinations(query_params.items(), i))
 
-        unique_property_ids = OrderedDict()  # Defined in the outer scope
+        unique_property_ids = []
 
-        # Function to add property IDs to unique_property_ids
-        def filter_and_add_ids(filters):
-            nonlocal unique_property_ids  # Allows modification of the unique_property_ids variable defined in the enclosing scope
-            property_sub_qs = property_qs.filter(**filters)
-            for prop_id in property_sub_qs.values_list("id", flat=True):
-                unique_property_ids[prop_id] = None  # Add each property ID to unique_property_ids
-                # Using OrderedDict to preserve the insertion order and ensure IDs are unique
+        def add_property_ids(filters):
+            for prop_id in property_qs.filter(**filters).values_list("id", flat=True):
+                if prop_id not in unique_property_ids:
+                    unique_property_ids.append(prop_id)
 
-        # Process each searched place with each combination of query parameters
         if searched_places:
             for place in searched_places:
                 if query_param_combinations:
                     for combo in query_param_combinations:
-                        filters = dict(combo)  # Convert the combination tuple to a dictionary
-                        filter_and_add_ids({**place, **filters})  # Filter properties and add their IDs to unique_property_ids
-                
-                filter_and_add_ids(place)  # Filter properties and add their IDs to unique_property_ids
-
-                # Also handle place alone after removing specific levels of granularity
+                        combo_filters = dict(combo)
+                        merged = {**place, **combo_filters}
+                        add_property_ids(merged)
+                add_property_ids(place)
+                # Less granular
                 for key in ["building__sub_district", "building__district"]:
                     if key in place:
-                        place.pop(key)  # Remove the specified key to create a less granular filter
-
+                        reduced = dict(place)
+                        reduced.pop(key)
                         if query_param_combinations:
                             for combo in query_param_combinations:
-                                filters = dict(combo)  # Convert the combination tuple to a dictionary
-                                filter_and_add_ids({**place, **filters})  # Filter properties and add their IDs to unique_property_ids
-                        
-                        filter_and_add_ids(place)  # Filter properties and add their IDs to unique_property_ids
-
-        # Convert OrderedDict keys to list to get unique property IDs in the original order
-        unique_property_ids = list(unique_property_ids.keys())
+                                combo_filters = dict(combo)
+                                merged = {**reduced, **combo_filters}
+                                add_property_ids(merged)
+                        add_property_ids(reduced)
 
         if unique_property_ids:
-            # Get the queryset of the rest of the properties excluding the ones in unique_property_ids
-            rest_of_the_property_ids = property_qs.exclude(id__in=unique_property_ids).order_by("-created_at").values_list("id", flat=True)        
-            # Combine the unique property IDs with the rest, maintaining the original order first
-            property_id_list = unique_property_ids + list(rest_of_the_property_ids)
-            # Create a Case expression to order the properties based on their IDs
-            order_by = Case(*[When(property__id=id, then=pos) for pos, id in enumerate(property_id_list)])
+            rest_props = property_qs.exclude(id__in=unique_property_ids).order_by("-created_at").values_list("id", flat=True)
+            property_id_list = unique_property_ids + list(rest_props)
         else:
-            property_ids = property_qs.order_by("-created_at").values_list("id", flat=True)
-            property_id_list = list(property_ids)
-            # If their is no cookie we will order them by position
-            order_by = "position"
-        
-        ad_query_params = {
-            "property_id__in": property_id_list,
-        }
-        ad_location = request.GET.get("ad-location", None)
+            property_id_list = list(property_qs.order_by("-created_at").values_list("id", flat=True))
+
+        matched_building_ids = []
+
+        def add_building_ids(filters):
+            for bid in building_qs.filter(**filters).values_list("id", flat=True):
+                if bid not in matched_building_ids:
+                    matched_building_ids.append(bid)
+
+        if searched_places:
+            for place in searched_places:
+                mapped = {k.replace("building__", ""): v for k, v in place.items() if k.startswith("building__")}
+                if building__type is not None:
+                    mapped.setdefault("type", building__type)
+                if building__sub_type is not None:
+                    mapped.setdefault("sub_type", building__sub_type)
+                if mapped:
+                    add_building_ids(mapped)
+                for key in ["sub_district", "district"]:
+                    if key in mapped:
+                        reduced = dict(mapped)
+                        reduced.pop(key)
+                        if reduced:
+                            add_building_ids(reduced)
+
+        if matched_building_ids:
+            rest_buildings = building_qs.exclude(id__in=matched_building_ids).order_by("-created_at").values_list("id", flat=True)
+            building_id_list = matched_building_ids + list(rest_buildings)
+        else:
+            building_id_list = list(building_qs.order_by("-created_at").values_list("id", flat=True))
+
+        property_ct = ContentType.objects.get_for_model(Property)
+        building_ct = ContentType.objects.get_for_model(Building)
+
+        ad_location = request.GET.get("ad-location")
+
+        # Build the queryset: include valid generic targets and also ads with null content_type for this location
+        valid_targets = (
+            Q(content_type=property_ct, object_id__in=property_id_list) |
+            Q(content_type=building_ct, object_id__in=building_id_list)
+        )
+        null_targets = Q(content_type__isnull=True)
         if ad_location:
-            ad_query_params["ad_location"] = ad_location
-       
-        # Filter the queryset for active reels and order them according to the Case expression
-        advertisement_qs = self.get_queryset().filter(**ad_query_params).order_by(order_by)
+            valid_targets &= Q(ad_location=ad_location)
+            null_targets &= Q(ad_location=ad_location)
+
+        ads_qs = self.get_queryset().filter(valid_targets | null_targets)
+
+        ordering_cases = []
+        pos = 0
+        for pid in property_id_list:
+            ordering_cases.append(When(content_type=property_ct, object_id=pid, then=pos)); pos += 1
+        for bid in building_id_list:
+            ordering_cases.append(When(content_type=building_ct, object_id=bid, then=pos)); pos += 1
+        # Anything unmatched (including content_type is null) will go to the end
+        ordering_expression = Case(*ordering_cases, default=Value(10**9), output_field=IntegerField()) if ordering_cases else "position"
+        advertisement_qs = ads_qs.order_by(ordering_expression, "position", "-created_at")
         paginator = self.pagination_class()
-        paginated_queryset = paginator.paginate_queryset(advertisement_qs, request)
-        serializer = AdvertisementSuggestionSerializer(paginated_queryset, many=True)
+        page = paginator.paginate_queryset(advertisement_qs, request)
+        serializer = AdvertisementSuggestionSerializer(page, many=True)
         return Response(serializer.data)

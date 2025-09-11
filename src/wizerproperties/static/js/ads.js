@@ -23,25 +23,30 @@ $(document).ready(function(){
             interval: 3000
         }).mount();
     };
-
-
     function ads_tmp(data){
-        return  '<div class="top-banner-img">'+
-                    '<a href="/property/details/'+data?.property_id+'/?ad_id='+data?.id+'">'+
-                        '<img src="'+data?.banner_image+'" alt="wip-ads">'+
-                    '</a>'+
-                '</div>'
+        var img = '<img src="'+(data?.banner_image || '')+'" alt="wip-ads">';
+        if (data?.target_type && data?.object_id) {
+            return  '<div class="top-banner-img">'+
+                        '<a href="/'+data.target_type+'/details/'+data.object_id+'/?ad_id='+data?.id+'">'+
+                            img +
+                        '</a>'+
+                    '</div>';
+        }
+        return '<div class="top-banner-img">'+ img +'</div>';
     };
 
 
     function side_ads_tmp(data){
-        return  '<div class="side-add-banner-img">'+
-                    '<a href="/property/details/'+data?.property_id+'/?ad_id='+data?.id+'">'+
-                        '<img src="'+data?.banner_image+'" alt="wip-ads">'+
-                    '</a>'+
-                '</div>'
+        var img = '<img src="'+(data?.banner_image || '')+'" alt="wip-ads">';
+        if (data?.target_type && data?.object_id) {
+            return  '<div class="side-add-banner-img">'+
+                        '<a href="/'+data.target_type+'/details/'+data.object_id+'/?ad_id='+data?.id+'">'+
+                            img +
+                        '</a>'+
+                    '</div>';
+        }
+        return '<div class="side-add-banner-img">'+ img +'</div>';
     };
-
 
     function loader_tmp(){
         return '<div class="top-banner-img top-banner-loader">'+

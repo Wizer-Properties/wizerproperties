@@ -174,8 +174,8 @@ class AdDemographyAdmin(admin.ModelAdmin):
 
 @admin.register(AdvertisementLog, site=custom_admin_site)
 class AdvertisementLogAdmin(admin.ModelAdmin):
-    list_display = ["id", "property", "advertisement", "user_obj", "location", "created_at"]
+    list_display = ["id", "content_object", "advertisement", "user_obj", "location", "created_at"]
     
 @admin.register(AdViewerLocation, site=custom_admin_site)
 class AdViewerLocation(admin.ModelAdmin):
-    list_display = ["id", "property", "advertisement", "address", "view_from_this_location", "created_at"]
+    list_display = ["id", "content_object", "advertisement", "address", "view_from_this_location", "created_at"]

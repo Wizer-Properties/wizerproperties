@@ -77,27 +77,31 @@ class Advertisement(TimestampedModel):
         return end_at
     
     def conversion_rate(self) -> float:
-        """Returns advertisement conversion rate"""
-
+        """Returns advertisement conversion rate.
+        For Property-targeted ads, computes VisitingSchedule count / clicks.
+        Non-property targets return 0.0 for now.
+        """
         if self.number_of_clicked == 0:
             return 0.0
-        
-        property_content_type = ContentType.objects.get_for_model(Property)
-        # Filter VisitingSchedule objects for the specific property
+
+        if not self.content_type or not self.object_id:
+            return 0.0
+
+        property_ct = ContentType.objects.get_for_model(Property)
+        if self.content_type_id != property_ct.id:
+            return 0.0
+
         visiting_schedule_count = VisitingSchedule.objects.filter(
-            content_type=property_content_type,
-            object_id=self.property.id
+            content_type=property_ct,
+            object_id=self.object_id,
         ).count()
-        conversion_rate = round((visiting_schedule_count/self.number_of_clicked) * 100, 2)
-        
-        return conversion_rate
+        return round((visiting_schedule_count / self.number_of_clicked) * 100, 2)
 
     def manage_ad_analytics(self, user=None, location=None) -> None:
         """Depending on view of an ad we are upending it's associates analytics value"""
         
         self.number_of_clicked += 1     # Increasing the ad click count
         self.save()
-        
         if user and hasattr(user, "prospectprofile"):
             if user.prospectprofile.gender ==  "male":
                 self.addemography.male_visitors += 1
@@ -105,22 +109,23 @@ class Advertisement(TimestampedModel):
                 self.addemography.female_visitors += 1
             
             self.addemography.save()
-        
         if location:
-            # Creating AD log
+            # Create AD log (generic to Property/Building or None)
             AdvertisementLog.objects.create(
-                property=self.property,
+                content_type=self.content_type,
+                object_id=self.object_id,
                 advertisement=self,
                 user_obj=user,
-                location=location
+                location=location,
             )
 
-            # Saving ad viewer location
+            # Saving ad viewer location (generic)
             AdViewerLocation = apps.get_model("advertise.AdViewerLocation")
-            ad_viewer_location_obj, created = AdViewerLocation.objects.get_or_create(
-                property = self.property,
-                advertisement = self,
-                address = location
+            ad_viewer_location_obj, _ = AdViewerLocation.objects.get_or_create(
+                advertisement=self,
+                content_type=self.content_type,
+                object_id=self.object_id,
+                address=location,
             )
             ad_viewer_location_obj.view_from_this_location += 1
             ad_viewer_location_obj.save()
@@ -131,7 +136,20 @@ class Advertisement(TimestampedModel):
             
 
 class AdvertisementLog(TimestampedModel):
-    property = models.ForeignKey(Property, on_delete=models.SET_NULL, null=True)
+    # Generic link to the target (Property or Building); both fields can be null
+    content_type = models.ForeignKey(
+        ContentType,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        limit_choices_to=Q(
+            Q(app_label='building', model='building') |
+            Q(app_label='property', model='property')
+        )
+    )
+    object_id = models.PositiveIntegerField(null=True, blank=True)
+    content_object = GenericForeignKey('content_type', 'object_id')
+
     advertisement = models.ForeignKey(Advertisement, on_delete=models.SET_NULL, null=True)
     user_obj = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     location = models.CharField(max_length=500, null=True)
