@@ -32,13 +32,17 @@ class Property(TimestampedModel):
     balcony_direction = models.CharField(max_length=255, null=True)
     main_door_direction = models.CharField(max_length=255, null=True)
     unit_position = models.CharField(max_length=100, choices=UNIT_POSITION_TYPES, null=True)
-    have_tenant_occupied = models.BooleanField(default=False)
+    
+    # Using verbose_name to display clean field names in Django admin
+    # Removes "have_" and "is_" prefixes to make admin interface more user-friendly
+    # while keeping original field names in database for code compatibility
+    have_tenant_occupied = models.BooleanField(default=False, verbose_name="Tenant Occupied")
     tenant_occupied_validity = models.DateField(blank=True, null=True)
-    have_vacant = models.BooleanField(default=False)
-    have_owner_occupied = models.BooleanField(default=False)
-    have_bathtub = models.BooleanField(default=False)
-    have_duplex = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+    have_vacant = models.BooleanField(default=False, verbose_name="Vacant")
+    have_owner_occupied = models.BooleanField(default=False, verbose_name="Owner Occupied")
+    have_bathtub = models.BooleanField(default=False, verbose_name="Bathtub")
+    have_duplex = models.BooleanField(default=False, verbose_name="Duplex")
+    is_active = models.BooleanField(default=True, verbose_name="Active")
     created_by = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True, related_name="properties")
     view_time = models.DurationField(default=timedelta(seconds=0))  # How long the viewers view this property
     search_appearance = models.PositiveIntegerField(default=0)  # Number to time it appear in search

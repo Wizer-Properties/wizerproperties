@@ -46,24 +46,30 @@ class Building(TimestampedModel):
     quota = models.CharField(max_length=100, choices=QUOTA_TYPES, null=True)
     furnishing = models.CharField(max_length=100, choices=FURNISHING_TYPES, null=True)
     distance_from_location_to_BTS_or_MRT = models.DecimalField(
-        max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(0)]
+        max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(0)],
+        verbose_name="Distance from location to BTS or MRT (KM)"
     )
     distance_from_location_to_ARL = models.DecimalField(
-        max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(0)]
+        max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(0)],
+        verbose_name="Distance from location to ARL (KM)"
     )
     view = models.CharField(max_length=500, null=True)
     facility_view = models.URLField(max_length=2000, blank=True, null=True)
     location_view = models.URLField(max_length=2000, blank=True, null=True)
-    have_freehold = models.BooleanField(default=False)
-    have_leasehold = models.BooleanField(default=False)
-    have_infinity_pool = models.BooleanField(default=False)
-    have_pets_allowed = models.BooleanField(default=False)
-    have_guard_house = models.BooleanField(default=False)
-    have_sauna = models.BooleanField(default=False)
-    have_sky_lounge = models.BooleanField(default=False)
-    have_grocery = models.BooleanField(default=False)
-    have_fitness_area = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+    
+    # Using verbose_name to display clean field names in Django admin
+    # Removes "have_" and "is_" prefixes to make admin interface more user-friendly
+    # while keeping original field names in database for code compatibility
+    have_freehold = models.BooleanField(default=False, verbose_name="Freehold")
+    have_leasehold = models.BooleanField(default=False, verbose_name="Leasehold")
+    have_infinity_pool = models.BooleanField(default=False, verbose_name="Infinity Pool")
+    have_pets_allowed = models.BooleanField(default=False, verbose_name="Pets Allowed")
+    have_guard_house = models.BooleanField(default=False, verbose_name="Guard House")
+    have_sauna = models.BooleanField(default=False, verbose_name="Sauna")
+    have_sky_lounge = models.BooleanField(default=False, verbose_name="Sky Lounge")
+    have_grocery = models.BooleanField(default=False, verbose_name="Grocery")
+    have_fitness_area = models.BooleanField(default=False, verbose_name="Fitness Area")
+    is_active = models.BooleanField(default=True, verbose_name="Active")
     created_by = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True)
 
     def __str__(self):

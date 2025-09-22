@@ -36,8 +36,8 @@ class PropertyAdmin(admin.ModelAdmin):
         "_building",
         "unit_id",
         "title",
-        "price",
-        "price_per_sqm",
+        "_price",
+        "_price_per_sqm",
         "floor_number",
         "unit_area",
         "number_of_bedroom",
@@ -56,6 +56,18 @@ class PropertyAdmin(admin.ModelAdmin):
             link = reverse("admin:building_building_change", args=[obj.building.id])
             return format_html('<a href="{}" target="_blank">{}</a>', link, obj.building.title)
         return "--"
+    
+    def _price(self, obj):
+        if obj.price:
+            return f"{obj.price:,.2f} THB"
+        return "--"
+    _price.short_description = "Price"
+    
+    def _price_per_sqm(self, obj):
+        if obj.price_per_sqm:
+            return f"{obj.price_per_sqm:,.2f} THB"
+        return "--"
+    _price_per_sqm.short_description = "Price per SQM"
     
     def has_add_permission(self, request):
         return False
@@ -118,7 +130,7 @@ class DiscountPropertyForm(forms.ModelForm):
 
 @admin.register(DiscountProperty, site=custom_admin_site)
 class DiscountPropertyAdmin(admin.ModelAdmin):
-    list_display = ["id", "_building", "_property", "period", "number_of_clicked", "_view_time", "created_at", "_status"]
+    list_display = ["id", "_building", "_property", "period", "_number_of_clicked", "_view_time", "created_at", "_status"]
     form = DiscountPropertyForm
     
     def _property(self, obj):
@@ -132,6 +144,10 @@ class DiscountPropertyAdmin(admin.ModelAdmin):
             link = reverse("admin:building_building_change", args=[obj.property.building.id])
             return format_html('<a href="{}" target="_blank">{}</a>', link, obj.property.building.title)
         return "--"
+    
+    def _number_of_clicked(self, obj):
+        return obj.number_of_clicked
+    _number_of_clicked.short_description = "Number of Clicks"
     
     def _status(self, obj):
         if obj.period >= timezone.now().date():
