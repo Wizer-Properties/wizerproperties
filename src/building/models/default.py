@@ -16,12 +16,8 @@ from utils.general_func import formatted_number
 class Building(TimestampedModel):
     title = models.CharField(max_length=255, null=True)
     description = models.TextField(max_length=3000, null=True)
-    lowest_price = models.DecimalField(
-        max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(0)]
-    )
-    highest_price = models.DecimalField(
-        max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(0)]
-    )
+    lowest_price = models.PositiveIntegerField(default=0, null=True)
+    highest_price = models.PositiveIntegerField(default=0, null=True)
     type = models.CharField(max_length=100, choices=BUILDING_TYPES, null=True)
     sub_type = models.CharField(
         max_length=100,

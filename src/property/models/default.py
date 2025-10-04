@@ -18,9 +18,7 @@ class Property(TimestampedModel):
     unit_id = models.CharField(max_length=100, null=True)
     title = models.CharField(max_length=255, null=True)
     description = models.TextField(max_length=3000, null=True)
-    price = models.DecimalField(
-        max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(1)]
-    )
+    price = models.PositiveIntegerField(default=0, null=True)
     price_per_sqm = models.DecimalField(
         max_digits=20, decimal_places=2, default=0, null=True, validators=[MinValueValidator(1)]
     )
