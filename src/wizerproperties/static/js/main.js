@@ -82,6 +82,40 @@ $(document).ready(function(){
         $(this).attr('effect', true)
 
     });
+
+
+
+    // input price format
+    $(document).on('change', '[formatted-price="input"]', function(){
+        var value = $(this).find('input[type="number"]').val();
+        // remove existing balance tag if present
+        $(this).find('balance').remove();
+        // only append when value is not null/empty
+        if(value !== null && value !== undefined && String(value).trim() !== ''){
+            $(this).append('<balance>'+formatBalance(value)+'</balance>');
+        };
+
+        $(this).attr('typing', false);
+    });
+
+    $(document).on('input', '[formatted-price="input"]', function(){
+        $(this).attr('typing', true);
+    });
+
+    // set typing to true when the formatted-price element receives focus
+    $(document).on('focus', '[formatted-price="input"]', function(){
+        $(this).attr('typing', true);
+    });
+
+    // on blur, mark typing as false (change handler already sets false on change)
+    $(document).on('blur', '[formatted-price="input"]', function(){
+        var value = $(this).find('input[type="number"]').val();
+        if(value === null || value === undefined || String(value).trim() === ''){
+            $(this).attr('typing', null);
+        }else{
+            $(this).attr('typing', false);
+        }
+    });
 });
 
 

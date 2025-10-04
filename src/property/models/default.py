@@ -9,6 +9,8 @@ from utils.general_data import UNIT_POSITION_TYPES
 from user.models import User
 from django.db.models import Sum
 from django.utils.timezone import now
+from utils.general_func import formatted_number
+
 
 
 class Property(TimestampedModel):
@@ -104,6 +106,15 @@ class Property(TimestampedModel):
         else:
             # If no click logs exist for today, create a new one
             PropertyClicksLog.objects.create(property=self, number_of_clicked=1)
+
+
+    @property
+    def format_price(self):
+        return formatted_number(self.price)
+    
+    @property
+    def format_price_per_sqm(self):
+        return formatted_number(self.price_per_sqm)
 
 
 class PropertyVisitLog(TimestampedModel):

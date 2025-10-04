@@ -1327,6 +1327,29 @@ main {
     margin: 0 auto;
 }
 
+[formatted-price="input"] balance{
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.authFormDiv[formatted-price="input"] balance{
+    padding: 12px 30px;
+    border: 1px solid #c8d3de !important;
+    font-size: 15px;
+    border-radius: 10px;
+    padding-bottom: 10px;
+}
+
+[formatted-price="input"][typing="true"] balance,
+[formatted-price="input"][typing="false"] input[type="number"]{
+    opacity: 0 !important;
+}
+
+
 @media (max-width: 1180px) {
     body[menu="open"] .trans-box-main {
         padding-left: 10px;

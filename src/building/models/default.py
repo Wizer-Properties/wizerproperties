@@ -11,7 +11,7 @@ from utils.general_data import (
 )
 from utils.helper_func import validate_max_current_year
 from core.models import TimestampedModel
-
+from utils.general_func import formatted_number
 
 class Building(TimestampedModel):
     title = models.CharField(max_length=255, null=True)
@@ -109,3 +109,10 @@ class Building(TimestampedModel):
         # Raise validation errors if any
         if error_messages:
             raise ValidationError(error_messages)
+        
+
+    def formatted_highest_price(self):
+        return formatted_number(self.highest_price)
+    
+    def formatted_lowest_price(self):
+        return formatted_number(self.lowest_price)

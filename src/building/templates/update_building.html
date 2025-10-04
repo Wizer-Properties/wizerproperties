@@ -40,19 +40,21 @@
 
                     <div class="row">
                         <div class="col-lg-6">
-                            <div class="authFormDiv">
+                            <div class="authFormDiv" formatted-price="input" typing="false">
                                 <!-- <span class="authErrorMessage">Message</span> -->
                                 <input name="lowest_price" type="number" class="authInput" placeholder="Lowest Price"
                                     value="{{ building.lowest_price }}" required>
                                 <div class="authlabelline authcompleteProfileLabe">Lowest Price</div>
+                                 <balance>{{ building.formatted_lowest_price }}</balance>
                             </div>
                         </div>
                         <div class="col-lg-6">
-                            <div class="authFormDiv">
+                            <div class="authFormDiv" formatted-price="input" typing="false">
                                 <!-- <span class="authErrorMessage">Message</span> -->
                                 <input name="highest_price" type="number" class="authInput" placeholder="Highest Price"
                                     value="{{ building.highest_price }}" required>
                                 <div class="authlabelline authcompleteProfileLabe">Highest Price</div>
+                                <balance>{{ building.formatted_highest_price }}</balance>
                             </div>
                         </div>
                         <div class="col-lg-6">

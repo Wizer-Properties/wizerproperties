@@ -182,3 +182,26 @@ def get_duration_without_milliseconds(duration):
             return f"{hours:02}:{minutes:02}:{seconds:02}"
 
     return duration
+
+
+
+def formatted_number(value):
+    """
+    Formatted number returning a string, eg 234234234 convert to 234,234,234
+    """
+    if value is None:
+        return ""
+    
+    parts = str(value).split('.')
+    integer_part = parts[0]
+    
+    # Add commas to integer part
+    integer_part = "{:,}".format(int(integer_part))
+    
+    # Combine with decimal part if it exists and is not all zeros
+    if len(parts) > 1 and parts[1].strip('0'):
+        formatted = integer_part + '.' + parts[1]
+    else:
+        formatted = integer_part
+    
+    return formatted

@@ -36,19 +36,21 @@
 
                     <div class="row">
                         <div class="col-lg-6">
-                            <div class="authFormDiv">
+                            <div class="authFormDiv" formatted-price="input" typing="false">
                                 <!-- <span class="authErrorMessage">Message</span> -->
                                 <input name="price" type="number" class="authInput" placeholder="Price"
                                     value="{{ property.price }}" required>
                                 <div class="authlabelline authcompleteProfileLabe">Price</div>
+                                 <balance>{{ property.format_price }}</balance>
                             </div>
                         </div>
                         <div class="col-lg-6">
-                            <div class="authFormDiv">
+                            <div class="authFormDiv" formatted-price="input" typing="false">
                                 <!-- <span class="authErrorMessage">Message</span> -->
                                 <input name="price_per_sqm" type="number" class="authInput" placeholder="Price per sqm"
                                     value="{{ property.price_per_sqm }}" required>
                                 <div class="authlabelline authcompleteProfileLabe">Price Per Sqm</div>
+                                 <balance>{{ property.format_price_per_sqm }}</balance>
                             </div>
                         </div>
                         <div class="col-lg-6">
