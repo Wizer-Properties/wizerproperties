@@ -102,7 +102,7 @@ $(document).ready(function(){
                             '<img src="'+data?.default_image+'" alt="'+data?.title+'" loading="lazy">' +
                         '</div>'+
                         '<div class="search-result-box mt-2">'+
-                            '<h1> '+data?.title+' </h1>'+
+                            '<h1 class="card-title"> '+data?.title+' </h1>'+
                             '<div class="location">'+
                                 '<div class="icon">'+
                                     '<i class="bi bi-geo-alt"></i>'+
