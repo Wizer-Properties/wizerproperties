@@ -4,9 +4,30 @@ from django.utils.html import format_html
 from core.admin import custom_admin_site
 
 
+class BuildingMediaInline(admin.TabularInline):
+    model = BuildingMedia
+    extra = 0
+    readonly_fields = ("type", "link", "created_at")
+    fields = ("type", "link", "created_at")
+    can_delete = False
+    show_change_link = True
+
+    def link(self, obj):
+        if obj.file:
+            return format_html(
+                '<a href="{}" target="_blank">Link</a>', 
+                obj.file.url
+            )
+       
+        return "--"
+    
+    link.short_description = "Link"
+
+
 @admin.register(Building, site=custom_admin_site)
 class BuildingAdmin(admin.ModelAdmin):
     change_list_template = 'admin/building_detail_change_list.html'
+    inlines = [BuildingMediaInline]
     list_display = [
         "title",
         "type",

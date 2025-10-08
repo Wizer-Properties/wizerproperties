@@ -27,10 +27,30 @@ from core.admin import custom_admin_site
 
 # custom_admin_site.register(PropertyClicksLog, PropertyClicksLogAdmin)
 
+class PropertyMediaInline(admin.TabularInline):
+    model = PropertyMedia
+    extra = 0
+    readonly_fields = ("type", "link", "created_at")
+    fields = ("type", "link", "created_at")
+    can_delete = False
+    show_change_link = True
+
+    def link(self, obj):
+        if obj.file:
+            return format_html(
+                '<a href="{}" target="_blank">Link</a>', 
+                obj.file.url
+            )
+       
+        return "--"
+    
+    link.short_description = "Link"
+
 
 @admin.register(Property, site=custom_admin_site)
 class PropertyAdmin(admin.ModelAdmin):
     change_list_template = 'admin/property_detail_change_list.html'
+    inlines = [PropertyMediaInline]
     list_display = [
         "id",
         "_building",

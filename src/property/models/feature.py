@@ -10,6 +10,7 @@ class FeatureProperty(TimestampedModel):
     property = models.ForeignKey(Property, null=True, on_delete=models.SET_NULL, related_name="features")
     number_of_clicked = models.PositiveIntegerField(default=0)  # How many times user has view this property
     view_time = models.DurationField(default=timedelta(seconds=0))  # How long the viewers view this property
+    expiry_date = models.DateField(null=True)
 
     class Meta:
         verbose_name_plural = "Feature properties"
