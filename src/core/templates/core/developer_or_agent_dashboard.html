@@ -13,6 +13,129 @@
         padding: 0;
         font-size: inherit;
     }
+    
+    /* Enhanced Dashboard Styling */
+    .dashboard-single-card {
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .dashboard-single-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .dashboard-single-card i {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2.5rem;
+        opacity: 0.3;
+    }
+    
+    .single-card-value {
+        padding: 25px;
+        position: relative;
+        z-index: 2;
+    }
+    
+    .single-card-value span {
+        font-size: 2.5rem;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+    
+    .single-card-value p {
+        margin: 0;
+        font-size: 1rem;
+        opacity: 0.9;
+    }
+    
+    /* Table styling improvements */
+    .table-area {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .dashboard-data-table {
+        margin: 0;
+        border: none;
+        width: 100% !important;
+    }
+    
+    .dashboard-data-table thead th {
+        background: #f8f9fa;
+        border: none;
+        font-weight: 600;
+        color: #495057;
+        padding: 15px 12px;
+    }
+    
+    .dashboard-data-table tbody td {
+        border: none;
+        border-bottom: 1px solid #f1f3f4;
+        padding: 12px;
+        vertical-align: middle;
+    }
+    
+    .dashboard-data-table tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+    
+    .badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+    
+    .link {
+        color: #007bff;
+        text-decoration: none;
+        margin-right: 10px;
+        font-size: 0.9rem;
+    }
+    
+    .link:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+    
+    /* Quick Actions hover effects */
+    .quick-action-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .quick-action-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+    
+    /* Responsive improvements */
+    @media (max-width: 768px) {
+        .single-card-value span {
+            font-size: 2rem;
+        }
+        
+        .dashboard-single-card i {
+            font-size: 2rem;
+        }
+        
+        .single-card-value {
+            padding: 20px;
+        }
+        
+        .quick-action-card {
+            margin-bottom: 15px;
+        }
+    }
 </style>
 {% endblock extend_head %}
 
@@ -41,18 +164,19 @@
 
 <section id="dashboard-cards-list-area" class="my-5">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-6 dashboard-card">
-                <div class="dashboard-single-card">
+        <!-- Main Statistics Row -->
+        <div class="row mb-4">
+            <div class="col-lg-3 col-md-6 col-sm-12 dashboard-card">
+                <div class="dashboard-single-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
                     <div class="single-card-value">
                         <span>{{ total_buildings }}</span>
-                        <p>Building</p>
+                        <p>Buildings</p>
                     </div>
                     <i class="bi bi-buildings"></i>
                 </div>
             </div>
-            <div class="col-lg-3 col-6 dashboard-card">
-                <div class="dashboard-single-card">
+            <div class="col-lg-3 col-md-6 col-sm-12 dashboard-card">
+                <div class="dashboard-single-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
                     <div class="single-card-value">
                         <span>{{ total_properties }}</span>
                         <p>Properties</p>
@@ -60,29 +184,54 @@
                     <i class="bi bi-newspaper"></i>
                 </div>
             </div>
-
-            <div class="col-lg-3 col-6 dashboard-card">
-                <div class="dashboard-single-card">
+            <div class="col-lg-3 col-md-6 col-sm-12 dashboard-card">
+                <div class="dashboard-single-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
                     <div class="single-card-value">
-                        <span id="active-properties-count">
-                            {{ active_properties_count }}
-                        </span>
+                        <span id="active-properties-count">{{ active_properties_count }}</span>
                         <p>Active Properties</p>
                     </div>
                     <i class="bi bi-send-arrow-up"></i>
                 </div>
             </div>
-            
-            <div class="col-lg-3 col-6 dashboard-card">
-                <div class="dashboard-single-card">
+            <div class="col-lg-3 col-md-6 col-sm-12 dashboard-card">
+                <div class="dashboard-single-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
                     <div class="single-card-value">
-                        <span>0</span>
-                        <p>Scheduled Tours</p>
+                        <span>
+                            {% if request.user.user_type == 'agent' %}
+                                {{ request.user.agentprofile.credit_balance }}
+                            {% elif request.user.user_type == 'developer' %}
+                                {{ request.user.developerprofile.credit_balance }}
+                            {% endif %}
+                        </span>
+                        <p>Credit Balance</p> {{ request.user.user_type }}
                     </div>
-                    <i class="bi bi-calendar-week"></i>
+                    <i class="bi bi-wallet2"></i>
                 </div>
             </div>
         </div>
+        
+        <!-- Promotional Properties Row -->
+        <div class="row mb-4">
+            <div class="col-lg-6 col-md-6 col-sm-12 dashboard-card">
+                <div class="dashboard-single-card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                    <div class="single-card-value">
+                        <span>{{ total_discount_properties }}</span>
+                        <p>Discount Properties</p>
+                    </div>
+                    <i class="bi bi-tag"></i>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 dashboard-card">
+                <div class="dashboard-single-card" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+                    <div class="single-card-value">
+                        <span>{{ total_featured_properties }}</span>
+                        <p>Featured Properties</p>
+                    </div>
+                    <i class="bi bi-star"></i>
+                </div>
+            </div>
+        </div>
+        
     </div>
 </section>
 
@@ -222,6 +371,197 @@
     </div>
 </section>
 
+<!-- Discount Properties Section -->
+<section class="mb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="table-area" style="border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                    <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); padding: 15px 20px; color: white;">
+                        <h4 style="margin: 0; display: inline-block;">
+                            <i class="bi bi-tag"></i> Discount Properties
+                        </h4>
+                        <div style="float: right;">
+                            <a href="{% url 'property:discount_list' %}" style="color: white; text-decoration: none; margin-right: 15px;">
+                                <i class="bi bi-list-ul"></i> View All ({{ total_discount_properties }})
+                            </a>
+                            <a href="{% url 'property:create_discount' %}" style="color: white; text-decoration: none;">
+                                <i class="bi bi-plus-circle"></i> Create New
+                            </a>
+                        </div>
+                    </div>
+                    
+                    {% if total_discount_properties > 0 %}
+                    <table class="dashboard-data-table" id="discount-property-table">
+                        <thead>
+                            <tr>
+                                <th>Property</th>
+                                <th>Building</th>
+                                <th>Expiry Date</th>
+                                <th>Clicks</th>
+                                <th>View Time</th>
+                                <th>Status</th>
+                                <th class="th-edit-delete-see">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for discount in discount_properties %}
+                            <tr>
+                                <td>
+                                    {% if discount.property %}
+                                        <a href="{% url 'property:get' discount.property.id %}?discounted=true" target="_blank" style="color: #007bff; text-decoration: none;">
+                                            <strong>{{ discount.property.title|default:"No Title" }}</strong>
+                                        </a>
+                                    {% else %}
+                                        <span class="text-muted">Property Deleted</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if discount.property and discount.property.building %}
+                                        {{ discount.property.building.title }}
+                                    {% else %}
+                                        <span class="text-muted">-</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge" style="background: #f8f9fa; color: #495057;">
+                                        {{ discount.period|date:"M d, Y" }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge" style="background: #e3f2fd; color: #1565c0;">
+                                        {{ discount.number_of_clicked }}
+                                    </span>
+                                </td>
+                                <td>{{ discount.duration_without_microseconds }}</td>
+                                <td>
+                                    {% if discount.period >= today %}
+                                        <span class="badge" style="background: #d4edda; color: #155724;">Active</span>
+                                    {% else %}
+                                        <span class="badge" style="background: #f8d7da; color: #721c24;">Expired</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="td-edit-delete-see">
+                                        <a href="{% url 'property:edit_discount' discount.id %}" class="link" style="color: #28a745;">Edit</a>
+                                        <a href="{% url 'property:delete_discount' discount.id %}" class="link" style="color: #dc3545;">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div style="padding: 40px; text-align: center; color: #6c757d;">
+                        <i class="bi bi-tag" style="font-size: 48px; opacity: 0.3;"></i>
+                        <p>No discount properties found. <a href="{% url 'property:create_discount' %}">Create your first discount property</a></p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Properties Section -->
+<section class="mb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="table-area" style="border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                    <div style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); padding: 15px 20px; color: #495057;">
+                        <h4 style="margin: 0; display: inline-block;">
+                            <i class="bi bi-star"></i> Featured Properties
+                        </h4>
+                        <div style="float: right;">
+                            <a href="{% url 'property:featured_list' %}" style="color: #495057; text-decoration: none; margin-right: 15px;">
+                                <i class="bi bi-list-ul"></i> View All ({{ total_featured_properties }})
+                            </a>
+                            <a href="{% url 'property:create_featured' %}" style="color: #495057; text-decoration: none;">
+                                <i class="bi bi-plus-circle"></i> Create New
+                            </a>
+                        </div>
+                    </div>
+                    
+                    {% if total_featured_properties > 0 %}
+                    <table class="dashboard-data-table" id="featured-property-table">
+                        <thead>
+                            <tr>
+                                <th>Property</th>
+                                <th>Building</th>
+                                <th>Expiry Date</th>
+                                <th>Clicks</th>
+                                <th>View Time</th>
+                                <th>Status</th>
+                                <th class="th-edit-delete-see">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for featured in featured_properties %}
+                            <tr>
+                                <td>
+                                    {% if featured.property %}
+                                        <a href="{% url 'property:get' featured.property.id %}?featured=true" target="_blank" style="color: #007bff; text-decoration: none;">
+                                            <strong>{{ featured.property.title|default:"No Title" }}</strong>
+                                        </a>
+                                    {% else %}
+                                        <span class="text-muted">Property Deleted</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if featured.property and featured.property.building %}
+                                        {{ featured.property.building.title }}
+                                    {% else %}
+                                        <span class="text-muted">-</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if featured.expiry_date %}
+                                        <span class="badge" style="background: #f8f9fa; color: #495057;">
+                                            {{ featured.expiry_date|date:"M d, Y" }}
+                                        </span>
+                                    {% else %}
+                                        <span class="badge" style="background: #fff3cd; color: #856404;">No Expiry</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge" style="background: #e3f2fd; color: #1565c0;">
+                                        {{ featured.number_of_clicked }}
+                                    </span>
+                                </td>
+                                <td>{{ featured.duration_without_microseconds }}</td>
+                                <td>
+                                    {% if featured.expiry_date %}
+                                        {% if featured.expiry_date >= today %}
+                                            <span class="badge" style="background: #d4edda; color: #155724;">Active</span>
+                                        {% else %}
+                                            <span class="badge" style="background: #f8d7da; color: #721c24;">Expired</span>
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="badge" style="background: #fff3cd; color: #856404;">No Expiry</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="td-edit-delete-see">
+                                        <a href="{% url 'property:edit_featured' featured.id %}" class="link" style="color: #28a745;">Edit</a>
+                                        <a href="{% url 'property:delete_featured' featured.id %}" class="link" style="color: #dc3545;">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div style="padding: 40px; text-align: center; color: #6c757d;">
+                        <i class="bi bi-star" style="font-size: 48px; opacity: 0.3;"></i>
+                        <p>No featured properties found. <a href="{% url 'property:create_featured' %}">Create your first featured property</a></p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <section>
     <div class="container">

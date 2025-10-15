@@ -57,6 +57,7 @@ class DeveloperProfileAdmin(admin.ModelAdmin):
     list_display = [
         "id",
         "_user",
+        "credit_balance",
         "company_name",
         "address",
         "company_details",
@@ -93,6 +94,7 @@ class AgentProfileAdmin(admin.ModelAdmin):
     list_display = [
         "id",
         "_user",
+        "credit_balance",
         "company_name",
         "address",
         "company_details",

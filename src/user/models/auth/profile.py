@@ -26,6 +26,7 @@ class DeveloperOrAgentMixin(Profile):
     whats_app_link = models.URLField(max_length=2000, blank=True, null=True)
     line_link = models.URLField(max_length=2000, blank=True, null=True)
     we_chat_link = models.URLField(max_length=2000, blank=True, null=True)
+    credit_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     class Meta:
         abstract = True

@@ -9,9 +9,10 @@ from property.models import Property
 
 class DiscountProperty(TimestampedModel):
     property = models.ForeignKey(Property, null=True, on_delete=models.SET_NULL, related_name="discounts")
-    period = models.DateField(null=True)
+    period = models.DateField(null=True, verbose_name="Expiry Date")
     number_of_clicked = models.PositiveIntegerField(default=0)  # How many times user has view this property
     view_time = models.DurationField(default=timedelta(seconds=0))  # How long the viewers view this property
+    created_by = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True, related_name="discount_properties")
 
     class Meta:
         verbose_name_plural = "Discount properties"

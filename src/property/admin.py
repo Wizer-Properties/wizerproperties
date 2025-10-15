@@ -150,8 +150,10 @@ class DiscountPropertyForm(forms.ModelForm):
 
 @admin.register(DiscountProperty, site=custom_admin_site)
 class DiscountPropertyAdmin(admin.ModelAdmin):
-    list_display = ["id", "_building", "_property", "period", "_number_of_clicked", "_view_time", "created_at", "_status"]
+    list_display = ["id", "_building", "_property", "period", "_number_of_clicked", "_view_time", "created_by", "created_at", "_status"]
     form = DiscountPropertyForm
+    list_filter = ["period", "created_at", "created_by"]
+    search_fields = ["property__title", "property__building__title", "created_by__username"]
     
     def _property(self, obj):
         if obj.property:
@@ -200,8 +202,10 @@ class FeaturePropertyForm(forms.ModelForm):
 
 @admin.register(FeatureProperty, site=custom_admin_site)
 class FeaturePropertyAdmin(admin.ModelAdmin):
-    list_display = ["id", "_building", "_property", "number_of_clicked", "_view_time", "created_at"]
+    list_display = ["id", "_building", "_property", "expiry_date", "_number_of_clicked", "_view_time", "created_by", "created_at", "_status"]
     form = FeaturePropertyForm
+    list_filter = ["expiry_date", "created_at", "created_by"]
+    search_fields = ["property__title", "property__building__title", "created_by__username"]
     
     def _property(self, obj):
         if obj.property:
@@ -214,6 +218,17 @@ class FeaturePropertyAdmin(admin.ModelAdmin):
             link = reverse("admin:building_building_change", args=[obj.property.building.id])
             return format_html('<a href="{}" target="_blank">{}</a>', link, obj.property.building.title)
         return "--"
+    
+    def _number_of_clicked(self, obj):
+        return obj.number_of_clicked
+    _number_of_clicked.short_description = "Number of Clicks"
+    
+    def _status(self, obj):
+        if obj.expiry_date and obj.expiry_date >= timezone.now().date():
+            return "Active"
+        elif obj.expiry_date:
+            return "Expired"
+        return "No Expiry"
     
     def _view_time(self, obj):
         return obj.duration_without_microseconds()

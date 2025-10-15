@@ -23,3 +23,42 @@ class Contact(TimestampedModel):
     
     def __str__(self):
         return str(self.subject)
+    
+    
+class AdminSettings(TimestampedModel):
+    initial_credit_balance_for_agent = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0,
+        help_text="Default starting credit for newly created agent profiles."
+    )
+    initial_credit_balance_for_developer = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0,
+        help_text="Default starting credit for newly created developer profiles."
+    )
+    
+    # Pricing for promotional features
+    discount_property_cost = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0,
+        help_text="Credit cost to create a discount property."
+    )
+    featured_property_cost = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0,
+        help_text="Credit cost to create a featured property."
+    )
+
+    class Meta:
+        verbose_name = "Admin Setting"
+        verbose_name_plural = "Admin Settings"
+
+    def __str__(self):
+        return "Admin Settings"
+
+
+    

@@ -42,6 +42,10 @@
         {% url 'property:create' as create_property_url %}
         {% url 'property:comparison' as comparison_property_url %}
         {% url 'property:favorite_list' as favorite_list_property_url %}
+        {% url 'property:discount_list' as discount_property_url %}
+        {% url 'property:featured_list' as featured_property_url %}
+        {% url 'property:create_discount' as create_discount_property_url %}
+        {% url 'property:create_featured' as create_featured_property_url %}
         {% url 'advertise:create_reels' as create_reels_url %}
         {% url 'advertise:analytics' as ads_analytics_url %}
         {% url 'advertise:performance' as ads_performance_url %}
@@ -101,7 +105,10 @@
                                     href="{{ create_building_url }}">Building</a>
                                 <a class="nav-link {% if request.path == create_property_url %}active-nav{% endif %}"
                                     href="{{ create_property_url }}">Property</a>
-        
+                                <a class="nav-link {% if request.path == discount_property_url %}active-nav{% endif %}"
+                                    href="{{ discount_property_url }}">Discount Properties</a>
+                                <a class="nav-link {% if request.path == featured_property_url %}active-nav{% endif %}"
+                                    href="{{ featured_property_url }}">Featured Properties</a>
                                 <a class="nav-link {% if request.path == create_reels_url %}active-nav{% endif %}"
                                     href="{{ create_reels_url }}">Create Reels</a>
                                 {% endif %}

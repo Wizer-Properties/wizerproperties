@@ -1,9 +1,6 @@
 from django.contrib import admin
-from core.models import Contact
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-
+from core.models import Contact, AdminSettings
 
 
 class CustomAdminSite(admin.AdminSite):
@@ -43,3 +40,23 @@ class ContactAdmin(admin.ModelAdmin):
         extra_context['show_save_and_add_another'] = False
         extra_context['show_delete'] = False
         return super(ContactAdmin, self).add_view(request, form_url, extra_context=extra_context)
+
+
+@admin.register(AdminSettings, site=custom_admin_site)
+class AdminSettingsAdmin(admin.ModelAdmin):
+    list_display = [
+        "id", 
+        "initial_credit_balance_for_agent", 
+        "initial_credit_balance_for_developer",
+        "discount_property_cost",
+        "featured_property_cost"
+    ]
+    fieldsets = (
+        ('Initial Credit Settings', {
+            'fields': ('initial_credit_balance_for_agent', 'initial_credit_balance_for_developer')
+        }),
+        ('Promotional Feature Pricing', {
+            'fields': ('discount_property_cost', 'featured_property_cost'),
+            'description': 'Set the credit cost for creating discount and featured properties'
+        }),
+    )
