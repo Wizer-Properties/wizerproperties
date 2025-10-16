@@ -18,6 +18,26 @@ $(document).ready(function () {
         }
     });
 
+    $("#discount-property-table").DataTable({
+        ordering: false,
+        lengthChange: false,
+        info: false,
+        initComplete: function () {
+            var table = $("#discount-property-table").parents(".table-area");
+            table.find(".dataTables_filter").prepend('<h1 class="table-title">Discount Properties</h1> ');
+        }
+    });
+
+    $("#featured-property-table").DataTable({
+        ordering: false,
+        lengthChange: false,
+        info: false,
+        initComplete: function () {
+            var table = $("#featured-property-table").parents(".table-area");
+            table.find(".dataTables_filter").prepend('<h1 class="table-title">Featured Properties</h1> ');
+        }
+    });
+
 
 
     function table_height(_table) {
@@ -45,11 +65,15 @@ $(document).ready(function () {
     table_height($("#property-table"));
     table_height($("#building-table"));
     table_height($("#property-visit-schedule"));
+    table_height($("#discount-property-table"));
+    table_height($("#featured-property-table"));
 
     $(window).resize(function () {
         table_height($("#property-table"));
         table_height($("#building-table"));
         table_height($("#property-visit-schedule"));
+        table_height($("#discount-property-table"));
+        table_height($("#featured-property-table"));
     });
 
 
