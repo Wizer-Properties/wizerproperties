@@ -1,5 +1,6 @@
 import requests
-from datetime import datetime, timedelta
+import os
+from datetime import timedelta
 from django.utils import timezone
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
@@ -7,6 +8,7 @@ from django.core.exceptions import ValidationError
 from django.template.loader import render_to_string
 from openai import OpenAI
 from ipdata.models import IPData
+from utils.admin_settings import get_openai_api_key
 
 
 def send_email(subject, to_email, html_content, text_content="", context={}):
@@ -92,17 +94,29 @@ def get_chatgpt_response(content, previous_response=None):
     """
     Return generated message response using ChatGPT based on the provided 'content'.
     """
-    client = OpenAI()
-    messages = []
-    if previous_response:
-        messages.append({"role": "system", "content": previous_response})
-    messages.append({"role": "user", "content": content})
+    try:
+        # Get OpenAI API key from admin settings
+        api_key = get_openai_api_key()
+        
+        if not api_key:
+            return "OpenAI API key is not configured in admin settings."
+        
+        # Set the API key in environment for this request
+        os.environ["OPENAI_API_KEY"] = api_key
+        
+        client = OpenAI()
+        messages = []
+        if previous_response:
+            messages.append({"role": "system", "content": previous_response})
+        messages.append({"role": "user", "content": content})
 
-    response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=messages,
-    )
-    return response.choices[0].message.content
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=messages,
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        return "I'm sorry, I'm having trouble connecting right now. Please try again later."
 
 
 def get_user_ip(request):

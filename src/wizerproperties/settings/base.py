@@ -202,10 +202,6 @@ if DEBUG:
 # For Google map 
 GOOGLE_API_KEY = config("GOOGLE_API_KEY", "")
 
-# For ChatGPT
-OPENAI_API_KEY = config("OPENAI_API_KEY", "")
-os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
-
 COOKIE_EXPIRE_TIME = 7*24*60*60  #7days in seconds
 
 IPINFO_API_KEY = config("IPINFO_API_KEY", "")

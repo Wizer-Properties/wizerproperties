@@ -59,4 +59,8 @@ class AdminSettingsAdmin(admin.ModelAdmin):
             'fields': ('discount_property_cost', 'featured_property_cost'),
             'description': 'Set the credit cost for creating discount and featured properties'
         }),
+        ('API Keys', {
+            'fields': ('openai_api_key',),
+            'description': 'Configure API keys for external services'
+        }),
     )

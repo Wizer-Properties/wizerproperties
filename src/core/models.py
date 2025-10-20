@@ -52,6 +52,14 @@ class AdminSettings(TimestampedModel):
         default=0,
         help_text="Credit cost to create a featured property."
     )
+    
+    # API Keys
+    openai_api_key = models.CharField(
+        max_length=500,
+        blank=True,
+        null=True,
+        help_text="OpenAI API key for ChatGPT integration."
+    )
 
     class Meta:
         verbose_name = "Admin Setting"

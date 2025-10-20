@@ -378,7 +378,6 @@
             <div class="col-12">
                 <div class="table-area">
                     <table class="dashboard-data-table" id="discount-property-table">
-                        <caption>Discount Properties</caption>
                         <thead>
                             <tr>
                                 <th>Property</th>
@@ -387,7 +386,6 @@
                                 <th>Clicks</th>
                                 <th>View Time</th>
                                 <th>Status</th>
-                                <th class="th-edit-delete-see">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -434,13 +432,6 @@
                                     </div>
                                 </td>
                             </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="7" style="text-align: center; padding: 40px; color: #6c757d;">
-                                    <i class="bi bi-tag" style="font-size: 48px; opacity: 0.3;"></i>
-                                    <p>No discount properties found. <a href="{% url 'property:create_discount' %}">Create your first discount property</a></p>
-                                </td>
-                            </tr>
                             {% endfor %}
                         </tbody>
                     </table>
@@ -457,7 +448,6 @@
             <div class="col-12">
                 <div class="table-area">
                     <table class="dashboard-data-table" id="featured-property-table">
-                        <caption>Featured Properties</caption>
                         <thead>
                             <tr>
                                 <th>Property</th>
@@ -519,13 +509,6 @@
                                         <a href="{% url 'property:edit_featured' featured.id %}" class="link" style="color: #28a745;">Edit</a>
                                         <a href="{% url 'property:delete_featured' featured.id %}" class="link" style="color: #dc3545;">Delete</a>
                                     </div>
-                                </td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="7" style="text-align: center; padding: 40px; color: #6c757d;">
-                                    <i class="bi bi-star" style="font-size: 48px; opacity: 0.3;"></i>
-                                    <p>No featured properties found. <a href="{% url 'property:create_featured' %}">Create your first featured property</a></p>
                                 </td>
                             </tr>
                             {% endfor %}

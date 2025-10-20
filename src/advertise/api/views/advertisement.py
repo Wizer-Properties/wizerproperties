@@ -192,17 +192,16 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
             null_targets &= Q(ad_location=ad_location)
 
         ads_qs = self.get_queryset().filter(valid_targets | null_targets)
-
+                
         ordering_cases = []
         pos = 0
         for pid in property_id_list:
             ordering_cases.append(When(content_type=property_ct, object_id=pid, then=pos)); pos += 1
         for bid in building_id_list:
             ordering_cases.append(When(content_type=building_ct, object_id=bid, then=pos)); pos += 1
+            
         # Anything unmatched (including content_type is null) will go to the end
         ordering_expression = Case(*ordering_cases, default=Value(10**9), output_field=IntegerField()) if ordering_cases else "position"
         advertisement_qs = ads_qs.order_by(ordering_expression, "position", "-created_at")
-        paginator = self.pagination_class()
-        page = paginator.paginate_queryset(advertisement_qs, request)
-        serializer = AdvertisementSuggestionSerializer(page, many=True)
+        serializer = AdvertisementSuggestionSerializer(advertisement_qs, many=True)
         return Response(serializer.data)

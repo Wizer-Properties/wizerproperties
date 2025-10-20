@@ -23,3 +23,12 @@ def get_featured_property_cost():
     """Get the cost for creating a featured property"""
     settings = get_admin_settings()
     return settings.featured_property_cost
+
+
+def get_openai_api_key():
+    """Get the OpenAI API key from admin settings"""
+    try:
+        settings = get_admin_settings()
+        return settings.openai_api_key or ""
+    except Exception:
+        return ""

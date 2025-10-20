@@ -133,14 +133,6 @@
     <div class="form-container">
         <h2 class="form-title">{{ page_title }}</h2>
         
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-        
         <!-- Property Information Display -->
         {% if property_type == 'discount' and discount_property %}
             <div class="property-info">
