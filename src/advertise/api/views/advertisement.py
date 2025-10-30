@@ -22,7 +22,7 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
     serializer_class = AdvertisementSerializer
     pagination_class = AdvertisementPagination
     permission_classes = [AdvertisementPermission]
-    queryset = Advertisement.objects.filter(expired_at__gte=timezone.now(), is_active=True)
+    queryset = Advertisement.objects.filter(expired_at__gte=timezone.now())
     ordering = ["-created_at"]  # Default ordering
     
     @action(detail=True, methods=["patch"], url_path="manage-view-time")
