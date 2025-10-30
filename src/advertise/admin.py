@@ -59,7 +59,7 @@ class AdvertisementAdminForm(forms.ModelForm):
 
 @admin.register(Advertisement, site=custom_admin_site)
 class AdvertisementAdmin(admin.ModelAdmin):
-    list_display = ["id", "content_object", "ad_location", "position", "ad_run_duration", "number_of_clicked", "_view_time", "_analytics_button", "created_at"]
+    list_display = ["id", "content_object", "ad_location", "position", "ad_run_duration", "number_of_clicked", "_view_time", "_analytics_button", "created_at", "expired_at"]
     list_editable = ["ad_location", "position"]
     readonly_fields = ['_view_time']  # Add to instance details view
     exclude = ['view_time']  # Exclude from the add/edit form

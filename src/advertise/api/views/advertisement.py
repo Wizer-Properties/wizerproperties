@@ -6,6 +6,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from django.db.models import Case, When, Value, IntegerField
 from datetime import timedelta
+from django.utils import timezone
 
 from advertise.models import Advertisement
 from django.contrib.contenttypes.models import ContentType
@@ -21,7 +22,7 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
     serializer_class = AdvertisementSerializer
     pagination_class = AdvertisementPagination
     permission_classes = [AdvertisementPermission]
-    queryset = Advertisement.objects.all()
+    queryset = Advertisement.objects.filter(expired_at__gte=timezone.now(), is_active=True)
     ordering = ["-created_at"]  # Default ordering
     
     @action(detail=True, methods=["patch"], url_path="manage-view-time")

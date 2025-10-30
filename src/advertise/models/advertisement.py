@@ -70,6 +70,18 @@ class Advertisement(TimestampedModel):
         if error_messages:
             raise ValidationError(error_messages)
     
+
+    def save(self, *args, **kwargs):
+        """Overriding save method to set expired_at field based on ad_run_duration"""
+        
+        # Call super().save() first to ensure created_at is set
+        super().save(*args, **kwargs)
+        
+        if not self.expired_at and self.created_at:
+            self.expired_at = self.created_at + timedelta(days=self.ad_run_duration)
+            # Save again to update expired_at
+            super().save(update_fields=['expired_at'])
+    
     def end_at(self) -> str:
         """Returns Ad finishing time"""
 

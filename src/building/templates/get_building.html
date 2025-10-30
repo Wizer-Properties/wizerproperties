@@ -494,15 +494,18 @@
     var AVAILABLE_API_URL = '/building/api/details/{{building.id}}/available-units/';
     var BUILDING_ID = '{{building.id}}';
     var USER_ID = '{{ user.id }}';
-    var ADS_SUGGEST_URL = '/advertise/api/advertisement/suggested/'
-    var ADS_LOCATION_PARAM = ['details_sidebar', 'details_topbar']
+    var CSRF_TOKEN = '{{ csrf_token }}';
+    var ADS_SUGGEST_URL = '/advertise/api/advertisement/suggested/';
+    var ADS_LOCATION_PARAM = ['details_sidebar', 'details_topbar'];
 </script>
 
 <script src="{% static 'js/libraries/video.min.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+<script src="{% static '/js/timeme.min.js' %}"></script>
 <script src="{% static 'js/libraries/splide.min.js' %}"></script>
 <script src="{% static 'js/libraries/noframework.waypoints.min.js' %}"></script>
 <script src="{% static 'js/building/detail-page.js' %}"></script>
+<script src="{% static '/js/advertise/manage-view-time.js' %}?v=1.05"></script>
 <script src="{% static '/js/ads.js' %}?v=1.03"></script>
 
 {% endblock extend_script %}
