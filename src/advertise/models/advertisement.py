@@ -59,7 +59,7 @@ class Advertisement(TimestampedModel):
         error_messages = {} # Error messages will append here
 
         if self.content_type and not self.object_id:
-            error_messages.update({'object_id': ['Object ID must be set if content type is specified']})
+            error_messages.update({'object_id': ['Related object must be set if content type is specified']})
         
         if self.status == 'running':
             if Advertisement.objects.filter(ad_location=self.ad_location, position=self.position, status='running').exclude(id=self.id).exists():
