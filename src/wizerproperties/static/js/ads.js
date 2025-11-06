@@ -87,7 +87,7 @@ $(document).ready(function(){
                             perPage: 1,
                             type: 'loop',
                             arrows: false,
-                            pagination: false,
+                            // pagination: false,
                             autoplay: 'playing',
                             interval: 3000
                         }).mount();

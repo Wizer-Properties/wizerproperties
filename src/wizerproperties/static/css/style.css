@@ -977,6 +977,23 @@ option:disabled{
 
 .top-banner{
     margin-top: 10px;
+    padding-bottom: 20px;
+}
+
+.top-banner
+.splide__pagination{
+    bottom: -20px !important;
+}
+
+.top-banner
+.splide__pagination__page{
+    background: var(--th-color-1) !important;
+    opacity: .5;
+}
+
+.top-banner
+.splide__pagination__page.is-active{
+    opacity: 1;
 }
 
 .top-banner-img{
