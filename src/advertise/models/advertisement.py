@@ -58,9 +58,8 @@ class Advertisement(TimestampedModel):
         
         error_messages = {} # Error messages will append here
 
-        # If content_type cleared, also clear object_id to avoid dangling references
-        if not self.content_type:
-            self.object_id = None
+        if self.content_type and not self.object_id:
+            error_messages.update({'object_id': ['Object ID must be set if content type is specified']})
         
         if self.status == 'running':
             if Advertisement.objects.filter(ad_location=self.ad_location, position=self.position, status='running').exclude(id=self.id).exists():
@@ -73,6 +72,10 @@ class Advertisement(TimestampedModel):
 
     def save(self, *args, **kwargs):
         """Overriding save method to set expired_at field based on ad_run_duration"""
+
+        # If content_type cleared, also clear object_id to avoid dangling references
+        if not self.content_type:
+            self.object_id = None
         
         # Call super().save() first to ensure created_at is set
         super().save(*args, **kwargs)
