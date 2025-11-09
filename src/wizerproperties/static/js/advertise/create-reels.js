@@ -1,65 +1,55 @@
-$(document).ready(function(){
+$(function () {
+  $("#reels-create-form").on("submit", function (event) {
+    event.preventDefault();
 
-    $("#reels-create-form").submit(function (event) {
-        event.preventDefault();
+    var formData = new FormData(this);
+    var $submitButton = $(this).find("button[type='submit']");
+    var $buttonText = $("#createReelButtonText");
+    var $spinner = $("#loadingSpinner");
 
-        var formData = new FormData(this);
-        var createReelButtonText = $("#createReelButtonText");
-        var loadingSpinner = $("#loadingSpinner");
+    $submitButton.prop("disabled", true);
+    $buttonText.hide();
+    $spinner.show();
 
-        createReelButtonText.hide(); // Hide the text
-        loadingSpinner.show(); // Show the spinner
+    $.ajax({
+      url: "/advertise/api/reel/",
+      type: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      headers: { "X-CSRFToken": csrfToken },
+      success: function (response, status, xhr) {
+        $(".error-message").html("");
 
-        $.ajax({
-            url: '/advertise/api/reel/', // Replace with your API endpoint
-            type: "POST",
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (response, status, xhr) {
-                loadingSpinner.hide(); // Hide the spinner
-                createReelButtonText.show(); // Show the text
+        if (xhr.status === 201) {
+          $(".success-message").html("<span class='authSuccessMessage'>Reel shared successfully.</span>");
+        }
 
-                $(".error-message").html("");
-
-                var successMessages = "";
-                if (xhr.status == 201) {
-                    successMessages +=
-                        "<span class='authSuccessMessage'>Property created successfully</span>";
-                }
-
-                // Handle success (e.g., show a success message)
-                $(".success-message").html(successMessages);
-
-                // Redirect to the homepage after 1 second
-                setTimeout(function () {
-                    window.location.href = "/";
-                }, 1000);
-            },
-            error: function (xhr, status, error) {
-                loadingSpinner.hide(); // Hide the spinner
-                createReelButtonText.show(); // Show the text
-
-                $(".success-message").html("");
-                if (xhr.status === 400) {
-                    // Bad Request (validation error)
-                    var errorData = xhr.responseJSON;
-                    var errorMessages = "";
-                    for (var key in errorData) {
-                        if (errorData.hasOwnProperty(key)) {
-                            errorMessages +=
-                                "<span class='authErrorMessage'>" +
-                                errorData[key][0] +
-                                "</span>";
-                        }
-                    }
-                    $(".error-message").html(errorMessages);
-                } else {
-                    // Handle other error cases (e.g., server error)
-                    console.error(error);
-                    alert("An error occurred. Please try again later.");
-                }
-            },
-        });
+        setTimeout(function () {
+          window.location.href = "/advertise/reels/";
+        }, 1000);
+      },
+      error: function (xhr, status, error) {
+        $(".success-message").html("");
+        if (xhr.status === 400) {
+          var errorData = xhr.responseJSON || {};
+          var errorMessages = "";
+          for (var key in errorData) {
+            if (Object.prototype.hasOwnProperty.call(errorData, key) && errorData[key].length > 0) {
+              errorMessages += "<span class='authErrorMessage'>" + errorData[key][0] + "</span>";
+            }
+          }
+          $(".error-message").html(errorMessages);
+        } else {
+          console.error(error);
+          alert("An error occurred. Please try again later.");
+        }
+      },
+      complete: function () {
+        $submitButton.prop("disabled", false);
+        $buttonText.show();
+        $spinner.hide();
+      },
     });
-})
+  });
+});

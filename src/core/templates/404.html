@@ -8,15 +8,15 @@
     <div class="max-w-lg w-full space-y-8 text-center">
         <div>
             <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                404 - Page Not Found
+                Page not found
             </h2>
             <p class="mt-2 text-center text-sm text-gray-600">
-                Oops! The page you're looking for doesn't exist.
+                The page you're looking for doesn't exist or has been moved. Let's get you back on track.
             </p>
         </div>
         <div class="mt-8">
-            <a href="{% url 'home' %}">
-                Go back to homepage
+            <a href="{% url 'home' %}" class="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90">
+                Return to homepage
             </a>
         </div>
     </div>

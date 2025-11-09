@@ -1,3 +1,77 @@
+$(function () {
+  function populateReelForm() {
+    $.ajax({
+      url: "/advertise/api/reel/" + REEL_ID + "/",
+      type: "GET",
+      headers: { "X-CSRFToken": csrfToken },
+      success: function (data) {
+        $('[name="url"]').val(data && data.url ? data.url : "");
+        $('[name="social_media"]').val(data && data.social_media ? data.social_media : "");
+        $('[name="category"]').val(data && data.category ? data.category : "");
+        $('[name="property"]').val(data && data.property ? data.property : "");
+      },
+      error: function (error) {
+        console.error(error);
+      },
+    });
+  }
+
+  populateReelForm();
+
+  $("#reels-create-form").on("submit", function (event) {
+    event.preventDefault();
+
+    var formData = new FormData(this);
+    var $submitButton = $(this).find("button[type='submit']");
+    var $buttonText = $("#createReelButtonText");
+    var $spinner = $("#loadingSpinner");
+
+    $submitButton.prop("disabled", true);
+    $buttonText.hide();
+    $spinner.show();
+
+    $.ajax({
+      url: "/advertise/api/reel/" + REEL_ID + "/",
+      type: "PATCH",
+      headers: { "X-CSRFToken": csrfToken },
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function (response, status, xhr) {
+        $(".error-message").html("");
+
+        if (xhr.status === 200) {
+          $(".success-message").html("<span class='authSuccessMessage'>Reel updated successfully.</span>");
+        }
+
+        setTimeout(function () {
+          window.location.href = "/advertise/reels/";
+        }, 1000);
+      },
+      error: function (xhr, status, error) {
+        $(".success-message").html("");
+        if (xhr.status === 400) {
+          var errorData = xhr.responseJSON || {};
+          var errorMessages = "";
+          for (var key in errorData) {
+            if (Object.prototype.hasOwnProperty.call(errorData, key) && errorData[key].length > 0) {
+              errorMessages += "<span class='authErrorMessage'>" + errorData[key][0] + "</span>";
+            }
+          }
+          $(".error-message").html(errorMessages);
+        } else {
+          console.error(error);
+          alert("An error occurred. Please try again later.");
+        }
+      },
+      complete: function () {
+        $submitButton.prop("disabled", false);
+        $buttonText.show();
+        $spinner.hide();
+      },
+    });
+  });
+});
 $(document).ready(function(){
 
     function shared_reels_data(){

@@ -3,509 +3,278 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Building details</title>
-<link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet" />
-<link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
-<link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
-<link rel="stylesheet" href="{% static '/css/detail-page.css' %}?v=1.03" />
-
+<title>{{ building.title }} | Building Details</title>
+<link rel="stylesheet" href="{% static 'css/libraries/splide.min.css' %}?v=2.0" />
 <script>
-    // this is related to google map that calling in g_map.js
     function buildingGeocodeAddress(render_dom, default_lat_lng) {
-        let geocoder = new google.maps.Geocoder();
-
-        geocoder.geocode({ 'address': '{{ building.address }}' }, function (results, status) {
-            if (status === 'OK') {
-                var myLatLng = results[0].geometry.location;
-                
-                var map = new google.maps.Map(render_dom, {
-                    center: myLatLng,
-                    zoom: 12
-                });
-
-                new google.maps.Marker({
-                    position: myLatLng,
-                    map: map,
-                    title: '{{ building.address }}'
-                });
-            } else {
-                var map = new google.maps.Map(render_dom, {
-                    center: default_lat_lng,
-                    zoom: 12
-                });
-
-                new google.maps.Marker({
-                    position: default_lat_lng,
-                    map: map,
-                    title: 'Something is wrong ! This is not the right address !!'
-                });
-            }
+        const geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ address: '{{ building.address|escapejs }}' }, function (results, status) {
+            const map = new google.maps.Map(render_dom, {
+                center: status === 'OK' ? results[0].geometry.location : default_lat_lng,
+                zoom: 13,
+                disableDefaultUI: true,
+            });
+            new google.maps.Marker({
+                position: status === 'OK' ? results[0].geometry.location : default_lat_lng,
+                map,
+                title: '{{ building.address|escapejs }}',
+            });
         });
     }
 </script>
 {% endblock extend_head %}
 
 {% block content %}
-
-<div class="top-banner mb-5">
-    <div class="container">
-        <div class="col-lg-8 col-md-8 col-11 mx-auto">
-            <div class="splide ads-banner-slider">
-                <div class="splide__track">
-                    <div class="splide__list">
-                        <!-- from dom -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<section id="details-banner">
-    <div class="container position-relative z-index-3">
-        <nav class="nav-tab-wrapper">
-            <div class="nav nav-tabs gallery-btn" id="nav-tab" role="tablist">
-                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#nav-imges" aria-selected="true" type="image">
-                    Images
-                </button>
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-unit-floor-plans" aria-selected="false" type="unit_floor_plan">
-                    Unit Floor Plans
-                </button>
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-master-plans" aria-selected="false" type="master_plan">
-                    Master Plans
-                </button>
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-video" aria-selected="false" type="video">
-                    Video
-                </button>
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-facilities-view" aria-selected="false">
-                    Facilities View
-                </button>
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-location-video" aria-selected="false">
-                    Location View
-                </button>
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-areal-view" aria-selected="false" type="aerial_drone_video">
-                    Areal View
-                </button>
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-map" aria-selected="false">
-                    Map
-                </button>
-            </div>
-        </nav>
-
-        <div class="tab-content" id="banner-nav-tabContent">
-            <!-- Images -->
-            <div class="tab-pane fade show active" id="nav-imges" label-name="media-files-image">
-                <div class="details-gallery">
-                    <!-- this is a dom -->
-                    <!-- <div class="details-gallery-img-box">
-                        <img src="" alt="bg">
-                    </div> -->
-                </div>
-            </div>
-
-
-            <!--  Building Floor Plans -->
-            <div class="tab-pane fade" id="nav-floor-plans" label-name="media-files-floor-plan">
-                <div class="details-gallery">
-                     <!-- this is a dom -->
-                    <!-- <div class="details-gallery-img-box">
-                        <img src="" alt="bg">
-                    </div> -->
-                </div>
-            </div>
-
-            
-            <!-- Unit Floor Plans -->
-            <div class="tab-pane fade" id="nav-unit-floor-plans" label-name="media-files-unit-floor-plan">
-                <div class="details-gallery">
-                     <!-- this is a dom -->
-                    <!-- <div class="details-gallery-img-box">
-                        <img src="" alt="bg">
-                    </div> -->
-                </div>
-            </div>
-
-
-            <!-- Master Map Plans -->
-            <div class="tab-pane fade" id="nav-master-plans" label-name="media-files-master-plan">
-                <div class="details-gallery">
-                    <!-- this is a dom -->
-                   <!-- <div class="details-gallery-img-box">
-                       <img src="" alt="bg">
-                   </div> -->
-               </div>
-            </div>
-
-
-            <!-- facilities Map Plans -->
-            <div class="tab-pane fade" id="nav-facilities-view" label-name="facilities-view">
-                <div class="details-gallery-3D-view">
-                    
-                </div>
-            </div>
-
-
-            <!-- location Map Plans -->
-            <div class="tab-pane fade" id="nav-location-video" label-name="location-video">
-                <div class="details-gallery-3D-view">
-                </div>
-            </div>
-
-
-            <!-- areal Plans -->
-            <div class="tab-pane fade" id="nav-areal-view" label-name="areal-view">
-                <div class="details-gallery-video">
-                    <video
-                        id="my-video"
-                        class="video-js"
-                        controls
-                        preload="auto"
-                        data-setup="{}"
-                    >
-                    <p class="vjs-no-js">
-                        To view this video please enable JavaScript, and consider upgrading to a web browser that
-                    </p>
-                    </video>
-                </div>
-            </div>
-
-
-            <!-- Map Plans -->
-            <div class="tab-pane fade" id="nav-video" label-name="media-files-video">
-                <div class="details-gallery-video">
-                    <!-- this is a dom -->
-                    <video
-                        id="my-video"
-                        class="video-js"
-                        controls
-                        preload="auto"
-                        data-setup="{}"
-                  >
-                    <p class="vjs-no-js">
-                        To view this video please enable JavaScript, and consider upgrading to a web browser that
-                    </p>
-                  </video>
-               </div>
-            </div>
-            
-
-            <!-- Map -->
-            <div class="tab-pane fade" id="nav-map">
-                <div id="map"></div>
-            </div>
-        </div>
-
-    </div>
-</section>
-
-
-<div class="img-gallery-dialog">
-    <div class="img-gallery-dialog-overlay dialog-dismiss"></div>
-    <div class="img-gallery-dialog-container">
-        <button class="dialog-dismiss img-gallery-close-btn"> <i class="bi bi-x-lg"></i> </button>
-        <div class="splide img-gallery-dialog-slider">
-            <div class="splide__track">
-                <div class="splide__list">
-
-                    <!-- from dom -->
-                    <div class="splide__slide pre_splide">
-                        <div class="img-gallery-dialog-loader">
-                            <img src="{% static '/media/loader.svg' %}" alt="loader">
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<section>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8">
-
-                <!-- address price info -->
-                <div class="property-address-price-info">
-                    <h1 class="title-perice-area">
-                        <span class="title" label-name="build-title"> 
-                            <span class="skeleton-box" style="width: 200px; height: 26px;"></span> 
-                        </span>
-                        <span class="price"> 
-                            Price :
-                            <span label-name="build-max-min-price">
-                                <span class="skeleton-box" style="width: 140px; height: 26px;"></span> 
-                            </span>
-                        </span>
-                    </h1>
-                    <address>
-                        <i class="bi bi-geo-alt"></i>
-                        <span label-name="address">
-                            <span class="skeleton-box" style="width: 100px; height: 22px;"></span>
-                        </span>
-                    </address>
-                </div>
-
-                <!-- property short info -->
-                <div class="property-short-info">
-                    <div class="property-short-info-box">
-                        <span class="property-label">Building</span>
-                        <div class="d-flex align-items-center">
-                            <div class="property-short-info-icon">
-                                <img src="{% static '/media/icons/building.svg' %}" alt="building-icon">
-                            </div>
-                            <span class="property-value" label-name="building_type">
-                                <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="property-short-info-box">
-                        <span class="property-label">Unit</span>
-                        <div class="d-flex align-items-center">
-                            <div class="property-short-info-icon">
-                                <img src="{% static '/media/icons/unit.svg' %}" alt="unit-icon">
-                            </div>
-                            <span class="property-value" label-name="total_units_for_sale">
-                                <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="property-short-info-box">
-                        <span class="property-label">Project Area</span>
-                        <div class="d-flex align-items-center">
-                            <div class="property-short-info-icon">
-                                <img src="{% static '/media/icons/plan-size.svg' %}" alt="plan-size-icon">
-                            </div>
-                            <span class="property-value" label-name="project_total_area">
-                                <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="property-short-info-box">
-                        <span class="property-label">Floor</span>
-                        <div class="d-flex align-items-center">
-                            <div class="property-short-info-icon">
-                                <img src="{% static '/media/icons/stairs.svg' %}" alt="stairs-icon">
-                            </div>
-                            <span class="property-value" label-name="total_floors">
-                                <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
-                            </span> 
-                        </div>
-                    </div>
-                    <div class="property-short-info-box">
-                        <span class="property-label">Build</span>
-                        <div class="d-flex align-items-center">
-                            <div class="property-short-info-icon">
-                                <img src="{% static '/media/icons/build.svg' %}" alt="build-icon">
-                            </div>
-                            <span class="property-value" label-name="construction_year">
-                                <span class="skeleton-box mt-1" style="width: 20px; height: 20px;"></span>
-                            </span>
-                        </div>
-                    </div>
-        
-                </div>
-
-                <!-- 1 -->
-                <div class="facilities-area">
-                    <h1 class="section-title">Building description & facilities</h1>
-                    <div class="facilities-list">
-                        <div class="row" label-name="facilities">
-
-                            <div class="col-6 col-md-6 col-lg-4 mb-3">
-                                <div class="facilities-box">
-                                    <span class="skeleton-box" style="width: 80%; height: 35px;"></span>
+<section class="bg-muted/40 py-12">
+    <div class="container space-y-12">
+        <div class="grid gap-8 lg:grid-cols-[2fr,1fr]">
+            <div class="space-y-6">
+                <div class="rounded-2xl border border-border bg-card shadow-sm">
+                    <div class="p-6">
+                        <div class="flex flex-wrap items-start justify-between gap-4">
+                            <div class="space-y-2">
+                                <p class="text-xs font-semibold uppercase tracking-[0.4em] text-primary">Building</p>
+                                <h1 class="text-3xl font-heading font-semibold text-foreground" data-building-title>Loading…</h1>
+                                <div class="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+                                    <i class="bi bi-geo-alt text-base text-primary"></i>
+                                    <span data-building-address>Loading…</span>
                                 </div>
                             </div>
-
-                            <div class="col-6 col-md-6 col-lg-4 mb-3">
-                                <div class="facilities-box">
-                                    <span class="skeleton-box" style="width: 80%; height: 35px;"></span>
-                                </div>
+                            <div class="rounded-xl border border-border bg-primary/10 px-4 py-3 text-sm font-semibold text-primary">
+                                <span data-building-price>Loading…</span>
                             </div>
-
-
-                            <div class="col-6 col-md-6 col-lg-4 mb-3">
-                                <div class="facilities-box">
-                                    <span class="skeleton-box" style="width: 80%; height: 35px;"></span>
-                                </div>
-                            </div>
-
-                            <div class="col-6 col-md-6 col-lg-4 mb-3">
-                                <div class="facilities-box">
-                                    <span class="skeleton-box" style="width: 80%; height: 35px;"></span>
-                                </div>
-                            </div>
-                            
-
                         </div>
                     </div>
-
-                    <div class="section-scripts" label-name="building-description" style="font-weight: 500;">
-                        <span class="skeleton-box" style="height: 200px;"></span>
+                    <div class="border-t border-border">
+                        <div class="splide" id="building-hero-slider">
+                            <div class="splide__track">
+                                <ul class="splide__list" data-gallery-list>
+                                    <li class="splide__slide h-72 animate-pulse bg-muted"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-border px-6 py-4">
+                        <div class="flex flex-wrap gap-2 text-sm font-medium">
+                            <button type="button" class="gallery-tab-button nav-pill nav-pill-active" data-gallery-filter="image">Images</button>
+                            <button type="button" class="gallery-tab-button nav-pill" data-gallery-filter="unit_floor_plan">Floor Plans</button>
+                            <button type="button" class="gallery-tab-button nav-pill" data-gallery-filter="master_plan">Master Plans</button>
+                            <button type="button" class="gallery-tab-button nav-pill" data-gallery-filter="video">Video</button>
+                            <button type="button" class="gallery-tab-button nav-pill" data-gallery-filter="aerial_drone_video">Aerial</button>
+                        </div>
+                        <button type="button" class="btn-secondary hidden lg:inline-flex" data-gallery-open>
+                            View Gallery
+                        </button>
                     </div>
                 </div>
 
-            </div>
-
-
-
-
-            <div class="col-lg-4">
-                <div class="side-box-info developer-info">
-                    <div class="contact-info-side-box">
-                        <div class="developer-co-info">
-                            <!-- <span class="developer-box-title"> Marketed By </span>
-                            <div class="d-flex gap-3 justify-content-between">
-                                <div>
-                                    <h1 class="section-title" label-name="company_name">
-                                        <span class="skeleton-box" style="width: 100%; height: 22px;"></span>
-                                    </h1>
-                                    <address label-name="address"></address>
-                                </div>
-                                <div class="developer-company-logo" label-name="company_logo">
-                                    <span class="skeleton-box" style="width: 100%; height: 70px;"></span>
-                                </div>
-                            </div> -->
-
-                            <div class="developer-contact-area mt-2">
-                                {% if not request.user.is_authenticated or request.user.user_type == "prospect" %}
-                                <a class="contact-info-list-data" href="/schedule/create_schedule?type=property&id={{property.id}}"> 
-                                    Schedule Viewing 
-                                </a>
-                                {% endif %}
-
-                                <div social-contact="contact_phone_number">
-                                    <a href="" target="_blank" class="contact-info-list-data">
-                                        <i class="bi bi-telephone"></i>
-                                        <span label-name="contact_phone_number">
-                                            <span class="skeleton-box" style="width: 80px; height: 22px;"></span>
-                                        </span>
-                                    </a>
-                                </div>
-
-                                <!-- <div social-contact="contact_email">
-                                    <a href="" target="_blank" class="contact-info-list-data">
-                                        <i class="bi bi-envelope"></i>
-                                        <span label-name="contact_email">
-                                            <span class="skeleton-box" style="width: 80px; height: 22px;"></span>
-                                        </span>
-                                    </a>
-                                </div> -->
-                            </div>
-
+                <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
+                    <h2 class="text-lg font-semibold text-foreground">Key Metrics</h2>
+                    <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                        <div class="stat-chip">
+                            <span class="stat-label">Type</span>
+                            <span class="stat-value" data-building-type>—</span>
                         </div>
-
+                        <div class="stat-chip">
+                            <span class="stat-label">Units</span>
+                            <span class="stat-value" data-building-units>—</span>
+                        </div>
+                        <div class="stat-chip">
+                            <span class="stat-label">Total Area</span>
+                            <span class="stat-value" data-building-area>—</span>
+                        </div>
+                        <div class="stat-chip">
+                            <span class="stat-label">Floors</span>
+                            <span class="stat-value" data-building-floors>—</span>
+                        </div>
+                        <div class="stat-chip">
+                            <span class="stat-label">Completion</span>
+                            <span class="stat-value" data-building-completion>—</span>
+                        </div>
+                        <div class="stat-chip">
+                            <span class="stat-label">BTS / MRT</span>
+                            <span class="stat-value" data-building-bts>—</span>
+                        </div>
+                        <div class="stat-chip">
+                            <span class="stat-label">ARL</span>
+                            <span class="stat-value" data-building-arl>—</span>
+                        </div>
+                        <div class="stat-chip">
+                            <span class="stat-label">Quota</span>
+                            <span class="stat-value" data-building-quota>—</span>
+                        </div>
                     </div>
+                </div>
 
-                    <div class="splide side-add-banner-slider">
+                <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <h2 class="text-lg font-semibold text-foreground">Description</h2>
+                            <p class="text-sm text-muted-foreground">Crafted for modern living—learn what sets this development apart.</p>
+                        </div>
+                        <button type="button" class="btn-secondary hidden sm:inline-flex" data-description-expand>
+                            Expand
+                        </button>
+                    </div>
+                    <div class="mt-4 space-y-4 text-sm text-muted-foreground" data-building-description>
+                        <div class="h-24 animate-pulse rounded-md bg-muted/60"></div>
+                    </div>
+                </div>
+
+                <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
+                    <h2 class="text-lg font-semibold text-foreground">Amenities</h2>
+                    <p class="text-sm text-muted-foreground">Lifestyle perks available to residents.</p>
+                    <div class="mt-4 flex flex-wrap gap-2" data-building-amenities>
+                        <span class="inline-flex animate-pulse rounded-full bg-muted px-3 py-1 text-xs text-muted-foreground">Loading…</span>
+                    </div>
+                </div>
+
+                <div class="space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sm">
+                    <div class="grid gap-6 md:grid-cols-2">
+                        <div class="space-y-4">
+                            <h3 class="text-sm font-semibold text-foreground">Facilities View</h3>
+                            <div class="overflow-hidden rounded-xl border border-border bg-muted/60" data-facility-view>
+                                <div class="aspect-video flex items-center justify-center text-xs text-muted-foreground">Loading…</div>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <h3 class="text-sm font-semibold text-foreground">Location View</h3>
+                            <div class="overflow-hidden rounded-xl border border-border bg-muted/60" data-location-view>
+                                <div class="aspect-video flex items-center justify-center text-xs text-muted-foreground">Loading…</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <h3 class="text-sm font-semibold text-foreground">Google Map</h3>
+                        <div class="overflow-hidden rounded-xl border border-border">
+                            <div id="map" class="aspect-video"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <section class="space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sm">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div>
+                            <h2 class="text-lg font-semibold text-foreground">Available Units</h2>
+                            <p class="text-sm text-muted-foreground">Browse available inventory by bedroom count.</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 text-sm font-medium">
+                            <button class="filter-chip filter-chip-active" data-available-filter="all">All</button>
+                            <button class="filter-chip" data-available-filter="1">1 Bed</button>
+                            <button class="filter-chip" data-available-filter="2">2 Beds</button>
+                            <button class="filter-chip" data-available-filter="3">3 Beds</button>
+                            <button class="filter-chip" data-available-filter="4">4 Beds</button>
+                        </div>
+                    </div>
+                    <div class="splide" id="available-units-slider">
                         <div class="splide__track">
-                            <div class="splide__list">
-                                <!-- from ads.js -->
-                            </div>
+                            <ul class="splide__list" data-available-list>
+                                <li class="splide__slide">
+                                    <div class="h-64 animate-pulse rounded-2xl bg-muted"></div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                </div>
+                </section>
+
+                {% include 'review-box.html' %}
             </div>
 
+            <aside class="space-y-6">
+                <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
+                    <h2 class="text-lg font-semibold text-foreground">Connect with our advisors</h2>
+                    <p class="mt-2 text-sm text-muted-foreground">Let us help you discover availability, schedule tours, and answer questions.</p>
+                    {% if not request.user.is_authenticated or request.user.user_type == "prospect" %}
+                    <a href="/schedule/create_schedule?type=building&id={{ building.id }}" class="btn mt-4 w-full justify-center">
+                        Schedule a Viewing
+                    </a>
+                    {% endif %}
+                    <div class="mt-6 space-y-3 text-sm">
+                        <div class="flex items-center gap-3 rounded-xl border border-border bg-secondary/50 px-4 py-3">
+                            <span class="inline-flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                                <i class="bi bi-telephone"></i>
+                            </span>
+                            <div>
+                                <p class="text-xs uppercase text-muted-foreground">Call us</p>
+                                <a href="tel:{{ building.contact_phone_number }}" class="font-semibold text-foreground" data-contact-phone>
+                                    {{ building.contact_phone_number|default:"+" }}
+                                </a>
+                            </div>
+                        </div>
+                        {% if building.contact_email %}
+                        <div class="flex items-center gap-3 rounded-xl border border-border bg-secondary/50 px-4 py-3">
+                            <span class="inline-flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                                <i class="bi bi-envelope"></i>
+                            </span>
+                            <div>
+                                <p class="text-xs uppercase text-muted-foreground">Email</p>
+                                <a href="mailto:{{ building.contact_email }}" class="font-semibold text-foreground">
+                                    {{ building.contact_email }}
+                                </a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
 
+                <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
+                    <h2 class="text-lg font-semibold text-foreground">Project Snapshot</h2>
+                    <dl class="mt-4 space-y-3 text-sm">
+                        <div class="flex items-center justify-between">
+                            <dt class="text-muted-foreground">Status</dt>
+                            <dd class="font-semibold text-foreground capitalize" data-building-status>—</dd>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <dt class="text-muted-foreground">Furnishing</dt>
+                            <dd class="font-semibold text-foreground capitalize" data-building-furnishing>—</dd>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <dt class="text-muted-foreground">Primary View</dt>
+                            <dd class="font-semibold text-foreground capitalize" data-building-view>—</dd>
+                        </div>
+                    </dl>
+                </div>
+
+                <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
+                    <h2 class="text-lg font-semibold text-foreground">Stay in the loop</h2>
+                    <p class="mt-2 text-sm text-muted-foreground">Receive tailored updates on new listings and price movements.</p>
+                    <a href="/user/signup/" class="btn-secondary mt-4 w-full justify-center">
+                        Create Alert
+                    </a>
+                </div>
+            </aside>
         </div>
     </div>
 </section>
 
-
-
-<section id="available-units">
-    <div class="container">
-        <h1 class="section-title">Available Units</h1>
-
-        <nav>
-            <ul class="pagination filter-available-units">
-                <li class="page-item active">
-                    <span class="page-link" label="all">All</span>
-                </li>
-                <li class="page-item">
-                    <span class="page-link" label="1"> 1 bed </span>
-                </li>                
-                <li class="page-item">
-                    <span class="page-link" label="2"> 2 beds </span>
-                </li>
-                <li class="page-item">
-                    <span class="page-link" label="3"> 3 beds </span>
-                </li>
-                <li class="page-item">
-                    <span class="page-link" label="4"> 4 beds </span>
-                </li>
-            </ul>
-        </nav>
-
-        <section class="splide available-unitssplide-splide">
+<div class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 px-4 backdrop-blur" data-gallery-modal>
+    <div class="relative w-full max-w-5xl overflow-hidden rounded-3xl border border-border bg-card shadow-2xl">
+        <button type="button" class="absolute right-4 top-4 inline-flex size-10 items-center justify-center rounded-full border border-border bg-secondary/70 text-muted-foreground transition hover:bg-secondary" data-gallery-close>
+            <i class="bi bi-x-lg"></i>
+            <span class="sr-only">Close</span>
+        </button>
+        <div class="splide" id="building-gallery-modal">
             <div class="splide__track">
-                  <div class="splide__list">
-
-                        <div class="splide__slide property-card-loader">
-                            <div class="property-card">
-                                <div class="property-card-img">
-                                    <span class="skeleton-box" style="width: 100%; height: 180px;"></span>
-                                </div>
-                    
-                                <div class="p-2">
-                                    <div class="property-price-info">
-                                        <span class="skeleton-box" style="width: 100%; height: 27px;"></span>
-                                    </div>
-                        
-                                    <div class="property-contains">
-                                        <span class="skeleton-box" style="width: 100%; height: 60px;"></span>
-                                        <span class="skeleton-box" style="width: 100%; height: 60px;"></span>
-                                        <span class="skeleton-box" style="width: 100%; height: 60px;"></span>
-                                        <span class="skeleton-box" style="width: 100%; height: 60px;"></span>
-                                    </div>
-                        
-                                    <div class="property-expand-btn">
-                                        <span class="skeleton-box" style="width: 100%; height: 27px;"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                  </div>
+                <ul class="splide__list" data-gallery-modal-list>
+                    <li class="splide__slide h-[520px] animate-pulse bg-muted"></li>
+                </ul>
             </div>
-        </section>
-
-
-        
-
+        </div>
     </div>
-</section>
-
-{% include 'review-box.html' %}
-
-
+</div>
 {% endblock %}
 
 {% block extend_script %}
-<script src="{% static 'js/libraries/lodash.min.js' %}"></script>
-<script>
-    var ASSET_API_URL = '/building/api/details/{{building.id}}/';
-    var GELLERY_API_URL = '/building/api/details/{{building.id}}/media-files/';
-    var AVAILABLE_API_URL = '/building/api/details/{{building.id}}/available-units/';
-    var BUILDING_ID = '{{building.id}}';
-    var USER_ID = '{{ user.id }}';
-    var CSRF_TOKEN = '{{ csrf_token }}';
-    var ADS_SUGGEST_URL = '/advertise/api/advertisement/suggested/';
-    var ADS_LOCATION_PARAM = ['details_sidebar', 'details_topbar'];
-</script>
-
-<script src="{% static 'js/libraries/video.min.js' %}"></script>
-<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
-<script src="{% static '/js/timeme.min.js' %}"></script>
 <script src="{% static 'js/libraries/splide.min.js' %}"></script>
-<script src="{% static 'js/libraries/noframework.waypoints.min.js' %}"></script>
-<script src="{% static 'js/building/detail-page.js' %}"></script>
-<script src="{% static '/js/advertise/manage-view-time.js' %}?v=1.05"></script>
-<script src="{% static '/js/ads.js' %}?v=1.04"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+<script>
+    const ASSET_API_URL = '/building/api/details/{{ building.id }}/';
+    const GALLERY_API_URL = '/building/api/details/{{ building.id }}/media-files/';
+    const AVAILABLE_API_URL = '/building/api/details/{{ building.id }}/available-units/';
+    const BUILDING_ID = '{{ building.id }}';
+    const USER_ID = '{{ user.id|default:0 }}';
+    const CSRF_TOKEN = '{{ csrf_token }}';
+</script>
+<script src="{% static 'js/building/detail-page.js' %}?v=2.00"></script>
 {% endblock extend_script %}
+

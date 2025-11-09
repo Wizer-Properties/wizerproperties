@@ -3,98 +3,210 @@
 
 {% block profile %}
 
-<!--- Complete Profile Form Start --->
-
-<div class="authForm">
-    <div class="success-message">
-        <!-- <span class="authSuccessMessage"></span> -->
-    </div>
-    <div class="error-message">
-        <!-- <span class="authErrorMessage"></span> -->
-    </div>
+<div class="space-y-6">
     {% if profile.company_logo %}
-    <div class="companyLogoDiv">
-        <img src="{{ profile.company_logo.url }}" alt="Company Logo" style="max-width: 200px;">
+    <div class="flex justify-center pb-6">
+        <img src="{{ profile.company_logo.url }}" alt="Company Logo" class="max-w-[200px] rounded-xl border border-border shadow-sm">
     </div>
     {% endif %}
-    <div class="authFormDiv">
-        <!-- <span class="authErrorMessage">Message</span> -->
-        <input name="company_logo" type="file" accept="image/*" class="authInput authFile">
-        <div class="fileName"> Company Logo</div>
+
+    <div class="space-y-2">
+        <label for="company_logo" class="text-sm font-medium text-muted-foreground">
+            Company Logo
+        </label>
+        <input
+            id="company_logo"
+            name="company_logo"
+            type="file"
+            accept="image/*"
+            aria-describedby="company-logo-help"
+            aria-label="Upload company logo image"
+            class="w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground file:cursor-pointer hover:file:bg-primary/90"
+        >
+        <p id="company-logo-help" class="text-sm text-muted-foreground fileName">Select a file</p>
     </div>
-    <div class="authFormDiv">
-        <!-- <span class="authErrorMessage">Message</span> -->
-        <input name="email" type="email" class="authInput" placeholder="Email" value="{{ request.user.email }}"
-            readonly>
-        <div class="authlabelline authcompleteProfileLabe">Email</div>
+
+    <div class="space-y-2">
+        <label for="email" class="text-sm font-medium text-muted-foreground">
+            Email address
+        </label>
+        <input
+            id="email"
+            name="email"
+            type="email"
+            value="{{ request.user.email }}"
+            readonly
+            aria-readonly="true"
+            aria-label="Your email address"
+            class="w-full rounded-xl border border-border bg-muted px-4 py-3 text-base text-muted-foreground shadow-sm cursor-not-allowed"
+        >
     </div>
-    <div class="authFormDiv">
-        <!-- <span class="authErrorMessage">Message</span> -->
-        <input name="company_name" type="text" class="authInput" placeholder="Company Name"
-            value="{{ profile.company_name }}" required>
-        <div class="authlabelline authcompleteProfileLabe">Company Name</div>
+
+    <div class="space-y-2">
+        <label for="company_name" class="text-sm font-medium text-muted-foreground">
+            Company Name
+        </label>
+        <input
+            id="company_name"
+            name="company_name"
+            type="text"
+            placeholder="Company Name"
+            value="{{ profile.company_name }}"
+            required
+            aria-required="true"
+            aria-describedby="company-name-error"
+            aria-invalid="false"
+            autocomplete="organization"
+            class="w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+        >
+        <div id="company-name-error" class="sr-only" role="alert"></div>
     </div>
-    <div class="d-flex">
-        <div class="phone_code_area">
-            <div class="authFormDiv">
-                <!-- <span class="authErrorMessage">Message</span> -->
-                <select name="phone_code" type="text" id="phone_code" class="authInput authSelectInput"
-                    placeholder="Code" required>
-                    <option value="+66">+66</option>
+
+    <div class="space-y-2">
+        <label for="phone_number" class="text-sm font-medium text-muted-foreground">
+            Phone Number
+        </label>
+        <div class="flex gap-3">
+            <select
+                id="phone_code"
+                name="phone_code"
+                required
+                aria-required="true"
+                aria-label="Country code"
+                class="w-40 rounded-xl border border-border bg-background px-3 py-3 text-sm text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            >
+                <option value="+66">🇹🇭 +66 (TH)</option>
+                <option value="+60">🇲🇾 +60 (MY)</option>
+                <option value="+65">🇸🇬 +65 (SG)</option>
+                <option value="+852">🇭🇰 +852 (HK)</option>
+                <option value="+86">🇨🇳 +86 (CN)</option>
+                <option value="+886">🇹🇼 +886 (TW)</option>
+                <option value="+84">🇻🇳 +84 (VN)</option>
+                <option value="+62">🇮🇩 +62 (ID)</option>
+                <option value="+63">🇵🇭 +63 (PH)</option>
+                <option value="+95">🇲🇲 +95 (MM)</option>
+                <option value="+855">🇰🇭 +855 (KH)</option>
+                <option value="+856">🇱🇦 +856 (LA)</option>
+                <option value="+673">🇧🇳 +673 (BN)</option>
                 </select>
-            </div>
+            <input
+                id="phone_number"
+                name="phone_number"
+                type="tel"
+                placeholder="Phone Number"
+                value="{{ profile.phone_number|cut:'+66' }}"
+                required
+                aria-required="true"
+                aria-describedby="phone-error"
+                aria-invalid="false"
+                autocomplete="tel"
+                class="flex-1 rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            >
         </div>
-
-        <div class="phone_number_area">
-            <div class="authFormDiv">
-                <!-- <span class="authErrorMessage">Message</span> -->
-                <input name="phone_number" type="tel" class="authInput" placeholder="Phone Number"
-                    value="{{ profile.phone_number|cut:'+66' }}" required>
-                <div class="authlabelline authcompleteProfileLabe">Phone Number</div>
-            </div>
-        </div>
-    </div>
-    <div class="authFormDiv">
-        <!-- <span class="authErrorMessage">Message</span> -->
-        <input name="whats_app_link" type="text" class="authInput" placeholder="WhatsApp Link" value="{{ profile.whats_app_link }}">
-        <div class="authlabelline authcompleteProfileLabe">WhatsApp Link</div>
-    </div>
-    <div class="authFormDiv">
-        <!-- <span class="authErrorMessage">Message</span> -->
-        <input name="line_link" type="text" class="authInput" placeholder="Line Link" value="{{ profile.line_link }}">
-        <div class="authlabelline authcompleteProfileLabe">Line Link</div>
-    </div>
-    <div class="authFormDiv">
-        <!-- <span class="authErrorMessage">Message</span> -->
-        <input name="we_chat_link" type="text" class="authInput" placeholder="WeChat Link" value="{{ profile.we_chat_link }}">
-        <div class="authlabelline authcompleteProfileLabe">WeChat Link</div>
-    </div>
-    <div class="authFormDiv">
-        <!-- <span class="authErrorMessage">Message</span> -->
-        <input name="address" type="text" class="authInput pac-input" placeholder="Company Address"
-            value="{{ profile.address }}" required>
-        <div class="authlabelline authcompleteProfileLabe">Company Address</div>
+        <div id="phone-error" class="sr-only" role="alert"></div>
     </div>
 
-    <input name="latitude" label="latitude" label-name="latitude" type="text" class="authInput"
-        value="{{ profile.latitude }}" placeholder="Latitude">
-    <input name="longitude" label="longitude" label-name="longitude" type="text" class="authInput"
-        value="{{ profile.longitude }}" placeholder="Longitude">
-
-    <div class="authFormDiv">
-        <!-- <span class="authErrorMessage">Message</span> -->
-        <textarea name="company_details" type="text" id="emailInput" class="authInput profileCompanyDeatils"
-            placeholder="Company Details" required>{{ profile.company_details }}</textarea>
-        <div class="authlabelline authcompleteProfileLabe">Company Details</div>
+    <div class="space-y-2">
+        <label for="whats_app_link" class="text-sm font-medium text-muted-foreground">
+            WhatsApp Link
+        </label>
+        <input
+            id="whats_app_link"
+            name="whats_app_link"
+            type="url"
+            placeholder="WhatsApp Link"
+            value="{{ profile.whats_app_link }}"
+            aria-describedby="whatsapp-help"
+            autocomplete="url"
+            class="w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+        >
+        <p id="whatsapp-help" class="sr-only">Optional WhatsApp contact link</p>
     </div>
-    <button type="submit" class="authButton completeProfileButton">
+
+    <div class="space-y-2">
+        <label for="line_link" class="text-sm font-medium text-muted-foreground">
+            Line Link
+        </label>
+        <input
+            id="line_link"
+            name="line_link"
+            type="url"
+            placeholder="Line Link"
+            value="{{ profile.line_link }}"
+            aria-describedby="line-help"
+            autocomplete="url"
+            class="w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+        >
+        <p id="line-help" class="sr-only">Optional Line contact link</p>
+    </div>
+
+    <div class="space-y-2">
+        <label for="we_chat_link" class="text-sm font-medium text-muted-foreground">
+            WeChat Link
+        </label>
+        <input
+            id="we_chat_link"
+            name="we_chat_link"
+            type="url"
+            placeholder="WeChat Link"
+            value="{{ profile.we_chat_link }}"
+            aria-describedby="wechat-help"
+            autocomplete="url"
+            class="w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+        >
+        <p id="wechat-help" class="sr-only">Optional WeChat contact link</p>
+    </div>
+
+    <div class="space-y-2">
+        <label for="address" class="text-sm font-medium text-muted-foreground">
+            Company Address
+        </label>
+        <input
+            id="address"
+            name="address"
+            type="text"
+            class="pac-input w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            placeholder="Company Address"
+            value="{{ profile.address }}"
+            required
+            aria-required="true"
+            aria-describedby="address-error"
+            aria-invalid="false"
+            autocomplete="street-address"
+        >
+        <div id="address-error" class="sr-only" role="alert"></div>
+    </div>
+
+    <input name="latitude" label="latitude" label-name="latitude" type="text" value="{{ profile.latitude }}" placeholder="Latitude" style="display:none;" aria-hidden="true">
+    <input name="longitude" label="longitude" label-name="longitude" type="text" value="{{ profile.longitude }}" placeholder="Longitude" style="display:none;" aria-hidden="true">
+
+    <div class="space-y-2">
+        <label for="company_details" class="text-sm font-medium text-muted-foreground">
+            Company Details
+        </label>
+        <textarea
+            id="company_details"
+            name="company_details"
+            rows="5"
+            placeholder="Company Details"
+            required
+            aria-required="true"
+            aria-describedby="company-details-error"
+            aria-invalid="false"
+            class="w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none"
+        >{{ profile.company_details }}</textarea>
+        <div id="company-details-error" class="sr-only" role="alert"></div>
+    </div>
+
+    <button
+        type="submit"
+        class="inline-flex w-full items-center justify-center gap-3 rounded-xl bg-primary px-5 py-3 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/30 transition hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50 disabled:cursor-not-allowed"
+        id="update-profile-button"
+        aria-label="Update your profile"
+        aria-busy="false"
+    >
         <span id="loginButtonText">Update Profile</span>
-        <div id="loadingSpinner" class="spinner-border" role="status" style="display: none;">
-            <span class="sr-only">Loading...</span>
-        </div>
     </button>
 </div>
-
-<!--- Complete Profile Form End --->
 
 {% endblock %}

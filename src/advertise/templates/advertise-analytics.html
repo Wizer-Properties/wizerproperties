@@ -3,6 +3,192 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
+<title>Advertise analytics</title>
+<link rel="stylesheet" href="{% static '/css/libraries/dataTables.min.css' %}" />
+{% endblock extend_head %}
+
+{% block content %}
+<section class="bg-muted/30 py-12">
+    <div class="container max-w-6xl space-y-10">
+        <header class="space-y-4">
+            <p class="text-xs font-semibold uppercase tracking-[0.4em] text-primary">Advertise</p>
+            <div class="space-y-2">
+                <h1 class="text-3xl font-heading font-semibold text-foreground">Engagement analytics</h1>
+                <p class="max-w-3xl text-sm text-muted-foreground">
+                    Track how prospects interact with your campaigns, understand viewing habits, and dig into the best performing listings without leaving the dashboard experience.
+                </p>
+            </div>
+        </header>
+
+        <div class="grid gap-6 lg:grid-cols-[2fr_1fr]">
+            <article class="card space-y-6" label-name="visit-analytics">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-lg font-semibold text-foreground">Visit trends</h2>
+                        <p class="text-sm text-muted-foreground">Compare property visits over time and monitor performance shifts.</p>
+                    </div>
+                    <div class="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+                        <div class="inline-flex flex-wrap gap-2 rounded-full border border-border bg-background/80 p-1 chart-filter-btn-area" data-filter-group="timeframe">
+                            <button type="button" label-name="filter-type" value="weekly" active="true" aria-pressed="true" class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium text-muted-foreground transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 aria-pressed:bg-primary aria-pressed:text-primary-foreground hover:text-foreground">Weekly</button>
+                            <button type="button" label-name="filter-type" value="monthly" aria-pressed="false" class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium text-muted-foreground transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 aria-pressed:bg-primary aria-pressed:text-primary-foreground hover:text-foreground">Monthly</button>
+                            <button type="button" label-name="filter-type" value="yearly" aria-pressed="false" class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium text-muted-foreground transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 aria-pressed:bg-primary aria-pressed:text-primary-foreground hover:text-foreground">Yearly</button>
+                        </div>
+                        <div class="inline-flex items-center gap-2 rounded-full border border-border bg-background/80 p-1 chart-filter-btn-area" data-filter-group="pagination">
+                            <button type="button" label-name="pagination" name="previous" value="false" class="inline-flex size-8 items-center justify-center rounded-full text-muted-foreground transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 aria-disabled:opacity-40" aria-label="Previous range">
+                                <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M15 18l-6-6 6-6" />
+                                </svg>
+                            </button>
+                            <button type="button" label-name="pagination" name="next" value="false" class="inline-flex size-8 items-center justify-center rounded-full text-muted-foreground transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 aria-disabled:opacity-40" aria-label="Next range">
+                                <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m9 18 6-6-6-6" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-xs font-medium uppercase tracking-widest text-muted-foreground" label-name="date-range"></p>
+
+                <div class="relative flex min-h-[320px] items-center justify-center rounded-xl border border-dashed border-border bg-secondary/40">
+                    <div id="property_view" class="h-[320px] w-full"></div>
+                    <div class="chart-overlay pointer-events-none absolute inset-0 hidden items-center justify-center bg-background/60 backdrop-blur-sm" data-chart-loader>
+                        <span class="size-10 animate-spin rounded-full border-2 border-primary border-t-transparent"></span>
+                        <span class="sr-only">Loading chart</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card space-y-4">
+                <div class="flex items-center justify-between gap-2">
+                    <div>
+                        <h2 class="text-lg font-semibold text-foreground">Gender analytics</h2>
+                        <p class="text-sm text-muted-foreground">Understand who is watching your campaigns.</p>
+                    </div>
+                </div>
+                <div class="relative flex min-h-[320px] items-center justify-center rounded-xl border border-dashed border-border bg-secondary/40">
+                    <div id="gender-analytics" class="h-[280px] w-full"></div>
+                    <div class="pointer-events-none absolute inset-0 hidden items-center justify-center bg-background/60 backdrop-blur-sm" data-gender-loader>
+                        <span class="size-10 animate-spin rounded-full border-2 border-primary border-t-transparent"></span>
+                        <span class="sr-only">Loading gender analytics</span>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <section class="space-y-4">
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h2 class="text-lg font-semibold text-foreground">Insight library</h2>
+                    <p class="text-sm text-muted-foreground">Tap into deeper breakdowns for conversions, rankings, and audience behavior.</p>
+                </div>
+                <p class="text-xs text-muted-foreground">Click any card to open the detailed report.</p>
+            </div>
+
+            <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                <button type="button" class="flex h-full flex-col justify-between gap-3 rounded-2xl border border-border bg-card p-5 text-left shadow-sm transition hover:border-primary/70 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" target-modal="top_performing_properties_by_conversion">
+                    <div>
+                        <h3 class="text-sm font-semibold text-foreground">Top Performing Properties by Conversion</h3>
+                        <p class="mt-1 text-xs text-muted-foreground">See the listings delivering the highest inquiry-to-view ratios.</p>
+                    </div>
+                    <span class="text-xs font-medium text-muted-foreground" label-name="total-data">Total data : --</span>
+                </button>
+
+                <button type="button" class="flex h-full flex-col justify-between gap-3 rounded-2xl border border-border bg-card p-5 text-left shadow-sm transition hover:border-primary/70 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" target-modal="top_ranked_properties">
+                    <div>
+                        <h3 class="text-sm font-semibold text-foreground">Top-Ranked Properties by View</h3>
+                        <p class="mt-1 text-xs text-muted-foreground">Monitor the listings capturing the most visits and attention.</p>
+                    </div>
+                    <span class="text-xs font-medium text-muted-foreground" label-name="total-data">Total data : --</span>
+                </button>
+
+                <button type="button" class="flex h-full flex-col justify-between gap-3 rounded-2xl border border-border bg-card p-5 text-left shadow-sm transition hover:border-primary/70 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" target-modal="most_in_demand_price_range">
+                    <div>
+                        <h3 class="text-sm font-semibold text-foreground">Most In-Demand Price Range</h3>
+                        <p class="mt-1 text-xs text-muted-foreground">Understand which pricing brackets resonate with viewers.</p>
+                    </div>
+                    <span class="text-xs font-medium text-muted-foreground" label-name="total-data">Total data : --</span>
+                </button>
+
+                <button type="button" class="flex h-full flex-col justify-between gap-3 rounded-2xl border border-border bg-card p-5 text-left shadow-sm transition hover:border-primary/70 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" target-modal="top_rated_buildings">
+                    <div>
+                        <h3 class="text-sm font-semibold text-foreground">Top-Rated Buildings</h3>
+                        <p class="mt-1 text-xs text-muted-foreground">Discover which buildings stand out in customer reviews.</p>
+                    </div>
+                    <span class="text-xs font-medium text-muted-foreground" label-name="total-data">Total data : --</span>
+                </button>
+
+                <button type="button" class="flex h-full flex-col justify-between gap-3 rounded-2xl border border-border bg-card p-5 text-left shadow-sm transition hover:border-primary/70 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" target-modal="maximum_viewing_time_properties">
+                    <div>
+                        <h3 class="text-sm font-semibold text-foreground">Maximum Viewing Time</h3>
+                        <p class="mt-1 text-xs text-muted-foreground">Identify properties with the longest engagement sessions.</p>
+                    </div>
+                    <span class="text-xs font-medium text-muted-foreground" label-name="total-data">Total data : --</span>
+                </button>
+
+                <button type="button" class="flex h-full flex-col justify-between gap-3 rounded-2xl border border-border bg-card p-5 text-left shadow-sm transition hover:border-primary/70 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" target-modal="most_favorite_properties">
+                    <div>
+                        <h3 class="text-sm font-semibold text-foreground">Most User Favorites</h3>
+                        <p class="mt-1 text-xs text-muted-foreground">Track the listings users save for later.</p>
+                    </div>
+                    <span class="text-xs font-medium text-muted-foreground" label-name="total-data">Total data : --</span>
+                </button>
+
+                <button type="button" class="flex h-full flex-col justify-between gap-3 rounded-2xl border border-border bg-card p-5 text-left shadow-sm transition hover:border-primary/70 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" target-modal="popular_search_location_properties">
+                    <div>
+                        <h3 class="text-sm font-semibold text-foreground">Popular Search Locations</h3>
+                        <p class="mt-1 text-xs text-muted-foreground">Reveal neighborhoods and hotspots buyers revisit.</p>
+                    </div>
+                    <span class="text-xs font-medium text-muted-foreground" label-name="total-data">Total data : --</span>
+                </button>
+
+                <button type="button" class="flex h-full flex-col justify-between gap-3 rounded-2xl border border-border bg-card p-5 text-left shadow-sm transition hover:border-primary/70 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" target-modal="most_appeared_on_the_compare_list">
+                    <div>
+                        <h3 class="text-sm font-semibold text-foreground">Most Compared Properties</h3>
+                        <p class="mt-1 text-xs text-muted-foreground">See what listings enter shortlists and comparisons.</p>
+                    </div>
+                    <span class="text-xs font-medium text-muted-foreground" label-name="total-data">Total data : --</span>
+                </button>
+
+                <button type="button" class="flex h-full flex-col justify-between gap-3 rounded-2xl border border-border bg-card p-5 text-left shadow-sm transition hover:border-primary/70 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" target-modal="highest_search_appearances_properties">
+                    <div>
+                        <h3 class="text-sm font-semibold text-foreground">Highest Search Appearances</h3>
+                        <p class="mt-1 text-xs text-muted-foreground">Check which listings appear most across discovery flows.</p>
+                    </div>
+                    <span class="text-xs font-medium text-muted-foreground" label-name="total-data">Total data : --</span>
+                </button>
+            </div>
+        </section>
+    </div>
+</section>
+
+{% include "advertise/partials/analytics-modals.html" %}
+{% endblock %}
+
+{% block extend_script %}
+<script>
+    var VISITE_ANALYTCS = '/property/api/visit-analytics/';
+    var USER_GENDER_RATIO = '/property/api/analytics/user-gender-ratio';
+    var TOP_RATED_BUILDINGS = '/property/api/analytics/top-rated-buildings/';
+    var TOP_RANKED_PROPERTIES = '/property/api/analytics/top-ranked-properties/';
+    var MOST_FAVORITE_PROPERTIES = '/property/api/analytics/most-favorite-properties/';
+    var MOST_IN_DEMAND_PRICE_RANGE = '/property/api/analytics/most-in-demand-price-range/';
+    var MAXIMUM_VIEWING_TIME_PROPERTIES = '/property/api/analytics/maximum-viewing-time-properties/';
+    var MOST_APPEARED_ON_THE_COMPARE_LIST = '/property/api/analytics/most-appeared-on-the-compare-list/';
+    var POPULAR_SEARCH_LOCATION_PROPERTIES = '/property/api/analytics/popular-search-location-properties/';
+    var HIGHEST_SEARCH_APPEARANCES_PROPERTIES = '/property/api/analytics/highest-search-appearances-properties/';
+    var TOP_PERFORMING_PROPERTIES_BY_CONVERSION = '/property/api/analytics/top-performing-properties-by-conversion/';
+</script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+<script src="{% static '/js/libraries/dataTables.min.js' %}?v=1.00"></script>
+<script src="{% static '/js/libraries/echarts.min.js' %}?v=1.00"></script>
+<script src="{% static '/js/advertise/analytics.js' %}?v=2.00"></script>
+{% endblock extend_script %}
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block extend_head %}
 <title>Advertise Performance</title>
 <link rel="stylesheet" href="{% static '/css/libraries/dataTables.min.css' %}" />
 <link rel="stylesheet" href="{% static '/css/auth.css' %}?v=1.01" />

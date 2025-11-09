@@ -5,6 +5,7 @@ $(document).ready(function () {
         if (imageId) {
             deletedImages.push(imageId);
         }
+        $(this).closest(".group, .uploaded-file-view-img, a").remove();
     });
 
     $("#building-update-form").submit(function (event) {
@@ -87,13 +88,11 @@ $(document).ready(function () {
     var constructionYearInput = $('#construction_year');
 
     function updateConstructionYearVisibility() {
-        if (statusSelect.val() === 'completed') {
-            constructionYearDiv.show();
-            constructionYearInput.prop('required', true);
-        } else {
-            constructionYearDiv.hide();
-            constructionYearInput.prop('required', false);
-            constructionYearInput.val(null); // Clear the value if hidden
+        var isCompleted = statusSelect.val() === 'completed';
+        constructionYearDiv.toggleClass('hidden', !isCompleted);
+        constructionYearInput.prop('required', isCompleted);
+        if (!isCompleted) {
+            constructionYearInput.val(null);
         }
     }
 
@@ -104,11 +103,12 @@ $(document).ready(function () {
 
     // Sub type visibility ------------------------------ start
     var subTypeSelect = $('#sub_type_select');
+    var subTypeContainer = $('#sub_type_container');
 
     function updateSubTypeOptions(subTypes) {
         var selectedValue = subTypeSelect.val();
         subTypeSelect.empty();
-        subTypeSelect.append('<option value="">........</option>');
+        subTypeSelect.append('<option value="">Select sub type</option>');
         $.each(subTypes, function(value, label) {
             subTypeSelect.append('<option value="' + value + '">' + label + '</option>');
         });
@@ -122,8 +122,8 @@ $(document).ready(function () {
     function toggleSubTypeVisibility() {
         var typeValue = $('#type_select').val();
         if (typeValue) {
-            $('#sub_type_container .authFormDiv').show();
-            $('#sub_type_select').prop('required', true);
+            subTypeContainer.removeClass('hidden');
+            subTypeSelect.prop('required', true);
 
             if (typeValue == 'residence') {
                 updateSubTypeOptions(residenceSubTypes);
@@ -131,8 +131,8 @@ $(document).ready(function () {
                 updateSubTypeOptions(commercialSubTypes);
             }
         } else {
-            $('#sub_type_container .authFormDiv').hide();
-            $('#sub_type_select').prop('required', false).val('');
+            subTypeContainer.addClass('hidden');
+            subTypeSelect.prop('required', false).val('');
         }
     }
 
@@ -140,7 +140,6 @@ $(document).ready(function () {
 
     $('#type_select').on('change', function() {
         toggleSubTypeVisibility();
-        // Set sub-type value to empty string when type changes
         subTypeSelect.val('');
     });
     // --------------------------------- end

@@ -14,7 +14,9 @@ def email_verification(request):
         context["status"] = "success"
         context["message"] = f"We have sent you a verification code to your email ({user_email}). Please check your email and verify your account."
     except Exception as e:
-        print("user_email", user_email)
+        print(f"Email verification error for {user_email}: {str(e)}")
+        import traceback
+        traceback.print_exc()
         context["status"] = "error"
         context["message"] = f"Something went wrong. Could not send ({user_email}) verification code. Please try again later."
     return render(request, "auth/email_verification.html", context)

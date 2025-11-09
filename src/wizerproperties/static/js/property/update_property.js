@@ -1,103 +1,93 @@
 $(document).ready(function () {
-    var deletedImages = [];
-    $(".remove-image").click(function () {
-        var imageId = $(this).data("id");
-        if (imageId) {
-            deletedImages.push(imageId);
+  var deletedImages = [];
+  var tenantValidityWrapper = $("[data-tenant-validity]");
+  var tenantValidityInput = tenantValidityWrapper.find('input[name="tenant_occupied_validity"]');
+
+  function toggleTenantValidity() {
+    var isChecked = $("#tenant_occupied").is(":checked");
+    tenantValidityWrapper.toggleClass("hidden", !isChecked);
+    if (tenantValidityInput.length) {
+      tenantValidityInput.prop("required", isChecked);
+      if (!isChecked) {
+        tenantValidityInput.val("");
+      }
+    }
+  }
+
+  toggleTenantValidity();
+  $("#tenant_occupied").on("change", toggleTenantValidity);
+
+  $(document).on("click", ".remove-image", function (event) {
+    event.preventDefault();
+    var imageId = $(this).data("id");
+    if (imageId && !deletedImages.includes(imageId)) {
+      deletedImages.push(imageId);
+    }
+    $(this).closest(".group").remove();
+  });
+
+  $("#property-update-form").on("submit", function (event) {
+    event.preventDefault();
+
+    var formData = new FormData(this);
+    if (deletedImages.length > 0) {
+      deletedImages.forEach(function (id) {
+        formData.append("deleted_images", id);
+      });
+    }
+
+    var updatePropertyButtonText = $("#updatePropertyButtonText");
+    var loadingSpinner = $("#loadingSpinner");
+
+    updatePropertyButtonText.hide();
+    loadingSpinner.show();
+
+    $.ajax({
+      url: updatePropertyAPIUrl,
+      type: "PUT",
+      data: formData,
+      processData: false,
+      contentType: false,
+      headers: {
+        "X-CSRFToken": csrfToken,
+      },
+      success: function (response, status, xhr) {
+        loadingSpinner.hide();
+        updatePropertyButtonText.show();
+
+        $(".error-message").html("");
+
+        var successMessages = "";
+        if (xhr.status === 200) {
+          successMessages += "<span class='authSuccessMessage'>Property updated successfully</span>";
         }
-    });
 
-    $("#property-update-form").submit(function (event) {
-        event.preventDefault();
+        $(".success-message").html(successMessages);
 
-        var formData = new FormData(this);
+        setTimeout(function () {
+          window.location.href = "/dashboard";
+        }, 1000);
+      },
+      error: function (xhr, status, error) {
+        loadingSpinner.hide();
+        updatePropertyButtonText.show();
 
-        if (deletedImages.length > 0) {
-            for (var i = 0; i < deletedImages.length; i++) {
-                formData.append("deleted_images", deletedImages[i]);
+        $(".success-message").html("");
+
+        if (xhr.status === 400) {
+          var errorData = xhr.responseJSON || {};
+          var errorMessages = "";
+          for (var key in errorData) {
+            if (errorData.hasOwnProperty(key) && errorData[key].length > 0) {
+              errorMessages += "<span class='authErrorMessage'>" + errorData[key][0] + "</span>";
             }
+          }
+          $(".error-message").html(errorMessages);
+        } else {
+          console.error(error);
+          alert("An error occurred. Please try again later.");
         }
-
-        var updatePropertyButtonText = $("#updatePropertyButtonText");
-        var loadingSpinner = $("#loadingSpinner");
-
-        updatePropertyButtonText.hide(); // Hide the text
-        loadingSpinner.show(); // Show the spinner
-
-        $.ajax({
-            url: updatePropertyAPIUrl, // Replace with your API endpoint
-            type: "PUT",
-            data: formData,
-            processData: false,
-            contentType: false,
-            headers: {
-                "X-CSRFToken": csrfToken,
-            },
-            success: function (response, status, xhr) {
-                loadingSpinner.hide(); // Hide the spinner
-                updatePropertyButtonText.show(); // Show the text
-
-                $(".error-message").html("");
-
-                var successMessages = "";
-                if (xhr.status == 200) {
-                    successMessages +=
-                        "<span class='authSuccessMessage'>Property updated successfully</span>";
-                }
-
-                // Handle success (e.g., show a success message)
-                $(".success-message").html(successMessages);
-
-                // Redirect to the dashboard after 1 second
-                setTimeout(function () {
-                    window.location.href = "/dashboard";
-                }, 1000);
-            },
-            error: function (xhr, status, error) {
-                loadingSpinner.hide(); // Hide the spinner
-                updatePropertyButtonText.show(); // Show the text
-
-                $(".success-message").html("");
-
-                if (xhr.status === 400) {
-                    // Bad Request (validation error)
-                    var errorData = xhr.responseJSON;
-                    var errorMessages = "";
-                    for (var key in errorData) {
-                        if (errorData.hasOwnProperty(key)) {
-                            errorMessages +=
-                                "<span class='authErrorMessage'>" +
-                                errorData[key][0] +
-                                "</span>";
-                        }
-                    }
-                    $(".error-message").html(errorMessages);
-                } else {
-                    // Handle other error cases (e.g., server error)
-                    console.error(error);
-                    alert("An error occurred. Please try again later.");
-                }
-            },
-        });
+      },
     });
-
-    $(document).on('change', '#tenant_occupied', function(){
-        var is_checked = $(this).is(":checked");
-        
-        if(is_checked){
-            $('.property-options-area').append(
-                '<div class="col-12 date_picker_box_wrapper">'+
-                    '<div class="authFormDiv">'+
-                        '<input type="text" class="authInput date_picker_box" placeholder="mm-dd-yyyy">'+
-                        '<div class="authlabelline authcompleteProfileLabe">State i.e until Oct 2024</div>'+
-                        '<input type="date" name="tenant_occupied_validity" required class="authInput hidden_date_picker_box">'+
-                    '</div>'+
-                '</div>'
-            );
-
-            init_datepacker()
-        }else{
-            $('.date_picker_box_wrapper').remove()
-        }
-    })
+  });
 });

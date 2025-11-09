@@ -1,395 +1,438 @@
-$(document).ready(function(){
+$(function () {
+  var $body = $("body");
 
-    $('[target-modal]').click(function(){
-        var modal_name = $(this).attr('target-modal')
-        $('[modal-name="'+modal_name+'"]').modal("show");
-    })
+  function openModal(name) {
+    var $modal = $('[modal-name="' + name + '"]');
+    if (!$modal.length) return;
+    $modal.removeClass("hidden").attr("aria-hidden", "false");
+    $body.addClass("overflow-hidden");
+  }
 
-    function time_convert(seconds ){
-        var hours = Math.floor((seconds % 86400) / 3600);
-        var minutes = Math.floor((seconds % 3600) / 60);
-        var secs = Math.floor(seconds % 60);
-
-        // Format the output
-        return hours+'h : '+minutes+'m : '+secs+'s';
+  function closeModal($modal) {
+    if (!$modal || !$modal.length) return;
+    $modal.addClass("hidden").attr("aria-hidden", "true");
+    if ($('[modal-name]:visible').length === 0) {
+      $body.removeClass("overflow-hidden");
     }
+  }
 
-    var property_dom = document.getElementById('property_view');
-    var propertyChart = echarts.init(property_dom);
-    var propertyOption;
+  $(document).on("click", "[target-modal]", function () {
+    openModal($(this).attr("target-modal"));
+  });
 
-    propertyOption = {
-        title: {
-            text: 'Property View'
-        },
-        xAxis: {
-            type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        },
-        yAxis: {
-            type: 'value',
-            minInterval: 1,
-        },
-        series: [
-            {
-                data: [],
-                type: 'line'
-            }
-        ]
-    };
+  $(document).on("click", "[data-modal-close]", function () {
+    closeModal($(this).closest("[modal-name]"));
+  });
 
-    propertyOption && propertyChart.setOption(propertyOption);
-
-
-    window.addEventListener('resize', function() {
-        propertyChart.resize();
-    });
-
-    var analytic_params = {
-        filter_type : 'weekly'
+  $(document).on("keydown", function (event) {
+    if (event.key === "Escape") {
+      closeModal($("[modal-name]").filter(":visible").last());
     }
+  });
 
-    function modal_preloader(){
-        return  '<div class="modal-preloader">'+
-                    '<img src="/static/media/loader.gif" alt="loading">'+
-                '</div>'
-    }
+  function formatDuration(seconds) {
+    if (seconds === null || seconds === undefined || isNaN(seconds)) return "--";
+    var total = Math.max(0, Number(seconds));
+    var hours = Math.floor(total / 3600);
+    var minutes = Math.floor((total % 3600) / 60);
+    var secs = Math.floor(total % 60);
+    return hours + "h " + minutes + "m " + secs + "s";
+  }
 
+  var chartElement = document.getElementById("property_view");
+  if (!chartElement) return;
 
-    function get_visite_analytic_data(){
-        $.ajax({
-            url: VISITE_ANALYTCS,
-            type: 'GET',
-            data : analytic_params,
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            beforeSend: function() {
-                $('[label-name="visit-analytics"]').append(modal_preloader())
-            },
-            success: function (data) {
-                propertyOption.series[0].data = data?.visit_data
-                propertyOption.xAxis.data = data?.label_list
-                propertyChart.setOption(propertyOption)
-
-                if(analytic_params.previous) delete analytic_params.previous;
-                if(analytic_params.next) delete analytic_params.next;
-
-                $('[label-name="pagination"][name="next"]').val(data?.pagination?.next)
-                $('[label-name="pagination"][name="previous"]').val(data?.pagination?.previous)
-                $('[label-name="pagination"][name="next"]').attr('active', Boolean(data?.pagination?.next))
-                $('[label-name="pagination"][name="previous"]').attr('active', Boolean(data?.pagination?.previous))
-
-                var date_range = dayjs(data?.start_date).format('MMM D, YYYY') +' to '+ 
-                                 dayjs(data?.end_date).format('MMM D, YYYY')
-                $('[label-name="date-range"]').html(date_range)
-            },
-            error: function (error) {
-                console.log(error)
-            },
-            complete : function(){
-                $('[label-name="visit-analytics"] .modal-preloader').remove()
-            }
-        });
-    };
-
-    get_visite_analytic_data();
-
-
-    $(document).on('click', '.chart-filter-btn-area [label-name]', function(){
-        var label_name = $(this).attr('label-name');
-        var label_value = $(this).attr('value');
-        if(
-            label_name == "filter-type" &&
-            analytic_params.filter_type != label_value
-        ){
-            analytic_params.filter_type = label_value;
-            $('[label-name="filter-type"]').attr("active", false)
-            $(this).attr("active", true)
-            get_visite_analytic_data();
-            return
-        };
-
-        if(
-            label_name == "pagination" &&
-            ![false, 'false', ''].includes(label_value)
-        ){
-            analytic_params[$(this).attr('name')] = label_value;
-            get_visite_analytic_data();
-            return
-        };        
-    });
-
-
-
-    // ================================== chart end
-    // ================================== chart end
-    // ================================== chart end
-    // ================================== chart end
-    // ================================== chart end
-
-    function skeleton(){
-        return '<span class="skeleton-box" style="width: 100%; height: 100%;"></span> '
-    }
-
-
-    function analytic_table_data({
-        url, target_attr_name, data_table_void
-    }){
-
-        var target_table = $('[table-name='+target_attr_name+']')
-        
-        var init_table = target_table.DataTable({
-            ordering: false,
-            lengthChange: false,
-            info: false,
-            pageLength: 5,
-            initComplete: function () {
-                // $("#property-table").parents(".table-area").find(".dataTables_filter").prepend('<h1 class="table-title">Property</h1> ');
-                var get_table_title = target_table.attr("table-title");
-                if(get_table_title){
-                    var table_title_dom = '<h1 class="table-title">'+get_table_title+'</h1>'
-                    target_table.parents('.table-area').find('.dataTables_filter').prepend(table_title_dom)
-                };
-            }
-        });
-
-
-        $.ajax({
-            url,
-            type: 'GET',
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            beforeSend: function() {
-                target_table.parents('.table-area').append(skeleton())
-            },
-            success: function (data) {
-                // console.log(url)
-                // console.log(data)
-                data_table_void({
-                    data, 
-                    init_table,
-                })
-
-                $('[target-modal='+target_attr_name+'] [label-name="total-data"]').html('Total data : ' + data?.length || 0)
-            },
-            error: function (error) {
-                console.log(error)
-            },
-            complete : function(){
-                target_table.parents('.table-area').find('.skeleton-box').remove()
-            }
-        });
-    };
-
-
-    analytic_table_data({
-        url : TOP_PERFORMING_PROPERTIES_BY_CONVERSION,
-        target_attr_name : 'top_performing_properties_by_conversion',
-        data_table_void : function (e){
-            for (let i = 0; i < e.data.length; i++) {
-                e.init_table.row.add([
-                    e.data[i]?.title,
-                    e.data[i]?.building_name,
-                    e.data[i]?.building_location,
-                    e.data[i]?.conversion_rate + ' %',
-                ]).draw(false).node();
-            };
-        }
-    });
-
-    analytic_table_data({
-        url : MAXIMUM_VIEWING_TIME_PROPERTIES,
-        target_attr_name : 'maximum_viewing_time_properties',
-        data_table_void : function (e){
-            for (let i = 0; i < e.data.length; i++) {
-                e.init_table.row.add([
-                    e.data[i]?.title,
-                    e.data[i]?.building_name,
-                    e.data[i]?.building_location,
-                    time_convert(e.data[i]?.view_time),
-                ]).draw(false).node();
-            };
-        }
-    });
-
-    analytic_table_data({
-        url : POPULAR_SEARCH_LOCATION_PROPERTIES,
-        target_attr_name : 'popular_search_location_properties',
-        data_table_void : function (e){
-            for (let i = 0; i < e.data.length; i++) {
-                e.init_table.row.add([
-                    e.data[i]?.address,
-                    e.data[i]?.view_from_this_location,
-                ]).draw(false).node();
-            };
-        }
-    });
-
-    analytic_table_data({
-        url : HIGHEST_SEARCH_APPEARANCES_PROPERTIES,
-        target_attr_name : 'highest_search_appearances_properties',
-        data_table_void : function (e){
-            for (let i = 0; i < e.data.length; i++) {
-                e.init_table.row.add([
-                    e.data[i]?.title,
-                    e.data[i]?.building_name,
-                    e.data[i]?.building_location,
-                    e.data[i]?.search_appearance,
-                ]).draw(false).node();
-            };
-        }
-    });
-
-    analytic_table_data({
-        url : MOST_IN_DEMAND_PRICE_RANGE,
-        target_attr_name : 'most_in_demand_price_range',
-        data_table_void : function (e){
-            for (let i = 0; i < e.data.length; i++) {
-                e.init_table.row.add([
-                    e.data[i]?.range,
-                    e.data[i]?.search_appearance,
-                ]).draw(false).node();
-            };
-        }
-    });
-
-    analytic_table_data({
-        url : TOP_RANKED_PROPERTIES,
-        target_attr_name : 'top_ranked_properties',
-        data_table_void : function (e){
-            for (let i = 0; i < e.data.length; i++) {
-                e.init_table.row.add([
-                    e.data[i]?.title,
-                    e.data[i]?.building_name,
-                    e.data[i]?.building_location,
-                    e.data[i]?.visit_count,
-                ]).draw(false).node();
-            };
-        }
-    });
-
-    analytic_table_data({
-        url : TOP_RATED_BUILDINGS,
-        target_attr_name : 'top_rated_buildings',
-        data_table_void : function (e){
-            for (let i = 0; i < e.data.length; i++) {
-                e.init_table.row.add([
-                    e.data[i]?.title,
-                    e.data[i]?.address,
-                    e.data[i]?.average_rating,
-                ]).draw(false).node();
-            };
-        }
-    });
-
-    analytic_table_data({
-        url : MOST_FAVORITE_PROPERTIES,
-        target_attr_name : 'most_favorite_properties',
-        data_table_void : function (e){
-            for (let i = 0; i < e.data.length; i++) {
-                e.init_table.row.add([
-                    e.data[i]?.title,
-                    e.data[i]?.building_name,
-                    e.data[i]?.building_location,
-                    e.data[i]?.favorite_count,
-                ]).draw(false).node();
-            };
-        }
-    });
-
-    analytic_table_data({
-        url : MOST_APPEARED_ON_THE_COMPARE_LIST,
-        target_attr_name : 'most_appeared_on_the_compare_list',
-        data_table_void : function (e){
-            for (let i = 0; i < e.data.length; i++) {
-                e.init_table.row.add([
-                    e.data[i]?.title,
-                    e.data[i]?.building_name,
-                    e.data[i]?.building_location,
-                    e.data[i]?.compare_count,
-                ]).draw(false).node();
-            };
-        }
-    });
-
-
-    
-    // analytic_table_data({
-    //     url : USER_PROPERTIES_LOCATIONS,
-    //     target_attr_name : 'user_properties_locations'
-    // });
-
-    var gender_analytics_chart_dom = document.getElementById('gender-analytics');
-    var gender_analytics_chart = echarts.init(gender_analytics_chart_dom);
-    var gender_option_data = {
-        tooltip: {
-            trigger: 'item'
+  var propertyChart = echarts.init(chartElement);
+  var propertyOption = {
+    title: {
+      text: "Property View",
+      left: "left",
+      textStyle: {
+        fontSize: 14,
+        fontFamily: "var(--font-sans)",
+        color: "currentColor",
+      },
+    },
+    tooltip: {
+      trigger: "axis",
+      backgroundColor: "rgba(15, 23, 42, 0.9)",
+      borderWidth: 0,
+      textStyle: { color: "#fff" },
+    },
+    grid: { left: "3%", right: "3%", bottom: "5%", containLabel: true },
+    xAxis: {
+      type: "category",
+      data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      axisLine: { lineStyle: { color: "rgba(148, 163, 184, 0.35)" } },
+      axisLabel: { color: "rgba(148, 163, 184, 0.9)" },
+    },
+    yAxis: {
+      type: "value",
+      minInterval: 1,
+      axisLine: { show: false },
+      splitLine: { lineStyle: { color: "rgba(148, 163, 184, 0.2)" } },
+      axisLabel: { color: "rgba(148, 163, 184, 0.9)" },
+    },
+    series: [
+      {
+        data: [],
+        type: "line",
+        smooth: true,
+        symbol: "circle",
+        symbolSize: 8,
+        lineStyle: { width: 3, color: "#0ea5e9" },
+        itemStyle: { color: "#2563eb" },
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            { offset: 0, color: "rgba(14, 165, 233, 0.25)" },
+            { offset: 1, color: "rgba(37, 99, 235, 0.05)" },
+          ]),
         },
-        legend: {
-            top: '5%',
-            left: 'center'
-        },
-        series: [
-            {
-                name: 'Gender',
-                type: 'pie',
-                radius: ['40%', '70%'],
-                avoidLabelOverlap: false,
-                itemStyle: {
-                    borderRadius: 10,
-                    borderColor: '#fff',
-                    borderWidth: 2
-                },
-                label: {
-                    show: false,
-                    position: 'center'
-                },
-                emphasis: {
-                    label: {
-                        show: true,
-                        fontSize: 18,
-                        fontWeight: 'bold'
-                    }
-                },
-                labelLine: {
-                    show: false
-                },
-                data: [
-                    { value: 0, name: 'Male' },
-                    { value: 0, name: 'Female' }
-                ]
-            }
-        ]
-    };
+      },
+    ],
+  };
 
+  propertyChart.setOption(propertyOption);
+  window.addEventListener("resize", function () {
+    propertyChart.resize();
+  });
 
-    function gender_ratio_data(){
-        $.ajax({
-            url: USER_GENDER_RATIO,
-            type: 'GET',
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            beforeSend: function() {
-                // $('#gender-analytics').html(skeleton())
-            },
-            success: function (data) {
-                gender_option_data.series[0].data = [
-                    { value: data?.male, name: 'Male' },
-                    { value: data?.female, name: 'Female' }
-                ]
-                gender_option_data && gender_analytics_chart.setOption(gender_option_data);
-            },
-            error: function (error) {
-                console.log(error)
-            },
-            complete : function(){
-                // $('#gender-analytics').find('.skeleton-box').remove();
-            }
-        });
-    };
+  var analyticParams = { filter_type: "weekly" };
+  var $chartLoader = $("[data-chart-loader]");
 
-    gender_ratio_data()
-})
+  function togglePaginationButtons(pagination) {
+    var nextValue = pagination && pagination.next ? pagination.next : false;
+    var prevValue = pagination && pagination.previous ? pagination.previous : false;
+
+    var $nextButton = $('[label-name="pagination"][name="next"]');
+    var $prevButton = $('[label-name="pagination"][name="previous"]');
+
+    $nextButton
+      .val(nextValue || false)
+      .attr("aria-disabled", !nextValue)
+      .prop("disabled", !nextValue);
+
+    $prevButton
+      .val(prevValue || false)
+      .attr("aria-disabled", !prevValue)
+      .prop("disabled", !prevValue);
+  }
+
+  function setFilterActive($button) {
+    var group = $button.closest(".chart-filter-btn-area");
+    group.find('[label-name="filter-type"]').attr("aria-pressed", "false");
+    $button.attr("aria-pressed", "true");
+  }
+
+  function getVisitAnalytics() {
+    $.ajax({
+      url: VISITE_ANALYTCS,
+      type: "GET",
+      data: analyticParams,
+      headers: { "X-CSRFToken": csrfToken },
+      beforeSend: function () {
+        $chartLoader.removeClass("hidden");
+      },
+      success: function (data) {
+        propertyOption.series[0].data = data && data.visit_data ? data.visit_data : [];
+        propertyOption.xAxis.data = data && data.label_list ? data.label_list : [];
+        propertyChart.setOption(propertyOption);
+
+        delete analyticParams.previous;
+        delete analyticParams.next;
+
+        togglePaginationButtons(data && data.pagination ? data.pagination : null);
+
+        if (data && data.start_date && data.end_date) {
+          var dateRange =
+            dayjs(data.start_date).format("MMM D, YYYY") +
+            " to " +
+            dayjs(data.end_date).format("MMM D, YYYY");
+          $('[label-name="date-range"]').text(dateRange);
+        }
+      },
+      error: function (error) {
+        console.error(error);
+      },
+      complete: function () {
+        $chartLoader.addClass("hidden");
+      },
+    });
+  }
+
+  getVisitAnalytics();
+
+  $(document).on("click", '.chart-filter-btn-area [label-name="filter-type"]', function () {
+    var value = $(this).attr("value");
+    if (!value || analyticParams.filter_type === value) return;
+    analyticParams.filter_type = value;
+    setFilterActive($(this));
+    getVisitAnalytics();
+  });
+
+  $(document).on("click", '.chart-filter-btn-area [label-name="pagination"]', function () {
+    var value = $(this).val();
+    var name = $(this).attr("name");
+    if (!value || value === "false" || !name || $(this).prop("disabled")) return;
+    analyticParams[name] = value;
+    getVisitAnalytics();
+  });
+
+  function renderLoader() {
+    return (
+      '<div class="table-loader absolute inset-0 z-10 flex items-center justify-center rounded-2xl bg-card/80 backdrop-blur-sm">' +
+      '<span class="size-10 animate-spin rounded-full border-2 border-primary border-t-transparent"></span>' +
+      '<span class="sr-only">Loading report</span>' +
+      "</div>"
+    );
+  }
+
+  function analyticsTableData(config) {
+    var $table = $('[table-name="' + config.targetName + '"]');
+    if (!$table.length) return;
+
+    var dataTable = $table.DataTable({
+      ordering: false,
+      lengthChange: false,
+      info: false,
+      pageLength: 5,
+      language: {
+        search: "",
+        searchPlaceholder: "Search…",
+      },
+      dom: '<"flex flex-col gap-3 md:flex-row md:items-center md:justify-between"f><"overflow-x-auto">rt<"mt-4 flex items-center justify-between gap-3"p>',
+      initComplete: function () {
+        var title = $table.attr("table-title");
+        if (title) {
+          var $filter = $table.parents(".table-area").find(".dataTables_filter");
+          if ($filter.length) {
+            $filter
+              .addClass("flex items-center gap-3")
+              .prepend('<h3 class="text-base font-semibold text-foreground">' + title + "</h3>");
+            $filter.find("input").addClass("input h-9 w-40");
+          }
+        }
+      },
+    });
+
+    $.ajax({
+      url: config.url,
+      type: "GET",
+      headers: { "X-CSRFToken": csrfToken },
+      beforeSend: function () {
+        var $container = $table.parents(".table-area");
+        if ($container.find(".table-loader").length === 0) {
+          $container.append(renderLoader());
+        }
+      },
+      success: function (data) {
+        if (Array.isArray(data)) {
+          config.onPopulate({ rows: data, dataTable: dataTable });
+          $('[target-modal="' + config.targetName + '"] [label-name="total-data"]').text(
+            "Total data : " + data.length
+          );
+        }
+      },
+      error: function (error) {
+        console.error(error);
+      },
+      complete: function () {
+        $table.parents(".table-area").find(".table-loader").remove();
+      },
+    });
+  }
+
+  analyticsTableData({
+    url: TOP_PERFORMING_PROPERTIES_BY_CONVERSION,
+    targetName: "top_performing_properties_by_conversion",
+    onPopulate: function (payload) {
+      payload.rows.forEach(function (row) {
+        payload.dataTable.row.add([
+          row && row.title ? row.title : "--",
+          row && row.building_name ? row.building_name : "--",
+          row && row.building_location ? row.building_location : "--",
+          (row && row.conversion_rate ? row.conversion_rate : "--") + " %",
+        ]);
+      });
+      payload.dataTable.draw(false);
+    },
+  });
+
+  analyticsTableData({
+    url: MAXIMUM_VIEWING_TIME_PROPERTIES,
+    targetName: "maximum_viewing_time_properties",
+    onPopulate: function (payload) {
+      payload.rows.forEach(function (row) {
+        payload.dataTable.row.add([
+          row && row.title ? row.title : "--",
+          row && row.building_name ? row.building_name : "--",
+          row && row.building_location ? row.building_location : "--",
+          formatDuration(row && row.view_time ? row.view_time : 0),
+        ]);
+      });
+      payload.dataTable.draw(false);
+    },
+  });
+
+  analyticsTableData({
+    url: POPULAR_SEARCH_LOCATION_PROPERTIES,
+    targetName: "popular_search_location_properties",
+    onPopulate: function (payload) {
+      payload.rows.forEach(function (row) {
+        payload.dataTable.row.add([
+          row && row.address ? row.address : "--",
+          row && row.view_from_this_location ? row.view_from_this_location : 0,
+        ]);
+      });
+      payload.dataTable.draw(false);
+    },
+  });
+
+  analyticsTableData({
+    url: HIGHEST_SEARCH_APPEARANCES_PROPERTIES,
+    targetName: "highest_search_appearances_properties",
+    onPopulate: function (payload) {
+      payload.rows.forEach(function (row) {
+        payload.dataTable.row.add([
+          row && row.title ? row.title : "--",
+          row && row.building_name ? row.building_name : "--",
+          row && row.building_location ? row.building_location : "--",
+          row && row.search_appearance ? row.search_appearance : 0,
+        ]);
+      });
+      payload.dataTable.draw(false);
+    },
+  });
+
+  analyticsTableData({
+    url: MOST_IN_DEMAND_PRICE_RANGE,
+    targetName: "most_in_demand_price_range",
+    onPopulate: function (payload) {
+      payload.rows.forEach(function (row) {
+        payload.dataTable.row.add([
+          row && row.range ? row.range : "--",
+          row && row.search_appearance ? row.search_appearance : 0,
+        ]);
+      });
+      payload.dataTable.draw(false);
+    },
+  });
+
+  analyticsTableData({
+    url: TOP_RANKED_PROPERTIES,
+    targetName: "top_ranked_properties",
+    onPopulate: function (payload) {
+      payload.rows.forEach(function (row) {
+        payload.dataTable.row.add([
+          row && row.title ? row.title : "--",
+          row && row.building_name ? row.building_name : "--",
+          row && row.building_location ? row.building_location : "--",
+          row && row.visit_count ? row.visit_count : 0,
+        ]);
+      });
+      payload.dataTable.draw(false);
+    },
+  });
+
+  analyticsTableData({
+    url: TOP_RATED_BUILDINGS,
+    targetName: "top_rated_buildings",
+    onPopulate: function (payload) {
+      payload.rows.forEach(function (row) {
+        payload.dataTable.row.add([
+          row && row.title ? row.title : "--",
+          row && row.address ? row.address : "--",
+          row && row.average_rating ? row.average_rating : 0,
+        ]);
+      });
+      payload.dataTable.draw(false);
+    },
+  });
+
+  analyticsTableData({
+    url: MOST_FAVORITE_PROPERTIES,
+    targetName: "most_favorite_properties",
+    onPopulate: function (payload) {
+      payload.rows.forEach(function (row) {
+        payload.dataTable.row.add([
+          row && row.title ? row.title : "--",
+          row && row.building_name ? row.building_name : "--",
+          row && row.building_location ? row.building_location : "--",
+          row && row.favorite_count ? row.favorite_count : 0,
+        ]);
+      });
+      payload.dataTable.draw(false);
+    },
+  });
+
+  analyticsTableData({
+    url: MOST_APPEARED_ON_THE_COMPARE_LIST,
+    targetName: "most_appeared_on_the_compare_list",
+    onPopulate: function (payload) {
+      payload.rows.forEach(function (row) {
+        payload.dataTable.row.add([
+          row && row.title ? row.title : "--",
+          row && row.building_name ? row.building_name : "--",
+          row && row.building_location ? row.building_location : "--",
+          row && row.compare_count ? row.compare_count : 0,
+        ]);
+      });
+      payload.dataTable.draw(false);
+    },
+  });
+
+  var genderElement = document.getElementById("gender-analytics");
+  var genderChart = echarts.init(genderElement);
+  var genderLoader = $("[data-gender-loader]");
+
+  var genderOption = {
+    tooltip: { trigger: "item" },
+    legend: {
+      top: "5%",
+      left: "center",
+      textStyle: { fontFamily: "var(--font-sans)", color: "currentColor" },
+    },
+    series: [
+      {
+        name: "Gender",
+        type: "pie",
+        radius: ["40%", "70%"],
+        avoidLabelOverlap: false,
+        itemStyle: { borderRadius: 10, borderColor: "#fff", borderWidth: 2 },
+        label: { show: false, position: "center" },
+        emphasis: { label: { show: true, fontSize: 18, fontWeight: "bold" } },
+        labelLine: { show: false },
+        data: [
+          { value: 0, name: "Male" },
+          { value: 0, name: "Female" },
+        ],
+      },
+    ],
+  };
+
+  function fetchGenderAnalytics() {
+    $.ajax({
+      url: USER_GENDER_RATIO,
+      type: "GET",
+      headers: { "X-CSRFToken": csrfToken },
+      beforeSend: function () {
+        genderLoader.removeClass("hidden");
+      },
+      success: function (data) {
+        genderOption.series[0].data = [
+          { value: data && data.male ? data.male : 0, name: "Male" },
+          { value: data && data.female ? data.female : 0, name: "Female" },
+        ];
+        genderChart.setOption(genderOption);
+      },
+      error: function (error) {
+        console.error(error);
+      },
+      complete: function () {
+        genderLoader.addClass("hidden");
+      },
+    });
+  }
+
+  fetchGenderAnalytics();
+});
