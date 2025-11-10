@@ -1,49 +1,54 @@
 {% load static %}
 
-<link href="{% static 'css/gptchat.css' %}?v=1.02" rel="stylesheet" />
+<section id="home-helper-ai" class="bg-muted/40 py-16">
+    <div class="container max-w-4xl space-y-10">
+        <div class="space-y-3 text-center">
+            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Home Helper AI</p>
+            <h2 class="text-3xl font-heading font-semibold text-foreground">Get instant answers for your property journey</h2>
+            <p class="text-sm text-muted-foreground">Ask about developer incentives, ownership rules, financing steps, or anything else slowing you down. Home Helper AI stays up-to-date so you can move forward confidently.</p>
+        </div>
 
+        <div class="rounded-3xl border border-border bg-card shadow-lg">
+            <div class="h-[360px] overflow-y-auto border-b border-border" data-chat-history>
+                <ul class="flex flex-col gap-4 p-6 text-sm text-foreground" data-chat-messages>
+                    <li class="text-center text-sm text-muted-foreground" data-chat-empty>
+                        Start by asking something like “What are the steps to reserve an off-plan condo?” or tap a quick prompt below.
+                    </li>
+                </ul>
+            </div>
 
-<section id="open-ai-chat-box">
-    <div class="container-hm">
-        <h1 class="slider-title mt-4">Home Helper AI</h1>
-        <div class="clearfix open-ai-card">
-            <div class="chat-app">
-                <div class="chat">
-                    <!-- <div class="chat-header clearfix">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
-                                </a>
-                                <div class="chat-about">
-                                    <h6 class="m-b-0">Aiden Chavez</h6>
-                                    <small>Last seen: 2 hours ago</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-                    <div class="chat-history" style="display: none;">
-                        <ul class="m-b-0">
-                            <div class="chat-content-area"></div>
-
-                            <li class="clearfix chatbot-loader" style="display: none;">
-                                <div class="message other-message float-right">
-                                    <img src="{% static 'media/send-loader.gif' %}" style="width: 50px;"/>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="chat-message clearfix">
-                        <div class="d-flex gap-2 mb-0 align-items-center">
-                            <input type="text" class="class-chatbot-input" placeholder="Ask Our Property Expert">
-                            <div class="input-group-prepend">
-                                <button type="botton" class="chatbot-send-btn">
-                                    <span><i class="bi bi-send"></i></span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+            <div class="space-y-4 p-6">
+                <div class="flex flex-wrap gap-2" data-chat-prompts>
+                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary" data-chat-prompt>
+                        How do developer incentives work in Thailand?
+                    </button>
+                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary" data-chat-prompt>
+                        What documents are needed to buy as a foreigner?
+                    </button>
+                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary" data-chat-prompt>
+                        Can you explain the payment schedule for off-plan units?
+                    </button>
                 </div>
+
+                <form class="space-y-3" data-chat-form>
+                    <div class="flex items-end gap-3">
+                        <div class="flex-1">
+                            <label for="home-helper-input" class="sr-only">Ask Home Helper AI</label>
+                            <textarea id="home-helper-input" rows="1" class="input min-h-[48px] resize-none" placeholder="Ask our property expert…" data-chat-input></textarea>
+                        </div>
+                        <button type="submit" class="btn bg-primary text-white hover:bg-primary/90 focus-visible:outline-primary" data-chat-send>
+                            <i class="bi bi-send"></i>
+                            <span class="sr-only">Send</span>
+                        </button>
+                    </div>
+                    <p class="flex items-center gap-2 text-xs text-muted-foreground" data-chat-status hidden>
+                        <span class="inline-flex size-2 animate-ping rounded-full bg-primary"></span>
+                        Home Helper AI is drafting a response…
+                    </p>
+                    <p class="text-xs text-muted-foreground">
+                        Answers are generated from up-to-date property regulations, developer documentation, and internal market intelligence. Always confirm legal or financial decisions with qualified professionals.
+                    </p>
+                </form>
             </div>
         </div>
     </div>

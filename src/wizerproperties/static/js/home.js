@@ -1,782 +1,492 @@
-$(document).ready(function(){
+"use strict";
 
-    function property_list_tmp(data){
-        var is_fav_effect = localStorage.getItem('favorite-effect');
+(function () {
+  const CardFactory = window.PropertyCardFactory;
+  const CountdownTimer = typeof Countdown === "function" ? Countdown : null;
+  const csrfToken = typeof window.csrfToken !== "undefined" ? window.csrfToken : "";
+  const userType = typeof window.user_type !== "undefined" ? window.user_type : null;
+  const showActions = !["agent", "developer"].includes(userType || "");
+  const favoriteEffect = localStorage.getItem("favorite-effect") || "pulse";
 
-        return  '<div class="property-single-box secion-space">'+
-                    '<div class="search-result-box-wrapper">'+ 
-                        '<div class="home-slider-img-wrapper position-relative">'+
-                            '<div class="search-result-box-img">'+
-                                '<img src="'+data?.default_image+'" alt="'+data?.building_title+'" loading="lazy">' +
-                            '</div>'+
-                        '</div>'+
+  if (typeof Splide !== "function") {
+    console.warn("Splide is required for home.js but was not found.");
+    return;
+  }
 
-                        '<div class="search-result-box position-relative" show-compare-favorite="'+!['agent', 'developer'].includes(user_type)+'">'+
-                            '<div class="compare-favorite-btn-area">'+
-                                (
-                                    !['agent', 'developer'].includes(user_type) ?
-                                    '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
-                                        '<i class="bi bi-heart-fill"></i>'+
-                                        '<span> Favorite </span>'+
-                                    '</button>' +
-                                    '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
-                                        '<i class="bi bi-arrow-left-right"></i>'+
-                                        '<i class="bi bi-check2"></i>'+
-                                        '<span> Compare </span>'+
-                                    '</button>': ''
-                                ) +
-                            '</div>'+
+  const selectors = {
+    heroInput: document.getElementById("gm-search-input"),
+    searchButton: document.getElementById("location-search-btn"),
+    clearLocation: document.querySelector("[data-search-clear]"),
+    errorNode: document.querySelector("[data-search-error]"),
+    propertyTypeButtons: document.querySelectorAll("[data-property-type]"),
+  };
 
+  const perPageBreakpoints = () => {
+    if (window.innerWidth <= 640) return 1;
+    if (window.innerWidth <= 1200) return 2;
+    return 3;
+  };
 
-                            '<h1 class="card-title">'+data?.building_title+'</h1>'+
+  const createLoaderSlide = () => {
+    const slide = document.createElement("li");
+    slide.className = "splide__slide";
+    slide.dataset.sliderLoader = "true";
+    slide.innerHTML = `
+      <div class="h-full w-full animate-pulse rounded-3xl border border-border bg-card p-6 shadow-sm">
+        <div class="aspect-video w-full rounded-2xl bg-muted"></div>
+        <div class="mt-4 space-y-3">
+          <div class="h-4 w-3/4 rounded bg-muted"></div>
+          <div class="h-4 w-1/2 rounded bg-muted"></div>
+          <div class="h-3 w-full rounded bg-muted"></div>
+        </div>
+      </div>
+    `;
+    return slide;
+  };
 
-                            '<div class="property-contains">'+
-                                '<div class="property-short-info-box d-flex align-items-center">'+
-                                    '<div class="property-short-info-icon">'+
-                                        '<img src="/static/media/icons/bed.svg" alt="bed-icon">'+
-                                    '</div>'+
-                                    '<span class="property-label">Beds:</span>'+
-                                    '<span class="property-value"> '+ data?.number_of_bedroom+' </span>'+
-                                '</div>'+
-                                '<div class="property-short-info-box">'+
-                                    '<div class="property-short-info-icon">'+
-                                        '<img src="/static/media/icons/bath.svg" alt="bath-icon">'+
-                                    '</div>'+
-                                    '<span class="property-label">Baths:</span>'+
-                                    '<span class="property-value"> '+ data?.number_of_bathroom +' </span>'+
-                                '</div>'+
-                                '<div class="property-short-info-box">'+
-                                    '<div class="property-short-info-icon">'+
-                                        '<img src="/static/media/icons/plan-size.svg" alt="plan-size-icon">'+
-                                    '</div>'+
-                                    '<span class="property-label">sqm:</span>'+
-                                    '<span class="property-value"> '+ data?.unit_area+ '</span>'+
-                                '</div>'+
-                            '</div>'+
+  const addLoaders = (listElement, count = 3) => {
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < count; i += 1) {
+      fragment.appendChild(createLoaderSlide());
+    }
+    listElement.appendChild(fragment);
+  };
 
-                            '<div class="location mb-3">'+
-                                '<div class="icon">'+
-                                    '<i class="bi bi-geo-alt me-1"></i>'+
-                                    data?.address+
-                                '</div>'+
-                            '</div>'+ 
+  const clearLoaders = (listElement) => {
+    listElement.querySelectorAll("[data-slider-loader]").forEach((node) => node.remove());
+  };
 
-                            '<div class="price-tag px-0 bg-transparent border-top">'+
-                                '<span class="home-slider-price"> ฿ '+formatBalance(Math.floor(data?.price) || 0)+ '</span>'+
-                                '<a href="/property/details/'+data?.id+'/" class="building-tag">'+
-                                    'View Homes <i class="bi bi-box-arrow-up-right"></i>' +
-                                '</a>' +
-                            '</div>'+
-                            
-                        '</div>'+
-                    '</div>'+
-                '</div>'
+  const convertCountdownAttributes = (container) => {
+    container.querySelectorAll("[data-date-count]").forEach((node) => {
+      if (!node.hasAttribute("date-count")) {
+        node.setAttribute("date-count", node.dataset.dateCount);
+      }
+    });
+  };
+
+  const refreshCountdowns = () => {
+    if (!CountdownTimer) return;
+    try {
+      new CountdownTimer({ template: "dd|hh|mm", labels: "Days|Hours|Minutes" });
+    } catch (error) {
+      console.warn("Failed to initialise countdown timer", error);
+    }
+  };
+
+  const mountGallery = (card) => {
+    const gallery = card.querySelector(".splide");
+    if (!gallery || gallery.dataset.splideMounted === "true") return;
+    const gallerySplide = new Splide(gallery, {
+      type: "fade",
+      perPage: 1,
+      arrows: true,
+      pagination: false,
+    });
+    gallerySplide.mount();
+    gallery.dataset.splideMounted = "true";
+  };
+
+  const createFallbackCard = (property = {}) => {
+    const wrapper = document.createElement("article");
+    const price = Number(property.price) || 0;
+    const priceText = typeof window.formatBalance === "function"
+      ? window.formatBalance(price)
+      : price.toLocaleString();
+    wrapper.className = "rounded-3xl border border-border bg-card p-6 shadow-sm";
+    wrapper.innerHTML = `
+      <div class="space-y-3">
+        <h3 class="text-lg font-semibold text-foreground">${property.building_title || property.title || "Available property"}</h3>
+        <p class="text-sm text-muted-foreground">${property.address || "Thailand"}</p>
+        <p class="text-2xl font-semibold text-foreground">฿ ${priceText}</p>
+        <a class="inline-flex items-center gap-2 text-sm text-primary" href="/property/details/${property.id ?? ""}/">
+          View details <i class="bi bi-arrow-up-right"></i>
+        </a>
+      </div>
+    `;
+    return wrapper;
+  };
+
+  const createPropertyCard = (property) => {
+    if (!CardFactory || typeof CardFactory.createCard !== "function") {
+      return createFallbackCard(property);
+    }
+    const card = CardFactory.createCard(property, {
+      showActions,
+      favoriteEffect,
+      scheduleUrl: (p) => `/schedule/create_schedule/?type=property&id=${p?.id ?? ""}`,
+      contactEmail: (p) => p?.developer_email || null,
+    });
+    convertCountdownAttributes(card);
+    mountGallery(card);
+    return card;
+  };
+
+  const appendSlides = (sliderInstance, listElement, items = []) => {
+    const fragment = document.createDocumentFragment();
+    items.forEach((item) => {
+      const card = createPropertyCard(item);
+      if (!card) return;
+      const slide = document.createElement("li");
+      slide.className = "splide__slide";
+      slide.appendChild(card);
+      fragment.appendChild(slide);
+    });
+    if (!fragment.childNodes.length) return false;
+    listElement.appendChild(fragment);
+    sliderInstance.refresh();
+    refreshCountdowns();
+    return true;
+  };
+
+  const initPaginatedSlider = ({ key, endpoint, requiresAuth = false }) => {
+    const sliderElement = document.querySelector(`[data-slider='${key}']`);
+    if (!sliderElement) return;
+
+    const listElement = sliderElement.querySelector("[data-slider-list]");
+    const emptyMessage = sliderElement.parentElement?.querySelector("[data-slider-empty]");
+    if (!listElement) return;
+
+    const slider = new Splide(sliderElement, {
+      type: "slide",
+      gap: "1.5rem",
+      perPage: perPageBreakpoints(),
+      arrows: true,
+      pagination: false,
+      breakpoints: {
+        1280: { perPage: 2, gap: "1rem" },
+        768: { perPage: 1, gap: "1rem", arrows: false },
+      },
+    });
+
+    slider.mount();
+
+    const state = {
+      page: 1,
+      hasMore: true,
+      loading: false,
     };
 
-    function discount_property_list_tmp(data){
-        var is_fav_effect = localStorage.getItem('favorite-effect');
-
-        return  '<div class="property-single-box discount_period secion-space">'+                
-                    '<div class="search-result-box-wrapper">'+
-                        '<div class="home-slider-img-wrapper position-relative">'+
-                            ( data?.discount_period ? '<div class="exclusive-deals-time position-absolute" date-count="'+data?.discount_period+'"></div>' : '')+
-                            '<div class="search-result-box-img">'+
-                                '<img src="'+data?.default_image+'" alt="'+data?.building_title+'" loading="lazy">' +
-                            '</div>'+
-                        '</div>'+
-                        '<div class="search-result-box position-relative pt-0" show-compare-favorite="'+!['agent', 'developer'].includes(user_type)+'">'+
-                            '<div class="compare-favorite-btn-area">'+
-                                (
-                                    !['agent', 'developer'].includes(user_type) ?
-                                    '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
-                                        '<i class="bi bi-heart-fill"></i>'+
-                                        '<span> Favorite </span>'+
-                                    '</button>' +
-                                    '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'" effect="'+is_fav_effect+'">'+
-                                        '<i class="bi bi-arrow-left-right"></i>'+
-                                        '<i class="bi bi-check2"></i>'+
-                                        '<span> Compare </span>'+
-                                    '</button>': ''
-                                ) +
-                            '</div>'+
-                            '<h1 class="card-title mt-2 mb-2">'+data?.building_title+'</h1>'+
-
-                            '<div class="property-contains">'+
-                                '<div class="property-short-info-box">'+
-                                    '<div class="property-short-info-icon">'+bed_icon+'</div>'+ // bed_icon call from icons.js file
-                                    '<span class="property-label">Beds:</span>'+
-                                    '<span class="property-value"> '+ data?.number_of_bedroom+' </span>'+
-                                '</div>'+
-                                '<div class="property-short-info-box">'+
-                                    '<div class="property-short-info-icon">'+bath_icon+'</div>'+ // bed_icon call from icons.js file
-                                    '<span class="property-label">Baths:</span>'+
-                                    '<span class="property-value"> '+ data?.number_of_bathroom +' </span>'+
-                                '</div>'+
-                                '<div class="property-short-info-box">'+
-                                    '<div class="property-short-info-icon">'+plan_icon+'</div>'+ // bed_icon call from icons.js file
-                                    '<span class="property-label">sqm:</span>'+
-                                    '<span class="property-value"> '+ data?.unit_area+ '</span>'+
-                                '</div>'+
-                            '</div>'+
-
-                            '<div class="location mb-3">'+
-                                '<div class="icon">'+
-                                    '<i class="bi bi-geo-alt me-1"></i>'+
-                                    data?.address+ 
-                                '</div>'+
-                            '</div>'+
-
-                            '<div class="price-tag px-0 border-top bg-transparent">'+
-                                '<span> ฿ '+formatBalance(Math.floor(data?.price) || 0)+ '</span>'+
-                                '<a href="/property/details/'+data?.id+'/?discounted=True" class="building-tag">'+
-                                    'View Homes <i class="bi bi-box-arrow-up-right"></i>' +
-                                '</a>' +
-                            '</div>'+
-                            
-                        '</div>'+
-                    '</div>'+
-                '</div>'
+    const handleEmpty = () => {
+      sliderElement.classList.add("hidden");
+      emptyMessage?.classList.remove("hidden");
     };
 
-
-    function building_list_tmp(data){
-        return  '<div class="property-single-box">'+
-                    '<a href="/building/details/'+data?.id+'/" class="search-result-box-wrapper">'+
-                        '<div class="search-result-box-img">'+
-                            '<img src="'+data?.default_image+'" alt="'+data?.building_title+'" loading="lazy">' +
-                        '</div>'+
-                        '<div class="search-result-box">'+
-                            // '<h1> '+data?.building_title+' </h1>'+
-                            '<div class="location">'+
-                                '<div class="icon">'+
-                                    '<i class="bi bi-geo-alt"></i> '+
-                                    data?.address+
-                                '</div>'+
-                            '</div>'+
-                            '<p class="sub-title">'+
-                            data?.total_units_for_sale +
-                            ' units for sale at this building' +
-                            '</p>'+
-                            // '<p class="details"> '+ data?.description+' </p>'+
-
-                            '<div class="property-contains">'+
-                                '<div class="property-short-info-box">'+
-                                    '<div class="property-short-info-icon">'+
-                                        '<img src="/static/media/icons/building.svg" alt="building-icon">'+
-                                    '</div>'+
-                                    '<span class="property-value"> '+ data?.type+' </span>'+
-                                    '<span class="property-label">Building</span>'+
-                                '</div>'+
-                                '<div class="property-short-info-box">'+
-                                    '<div class="property-short-info-icon">'+
-                                        '<img src="/static/media/icons/unit.svg" alt="unit-icon">'+
-                                    '</div>'+
-                                    '<span class="property-value"> '+ data?.total_units_for_sale +' </span>'+
-                                    '<span class="property-label">Units</span>'+
-                                '</div>'+
-                                '<div class="property-short-info-box">'+
-                                    '<div class="property-short-info-icon">'+
-                                        '<img src="/static/media/icons/plan-size.svg" alt="plan-size-icon">'+
-                                    '</div>'+
-                                    '<span class="property-value"> '+ data?.project_total_area+ '</span>'+
-                                    '<span class="property-label"> Project Area </span>'+
-                                '</div>'+
-                                '<div class="property-short-info-box">'+
-                                    '<div class="property-short-info-icon">'+
-                                        '<img src="/static/media/icons/stairs.svg" alt="stairs-icon">'+
-                                    '</div>'+
-                                    '<span class="property-value"> '+ data?.total_floors+' </span>'+
-                                    '<span class="property-label">Floor</span>'+
-                                '</div>'+
-                            '</div>'+
-                        '</div>'+
-
-                    '</a>'+
-                '</div>'
+    const buildUrl = () => {
+      const params = new URLSearchParams({ page_size: perPageBreakpoints().toString(), page: state.page.toString() });
+      return `${endpoint}?${params.toString()}`;
     };
 
-
-    
-    function loader_tmp(){
-        return  '<div class="splide__slide comparison-slider-box list_loader">'+
-                    '<div class="comparison-img-icon-box">'+
-                        '<span class="skeleton-box" style="width: 100%; height: 180px; border-radius: 10px;"></span>'+
-                    '</div>'+
-                    '<div class="comparison-list-label">'+
-                        '<li> <span class="skeleton-box" style="width: 100%; height: 12px;"></span> </li>'+
-                        '<li> <span class="skeleton-box" style="width: 100%; height: 12px;"></span> </li>'+
-                        '<li> <span class="skeleton-box" style="width: 100%; height: 12px;"></span> </li>'+
-                        '<li> <span class="skeleton-box" style="width: 100%; height: 12px;"></span> </li>'+
-                        '<li> <span class="skeleton-box" style="width: 100%; height: 12px;"></span> </li>'+
-                        '<li> <span class="skeleton-box" style="width: 100%; height: 70px;"></span> </li>'+
-                    '</div>'+
-                '</div>'
+    const updatePagination = (nextUrl) => {
+      if (!nextUrl) {
+        state.hasMore = false;
+        return;
+      }
+      try {
+        const url = new URL(nextUrl, window.location.origin);
+        const nextPage = Number(url.searchParams.get("page"));
+        state.page = Number.isNaN(nextPage) ? state.page + 1 : nextPage;
+        state.hasMore = true;
+      } catch (error) {
+        state.page += 1;
+        state.hasMore = true;
+      }
     };
 
+    const fetchPage = async () => {
+      if (state.loading || !state.hasMore) return;
+      state.loading = true;
+      addLoaders(listElement, Math.min(perPageBreakpoints(), 3));
 
-    // ======================== new-properties-slider
-
-
-    /*var new_properties_slider = new Splide( '.new-properties-slider', {
-        perPage: 4,
-        gap : 10,
-        pagination: false,
-        breakpoints: {
-            1200: {
-                perPage: 3,
-            },
-            780: {
-                perPage: 2,
-            },
-            460: {
-                perPage: 1,
-            }
-        }
-    }).mount();
-
-
-    var newly_properties_next;
-    var calling_next_properties;
-
-    function get_newly_properties_list(next_page){
-        if(calling_next_properties) return;
-        var page_size = 4;
-        if(window.innerWidth <= 1200) page_size = 3;
-        if(window.innerWidth <= 740) page_size = 2;
-        if(window.innerWidth <= 460) page_size = 1;
-
-        $.ajax({
-            url: '/property/api/list/newly-created/',
-            type: 'GET',
-            data : {
-                page_size : page_size,
-                page : next_page
-            },
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            beforeSend: function() {
-                for (let i = 0; i < page_size; i++) {
-                    new_properties_slider.add(loader_tmp())
-                };
-
-                calling_next_properties = true;
-            },
-            success: function (data) {
-                if(data?.count == 0){
-                    $('#new-properties').remove()
-                    return
-                }
-                calling_next_properties = false;
-                
-                for (let i = 0; i < data?.results.length; i++) {
-                    new_properties_slider.add(property_list_tmp(data?.results[i]))
-                };
-
-                new_properties_slider.remove('.new-properties-slider .list_loader');
-
-                if(data?.next != null){
-                    for (let i = 0; i < page_size; i++) {
-                        new_properties_slider.add(loader_tmp())
-                    };
-                };
-
-                newly_properties_next = data?.next
-            },
-            error: function (error) {
-                calling_next_properties = false;
-            }
+      try {
+        const response = await fetch(buildUrl(), {
+          headers: { "X-CSRFToken": csrfToken },
+          credentials: "same-origin",
         });
-    };
 
-    get_newly_properties_list();
-
-    new_properties_slider.on( 'moved', (e) => {
-        if(newly_properties_next == null) return;
-        get_newly_properties_list(newly_properties_next);
-    });*/
-
-
-
-    // ======================== popular-properties-slider
-
-
-
-    var popular_properties_slider = new Splide( '.popular-properties-slider', {
-        perPage: 3,
-        gap : 30,
-        pagination: false,
-        breakpoints: {
-            1200: {
-                perPage: 2,
-            },
-            780: {
-                perPage: 1,
-            },
-            460: {
-                perPage: 1,
-            }
-        }
-    }).mount();
-
-    var popular_properties_next;
-    var calling_popular_properties;
-
-    function get_popular_properties_list(next_page){
-        if(calling_popular_properties) return;
-        var page_size = 3;
-        if(window.innerWidth <= 1200) page_size = 2;
-        if(window.innerWidth <= 740) page_size = 1;
-        if(window.innerWidth <= 460) page_size = 1;
-
-        $.ajax({
-            url: '/property/api/list/popular/',
-            type: 'GET',
-            data : {
-                page_size : page_size,
-                page : next_page
-            },
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            beforeSend: function() {
-                for (let i = 0; i < page_size; i++) {
-                    popular_properties_slider.add(loader_tmp())
-                };
-
-                calling_popular_properties = true;
-            },
-            success: function (data) {
-                if(data?.count == 0){
-                    $('#popular-properties').remove()
-                    return
-                }
-                calling_popular_properties = false;
-                
-                for (let i = 0; i < data?.results.length; i++) {
-                    popular_properties_slider.add(property_list_tmp(data?.results[i]))
-                };
-
-                popular_properties_slider.remove('.popular-properties-slider .list_loader');
-
-                if(data?.next != null){
-                    for (let i = 0; i < page_size; i++) {
-                        popular_properties_slider.add(loader_tmp())
-                    };
-                };
-
-                popular_properties_next = data?.next
-            },
-            error: function (error) {
-                calling_popular_properties = false;
-            }
-        });
-    };
-
-    get_popular_properties_list();
-
-    popular_properties_slider.on( 'moved', (e) => {
-        if(popular_properties_next == null) return;
-        get_popular_properties_list(popular_properties_next);
-    });
-
-
-
-
-    // ======================== popular-buildings-slider
-
-
-    /*
-
-    var popular_building_slider = new Splide( '.popular-buildings-slider', {
-        perPage: 4,
-        gap : 10,
-        pagination: false,
-        breakpoints: {
-            1200: {
-                perPage: 3,
-            },
-            780: {
-                perPage: 2,
-            },
-            460: {
-                perPage: 1,
-            }
-        }
-    }).mount();
-
-    var popular_building_next;
-    var calling_popular_building;
-
-    function get_popular_building_list(next_page){
-        if(calling_popular_building) return;
-        var page_size = 4;
-        if(window.innerWidth <= 1200) page_size = 3;
-        if(window.innerWidth <= 740) page_size = 2;
-        if(window.innerWidth <= 460) page_size = 1;
-
-        $.ajax({
-            url: '/building/api/list/popular/',
-            type: 'GET',
-            data : {
-                page_size : page_size,
-                page : next_page
-            },
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            beforeSend: function() {
-                for (let i = 0; i < page_size; i++) {
-                    popular_building_slider.add(loader_tmp())
-                };
-
-                calling_popular_building = true;
-            },
-            success: function (data) {
-                if(data?.count == 0){
-                    $('#popular-buildings').remove()
-                    return
-                }
-                calling_popular_building = false;
-                
-                for (let i = 0; i < data?.results.length; i++) {
-                    popular_building_slider.add(building_list_tmp(data?.results[i]))
-                };
-
-                popular_building_slider.remove('.popular-buildings-slider .list_loader');
-
-                if(data?.next != null){
-                    for (let i = 0; i < page_size; i++) {
-                        popular_building_slider.add(loader_tmp())
-                    };
-                };
-
-                popular_building_next = data?.next
-            },
-            error: function (error) {
-                calling_popular_building = false;
-            }
-        });
-    };
-
-    get_popular_building_list();
-
-    popular_building_slider.on( 'moved', (e) => {
-        if(popular_building_next == null) return;
-        get_popular_building_list(popular_building_next);
-    });
-
-    */
-
-
-
-    // ======================== discount-properties-slider
-
-
-
-    var discount_properties_slider = new Splide( '.discount-properties-slider', {
-        perPage: 3,
-        gap : 30,
-        pagination: false,
-        breakpoints: {
-            1200: {
-                perPage: 2,
-            },
-            780: {
-                perPage: 1,
-            },
-            460: {
-                perPage: 1,
-            }
-        }
-    }).mount();
-
-    var discount_properties_next;
-    var calling_discount_properties;
-
-    function get_discount_properties_list(next_page){
-        if(calling_discount_properties) return;
-        var page_size = 3;
-        if(window.innerWidth <= 1200) page_size = 2;
-        if(window.innerWidth <= 740) page_size = 1;
-        if(window.innerWidth <= 460) page_size = 1;
-
-        $.ajax({
-            url: '/property/api/list/discount/',
-            type: 'GET',
-            data : {
-                page_size : page_size,
-                page : next_page
-            },
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            beforeSend: function() {
-                for (let i = 0; i < page_size; i++) {
-                    discount_properties_slider.add(loader_tmp())
-                };
-
-                calling_discount_properties = true;
-            },
-            success: function (data) {
-                if(data?.count == 0){
-                    $('#discount-properties').remove()
-                    return
-                }
-                calling_discount_properties = false;
-                
-                for (let i = 0; i < data?.results.length; i++) {
-                    discount_properties_slider.add(discount_property_list_tmp(data?.results[i]))
-                };
-
-                discount_properties_slider.remove('.discount-properties-slider .list_loader');
-
-                if(data?.next != null){
-                    for (let i = 0; i < page_size; i++) {
-                        discount_properties_slider.add(loader_tmp())
-                    };
-                };
-
-                discount_properties_next = data?.next;
-                var timer = new Countdown({
-                    template : "dd|hh|mm",
-                    labels : "Days|Hours|Minutes"
-                }) // for time countdown
-                timer.start()
-            },
-            error: function (error) {
-                calling_discount_properties = false;
-            }
-        });
-    };
-
-    get_discount_properties_list();
-
-    discount_properties_slider.on( 'moved', (e) => {
-        if(discount_properties_next == null) return;
-        get_discount_properties_list(discount_properties_next);
-    });
-
-
-      
-
-    // setInterval(() => {
-    //     var property_discount_el = $('.property-discount');
-
-    //     for (let i = 0; i < property_discount_el.length; i++) {
-    //         property_discount_el[i].innerHTML = countdown(property_discount_el[i].getAttribute('discount-time'))
-    //     }
-        
-    // }, 1000);
-
-
-    // ======================== recommended-properties-slider
-
-    var recommended_search_slider = new Splide( '.recommended-search-slider', {
-        perPage: 3,
-        gap : 30,
-        pagination: false,
-        breakpoints: {
-            1200: {
-                perPage: 2,
-            },
-            780: {
-                perPage: 1,
-            },
-            460: {
-                perPage: 1,
-            }
-        }
-    }).mount();
-
-
-    var recommended_properties_next;
-    var calling_recommended_properties;
-
-    function get_recommended_properties_list(next_page){
-        if(calling_recommended_properties) return;
-        var page_size = 3;
-        if(window.innerWidth <= 1200) page_size = 2;
-        if(window.innerWidth <= 740) page_size = 1;
-        if(window.innerWidth <= 460) page_size = 1;
-
-        $.ajax({
-            url: '/property/api/list/suggested-properties/',
-            type: 'GET',
-            data : {
-                page_size : page_size,
-                page : next_page
-            },
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            beforeSend: function() {
-                for (let i = 0; i < page_size; i++) {
-                    recommended_search_slider.add(loader_tmp())
-                };
-
-                calling_recommended_properties = true;
-            },
-            success: function (data) {
-                if(data?.count == 0){
-                    $('#recommended-search').remove()
-                    return
-                }
-                calling_recommended_properties = false;
-                
-                for (let i = 0; i < data?.results.length; i++) {
-                    recommended_search_slider.add(property_list_tmp(data?.results[i]))
-                };
-
-                recommended_search_slider.remove('.recommended-search-slider .list_loader');
-
-                if(data?.next != null){
-                    for (let i = 0; i < page_size; i++) {
-                        recommended_search_slider.add(loader_tmp())
-                    };
-                };
-
-                recommended_properties_next = data?.next
-            },
-            error: function (error) {
-                calling_recommended_properties = false;
-            }
-        });
-    };
-
-    get_recommended_properties_list();
-
-    recommended_search_slider.on( 'moved', (e) => {
-        if(recommended_properties_next == null) return;
-        get_recommended_properties_list(recommended_properties_next);
-    });
-
-    // Start ======================== Hot Properties For Sale- Near You! (prospect's nearest properties)
-
-    var hot_properties_slider = new Splide( '.hot-properties-slider', {
-        perPage: 3,
-        gap : 30,
-        pagination: false,
-        breakpoints: {
-            1200: {
-                perPage: 2,
-            },
-            780: {
-                perPage: 1,
-            },
-            460: {
-                perPage: 1,
-            }
-        }
-    }).mount();
-
-
-    var calling_hot_properties;
-
-    function get_hot_properties_list(){
-        if(calling_hot_properties) return;
-
-        $.ajax({
-            url: '/property/api/nearest/',
-            type: 'GET',
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            beforeSend: function() {
-                hot_properties_slider.add(loader_tmp())
-                calling_hot_properties = true;
-            },
-            success: function (data) {
-                if(data?.count == 0){
-                    $('#hot-properties').remove()
-                    return
-                }
-                calling_hot_properties = false;
-                
-                for (let i = 0; i < data?.length; i++) {
-                    hot_properties_slider.add(property_list_tmp(data[i]))
-                };
-
-                hot_properties_slider.remove('.hot-properties-slider .list_loader');
-            },
-            error: function (error) {
-                // console.log(error.responseJSON)
-                calling_hot_properties = false;
-                $('#hot-properties').remove();
-            }
-        });
-    };
-
-    get_hot_properties_list();
-  
-    // End ========================
-
-
-    var filter_data = new FilterData();
-
-    $(document).on('change', '.search-box-with-filter select', function(){
-        filter_data.set_value( $(this).attr('name'), $(this).val() )
-    });
-
-    $(document).on('change', '.custom-radio-checkbox input', function(){
-        filter_data.building_sub_type_void($(this).val());
-
-        if( $(this).parents('[type-init]').attr('type-init') == 'RESIDENCE_SUB_TYPES' ){
-            filter_data.set_value( 'building__type', 'residence' )
-        };
-
-        if( $(this).parents('[type-init]').attr('type-init') == 'COMMERCIAL_SUB_TYPES' ){
-            filter_data.set_value( 'building__type', 'commercial' )
-        };
-    });
-
-    $(document).on('click', '.property-type-list button', function(){
-        filter_data.building__type = $(this).attr('value');
-        filter_data.building_type_void();
-    });
-    
-    $(document).on('click', '.filter-clear', function(){
-        var for_type = $(this).attr('for');
-
-        if(for_type == "price"){
-            filter_data.clear_price()
-        }else if(for_type == "beds"){
-            filter_data.clear_bedroom()
-        }else if(for_type == "property-type"){
-            filter_data.clear_building_type()
-        }
-    });
-
-    $(document).on('click', '#location-search-btn', function(){
-        var $search_input = $(this).parents('.search-box-with-filter').find('#gm-search-input')
-        var filter_value = filter_data.only_has_value()
-        var _latitude = $search_input.attr("latitude")
-        var _longitude = $search_input.attr("longitude")
-        var _place_id = $search_input.attr("place_id")
-        var _fature_type = $search_input.attr("fature_type")
-
-        if(!_latitude && !_longitude) {
-            $(this).parents('.search-box-with-filter-content').prepend(' <p class="location-search-error"> Select from the suggest list !!! </p> ');
-
-            setTimeout(() => {
-                $('.location-search-error').remove()
-            }, 5000);
+        if (!response.ok) {
+          if (requiresAuth && (response.status === 401 || response.status === 403)) {
+            clearLoaders(listElement);
+            state.hasMore = false;
+            handleEmpty();
             return;
-        };
+          }
+          throw new Error(`Request failed with status ${response.status}`);
+        }
 
-        var filter_parms = '';
-        if(Object.values(filter_value).length > 0){
-            Object.entries(filter_value).forEach(([key, value]) => {
-                filter_parms += '&'+key+'='+value
-            });
-        };
+        const data = await response.json();
+        const results = Array.isArray(data?.results) ? data.results : Array.isArray(data) ? data : [];
 
-        window.location.href = "/property/search/" +
-                               '?place='+$search_input.val()+
-                               '&latitude='+_latitude+
-                               '&longitude='+_longitude+
-                               '&place_id='+_place_id+
-                               '&fature_type='+_fature_type+
-                               filter_parms;
+        clearLoaders(listElement);
+
+        if (!results.length && state.page === 1) {
+          state.hasMore = false;
+          handleEmpty();
+          return;
+        }
+
+        const appended = appendSlides(slider, listElement, results);
+        if (!appended && state.page === 1) {
+          state.hasMore = false;
+          handleEmpty();
+          return;
+        }
+
+        sliderElement.classList.remove("hidden");
+        emptyMessage?.classList.add("hidden");
+        updatePagination(data?.next ?? null);
+      } catch (error) {
+        console.error(`Failed to load slider data for ${key}`, error);
+        clearLoaders(listElement);
+        if (state.page === 1) {
+          handleEmpty();
+        }
+      } finally {
+        state.loading = false;
+      }
+    };
+
+    fetchPage();
+
+    slider.on("moved", () => {
+      const slideCount = slider.Components.Slides.getLength();
+      const threshold = Math.max(slideCount - perPageBreakpoints() * 2, 0);
+      if (state.hasMore && !state.loading && slider.index >= threshold) {
+        fetchPage();
+      }
     });
-});
+
+    window.addEventListener("resize", () => {
+      state.page = Math.max(state.page, 1);
+    });
+  };
+
+  const initNearestSlider = () => {
+    const sliderElement = document.querySelector("[data-slider='hot']");
+    if (!sliderElement) return;
+
+    const listElement = sliderElement.querySelector("[data-slider-list]");
+    const emptyMessage = sliderElement.parentElement?.querySelector("[data-slider-empty]");
+    if (!listElement) return;
+
+    const slider = new Splide(sliderElement, {
+      type: "slide",
+      gap: "1.5rem",
+      perPage: perPageBreakpoints(),
+      arrows: true,
+      pagination: false,
+      breakpoints: {
+        1280: { perPage: 2, gap: "1rem" },
+        768: { perPage: 1, gap: "1rem", arrows: false },
+      },
+    });
+
+    slider.mount();
+
+    let loading = false;
+
+    const showPrompt = () => {
+      sliderElement.classList.add("hidden");
+      emptyMessage?.classList.remove("hidden");
+    };
+
+    const hidePrompt = () => {
+      sliderElement.classList.remove("hidden");
+      emptyMessage?.classList.add("hidden");
+    };
+
+    const fetchNearest = async (coords) => {
+      if (!coords || !coords.latitude || !coords.longitude) {
+        showPrompt();
+        return;
+      }
+      if (loading) return;
+      loading = true;
+      listElement.innerHTML = "";
+      addLoaders(listElement, 3);
+
+      try {
+        const params = new URLSearchParams({
+          latitude: coords.latitude.toString(),
+          longitude: coords.longitude.toString(),
+        });
+        const response = await fetch(`/property/api/nearest/?${params.toString()}`, {
+          headers: { "X-CSRFToken": csrfToken },
+          credentials: "same-origin",
+        });
+
+        if (!response.ok) throw new Error(`Nearest request failed with status ${response.status}`);
+
+        const data = await response.json();
+        clearLoaders(listElement);
+        listElement.innerHTML = "";
+
+        if (!Array.isArray(data) || !data.length) {
+          showPrompt();
+          return;
+        }
+
+        appendSlides(slider, listElement, data);
+        hidePrompt();
+      } catch (error) {
+        console.warn("Failed to load nearby properties", error);
+        clearLoaders(listElement);
+        showPrompt();
+      } finally {
+        loading = false;
+      }
+    };
+
+    const geolocationButton = document.querySelector("[data-trigger-geolocation]");
+    if (geolocationButton) {
+      geolocationButton.addEventListener("click", () => {
+        if (!navigator.geolocation) {
+          showPrompt();
+          return;
+        }
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            fetchNearest({ latitude: position.coords.latitude, longitude: position.coords.longitude });
+          },
+          () => showPrompt()
+        );
+      });
+    }
+
+    showPrompt();
+  };
+
+  const handlePropertyTypeToggle = (button) => {
+    selectors.propertyTypeButtons.forEach((btn) => {
+      const isActive = btn === button;
+      btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+      btn.classList.remove("bg-primary", "text-white", "border-primary", "bg-secondary/60", "text-muted-foreground", "border-border");
+      if (isActive) {
+        btn.classList.add("bg-primary", "text-white", "border-primary");
+      } else {
+        btn.classList.add("bg-secondary/60", "text-muted-foreground", "border-border");
+      }
+    });
+  };
+
+  const initPropertyTypeControls = () => {
+    const buttons = selectors.propertyTypeButtons;
+    if (!buttons.length) return;
+    let defaultButton = null;
+    buttons.forEach((button) => {
+      if (!button.dataset.propertyType && !defaultButton) {
+        defaultButton = button;
+      }
+      button.addEventListener("click", () => handlePropertyTypeToggle(button));
+    });
+    handlePropertyTypeToggle(defaultButton || buttons[0]);
+  };
+
+  const hideError = () => {
+    if (!selectors.errorNode) return;
+    selectors.errorNode.classList.add("hidden");
+  };
+
+  const showError = (message) => {
+    if (!selectors.errorNode) return;
+    selectors.errorNode.textContent = message;
+    selectors.errorNode.classList.remove("hidden");
+  };
+
+  const clearLocationValue = () => {
+    if (!selectors.heroInput) return;
+    ["latitude", "longitude", "place_id", "fature_type"].forEach((attr) => selectors.heroInput.removeAttribute(attr));
+    selectors.heroInput.value = "";
+    hideError();
+    selectors.heroInput.focus();
+  };
+
+  const buildSearchUrl = () => {
+    const input = selectors.heroInput;
+    if (!input) return null;
+    const latitude = input.getAttribute("latitude");
+    const longitude = input.getAttribute("longitude");
+    const placeId = input.getAttribute("place_id");
+    const featureType = input.getAttribute("fature_type");
+    const value = input.value.trim();
+
+    if (!latitude || !longitude || !value) {
+      return null;
+    }
+
+    const params = new URLSearchParams({
+      place: value,
+      latitude,
+      longitude,
+    });
+
+    if (placeId) params.set("place_id", placeId);
+    if (featureType) params.set("fature_type", featureType);
+
+    ["min_price", "max_price", "min_number_of_bedroom", "max_number_of_bedroom"].forEach((name) => {
+      const field = document.querySelector(`select[name='${name}']`);
+      if (field && field.value) {
+        params.set(name, field.value);
+      }
+    });
+
+    selectors.propertyTypeButtons.forEach((button) => {
+      if (button.getAttribute("aria-pressed") === "true" && button.dataset.propertyType) {
+        params.set("building__type", button.dataset.propertyType);
+      }
+    });
+
+    return `/property/search/?${params.toString()}`;
+  };
+
+  const handleSearch = () => {
+    const url = buildSearchUrl();
+    if (!url) {
+      showError("Select a location from the autocomplete suggestions to start.");
+      selectors.heroInput?.focus();
+      return;
+    }
+    window.location.href = url;
+  };
+
+  const initHeroSearch = () => {
+    if (!selectors.heroInput || !selectors.searchButton) return;
+
+    initPropertyTypeControls();
+
+    selectors.searchButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      handleSearch();
+    });
+
+    selectors.heroInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        handleSearch();
+      }
+    });
+
+    selectors.heroInput.addEventListener("input", () => {
+      hideError();
+      ["latitude", "longitude", "place_id", "fature_type"].forEach((attr) => selectors.heroInput.removeAttribute(attr));
+    });
+
+    selectors.heroInput.addEventListener("change", hideError);
+
+    if (selectors.clearLocation) {
+      selectors.clearLocation.addEventListener("click", (event) => {
+        event.preventDefault();
+        clearLocationValue();
+      });
+    }
+  };
+
+  const sliderConfigs = [
+    { key: "discount", endpoint: "/property/api/list/discount/" },
+    { key: "recommended", endpoint: "/property/api/list/suggested-properties/", requiresAuth: true },
+    { key: "popular", endpoint: "/property/api/list/popular/" },
+  ];
+
+  sliderConfigs.forEach(initPaginatedSlider);
+  initNearestSlider();
+  initHeroSearch();
+})();
