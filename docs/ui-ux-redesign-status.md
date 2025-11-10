@@ -30,14 +30,16 @@
 |  | `review-box.html` | ✅ Completed | ✅ Completed | Shared review component restyled as Tailwind card and integrated with modern JS. |
 |  | `static/js/property/card-factory.js` | ✅ Completed | ✅ Completed | Adds resilient image fallbacks for developer avatars/gallery slides; keeps Splide cards functional when media misses. |
 |  | `search-filter-box.html` | ✅ Completed | ✅ Completed | Unified Tailwind filter chips, modal popovers, and vanilla JS controller emitting `propertyFilters:changed` events. |
-| **5. Advertise Module** | All templates | ✅ Completed | ✅ Completed | Analytics + performance dashboards rebuilt with Tailwind cards, modern modals, refreshed reel form, redesigned reels feed; legacy template fragments removed 2025-11-09. Latest update adds graceful empty states for charts/tables and removes duplicate DataTable initialisation. |
+| **5. Advertise Module** | All templates | ✅ Completed | ✅ Completed | Analytics + performance dashboards rebuilt with Tailwind cards, modern modals, refreshed reel form, redesigned reels feed; legacy template fragments removed 2025-11-09. Latest update adds graceful empty states for charts/tables and removes duplicate DataTable initialisation. Partial `advertise/partials/analytics-modals.html` matches new styling. |
 | **6. User Module** | Auth flows | ✅ Completed | ✅ Completed | Full Tailwind migration: login, signup, forgot_password, forgot_password_verification, update-password, email_verification, complete_profile all use consistent grid layout, hero sidebars, and modern form inputs. Comprehensive ARIA accessibility: form-level, input, button, and message attributes. Enhanced error handling with field-specific feedback. SEA country codes (13 countries) added to phone selectors with auto-strip functionality. |
 |  | Profile completion/settings | ✅ Completed | ✅ Completed | Complete Tailwind redesign matching auth forms. Full ARIA implementation, enhanced error handling, SEA country codes, Google Maps autocomplete integration, dynamic form field generation with proper validation. |
 |  | Emails | ✅ Completed | ✅ Completed | Redesigned account_verification.html and forgot_password_email.html with modern styling and ARIA attributes on links. |
 | **7. Blog Module** | `blog-list.html` | ◻️ Pending | ◻️ Pending | |
 |  | `blog-details.html` | ◻️ Pending | ◻️ Pending | |
-| **8. Schedule Module** | All templates | ◻️ Pending | ◻️ Pending | |
-| **9. Core & Misc** | `src/core/templates/*` | ✅ Completed | ✅ Completed | `home.html` now sports Tailwind hero, trust signals, benefit grid, developer CTA, and modernised Splide carousels; other core pages retain refreshed messaging with UI uplift queued next. |
+| **8. Schedule Module** | `create_schedule.html` | ◻️ Pending | ◻️ Pending | Needs Tailwind form shell, refreshed step copy, and modern date/time inputs. |
+|  | Email templates (`schedule_accept.html`, `schedule_cancel.html`) | ◻️ Pending | ◻️ Pending | Align transactional emails with new design language and update copy/CTA structure. |
+| **9. Core & Misc** | `src/core/templates/home.html` | ✅ Completed | ✅ Completed | Tailwind hero, trust signals, benefit grid, developer CTA, and modernised Splide carousels shipped. |
+|  | `contact_us.html`, `about-us.html`, `privacy.html`, `404.html` | ◻️ Pending | ◻️ Pending | Need Tailwind migration, refreshed content hierarchy, and updated CTA patterns. |
 |  | Home Helper AI (`chat.html`, `chatbot-gpt.js`) | ✅ Completed | ✅ Completed | Tailwind chat card with quick prompts, optimistic updates, keyboard shortcuts, and resilient fetch handling (no jQuery). |
 |  | `static/js/home.js` | ✅ Completed | ✅ Completed | Nearest slider now waits for browser geolocation before hitting the API; keeps UX clean when location access denied. |
 |  | Admin templates | ◻️ Optional | ◻️ Optional | |

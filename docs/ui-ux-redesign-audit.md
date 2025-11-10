@@ -196,6 +196,7 @@ This audit lists every template and supporting asset that should be touched duri
 ### `src/advertise/templates/advertise-analytics.html`
 - ✅ **UI**: Refreshed analytics layout with Tailwind cards, filter chips, responsive chart canvas, and modal panels styled with the new design tokens; empty state messaging now matches component styling.
 - ✅ **UX**: Streamlined timeframe/pagination controls, improved modal access, added loaders/skeletons, clarified insight descriptions, and ensured graceful empty states for charts and DataTables when analytics data is unavailable.
+- ✅ **Component Note**: Shared partial `advertise/partials/analytics-modals.html` mirrors the new styling and interaction patterns; no Bootstrap remnants remain.
 
 ### `src/advertise/templates/advertise-performance.html`
 - ✅ **UI**: Modernised campaign list table with responsive card container, summary metric tiles, and updated analytics modal visuals (legacy template remnants removed 2025-11-09); added Tailwind-styled empty state for zero-campaign scenarios.
@@ -251,6 +252,18 @@ This audit lists every template and supporting asset that should be touched duri
 
 ## 8. Schedule Module Templates
 
+### `src/schedule/templates/create_schedule.html`
+- ◻️ **UI**: Pending Tailwind conversion; currently relies on legacy card layout with mixed spacing.
+- ◻️ **UX**: Revisit step copy, date/time pickers, and confirmation messaging; align with updated scheduling flow.
+
+### `src/schedule/templates/email/schedule_accept.html`
+- ◻️ **UI**: Pending restyle to match transactional email system (Tailwind email tokens).
+- ◻️ **UX**: Refresh copy hierarchy, add clear CTA buttons, confirm responsive email behavior across clients.
+
+### `src/schedule/templates/email/schedule_cancel.html`
+- ◻️ **UI**: Pending Tailwind email layout parity; remove legacy table styling.
+- ◻️ **UX**: Ensure cancellation messaging includes follow-up options and support contact details.
+
 ### `src/schedule/templates/*.html`
 - **UI**: Refresh scheduling forms and list views with Tailwind components.
 - **UX**: Clarify appointment statuses, improve calendar interactions, and ensure scheduling confirmation flows are intuitive.
@@ -259,9 +272,25 @@ This audit lists every template and supporting asset that should be touched duri
 
 ## 9. Core & Miscellaneous Templates
 
-### `src/core/templates/*` (e.g., landing pages, legal pages)
+### `src/core/templates/home.html`
 - ✅ **UI**: `home.html` fully rebuilt with Tailwind primitives — gradient hero, trust badges, benefit grid, developer CTA, modular Splide carousels, and updated blog spotlight. Remaining landing/utility pages inherit refreshed typography but keep UI uplift on the roadmap.
 - ✅ **UX**: Home experience now follows 2025 landing page best practices (clarity, social proof, urgency). Hero search clarifies outcomes for international buyers, trust signals are surface-level, and developer/guide funnels support key conversion paths. Localised onboarding copy & CTA hierarchy tuned for remote investors.
+
+### `src/core/templates/contact_us.html`
+- ◻️ **UI**: Pending Tailwind migration; current layout uses legacy forms and spacing.
+- ◻️ **UX**: Revise support options hierarchy, add map/contact quick actions, and ensure international dialing guidance.
+
+### `src/core/templates/about-us.html`
+- ◻️ **UI**: Needs Tailwind storytelling layout, refreshed imagery, and typography alignment.
+- ◻️ **UX**: Clarify brand narrative, highlight trust markers, and add leadership/office sections.
+
+### `src/core/templates/privacy.html`
+- ◻️ **UI**: Pending typography scale update and section dividers using Tailwind prose utilities.
+- ◻️ **UX**: Add in-page nav, simplified summaries, and clear update timestamps.
+
+### `src/core/templates/404.html`
+- ◻️ **UI**: Replace legacy hero with Tailwind empty-state card; align illustration style with brand.
+- ◻️ **UX**: Provide primary CTA back to home/search plus secondary help links.
 
 ### Home Helper AI (`src/core/templates/chat.html`, `src/wizerproperties/static/js/chatbot-gpt.js`)
 - ✅ **UI**: Rebuilt as a Tailwind card with scrollable conversation history, quick-prompt chips, and elevated messaging patterns; removed legacy Bootstrap-era markup and external stylesheet.
