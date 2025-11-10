@@ -116,6 +116,58 @@
     @apply bg-muted/60 text-foreground;
   }
 
+  .nav-group {
+    @apply relative;
+  }
+
+  .nav-trigger {
+    @apply inline-flex cursor-pointer list-none items-center gap-1 rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition hover:bg-muted/40 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+  }
+
+  .nav-group[open] .nav-trigger {
+    @apply bg-muted/60 text-foreground;
+  }
+
+  .nav-popover {
+    @apply absolute left-0 top-full mt-2 w-[min(22rem,calc(100vw-2rem))] space-y-4 rounded-2xl border border-border bg-card/95 p-4 text-muted-foreground shadow-2xl backdrop-blur;
+  }
+
+  .nav-section-title {
+    @apply text-xs font-semibold uppercase tracking-wide text-muted-foreground;
+  }
+
+  .nav-popover-stack {
+    @apply space-y-2;
+  }
+
+  .nav-menu-link {
+    @apply block rounded-xl border border-transparent bg-transparent px-3 py-3 transition hover:border-border hover:bg-muted/40 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+  }
+
+  .nav-menu-active {
+    @apply border-border bg-muted/40 text-foreground;
+  }
+
+  .nav-menu-label {
+    @apply text-sm font-semibold text-foreground;
+  }
+
+  .nav-menu-description {
+    @apply mt-1 text-xs text-muted-foreground;
+  }
+
+  .nav-mobile-group {
+    @apply rounded-2xl border border-border bg-card/60 p-3;
+  }
+
+  .nav-mobile-trigger {
+    @apply flex cursor-pointer items-center justify-between text-sm font-semibold text-foreground;
+  }
+
+  .nav-mobile-stack {
+    @apply mt-3 space-y-2;
+  }
+
   .nav-sheet-link {
     @apply flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-muted-foreground transition hover:bg-muted/50 hover:text-foreground;
   }

@@ -3,415 +3,236 @@
 
 {% block extend_head %}
 <title>{{ page_title }}</title>
-<link rel="stylesheet" href="{% static '/css/libraries/dataTables.min.css' %}" />
-<link rel="stylesheet" href="{% static '/css/auth.css' %}?v=1.01" />
-<link rel="stylesheet" href="{% static '/css/dashboard.css' %}?v=1.01" />
-<style>
-    .property-list-table {
-        background: white;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        overflow: hidden;
-    }
-    
-    .table-header {
-        background: #f8f9fa;
-        padding: 20px;
-        border-bottom: 1px solid #dee2e6;
-    }
-    
-    .table-header h3 {
-        margin: 0;
-        color: #333;
-        font-weight: 600;
-    }
-    
-    .create-btn {
-        background: #007bff;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 5px;
-        text-decoration: none;
-        display: inline-block;
-        margin-top: 10px;
-        transition: background 0.3s;
-    }
-    
-    .create-btn:hover {
-        background: #0056b3;
-        color: white;
-        text-decoration: none;
-    }
-    
-    .status-badge {
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 500;
-    }
-    
-    .status-active {
-        background: #d4edda;
-        color: #155724;
-    }
-    
-    .status-expired {
-        background: #f8d7da;
-        color: #721c24;
-    }
-    
-    .status-no-expiry {
-        background: #fff3cd;
-        color: #856404;
-    }
-    
-    .delete-btn {
-        background: #dc3545;
-        color: white;
-        padding: 5px 15px;
-        border-radius: 3px;
-        text-decoration: none;
-        font-size: 12px;
-        transition: background 0.3s;
-    }
-    
-    .delete-btn:hover {
-        background: #c82333;
-        color: white;
-        text-decoration: none;
-    }
-    
-    .no-data {
-        text-align: center;
-        padding: 40px;
-        color: #6c757d;
-    }
-    
-    .action-buttons {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-    }
-    
-    .btn-edit {
-        background: #28a745;
-        color: white;
-        padding: 5px 12px;
-        border-radius: 3px;
-        text-decoration: none;
-        font-size: 12px;
-        transition: background 0.3s;
-    }
-    
-    .btn-edit:hover {
-        background: #218838;
-        color: white;
-        text-decoration: none;
-    }
-    
-    .btn-delete {
-        background: #dc3545;
-        color: white;
-        padding: 5px 12px;
-        border-radius: 3px;
-        text-decoration: none;
-        font-size: 12px;
-        transition: background 0.3s;
-    }
-    
-    .btn-delete:hover {
-        background: #c82333;
-        color: white;
-        text-decoration: none;
-    }
-    
-    .property-link {
-        color: #007bff;
-        text-decoration: none;
-        font-weight: 500;
-    }
-    
-    .property-link:hover {
-        color: #0056b3;
-        text-decoration: underline;
-    }
-    
-    .table-container {
-        background: white;
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    
-    .table-header-section {
-        background: {% if property_type == 'discount' %}linear-gradient(135deg, #fa709a 0%, #fee140 100%){% else %}linear-gradient(135deg, #a8edea 0%, #fed6e3 100%){% endif %};
-        padding: 20px 25px;
-        color: {% if property_type == 'discount' %}white{% else %}#495057{% endif %};
-    }
-    
-    .table-header-section h3 {
-        margin: 0;
-        display: inline-block;
-        font-size: 1.5rem;
-        font-weight: 600;
-    }
-    
-    .header-actions {
-        float: right;
-        display: flex;
-        gap: 15px;
-        align-items: center;
-    }
-    
-    .header-actions a {
-        color: {% if property_type == 'discount' %}white{% else %}#495057{% endif %};
-        text-decoration: none;
-        font-weight: 500;
-        transition: opacity 0.3s;
-    }
-    
-    .header-actions a:hover {
-        opacity: 0.8;
-        color: {% if property_type == 'discount' %}white{% else %}#495057{% endif %};
-        text-decoration: none;
-    }
-    
-    .credit-info {
-        background:rgb(139, 147, 156);
-        padding: 8px 12px;
-        border-radius: 5px;
-        font-size: 14px;
-        font-weight: 500;
-    }
-    
-    .table-responsive {
-        border: none;
-    }
-    
-    .table {
-        margin: 0;
-        border: none;
-    }
-    
-    .table thead th {
-        background: #f8f9fa;
-        border: none;
-        font-weight: 600;
-        color: #495057;
-        padding: 15px 12px;
-        border-bottom: 2px solid #dee2e6;
-    }
-    
-    .table tbody td {
-        border: none;
-        border-bottom: 1px solid #f1f3f4;
-        padding: 15px 12px;
-        vertical-align: middle;
-    }
-    
-    .table tbody tr:hover {
-        background-color: #f8f9fa;
-    }
-    
-    .status-badge {
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: 500;
-        text-align: center;
-        min-width: 60px;
-        display: inline-block;
-    }
-    
-    .click-badge {
-        background: #e3f2fd;
-        color: #1565c0;
-        padding: 4px 8px;
-        border-radius: 12px;
-        font-size: 0.75rem;
-        font-weight: 500;
-    }
-    
-    .date-badge {
-        background: #f8f9fa;
-        color: #495057;
-        padding: 4px 8px;
-        border-radius: 12px;
-        font-size: 0.75rem;
-        font-weight: 500;
-    }
-</style>
 {% endblock extend_head %}
 
 {% block content %}
-<div class="container my-5">
-    <div class="table-container">
-        <div class="table-header-section">
-            <h3>
-                <i class="bi {% if property_type == 'discount' %}bi-tag{% else %}bi-star{% endif %}"></i> 
-                {{ page_title }}
-            </h3>
-            <div class="header-actions">
-                <div class="credit-info">
-                    <i class="bi bi-wallet2"></i> 
-                    {% if request.user.user_type == 'agent' %}
-                        {{ request.user.agentprofile.credit_balance }}
-                    {% elif request.user.user_type == 'developer' %}
-                        {{ request.user.developerprofile.credit_balance }}
-                    {% endif %}
-                    credits
+<section class="bg-muted/40 py-12">
+    <div class="container space-y-6">
+        <header class="flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm lg:flex-row lg:items-center lg:justify-between">
+            <div class="space-y-2">
+                <p class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+                    <i class="bi {% if property_type == 'discount' %}bi-tag{% else %}bi-star{% endif %}"></i>
+                    {{ property_type|title }} Listings
+                </p>
+                <h1 class="text-2xl font-heading font-semibold text-foreground">{{ page_title }}</h1>
+                <p class="text-sm text-muted-foreground">
+                    Manage your {% if property_type == 'discount' %}flash sale{% else %}featured{% endif %} properties, review performance, and keep expiry dates up to date.
+                </p>
+            </div>
+            <div class="flex flex-col items-end gap-3 sm:flex-row sm:items-center">
+                <div class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground">
+                    <i class="bi bi-wallet2 text-sm text-primary"></i>
+                    <span>Credits:</span>
+                    <span class="font-semibold text-foreground">
+                        {% if request.user.user_type == 'agent' %}
+                            {{ request.user.agentprofile.credit_balance }}
+                        {% elif request.user.user_type == 'developer' %}
+                            {{ request.user.developerprofile.credit_balance }}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </span>
                 </div>
                 {% if property_type == 'discount' %}
-                    <a href="{% url 'property:create_discount' %}">
-                        <i class="bi bi-plus-circle"></i> Create New
-                    </a>
+                <a href="{% url 'property:create_discount' %}" class="btn">
+                    <i class="bi bi-plus-circle text-base"></i>
+                    <span>Create Discount</span>
+                </a>
                 {% else %}
-                    <a href="{% url 'property:create_featured' %}">
-                        <i class="bi bi-plus-circle"></i> Create New
-                    </a>
+                <a href="{% url 'property:create_featured' %}" class="btn">
+                    <i class="bi bi-plus-circle text-base"></i>
+                    <span>Create Featured</span>
+                </a>
                 {% endif %}
             </div>
-        </div>
-        
-        <div class="table-responsive">
-            <table class="table table-hover mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th>Property</th>
-                        <th>Building</th>
-                        <th>Expiry Date</th>
-                        <th>Clicks</th>
-                        <th>View Time</th>
-                        <th>Status</th>
-                        <th>Created</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if property_type == 'discount' %}
-                        {% for discount in discount_properties %}
+        </header>
+
+        <div class="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[720px] table-auto text-sm">
+                    <thead class="bg-muted/60 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                         <tr>
-                            <td>
-                                {% if discount.property %}
-                                    <a href="{% url 'property:get' discount.property.id %}?discounted=true" target="_blank" class="property-link">
-                                        {{ discount.property.title|default:"No Title" }}
-                                    </a>
-                                {% else %}
-                                    <span class="text-muted">Property Deleted</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if discount.property and discount.property.building %}
-                                    {{ discount.property.building.title }}
-                                {% else %}
-                                    <span class="text-muted">-</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                <span class="date-badge">{{ discount.period|date:"M d, Y" }}</span>
-                            </td>
-                            <td>
-                                <span class="click-badge">{{ discount.number_of_clicked }}</span>
-                            </td>
-                            <td>{{ discount.duration_without_microseconds }}</td>
-                            <td>
-                                {% if discount.period >= today_date %}
-                                    <span class="status-badge" style="background: #d4edda; color: #155724;">Active</span>
-                                {% else %}
-                                    <span class="status-badge" style="background: #f8d7da; color: #721c24;">Expired</span>
-                                {% endif %}
-                            </td>
-                            <td>{{ discount.created_at|date:"M d, Y" }}</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <a href="{% url 'property:edit_discount' discount.id %}" class="btn-edit">
-                                        <i class="bi bi-pencil"></i> Edit
-                                    </a>
-                                    <a href="{% url 'property:delete_discount' discount.id %}" class="btn-delete">
-                                        <i class="bi bi-trash"></i> Delete
-                                    </a>
-                                </div>
-                            </td>
+                            <th class="px-6 py-4">Property</th>
+                            <th class="px-6 py-4">Building</th>
+                            <th class="px-6 py-4">
+                                {% if property_type == 'discount' %}Expiry{% else %}Expiry / Status{% endif %}
+                            </th>
+                            <th class="px-6 py-4">Clicks</th>
+                            <th class="px-6 py-4">View Time</th>
+                            <th class="px-6 py-4">Status</th>
+                            <th class="px-6 py-4">Created</th>
+                            <th class="px-6 py-4 text-right">Actions</th>
                         </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="8" class="no-data">
-                                <i class="bi bi-tag" style="font-size: 48px; opacity: 0.3;"></i>
-                                <p>No discount properties found. <a href="{% url 'property:create_discount' %}">Create your first discount property</a></p>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    {% else %}
-                        {% for featured in featured_properties %}
-                        <tr>
-                            <td>
-                                {% if featured.property %}
-                                    <a href="{% url 'property:get' featured.property.id %}?featured=true" target="_blank" class="property-link">
-                                        {{ featured.property.title|default:"No Title" }}
-                                    </a>
-                                {% else %}
-                                    <span class="text-muted">Property Deleted</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if featured.property and featured.property.building %}
-                                    {{ featured.property.building.title }}
-                                {% else %}
-                                    <span class="text-muted">-</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if featured.expiry_date %}
-                                    <span class="date-badge">{{ featured.expiry_date|date:"M d, Y" }}</span>
-                                {% else %}
-                                    <span class="date-badge" style="background: #fff3cd; color: #856404;">No Expiry</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                <span class="click-badge">{{ featured.number_of_clicked }}</span>
-                            </td>
-                            <td>{{ featured.duration_without_microseconds }}</td>
-                            <td>
-                                {% if featured.expiry_date >= today_date %}
-                                    <span class="status-badge" style="background: #d4edda; color: #155724;">Active</span>
-                                {% else %}
-                                    <span class="status-badge" style="background: #f8d7da; color: #721c24;">Expired</span>
-                                {% endif %}
-                            </td>
-                            <td>{{ featured.created_at|date:"M d, Y" }}</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <a href="{% url 'property:edit_featured' featured.id %}" class="btn-edit">
-                                        <i class="bi bi-pencil"></i> Edit
-                                    </a>
-                                    <a href="{% url 'property:delete_featured' featured.id %}" class="btn-delete">
-                                        <i class="bi bi-trash"></i> Delete
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="8" class="no-data">
-                                <i class="bi bi-star" style="font-size: 48px; opacity: 0.3;"></i>
-                                <p>No featured properties found. <a href="{% url 'property:create_featured' %}">Create your first featured property</a></p>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    {% endif %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="divide-y divide-border/70 text-foreground">
+                        {% if property_type == 'discount' %}
+                            {% for discount in discount_properties %}
+                            <tr class="hover:bg-muted/40">
+                                <td class="px-6 py-4">
+                                    {% if discount.property %}
+                                        <a href="{% url 'property:get' discount.property.id %}?discounted=true" target="_blank" class="inline-flex items-center gap-2 font-medium text-primary hover:text-primary/80">
+                                            <i class="bi bi-link-45deg text-base"></i>
+                                            <span>{{ discount.property.title|default:"No Title" }}</span>
+                                        </a>
+                                    {% else %}
+                                        <span class="text-muted-foreground">Property deleted</span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {% if discount.property and discount.property.building %}
+                                        {{ discount.property.building.title }}
+                                    {% else %}
+                                        <span class="text-muted-foreground">—</span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-3 py-1 text-xs font-medium text-muted-foreground">
+                                        <i class="bi bi-calendar-event text-sm text-primary"></i>
+                                        {{ discount.period|date:"M d, Y" }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                                        <i class="bi bi-mouse3 text-sm"></i>
+                                        {{ discount.number_of_clicked }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">{{ discount.duration_without_microseconds }}</td>
+                                <td class="px-6 py-4">
+                                    {% if discount.period >= today_date %}
+                                        <span class="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-600">
+                                            <i class="bi bi-check-circle"></i>
+                                            Active
+                                        </span>
+                                    {% else %}
+                                        <span class="inline-flex items-center gap-2 rounded-full border border-destructive/30 bg-destructive/10 px-3 py-1 text-xs font-semibold text-destructive">
+                                            <i class="bi bi-exclamation-triangle"></i>
+                                            Expired
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4">{{ discount.created_at|date:"M d, Y" }}</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <a href="{% url 'property:edit_discount' discount.id %}" class="btn-secondary inline-flex items-center gap-2 px-3 py-1 text-xs">
+                                            <i class="bi bi-pencil"></i>
+                                            Edit
+                                        </a>
+                                        <a href="{% url 'property:delete_discount' discount.id %}" class="btn-destructive inline-flex items-center gap-2 px-3 py-1 text-xs">
+                                            <i class="bi bi-trash"></i>
+                                            Delete
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="px-6 py-16">
+                                    <div class="flex flex-col items-center gap-4 text-center text-muted-foreground">
+                                        <span class="inline-flex size-16 items-center justify-center rounded-full border border-border bg-secondary/40 text-3xl text-primary">
+                                            <i class="bi bi-tag"></i>
+                                        </span>
+                                        <div class="space-y-2">
+                                            <p class="text-lg font-semibold text-foreground">No discount properties yet</p>
+                                            <p class="text-sm">Create a discount listing to drive urgency and highlight time-sensitive offers.</p>
+                                        </div>
+                                        <a href="{% url 'property:create_discount' %}" class="btn-secondary">
+                                            Create a discount property
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            {% for featured in featured_properties %}
+                            <tr class="hover:bg-muted/40">
+                                <td class="px-6 py-4">
+                                    {% if featured.property %}
+                                        <a href="{% url 'property:get' featured.property.id %}?featured=true" target="_blank" class="inline-flex items-center gap-2 font-medium text-primary hover:text-primary/80">
+                                            <i class="bi bi-link-45deg text-base"></i>
+                                            <span>{{ featured.property.title|default:"No Title" }}</span>
+                                        </a>
+                                    {% else %}
+                                        <span class="text-muted-foreground">Property deleted</span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {% if featured.property and featured.property.building %}
+                                        {{ featured.property.building.title }}
+                                    {% else %}
+                                        <span class="text-muted-foreground">—</span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {% if featured.expiry_date %}
+                                        <span class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-3 py-1 text-xs font-medium text-muted-foreground">
+                                            <i class="bi bi-calendar-event text-sm text-primary"></i>
+                                            {{ featured.expiry_date|date:"M d, Y" }}
+                                        </span>
+                                    {% else %}
+                                        <span class="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-600">
+                                            <i class="bi bi-infinity"></i>
+                                            No expiry set
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                                        <i class="bi bi-mouse3 text-sm"></i>
+                                        {{ featured.number_of_clicked }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">{{ featured.duration_without_microseconds }}</td>
+                                <td class="px-6 py-4">
+                                    {% if featured.expiry_date and featured.expiry_date < today_date %}
+                                        <span class="inline-flex items-center gap-2 rounded-full border border-destructive/30 bg-destructive/10 px-3 py-1 text-xs font-semibold text-destructive">
+                                            <i class="bi bi-exclamation-triangle"></i>
+                                            Expired
+                                        </span>
+                                    {% else %}
+                                        <span class="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                                            <i class="bi bi-star-fill text-xs"></i>
+                                            Live
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4">{{ featured.created_at|date:"M d, Y" }}</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <a href="{% url 'property:edit_featured' featured.id %}" class="btn-secondary inline-flex items-center gap-2 px-3 py-1 text-xs">
+                                            <i class="bi bi-pencil"></i>
+                                            Edit
+                                        </a>
+                                        <a href="{% url 'property:delete_featured' featured.id %}" class="btn-destructive inline-flex items-center gap-2 px-3 py-1 text-xs">
+                                            <i class="bi bi-trash"></i>
+                                            Delete
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="px-6 py-16">
+                                    <div class="flex flex-col items-center gap-4 text-center text-muted-foreground">
+                                        <span class="inline-flex size-16 items-center justify-center rounded-full border border-border bg-secondary/40 text-3xl text-primary">
+                                            <i class="bi bi-star"></i>
+                                        </span>
+                                        <div class="space-y-2">
+                                            <p class="text-lg font-semibold text-foreground">No featured properties yet</p>
+                                            <p class="text-sm">Promote a listing to keep it at the top of search results and improve visibility.</p>
+                                        </div>
+                                        <a href="{% url 'property:create_featured' %}" class="btn-secondary">
+                                            Create a featured property
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
+</section>
 {% endblock content %}
-
-{% block extend_script %}
-<script>
-    // Add today's date for comparison
-    document.addEventListener('DOMContentLoaded', function() {
-        const today = new Date().toISOString().split('T')[0];
-        window.today = today;
-    });
-</script>
-{% endblock extend_script %}

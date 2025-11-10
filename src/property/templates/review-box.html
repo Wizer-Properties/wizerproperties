@@ -1,20 +1,26 @@
-<section id="review">
-    <div class="container">
-        <h1 class="section-title"> Property reviews </h1>
+<section id="review" class="bg-muted/40 py-12">
+    <div class="container space-y-6">
+        <header class="space-y-2">
+            <p class="text-xs font-semibold uppercase tracking-[0.4em] text-primary">Reviews</p>
+            <h2 class="text-3xl font-heading font-semibold text-foreground">Property reviews</h2>
+            <p class="max-w-2xl text-sm text-muted-foreground">
+                See what other prospects and residents are saying, or share your own experience with this property.
+            </p>
+        </header>
 
-        <div class="col-lg-8">
-            <div class="review-writing-area">
-                <!--  -->
+        <div class="grid gap-6 lg:grid-cols-[minmax(0,2fr)]">
+            <div class="review-writing-area space-y-4">
+                <!-- JS populates rating summary and submission form -->
             </div>
 
-            <div class="view-the-reviews">
-
+            <div class="space-y-4">
+                <div class="view-the-reviews space-y-4">
+                    <!-- JS injects review cards -->
+                </div>
+                <div class="load-more-reviews flex justify-center pt-2">
+                    <!-- JS injects load more button / message -->
+                </div>
             </div>
-
-            <div class="load-more-reviews">
-                
-            </div>
-
         </div>
     </div>
 </section>

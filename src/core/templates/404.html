@@ -1,26 +1,33 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}404 - Page Not Found{% endblock %}
+{% block title %}404 – Page Not Found{% endblock %}
 
 {% block content %}
-<div class="container min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 mt-5">
-    <div class="max-w-lg w-full space-y-8 text-center">
-        <div>
-            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                Page not found
-            </h2>
-            <p class="mt-2 text-center text-sm text-gray-600">
-                The page you're looking for doesn't exist or has been moved. Let's get you back on track.
+<section class="relative flex min-h-[70vh] items-center justify-center overflow-hidden bg-muted/30 py-16">
+    <div class="absolute inset-0 -z-10">
+        <img src="{% static 'media/background/auth-page-bg.webp' %}" alt="" class="h-full w-full object-cover opacity-40">
+        <div class="absolute inset-0 bg-background/85 backdrop-blur-sm"></div>
+    </div>
+
+    <div class="container max-w-3xl">
+        <div class="rounded-3xl border border-border bg-card/95 p-10 text-center shadow-xl backdrop-blur">
+            <p class="text-xs font-semibold uppercase tracking-[0.4em] text-primary">Error 404</p>
+            <h1 class="mt-4 text-4xl font-heading font-semibold text-foreground sm:text-5xl">We couldn’t find that page</h1>
+            <p class="mt-4 text-sm text-muted-foreground sm:text-base">
+                The link may be outdated or the page might have moved. Let’s help you find the information you were looking for.
             </p>
-        </div>
-        <div class="mt-8">
-            <a href="{% url 'home' %}" class="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90">
-                Return to homepage
-            </a>
+
+            <div class="mt-10 grid gap-3 sm:grid-cols-2">
+                <a href="{% url 'home' %}" class="btn justify-center">Back to homepage</a>
+                <a href="{% url 'property:search' %}" class="btn-secondary justify-center">Browse properties</a>
+            </div>
+
+            <div class="mt-8 space-y-2 text-xs text-muted-foreground">
+                <p>Still lost? Reach our support team and we’ll point you in the right direction.</p>
+                <a href="{% url 'contact' %}" class="inline-flex items-center justify-center text-primary hover:text-primary/80">Contact support →</a>
+            </div>
         </div>
     </div>
-</div>
+</section>
 {% endblock %}
-
-

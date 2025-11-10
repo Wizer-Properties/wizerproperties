@@ -134,6 +134,14 @@ $(document).ready(function(){
                         this_btn.parents('.property-single-box').remove();
                     };
                 } catch {}
+
+                try {
+                    window.dispatchEvent(new CustomEvent('favorite:removed', {
+                        detail: { propertyId: this_btn.attr('index') }
+                    }));
+                } catch (error) {
+                    console.error(error);
+                }
             },
             error: function (error) {
                 console.log("error")

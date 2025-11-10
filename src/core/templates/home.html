@@ -3,662 +3,524 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title> Home </title>
-<link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
-<link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
-<link rel="stylesheet" href="{% static '/css/search-page.css' %}?v=1.02" />
-<link rel="stylesheet" href="{% static '/css/favorite-list.css' %}?v=1.00" />
-<link rel="stylesheet" href="{% static '/css/search-filter.css' %}?v=1.03" />
-<link rel="stylesheet" href="{% static '/css/home.css' %}?v=1.09" />
-<link rel="stylesheet" href="{% static '/css/blog-page.css' %}?v=1.01"/>
-
-<style>
-    .header{
-        max-width: 1080px;
-        margin: 0 auto;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        padding-top: 20px !important;
-    }
-
-    .search-result-box[show-compare-favorite="true"]{
-        padding-top: 45px !important;
-    }
-
-    @media screen and (max-width: 1200px){
-        .header{
-            max-width: calc(100% - 80px) !important;
-        }
-    }
-
-    @media screen and (max-width: 560px){
-        .header{
-            max-width: calc(100% - 40px) !important;
-        }
-    }
-</style>
+<title>Discover Verified Property Developments in Thailand | WizerProperties</title>
+<link rel="stylesheet" href="{% static 'css/libraries/splide.min.css' %}?v=2.0" />
 {% endblock extend_head %}
 
-
-
-
-
 {% block content %}
-
-<div class="container-hm">
-    <div class="top-banner home-top-banner">
-        <div class="splide ads-banner-slider">
-            <div class="splide__track">
-                <div class="splide__list">
-                    <!-- from dom -->
-                </div>
-            </div>
-        </div>
+<section class="relative overflow-hidden bg-slate-950 text-white">
+    <div class="absolute inset-0">
+        <img src="{% static '/media/background/home-page-bg.webp' %}" alt="Thailand skyline" class="h-full w-full object-cover opacity-60">
+        <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 to-slate-900/70"></div>
     </div>
-</div>
-
-
-<section class="banner">
-    <div class="container-hm position-relative">
-
-        <div class="banner-img">
-            <img src="{% static '/media/background/home-page-bg.webp' %}" alt="wizerproperties">
-        </div>
-
-
-            <div class="banner-content">
-            <h1 class="banner-title"> Discover your perfect property in Thailand </h1>
-        
-            <div class="search-box-with-filter" load-google="false">
-                <div class="search-box-with-filter-content">
-                    <div class="search-box">
-                        <input id="gm-search-input" type="text" placeholder="Search by location, landmark or postcode" />
-                        <button id="location-search-btn">
-                            Search
-                        </button>
-                    </div>
-                    <div class="search-box-filter-option">
-        
-        
-                        <!-- =================================== -->
-        
-                        <div class="filter-single-box" pop-target="price-box" active-filter="false">
-                            <button class="filter-label">
-                                <span filter-label-name="Price">Price</span>
-                                <i class="bi bi-chevron-down"></i>
-                            </button>
-                        </div>
-                        <div pop-element="price-box">
-                            <div class="price-filter-box">
-                                <div class="price-filter-select-box">
-                                    <div class="d-flex gap-2 mb-4 align-items-center">
-                                        <select name="min_price">
-                                            <option value="">Min Price</option>
-                                            <option value="500000">฿ 500,000</option>
-                                            <option value="1000000">฿ 1,000,000</option>
-                                            <option value="2000000">฿ 2,000,000</option>
-                                            <option value="3000000">฿ 3,000,000</option>
-                                            <option value="4000000">฿ 4,000,000</option>
-                                            <option value="5000000">฿ 5,000,000</option>
-                                            <option value="6000000">฿ 6,000,000</option>
-                                            <option value="7000000">฿ 7,000,000</option>
-                                            <option value="8000000">฿ 8,000,000</option>
-                                            <option value="9000000">฿ 9,000,000</option>
-                                            <option value="10000000">฿ 10,000,000</option>
-                                            <option value="11000000">฿ 11,000,000</option>
-                                            <option value="12000000">฿ 12,000,000</option>
-                                            <option value="13000000">฿ 13,000,000</option>
-                                            <option value="14000000">฿ 14,000,000</option>
-                                            <option value="15000000">฿ 15,000,000</option>
-                                            <option value="16000000">฿ 16,000,000</option>
-                                            <option value="17000000">฿ 17,000,000</option>
-                                            <option value="18000000">฿ 18,000,000</option>
-                                            <option value="19000000">฿ 19,000,000</option>
-                                            <option value="20000000">฿ 20,000,000</option>
-                                            <option value="21000000">฿ 21,000,000</option>
-                                            <option value="22000000">฿ 22,000,000</option>
-                                            <option value="23000000">฿ 23,000,000</option>
-                                            <option value="24000000">฿ 24,000,000</option>
-                                            <option value="25000000">฿ 25,000,000</option>
-                                            <option value="26000000">฿ 26,000,000</option>
-                                            <option value="27000000">฿ 27,000,000</option>
-                                            <option value="28000000">฿ 28,000,000</option>
-                                            <option value="29000000">฿ 29,000,000</option>
-                                            <option value="30000000">฿ 30,000,000</option>
-                                            <option value="31000000">฿ 31,000,000</option>
-                                            <option value="32000000">฿ 32,000,000</option>
-                                            <option value="33000000">฿ 33,000,000</option>
-                                            <option value="34000000">฿ 34,000,000</option>
-                                            <option value="35000000">฿ 35,000,000</option>
-                                            <option value="36000000">฿ 36,000,000</option>
-                                            <option value="37000000">฿ 37,000,000</option>
-                                            <option value="38000000">฿ 38,000,000</option>
-                                            <option value="39000000">฿ 39,000,000</option>
-                                            <option value="40000000">฿ 40,000,000</option>
-                                            <option value="41000000">฿ 41,000,000</option>
-                                            <option value="42000000">฿ 42,000,000</option>
-                                            <option value="43000000">฿ 43,000,000</option>
-                                            <option value="44000000">฿ 44,000,000</option>
-                                            <option value="45000000">฿ 45,000,000</option>
-                                            <option value="46000000">฿ 46,000,000</option>
-                                            <option value="47000000">฿ 47,000,000</option>
-                                            <option value="48000000">฿ 48,000,000</option>
-                                            <option value="49000000">฿ 49,000,000</option>
-                                            <option value="50000000">฿ 50,000,000</option>
-                                            <option value="51000000">฿ 51,000,000</option>
-                                            <option value="52000000">฿ 52,000,000</option>
-                                            <option value="53000000">฿ 53,000,000</option>
-                                            <option value="54000000">฿ 54,000,000</option>
-                                            <option value="55000000">฿ 55,000,000</option>
-                                            <option value="56000000">฿ 56,000,000</option>
-                                            <option value="57000000">฿ 57,000,000</option>
-                                            <option value="58000000">฿ 58,000,000</option>
-                                            <option value="59000000">฿ 59,000,000</option>
-                                            <option value="60000000">฿ 60,000,000</option>
-                                            <option value="61000000">฿ 61,000,000</option>
-                                            <option value="62000000">฿ 62,000,000</option>
-                                            <option value="63000000">฿ 63,000,000</option>
-                                            <option value="64000000">฿ 64,000,000</option>
-                                            <option value="65000000">฿ 65,000,000</option>
-                                            <option value="66000000">฿ 66,000,000</option>
-                                            <option value="67000000">฿ 67,000,000</option>
-                                            <option value="68000000">฿ 68,000,000</option>
-                                            <option value="69000000">฿ 69,000,000</option>
-                                            <option value="70000000">฿ 70,000,000</option>
-                                            <option value="71000000">฿ 71,000,000</option>
-                                            <option value="72000000">฿ 72,000,000</option>
-                                            <option value="73000000">฿ 73,000,000</option>
-                                            <option value="74000000">฿ 74,000,000</option>
-                                            <option value="75000000">฿ 75,000,000</option>
-                                            <option value="76000000">฿ 76,000,000</option>
-                                            <option value="77000000">฿ 77,000,000</option>
-                                            <option value="78000000">฿ 78,000,000</option>
-                                            <option value="79000000">฿ 79,000,000</option>
-                                            <option value="80000000">฿ 80,000,000</option>
-                                            <option value="81000000">฿ 81,000,000</option>
-                                            <option value="82000000">฿ 82,000,000</option>
-                                            <option value="83000000">฿ 83,000,000</option>
-                                            <option value="84000000">฿ 84,000,000</option>
-                                            <option value="85000000">฿ 85,000,000</option>
-                                            <option value="86000000">฿ 86,000,000</option>
-                                            <option value="87000000">฿ 87,000,000</option>
-                                            <option value="88000000">฿ 88,000,000</option>
-                                            <option value="89000000">฿ 89,000,000</option>
-                                            <option value="90000000">฿ 90,000,000</option>
-                                            <option value="91000000">฿ 91,000,000</option>
-                                            <option value="92000000">฿ 92,000,000</option>
-                                            <option value="93000000">฿ 93,000,000</option>
-                                            <option value="94000000">฿ 94,000,000</option>
-                                            <option value="95000000">฿ 95,000,000</option>
-                                            <option value="96000000">฿ 96,000,000</option>
-                                            <option value="97000000">฿ 97,000,000</option>
-                                            <option value="98000000">฿ 98,000,000</option>
-                                            <option value="99000000">฿ 99,000,000</option>
-                                            <option value="100000000">฿ 100,000,000</option>
-                                            <option value="null">Min Price</option>
-                                        </select>
-                                        <i class="bi bi-dash to-to"></i>
-                                        <select name="max_price">
-                                            <option value="">Max Price</option>
-                                            <option value="500000">฿ 500,000</option>
-                                            <option value="1000000">฿ 1,000,000</option>
-                                            <option value="2000000">฿ 2,000,000</option>
-                                            <option value="3000000">฿ 3,000,000</option>
-                                            <option value="4000000">฿ 4,000,000</option>
-                                            <option value="5000000">฿ 5,000,000</option>
-                                            <option value="6000000">฿ 6,000,000</option>
-                                            <option value="7000000">฿ 7,000,000</option>
-                                            <option value="8000000">฿ 8,000,000</option>
-                                            <option value="9000000">฿ 9,000,000</option>
-                                            <option value="10000000">฿ 10,000,000</option>
-                                            <option value="11000000">฿ 11,000,000</option>
-                                            <option value="12000000">฿ 12,000,000</option>
-                                            <option value="13000000">฿ 13,000,000</option>
-                                            <option value="14000000">฿ 14,000,000</option>
-                                            <option value="15000000">฿ 15,000,000</option>
-                                            <option value="16000000">฿ 16,000,000</option>
-                                            <option value="17000000">฿ 17,000,000</option>
-                                            <option value="18000000">฿ 18,000,000</option>
-                                            <option value="19000000">฿ 19,000,000</option>
-                                            <option value="20000000">฿ 20,000,000</option>
-                                            <option value="21000000">฿ 21,000,000</option>
-                                            <option value="22000000">฿ 22,000,000</option>
-                                            <option value="23000000">฿ 23,000,000</option>
-                                            <option value="24000000">฿ 24,000,000</option>
-                                            <option value="25000000">฿ 25,000,000</option>
-                                            <option value="26000000">฿ 26,000,000</option>
-                                            <option value="27000000">฿ 27,000,000</option>
-                                            <option value="28000000">฿ 28,000,000</option>
-                                            <option value="29000000">฿ 29,000,000</option>
-                                            <option value="30000000">฿ 30,000,000</option>
-                                            <option value="31000000">฿ 31,000,000</option>
-                                            <option value="32000000">฿ 32,000,000</option>
-                                            <option value="33000000">฿ 33,000,000</option>
-                                            <option value="34000000">฿ 34,000,000</option>
-                                            <option value="35000000">฿ 35,000,000</option>
-                                            <option value="36000000">฿ 36,000,000</option>
-                                            <option value="37000000">฿ 37,000,000</option>
-                                            <option value="38000000">฿ 38,000,000</option>
-                                            <option value="39000000">฿ 39,000,000</option>
-                                            <option value="40000000">฿ 40,000,000</option>
-                                            <option value="41000000">฿ 41,000,000</option>
-                                            <option value="42000000">฿ 42,000,000</option>
-                                            <option value="43000000">฿ 43,000,000</option>
-                                            <option value="44000000">฿ 44,000,000</option>
-                                            <option value="45000000">฿ 45,000,000</option>
-                                            <option value="46000000">฿ 46,000,000</option>
-                                            <option value="47000000">฿ 47,000,000</option>
-                                            <option value="48000000">฿ 48,000,000</option>
-                                            <option value="49000000">฿ 49,000,000</option>
-                                            <option value="50000000">฿ 50,000,000</option>
-                                            <option value="51000000">฿ 51,000,000</option>
-                                            <option value="52000000">฿ 52,000,000</option>
-                                            <option value="53000000">฿ 53,000,000</option>
-                                            <option value="54000000">฿ 54,000,000</option>
-                                            <option value="55000000">฿ 55,000,000</option>
-                                            <option value="56000000">฿ 56,000,000</option>
-                                            <option value="57000000">฿ 57,000,000</option>
-                                            <option value="58000000">฿ 58,000,000</option>
-                                            <option value="59000000">฿ 59,000,000</option>
-                                            <option value="60000000">฿ 60,000,000</option>
-                                            <option value="61000000">฿ 61,000,000</option>
-                                            <option value="62000000">฿ 62,000,000</option>
-                                            <option value="63000000">฿ 63,000,000</option>
-                                            <option value="64000000">฿ 64,000,000</option>
-                                            <option value="65000000">฿ 65,000,000</option>
-                                            <option value="66000000">฿ 66,000,000</option>
-                                            <option value="67000000">฿ 67,000,000</option>
-                                            <option value="68000000">฿ 68,000,000</option>
-                                            <option value="69000000">฿ 69,000,000</option>
-                                            <option value="70000000">฿ 70,000,000</option>
-                                            <option value="71000000">฿ 71,000,000</option>
-                                            <option value="72000000">฿ 72,000,000</option>
-                                            <option value="73000000">฿ 73,000,000</option>
-                                            <option value="74000000">฿ 74,000,000</option>
-                                            <option value="75000000">฿ 75,000,000</option>
-                                            <option value="76000000">฿ 76,000,000</option>
-                                            <option value="77000000">฿ 77,000,000</option>
-                                            <option value="78000000">฿ 78,000,000</option>
-                                            <option value="79000000">฿ 79,000,000</option>
-                                            <option value="80000000">฿ 80,000,000</option>
-                                            <option value="81000000">฿ 81,000,000</option>
-                                            <option value="82000000">฿ 82,000,000</option>
-                                            <option value="83000000">฿ 83,000,000</option>
-                                            <option value="84000000">฿ 84,000,000</option>
-                                            <option value="85000000">฿ 85,000,000</option>
-                                            <option value="86000000">฿ 86,000,000</option>
-                                            <option value="87000000">฿ 87,000,000</option>
-                                            <option value="88000000">฿ 88,000,000</option>
-                                            <option value="89000000">฿ 89,000,000</option>
-                                            <option value="90000000">฿ 90,000,000</option>
-                                            <option value="91000000">฿ 91,000,000</option>
-                                            <option value="92000000">฿ 92,000,000</option>
-                                            <option value="93000000">฿ 93,000,000</option>
-                                            <option value="94000000">฿ 94,000,000</option>
-                                            <option value="95000000">฿ 95,000,000</option>
-                                            <option value="96000000">฿ 96,000,000</option>
-                                            <option value="97000000">฿ 97,000,000</option>
-                                            <option value="98000000">฿ 98,000,000</option>
-                                            <option value="99000000">฿ 99,000,000</option>
-                                            <option value="100000000">฿ 100,000,000</option>
-                                            <option value="null">Max Price</option>
-                                        </select>
-                                    </div>
-        
-                                    <div class="d-flex gap-2 align-items-center justify-content-between">
-                                        <button class="filter-clear" for="price" pop-dispatch> Clear </button>
-                                        <button class="apply-btn" pop-dispatch> Apply </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-        
-                        <!-- =========================================== -->
-        
-                        <div class="filter-single-box" pop-target="bed-box" active-filter="false">
-                            <button class="filter-label">
-                                <span filter-label-name="Bedrooms">Bedrooms</span>
-                                <i class="bi bi-chevron-down"></i>
-                            </button>
-                        </div>
-                        <div pop-element="bed-box">
-                            <div class="search-pop-up-box">
-                                <div class="search-pop-up-select-box">
-                                    <div class="d-flex gap-2 mb-4 align-items-center">
-                                        <select name="min_number_of_bedroom">
-                                            <option value="">No min</option>
-                                            <option value="1"> 1 bedroom</option>
-                                            <option value="2"> 2 bedrooms</option>
-                                            <option value="3"> 3 bedrooms</option>
-                                            <option value="4"> 4 bedrooms</option>
-                                            <option value="5"> 5 bedrooms</option>
-                                            <option value="6"> 6 bedrooms</option>
-                                            <option value="7"> 7 bedrooms</option>
-                                            <option value="8"> 8 bedrooms</option>
-                                            <option value="9"> 9 bedrooms</option>
-                                            <option value="10"> 10 bedrooms</option>
-                                            <option value="null">No min</option>
-                                        </select>
-                                        <i class="bi bi-dash to-to"></i>
-                                        <select name="max_number_of_bedroom">
-                                            <option value="">No max</option>
-                                            <option value="1"> 1 bedroom</option>
-                                            <option value="2"> 2 bedrooms</option>
-                                            <option value="3"> 3 bedrooms</option>
-                                            <option value="4"> 4 bedrooms</option>
-                                            <option value="5"> 5 bedrooms</option>
-                                            <option value="6"> 6 bedrooms</option>
-                                            <option value="7"> 7 bedrooms</option>
-                                            <option value="8"> 8 bedrooms</option>
-                                            <option value="9"> 9 bedrooms</option>
-                                            <option value="10"> 10 bedrooms</option>
-                                            <option value="null">No max</option>
-                                        </select>
-                                    </div>
-        
-                                    <div class="d-flex gap-2 align-items-center justify-content-between">
-                                        <button class="filter-clear" for="beds" pop-dispatch> Clear </button>
-                                        <button class="apply-btn" pop-dispatch> Apply </button>
-                                    </div>
-                                </div>
-        
-                            </div>
-                        </div>
-                        
-        
-                        
-                        <!-- =========================================== -->
-        
-                        <div class="filter-single-box" pop-target="property-type">
-                            <button class="filter-label">
-                                <span>Property type</span>
-                                <i class="bi bi-chevron-down"></i>
-                            </button>
-                        </div>
-                        <div pop-element="property-type">
-                            <div class="search-pop-up-box">
-        
-                                <div class="property-type-filter" building-type-status="residence">
-                                    <div class="property-type-list">
-                                        <button name="building__type" value="residence"> Residential </button>
-                                        <button name="building__type" value="commercial"> Commercial </button>
-                                    </div>
-        
-                                    <div type-area-name="residence" type-init="RESIDENCE_SUB_TYPES">
-                                        <!-- from dom base on type-init -->
-                                    </div>
-        
-                                    <div type-area-name="commercial" type-init="COMMERCIAL_SUB_TYPES">
-                                        <!-- from dom base on type-init -->
-                                    </div>
-        
-                                    <div class="property-type-action-btn">
-                                        <button class="filter-clear" for="property-type" pop-dispatch> Clear </button>
-                                        <button class="apply-btn" pop-dispatch> Apply </button>
-                                    </div>
-        
-                                </div>
-                            </div>
-                        </div>
-        
-        
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</section>
-
-{% if not request.user.is_authenticated %}
-<section class="mb-5">
-    <div class="container-hm">
-        <div class="banner-content pt-0">
-            <div class="sign-in-note-box">
-                <div class="sign-in-side-note">
-                    <h1>
-                        Unlock virtual tours and property comparisons
+    <div class="container relative z-10 py-24 lg:py-32">
+        <div class="grid items-start gap-16 lg:grid-cols-[minmax(0,1fr)_420px]">
+            <div class="space-y-8">
+                <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary-100">
+                    New builds in Thailand
+                </span>
+                <div class="space-y-5">
+                    <h1 class="text-4xl font-heading font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">
+                        Find verified developments built for international buyers
                     </h1>
-                    <p>
-                        Create an account to explore detailed listings, save favorites, and connect directly with developers and agents.
+                    <p class="max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg">
+                        WizerProperties surfaces new-build homes across Thailand that are fully vetted, price-transparent, and ready for virtual viewings. Compare units, understand payment milestones, and connect directly with trusted developers without hopping between brokers.
                     </p>
                 </div>
-            
-                <a href="/user/login/"> Get started </a>
+                <div class="flex flex-wrap items-center gap-4">
+                    <a href="#discount-properties" class="btn bg-primary text-white hover:bg-primary/90 focus-visible:outline-white">
+                        Browse spotlight deals
+                    </a>
+                    <a href="/schedule/create_schedule/?type=consultation" class="btn-secondary border-white/40 bg-white/10 text-white hover:bg-white/20">
+                        Talk to a local specialist
+                    </a>
+                </div>
+                <dl class="grid gap-6 text-sm text-white/80 sm:grid-cols-3">
+                    <div>
+                        <dt class="font-semibold text-white">10k+ verified units</dt>
+                        <dd class="mt-1 text-white/70">Every listing is checked for developer credibility and completion status.</dd>
+                    </div>
+                    <div>
+                        <dt class="font-semibold text-white">Remote-first experience</dt>
+                        <dd class="mt-1 text-white/70">Book live video tours, compare units, and sign digitally from anywhere.</dd>
+                    </div>
+                    <div>
+                        <dt class="font-semibold text-white">24h buyer concierge</dt>
+                        <dd class="mt-1 text-white/70">Local specialists answer financing, visa, and ownership questions on demand.</dd>
+                    </div>
+                </dl>
+            </div>
+            <div class="rounded-3xl border border-white/20 bg-white text-foreground shadow-2xl backdrop-blur-lg">
+                <div class="space-y-6 p-8">
+                    <div class="space-y-2">
+                        <h2 class="text-lg font-semibold text-foreground">Search homes matched to your brief</h2>
+                        <p class="text-sm text-muted-foreground">Choose a destination, set a budget, and we’ll surface the best-fitting developments.</p>
+                    </div>
+                    <div class="space-y-5">
+                        <div class="space-y-2">
+                            <label for="gm-search-input" class="text-sm font-medium text-muted-foreground">Location or landmark</label>
+                            <div class="relative">
+                                <span class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-muted-foreground">
+                                    <i class="bi bi-geo-alt text-lg"></i>
+                                </span>
+                                <input id="gm-search-input" type="text" placeholder="e.g. Bangkok, Thonglor, beach front" class="input h-12 rounded-2xl border border-border bg-white pl-11 pr-12 text-base" autocomplete="off">
+                                <button type="button" class="absolute inset-y-0 right-3 flex items-center text-muted-foreground transition hover:text-foreground" data-search-clear>
+                                    <i class="bi bi-x-circle text-lg"></i>
+                                    <span class="sr-only">Clear location</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="grid gap-3 sm:grid-cols-2">
+                            <label class="space-y-2 text-sm font-medium text-muted-foreground">
+                                <span>Min budget</span>
+                                <select name="min_price" class="input rounded-2xl border border-border bg-white py-2">
+                                    <option value="">Any</option>
+                                    <option value="500000">฿ 500,000</option>
+                                    <option value="1000000">฿ 1,000,000</option>
+                                    <option value="2000000">฿ 2,000,000</option>
+                                    <option value="5000000">฿ 5,000,000</option>
+                                    <option value="10000000">฿ 10,000,000</option>
+                                    <option value="20000000">฿ 20,000,000</option>
+                                    <option value="50000000">฿ 50,000,000</option>
+                                </select>
+                            </label>
+                            <label class="space-y-2 text-sm font-medium text-muted-foreground">
+                                <span>Max budget</span>
+                                <select name="max_price" class="input rounded-2xl border border-border bg-white py-2">
+                                    <option value="">Any</option>
+                                    <option value="2000000">฿ 2,000,000</option>
+                                    <option value="5000000">฿ 5,000,000</option>
+                                    <option value="10000000">฿ 10,000,000</option>
+                                    <option value="20000000">฿ 20,000,000</option>
+                                    <option value="50000000">฿ 50,000,000</option>
+                                    <option value="100000000">฿ 100,000,000</option>
+                                </select>
+                            </label>
+                            <label class="space-y-2 text-sm font-medium text-muted-foreground">
+                                <span>Min bedrooms</span>
+                                <select name="min_number_of_bedroom" class="input rounded-2xl border border-border bg-white py-2">
+                                    <option value="">Any</option>
+                                    <option value="1">1 bedroom</option>
+                                    <option value="2">2 bedrooms</option>
+                                    <option value="3">3 bedrooms</option>
+                                    <option value="4">4 bedrooms</option>
+                                    <option value="5">5 bedrooms</option>
+                                </select>
+                            </label>
+                            <label class="space-y-2 text-sm font-medium text-muted-foreground">
+                                <span>Max bedrooms</span>
+                                <select name="max_number_of_bedroom" class="input rounded-2xl border border-border bg-white py-2">
+                                    <option value="">Any</option>
+                                    <option value="1">1 bedroom</option>
+                                    <option value="2">2 bedrooms</option>
+                                    <option value="3">3 bedrooms</option>
+                                    <option value="4">4 bedrooms</option>
+                                    <option value="5">5 bedrooms</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="space-y-3">
+                            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">Property type</p>
+                            <div class="flex flex-wrap gap-3">
+                                <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary" data-property-type="" aria-pressed="true">
+                                    Any use
+                                </button>
+                                <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary" data-property-type="residence">
+                                    Residential
+                                </button>
+                                <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary" data-property-type="commercial">
+                                    Commercial
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <button type="button" id="location-search-btn" class="btn w-full justify-center bg-primary text-white hover:bg-primary/90">
+                                <i class="bi bi-search me-2"></i>
+                                <span>Search properties</span>
+                            </button>
+                            <p class="mt-2 hidden text-sm text-destructive" data-search-error>Select a location from the autocomplete suggestions to start.</p>
+                        </div>
+                    </div>
+                    <div class="border-t border-border pt-4">
+                        <p class="text-xs font-medium uppercase tracking-[0.3em] text-muted-foreground">Popular quick searches</p>
+                        <div class="mt-3 flex flex-wrap gap-2">
+                            <a href="/property/search/?place=Bangkok%2C%20Thailand&latitude=13.7563309&longitude=100.5017651&place_id=ChIJ82ENKDJgHTERIEjiXbIAAQE&fature_type=locality&min_price=5000000" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary">
+                                <i class="bi bi-building"></i>
+                                <span>Bangkok condos under ฿5M</span>
+                            </a>
+                            <a href="/property/search/?place=Phuket,%20Thailand&latitude=7.9843109&longitude=98.3307468&place_id=none&fature_type=circle&building__type=residence&min_number_of_bedroom=3" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary">
+                                <i class="bi bi-house-heart"></i>
+                                <span>Phuket family villas</span>
+                            </a>
+                            <a href="/property/search/?place=Chiang%20Mai,%20Thailand&latitude=18.7883439&longitude=98.9853008&place_id=none&fature_type=locality&building__type=commercial" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary">
+                                <i class="bi bi-briefcase"></i>
+                                <span>Chiang Mai commercial</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="-mt-10 bg-background py-12">
+    <div class="container">
+        <div class="rounded-3xl border border-border bg-card/80 p-6 shadow-lg backdrop-blur">
+            <div class="flex flex-col items-center gap-6 lg:flex-row lg:justify-between">
+                <div class="text-center lg:text-left">
+                    <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Trusted developers</p>
+                    <p class="text-sm text-muted-foreground">Verified partners across Bangkok, Phuket, Krabi, Chiang Mai &amp; coastal hotspots</p>
+                </div>
+                <div class="flex flex-wrap items-center justify-center gap-4 text-sm font-semibold text-muted-foreground">
+                    <span class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-4 py-2">Sansiri</span>
+                    <span class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-4 py-2">Ananda</span>
+                    <span class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-4 py-2">Origin</span>
+                    <span class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-4 py-2">Habitat Group</span>
+                    <span class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-4 py-2">Minor International</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-muted/20 py-20">
+    <div class="container space-y-12">
+        <div class="max-w-2xl space-y-4">
+            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Why buyers choose us</p>
+            <h2 class="text-3xl font-heading font-semibold text-foreground">We remove the friction foreign buyers feel most</h2>
+            <p class="text-base text-muted-foreground">Our redesign focuses on what global buyers struggle with—lack of transparency, fear of hidden costs, and uncertainty about local processes—aligning with 2025 landing page best practices that emphasise clarity, trust, and tangible outcomes.</p>
+        </div>
+        <div class="grid gap-6 md:grid-cols-3">
+            <article class="h-full space-y-4 rounded-3xl border border-border bg-card p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                <span class="inline-flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <i class="bi bi-shield-check text-xl"></i>
+                </span>
+                <h3 class="text-lg font-semibold text-foreground">Verified due diligence</h3>
+                <p class="text-sm text-muted-foreground">Every project shows legal status, ownership quotas, and developer credentials so you can act with confidence—directly addressing the trust gaps highlighted in real-estate UX research.</p>
+            </article>
+            <article class="h-full space-y-4 rounded-3xl border border-border bg-card p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                <span class="inline-flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <i class="bi bi-graph-up text-xl"></i>
+                </span>
+                <h3 class="text-lg font-semibold text-foreground">Transparent pricing &amp; incentives</h3>
+                <p class="text-sm text-muted-foreground">Compare developer incentives, payment schedules, and projected yields in one place—reducing the “hidden cost” anxiety cited in 2025 conversion benchmarks.</p>
+            </article>
+            <article class="h-full space-y-4 rounded-3xl border border-border bg-card p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                <span class="inline-flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <i class="bi bi-person-video3 text-xl"></i>
+                </span>
+                <h3 class="text-lg font-semibold text-foreground">Remote-first closing support</h3>
+                <p class="text-sm text-muted-foreground">Schedule virtual tours, coordinate inspection reports, and hand off documentation to bilingual specialists without timezone guesswork.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="bg-background py-12">
+    <div class="container">
+        <div class="top-banner overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+            <div class="splide ads-banner-slider">
+                <div class="splide__track">
+                    <ul class="splide__list">
+                        <!-- populated by ads.js -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if not request.user.is_authenticated %}
+<section class="bg-background py-16">
+    <div class="container">
+        <div class="rounded-3xl border border-border bg-card p-10 shadow-lg">
+            <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+                <div class="space-y-4">
+                    <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Create a free account</p>
+                    <h2 class="text-3xl font-heading font-semibold text-foreground">Unlock saved searches, instant alerts, and virtual-first tours</h2>
+                    <p class="text-sm text-muted-foreground">Personalise recommendations, sync favourite units across devices, and collaborate with developers in a single workspace.</p>
+                </div>
+                <div class="flex flex-col gap-3 sm:flex-row">
+                    <a href="/user/signup/" class="btn bg-primary text-white hover:bg-primary/90">Create free account</a>
+                    <a href="/user/login/" class="btn-secondary">Sign in</a>
+                </div>
             </div>
         </div>
     </div>
 </section>
 {% endif %}
-
-
-{% if not request.user.is_authenticated %}
-<section>
-    <div class="container-hm">
-
-    </div>
-</section>
-{% endif %}
-
-
-
 
 {% include 'chat.html' %}
 
-
-<section id="discount-properties">
-    <div class="container-hm">
-        <h1 class="slider-title">Limited-time developer offers</h1>
-
-        <div class="splide discount-properties-slider">
-            <div class="splide__track">
-                  <div class="splide__list">
-                  </div>
+<section id="discount-properties" class="bg-muted/30 py-16">
+    <div class="container space-y-8">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div class="space-y-3">
+                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Limited-time offers</p>
+                <h2 class="text-3xl font-heading font-semibold text-foreground">Developer incentives closing soon</h2>
+                <p class="text-sm text-muted-foreground">Access flash sales, staged payment plans, and launch-day bonuses curated for international buyers.</p>
             </div>
+            <a href="/property/search/?tag=spotlight" class="btn-secondary">View all deals</a>
         </div>
-    </div>
-</section>
-
-
-<section id="recommended-search">
-    <div class="container-hm">
-        <h1 class="slider-title">Recommended based on your preferences</h1>
-
-
-        <div class="splide recommended-search-slider">
-            <div class="splide__track">
-                <div class="splide__list">
+        <div class="space-y-4">
+            <div class="splide property-carousel" data-slider="discount">
+                <div class="splide__track">
+                    <ul class="splide__list" data-slider-list></ul>
                 </div>
             </div>
+            <p class="hidden text-sm text-muted-foreground" data-slider-empty>
+                No developer incentives are live right now. Check back soon or follow us for launch alerts.
+            </p>
         </div>
     </div>
 </section>
 
-
-
-<section id="hot-properties">
-    <div class="container-hm">
-        <h1 class="slider-title">Popular properties in your area</h1>
-
-
-        <div class="splide hot-properties-slider">
-            <div class="splide__track">
-                <div class="splide__list">
+<section id="recommended-search" class="bg-background py-16">
+    <div class="container space-y-8">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div class="space-y-3">
+                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Personalised picks</p>
+                <h2 class="text-3xl font-heading font-semibold text-foreground">Recommended based on your browsing</h2>
+                <p class="text-sm text-muted-foreground">We analyse saved searches and viewed listings to surface new launches that match your criteria.</p>
+            </div>
+            <a href="/property/search/" class="btn-secondary">Start exploring</a>
+        </div>
+        <div class="space-y-4">
+            <div class="splide property-carousel" data-slider="recommended">
+                <div class="splide__track">
+                    <ul class="splide__list" data-slider-list></ul>
                 </div>
             </div>
+            <p class="hidden text-sm text-muted-foreground" data-slider-empty>
+                Sign in or save a search to see personalised recommendations tailored to your preferences.
+            </p>
         </div>
     </div>
 </section>
 
+<section id="hot-properties" class="bg-muted/30 py-16">
+    <div class="container space-y-8">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div class="space-y-3">
+                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Near your coordinates</p>
+                <h2 class="text-3xl font-heading font-semibold text-foreground">Popular properties around you</h2>
+                <p class="text-sm text-muted-foreground">Share your location to uncover developments within a short drive—perfect for on-the-ground viewings.</p>
+            </div>
+            <button type="button" class="btn-secondary" data-trigger-geolocation>
+                Refresh with my location
+            </button>
+        </div>
+        <div class="space-y-4">
+            <div class="splide property-carousel" data-slider="hot">
+                <div class="splide__track">
+                    <ul class="splide__list" data-slider-list></ul>
+                </div>
+            </div>
+            <p class="hidden text-sm text-muted-foreground" data-slider-empty>
+                We couldn’t detect nearby listings yet. Enable location services and refresh to see what’s within reach.
+            </p>
+        </div>
+    </div>
+</section>
 
-<section id="popular-properties">
-    <div class="container-hm">
-        <h1 class="slider-title">Trending developments</h1>
+<section id="popular-properties" class="bg-background py-16">
+    <div class="container space-y-8">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div class="space-y-3">
+                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Trending releases</p>
+                <h2 class="text-3xl font-heading font-semibold text-foreground">Newest off-plan launches worth watching</h2>
+                <p class="text-sm text-muted-foreground">Browse projects gaining significant demand—complete with verified payment milestones and amenity breakdowns.</p>
+            </div>
+            <a href="/property/search/?ordering=-created_at" class="btn-secondary">See the latest</a>
+        </div>
+        <div class="space-y-4">
+            <div class="splide property-carousel" data-slider="popular">
+                <div class="splide__track">
+                    <ul class="splide__list" data-slider-list></ul>
+                </div>
+            </div>
+            <p class="hidden text-sm text-muted-foreground" data-slider-empty>
+                No trending projects are available right now. Try adjusting your filters or explore our market guides below.
+            </p>
+        </div>
+    </div>
+</section>
 
+<section id="popular-city" class="bg-muted/20 py-16">
+    <div class="container space-y-8">
+        <div class="space-y-3 text-center">
+            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Destinations</p>
+            <h2 class="text-3xl font-heading font-semibold text-foreground">Explore lifestyles across Thailand</h2>
+            <p class="text-sm text-muted-foreground">Jump into curated searches for city energy, island escapes, and emerging investment corridors.</p>
+        </div>
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+            <a href="/property/search/?place=Bangkok,%20Thailand&latitude=13.7563309&longitude=100.5017651&place_id=ChIJ82ENKDJgHTERIEjiXbIAAQE&fature_type=locality" class="group relative overflow-hidden rounded-3xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg">
+                <img src="{% static '/media/background/bangkok.jpg' %}" alt="Bangkok skyline" loading="lazy" class="h-56 w-full object-cover transition duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div class="absolute inset-x-0 bottom-0 space-y-1 p-6 text-white">
+                    <span class="text-lg font-semibold">Bangkok</span>
+                    <span class="text-xs uppercase tracking-[0.3em] text-white/70">Luxury condos &amp; mixed-use hubs</span>
+                </div>
+            </a>
+            <a href="/property/search/?place=Phuket,%20Thailand&latitude=7.9843109&longitude=98.3307468&place_id=none&fature_type=circle" class="group relative overflow-hidden rounded-3xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg">
+                <img src="{% static '/media/background/Phuket.jpg' %}" alt="Phuket" loading="lazy" class="h-56 w-full object-cover transition duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div class="absolute inset-x-0 bottom-0 space-y-1 p-6 text-white">
+                    <span class="text-lg font-semibold">Phuket</span>
+                    <span class="text-xs uppercase tracking-[0.3em] text-white/70">Resort villas &amp; branded residences</span>
+                </div>
+            </a>
+            <a href="/property/search/?place=Krabi,%20Thailand&latitude=8.1191811&longitude=99.1013498&place_id=none&fature_type=circle" class="group relative overflow-hidden rounded-3xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg">
+                <img src="{% static '/media/background/krabi.jpg' %}" alt="Krabi" loading="lazy" class="h-56 w-full object-cover transition duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div class="absolute inset-x-0 bottom-0 space-y-1 p-6 text-white">
+                    <span class="text-lg font-semibold">Krabi</span>
+                    <span class="text-xs uppercase tracking-[0.3em] text-white/70">Eco-led coastal escapes</span>
+                </div>
+            </a>
+            <a href="/property/search/?place=Pattani,%20Thailand&latitude=6.7006963&longitude=101.4339148&place_id=none&fature_type=circle" class="group relative overflow-hidden rounded-3xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg">
+                <img src="{% static '/media/background/pattani.jpg' %}" alt="Pattani" loading="lazy" class="h-56 w-full object-cover transition duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div class="absolute inset-x-0 bottom-0 space-y-1 p-6 text-white">
+                    <span class="text-lg font-semibold">Pattani</span>
+                    <span class="text-xs uppercase tracking-[0.3em] text-white/70">Emerging seaside investments</span>
+                </div>
+            </a>
+            <a href="/property/search/?place=Kanchanaburi,%20Thailand&latitude=14.6701192&longitude=99.0128926&place_id=none&fature_type=circle" class="group relative overflow-hidden rounded-3xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg">
+                <img src="{% static '/media/background/kanchanaburi.jpg' %}" alt="Kanchanaburi" loading="lazy" class="h-56 w-full object-cover transition duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div class="absolute inset-x-0 bottom-0 space-y-1 p-6 text-white">
+                    <span class="text-lg font-semibold">Kanchanaburi</span>
+                    <span class="text-xs uppercase tracking-[0.3em] text-white/70">Riverfront retreats &amp; eco estates</span>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
 
-        <div class="splide popular-properties-slider">
-            <div class="splide__track">
-                  <div class="splide__list">
-                  </div>
+<section class="bg-background py-16">
+    <div class="container space-y-12">
+        <div class="grid gap-10 lg:grid-cols-2 lg:items-center">
+            <div class="space-y-4">
+                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Developer &amp; agent partners</p>
+                <h2 class="text-3xl font-heading font-semibold text-foreground">Market to globally qualified buyers with zero guesswork</h2>
+                <p class="text-sm text-muted-foreground">Showcase your launch inventory to a worldwide audience, integrate your CRM, and receive analytics on lead quality, engagement, and conversion funnels.</p>
+                <ul class="space-y-3 text-sm text-muted-foreground">
+                    <li class="flex items-start gap-3"><i class="bi bi-check2-circle text-primary"></i><span>Dedicated campaign hub with heatmaps, lead velocity, and conversion tracking.</span></li>
+                    <li class="flex items-start gap-3"><i class="bi bi-check2-circle text-primary"></i><span>Professional media management—video, 3D, drone assets optimised for Splide galleries.</span></li>
+                    <li class="flex items-start gap-3"><i class="bi bi-check2-circle text-primary"></i><span>Buyer concierge follows up in English, Thai, Chinese, and Malay within 24 hours.</span></li>
+                </ul>
+                <div class="flex flex-wrap gap-3">
+                    <a href="/advertise/performance/" class="btn bg-primary text-white hover:bg-primary/90">Access partner dashboard</a>
+                    <a href="mailto:partners@wizerproperties.com" class="btn-secondary">Book a strategy session</a>
+                </div>
+            </div>
+            <div class="rounded-3xl border border-border bg-card p-8 shadow-lg">
+                <h3 class="text-lg font-semibold text-foreground">What our partners see</h3>
+                <dl class="mt-6 grid gap-6 sm:grid-cols-2">
+                    <div class="space-y-1">
+                        <dt class="text-3xl font-bold text-primary">+46%</dt>
+                        <dd class="text-sm text-muted-foreground">Average lift in qualified overseas enquiries after joining the platform.</dd>
+                    </div>
+                    <div class="space-y-1">
+                        <dt class="text-3xl font-bold text-primary">12 days</dt>
+                        <dd class="text-sm text-muted-foreground">Median time-to-offer for spotlight listings with virtual tours.</dd>
+                    </div>
+                    <div class="space-y-1">
+                        <dt class="text-3xl font-bold text-primary">4 languages</dt>
+                        <dd class="text-sm text-muted-foreground">Buyer support coverage—aligned with UX best practices to build trust.</dd>
+                    </div>
+                    <div class="space-y-1">
+                        <dt class="text-3xl font-bold text-primary">Real-time</dt>
+                        <dd class="text-sm text-muted-foreground">Exposure analytics across landing page sections and ad placements.</dd>
+                    </div>
+                </dl>
             </div>
         </div>
     </div>
 </section>
 
-
-<!-- <section id="new-properties">
-    <div class="container-hm">
-        <h1 class="slider-title">New Homes Exclusive- Off Plan Opportunities</h1>
-
-
-        <div class="splide new-properties-slider">
-            <div class="splide__track">
-                  <div class="splide__list">
-                  </div>
-            </div>
+<section class="bg-muted/30 py-16">
+    <div class="container space-y-8">
+        <div class="space-y-4 text-center">
+            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Insights &amp; guides</p>
+            <h2 class="text-3xl font-heading font-semibold text-foreground">Understand Thai property regulations, financing, and investment trends</h2>
+            <p class="text-sm text-muted-foreground">Stay ahead with actionable resources curated for global buyers navigating local legislation.</p>
         </div>
-    </div>
-</section> -->
-
-<!-- popular city -->
-<section id="popular-city">
-    <div class="container-hm secion-space">
-        <h1 class="slider-title">Explore popular destinations</h1>
-        <div class="popular-cities-gallery">
-            <div class="popular-cities-gallery-card">
-                <img src="{% static '/media/background/bangkok.jpg' %}" loading="lazy" alt="Bangkok">
-                <a href="/property/search/?place=Bangkok,%20Thailand&latitude=13.7563309&longitude=100.5017651&place_id=ChIJ82ENKDJgHTERIEjiXbIAAQE&fature_type=locality">
-                    <span>Bangkok</span>
-                    <span class="property-count">6 Properties</span>
-                </a>
-            </div>
-            <div class="popular-cities-gallery-card">
-                <img src="{% static '/media/background/Phuket.jpg' %}" loading="lazy" alt="Phuket">
-                <a href="/property/search/?place=Phuket,%20Thailand&latitude=7.9843109&longitude=98.3307468&place_id=none&fature_type=circle">
-                    <span>Phuket</span>
-                    <span class="property-count">3 Properties</span>
-                </a>
-            </div>
-            <div class="popular-cities-gallery-card">
-                <img src="{% static '/media/background/krabi.jpg' %}" loading="lazy" alt="Krabi">
-                <a href="/property/search/?place=Krabi,%20Thailand&latitude=8.1191811&longitude=99.1013498&place_id=none&fature_type=circle">
-                    <span>Krabi</span>
-                    <span class="property-count">2 Properties</span>
-                </a>
-            </div>
-            <div class="popular-cities-gallery-card">
-                <img src="{% static '/media/background/pattani.jpg' %}" loading="lazy" alt="Pattani">
-                <a href="/property/search/?place=Pattani,%20Thailand&latitude=6.7006963&longitude=101.4339148&place_id=none&fature_type=circle">
-                    <span>Pattani</span>
-                    <span class="property-count">1 Properties</span>
-                </a>
-            </div>
-            <div class="popular-cities-gallery-card">
-                <img src="{% static '/media/background/kanchanaburi.jpg' %}" loading="lazy" alt="Kanchanaburi">
-                <a href="/property/search/?place=Kanchanaburi,%20Thailand&latitude=14.6701192&longitude=99.0128926&place_id=none&fature_type=circle">
-                    <span>Kanchanaburi</span>
-                    <span class="property-count">7 Properties</span>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-<!-- blogs  -->
-<section class="secion-space">
-     <!-- blogs cards -->
-    <div class="container-hm">
-        <h1 class="slider-title">Insights and guides</h1>
-        <div class="blog-cards">
-            <div class="row blog-content-container-hm">
-                <div class="col-md-6 col-lg-4">
-                    <a href="/blogs/can-foreigners-buy-property-in-thailand-6b5d8">
-                        <div class="blog-card mb-5">
-                            <div class="blog-img">
-                                <img loading="lazy" src="http://wizerproperties.com/media/blog/banner_images/Best-Ways-for-Foreigners-To-Own-Property-In-Thailand.jpg" alt="Can Foreigners Buy Property in Thailand? Here’s What You Need to Know">
-                            </div>
-                            <div class="blog-content">
-                                <span class="blog-category">Religion</span><span class="blog-category">Property</span><span class="blog-category">Trading</span>
-                                <h5 class="blog-title">Can Foreigners Buy Property in Thailand? Here’s What You Need to Know</h5>
-                                <p class="blog-excerpt mt-3">Imagine this: you've fallen in love with Thailand's vibrant culture, stunning beaches and affordable lifestyle. You're ready to put down roots, but there’s one nagging question holding you back—can foreigners buy property in Thailand?</p>
-                                <div class="blog-info mt-4">
-                                    <span class="blog-likes">0 likes</span>
-                                    <span class="blog-views">11 views</span>
-                                    <span class="blog-read-time">2 Mins Read</span>
-                                    <span class="blog-create-date">10 Oct, 2024</span>
-                                </div>
-                            </div>
+        <div class="grid gap-8 md:grid-cols-3">
+            <article class="group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                <a href="/blogs/can-foreigners-buy-property-in-thailand-6b5d8" class="flex flex-1 flex-col">
+                    <div class="relative h-52 overflow-hidden">
+                        <img loading="lazy" src="http://wizerproperties.com/media/blog/banner_images/Best-Ways-for-Foreigners-To-Own-Property-In-Thailand.jpg" alt="Can Foreigners Buy Property in Thailand? Here’s What You Need to Know" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent"></div>
+                        <span class="absolute left-4 top-4 inline-flex rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white">Legal</span>
+                    </div>
+                    <div class="flex flex-1 flex-col gap-4 p-6">
+                        <h3 class="text-lg font-semibold text-foreground">Can Foreigners Buy Property in Thailand? Here’s What You Need to Know</h3>
+                        <p class="text-sm text-muted-foreground">The definitive guide to ownership structures, leasehold vs freehold, and the documents you’ll need before wiring funds.</p>
+                        <div class="mt-auto flex items-center justify-between text-xs text-muted-foreground">
+                            <span>10 Oct, 2024</span>
+                            <span>2 mins read</span>
                         </div>
-                    </a>
-                </div>
-        
-                <div class="col-md-6 col-lg-4">
-                    <a href="/blogs/can-foreigners-buy-property-in-thailand">
-                        <div class="blog-card mb-5">
-                            <div class="blog-img">
-                                <img loading="lazy" src="http://wizerproperties.com/media/blog/banner_images/villas-in-thailand-qcysqee9im1lxtiyefz5cyxm4ow2kmymlrwlmib4go.jpg" alt="Can Foreigners Buy Property in Thailand? Here’s the Ultimate Guide">
-                            </div>
-                            <div class="blog-content">
-                                <span class="blog-category">Productivity</span><span class="blog-category">Religion</span><span class="blog-category">Property</span>
-                                <h5 class="blog-title">Can Foreigners Buy Property in Thailand? Here’s the Ultimate Guide</h5>
-                                <p class="blog-excerpt mt-3">Imagine this: you've fallen in love with Thailand's vibrant culture, stunning beaches and affordable lifestyle. You're ready to put down roots, but there’s one nagging question holding you back—can foreigners buy property in Thailand?</p>
-                                <div class="blog-info mt-4">
-                                    <span class="blog-likes">0 likes</span>
-                                    <span class="blog-views">35 views</span>
-                                    <span class="blog-read-time">3 Mins Read</span>
-                                    <span class="blog-create-date">10 Oct, 2024</span>
-                                </div>
-                            </div>
+                    </div>
+                </a>
+            </article>
+            <article class="group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                <a href="/blogs/can-foreigners-buy-property-in-thailand" class="flex flex-1 flex-col">
+                    <div class="relative h-52 overflow-hidden">
+                        <img loading="lazy" src="http://wizerproperties.com/media/blog/banner_images/villas-in-thailand-qcysqee9im1lxtiyefz5cyxm4ow2kmymlrwlmib4go.jpg" alt="Can Foreigners Buy Property in Thailand? Here’s the Ultimate Guide" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent"></div>
+                        <span class="absolute left-4 top-4 inline-flex rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white">Investment</span>
+                    </div>
+                    <div class="flex flex-1 flex-col gap-4 p-6">
+                        <h3 class="text-lg font-semibold text-foreground">Can Foreigners Buy Property in Thailand? Here’s the Ultimate Guide</h3>
+                        <p class="text-sm text-muted-foreground">Compare ownership vehicles, tax implications, and financing options for condos, villas, and mixed-use assets.</p>
+                        <div class="mt-auto flex items-center justify-between text-xs text-muted-foreground">
+                            <span>10 Oct, 2024</span>
+                            <span>3 mins read</span>
                         </div>
-                    </a>
-                </div>
-
-                <div class="col-md-6 col-lg-4">
-                    <a href="/blogs/can-foreigners-buy-property-in-thailand-6b5d8">
-                        <div class="blog-card mb-5">
-                            <div class="blog-img">
-                                <img loading="lazy" src="http://wizerproperties.com/media/blog/banner_images/Best-Ways-for-Foreigners-To-Own-Property-In-Thailand.jpg" alt="Can Foreigners Buy Property in Thailand? Here’s What You Need to Know">
-                            </div>
-                            <div class="blog-content">
-                                <span class="blog-category">Religion</span><span class="blog-category">Property</span><span class="blog-category">Trading</span>
-                                <h5 class="blog-title">Can Foreigners Buy Property in Thailand? Here’s What You Need to Know</h5>
-                                <p class="blog-excerpt mt-3">Imagine this: you've fallen in love with Thailand's vibrant culture, stunning beaches and affordable lifestyle. You're ready to put down roots, but there’s one nagging question holding you back—can foreigners buy property in Thailand?</p>
-                                <div class="blog-info mt-4">
-                                    <span class="blog-likes">0 likes</span>
-                                    <span class="blog-views">11 views</span>
-                                    <span class="blog-read-time">2 Mins Read</span>
-                                    <span class="blog-create-date">10 Oct, 2024</span>
-                                </div>
-                            </div>
+                    </div>
+                </a>
+            </article>
+            <article class="group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                <a href="/blogs/can-foreigners-buy-property-in-thailand-6b5d8" class="flex flex-1 flex-col">
+                    <div class="relative h-52 overflow-hidden">
+                        <img loading="lazy" src="http://wizerproperties.com/media/blog/banner_images/Best-Ways-for-Foreigners-To-Own-Property-In-Thailand.jpg" alt="Thailand New-Build Checklist for Remote Buyers" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent"></div>
+                        <span class="absolute left-4 top-4 inline-flex rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white">Strategy</span>
+                    </div>
+                    <div class="flex flex-1 flex-col gap-4 p-6">
+                        <h3 class="text-lg font-semibold text-foreground">Thailand New-Build Checklist for Remote Buyers</h3>
+                        <p class="text-sm text-muted-foreground">Follow our eight-step playbook covering due diligence, financing, and handover so nothing falls through the cracks.</p>
+                        <div class="mt-auto flex items-center justify-between text-xs text-muted-foreground">
+                            <span>10 Oct, 2024</span>
+                            <span>2 mins read</span>
                         </div>
-                    </a>
-                </div>
-            </div>
+                    </div>
+                </a>
+            </article>
         </div>
     </div>
 </section>
 
-
-
-
-
+{% include "components/property/card.html" %}
 
 {% endblock %}
 
 {% block extend_script %}
 <script>
-    var ADS_SUGGEST_URL = '/advertise/api/advertisement/suggested/'
-    var ADS_LOCATION_PARAM = ['home']
-    csrfToken = "{{ csrf_token }}";
+    var ADS_SUGGEST_URL = '/advertise/api/advertisement/suggested/';
+    var ADS_LOCATION_PARAM = ['home'];
+    var csrfToken = "{{ csrf_token }}";
 </script>
-<script src="{% static '/js/icons.js' %}?v=1.00"></script>
-<script src="{% static '/js/libraries/splide.min.js' %}"></script>
-<script src="{% static '/js/time-count-down.js' %}?v=1.00"></script>
-<script src="{% static '/js/filter-init.js' %}?v=1.01"></script>
-<script src="{% static '/js/home.js' %}?v=1.10"></script>
-<script src="{% static '/js/property/compair-favorite.js' %}?v=1.00"></script>
-<script src="{% static '/js/chatbot-gpt.js' %}?v=1.01"></script>
-<script src="{% static '/js/ads.js' %}?v=1.04"></script>
+<script src="{% static 'js/libraries/splide.min.js' %}"></script>
+<script src="{% static 'js/property/card-factory.js' %}?v=1.00"></script>
+<script src="{% static 'js/time-count-down.js' %}?v=1.00"></script>
+<script src="{% static 'js/home.js' %}?v=2.00"></script>
+<script src="{% static 'js/property/compair-favorite.js' %}?v=1.00"></script>
+<script src="{% static 'js/chatbot-gpt.js' %}?v=1.01"></script>
+<script src="{% static 'js/ads.js' %}?v=1.04"></script>
 <script async custom-element="amp-tiktok" src="https://cdn.ampproject.org/v0/amp-tiktok-0.1.js"></script>
 {% endblock extend_script %}
+

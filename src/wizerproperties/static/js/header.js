@@ -69,4 +69,42 @@ document.addEventListener("DOMContentLoaded", () => {
       authModal.classList.add("hidden");
     }
   });
+
+  const header = document.querySelector("[data-site-header]");
+  const brandLarge = header?.querySelector("[data-brand-large]");
+  const brandCompact = header?.querySelector("[data-brand-compact]");
+
+  if (header && brandLarge && brandCompact) {
+    const updateBrandState = () => {
+      const isScrolled = window.scrollY > 40;
+      if (isScrolled) {
+        if (!brandLarge.classList.contains("hidden")) {
+          brandLarge.classList.add("hidden");
+        }
+        brandCompact.classList.remove("hidden");
+      } else {
+        brandLarge.classList.remove("hidden");
+        if (!brandCompact.classList.contains("hidden")) {
+          brandCompact.classList.add("hidden");
+        }
+      }
+    };
+
+    updateBrandState();
+    window.addEventListener("scroll", updateBrandState, { passive: true });
+  }
+
+  const desktopNavGroups = document.querySelectorAll("[data-nav-group]");
+  if (desktopNavGroups.length > 1) {
+    desktopNavGroups.forEach((group) => {
+      group.addEventListener("toggle", () => {
+        if (!group.open) return;
+        desktopNavGroups.forEach((other) => {
+          if (other !== group) {
+            other.removeAttribute("open");
+          }
+        });
+      });
+    });
+  }
 });

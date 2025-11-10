@@ -134,9 +134,23 @@ $(function () {
         $chartLoader.removeClass("hidden");
       },
       success: function (data) {
-        propertyOption.series[0].data = data && data.visit_data ? data.visit_data : [];
-        propertyOption.xAxis.data = data && data.label_list ? data.label_list : [];
-        propertyChart.setOption(propertyOption);
+        if (data && Array.isArray(data.visit_data) && data.visit_data.length) {
+          propertyChart.resize();
+          $("#property_view").removeClass("hidden");
+          $('[data-empty-state="chart"]').remove();
+          propertyOption.series[0].data = data.visit_data;
+          propertyOption.xAxis.data = data.label_list ? data.label_list : [];
+          propertyChart.setOption(propertyOption);
+        } else {
+          propertyChart.clear();
+          if (!$('[data-empty-state="chart"]').length) {
+            $("#property_view")
+              .addClass("hidden")
+              .after(
+                '<div data-empty-state="chart" class="flex h-[320px] items-center justify-center rounded-xl border border-dashed border-border bg-secondary/20 text-sm text-muted-foreground">No visit data available yet.</div>'
+              );
+          }
+        }
 
         delete analyticParams.previous;
         delete analyticParams.next;
@@ -226,11 +240,20 @@ $(function () {
         }
       },
       success: function (data) {
-        if (Array.isArray(data)) {
+        if (Array.isArray(data) && data.length) {
           config.onPopulate({ rows: data, dataTable: dataTable });
           $('[target-modal="' + config.targetName + '"] [label-name="total-data"]').text(
             "Total data : " + data.length
           );
+          $table.parents(".table-area").find('[data-empty-state="table"]').remove();
+        } else {
+          dataTable.clear().draw();
+          $('[target-modal="' + config.targetName + '"] [label-name="total-data"]').text("Total data : 0");
+          if (!$table.parents(".table-area").find('[data-empty-state="table"]').length) {
+            $table.after(
+              '<div data-empty-state="table" class="flex min-h-[200px] items-center justify-center text-sm text-muted-foreground">No data available.</div>'
+            );
+          }
         }
       },
       error: function (error) {

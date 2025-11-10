@@ -3,36 +3,108 @@
 
 
 {% block extend_head %}
-<title>About Us</title>
-
-<style>
-    body{
-        background-color: #f9f9f9;
-    }
-</style>
+<title>About WiSER Properties</title>
 {% endblock extend_head %}
 
 {% block content %}
-<section id="privacy-about-page">
-    <div class="about-page-bg-images"></div>
-    <div class="container">
-        <div class="privacy-about-reading-box">
-            <h1 class="title"> About WiSER Properties </h1>
+<section class="relative overflow-hidden bg-muted/30 py-16 sm:py-24">
+    <div class="absolute inset-0 -z-10 bg-gradient-to-br from-primary/10 via-muted/20 to-background"></div>
+    <div class="container max-w-5xl space-y-12">
+        <header class="space-y-5 text-center sm:space-y-6">
+            <span class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">About WiSER Properties</span>
+            <h1 class="text-3xl font-heading font-semibold text-foreground sm:text-4xl">
+                Connecting global investors with Thailand’s most trusted developments
+            </h1>
+            <p class="mx-auto max-w-2xl text-sm text-muted-foreground sm:text-base">
+                We transform how property teams and international buyers discover, evaluate, and close deals across Thailand. Our marketplace blends verified data, immersive media, and personalised support so every decision feels confident.
+            </p>
+        </header>
 
-
-            <div class="privacy-about-text">
-                WiSER Properties connects buyers, developers, and agents across Thailand's property market. We simplify property discovery, streamline transactions, and help you find the right investment or home.
-                <br>
-                <br>
-                Our platform brings together verified listings, virtual tours, and direct communication tools so you can explore properties confidently and make informed decisions.
-                <br>
-                <br>
-                Whether you're searching for a residential property, commercial space, or investment opportunity, we provide the tools and insights you need to navigate Thailand's real estate landscape.
-                <br>
-                <br>
-                Trusted by over 1,200 agents and developers, WiSER Properties is your partner in finding the perfect property match.
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="rounded-3xl border border-border bg-card/90 p-6 shadow-lg backdrop-blur">
+                <h2 class="text-xl font-semibold text-foreground">Market intelligence</h2>
+                <p class="mt-3 text-sm text-muted-foreground">
+                    From launch calendars to price history, WiSER curates data directly from developers so buyers can understand supply, incentives, and after-sales performance at a glance.
+                </p>
+            </div>
+            <div class="rounded-3xl border border-border bg-card/90 p-6 shadow-lg backdrop-blur">
+                <h2 class="text-xl font-semibold text-foreground">Unified collaboration</h2>
+                <p class="mt-3 text-sm text-muted-foreground">
+                    Agents, developers, and marketing teams coordinate through a single workspace—sharing listings, reels, analytics, and buyer updates without spreadsheets or email chains.
+                </p>
+            </div>
+            <div class="rounded-3xl border border-border bg-card/90 p-6 shadow-lg backdrop-blur">
+                <h2 class="text-xl font-semibold text-foreground">Experience-first buying</h2>
+                <p class="mt-3 text-sm text-muted-foreground">
+                    International buyers tour projects digitally, compare units, and book consultations securely—enjoying concierge-level support in their language and time zone.
+                </p>
             </div>
         </div>
+
+        <section class="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+            <div class="space-y-6 rounded-3xl border border-border bg-card/95 p-8 shadow-xl backdrop-blur">
+                <h2 class="text-2xl font-heading font-semibold text-foreground">Our mission</h2>
+                <p class="text-sm text-muted-foreground">
+                    To make cross-border property transactions intuitive, transparent, and human. WiSER removes friction from discovery through handover, empowering teams to scale internationally while retaining the bespoke service buyers expect.
+                </p>
+                <ul class="space-y-3 text-sm text-muted-foreground">
+                    <li class="flex items-start gap-3">
+                        <span class="mt-1 inline-flex size-2 rounded-full bg-primary"></span>
+                        <span>Verified, tokenised listing data keeps every team member aligned on pricing, incentives, and availability.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="mt-1 inline-flex size-2 rounded-full bg-primary"></span>
+                        <span>Immersive media pipelines—from Splide reels to AI descriptions—bring developments to life in any channel.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="mt-1 inline-flex size-2 rounded-full bg-primary"></span>
+                        <span>Guided workflows ensure compliance, documentation, and communications scale without compromising trust.</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="space-y-6 rounded-3xl border border-border bg-card/95 p-8 shadow-xl backdrop-blur">
+                <h2 class="text-2xl font-heading font-semibold text-foreground">By the numbers</h2>
+                <dl class="grid gap-6 text-sm text-muted-foreground">
+                    <div>
+                        <dt class="text-xs uppercase tracking-[0.2em] text-primary">Partner network</dt>
+                        <dd class="text-3xl font-heading font-semibold text-foreground">1,200+</dd>
+                        <p>Agents and developers co-managing projects across Bangkok, Phuket, Chiang Mai, and beyond.</p>
+                    </div>
+                    <div>
+                        <dt class="text-xs uppercase tracking-[0.2em] text-primary">Buyer reach</dt>
+                        <dd class="text-3xl font-heading font-semibold text-foreground">40%</dd>
+                        <p>Of enquiries originate from overseas investors, supported by multilingual marketing funnels.</p>
+                    </div>
+                    <div>
+                        <dt class="text-xs uppercase tracking-[0.2em] text-primary">Onboarding velocity</dt>
+                        <dd class="text-3xl font-heading font-semibold text-foreground">72 hrs</dd>
+                        <p>Average time to launch a new development with verified data, media assets, and sales collateral.</p>
+                    </div>
+                </dl>
+            </div>
+        </section>
+
+        <section class="rounded-3xl border border-border bg-card/95 p-8 shadow-xl backdrop-blur">
+            <div class="grid gap-8 lg:grid-cols-[1fr_1.1fr] lg:items-center">
+                <div class="space-y-4">
+                    <span class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Leadership spotlight</span>
+                    <h2 class="text-2xl font-heading font-semibold text-foreground">Local insight, global standards</h2>
+                    <p class="text-sm text-muted-foreground">
+                        Our team blends real estate operators, product builders, and data strategists who have scaled marketplaces across Southeast Asia. We partner with legal, finance, and compliance specialists so every expansion respects local regulations and investor expectations.
+                    </p>
+                </div>
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div class="rounded-2xl border border-border/70 bg-background/80 p-4 text-sm text-muted-foreground">
+                        <p class="font-semibold text-foreground">Nicha S., CEO</p>
+                        <p>Former development director turned marketplace founder, focused on aligning developer pipelines with investor demand.</p>
+                    </div>
+                    <div class="rounded-2xl border border-border/70 bg-background/80 p-4 text-sm text-muted-foreground">
+                        <p class="font-semibold text-foreground">Aaron W., CTO</p>
+                        <p>Built transaction infrastructure for high-growth proptech teams; now leads WiSER’s data and AI initiatives.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 </section>
 {% endblock %}

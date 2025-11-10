@@ -4,21 +4,7 @@
 
 {% block extend_head %}
 <title>Saved properties</title>
-<link rel="stylesheet" href="{% static '/css/search-page.css' %}?v=1.02" />
-<link rel="stylesheet" href="{% static '/css/favorite-list.css' %}?v=1.00" />
-
-<style>
-    .property-contains .property-short-info-box{
-        flex-direction: column !important;
-        align-items: center;
-    }
-
-    .search-result-box-img{
-        height: 200px;
-        padding: 0 !important;
-    }
-
-</style>
+<link rel="stylesheet" href="{% static 'css/libraries/splide.min.css' %}?v=2.0" />
 {% endblock extend_head %}
 
 
@@ -27,15 +13,18 @@
 
 {% block content %}
 
-<section>
+<section class="bg-muted/40 py-12">
     <div class="container">
-        <div class="favorite-list-area">
-            <h1 class="favorite-list-title"> Saved properties </h1>
-            <div class="row" id="favorite-list"></div>
+        <div class="space-y-8">
+            <h1 class="text-3xl font-heading font-semibold text-foreground">Your Saved Properties</h1>
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" id="favorite-list">
+                <!-- Property cards loaded by JS -->
+            </div>
         </div>
     </div>
-
 </section>
+
+{% include "components/property/card.html" %}
 
 {% endblock %}
 
@@ -45,7 +34,11 @@
 {% block extend_script %}
 <script>
     var favorite_removable = true;
+    var CSRF_TOKEN = '{{ csrf_token }}';
+    var USER_ID = '{{ user.id }}';
 </script>
+<script src="{% static 'js/libraries/splide.min.js' %}"></script>
+<script src="{% static 'js/property/card-factory.js' %}?v=1.00"></script>
 <script src="{% static '/js/property/compair-favorite.js' %}?v=1.00"></script>
 <script src="{% static 'js/favorite-list.js' %}?v=1.00"></script>
 {% endblock extend_script %}

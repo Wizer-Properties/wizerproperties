@@ -3,48 +3,91 @@
 
 
 {% block extend_head %}
-<title>Privacy</title>
-
-<style>
-    body{
-        background-color: #f9f9f9;
-    }
-</style>
+<title>Privacy Policy</title>
 {% endblock extend_head %}
 
 {% block content %}
-<section id="privacy-about-page">
-    <div class="privacy-page-bg-images"></div>
-    <div class="container">
-        <div class="privacy-about-reading-box">
-            <h1 class="title"> Privacy Policy </h1>
-            <div class="privacy-about-text">
-                At WiSER Properties, we respect your privacy and are committed to protecting your personal information. This policy explains how we collect, use, and safeguard your data when you use our platform.
-                <br>
-                <br>
-                <strong>Information We Collect</strong>
-                <br>
-                We collect information you provide directly, such as when you create an account, search for properties, contact agents or developers, or subscribe to our services. This may include your name, email address, phone number, and property preferences.
-                <br>
-                <br>
-                <strong>How We Use Your Information</strong>
-                <br>
-                We use your information to provide and improve our services, personalize your experience, facilitate property inquiries, send you relevant updates, and ensure platform security.
-                <br>
-                <br>
-                <strong>Data Protection</strong>
-                <br>
-                We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, alteration, disclosure, or destruction.
-                <br>
-                <br>
-                <strong>Your Rights</strong>
-                <br>
-                You have the right to access, update, or delete your personal information at any time through your account settings or by contacting us directly.
-                <br>
-                <br>
-                For questions about this policy or your data, please contact us through our contact page.
+<section class="bg-muted/30 py-16 sm:py-20">
+    <div class="container max-w-4xl space-y-10">
+        <header class="space-y-4 text-center">
+            <span class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Privacy & Security</span>
+            <h1 class="text-3xl font-heading font-semibold text-foreground sm:text-4xl">How WiSER protects your data</h1>
+            <p class="text-sm text-muted-foreground sm:text-base">
+                We take your trust seriously. This policy explains what we collect, why we collect it, and the controls you have over your information when using WiSER Properties.
+            </p>
+        </header>
+
+        <article class="space-y-12 rounded-3xl border border-border bg-card/95 p-8 shadow-xl backdrop-blur">
+            <section class="space-y-4">
+                <h2 class="text-2xl font-heading font-semibold text-foreground">1. Information we collect</h2>
+                <div class="prose prose-sm text-muted-foreground sm:prose-base">
+                    <p>We collect information in three primary ways:</p>
+                    <ul>
+                        <li><span class="font-semibold text-foreground">Information you provide</span> when creating an account, saving listings, booking consultations, or contacting support. This may include your name, email, phone number, investment preferences, and communication history.</li>
+                        <li><span class="font-semibold text-foreground">Usage information</span> such as pages visited, search filters, and device metadata that help us improve performance and relevance.</li>
+                        <li><span class="font-semibold text-foreground">Partner and public data</span> used to verify listings, pricing, and developer credentials to keep marketplace content accurate.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="space-y-4">
+                <h2 class="text-2xl font-heading font-semibold text-foreground">2. How we use your information</h2>
+                <div class="prose prose-sm text-muted-foreground sm:prose-base">
+                    <p>We process your data to:</p>
+                    <ul>
+                        <li>Deliver core functionality such as personalised search, saved listings, and booking flows.</li>
+                        <li>Connect you with relevant developers, agents, and underwriting partners when you request project information.</li>
+                        <li>Send product updates, market insights, and compliance notices you opt into.</li>
+                        <li>Maintain platform reliability, prevent fraud, and meet regulatory requirements in the markets we operate.</li>
+                    </ul>
+                    <p>We never sell your personal information. Any vendor partners we engage must meet WiSER’s security standards and sign data processing agreements.</p>
+                </div>
+            </section>
+
+            <section class="space-y-4">
+                <h2 class="text-2xl font-heading font-semibold text-foreground">3. Protecting your data</h2>
+                <div class="prose prose-sm text-muted-foreground sm:prose-base">
+                    <ul>
+                        <li>All data in transit is encrypted using TLS 1.2+ and stored using AES-256 encryption at rest.</li>
+                        <li>Access to production systems is gated behind role-based controls, hardware security keys, and continuous monitoring.</li>
+                        <li>We conduct periodic penetration tests, vendor risk reviews, and incident response simulations.</li>
+                        <li>Our infrastructure is hosted with providers that maintain ISO 27001, SOC 2, and GDPR compliance.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="space-y-4">
+                <h2 class="text-2xl font-heading font-semibold text-foreground">4. Your privacy controls</h2>
+                <div class="prose prose-sm text-muted-foreground sm:prose-base">
+                    <p>You can manage your information at any time:</p>
+                    <ul>
+                        <li>Update profile details, communication preferences, and saved searches directly in your account.</li>
+                        <li>Request export or deletion of your data by contacting <a href="mailto:privacy@wizerproperties.com">privacy@wizerproperties.com</a>.</li>
+                        <li>Opt out of marketing updates via unsubscribe links embedded in every campaign.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="space-y-4">
+                <h2 class="text-2xl font-heading font-semibold text-foreground">5. Updates to this policy</h2>
+                <div class="prose prose-sm text-muted-foreground sm:prose-base">
+                    <p>We review this policy regularly to reflect product enhancements or regulatory changes. When we make updates, we will:</p>
+                    <ul>
+                        <li>Publish the new effective date below.</li>
+                        <li>Notify active users via email or in-app messaging for material changes.</li>
+                        <li>Maintain a changelog so you can track what changed and why.</li>
+                    </ul>
+                    <p class="mt-4 text-xs uppercase tracking-[0.25em] text-muted-foreground">Last updated: 10 November 2025</p>
+                </div>
+            </section>
+        </article>
+
+        <footer class="rounded-3xl border border-border bg-card/95 p-6 text-sm text-muted-foreground shadow-md backdrop-blur">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <p>If you have questions about this policy or need assistance exercising your rights, our privacy team is here to help.</p>
+                <a href="{% url 'contact' %}" class="btn sm:w-auto">Contact privacy support</a>
             </div>
-        </div>
+        </footer>
     </div>
 </section>
 {% endblock %}

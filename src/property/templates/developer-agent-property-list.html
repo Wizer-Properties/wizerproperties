@@ -2,87 +2,103 @@
 {% load static %}
 
 {% block extend_head %}
-<title>Property listings</title>
-<link rel="stylesheet" href="{% static '/css/search-page.css' %}?v=1.02" />
-<link rel="stylesheet" href="{% static '/css/home.css' %}?v=1.04" />
-<link rel="stylesheet" href="{% static '/css/dev-agent-property-list.css' %}?v=1.00" />
+<title>{{ username }} | Property listings</title>
+<link rel="stylesheet" href="{% static 'css/libraries/splide.min.css' %}?v=2.0" />
 {% endblock extend_head %}
 
 {% block content %}
 
-
-<section id="dev-agent-info">
-    <div class="container">
-        <div class="row">
-
-            <div class="col-xl-5 col-lg-5">
-                <div class="dev-agent-profile-info-wrapper mb-3">
-                    <div class="dev-agent-profile-image">
+<section class="bg-muted/40 py-12">
+    <div class="container space-y-10">
+        <div class="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+            <article class="flex flex-col gap-6 rounded-2xl border border-border bg-card p-6 shadow-sm">
+                <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+                    <div class="relative inline-flex size-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-border bg-muted">
                         {% if company_info.company_logo %}
-                        <img src="{{company_info.company_logo}}" alt="">
+                        <img src="{{ company_info.company_logo }}" alt="{{ company_info.company_name|default:'Company logo' }}" class="h-full w-full object-cover" loading="lazy">
                         {% else %}
-                        <img src="{% static 'media/default-avatar.jpg' %}" alt="img">
+                        <img src="{% static 'media/default-avatar.jpg' %}" alt="Default avatar" class="h-full w-full object-cover" loading="lazy">
                         {% endif %}
                     </div>
-                    
-                    <div class="dev-agent-profile-contact">
-                        <h1> {{username}} </h1>
-
-                        <div class="mb-2">
-                            <a href="mailto:df" class="agent-developer-contact">
-                                <i class="bi bi-envelope"></i>
-                                <span> {{email}} </span>
-                            </a>
+                    <div class="space-y-2">
+                        <p class="text-xs font-semibold uppercase tracking-[0.4em] text-primary">
+                            {% if user.user_type == "developer" %}Developer{% elif user.user_type == "agent" %}Agent{% else %}Partner{% endif %}
+                        </p>
+                        <h1 class="text-3xl font-heading font-semibold text-foreground">{{ username }}</h1>
+                        <div class="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+                            <i class="bi bi-geo-alt text-primary"></i>
+                            <span>{{ company_info.address|default:"Address coming soon" }}</span>
                         </div>
-        
-                        <div>
-                            <a href="tel:dsf" class="agent-developer-contact">
-                                <i class="bi bi-telephone"></i>
-                                <span> {{company_info.phone_number}} </span>
-                            </a>
-                        </div>
-
                     </div>
                 </div>
-            </div>
 
-            <div class="col-xl-5 col-lg-4">
-                <div>
-                    <b> Company Name : </b>
-                    <span> {{ company_info.company_name }} </span>
+                <dl class="grid gap-4 sm:grid-cols-2">
+                    <div class="rounded-xl border border-border bg-secondary/40 px-4 py-3">
+                        <dt class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Company</dt>
+                        <dd class="text-sm font-medium text-foreground">{{ company_info.company_name|default:"—" }}</dd>
+                    </div>
+                    <div class="rounded-xl border border-border bg-secondary/40 px-4 py-3">
+                        <dt class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Phone</dt>
+                        <dd class="text-sm font-medium text-foreground">
+                            {% if company_info.phone_number %}
+                            <a href="tel:{{ company_info.phone_number }}" class="hover:text-primary">{{ company_info.phone_number }}</a>
+                            {% else %}
+                            <span>—</span>
+                            {% endif %}
+                        </dd>
+                    </div>
+                    <div class="rounded-xl border border-border bg-secondary/40 px-4 py-3">
+                        <dt class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Email</dt>
+                        <dd class="text-sm font-medium text-foreground">
+                            {% if email %}
+                            <a href="mailto:{{ email }}" class="hover:text-primary">{{ email }}</a>
+                            {% else %}
+                            <span>—</span>
+                            {% endif %}
+                        </dd>
+                    </div>
+                    <div class="rounded-xl border border-border bg-secondary/40 px-4 py-3">
+                        <dt class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Agent notes</dt>
+                        <dd class="text-sm text-muted-foreground" view-type="less">
+                            <span class="reel-details block max-w-prose overflow-hidden text-sm leading-relaxed transition-all duration-300 max-h-24">
+                                {{ company_info.company_details|default:"Profile details will appear here once provided." }}
+                            </span>
+                            <button type="button" class="reel-see-more-see-less mt-2 text-xs font-semibold uppercase tracking-wide text-primary hover:text-primary/80">
+                                See more
+                            </button>
+                        </dd>
+                    </div>
+                </dl>
+            </article>
+
+            <aside class="flex h-full flex-col gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm">
+                <div class="space-y-2">
+                    <p class="text-xs font-semibold uppercase tracking-[0.4em] text-primary">Portfolio</p>
+                    <div class="flex items-end gap-2">
+                        <p class="text-4xl font-heading font-semibold text-foreground" label-name="total">—</p>
+                        <span class="text-sm text-muted-foreground">Total listings</span>
+                    </div>
                 </div>
-
-                <div class="agent-developer-contact mt-2">
-                    <i class="bi bi-geo-alt"></i>
-                    <span> {{ company_info.address }} </span>
+                <div class="mt-auto space-y-3 text-sm text-muted-foreground">
+                    <p>Keep your listings up to date to maximize exposure and connect with prospects faster.</p>
+                    <a href="/property/create/" class="btn w-full justify-center">Add new listing</a>
                 </div>
-
-                <div class="agent-developer-contact mt-2">
-                    <p view-type="less">
-                        <span class="reel-details"> {{ company_info.company_details }} </span>
-                        <span class="reel-see-more-see-less"> See more </span>
-                    </p>
-                </div>
-
-            </div>
-
-            <div class="col-xl-2 col-lg-3">
-                    <h1 class="total-property">
-                        Total listings
-                        <span label-name="total"></span>
-                    </h1>
-            </div>
-
+            </aside>
         </div>
-    </div>
-</section>
 
+        <section id="property-list" class="py-12">
+            <div class="container">
+                <h1 class="text-2xl font-heading font-semibold text-foreground mb-6">Your Property Listings</h1>
+                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" id="user-property-list">
+                    <!-- Property cards loaded by JS -->
+                </div>
+            </div>
+        </section>
 
-<section id="property-list">
-    <div class="container">
-        <h1 class="slider-title"> Your property listings </h1>
-        <div class="row" id="user-property-list">
-            
+        {% include "components/property/card.html" %}
+
+        <div class="hidden w-full rounded-2xl border border-dashed border-border bg-card/60 p-8 text-center text-sm text-muted-foreground" data-empty-state>
+            No listings found at the moment.
         </div>
     </div>
 </section>
@@ -90,8 +106,10 @@
 
 {% block extend_script %}
 <script>
-    var USER_ID = '{{user_id}}';
+    var USER_ID = '{{ user.id }}';
 </script>
+<script src="{% static 'js/libraries/splide.min.js' %}"></script>
+<script src="{% static 'js/property/card-factory.js' %}?v=1.00"></script>
 <script src="{% static 'js/property/dev-agent-pros-list.js' %}?v=1.00"></script>
 <script src="{% static '/js/property/compair-favorite.js' %}?v=1.00"></script>
 {% endblock extend_script %}
