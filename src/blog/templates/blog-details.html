@@ -2,200 +2,144 @@
 {% load static %}
 
 {% block extend_head %}
-    <title>Blog Details</title>
+<title>{{ post.title }}</title>
 
-    <!-- Primary Meta Tags -->
-    <meta name="title" content="{{ post.title }}">
-    <meta name="description" content="{{ post.subtitle }}">
-    <meta name="keywords" content="{{ post.categories.all|join:', ' }}">
-    <meta name="author" content="{{ post.creator.full_name }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Primary Meta Tags -->
+<meta name="title" content="{{ post.title }}">
+<meta name="description" content="{{ post.subtitle }}">
+<meta name="keywords" content="{{ post.categories.all|join:', ' }}">
+<meta name="author" content="{{ post.creator.full_name }}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Open Graph / Facebook / LinkedIn -->
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="{{ request.build_absolute_uri }}">
-    <meta property="og:title" content="{{ post.title }}">
-    <meta property="og:description" content="{{ post.subtitle }}">
-    <meta property="og:image" content="{{ post.banner_image.url }}">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
+<!-- Open Graph / Facebook / LinkedIn -->
+<meta property="og:type" content="article">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:title" content="{{ post.title }}">
+<meta property="og:description" content="{{ post.subtitle }}">
+<meta property="og:image" content="{{ post.banner_image.url }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="{{ request.build_absolute_uri }}">
-    <meta name="twitter:title" content="{{ post.title }}">
-    <meta name="twitter:description" content="{{ post.subtitle }}">
-    <meta name="twitter:image" content="{{ post.banner_image.url }}">
-    
-    <!-- all css here -->
-    <link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
-    <link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
-    <link rel="stylesheet" href="{% static '/css/blog-page.css' %}?v=1.01"/>
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="{{ request.build_absolute_uri }}">
+<meta name="twitter:title" content="{{ post.title }}">
+<meta name="twitter:description" content="{{ post.subtitle }}">
+<meta name="twitter:image" content="{{ post.banner_image.url }}">
+
+<link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
+<link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
 {% endblock extend_head %}
 
 
 {% block content %}
-<!-- adds  -->
-<section>
-    <div class="top-banner  mb-5">
-        <div class="container">
-            <div class="col-lg-8 col-md-8 col-11 mx-auto">
-                <div class="splide ads-banner-slider">
-                    <div class="splide__track">
-                        <div class="splide__list ">
-                            <!-- from dom -->
-                            
-                        </div>
-                    </div>
+<section class="bg-muted/30 py-16 sm:py-20">
+    <div class="container max-w-5xl space-y-12">
+        <div class="rounded-3xl border border-border bg-card/95 p-6 shadow-lg backdrop-blur">
+            <div class="splide ads-banner-slider" aria-label="Sponsored property highlights">
+                <div class="splide__track">
+                    <div class="splide__list"></div>
                 </div>
             </div>
+            <p class="mt-3 text-center text-[11px] uppercase tracking-[0.35em] text-muted-foreground">Sponsored listings</p>
         </div>
+        <article class="space-y-10 rounded-3xl border border-border bg-card/95 p-8 shadow-xl backdrop-blur">
+            <div class="space-y-6">
+                <div class="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.3em] text-primary">
+                    {% for category in post.categories.all %}
+                        <span class="rounded-full border border-primary/40 bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary">{{ category.name }}</span>
+                    {% endfor %}
+                </div>
+                <h1 class="text-3xl font-heading font-semibold text-foreground sm:text-4xl">{{ post.title }}</h1>
+                <p class="text-sm text-muted-foreground sm:text-base">{{ post.subtitle }}</p>
+                <div class="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
+                    <span class="inline-flex items-center gap-1">
+                        <i class="bi bi-person-circle text-base text-primary"></i>
+                        {{ post.creator.full_name }}
+                    </span>
+                    <span class="inline-flex items-center gap-1">
+                        <i class="bi bi-calendar3 text-base text-primary"></i>
+                        {{ post.created_at|date:"d F Y" }}
+                    </span>
+                    <span class="inline-flex items-center gap-1">
+                        <i class="bi bi-stopwatch text-base text-primary"></i>
+                        {{ post.estimated_read_time }} min read
+                    </span>
+                    <span class="inline-flex items-center gap-1">
+                        <i class="bi bi-heart text-base text-primary"></i>
+                        {{ post.total_likes }} likes
+                    </span>
+                </div>
+            </div>
+
+            <figure class="overflow-hidden rounded-3xl">
+                <img src="{{ post.banner_image.url }}" alt="{{ post.title }}" loading="lazy" class="h-full w-full object-cover" />
+            </figure>
+
+            <article class="blog-article prose prose-slate max-w-none text-muted-foreground prose-headings:text-foreground prose-a:text-primary prose-strong:text-foreground">
+                {{ post.description|safe }}
+            </article>
+
+            <div class="flex flex-wrap items-center gap-3 rounded-2xl border border-border bg-background/70 p-4 text-xs text-muted-foreground">
+                <span class="font-semibold text-foreground uppercase tracking-[0.3em] text-[11px]">Tags</span>
+                {% for category in post.categories.all %}
+                    <span class="rounded-full border border-border/70 bg-card/80 px-3 py-1 text-[11px] font-medium text-muted-foreground">{{ category.name }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                <div class="flex items-center gap-3">
+                    <button type="button" class="blog-like-btn inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-xs font-medium text-muted-foreground transition hover:border-primary hover:text-primary" like-done="{{ is_liked }}" post-id="{{ post.id }}">
+                        <i class="bi bi-hand-thumbs-up text-base" data-icon="default"></i>
+                        <i class="bi bi-hand-thumbs-up-fill text-base hidden" data-icon="active"></i>
+                        Appreciate
+                    </button>
+                    <button type="button" class="blog-unlike-btn inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-xs font-medium text-muted-foreground transition hover:border-destructive hover:text-destructive" unlike-done="{{ is_disliked }}" post-id="{{ post.id }}">
+                        <i class="bi bi-hand-thumbs-down text-base" data-icon="default"></i>
+                        <i class="bi bi-hand-thumbs-down-fill text-base hidden" data-icon="active"></i>
+                        Not helpful
+                    </button>
+                </div>
+                <div class="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                    <span class="font-semibold uppercase tracking-[0.34em] text-[11px] text-primary">Share</span>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 hover:border-primary hover:text-primary">
+                        <i class="bi bi-facebook"></i> Facebook
+                    </a>
+                    <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ post.title|urlencode }}" target="_blank" class="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 hover:border-primary hover:text-primary">
+                        <i class="bi bi-twitter-x"></i> X
+                    </a>
+                    <a href="https://api.whatsapp.com/send?text={{ post.title|urlencode }}%20{{ request.build_absolute_uri|urlencode }}" target="_blank" class="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 hover:border-primary hover:text-primary">
+                        <i class="bi bi-whatsapp"></i> WhatsApp
+                    </a>
+                    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ post.title|urlencode }}" target="_blank" class="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 hover:border-primary hover:text-primary">
+                        <i class="bi bi-linkedin"></i> LinkedIn
+                    </a>
+                    <a href="mailto:?subject={{ post.title|urlencode }}&body={{ request.build_absolute_uri|urlencode }}" class="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 hover:border-primary hover:text-primary">
+                        <i class="bi bi-envelope"></i> Email
+                    </a>
+                </div>
+            </div>
+        </article>
+
+        <section class="related-blogs space-y-6 rounded-3xl border border-border bg-card/95 p-8 shadow-lg backdrop-blur" post-id="{{ post.id }}" data-post-categories="{% for category in post.categories.all %}{{ category.name }}{% if not forloop.last %}|{% endif %}{% endfor %}">
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Related reads</p>
+                    <h2 class="text-2xl font-heading font-semibold text-foreground">More articles you might enjoy</h2>
+                </div>
+            </div>
+            <div class="grid gap-4 md:grid-cols-2" data-related-grid>
+                <div class="related-blog-list grid gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-2"></div>
+            </div>
+        </section>
     </div>
-</section>
-
-
-<!-- blogs details -->
-<section>
-        <div class="row w-100">
-            <div class="col-md-3 bg- blog-details-left"></div>
-            <div class="col-md-6 blog-content">
-                <div class="blog-details">
-                    <div class="blog-entry-header">
-                         <h1 class="blog-entry-title">
-                            {{ post.title }}
-                        </h1>
-                        <div class="blog-details-info">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="blog-informations">
-                                        <div class="blog-creator-avater">
-                                            <img loading="lazy" src="https://png.pngtree.com/png-vector/20191101/ourmid/pngtree-cartoon-color-simple-male-avatar-png-image_1934459.jpg" alt="">
-                                        </div>
-                                        <div class="blog-others-details">
-                                            <p class="blog-creator-name">
-                                                <span>By</span>{{ post.creator.full_name }} 
-                                            </p>
-                                            <div class="blog-date-and-read-time">
-                                                <span class="blog-create-time">
-                                                    {{ post.created_at|date:"d F Y" }}
-                                                </span>
-                                                <span class="blog-read-time">
-                                                    {{ post.estimated_read_time }} mins read
-                                                </span>
-                                                <span class="blog-likes">
-                                                    {{ post.total_likes }} likes
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <!-- blog banner  -->
-
-                    <div class="blog-banner">
-                        <img  loading="lazy" src="{{ post.banner_image.url }}">
-                    </div>
-
-                    <p class="blog-subtitle">
-                        {{ post.subtitle }}
-                    </p>
-
-                    <!-- article  -->
-                    <article class="blog-article">
-                       {{ post.description|safe }}
-                    </article>
-
-                    <!-- blog tag or category -->
-
-                    <div class="blog-categorys-and-tag mt-4">
-                        <span>Tags:</span>
-                        {% for category in post.categories.all %}
-                            <p>{{ category.name }}</p>
-                        {% endfor %}
-                    </div>
-
-                    <!-- blog footer -->
-                    <div class="blog-footer">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="blog-informations">
-                                    <button class="blog-like-btn" like-done="{{ is_liked }}" post-id="{{ post.id }}">
-                                        <i class="bi bi-hand-thumbs-up"></i>
-                                        <i class="bi bi-hand-thumbs-up-fill"></i>
-                                    </button>
-
-                                    <button class="blog-unlike-btn" unlike-done="{{ is_disliked }}" post-id="{{ post.id }}">
-                                        <i class="bi bi-hand-thumbs-down"></i>
-                                        <i class="bi bi-hand-thumbs-down-fill"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="share-option">
-                                    <p>Share this:</p>
-                                    <div class="facebook">
-                                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
-                                            <img loading="lazy" src="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" alt="facebook-icon">
-                                        </a>
-                                    </div>
-                                    <div class="twitter-x">
-                                        <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ post.title|urlencode }}" target="_blank">
-                                            <img loading="lazy" src="https://cdn-icons-png.flaticon.com/512/5969/5969020.png" alt="twitter-x-icon">
-                                        </a>
-                                    </div>
-                                    <div class="whatsapp">
-                                        <a href="https://api.whatsapp.com/send?text={{ post.title|urlencode }}%20{{ request.build_absolute_uri|urlencode }}" target="_blank">
-                                            <img loading="lazy" src="https://cdn-icons-png.flaticon.com/512/3670/3670051.png" alt="whatsapp-icon">
-                                        </a>
-                                    </div>
-                                    <div class="linkedin">
-                                        <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ post.title|urlencode }}&summary=YOUR_SUMMARY" target="_blank">
-                                            <img loading="lazy" src="https://cdn-icons-png.flaticon.com/512/145/145807.png" alt="linkedin-icon">
-                                        </a>
-                                    </div>
-                                    <div class="line">
-                                        <a href="https://social-plugins.line.me/lineit/share?url={{ request.build_absolute_uri }}" target="_blank">
-                                            <img loading="lazy" src="https://cdn-icons-png.flaticon.com/512/3670/3670089.png" alt="line-icon">
-                                        </a>
-                                    </div>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="related-blogs mt-3 pt-4 pb-5" post-id="{{ post.id }}">
-                        <p class="related-blog-title"><span>related</span> blog</p>
-                        <div class="related-blog-list"></div>
-                    </div>
-                    
-                    
-                </div>
-            </div>
-            <div class="col-md-3  blog-details-right"></div>
-        </div>
-        
-
-
-        <!-- <div class="blog-details p-5">
-            
-        </div> -->
 </section>
 {% endblock %}
 
 
 {% block extend_script %}
-<script>
-    csrf_token = '{{ csrf_token }}'
-    post_id = '{{ post.id }}'
-    post_categories = [{% for category in post.categories.all %}"{{ category.name }}"{% if not forloop.last %}, {% endif %}{% endfor %}];
-</script>
 <!-- all js here -->
-  <script src="{% static '/js/libraries/splide.min.js' %}"></script>
-  <script src="{% static '/js/blog-page-details.js' %}?v=1.02"></script>
-  <script src="{% static '/js/blog-ads.js' %}?v=1.05"></script>
+<script src="{% static '/js/libraries/splide.min.js' %}"></script>
+<script src="{% static '/js/blog-ads.js' %}?v=1.05"></script>
+<script src="{% static '/js/blog-page-details.js' %}?v=2.00"></script>
 {% endblock extend_script %}

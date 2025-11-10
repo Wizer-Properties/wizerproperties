@@ -121,6 +121,7 @@ This audit lists every template and supporting asset that should be touched duri
 ### `src/property/templates/update_property.html`
 - ✅ **UI**: Brought update form to parity with the Tailwind components used in create flow (carded sections, modern inputs, tenant chips, media gallery, spinner states).
 - ✅ **UX**: Added inline helper copy, chip-based feature toggles, tenant availability controls, refreshed success/error messaging, and accessible media removal interactions.
+- ✅ **Maintenance** (2025-11-10): Removed duplicated legacy Bootstrap block so only the Tailwind implementation ships; no placeholder/commented markup remains.
 
 ### `src/property/templates/get_property.html`
 - ✅ **UI**: Modernized listing detail layout (hero area, key stats, feature chips, gallery slider, CTA sidebar) now aligned with building detail style.
@@ -241,28 +242,28 @@ This audit lists every template and supporting asset that should be touched duri
 ## 7. Blog Module Templates
 
 ### `src/blog/templates/blog-list.html`
-- **UI**: Redesign list layout with modern card grid, featured article hero, and consistent typography.
-- **UX**: Improve content hierarchy, add estimated read time indicators, and make category filters obvious.
+- ✅ **UI**: Tailwind hero banner with sponsored Splide slider, filter chip toolkit, and responsive card grid with hover states.
+- ✅ **UX**: Vanilla fetch-based filtering with load more control, badges for reads/likes, and empty-state messaging for no results.
 
 ### `src/blog/templates/blog-details.html`
-- **UI**: Apply new typography scale, heading styles, pull quotes, and image treatments.
-- **UX**: Enhance readability (line length, spacing), provide table of contents or jump links, and improve sharing/follow actions.
+- ✅ **UI**: Gradient intro, Tailwind prose article body, share actions, and related stories grid; legacy CSS removed.
+- ✅ **UX**: Author/read-time metadata surfaced, like/dislike controls modernised, accessible share links, and personalised related-content feed.
 
 ---
 
 ## 8. Schedule Module Templates
 
 ### `src/schedule/templates/create_schedule.html`
-- ◻️ **UI**: Pending Tailwind conversion; currently relies on legacy card layout with mixed spacing.
-- ◻️ **UX**: Revisit step copy, date/time pickers, and confirmation messaging; align with updated scheduling flow.
+- ✅ **UI**: Tailwind scheduling workspace with carded stepper, Splide sliders styled via tokens, and property summary panel with skeleton state.
+- ✅ **UX**: Modern fetch workflow, inline alerts, selection highlights, and contextual copy for confirmation/edit flows.
 
 ### `src/schedule/templates/email/schedule_accept.html`
-- ◻️ **UI**: Pending restyle to match transactional email system (Tailwind email tokens).
-- ◻️ **UX**: Refresh copy hierarchy, add clear CTA buttons, confirm responsive email behavior across clients.
+- ✅ **UI**: Responsive email shell with gradient header, summary card, and branded CTA built with inline Tailwind-inspired tokens.
+- ✅ **UX**: Clear confirmation messaging, next steps guidance, and support contact block.
 
 ### `src/schedule/templates/email/schedule_cancel.html`
-- ◻️ **UI**: Pending Tailwind email layout parity; remove legacy table styling.
-- ◻️ **UX**: Ensure cancellation messaging includes follow-up options and support contact details.
+- ✅ **UI**: Cancellation email redesign with status badge, action buttons, and muted alert palette.
+- ✅ **UX**: Provides explanation, reschedule CTA, and concierge escalation paths to reduce drop-off.
 
 ### `src/schedule/templates/*.html`
 - **UI**: Refresh scheduling forms and list views with Tailwind components.
@@ -277,20 +278,20 @@ This audit lists every template and supporting asset that should be touched duri
 - ✅ **UX**: Home experience now follows 2025 landing page best practices (clarity, social proof, urgency). Hero search clarifies outcomes for international buyers, trust signals are surface-level, and developer/guide funnels support key conversion paths. Localised onboarding copy & CTA hierarchy tuned for remote investors.
 
 ### `src/core/templates/contact_us.html`
-- ◻️ **UI**: Pending Tailwind migration; current layout uses legacy forms and spacing.
-- ◻️ **UX**: Revise support options hierarchy, add map/contact quick actions, and ensure international dialing guidance.
+- ✅ **UI**: Tailwind contact hero with backdrop overlay, dual card layout for contact details and form, removed legacy `contact.css`, and aligned spacing/typography with design tokens.
+- ✅ **UX**: Accessible form with inline validation, modern fetch-based submission, success/error alert messaging, clarified operating hours, and direct contact options surfaced for quick routing.
 
 ### `src/core/templates/about-us.html`
-- ◻️ **UI**: Needs Tailwind storytelling layout, refreshed imagery, and typography alignment.
-- ◻️ **UX**: Clarify brand narrative, highlight trust markers, and add leadership/office sections.
+- ✅ **UI**: Story-driven Tailwind page with gradient hero, three-card highlight grid, mission/metrics sections, and leadership spotlight; removed inline styles.
+- ✅ **UX**: Reframed copy around mission, market outcomes, and team expertise with scannable bullets; emphasised data points and support pathways for investor confidence.
 
 ### `src/core/templates/privacy.html`
-- ◻️ **UI**: Pending typography scale update and section dividers using Tailwind prose utilities.
-- ◻️ **UX**: Add in-page nav, simplified summaries, and clear update timestamps.
+- ✅ **UI**: Converted to Tailwind prose within a layered card, hero introduction, and policy sections with clear hierarchy; stripped legacy styling.
+- ✅ **UX**: Structured policy into numbered sections, added actionable bullet lists, privacy contact CTA, and timestamped update notice for transparency.
 
 ### `src/core/templates/404.html`
-- ◻️ **UI**: Replace legacy hero with Tailwind empty-state card; align illustration style with brand.
-- ◻️ **UX**: Provide primary CTA back to home/search plus secondary help links.
+- ✅ **UI**: Created Tailwind error card with background overlay, responsive typography, and dual CTA buttons aligned to design system tokens.
+- ✅ **UX**: Added clear recovery paths (home, property search, support), contextual copy, and consistent tone to reassure users.
 
 ### Home Helper AI (`src/core/templates/chat.html`, `src/wizerproperties/static/js/chatbot-gpt.js`)
 - ✅ **UI**: Rebuilt as a Tailwind card with scrollable conversation history, quick-prompt chips, and elevated messaging patterns; removed legacy Bootstrap-era markup and external stylesheet.

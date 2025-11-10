@@ -1,397 +1,347 @@
-$(document).ready(function(){
-// date-picker-splide
-    var date_splide = new Splide( '.date-picker-splide' , {
-        perPage: 4,
-        gap : '15px',
-        pagination : false,
-        breakpoints: {
-            860: {
-                perPage: 3
-            },
-      }
-    }).mount();
+const DATE_SLIDE_BASE_CLASSES = "date-field-box flex h-24 w-full flex-col items-center justify-center gap-1 rounded-2xl border border-border bg-background/70 text-sm font-medium text-muted-foreground transition hover:border-primary hover:text-primary";
+const DATE_SLIDE_SELECTED_CLASSES = "border-primary bg-primary/10 text-primary shadow";
+const TIME_SLIDE_BASE_CLASSES = "date-field-box flex h-16 w-full items-center justify-center rounded-2xl border border-border bg-background/70 text-sm font-semibold text-muted-foreground transition hover:border-primary hover:text-primary";
+const TIME_SLIDE_SELECTED_CLASSES = "border-primary bg-primary/10 text-primary shadow";
 
+const ALERT_SUCCESS = (message) => `
+  <div class="alert alert-success" role="status">
+    ${message}
+  </div>
+`;
 
-    var time_splide = new Splide( '.time-picker-splide' , {
-        perPage: 5,
-        gap : '15px',
-        pagination : false,
-        breakpoints: {
-            860: {
-                perPage: 3
-            },
-      }
-    }).mount();
+const ALERT_ERROR = (message) => `
+  <div class="alert alert-danger" role="alert">
+    ${message}
+  </div>
+`;
 
+document.addEventListener("DOMContentLoaded", () => {
+  const dateRoot = document.querySelector(".date-picker-splide");
+  const timeRoot = document.querySelector(".time-picker-splide");
+  const confirmButton = document.querySelector(".create-schedule-btn");
+  const summaryField = document.querySelector(".display-time");
+  const alertsRegion = document.querySelector(".alert_messages");
+  const propertyBox = document.querySelector(".property-single-box");
+  const scheduleTitle = document.querySelector(".create-schedule-title");
+  const editField = document.querySelector('[label-name="update-date-field"]');
 
-    function getNext7Days() {
-        var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        var monthsShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      
-        var now = new Date();
-        var currentHour = now.getHours();
-        var currentMinute = now.getMinutes();
-      
-        if (currentHour > 22 || (currentHour === 22 && currentMinute >= 0)) {
-            now.setDate(now.getDate() + 1);
-        };
-      
-        var next7Days = [];
-      
-        for (let i = 0; i < 30; i++) {
-            var date = new Date(now);
-            date.setDate(now.getDate() + i);
-            var dayName = days[date.getDay()];
-            var monthNameShort = monthsShort[date.getMonth()];
-            var day = date.getDate();
+  if (!dateRoot || !timeRoot || !confirmButton || !propertyBox) {
+    return;
+  }
 
-            var month = (date.getMonth() + 1 < 10) ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
-            var formattedDay = (day < 10) ? '0' + day : day;
-      
-            next7Days.push({
-                index : i,
-                date: formattedDay,
-                monthName: monthNameShort,
-                dayName: dayName,
-                year : date.getFullYear(),
-                full_date : date.getFullYear()+'-'+month+'-'+formattedDay
-            });
+  const url = new URL(window.location.href);
+  const assetType = url.searchParams.get("type");
+  const assetId = url.searchParams.get("id");
+  const isEdit = url.searchParams.get("edit") === "true";
+  const scheduleId = url.searchParams.get("schedule-id");
 
-        };
+  scheduleTitle.textContent = isEdit ? "Update your visit" : "Schedule a property tour";
+  confirmButton.textContent = isEdit ? "Update visit" : "Confirm visit";
 
-        return next7Days;
-    };
+  const state = {
+    selectedDate: null,
+    selectedTime: null,
+    creating: false,
+  };
 
-    function date_tmp(data){
-        return '<div class="splide__slide date-field-box" is_selected="false" date-index="'+data?.index+'">'+
-                    '<span> '+data?.dayName+' </span>'+
-                    '<span> '+data?.date+' </span>'+
-                    '<span> '+data?.monthName+' </span>'+
-                '</div>'
-    };
-      
-    var next7DaysInfo = getNext7Days();
+  const dateSplide = new Splide(".date-picker-splide", {
+    perPage: 4,
+    gap: "16px",
+    pagination: false,
+    breakpoints: {
+      1024: { perPage: 3 },
+      768: { perPage: 2 },
+    },
+  }).mount();
 
-    next7DaysInfo.forEach((dayInfo) => {
-        date_splide.add(date_tmp(dayInfo));
+  const timeSplide = new Splide(".time-picker-splide", {
+    perPage: 5,
+    gap: "16px",
+    pagination: false,
+    breakpoints: {
+      1024: { perPage: 4 },
+      768: { perPage: 3 },
+    },
+  }).mount();
+
+  const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const monthsShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  const generateUpcomingDays = () => {
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+
+    if (currentHour > 22 || (currentHour === 22 && currentMinute >= 0)) {
+      now.setDate(now.getDate() + 1);
+    }
+
+    const days = [];
+    for (let i = 0; i < 30; i += 1) {
+      const date = new Date(now);
+      date.setDate(now.getDate() + i);
+
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      days.push({
+        index: i,
+        dayName: daysOfWeek[date.getDay()],
+        day,
+        monthName: monthsShort[date.getMonth()],
+        year: date.getFullYear(),
+        isoDate: `${date.getFullYear()}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`,
+      });
+    }
+    return days;
+  };
+
+  const generateTimeSlots = () => {
+    const slots = [];
+    const now = new Date();
+    const start = new Date();
+    start.setHours(9, 0, 0, 0);
+    const end = new Date();
+    end.setHours(21, 0, 0, 0);
+
+    let cursor = now >= end || now < start ? new Date(start) : new Date(now);
+    if (cursor.getMinutes() < 30) {
+      cursor.setMinutes(30, 0, 0);
+    } else {
+      cursor.setHours(cursor.getHours() + 1, 0, 0, 0);
+    }
+
+    cursor = new Date(Math.max(cursor, start));
+
+    while (cursor < end) {
+      slots.push(cursor.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" }));
+      cursor.setMinutes(cursor.getMinutes() + 30);
+    }
+    slots.push("9:00 PM");
+    return slots;
+  };
+
+  const createDateSlide = (day) => `
+    <div class="splide__slide">
+      <button type="button" class="${DATE_SLIDE_BASE_CLASSES}" data-date-index="${day.index}" data-date-value="${day.isoDate}">
+        <span class="text-xs uppercase tracking-[0.2em] text-muted-foreground">${day.dayName}</span>
+        <span class="text-lg font-semibold text-foreground">${String(day.day).padStart(2, "0")}</span>
+        <span class="text-xs uppercase tracking-[0.2em] text-muted-foreground">${day.monthName}</span>
+      </button>
+    </div>
+  `;
+
+  const createTimeSlide = (time, index) => `
+    <div class="splide__slide">
+      <button type="button" class="${TIME_SLIDE_BASE_CLASSES}" data-time-index="${index}" data-time-value="${time}">
+        ${time}
+      </button>
+    </div>
+  `;
+
+  const refreshSelectionStyles = () => {
+    dateRoot.querySelectorAll(".date-field-box").forEach((button) => {
+      const isSelected = state.selectedDate && button.dataset.dateValue === state.selectedDate.isoDate;
+      button.className = isSelected ? `${DATE_SLIDE_BASE_CLASSES} ${DATE_SLIDE_SELECTED_CLASSES}` : DATE_SLIDE_BASE_CLASSES;
     });
 
+    timeRoot.querySelectorAll(".date-field-box").forEach((button) => {
+      const isSelected = state.selectedTime && button.dataset.timeValue === state.selectedTime.label;
+      button.className = isSelected ? `${TIME_SLIDE_BASE_CLASSES} ${TIME_SLIDE_SELECTED_CLASSES}` : TIME_SLIDE_BASE_CLASSES;
+    });
+  };
 
-    function generateTimeArray() {
-        var timeArray = [];
-        var now = new Date();
-        var startTime = new Date();
-        startTime.setHours(9, 0, 0, 0); // Always start at 9:00 AM
-        var endTime = new Date();
-        endTime.setHours(21, 0, 0, 0); // End at 9:00 PM
-      
-        // Check if the current time is between 9:00 PM and 9:00 AM
-        if (now >= endTime || now < startTime) {
-            now = new Date(startTime); // Set the current time to 9:00 AM
-        } else {
-            var minutes = now.getMinutes();
-      
-            if (minutes < 30) {
-                now.setMinutes(30);
-            } else {
-                now.setHours(now.getHours() + 1);
-                now.setMinutes(0);
-            }
+  const upcomingDays = generateUpcomingDays();
+  upcomingDays.forEach((day) => dateSplide.add(createDateSlide(day)));
+
+  const timeSlots = generateTimeSlots();
+  timeSlots.forEach((slot, index) => timeSplide.add(createTimeSlide(slot, index)));
+
+  const updateSummary = () => {
+    if (!summaryField) return;
+    if (state.selectedDate && state.selectedTime) {
+      const { dayName, day, monthName, year } = state.selectedDate;
+      summaryField.textContent = `${dayName} ${String(day).padStart(2, "0")} ${monthName}, ${state.selectedTime.label} (${year})`;
+      confirmButton.classList.remove("hidden");
+    } else {
+      summaryField.textContent = "";
+      confirmButton.classList.add("hidden");
+    }
+  };
+
+  dateRoot.addEventListener("click", (event) => {
+    const button = event.target.closest(".date-field-box");
+    if (!button) return;
+    const index = Number(button.dataset.dateIndex);
+    state.selectedDate = upcomingDays[index];
+    refreshSelectionStyles();
+    updateSummary();
+  });
+
+  timeRoot.addEventListener("click", (event) => {
+    const button = event.target.closest(".date-field-box");
+    if (!button) return;
+    const index = Number(button.dataset.timeIndex);
+    state.selectedTime = {
+      index,
+      label: timeSlots[index],
+    };
+    refreshSelectionStyles();
+    updateSummary();
+  });
+
+  const formatTimeForApi = (timeLabel) => {
+    if (!timeLabel) return null;
+    const parts = timeLabel.split(/:| /);
+    let hours = parseInt(parts[0], 10);
+    const minutes = parseInt(parts[1], 10);
+    const period = parts[2];
+
+    if (period === "PM" && hours < 12) hours += 12;
+    if (period === "AM" && hours === 12) hours = 0;
+
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:00`;
+  };
+
+  const renderFacilities = (data) => {
+    const facilities = [];
+    if (data?.building?.have_fitness_area) facilities.push("Fitness");
+    if (data?.building?.have_grocery) facilities.push("Grocery");
+    if (data?.building?.have_guard_house) facilities.push("Security");
+    if (data?.building?.have_river_view) facilities.push("River view");
+    if (data?.building?.have_sauna) facilities.push("Sauna");
+    if (data?.building?.have_sky_lounge) facilities.push("Sky lounge");
+
+    return facilities
+      .map((item) => `<span class="rounded-full border border-border/60 bg-background/80 px-3 py-1 text-xs text-muted-foreground">${item}</span>`)
+      .join("");
+  };
+
+  const renderPropertyCard = (data) => {
+    const title = data?.title || data?.building?.title || "Untitled";
+    const address = data?.building?.address || "";
+    const image = data?.image_path || data?.building?.image_path || "/static/media/logo.png";
+    const description = data?.description || "";
+
+    return `
+      <div class="space-y-5">
+        <div class="overflow-hidden rounded-2xl border border-border/60 bg-muted/40">
+          <img src="${image}" alt="${title}" loading="lazy" class="h-56 w-full object-cover" />
+        </div>
+        <div class="space-y-3">
+          <h2 class="text-xl font-heading font-semibold text-foreground">${title}</h2>
+          <p class="flex items-start gap-2 text-sm text-muted-foreground">
+            <i class="bi bi-geo-alt text-base text-primary"></i>
+            ${address}
+          </p>
+          ${
+            assetType === "property"
+              ? `
+                <div class="space-y-4 rounded-2xl border border-border/60 bg-background/70 p-4">
+                  <p class="text-sm text-muted-foreground">${description}</p>
+                  <div class="grid grid-cols-2 gap-3 text-center text-xs text-muted-foreground sm:grid-cols-4">
+                    <div class="rounded-xl border border-border/60 bg-card/80 p-3">
+                      <p class="text-lg font-semibold text-foreground">${data?.number_of_bedroom ?? "-"}</p>
+                      <p>Bedrooms</p>
+                    </div>
+                    <div class="rounded-xl border border-border/60 bg-card/80 p-3">
+                      <p class="text-lg font-semibold text-foreground">${data?.number_of_bathroom ?? "-"}</p>
+                      <p>Bathrooms</p>
+                    </div>
+                    <div class="rounded-xl border border-border/60 bg-card/80 p-3">
+                      <p class="text-lg font-semibold text-foreground">${data?.unit_area ?? "-"}</p>
+                      <p>Sqm</p>
+                    </div>
+                    <div class="rounded-xl border border-border/60 bg-card/80 p-3">
+                      <p class="text-lg font-semibold text-foreground">${data?.floor_number ?? "-"}</p>
+                      <p>Floor</p>
+                    </div>
+                  </div>
+                </div>
+              `
+              : ""
+          }
+          <div class="flex flex-wrap gap-2">${renderFacilities(data)}</div>
+        </div>
+      </div>
+    `;
+  };
+
+  const assetEndpoint = assetType === "property"
+    ? `/property/api/details/${assetId}/schedule/`
+    : `/building/api/details/${assetId}/schedule/`;
+
+  fetch(assetEndpoint, {
+    headers: { "X-CSRFToken": typeof csrfToken !== "undefined" ? csrfToken : "" },
+  })
+    .then((response) => response.json())
+    .then((payload) => {
+      const data = assetType === "building" ? { building: payload } : payload;
+      propertyBox.innerHTML = renderPropertyCard(data);
+    })
+    .catch(() => {
+      propertyBox.innerHTML = `<p class="text-sm text-destructive">We couldn’t load the property details. Please try again later.</p>`;
+    });
+
+  if (isEdit && scheduleId) {
+    fetch(`/schedule/api/${scheduleId}/`, {
+      headers: { "X-CSRFToken": typeof csrfToken !== "undefined" ? csrfToken : "" },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const raw = new Date(data?.visiting_time);
+        raw.setHours(raw.getHours() - 7);
+        if (editField) {
+          editField.innerHTML = `<p class="rounded-xl border border-border/60 bg-secondary/40 px-4 py-2 text-xs text-muted-foreground">Created schedule: ${dayjs(raw).format("dddd DD MMM, h:mm A (YYYY)")}</p>`;
         }
-      
-        let currentTime = new Date(Math.max(now, startTime));
-      
-        while (currentTime < endTime) {
-            var formattedTime = currentTime.toLocaleTimeString('en-US', {
-                hour: 'numeric',
-                minute: '2-digit',
-            });
-            timeArray.push(formattedTime);        
-            currentTime.setMinutes(currentTime.getMinutes() + 30);
+      })
+      .catch(() => {
+        if (editField) {
+          editField.innerHTML = `<p class="rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-2 text-xs text-destructive">We couldn’t fetch the current booking details.</p>`;
         }
+      });
+  }
 
-        timeArray.push('9:00 PM');
-        return timeArray;
-    }
+  const showMessage = (html) => {
+    if (!alertsRegion) return;
+    alertsRegion.innerHTML = html;
+  };
 
-    function time_tmp(data, index){
-        return '<div class="splide__slide date-field-box" is_selected="false" time-index="'+index+'">'+
-                    '<span>'+data+'</span>'+
-                '</div>'
-    }
-    
-    var timeSlots = generateTimeArray();
-      
-    timeSlots.forEach((data, index) => {
-        time_splide.add(time_tmp(data, index));
+  confirmButton.addEventListener("click", () => {
+    if (!state.selectedDate || !state.selectedTime || state.creating) return;
+    state.creating = true;
+    confirmButton.setAttribute("disabled", "disabled");
+
+    const visitingTime = `${state.selectedDate.isoDate}T${formatTimeForApi(state.selectedTime.label)}Z`;
+    const endpoint = isEdit ? `/schedule/api/${scheduleId}/` : "/schedule/api/";
+    const method = isEdit ? "PATCH" : "POST";
+
+    const body = new URLSearchParams({
+      object_id: assetId,
+      content_type_name: assetType,
+      visiting_time: visitingTime,
     });
 
-
-    function format_time(time){
-        if(!time) return;
-        var timeArray = time.split(/:| /);
-        var hours = parseInt(timeArray[0], 10);
-        var minutes = parseInt(timeArray[1], 10);
-        var period = timeArray[2];
-
-        // Convert to 24-hour format
-        if (period === 'PM' && hours < 12) {
-            hours += 12;
-        } else if (period === 'AM' && hours === 12) {
-            hours = 0;
-        }
-
-        // Add seconds and format the time
-        var seconds = '00';
-        return hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0') + ':' + seconds;
-    }
-      
-      
-    var url = new URL(window.location.href);
-    var asset_type = url.searchParams.get("type");
-    var asset_id = url.searchParams.get("id");
-    var is_edit = url.searchParams.get("edit");
-    var schedule_id = url.searchParams.get("schedule-id");
-    
-
-    var date_value;
-    var time_value;
-
-    $(document).on('click', '.date-picker-splide .date-field-box', function(){
-        $('.date-picker-splide .date-field-box').attr('is_selected', false);
-        $(this).attr('is_selected', true);
-        var date_index = $(this).attr('date-index');
-        date_value = next7DaysInfo[date_index];
-        showing_date_time();
-    });
-
-    $(document).on('click', '.time-picker-splide .date-field-box', function(){
-        $('.time-picker-splide .date-field-box').attr('is_selected', false);
-        $(this).attr('is_selected', true);
-        var date_index = $(this).attr('time-index');
-        time_value = timeSlots[date_index];
-        showing_date_time();
-    });
-
-
-    function showing_date_time(){
-        var date_time_dom  =    (date_value?.dayName || '') +' '+
-                                (date_value?.date || '') +' '+
-                                (date_value?.monthName || '') + ', '+
-                                (time_value  || '') +
-                                (date_value?.year && ' (' + date_value?.year + ')')
-
-        $('.display-time').html(date_time_dom);
-
-        if(date_value && time_value){
-            $('.create-schedule-btn').removeClass('d-none')
-        }
-    };
-
-
-
-
-    var creating_schedule = false;
-
-    $(document).on('click', '.create-schedule-btn', function(){
-        if(creating_schedule) return;
-        creating_schedule = true;
-
-        var visiting_time = date_value?.full_date+'T'+format_time(time_value)+'Z';
-
-        var SCHEDULE_API = is_edit == 'true' ? 
-                            '/schedule/api/'+schedule_id+'/' : '/schedule/api/';
-
-        $.ajax({
-            url: SCHEDULE_API,
-            type: is_edit == 'true' ? 'PATCH' : 'POST',
-            data : {
-                object_id : asset_id,
-                content_type_name : asset_type,
-                visiting_time : visiting_time,
-            },
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            beforeSend: function() {
-                
-            },
-            success: function (data) {
-                creating_schedule = false;
-                $('.alert_messages').html(
-                    '<div class="alert alert-success text-center" role="alert"> Successfully '+
-                    (is_edit == 'true' ? 'Update The' : 'Created A') +
-                    ' Schedule </div>'
-                );
-
-                setTimeout(() => {
-                    window.location.href = '/dashboard/'
-                }, 1500);
-            },
-            error: function (error) {
-                creating_schedule = false
-                $('.alert_messages').html('<div class="alert alert-danger text-center" role="alert"> Something is wrong. Unable to create schedule </div>')
-            }
-        });       
-    });
-
-
-    var ASSET_API_URL = asset_type == 'property' ? 
-                        '/property/api/details/'+asset_id+'/schedule/' :
-                        '/building/api/details/'+asset_id+'/schedule/'
-
-                            
-    function property_facility_tmp(data){
-        var facility_tmp = '';
-
-        if(data?.building?.have_fitness_area){
-            facility_tmp += '<span>GYM</span>'
-        };
-
-        if(data?.building?.have_grocery){
-            facility_tmp += '<span>Grocery</span>'
-        };
-
-        if(data?.building?.have_guard_house){
-            facility_tmp += '<span>Security</span>'
-        };
-
-        if(data?.building?.have_river_view){
-            facility_tmp += '<span>River View</span>'
-        };
-
-        if(data?.building?.have_sauna){
-            facility_tmp += '<span>Sauna</span>'
-        };
-
-        if(data?.building?.have_sky_lounge){
-            facility_tmp += '<span>Sky Lounge</span>'
-        };
-        
-        return facility_tmp;
-    }
-
-    function property_data_tmp(data){
-        return '<p class="sub-title">'+
-                    data?.number_of_bedroom+
-                    ' bedroom ' +
-                    data?.building?.type+
-                    ' for sale at ' +
-                    data?.title+
-                    '</p>'+
-                    '<p class="details"> '+ data?.description+' </p>'+
-
-                    '<div class="property-contains">'+
-                        '<div class="property-short-info-box">'+
-                            '<div class="property-short-info-icon">'+
-                                '<img src="/static/media/icons/bed.svg" alt="bed-icon">'+
-                            '</div>'+
-                            '<span class="property-value"> '+ data?.number_of_bedroom+' </span>'+
-                            '<span class="property-label">Beds</span>'+
-                        '</div>'+
-                        '<div class="property-short-info-box">'+
-                            '<div class="property-short-info-icon">'+
-                                '<img src="/static/media/icons/bath.svg" alt="bath-icon">'+
-                            '</div>'+
-                            '<span class="property-value"> '+ data?.number_of_bathroom +' </span>'+
-                            '<span class="property-label">Baths</span>'+
-                        '</div>'+
-                        '<div class="property-short-info-box">'+
-                            '<div class="property-short-info-icon">'+
-                                '<img src="/static/media/icons/plan-size.svg" alt="plan-size-icon">'+
-                            '</div>'+
-                            '<span class="property-value"> '+ data?.unit_area+ '</span>'+
-                            '<span class="property-label"> SqM</span>'+
-                        '</div>'+
-                        '<div class="property-short-info-box">'+
-                            '<div class="property-short-info-icon">'+
-                                '<img src="/static/media/icons/stairs.svg" alt="stairs-icon">'+
-                            '</div>'+
-                            '<span class="property-value"> '+ data?.floor_number+' </span>'+
-                            '<span class="property-label">Floor</span>'+
-                        '</div>'+
-                    '</div>'
-    }
-
-    function asset_tmp(data){
-        return  '<div class="search-result-box-wrapper">'+
-                    '<div class="row">'+
-                        '<div class="col-sm-4">'+
-                            '<div class="search-result-box-img">'+
-                                '<img src="'+(data?.image_path || data?.building?.image_path)+'" alt="image" loading="lazy">' +
-                            '</div>'+
-                        '</div>'+
-                        '<div class="col-sm-8">'+
-                            '<div class="search-result-box">'+
-                                '<h1> '+(data?.title || data?.building?.title)+' </h1>'+
-                                '<div class="location">'+
-                                    '<div class="icon">'+
-                                        '<i class="bi bi-geo-alt"></i>'+
-                                        data?.building?.address+
-                                    '</div>'+
-                                '</div>'+
-                                ( asset_type == 'property' ? property_data_tmp(data) : '') +
-                                '<div class="property-faciluty">'+
-                                    property_facility_tmp(data) +
-                                '</div>'+
-                            '</div>'+
-                        '</div>'+
-                    '</div>'+
-                '</div>'
-    };
-
-    function get_asset_details(){
-        $.ajax({
-            url: ASSET_API_URL,
-            type: 'GET',
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            success: function (data) {
-                var data = data;
-
-                if(asset_type == 'building'){
-                    data = {
-                        building : data
-                    }
-                };
-
-                $('.property-single-box').html(asset_tmp(data))
-            },
-            error: function (error) {
-                console.log("error")
-            }
-        });
-    };
-
-    get_asset_details();
-
-
-    function get_edit_data(){
-        $.ajax({
-            url: '/schedule/api/'+schedule_id+'/',
-            type: 'GET',
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            success: function (data) {
-                var now = new Date(data?.visiting_time)
-                now.setHours(now.getHours() - 7);
-                var edited_date = dayjs(now).format('dddd DD MMM, h:mm A (YYYY)');
-                $('[label-name="update-date-field"]').html('<div class="edited_date">Created Schedule : '+edited_date+'</div>')
-
-            },
-            error: function (error) {
-                console.log("error")
-            }
-        });
-    }
-
-    if(is_edit == 'true'){
-        get_edit_data()
-        $('.create-schedule-title').html('Update Schedule')
-        $('.create-schedule-btn').html('Update')
-    }else{
-        $('.create-schedule-title').html('Create Schedule')
-    };
-})
+    fetch(endpoint, {
+      method,
+      headers: {
+        "X-CSRFToken": typeof csrfToken !== "undefined" ? csrfToken : "",
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+      },
+      body,
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error("Failed to create schedule");
+        showMessage(ALERT_SUCCESS(`Successfully ${isEdit ? "updated" : "created"} your schedule.`));
+        setTimeout(() => {
+          window.location.href = "/dashboard/";
+        }, 1400);
+      })
+      .catch(() => {
+        showMessage(ALERT_ERROR("Something went wrong. Please try again."));
+      })
+      .finally(() => {
+        state.creating = false;
+        confirmButton.removeAttribute("disabled");
+      });
+  });
+});
