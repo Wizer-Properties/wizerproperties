@@ -51,6 +51,7 @@
 | **11. Componentization** | Shared partials (`form-field`, etc.) | 🌟 In progress | 🌟 In progress | `components/property/card.html` live; continue extracting filters/forms. |
 | **12. Documentation** | `docs/design-decision-log.md` | ◻️ Pending | ◻️ Pending | |
 |  | `docs/accessibility-checklist.md` | 🌟 In progress | 🌟 In progress | ARIA attributes comprehensively implemented across all auth forms. WCAG 2.1 compliance improved with proper roles, live regions, form validation feedback, focus management, and keyboard navigation. |
+|  | `scripts/submit_projects_units.py` | ✅ Completed | ✅ Completed | New automation script seeds researched building/unit fixtures via API for consistent QA data during redesign reviews. |
 | **13. Libraries & References** | Library adoption | 🌟 In progress | 🌟 In progress | Tailwind/shadcn groundwork done. |
 | **14. Immediate Next Steps** | Architecture, tokens, core layout, form prototype, stakeholder reviews | ✅ Completed | ✅ Completed | Tailwind config, base layout, building forms done. Upcoming focus: extract shared property filter partial + module, modernise compare/favorite API helper, and ship Splide gallery utility. |
 

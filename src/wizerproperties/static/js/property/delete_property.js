@@ -42,7 +42,9 @@ $(document).ready(function () {
                     .draw(false);
 
                 // Close the modal after the delete button is clicked
-                $('#confirmationModal').modal("hide");
+                if (typeof hideModal === "function") {
+                    hideModal();
+                }
             },
             error: function (error) {
                 // Display error message in modal

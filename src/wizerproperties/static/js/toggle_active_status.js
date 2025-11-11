@@ -59,7 +59,9 @@ $(document).ready(function () {
                     updateActivePropertiesCount(isChecked ? 1 : -1);
                 }
                 // Close the modal after the change button is clicked
-                $('#confirmationModal').modal("hide");
+                if (typeof hideModal === "function") {
+                    hideModal();
+                }
             },
             error: function (error) {
                 // Handle error, show an error message to the user

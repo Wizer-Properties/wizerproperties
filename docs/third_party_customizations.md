@@ -9,6 +9,11 @@ This section documents all modifications made to third-party packages within thi
   - **Reason:** None
   - **Modification:** Nothing changes only override the file.
 
+**Requests (Python library)**
+- **File:** scripts/submit_projects_units.py
+  - **Reason:** Automated API seeding for redesigned building/property flows.
+  - **Modification:** Consumption only — no package modifications required; listed here to note reliance on upstream behaviour when refreshing local data.
+
 **Postgresql**
 - **File:** user/migrations/0001_initial.py
   - **Reason:** For make email case insensitive

@@ -339,6 +339,7 @@ This audit lists every template and supporting asset that should be touched duri
 - **UX**: Log flow decisions, user dilemmas, and research insights.
 - **UI**: Record visual rationale (color/contrast choices, typography pairings).
 - **Property Components**: Shared card/filter patterns documented inline within this audit; standalone `property-component-plan.md` consolidated and removed.
+- 🌟 **Quality Assurance Support**: `scripts/submit_projects_units.py` now seeds researched building + unit fixtures through the authenticated API, giving designers consistent data when reviewing Tailwind forms and detail views locally.
 
 ### `docs/accessibility-checklist.md` (to be created)
 - 🌟 **UX**: ARIA attributes comprehensively implemented across all authentication templates:

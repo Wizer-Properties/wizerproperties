@@ -440,8 +440,8 @@
                 hide_dismiss_button: true
             });
             setTimeout(() => {
-                if (window.jQuery) {
-                    window.jQuery('#confirmationModal').modal('hide');
+                if (typeof hideModal === 'function') {
+                    hideModal();
                 }
             }, 1500);
         } else {

@@ -463,6 +463,37 @@
     <script>
         var csrfToken = "{{ csrf_token }}";
 
+        let modalParentClass = "";
+        let modalOnConfirm = null;
+        let confirmationHandlerAttached = false;
+
+        function applyModalParentClass(dialog, parentClass) {
+            if (!dialog) return;
+
+            if (modalParentClass) {
+                modalParentClass.split(/\s+/).filter(Boolean).forEach(cls => dialog.classList.remove(cls));
+                modalParentClass = "";
+            }
+
+            if (parentClass) {
+                var classes = Array.isArray(parentClass) ? parentClass : String(parentClass).split(/\s+/).filter(Boolean);
+                if (classes.length) {
+                    classes.forEach(cls => dialog.classList.add(cls));
+                    modalParentClass = classes.join(" ");
+                }
+            }
+        }
+
+        function handleConfirmButtonClick(event) {
+            if (event.currentTarget.getAttribute("data-button-type") === "hidden") {
+                return;
+            }
+
+            if (typeof modalOnConfirm === "function") {
+                modalOnConfirm(event);
+            }
+        }
+
         function showModal(data) {
             const dialog = document.querySelector("[data-confirmation-dialog]");
             if (!dialog) return;
@@ -471,6 +502,8 @@
             const bodyNode = dialog.querySelector("#confirmationModalBody");
             const confirmButton = dialog.querySelector("#confirmButton");
             const dismissButton = dialog.querySelector("[data-confirmation-dismiss]");
+
+            applyModalParentClass(dialog, data?.parentClass || "");
 
             labelNode.innerHTML = data?.modalTitle ?? "";
             bodyNode.innerHTML = data?.modalBody ?? "";
@@ -497,12 +530,21 @@
                 dismissButton.classList.remove("hidden");
             }
 
+            modalOnConfirm = typeof data?.onConfirm === "function" ? data.onConfirm : null;
+
+            if (confirmButton && !confirmationHandlerAttached) {
+                confirmButton.addEventListener("click", handleConfirmButtonClick);
+                confirmationHandlerAttached = true;
+            }
+
             dialog.classList.remove("hidden");
         }
 
         function hideModal() {
             const dialog = document.querySelector("[data-confirmation-dialog]");
             if (!dialog) return;
+            applyModalParentClass(dialog, "");
+            modalOnConfirm = null;
             dialog.classList.add("hidden");
         }
 
