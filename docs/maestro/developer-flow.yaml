@@ -1,6 +1,6 @@
-appId: com.wizerproperties.app
-# For web testing, use: appId: web
-# For mobile web view, configure your app to open the web URL
+appId: web
+# Django web application - uses server-side rendered templates with Tailwind CSS
+# This is a web app, not a mobile app, so we use appId: web
 
 ---
 # Developer Flow Test Suite
@@ -12,10 +12,13 @@ appId: com.wizerproperties.app
 
 - launchApp
 
+# Navigate to login page (Django web app)
+- openLink: "${BASE_URL:-http://localhost:8000}/user/login/"
+- waitForAnimationToEnd
+
 # ============================================
-# 1. AUTHENTICATION FLOW
+# 1. AUTHENTICATION FLOW - Developer Login
 # ============================================
-- testName: "Developer Login"
 - assertVisible: "Sign in"
 - tapOn: "Sign in"
 - assertVisible:
@@ -30,12 +33,10 @@ appId: com.wizerproperties.app
 - assertVisible:
     text: "Dashboard"
     optional: true
-    timeout: 5000
 
 # ============================================
-# 2. DASHBOARD NAVIGATION
+# 2. DASHBOARD NAVIGATION - View Developer Dashboard
 # ============================================
-- testName: "View Developer Dashboard"
 - assertVisible:
     text: "Dashboard"
 - assertVisible:
@@ -54,20 +55,13 @@ appId: com.wizerproperties.app
     optional: true
 
 # ============================================
-# 3. PROPERTY LISTINGS VIEW
+# 3. PROPERTY LISTINGS VIEW - Navigate to Property Listings
 # ============================================
-- testName: "Navigate to Property Listings"
-# Navigate to developer property list
-# Note: Replace {USER_ID} with actual developer user ID
-- runScript: |
-    // Get user ID from dashboard or use environment variable
-    const userId = "${DEVELOPER_USER_ID}";
-    // Navigate to property list
-    window.location.href = `/property/list/${userId}/`;
+# Navigate to developer property list (Django web app)
+- openLink: "${BASE_URL:-http://localhost:8000}/property/list/${DEVELOPER_USER_ID}/"
 - waitForAnimationToEnd
 - assertVisible:
     text: "Your Property Listings"
-    timeout: 5000
 
 # Verify property list elements
 - assertVisible:
@@ -81,19 +75,18 @@ appId: com.wizerproperties.app
     optional: true
 
 # ============================================
-# 4. PROPERTY CARD INTERACTIONS
+# 4. PROPERTY CARD INTERACTIONS - Interact with Property Cards
 # ============================================
-- testName: "Interact with Property Cards"
 # Scroll to see property cards if they exist
 - scroll
 - scroll
 - waitForAnimationToEnd
 
 # Check if properties are loaded
+- waitForAnimationToEnd
 - assertVisible:
     text: "No listings found"
     optional: true
-    timeout: 3000
 
 # If properties exist, interact with first property card
 - tapOn:
@@ -103,9 +96,8 @@ appId: com.wizerproperties.app
 - waitForAnimationToEnd
 
 # ============================================
-# 5. CREATE NEW PROPERTY
+# 5. CREATE NEW PROPERTY - Navigate to Create Property
 # ============================================
-- testName: "Navigate to Create Property"
 - back
 - waitForAnimationToEnd
 - tapOn:
@@ -114,26 +106,23 @@ appId: com.wizerproperties.app
 - waitForAnimationToEnd
 
 # Verify create property form
+- waitForAnimationToEnd
 - assertVisible:
     text: "Create"
     optional: true
-    timeout: 5000
 - assertVisible:
     text: "Title"
     optional: true
 - back
 
 # ============================================
-# 6. DASHBOARD PROPERTY MANAGEMENT
+# 6. DASHBOARD PROPERTY MANAGEMENT - Manage Properties from Dashboard
 # ============================================
-- testName: "Manage Properties from Dashboard"
-# Navigate back to dashboard
-- runScript: |
-    window.location.href = '/dashboard/';
+# Navigate back to dashboard (Django web app)
+- openLink: "${BASE_URL:-http://localhost:8000}/dashboard/"
 - waitForAnimationToEnd
 - assertVisible:
     text: "Properties"
-    timeout: 5000
 
 # Scroll to properties table
 - scroll
@@ -151,9 +140,8 @@ appId: com.wizerproperties.app
     optional: true
 
 # ============================================
-# 7. TOGGLE PROPERTY ACTIVE STATUS
+# 7. TOGGLE PROPERTY ACTIVE STATUS - Toggle Property Active Status
 # ============================================
-- testName: "Toggle Property Active Status"
 # Find and toggle first property's active status
 - tapOn:
     id: "toggle-active"
@@ -162,15 +150,14 @@ appId: com.wizerproperties.app
 - waitForAnimationToEnd
 
 # Verify toggle worked (check for success message or state change)
+- waitForAnimationToEnd
 - assertVisible:
     text: ".*"
     optional: true
-    timeout: 2000
 
 # ============================================
-# 8. VIEW PROPERTY DETAILS
+# 8. VIEW PROPERTY DETAILS - View Property Details
 # ============================================
-- testName: "View Property Details"
 # Navigate to property details if available
 - tapOn:
     text: "View"
@@ -179,10 +166,10 @@ appId: com.wizerproperties.app
 - waitForAnimationToEnd
 
 # Verify property detail page elements
+- waitForAnimationToEnd
 - assertVisible:
     text: ".*"
     optional: true
-    timeout: 5000
 - scroll
 - waitForAnimationToEnd
 
@@ -191,17 +178,14 @@ appId: com.wizerproperties.app
 - waitForAnimationToEnd
 
 # ============================================
-# 9. SEARCH AND FILTER PROPERTIES
+# 9. SEARCH AND FILTER PROPERTIES - Search Properties
 # ============================================
-- testName: "Search Properties"
-# Navigate to property search
-- runScript: |
-    window.location.href = '/property/search/';
+# Navigate to property search (Django web app)
+- openLink: "${BASE_URL:-http://localhost:8000}/property/search/"
 - waitForAnimationToEnd
 - assertVisible:
     text: "Search"
     optional: true
-    timeout: 5000
 
 # Interact with search filters if available
 - tapOn:
@@ -214,18 +198,14 @@ appId: com.wizerproperties.app
 - waitForAnimationToEnd
 
 # ============================================
-# 10. LOGOUT
+# 10. LOGOUT - Developer Logout
 # ============================================
-- testName: "Developer Logout"
-# Navigate to logout (usually in header/menu)
-- tapOn:
-    text: "Logout"
-    optional: true
+# Navigate to logout (Django web app)
+- openLink: "${BASE_URL:-http://localhost:8000}/user/logout/"
 - waitForAnimationToEnd
 
 # Verify logged out
+- waitForAnimationToEnd
 - assertVisible:
     text: "Sign in"
     optional: true
-    timeout: 5000
-
