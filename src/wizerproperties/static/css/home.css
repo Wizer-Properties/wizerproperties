@@ -509,6 +509,7 @@
 .reel-details{
     display: -webkit-box;
     -webkit-line-clamp: 1;
+    line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -924,4 +925,42 @@
         padding-right: 5px !important;
     }
 
+}
+
+/* Property card fixes for Splide slider carousels */
+.property-carousel .splide__slide {
+    width: 100%;
+    height: auto;
+    display: flex;
+}
+
+.property-carousel .splide__slide > article {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ensure cards maintain proper aspect ratio in slider */
+.property-carousel [data-property-card] {
+    min-height: 0;
+}
+
+/* Prevent text overflow in slider context */
+.property-carousel [data-card-title] {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.property-carousel [data-card-address] {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Ensure developer name doesn't overflow */
+.property-carousel [data-card-developer-name] {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

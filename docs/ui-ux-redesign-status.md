@@ -29,7 +29,9 @@
 |  | Discount/featured templates (`create_*`, `edit_*`, list/delete) | ✅ Completed | ✅ Completed | Promotion flows now share Tailwind cards, tables, and confirmation modal styling. |
 |  | `review-box.html` | ✅ Completed | ✅ Completed | Shared review component restyled as Tailwind card and integrated with modern JS. |
 |  | `static/js/property/card-factory.js` | ✅ Completed | ✅ Completed | Adds resilient image fallbacks for developer avatars/gallery slides; keeps Splide cards functional when media misses. |
-|  | `search-filter-box.html` | ✅ Completed | ✅ Completed | Unified Tailwind filter chips, modal popovers, and vanilla JS controller emitting `propertyFilters:changed` events. |
+|  | `components/property/card.html` | ✅ Completed | ✅ Completed | Rebuilt from scratch (2025-11-10): replaced grid layout with vertical flexbox design (image top, content below) for proper display in both full-width and slider contexts. Responsive image heights, text truncation (line-clamp), overflow handling, and improved spacing throughout. |
+|  | `components/property/filter-panel.html` | ✅ Completed | ✅ Completed | Componentized filter panel with modular `initPropertyFilters(options)` function. Unified Tailwind filter chips, modal popovers, and vanilla JS controller emitting `propertyFilters:changed` events (2025-11-10). |
+|  | `static/js/property/compair-favorite.js` | ✅ Completed | ✅ Completed | Complete modernization (2025-11-10): Removed jQuery, migrated to fetch API, integrated with card factory button states, emits events for count syncing (`compare:added`, `compare:removed`, `favorite:added`, `favorite:removed`). Improved error handling, loading states, and visual feedback. |
 | **5. Advertise Module** | All templates | ✅ Completed | ✅ Completed | Analytics + performance dashboards rebuilt with Tailwind cards, modern modals, refreshed reel form, redesigned reels feed; legacy template fragments removed 2025-11-09. Latest update adds graceful empty states for charts/tables and removes duplicate DataTable initialisation. Partial `advertise/partials/analytics-modals.html` matches new styling. |
 | **6. User Module** | Auth flows | ✅ Completed | ✅ Completed | Full Tailwind migration: login, signup, forgot_password, forgot_password_verification, update-password, email_verification, complete_profile all use consistent grid layout, hero sidebars, and modern form inputs. Comprehensive ARIA accessibility: form-level, input, button, and message attributes. Enhanced error handling with field-specific feedback. SEA country codes (13 countries) added to phone selectors with auto-strip functionality. |
 |  | Profile completion/settings | ✅ Completed | ✅ Completed | Complete Tailwind redesign matching auth forms. Full ARIA implementation, enhanced error handling, SEA country codes, Google Maps autocomplete integration, dynamic form field generation with proper validation. |
@@ -38,7 +40,7 @@
 |  | `blog-details.html` | ✅ Completed | ✅ Completed | Tailwind prose layout, share controls, and related content feed delivered (2025-11-10). |
 | **8. Schedule Module** | `create_schedule.html` | ✅ Completed | ✅ Completed | Tailwind stepper UI, Splide selectors, and inline validation/alerts live (2025-11-10). |
 |  | Email templates (`schedule_accept.html`, `schedule_cancel.html`) | ✅ Completed | ✅ Completed | Responsive transactional templates with summary cards and action CTAs (2025-11-10). |
-| **9. Core & Misc** | `src/core/templates/home.html` | ✅ Completed | ✅ Completed | Tailwind hero, trust signals, benefit grid, developer CTA, and modernised Splide carousels shipped. |
+| **9. Core & Misc** | `src/core/templates/home.html` | ✅ Completed | ✅ Completed | Tailwind hero, trust signals, benefit grid, developer CTA, and modernised Splide carousels shipped. Property card component rebuilt from scratch (2025-11-10): vertical flexbox layout replaces problematic grid, works in both full-width and slider contexts. Styles organized in `home.css` with flex display rules. |
 |  | `contact_us.html` | ✅ Completed | ✅ Completed | Tailwind overlay hero, contact detail card, accessible fetch-based form, and inline success/error messaging (2025-11-10). |
 |  | `about-us.html` | ✅ Completed | ✅ Completed | Gradient hero, mission/metrics cards, leadership spotlight, and refreshed storytelling copy (2025-11-10). |
 |  | `privacy.html` | ✅ Completed | ✅ Completed | Tailwind prose layout, numbered sections, privacy CTA, and update timestamp (2025-11-10). |
@@ -48,10 +50,10 @@
 |  | Admin templates | ◻️ Optional | ◻️ Optional | |
 | **10. Media & Pipeline** | Image assets audit | ◻️ Pending | ◻️ Pending | |
 |  | Build pipeline | ✅ Completed | ✅ Completed | Tailwind CLI + npm scripts in place. |
-| **11. Componentization** | Shared partials (`form-field`, etc.) | 🌟 In progress | 🌟 In progress | `components/property/card.html` live; continue extracting filters/forms. |
+| **11. Componentization** | Shared partials (`form-field`, etc.) | 🌟 In progress | 🌟 In progress | `components/property/card.html` and `components/property/filter-panel.html` live with modular JS; continue extracting forms/other components. |
 | **12. Documentation** | `docs/design-decision-log.md` | ◻️ Pending | ◻️ Pending | |
 |  | `docs/accessibility-checklist.md` | 🌟 In progress | 🌟 In progress | ARIA attributes comprehensively implemented across all auth forms. WCAG 2.1 compliance improved with proper roles, live regions, form validation feedback, focus management, and keyboard navigation. |
 |  | `scripts/submit_projects_units.py` | ✅ Completed | ✅ Completed | New automation script seeds researched building/unit fixtures via API for consistent QA data during redesign reviews. |
 | **13. Libraries & References** | Library adoption | 🌟 In progress | 🌟 In progress | Tailwind/shadcn groundwork done. |
-| **14. Immediate Next Steps** | Architecture, tokens, core layout, form prototype, stakeholder reviews | ✅ Completed | ✅ Completed | Tailwind config, base layout, building forms done. Upcoming focus: extract shared property filter partial + module, modernise compare/favorite API helper, and ship Splide gallery utility. |
+| **14. Immediate Next Steps** | Componentization, modernization, utilities | ✅ In progress | ✅ In progress | Filter panel componentized (2025-11-10). Compare/favorite JS modernized (2025-11-10). Next: extract Splide gallery helper module for reuse across detail/search/favorites. |
 

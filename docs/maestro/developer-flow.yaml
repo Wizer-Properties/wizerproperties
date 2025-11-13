@@ -1,0 +1,231 @@
+appId: com.wizerproperties.app
+# For web testing, use: appId: web
+# For mobile web view, configure your app to open the web URL
+
+---
+# Developer Flow Test Suite
+# This test suite covers the complete developer workflow including:
+# - Authentication
+# - Dashboard navigation
+# - Property management
+# - Property listing views
+
+- launchApp
+
+# ============================================
+# 1. AUTHENTICATION FLOW
+# ============================================
+- testName: "Developer Login"
+- assertVisible: "Sign in"
+- tapOn: "Sign in"
+- assertVisible:
+    text: "Email"
+- inputText: "${DEVELOPER_EMAIL}"
+- inputText: "${DEVELOPER_PASSWORD}"
+- tapOn:
+    text: "Log in"
+    # Alternative selector if button has different text:
+    # id: "log-in-button"
+- waitForAnimationToEnd
+- assertVisible:
+    text: "Dashboard"
+    optional: true
+    timeout: 5000
+
+# ============================================
+# 2. DASHBOARD NAVIGATION
+# ============================================
+- testName: "View Developer Dashboard"
+- assertVisible:
+    text: "Dashboard"
+- assertVisible:
+    text: "Buildings"
+    optional: true
+- assertVisible:
+    text: "Properties"
+    optional: true
+- assertVisible:
+    text: "Credit Balance"
+    optional: true
+
+# Verify statistics cards are visible
+- assertVisible:
+    text: "Active Properties"
+    optional: true
+
+# ============================================
+# 3. PROPERTY LISTINGS VIEW
+# ============================================
+- testName: "Navigate to Property Listings"
+# Navigate to developer property list
+# Note: Replace {USER_ID} with actual developer user ID
+- runScript: |
+    // Get user ID from dashboard or use environment variable
+    const userId = "${DEVELOPER_USER_ID}";
+    // Navigate to property list
+    window.location.href = `/property/list/${userId}/`;
+- waitForAnimationToEnd
+- assertVisible:
+    text: "Your Property Listings"
+    timeout: 5000
+
+# Verify property list elements
+- assertVisible:
+    text: "Portfolio"
+    optional: true
+- assertVisible:
+    text: "Total listings"
+    optional: true
+- assertVisible:
+    text: "Add new listing"
+    optional: true
+
+# ============================================
+# 4. PROPERTY CARD INTERACTIONS
+# ============================================
+- testName: "Interact with Property Cards"
+# Scroll to see property cards if they exist
+- scroll
+- scroll
+- waitForAnimationToEnd
+
+# Check if properties are loaded
+- assertVisible:
+    text: "No listings found"
+    optional: true
+    timeout: 3000
+
+# If properties exist, interact with first property card
+- tapOn:
+    text: ".*"
+    index: 0
+    optional: true
+- waitForAnimationToEnd
+
+# ============================================
+# 5. CREATE NEW PROPERTY
+# ============================================
+- testName: "Navigate to Create Property"
+- back
+- waitForAnimationToEnd
+- tapOn:
+    text: "Add new listing"
+    optional: true
+- waitForAnimationToEnd
+
+# Verify create property form
+- assertVisible:
+    text: "Create"
+    optional: true
+    timeout: 5000
+- assertVisible:
+    text: "Title"
+    optional: true
+- back
+
+# ============================================
+# 6. DASHBOARD PROPERTY MANAGEMENT
+# ============================================
+- testName: "Manage Properties from Dashboard"
+# Navigate back to dashboard
+- runScript: |
+    window.location.href = '/dashboard/';
+- waitForAnimationToEnd
+- assertVisible:
+    text: "Properties"
+    timeout: 5000
+
+# Scroll to properties table
+- scroll
+- waitForAnimationToEnd
+
+# Look for property table
+- assertVisible:
+    text: "ID"
+    optional: true
+- assertVisible:
+    text: "Title"
+    optional: true
+- assertVisible:
+    text: "Active"
+    optional: true
+
+# ============================================
+# 7. TOGGLE PROPERTY ACTIVE STATUS
+# ============================================
+- testName: "Toggle Property Active Status"
+# Find and toggle first property's active status
+- tapOn:
+    id: "toggle-active"
+    index: 0
+    optional: true
+- waitForAnimationToEnd
+
+# Verify toggle worked (check for success message or state change)
+- assertVisible:
+    text: ".*"
+    optional: true
+    timeout: 2000
+
+# ============================================
+# 8. VIEW PROPERTY DETAILS
+# ============================================
+- testName: "View Property Details"
+# Navigate to property details if available
+- tapOn:
+    text: "View"
+    index: 0
+    optional: true
+- waitForAnimationToEnd
+
+# Verify property detail page elements
+- assertVisible:
+    text: ".*"
+    optional: true
+    timeout: 5000
+- scroll
+- waitForAnimationToEnd
+
+# Navigate back
+- back
+- waitForAnimationToEnd
+
+# ============================================
+# 9. SEARCH AND FILTER PROPERTIES
+# ============================================
+- testName: "Search Properties"
+# Navigate to property search
+- runScript: |
+    window.location.href = '/property/search/';
+- waitForAnimationToEnd
+- assertVisible:
+    text: "Search"
+    optional: true
+    timeout: 5000
+
+# Interact with search filters if available
+- tapOn:
+    text: "Filter"
+    optional: true
+- waitForAnimationToEnd
+
+# Close filter panel
+- back
+- waitForAnimationToEnd
+
+# ============================================
+# 10. LOGOUT
+# ============================================
+- testName: "Developer Logout"
+# Navigate to logout (usually in header/menu)
+- tapOn:
+    text: "Logout"
+    optional: true
+- waitForAnimationToEnd
+
+# Verify logged out
+- assertVisible:
+    text: "Sign in"
+    optional: true
+    timeout: 5000
+

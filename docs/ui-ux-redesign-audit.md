@@ -163,10 +163,10 @@ This audit lists every template and supporting asset that should be touched duri
 ### `src/property/templates/review-box.html`
 - ✅ **UI/UX**: Shared review component migrated to Tailwind card with submission/CTA areas; JS updated for fetch-based workflows.
 
-### `src/property/templates/search-filter-box.html`
+### `src/property/templates/components/property/filter-panel.html`
 - ✅ **UI**: Tailwind chip triggers, popover shells, and modal overlay replace legacy CSS.
 - ✅ **UX**: Vanilla JS controller manages state, emits `propertyFilters:changed` events, and supports keyboard-friendly clear/apply semantics. Popovers now announce expanded state; modal focus trap and Escape handling implemented for accessibility.
-- 🔜 **Next**: Extract markup into reusable `components/property/filter-panel.html` partial and expose `initPropertyFilters(options)` module for other search contexts.
+- ✅ **Componentization** (2025-11-10): Extracted into reusable `components/property/filter-panel.html` partial with modular `initPropertyFilters(options)` function in `js/property/filter-init.js` for use across search contexts.
 
 ### `src/wizerproperties/static/js/property/detail-page.js`
 - ✅ **UI/UX**: Converted to modular fetch with Tailwind hooks, lazy gallery loading, updated compare/favorite logic, and review submission.
@@ -187,8 +187,7 @@ This audit lists every template and supporting asset that should be touched duri
 - ✅ **Component Note**: Imports shared card factory for rendering and lazy Splide mounting.
 
 ### `src/wizerproperties/static/js/property/compair-favorite.js`
-- ✅ **UX**: Compare/favorite integration updated to broadcast removal events and sync counts.
-- 🔜 **Next**: Modernise to fetch + shared helpers, align button state management with card factory actions.
+- ✅ **UX/UI**: Complete modernization (2025-11-10): Removed jQuery dependencies, migrated to fetch API, integrated with card factory button states (proper icon updates), emits `compare:added`, `compare:removed`, `favorite:added`, and `favorite:removed` events for count syncing. Improved error handling, loading states with ARIA attributes, and visual feedback effects. Maintains backward compatibility with `favorite-list.js` event listeners.
 
 ---
 
@@ -276,6 +275,7 @@ This audit lists every template and supporting asset that should be touched duri
 ### `src/core/templates/home.html`
 - ✅ **UI**: `home.html` fully rebuilt with Tailwind primitives — gradient hero, trust badges, benefit grid, developer CTA, modular Splide carousels, and updated blog spotlight. Remaining landing/utility pages inherit refreshed typography but keep UI uplift on the roadmap.
 - ✅ **UX**: Home experience now follows 2025 landing page best practices (clarity, social proof, urgency). Hero search clarifies outcomes for international buyers, trust signals are surface-level, and developer/guide funnels support key conversion paths. Localised onboarding copy & CTA hierarchy tuned for remote investors.
+- ✅ **Layout Fix** (2025-11-10): Rebuilt property card component from scratch to fix layout issues in Splide carousels. Replaced fixed-width grid layout with vertical flexbox design that works seamlessly in both full-width search results and constrained slider contexts. Styles organized in `home.css` with proper flex display rules for slider slides.
 
 ### `src/core/templates/contact_us.html`
 - ✅ **UI**: Tailwind contact hero with backdrop overlay, dual card layout for contact details and form, removed legacy `contact.css`, and aligned spacing/typography with design tokens.
@@ -323,10 +323,10 @@ This audit lists every template and supporting asset that should be touched duri
 - `templates/components/form-field.html`
 - `templates/components/section-header.html`
 - `templates/components/upload-tile.html`
-- ✅ `templates/components/property-card.html` (implemented) — shared across search, favorites, developer listings via `property/card-factory.js`.
+- ✅ `templates/components/property/card.html` (implemented) — shared across search, favorites, developer listings via `property/card-factory.js`. Rebuilt from scratch (2025-11-10): replaced problematic grid layout with vertical flexbox design (image on top, content below) for proper display in both full-width and slider contexts. Enhanced with responsive image heights, proper text truncation (line-clamp), overflow handling, and improved spacing.
+- ✅ `templates/components/property/filter-panel.html` (implemented 2025-11-10) — componentized filter panel with modular `initPropertyFilters(options)` function in `js/property/filter-init.js`; used across search and map views.
 - **UI**: Centralize styling through shared partials to avoid drift.
 - **UX**: Guarantee consistent behavior (validation hints, helper text, error states) across modules.
-- 🔜 Extract `templates/components/property-filter-panel.html` from current search filter box once map/list parity verified.
 
 ### Shared Context Helpers
 - **UX**: Provide template tags or context processors to feed status badges, feature chips, and breadcrumbs without duplicating logic.
@@ -367,7 +367,7 @@ This audit lists every template and supporting asset that should be touched duri
 
 ## 14. Immediate Next Steps
 
-1. **Componentise Search Filters**: Convert `search-filter-box.html` into reusable partial + module (`initPropertyFilters`) so map/list views consume shared markup.
-2. **Modernise Compare/Favorite JS**: Refactor `property/compair-favorite.js` to fetch API helpers, integrate with card factory button states, and remove jQuery dependencies.
+1. ✅ **Componentise Search Filters**: Converted `search-filter-box.html` into reusable `components/property/filter-panel.html` partial with modular `initPropertyFilters(options)` function (2025-11-10).
+2. ✅ **Modernise Compare/Favorite JS**: Refactored `property/compair-favorite.js` to use fetch API, removed jQuery dependencies, integrated with card factory button states, and emits proper events for count syncing (2025-11-10).
 3. **Splide Helper Module**: Extract lazy gallery mounting into `static/js/modules/property-card-gallery.js` for reuse across detail/search/favorites.
 

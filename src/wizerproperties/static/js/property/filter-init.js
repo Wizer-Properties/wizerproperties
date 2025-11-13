@@ -1,5 +1,16 @@
 "use strict";
 
+/**
+ * Property Filter Initialization Module
+ * 
+ * Provides a reusable filter system for property search views.
+ * Usage: initPropertyFilters({ container: document.querySelector('#search-filter-box') })
+ * 
+ * @param {Object} options - Configuration options
+ * @param {HTMLElement} options.container - Container element for the filter panel (default: #search-filter-box)
+ * @param {Object} options.initialState - Initial filter state (default: parsed from URL params)
+ * @param {Function} options.onChange - Callback when filters change (default: dispatches propertyFilters:changed event)
+ */
 (function () {
   const RESIDENCE_SUB_TYPES = [
     { value: "bungalow_villa", label: "Bungalow / Villa" },
@@ -15,38 +26,6 @@
     { value: "agricultural_land", label: "Agricultural Land" },
     { value: "other", label: "Other" },
   ];
-
-  const dom = {
-    triggerGroup: document.querySelector("[data-filter-trigger-group]"),
-    popoverWrapper: document.querySelector("[data-filter-popovers]"),
-    popovers: document.querySelectorAll("[data-filter-popover]") || [],
-    modal: document.querySelector("[data-filter-modal]") || null,
-    activeChips: document.querySelector("[data-active-filter-chips]") || null,
-    filterLabels: document.querySelectorAll("[data-filter-label]") || [],
-    locationClear: document.querySelector("[data-filter-clear-location]") || null,
-    locationInput: document.getElementById("gm-search-input"),
-    resetButtons: document.querySelectorAll("[data-filter-reset]") || [],
-  };
-
-  const urlParams = new URL(window.location.href).searchParams;
-  const initialSubType = urlParams.get("building__sub_type");
-  const initialState = {
-    min_price: urlParams.get("min_price"),
-    max_price: urlParams.get("max_price"),
-    min_number_of_bedroom: urlParams.get("min_number_of_bedroom"),
-    max_number_of_bedroom: urlParams.get("max_number_of_bedroom"),
-    building__type: urlParams.get("building__type") || "",
-    building__sub_type: initialSubType ? initialSubType.split(",") : [],
-    nearby: urlParams.get("nearby"),
-    min_unit_area: urlParams.get("min_unit_area"),
-    max_unit_area: urlParams.get("max_unit_area"),
-    number_of_bathroom: urlParams.get("number_of_bathroom"),
-    building__quota: urlParams.get("building__quota"),
-    building__furnishing: urlParams.get("building__furnishing"),
-    building__status: urlParams.get("building__status"),
-    building__have_freehold: urlParams.get("building__have_freehold") === "true",
-    building__have_leasehold: urlParams.get("building__have_leasehold") === "true",
-  };
 
   class FilterData {
     constructor(initial = {}) {
@@ -183,15 +162,14 @@
     }
   }
 
-  const filterData = new FilterData(initialState);
-  window.filter_data = filterData;
-
   class FilterController {
-    constructor(data) {
+    constructor(data, container, onChange) {
       this.data = data;
+      this.container = container;
+      this.onChange = onChange || this.defaultOnChange.bind(this);
       this.activePopover = null;
       this.activeTrigger = null;
-      this.subTypeContainer = document.querySelector("[data-filter-subtype-list]");
+      this.subTypeContainer = null;
       this.modalOpen = false;
       this.modalTrigger = null;
       this.previousFocus = null;
@@ -200,18 +178,50 @@
       this.modalFocusable = [];
       this.firstFocusable = null;
       this.lastFocusable = null;
+      this.dom = {};
+    }
+
+    defaultOnChange(trigger, filters) {
+      document.dispatchEvent(
+        new CustomEvent("propertyFilters:changed", {
+          detail: {
+            trigger,
+            filters,
+          },
+        })
+      );
     }
 
     init() {
+      this.initDOM();
+      if (!this.dom.triggerGroup) {
+        console.warn("Property filter panel not found in container");
+        return;
+      }
       this.renderSubTypes(this.data.building__type || "residence");
       this.restoreSelections();
       this.attachEvents();
       this.updateUI();
     }
 
+    initDOM() {
+      this.dom = {
+        triggerGroup: this.container.querySelector("[data-filter-trigger-group]"),
+        popoverWrapper: this.container.querySelector("[data-filter-popovers]"),
+        popovers: this.container.querySelectorAll("[data-filter-popover]") || [],
+        modal: this.container.querySelector("[data-filter-modal]") || null,
+        activeChips: this.container.querySelector("[data-active-filter-chips]") || null,
+        filterLabels: this.container.querySelectorAll("[data-filter-label]") || [],
+        locationClear: this.container.querySelector("[data-filter-clear-location]") || null,
+        locationInput: this.container.querySelector("#gm-search-input") || document.getElementById("gm-search-input"),
+        resetButtons: this.container.querySelectorAll("[data-filter-reset]") || [],
+      };
+      this.subTypeContainer = this.container.querySelector("[data-filter-subtype-list]");
+    }
+
     attachEvents() {
-      if (dom.triggerGroup) {
-        dom.triggerGroup.addEventListener("click", (event) => {
+      if (this.dom.triggerGroup) {
+        this.dom.triggerGroup.addEventListener("click", (event) => {
           const trigger = event.target.closest("[data-filter-trigger]");
           if (!trigger) return;
           const targetName = trigger.getAttribute("data-filter-trigger");
@@ -223,15 +233,15 @@
         });
       }
 
-      if (dom.popoverWrapper) {
-        dom.popoverWrapper.addEventListener("change", (event) => {
+      if (this.dom.popoverWrapper) {
+        this.dom.popoverWrapper.addEventListener("change", (event) => {
           const target = event.target;
           if (!(target instanceof HTMLInputElement || target instanceof HTMLSelectElement)) return;
           if (!target.hasAttribute("data-filter-input")) return;
           this.handleInputChange(target);
         });
 
-        dom.popoverWrapper.addEventListener("click", (event) => {
+        this.dom.popoverWrapper.addEventListener("click", (event) => {
           const closeButton = event.target.closest("[data-filter-close]");
           if (closeButton) {
             this.closeActivePopover(true);
@@ -275,8 +285,8 @@
         }
       });
 
-      if (dom.modal) {
-        dom.modal.addEventListener("click", (event) => {
+      if (this.dom.modal) {
+        this.dom.modal.addEventListener("click", (event) => {
           const close = event.target.closest("[data-filter-close]");
           if (close && this.modalOpen) {
             this.closeModal();
@@ -299,7 +309,7 @@
           }
         });
 
-        dom.modal.querySelectorAll("[data-filter-input]").forEach((input) => {
+        this.dom.modal.querySelectorAll("[data-filter-input]").forEach((input) => {
           input.addEventListener("change", (event) => {
             const target = event.target;
             if (!(target instanceof HTMLSelectElement)) return;
@@ -308,8 +318,8 @@
         });
       }
 
-      if (dom.activeChips) {
-        dom.activeChips.addEventListener("click", (event) => {
+      if (this.dom.activeChips) {
+        this.dom.activeChips.addEventListener("click", (event) => {
           const chip = event.target.closest("button[data-remove-filter]");
           if (!chip) return;
           const key = chip.getAttribute("data-remove-filter");
@@ -320,7 +330,7 @@
         });
       }
 
-      dom.resetButtons.forEach((button) => {
+      this.dom.resetButtons.forEach((button) => {
         button.addEventListener("click", () => {
           this.data.clearAll();
           this.restoreSelections();
@@ -329,10 +339,10 @@
         });
       });
 
-      if (dom.locationClear && dom.locationInput) {
-        dom.locationClear.addEventListener("click", () => {
-          dom.locationInput.value = "";
-          dom.locationInput.dispatchEvent(new Event("change"));
+      if (this.dom.locationClear && this.dom.locationInput) {
+        this.dom.locationClear.addEventListener("click", () => {
+          this.dom.locationInput.value = "";
+          this.dom.locationInput.dispatchEvent(new Event("change"));
         });
       }
 
@@ -445,15 +455,15 @@
     }
 
     getPopoverByName(name) {
-      return Array.from(dom.popovers).find((popover) => popover.dataset.filterPopover === name) || null;
+      return Array.from(this.dom.popovers).find((popover) => popover.dataset.filterPopover === name) || null;
     }
 
     openModal(trigger) {
-      if (!dom.modal || this.modalOpen) return;
-      dom.modal.hidden = false;
-      dom.modal.classList.remove("hidden");
-      dom.modal.classList.add("flex");
-      const dialog = dom.modal.querySelector("[role='dialog'][tabindex='-1']") || dom.modal;
+      if (!this.dom.modal || this.modalOpen) return;
+      this.dom.modal.hidden = false;
+      this.dom.modal.classList.remove("hidden");
+      this.dom.modal.classList.add("flex");
+      const dialog = this.dom.modal.querySelector("[role='dialog'][tabindex='-1']") || this.dom.modal;
       this.previousFocus = document.activeElement;
       this.dialogElement = dialog;
       const focusableSelectors = "a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex='-1'])";
@@ -480,7 +490,7 @@
       };
       dialog.addEventListener("keydown", this.focusTrapHandler);
       document.body.classList.add("overflow-hidden");
-      dom.modal.setAttribute("aria-hidden", "false");
+      this.dom.modal.setAttribute("aria-hidden", "false");
       if (trigger) {
         this.modalTrigger = trigger;
         trigger.setAttribute("aria-expanded", "true");
@@ -489,11 +499,11 @@
     }
 
     closeModal() {
-      if (!dom.modal || !this.modalOpen) return;
-      dom.modal.classList.remove("flex");
-      dom.modal.classList.add("hidden");
-      dom.modal.hidden = true;
-      dom.modal.setAttribute("aria-hidden", "true");
+      if (!this.dom.modal || !this.modalOpen) return;
+      this.dom.modal.classList.remove("flex");
+      this.dom.modal.classList.add("hidden");
+      this.dom.modal.hidden = true;
+      this.dom.modal.setAttribute("aria-hidden", "true");
       const dialog = this.dialogElement;
       if (dialog && this.focusTrapHandler) {
         dialog.removeEventListener("keydown", this.focusTrapHandler);
@@ -539,8 +549,8 @@
     }
 
     restoreSelections() {
-      if (!dom.popoverWrapper) return;
-      dom.popoverWrapper.querySelectorAll("[data-filter-input]").forEach((input) => {
+      if (!this.dom.popoverWrapper) return;
+      this.dom.popoverWrapper.querySelectorAll("[data-filter-input]").forEach((input) => {
         if (!(input instanceof HTMLSelectElement || input instanceof HTMLInputElement)) return;
         const { name, type } = input;
         if (name === "building__type") {
@@ -559,8 +569,8 @@
         }
       });
 
-      if (dom.modal) {
-        dom.modal.querySelectorAll("[data-filter-input]").forEach((input) => {
+      if (this.dom.modal) {
+        this.dom.modal.querySelectorAll("[data-filter-input]").forEach((input) => {
           if (!(input instanceof HTMLSelectElement)) return;
           input.value = this.data[input.name] ?? "";
         });
@@ -571,8 +581,8 @@
     }
 
     updateToggleStates() {
-      if (!dom.modal) return;
-      dom.modal.querySelectorAll("[data-filter-toggle]").forEach((button) => {
+      if (!this.dom.modal) return;
+      this.dom.modal.querySelectorAll("[data-filter-toggle]").forEach((button) => {
         const key = button.getAttribute("name");
         const value = button.getAttribute("value");
         let isActive = false;
@@ -597,7 +607,7 @@
     }
 
     updateLabels() {
-      dom.filterLabels.forEach((label) => {
+      this.dom.filterLabels.forEach((label) => {
         const key = label.getAttribute("data-filter-label");
         if (!key) return;
         switch (key) {
@@ -643,7 +653,7 @@
     }
 
     updateActiveChips() {
-      if (!dom.activeChips) return;
+      if (!this.dom.activeChips) return;
       const fragments = document.createDocumentFragment();
       const filters = this.data.only_has_value();
 
@@ -668,22 +678,85 @@
       if (filters.building__have_freehold) addChip("building__have_freehold", "Freehold");
       if (filters.building__have_leasehold) addChip("building__have_leasehold", "Leasehold");
 
-      dom.activeChips.innerHTML = "";
-      dom.activeChips.appendChild(fragments);
+      this.dom.activeChips.innerHTML = "";
+      this.dom.activeChips.appendChild(fragments);
     }
 
     notifyChange(trigger) {
-      document.dispatchEvent(
-        new CustomEvent("propertyFilters:changed", {
-          detail: {
-            trigger,
-            filters: this.data.only_has_value(),
-          },
-        })
-      );
+      this.onChange(trigger, this.data.only_has_value());
+    }
+
+    getFilters() {
+      return this.data.only_has_value();
+    }
+
+    getFilterData() {
+      return this.data;
     }
   }
 
-  const controller = new FilterController(filterData);
-  controller.init();
+  /**
+   * Initialize property filters
+   * @param {Object} options - Configuration options
+   * @returns {FilterController} - The filter controller instance
+   */
+  function initPropertyFilters(options = {}) {
+    const container = options.container || document.getElementById("search-filter-box");
+    if (!container) {
+      console.warn("Property filter container not found");
+      return null;
+    }
+
+    // Parse initial state from URL or use provided state
+    let initialState = options.initialState;
+    if (!initialState) {
+      const urlParams = new URL(window.location.href).searchParams;
+      const initialSubType = urlParams.get("building__sub_type");
+      initialState = {
+        min_price: urlParams.get("min_price"),
+        max_price: urlParams.get("max_price"),
+        min_number_of_bedroom: urlParams.get("min_number_of_bedroom"),
+        max_number_of_bedroom: urlParams.get("max_number_of_bedroom"),
+        building__type: urlParams.get("building__type") || "",
+        building__sub_type: initialSubType ? initialSubType.split(",") : [],
+        nearby: urlParams.get("nearby"),
+        min_unit_area: urlParams.get("min_unit_area"),
+        max_unit_area: urlParams.get("max_unit_area"),
+        number_of_bathroom: urlParams.get("number_of_bathroom"),
+        building__quota: urlParams.get("building__quota"),
+        building__furnishing: urlParams.get("building__furnishing"),
+        building__status: urlParams.get("building__status"),
+        building__have_freehold: urlParams.get("building__have_freehold") === "true",
+        building__have_leasehold: urlParams.get("building__have_leasehold") === "true",
+      };
+    }
+
+    const filterData = new FilterData(initialState);
+    const controller = new FilterController(filterData, container, options.onChange);
+    controller.init();
+
+    // Expose filter data globally for backward compatibility
+    window.filter_data = filterData;
+
+    return controller;
+  }
+
+  // Auto-initialize if filter panel exists (backward compatibility)
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+      const container = document.getElementById("search-filter-box");
+      if (container) {
+        initPropertyFilters({ container });
+      }
+    });
+  } else {
+    const container = document.getElementById("search-filter-box");
+    if (container) {
+      initPropertyFilters({ container });
+    }
+  }
+
+  // Export for use in other modules
+  window.initPropertyFilters = initPropertyFilters;
 })();
+
