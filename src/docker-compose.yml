@@ -50,7 +50,13 @@ services:
         - ./certbot/www/:/var/www/certbot/:rw
         - ./certbot/conf/:/etc/letsencrypt/:rw
       command: certonly --webroot -w /var/www/certbot --force-renewal --email satnam182@hotmail.com -d wizerproperties.com --agree-tos
-
+  
+  assets:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ..:/app
+    command: sh -c "npm ci && npm run tailwind:build && sleep infinity"
 
 volumes:
   postgres_data:

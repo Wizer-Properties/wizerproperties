@@ -216,7 +216,7 @@
                             <h2 class="text-lg font-semibold text-foreground">Building Snapshot</h2>
                             <p class="text-sm text-muted-foreground">Fast facts about {{ property.building.title }}.</p>
                         </div>
-                        <a href="{% url 'building:get_building' property.building.slug property.building.id %}" class="btn-secondary">
+                        <a href="{% url 'building:get' property.building.id %}" class="btn-secondary">
                             View building
                         </a>
                     </div>

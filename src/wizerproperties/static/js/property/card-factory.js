@@ -22,9 +22,9 @@
   const formatCurrency = (value) => {
     if (!value) return "฿ 0";
     if (typeof window.formatBalance === "function") {
-      return `฿ ${window.formatBalance(Number(value))}`;
+      return `฿ ${window.formatBalance(Math.floor(Number(value)))}`;
     }
-    return `฿ ${Number(value).toLocaleString()}`;
+    return `฿ ${Math.floor(Number(value)).toLocaleString()}`;
   };
 
   const formatDate = (value) => {
@@ -44,13 +44,15 @@
 
     if (property.tag === "spotlight") {
       const badge = document.createElement("span");
-      badge.className = "rounded-full bg-destructive px-3 py-1 text-xs font-semibold text-white";
+    // Subtle outline accent for discounted/spotlight using semantic utility
+    badge.className = "rounded-full border border-discounted bg-black/50 px-3 py-1 text-xs font-semibold text-white backdrop-blur";
       badge.textContent = "Flash Sale";
       fragments.appendChild(badge);
     }
     if (property.tag === "feature") {
       const badge = document.createElement("span");
-      badge.className = "rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white";
+    // Subtle outline accent for featured using semantic utility
+    badge.className = "rounded-full border border-featured bg-black/50 px-3 py-1 text-xs font-semibold text-white backdrop-blur";
       badge.textContent = "Featured Listing";
       fragments.appendChild(badge);
     }
@@ -170,6 +172,12 @@
 
     card.dataset.propertyId = property.id || "";
     if (property.tag) card.dataset.propertyTag = property.tag;
+    // Apply subtle outline accent to the entire card based on tag
+    if (property.tag === "spotlight") {
+    card.classList.add("border-2", "border-discounted");
+    } else if (property.tag === "feature") {
+    card.classList.add("border-2", "border-featured");
+    }
 
     const cardActions = card.querySelector("[data-card-actions]");
     const favoriteButton = cardActions?.querySelector("[data-card-favorite]");

@@ -24,6 +24,14 @@ module.exports = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        // Brand accents (client request 2025-11-16)
+        brand: {
+          teal: "#15c1b9",
+          purple: "#7f1377",
+        },
+        // Semantic aliases for use across UI
+        featured: "#7f1377",
+        discounted: "#15c1b9",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -81,5 +89,19 @@ module.exports = {
     require("@tailwindcss/typography"),
     require("@tailwindcss/aspect-ratio"),
     require("tailwindcss-animate"),
+    // Small plugin to expose semantic outline utilities
+    function ({ addUtilities, theme }) {
+      const newUtilities = {
+        ".border-featured": { borderColor: theme("colors.featured") },
+        ".border-discounted": { borderColor: theme("colors.discounted") },
+        ".ring-featured": { "--tw-ring-color": theme("colors.featured") },
+        ".ring-discounted": { "--tw-ring-color": theme("colors.discounted") },
+        ".text-brand-teal": { color: theme("colors.brand.teal") },
+        ".text-brand-purple": { color: theme("colors.brand.purple") },
+        ".bg-brand-teal": { backgroundColor: theme("colors.brand.teal") },
+        ".bg-brand-purple": { backgroundColor: theme("colors.brand.purple") },
+      };
+      addUtilities(newUtilities);
+    },
   ],
 };

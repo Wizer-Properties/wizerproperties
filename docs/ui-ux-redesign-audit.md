@@ -56,6 +56,28 @@ This audit lists every template and supporting asset that should be touched duri
 - **UI**: Document color palette, typography, spacing, and component variants.
 - **UX**: Define motion guidelines (even if deferred), focus states, density modes, and accessibility heuristics.
 
+### Brand Accent Guidance (Client Request 2025-11-16)
+- Subtle retention of brand accents across the site:
+  - Discounted/spotlight contexts: outline/badge accent `#15c1b9`.
+  - Featured contexts: outline/badge accent `#7f1377`.
+- Keep usage minimal and clean; prefer outlines/borders, subtle badges, or icon strokes over large fills.
+- Primary CTA style remains unchanged; do not recolor the main CTA button.
+
+### Tailwind Tokens & Utilities (2025-11-16)
+- Added brand colors to Tailwind for consistent use across templates:
+  - `brand.teal` = `#15c1b9`
+  - `brand.purple` = `#7f1377`
+  - Semantic aliases: `featured` = `#7f1377`, `discounted` = `#15c1b9`
+- Semantic utilities registered:
+  - Borders: `border-featured`, `border-discounted`
+  - Rings: `ring-featured`, `ring-discounted`
+  - Text: `text-brand-teal`, `text-brand-purple`
+  - Backgrounds: `bg-brand-teal`, `bg-brand-purple`
+- Usage guidance:
+  - Featured cards/badges: prefer `border-featured`, `ring-featured`, or `text-brand-purple` for icon strokes.
+  - Discounted/spotlight: prefer `border-discounted`, `ring-discounted`, or `text-brand-teal`.
+  - Avoid changing primary CTA; accents should be outlines/badges only.
+
 ---
 
 ## 2. Shared Template Includes & Layout Pieces
@@ -188,6 +210,15 @@ This audit lists every template and supporting asset that should be touched duri
 
 ### `src/wizerproperties/static/js/property/compair-favorite.js`
 - ✅ **UX/UI**: Complete modernization (2025-11-10): Removed jQuery dependencies, migrated to fetch API, integrated with card factory button states (proper icon updates), emits `compare:added`, `compare:removed`, `favorite:added`, and `favorite:removed` events for count syncing. Improved error handling, loading states with ARIA attributes, and visual feedback effects. Maintains backward compatibility with `favorite-list.js` event listeners.
+
+### Currency Formatting Consistency (2025-11-16)
+- ✅ All property card prices (total and per-sqm) now display as whole baht values (no decimals) to match detail pages and badges. Implemented in `static/js/property/card-factory.js` via flooring to the nearest baht for clean presentation.
+
+### Featured/Discounted Card Styling (2025-11-16)
+- ✅ Subtle outlines/badges applied via design tokens:
+  - Discounted/spotlight: border/badge accent `#15c1b9`.
+  - Featured: border/badge accent `#7f1377`.
+- Primary CTA retains existing color and style for consistency.
 
 ---
 

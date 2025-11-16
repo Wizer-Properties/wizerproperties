@@ -2,7 +2,7 @@ services:
   web:
     build:
       context: .
-    command: npm install && npm run dev && bash -c "python manage.py runserver 0.0.0.0:8000"
+    command: bash -c "python manage.py runserver 0.0.0.0:8000"
     ports:
       - "8000:8000"
     volumes:
@@ -24,6 +24,13 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB_HOST=${POSTGRES_HOST}
+
+  assets:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ..:/app
+    command: sh -c "npm ci && npm run tailwind:watch"
 
 volumes:
   postgres_data:
