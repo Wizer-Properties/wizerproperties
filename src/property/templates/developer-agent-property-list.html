@@ -21,9 +21,9 @@
                         {% endif %}
                     </div>
                     <div class="space-y-2">
-                        <p class="text-xs font-semibold uppercase tracking-[0.4em] text-primary">
+                        <span class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">
                             {% if user.user_type == "developer" %}Developer{% elif user.user_type == "agent" %}Agent{% else %}Partner{% endif %}
-                        </p>
+                        </span>
                         <h1 class="text-3xl font-heading font-semibold text-foreground">{{ username }}</h1>
                         <div class="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
                             <i class="bi bi-geo-alt text-primary"></i>
@@ -73,7 +73,7 @@
 
             <aside class="flex h-full flex-col gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm">
                 <div class="space-y-2">
-                    <p class="text-xs font-semibold uppercase tracking-[0.4em] text-primary">Portfolio</p>
+                    <span class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Portfolio</span>
                     <div class="flex items-end gap-2">
                         <p class="text-4xl font-heading font-semibold text-foreground" label-name="total">—</p>
                         <span class="text-sm text-muted-foreground">Total listings</span>

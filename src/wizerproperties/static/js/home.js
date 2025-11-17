@@ -448,10 +448,26 @@
     window.location.href = url;
   };
 
+  const initFilterToggle = () => {
+    const toggleButton = document.querySelector("[data-filter-toggle]");
+    const filterPanel = document.querySelector("[data-filter-panel]");
+    const filterIcon = document.querySelector("[data-filter-icon]");
+
+    if (!toggleButton || !filterPanel || !filterIcon) return;
+
+    toggleButton.addEventListener("click", () => {
+      const isExpanded = toggleButton.getAttribute("aria-expanded") === "true";
+      toggleButton.setAttribute("aria-expanded", !isExpanded);
+      filterPanel.classList.toggle("hidden");
+      filterIcon.classList.toggle("rotate-180");
+    });
+  };
+
   const initHeroSearch = () => {
     if (!selectors.heroInput || !selectors.searchButton) return;
 
     initPropertyTypeControls();
+    initFilterToggle();
 
     selectors.searchButton.addEventListener("click", (event) => {
       event.preventDefault();

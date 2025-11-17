@@ -9,153 +9,152 @@
 {% endblock extend_head %}
 
 {% block content %}
+<!-- Hero Section: Focused Bangkok New-Build Search -->
 <section class="relative overflow-hidden bg-slate-950 text-white">
     <div class="absolute inset-0">
-        <img src="{% static '/media/background/home-page-bg.webp' %}" alt="Thailand skyline" class="h-full w-full object-cover opacity-60">
+        <img src="{% static '/media/background/home-page-bg.webp' %}" alt="Bangkok skyline" class="h-full w-full object-cover opacity-60" fetchpriority="high" loading="eager" decoding="async">
         <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 to-slate-900/70"></div>
     </div>
-    <div class="container relative z-10 py-24 lg:py-32">
-        <div class="grid items-start gap-16 lg:grid-cols-[minmax(0,1fr)_420px]">
-            <div class="space-y-8">
-                <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary-100">
-                    New builds in Thailand
-                </span>
-                <div class="space-y-5">
-                    <h1 class="text-4xl font-heading font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">
-                        Find verified developments built for international buyers
-                    </h1>
-                    <p class="max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg">
-                        WizerProperties surfaces new-build homes across Thailand that are fully vetted, price-transparent, and ready for virtual viewings. Compare units, understand payment milestones, and connect directly with trusted developers without hopping between brokers.
-                    </p>
-                </div>
-                <div class="flex flex-wrap items-center gap-4">
-                    <a href="#discount-properties" class="btn bg-primary text-white hover:bg-primary/90 focus-visible:outline-white">
-                        Browse spotlight deals
-                    </a>
-                    <a href="/schedule/create_schedule/?type=consultation" class="btn-secondary border-white/40 bg-white/10 text-white hover:bg-white/20">
-                        Talk to a local specialist
-                    </a>
-                </div>
-                <dl class="grid gap-6 text-sm text-white/80 sm:grid-cols-3">
-                    <div>
-                        <dt class="font-semibold text-white">10k+ verified units</dt>
-                        <dd class="mt-1 text-white/70">Every listing is checked for developer credibility and completion status.</dd>
-                    </div>
-                    <div>
-                        <dt class="font-semibold text-white">Remote-first experience</dt>
-                        <dd class="mt-1 text-white/70">Book live video tours, compare units, and sign digitally from anywhere.</dd>
-                    </div>
-                    <div>
-                        <dt class="font-semibold text-white">24h buyer concierge</dt>
-                        <dd class="mt-1 text-white/70">Local specialists answer financing, visa, and ownership questions on demand.</dd>
-                    </div>
-                </dl>
+    <div class="container relative z-10 py-20 lg:py-28">
+        <div class="mx-auto max-w-4xl space-y-8 text-center">
+            <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary-100">
+                Verified Bangkok new-builds for foreign buyers
+            </span>
+            <div class="space-y-4">
+                <h1 class="text-4xl font-heading font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">
+                    Find your Bangkok condo or villa with full transparency
+                </h1>
+                <p class="mx-auto max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg">
+                    Browse verified new-build developments across Bangkok. Compare prices, payment plans, and rental yields—all vetted for international buyers.
+                </p>
             </div>
-            <div class="rounded-3xl border border-white/20 bg-white text-foreground shadow-2xl backdrop-blur-lg">
-                <div class="space-y-6 p-8">
-                    <div class="space-y-2">
-                        <h2 class="text-lg font-semibold text-foreground">Search homes matched to your brief</h2>
-                        <p class="text-sm text-muted-foreground">Choose a destination, set a budget, and we’ll surface the best-fitting developments.</p>
-                    </div>
-                    <div class="space-y-5">
+            
+            <!-- Simplified Search Card -->
+            <div class="mx-auto max-w-2xl rounded-3xl border border-white/20 bg-white text-foreground shadow-2xl backdrop-blur-lg">
+                <div class="space-y-6 p-6 sm:p-8">
+                    <div class="space-y-4">
                         <div class="space-y-2">
-                            <label for="gm-search-input" class="text-sm font-medium text-muted-foreground">Location or landmark</label>
+                            <label for="gm-search-input" class="sr-only">Search by area, BTS/MRT station, or project name</label>
                             <div class="relative">
                                 <span class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-muted-foreground">
                                     <i class="bi bi-geo-alt text-lg"></i>
                                 </span>
-                                <input id="gm-search-input" type="text" placeholder="e.g. Bangkok, Thonglor, beach front" class="input h-12 rounded-2xl border border-border bg-white pl-11 pr-12 text-base" autocomplete="off">
+                                <input 
+                                    id="gm-search-input" 
+                                    type="text" 
+                                    placeholder="e.g. Thong Lo, BTS Asok, Sukhumvit 39, riverside condo" 
+                                    class="input h-14 rounded-2xl border border-border bg-white pl-11 pr-12 text-base" 
+                                    autocomplete="off"
+                                >
                                 <button type="button" class="absolute inset-y-0 right-3 flex items-center text-muted-foreground transition hover:text-foreground" data-search-clear>
                                     <i class="bi bi-x-circle text-lg"></i>
                                     <span class="sr-only">Clear location</span>
                                 </button>
                             </div>
                         </div>
-                        <div class="grid gap-3 sm:grid-cols-2">
-                            <label class="space-y-2 text-sm font-medium text-muted-foreground">
-                                <span>Min budget</span>
-                                <select name="min_price" class="input rounded-2xl border border-border bg-white py-2">
-                                    <option value="">Any</option>
-                                    <option value="500000">฿ 500,000</option>
-                                    <option value="1000000">฿ 1,000,000</option>
-                                    <option value="2000000">฿ 2,000,000</option>
-                                    <option value="5000000">฿ 5,000,000</option>
-                                    <option value="10000000">฿ 10,000,000</option>
-                                    <option value="20000000">฿ 20,000,000</option>
-                                    <option value="50000000">฿ 50,000,000</option>
-                                </select>
-                            </label>
-                            <label class="space-y-2 text-sm font-medium text-muted-foreground">
-                                <span>Max budget</span>
-                                <select name="max_price" class="input rounded-2xl border border-border bg-white py-2">
-                                    <option value="">Any</option>
-                                    <option value="2000000">฿ 2,000,000</option>
-                                    <option value="5000000">฿ 5,000,000</option>
-                                    <option value="10000000">฿ 10,000,000</option>
-                                    <option value="20000000">฿ 20,000,000</option>
-                                    <option value="50000000">฿ 50,000,000</option>
-                                    <option value="100000000">฿ 100,000,000</option>
-                                </select>
-                            </label>
-                            <label class="space-y-2 text-sm font-medium text-muted-foreground">
-                                <span>Min bedrooms</span>
-                                <select name="min_number_of_bedroom" class="input rounded-2xl border border-border bg-white py-2">
-                                    <option value="">Any</option>
-                                    <option value="1">1 bedroom</option>
-                                    <option value="2">2 bedrooms</option>
-                                    <option value="3">3 bedrooms</option>
-                                    <option value="4">4 bedrooms</option>
-                                    <option value="5">5 bedrooms</option>
-                                </select>
-                            </label>
-                            <label class="space-y-2 text-sm font-medium text-muted-foreground">
-                                <span>Max bedrooms</span>
-                                <select name="max_number_of_bedroom" class="input rounded-2xl border border-border bg-white py-2">
-                                    <option value="">Any</option>
-                                    <option value="1">1 bedroom</option>
-                                    <option value="2">2 bedrooms</option>
-                                    <option value="3">3 bedrooms</option>
-                                    <option value="4">4 bedrooms</option>
-                                    <option value="5">5 bedrooms</option>
-                                </select>
-                            </label>
-                        </div>
-                        <div class="space-y-3">
-                            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">Property type</p>
-                            <div class="flex flex-wrap gap-3">
-                                <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-primary/60" data-property-type="" aria-pressed="true">
-                                    Any use
+                        
+                        <!-- Quick Filter Chips -->
+                        <div class="space-y-2">
+                            <p class="text-xs font-medium text-muted-foreground">Quick filters</p>
+                            <div class="flex flex-wrap gap-2">
+                                <button type="button" class="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/60 px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary" data-property-type="" aria-pressed="true" aria-label="Filter: Any property type">
+                                    <i class="bi bi-building" aria-hidden="true"></i>
+                                    <span>Any</span>
                                 </button>
-                                <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary" data-property-type="residence">
-                                    Residential
+                                <button type="button" class="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/60 px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary" data-property-type="residence" aria-pressed="false" aria-label="Filter: Residential properties">
+                                    <i class="bi bi-house-heart" aria-hidden="true"></i>
+                                    <span>Residential</span>
                                 </button>
-                                <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary" data-property-type="commercial">
-                                    Commercial
+                                <button type="button" class="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/60 px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary" data-property-type="commercial" aria-pressed="false" aria-label="Filter: Commercial properties">
+                                    <i class="bi bi-briefcase" aria-hidden="true"></i>
+                                    <span>Commercial</span>
                                 </button>
                             </div>
                         </div>
+                        
+                        <!-- Collapsible Advanced Filters -->
+                        <div class="space-y-3">
+                            <button type="button" class="flex w-full items-center justify-between text-sm font-medium text-muted-foreground transition hover:text-foreground focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2" data-filter-toggle aria-expanded="false" aria-controls="advanced-filters-panel">
+                                <span>More filters</span>
+                                <i class="bi bi-chevron-down transition-transform" data-filter-icon aria-hidden="true"></i>
+                            </button>
+                            <div id="advanced-filters-panel" class="hidden space-y-3 border-t border-border pt-3" data-filter-panel>
+                                <div class="grid gap-3 sm:grid-cols-2">
+                                    <label class="space-y-1.5 text-sm font-medium text-muted-foreground">
+                                        <span>Min budget</span>
+                                        <select name="min_price" class="input rounded-xl border border-border bg-white py-2 text-sm">
+                                            <option value="">Any</option>
+                                            <option value="500000">฿ 500,000</option>
+                                            <option value="1000000">฿ 1,000,000</option>
+                                            <option value="2000000">฿ 2,000,000</option>
+                                            <option value="5000000">฿ 5,000,000</option>
+                                            <option value="10000000">฿ 10,000,000</option>
+                                            <option value="20000000">฿ 20,000,000</option>
+                                            <option value="50000000">฿ 50,000,000</option>
+                                        </select>
+                                    </label>
+                                    <label class="space-y-1.5 text-sm font-medium text-muted-foreground">
+                                        <span>Max budget</span>
+                                        <select name="max_price" class="input rounded-xl border border-border bg-white py-2 text-sm">
+                                            <option value="">Any</option>
+                                            <option value="2000000">฿ 2,000,000</option>
+                                            <option value="5000000">฿ 5,000,000</option>
+                                            <option value="10000000">฿ 10,000,000</option>
+                                            <option value="20000000">฿ 20,000,000</option>
+                                            <option value="50000000">฿ 50,000,000</option>
+                                            <option value="100000000">฿ 100,000,000</option>
+                                        </select>
+                                    </label>
+                                    <label class="space-y-1.5 text-sm font-medium text-muted-foreground">
+                                        <span>Min bedrooms</span>
+                                        <select name="min_number_of_bedroom" class="input rounded-xl border border-border bg-white py-2 text-sm">
+                                            <option value="">Any</option>
+                                            <option value="1">1 bedroom</option>
+                                            <option value="2">2 bedrooms</option>
+                                            <option value="3">3 bedrooms</option>
+                                            <option value="4">4 bedrooms</option>
+                                            <option value="5">5 bedrooms</option>
+                                        </select>
+                                    </label>
+                                    <label class="space-y-1.5 text-sm font-medium text-muted-foreground">
+                                        <span>Max bedrooms</span>
+                                        <select name="max_number_of_bedroom" class="input rounded-xl border border-border bg-white py-2 text-sm">
+                                            <option value="">Any</option>
+                                            <option value="1">1 bedroom</option>
+                                            <option value="2">2 bedrooms</option>
+                                            <option value="3">3 bedrooms</option>
+                                            <option value="4">4 bedrooms</option>
+                                            <option value="5">5 bedrooms</option>
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div>
-                            <button type="button" id="location-search-btn" class="btn w-full justify-center bg-primary text-white hover:bg-primary/90">
-                                <i class="bi bi-search me-2"></i>
-                                <span>Search properties</span>
+                            <button type="button" id="location-search-btn" class="btn w-full justify-center bg-primary text-white hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2" aria-label="Search for Bangkok new-build properties">
+                                <i class="bi bi-search me-2" aria-hidden="true"></i>
+                                <span>Search Bangkok new-builds</span>
                             </button>
                             <p class="mt-2 hidden text-sm text-destructive" data-search-error>Select a location from the autocomplete suggestions to start.</p>
                         </div>
                     </div>
+                    
+                    <!-- Quick Search Links -->
                     <div class="border-t border-border pt-4">
-                        <p class="text-xs font-medium uppercase tracking-[0.3em] text-muted-foreground">Popular quick searches</p>
-                        <div class="mt-3 flex flex-wrap gap-2">
-                            <a href="/property/search/?place=Bangkok%2C%20Thailand&latitude=13.7563309&longitude=100.5017651&place_id=ChIJ82ENKDJgHTERIEjiXbIAAQE&fature_type=locality&min_price=5000000" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary">
+                        <p class="mb-2 text-xs font-medium uppercase tracking-[0.3em] text-muted-foreground">Popular Bangkok searches</p>
+                        <div class="flex flex-wrap justify-center gap-2">
+                            <a href="/property/search/?place=Thong%20Lo,%20Bangkok&latitude=13.7307&longitude=100.5853&fature_type=locality&building__type=residence" class="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary">
+                                <i class="bi bi-train-front"></i>
+                                <span>Near BTS Thong Lo</span>
+                            </a>
+                            <a href="/property/search/?place=Sathorn,%20Bangkok&latitude=13.7234&longitude=100.5347&fature_type=locality&min_price=5000000" class="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary">
                                 <i class="bi bi-building"></i>
-                                <span>Bangkok condos under ฿5M</span>
+                                <span>Sathorn condos under ฿5M</span>
                             </a>
-                            <a href="/property/search/?place=Phuket,%20Thailand&latitude=7.9843109&longitude=98.3307468&place_id=none&fature_type=circle&building__type=residence&min_number_of_bedroom=3" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary">
-                                <i class="bi bi-house-heart"></i>
-                                <span>Phuket family villas</span>
-                            </a>
-                            <a href="/property/search/?place=Chiang%20Mai,%20Thailand&latitude=18.7883439&longitude=98.9853008&place_id=none&fature_type=locality&building__type=commercial" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary">
-                                <i class="bi bi-briefcase"></i>
-                                <span>Chiang Mai commercial</span>
+                            <a href="/property/search/?place=Bangkok%20Riverside&latitude=13.7279&longitude=100.5018&fature_type=circle&building__type=residence" class="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary">
+                                <i class="bi bi-water"></i>
+                                <span>Riverside properties</span>
                             </a>
                         </div>
                     </div>
@@ -165,104 +164,128 @@
     </div>
 </section>
 
-<section class="-mt-10 bg-background py-12">
+<!-- Trust Band: Stats moved here -->
+<section class="-mt-8 bg-background py-10">
     <div class="container">
-        <div class="rounded-3xl border border-border bg-card/80 p-6 shadow-lg backdrop-blur">
-            <div class="flex flex-col items-center gap-6 lg:flex-row lg:justify-between">
-                <div class="text-center lg:text-left">
-                    <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Trusted developers</p>
-                    <p class="text-sm text-muted-foreground">Verified partners across Bangkok, Phuket, Krabi, Chiang Mai &amp; coastal hotspots</p>
+        <div class="rounded-2xl border border-border bg-card/50 p-8 shadow-sm backdrop-blur-sm">
+            <dl class="grid gap-8 text-sm sm:grid-cols-3">
+                <div class="text-center">
+                    <div class="mb-3 inline-flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                        <i class="bi bi-shield-check text-xl" aria-hidden="true"></i>
+                    </div>
+                    <dt class="text-xl font-heading font-semibold text-foreground">10k+ verified units</dt>
+                    <dd class="mt-2 text-sm leading-relaxed text-muted-foreground">Every listing checked for developer credibility and completion status</dd>
                 </div>
-                <div class="flex flex-wrap items-center justify-center gap-4 text-sm font-semibold text-muted-foreground">
-                    <span class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-4 py-2">Sansiri</span>
-                    <span class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-4 py-2">Ananda</span>
-                    <span class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-4 py-2">Origin</span>
-                    <span class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-4 py-2">Habitat Group</span>
-                    <span class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-4 py-2">Minor International</span>
+                <div class="text-center">
+                    <div class="mb-3 inline-flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                        <i class="bi bi-laptop text-xl" aria-hidden="true"></i>
+                    </div>
+                    <dt class="text-xl font-heading font-semibold text-foreground">Remote-first experience</dt>
+                    <dd class="mt-2 text-sm leading-relaxed text-muted-foreground">Book video tours, compare units, and sign digitally from anywhere</dd>
                 </div>
-            </div>
+                <div class="text-center">
+                    <div class="mb-3 inline-flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                        <i class="bi bi-headset text-xl" aria-hidden="true"></i>
+                    </div>
+                    <dt class="text-xl font-heading font-semibold text-foreground">24h buyer concierge</dt>
+                    <dd class="mt-2 text-sm leading-relaxed text-muted-foreground">Local specialists answer financing, visa, and ownership questions</dd>
+                </div>
+            </dl>
         </div>
     </div>
 </section>
 
-<section class="bg-muted/20 py-20">
-    <div class="container space-y-12">
-        <div class="max-w-2xl space-y-4">
-            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Why buyers choose us</p>
-            <h2 class="text-3xl font-heading font-semibold text-foreground">We remove the friction foreign buyers feel most</h2>
-            <p class="text-base text-muted-foreground">Our redesign focuses on what global buyers struggle with—lack of transparency, fear of hidden costs, and uncertainty about local processes—aligning with 2025 landing page best practices that emphasise clarity, trust, and tangible outcomes.</p>
+<!-- Task Tiles: Bangkok Buyer Jobs-to-be-Done -->
+<section class="bg-muted/20 py-16">
+    <div class="container space-y-8">
+        <div class="text-center">
+            <span class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+                Buyer resources
+            </span>
         </div>
-        <div class="grid gap-6 md:grid-cols-3">
-            <article class="h-full space-y-4 rounded-3xl border border-border bg-card p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-                <span class="inline-flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <a href="/blogs/can-foreigners-buy-property-in-thailand-6b5d8" class="group flex h-full flex-col rounded-3xl border border-border bg-card p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                <span class="mb-4 inline-flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
                     <i class="bi bi-shield-check text-xl"></i>
                 </span>
-                <h3 class="text-lg font-semibold text-foreground">Verified due diligence</h3>
-                <p class="text-sm text-muted-foreground">Every project shows legal status, ownership quotas, and developer credentials so you can act with confidence—directly addressing the trust gaps highlighted in real-estate UX research.</p>
-            </article>
-            <article class="h-full space-y-4 rounded-3xl border border-border bg-card p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-                <span class="inline-flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-                    <i class="bi bi-graph-up text-xl"></i>
+                <h3 class="mb-2 text-lg font-semibold text-foreground">Can foreigners own a condo in Bangkok?</h3>
+                <p class="mb-4 flex-1 text-sm text-muted-foreground">Understand ownership structures, leasehold vs freehold, and legal requirements for international buyers.</p>
+                <span class="inline-flex items-center gap-2 text-sm font-medium text-primary">
+                    <span>Read guide</span>
+                    <i class="bi bi-arrow-right transition-transform group-hover:translate-x-1"></i>
                 </span>
-                <h3 class="text-lg font-semibold text-foreground">Transparent pricing &amp; incentives</h3>
-                <p class="text-sm text-muted-foreground">Compare developer incentives, payment schedules, and projected yields in one place—reducing the “hidden cost” anxiety cited in 2025 conversion benchmarks.</p>
-            </article>
-            <article class="h-full space-y-4 rounded-3xl border border-border bg-card p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-                <span class="inline-flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+            </a>
+            
+            <a href="/property/search/?place=Bangkok,%20Thailand&latitude=13.7563309&longitude=100.5017651&place_id=ChIJ82ENKDJgHTERIEjiXbIAAQE&fature_type=locality&ordering=-rental_yield" class="group flex h-full flex-col rounded-3xl border border-border bg-card p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                <span class="mb-4 inline-flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <i class="bi bi-graph-up-arrow text-xl"></i>
+                </span>
+                <h3 class="mb-2 text-lg font-semibold text-foreground">Best Bangkok areas for rental yield</h3>
+                <p class="mb-4 flex-1 text-sm text-muted-foreground">Compare projected returns across Thong Lo, Sathorn, Asok, and other prime investment zones.</p>
+                <span class="inline-flex items-center gap-2 text-sm font-medium text-primary">
+                    <span>Explore areas</span>
+                    <i class="bi bi-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </span>
+            </a>
+            
+            <a href="/blogs/can-foreigners-buy-property-in-thailand-6b5d8" class="group flex h-full flex-col rounded-3xl border border-border bg-card p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                <span class="mb-4 inline-flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <i class="bi bi-calculator text-xl"></i>
+                </span>
+                <h3 class="mb-2 text-lg font-semibold text-foreground">Understand Bangkok payment plans & fees</h3>
+                <p class="mb-4 flex-1 text-sm text-muted-foreground">Learn about staged payments, transfer fees, taxes, and hidden costs before you commit.</p>
+                <span class="inline-flex items-center gap-2 text-sm font-medium text-primary">
+                    <span>Learn more</span>
+                    <i class="bi bi-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </span>
+            </a>
+            
+            <a href="/schedule/create_schedule/?type=consultation" class="group flex h-full flex-col rounded-3xl border border-border bg-card p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                <span class="mb-4 inline-flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
                     <i class="bi bi-person-video3 text-xl"></i>
                 </span>
-                <h3 class="text-lg font-semibold text-foreground">Remote-first closing support</h3>
-                <p class="text-sm text-muted-foreground">Schedule virtual tours, coordinate inspection reports, and hand off documentation to bilingual specialists without timezone guesswork.</p>
-            </article>
+                <h3 class="mb-2 text-lg font-semibold text-foreground">Book a video tour with a local specialist</h3>
+                <p class="mb-4 flex-1 text-sm text-muted-foreground">Schedule a live virtual viewing and get answers about financing, visas, and ownership in your language.</p>
+                <span class="inline-flex items-center gap-2 text-sm font-medium text-primary">
+                    <span>Book now</span>
+                    <i class="bi bi-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </span>
+            </a>
         </div>
     </div>
 </section>
 
-<section class="bg-background py-12">
+<!-- Trusted Developers Band -->
+<section class="bg-background py-8">
     <div class="container">
-        <div class="top-banner overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-            <div class="splide ads-banner-slider">
-                <div class="splide__track">
-                    <ul class="splide__list">
-                        <!-- populated by ads.js -->
-                    </ul>
+        <div class="rounded-2xl border border-border bg-card/80 p-6 shadow-sm">
+            <div class="flex flex-col items-center gap-4 lg:flex-row lg:justify-between">
+                <div class="text-center lg:text-left space-y-2">
+                    <span class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Trusted developers</span>
+                    <p class="text-sm text-muted-foreground">Verified partners across Bangkok, Phuket, Krabi, Chiang Mai &amp; coastal hotspots</p>
+                </div>
+                <div class="flex flex-wrap items-center justify-center gap-3 text-sm font-semibold text-muted-foreground">
+                    <span class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-3 py-1.5">Sansiri</span>
+                    <span class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-3 py-1.5">Ananda</span>
+                    <span class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-3 py-1.5">Origin</span>
+                    <span class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-3 py-1.5">Habitat Group</span>
+                    <span class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-3 py-1.5">Minor International</span>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-{% if not request.user.is_authenticated %}
-<section class="bg-background py-16">
-    <div class="container">
-        <div class="rounded-3xl border border-border bg-card p-10 shadow-lg">
-            <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
-                <div class="space-y-4">
-                    <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Create a free account</p>
-                    <h2 class="text-3xl font-heading font-semibold text-foreground">Unlock saved searches, instant alerts, and virtual-first tours</h2>
-                    <p class="text-sm text-muted-foreground">Personalise recommendations, sync favourite units across devices, and collaborate with developers in a single workspace.</p>
-                </div>
-                <div class="flex flex-col gap-3 sm:flex-row">
-                    <a href="/user/signup/" class="btn bg-primary text-white hover:bg-primary/90">Create free account</a>
-                    <a href="/user/login/" class="btn-secondary">Sign in</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endif %}
-
-{% include 'chat.html' %}
-
-<section id="discount-properties" class="bg-muted/30 py-16">
+<!-- Spotlight Section: Merged Discount + Popular -->
+<section id="spotlight-properties" class="bg-muted/30 py-16">
     <div class="container space-y-8">
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div class="space-y-3">
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Limited-time offers</p>
-                <h2 class="text-3xl font-heading font-semibold text-foreground">Developer incentives closing soon</h2>
-                <p class="text-sm text-muted-foreground">Access flash sales, staged payment plans, and launch-day bonuses curated for international buyers.</p>
+            <div class="space-y-2">
+                <span class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Bangkok spotlight</span>
+                <h2 class="text-3xl font-heading font-semibold text-foreground">Limited-time incentives & newest launches</h2>
+                <p class="text-sm text-muted-foreground">Access flash sales, staged payment plans, and launch-day bonuses curated for international buyers in Bangkok.</p>
             </div>
-            <a href="/property/search/?tag=spotlight" class="btn-secondary">View all deals</a>
+            <a href="/property/search/?tag=spotlight" class="btn-secondary whitespace-nowrap">View all Bangkok deals</a>
         </div>
         <div class="space-y-4">
             <div class="splide property-carousel" data-slider="discount">
@@ -277,17 +300,44 @@
     </div>
 </section>
 
-<section id="recommended-search" class="bg-background py-16">
+<!-- Ads Banner -->
+<section class="bg-background py-12">
+    <div class="container">
+        <div class="top-banner overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+            <div class="splide ads-banner-slider">
+                <div class="splide__track">
+                    <ul class="splide__list">
+                        <!-- populated by ads.js -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Personalized Properties: Merged Recommended + Hot -->
+<section id="personalized-properties" class="bg-background py-16">
     <div class="container space-y-8">
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div class="space-y-3">
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Personalised picks</p>
-                <h2 class="text-3xl font-heading font-semibold text-foreground">Recommended based on your browsing</h2>
-                <p class="text-sm text-muted-foreground">We analyse saved searches and viewed listings to surface new launches that match your criteria.</p>
+            <div class="space-y-2">
+                <span class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Picked for you</span>
+                <h2 class="text-3xl font-heading font-semibold text-foreground">Properties matched to your preferences</h2>
+                <p class="text-sm text-muted-foreground">Based on your browsing history and saved searches in Bangkok.</p>
             </div>
-            <a href="/property/search/" class="btn-secondary">Start exploring</a>
+            <div class="flex flex-wrap gap-2">
+                <a href="/property/search/" class="btn-secondary whitespace-nowrap">Start exploring</a>
+                <button type="button" class="btn-secondary whitespace-nowrap" data-trigger-geolocation aria-label="Show properties near my location">
+                    <i class="bi bi-geo-alt me-1" aria-hidden="true"></i>
+                    <span>Near me</span>
+                </button>
+            </div>
         </div>
-        <div class="space-y-4">
+        
+        <!-- Recommended Properties (if authenticated) -->
+        <div class="space-y-4" data-personalized-section="recommended">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-foreground">Recommended for you</h3>
+            </div>
             <div class="splide property-carousel" data-slider="recommended">
                 <div class="splide__track">
                     <ul class="splide__list" data-slider-list></ul>
@@ -297,45 +347,28 @@
                 Sign in or save a search to see personalised recommendations tailored to your preferences.
             </p>
         </div>
-    </div>
-</section>
-
-<section id="hot-properties" class="bg-muted/30 py-16">
-    <div class="container space-y-8">
-        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div class="space-y-3">
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Near your coordinates</p>
-                <h2 class="text-3xl font-heading font-semibold text-foreground">Popular properties around you</h2>
-                <p class="text-sm text-muted-foreground">Share your location to uncover developments within a short drive—perfect for on-the-ground viewings.</p>
+        
+        <!-- Nearby Properties (if geolocation enabled) -->
+        <div class="space-y-4 hidden" data-personalized-section="nearby">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-foreground">Near your location</h3>
             </div>
-            <button type="button" class="btn-secondary" data-trigger-geolocation>
-                Refresh with my location
-            </button>
-        </div>
-        <div class="space-y-4">
             <div class="splide property-carousel" data-slider="hot">
                 <div class="splide__track">
                     <ul class="splide__list" data-slider-list></ul>
                 </div>
             </div>
             <p class="hidden text-sm text-muted-foreground" data-slider-empty>
-                We couldn’t detect nearby listings yet. Enable location services and refresh to see what’s within reach.
+                We couldn't detect nearby listings yet. Enable location services and refresh to see what's within reach.
             </p>
         </div>
-    </div>
-</section>
-
-<section id="popular-properties" class="bg-background py-16">
-    <div class="container space-y-8">
-        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div class="space-y-3">
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Trending releases</p>
-                <h2 class="text-3xl font-heading font-semibold text-foreground">Newest off-plan launches worth watching</h2>
-                <p class="text-sm text-muted-foreground">Browse projects gaining significant demand—complete with verified payment milestones and amenity breakdowns.</p>
+        
+        <!-- Fallback: Popular Properties -->
+        <div class="space-y-4" data-personalized-section="popular">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-foreground">Trending in Bangkok</h3>
+                <a href="/property/search/?ordering=-created_at" class="text-sm font-medium text-primary hover:underline">See all</a>
             </div>
-            <a href="/property/search/?ordering=-created_at" class="btn-secondary">See the latest</a>
-        </div>
-        <div class="space-y-4">
             <div class="splide property-carousel" data-slider="popular">
                 <div class="splide__track">
                     <ul class="splide__list" data-slider-list></ul>
@@ -348,118 +381,158 @@
     </div>
 </section>
 
-<section id="popular-city" class="bg-muted/20 py-16">
+<!-- Account Creation: Lighter, Better Positioned -->
+{% if not request.user.is_authenticated %}
+<section class="bg-muted/20 py-12">
+    <div class="container">
+        <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
+            <div class="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
+                <div class="text-center sm:text-left">
+                    <h3 class="text-lg font-semibold text-foreground">Save searches and get price alerts</h3>
+                    <p class="mt-1 text-sm text-muted-foreground">Create a free account to sync favourites across devices and receive instant notifications.</p>
+                </div>
+                <div class="flex flex-col gap-2 sm:flex-row">
+                    <a href="/user/signup/" class="btn bg-primary text-white hover:bg-primary/90 whitespace-nowrap">Create free account</a>
+                    <a href="/user/login/" class="btn-secondary whitespace-nowrap">Sign in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% include 'chat.html' %}
+
+<!-- Bangkok Micro-Areas: Primary Focus -->
+<section id="bangkok-areas" class="bg-muted/20 py-16">
     <div class="container space-y-8">
         <div class="space-y-3 text-center">
-            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Destinations</p>
-            <h2 class="text-3xl font-heading font-semibold text-foreground">Explore lifestyles across Thailand</h2>
-            <p class="text-sm text-muted-foreground">Jump into curated searches for city energy, island escapes, and emerging investment corridors.</p>
+            <span class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Bangkok areas</span>
+            <h2 class="text-3xl font-heading font-semibold text-foreground">Explore prime Bangkok neighbourhoods</h2>
+            <p class="text-sm text-muted-foreground">Discover new-build condos and villas in Bangkok's most sought-after districts.</p>
         </div>
-        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
-            <a href="/property/search/?place=Bangkok,%20Thailand&latitude=13.7563309&longitude=100.5017651&place_id=ChIJ82ENKDJgHTERIEjiXbIAAQE&fature_type=locality" class="group relative overflow-hidden rounded-3xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg">
-                <img src="{% static '/media/background/bangkok.jpg' %}" alt="Bangkok skyline" loading="lazy" class="h-56 w-full object-cover transition duration-500 group-hover:scale-105">
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <a href="/property/search/?place=Thong%20Lo,%20Bangkok&latitude=13.7307&longitude=100.5853&fature_type=locality&building__type=residence" class="group relative overflow-hidden rounded-3xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg" aria-label="Browse properties in Thong Lo & Ekkamai">
+                <img src="{% static '/media/background/bangkok.jpg' %}" alt="Thong Lo & Ekkamai district, Bangkok" loading="lazy" width="400" height="192" class="h-48 w-full object-cover transition duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                <div class="absolute inset-x-0 bottom-0 space-y-1 p-6 text-white">
-                    <span class="text-lg font-semibold">Bangkok</span>
-                    <span class="text-xs uppercase tracking-[0.3em] text-white/70">Luxury condos &amp; mixed-use hubs</span>
+                <div class="absolute inset-x-0 bottom-0 space-y-1 p-5 text-white">
+                    <span class="text-lg font-semibold">Thong Lo & Ekkamai</span>
+                    <span class="text-xs uppercase tracking-[0.3em] text-white/70">BTS-connected luxury condos</span>
                 </div>
             </a>
-            <a href="/property/search/?place=Phuket,%20Thailand&latitude=7.9843109&longitude=98.3307468&place_id=none&fature_type=circle" class="group relative overflow-hidden rounded-3xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg">
-                <img src="{% static '/media/background/Phuket.jpg' %}" alt="Phuket" loading="lazy" class="h-56 w-full object-cover transition duration-500 group-hover:scale-105">
+            <a href="/property/search/?place=Sathorn,%20Bangkok&latitude=13.7234&longitude=100.5347&fature_type=locality&building__type=residence" class="group relative overflow-hidden rounded-3xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg" aria-label="Browse properties in Sathorn">
+                <img src="{% static '/media/background/bangkok.jpg' %}" alt="Sathorn district, Bangkok CBD" loading="lazy" width="400" height="192" class="h-48 w-full object-cover transition duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                <div class="absolute inset-x-0 bottom-0 space-y-1 p-6 text-white">
-                    <span class="text-lg font-semibold">Phuket</span>
-                    <span class="text-xs uppercase tracking-[0.3em] text-white/70">Resort villas &amp; branded residences</span>
+                <div class="absolute inset-x-0 bottom-0 space-y-1 p-5 text-white">
+                    <span class="text-lg font-semibold">Sathorn</span>
+                    <span class="text-xs uppercase tracking-[0.3em] text-white/70">CBD high-rises &amp; riverside</span>
                 </div>
             </a>
-            <a href="/property/search/?place=Krabi,%20Thailand&latitude=8.1191811&longitude=99.1013498&place_id=none&fature_type=circle" class="group relative overflow-hidden rounded-3xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg">
-                <img src="{% static '/media/background/krabi.jpg' %}" alt="Krabi" loading="lazy" class="h-56 w-full object-cover transition duration-500 group-hover:scale-105">
+            <a href="/property/search/?place=Asok,%20Bangkok&latitude=13.7374&longitude=100.5608&fature_type=locality&building__type=residence" class="group relative overflow-hidden rounded-3xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg" aria-label="Browse properties in Asok & Phrom Phong">
+                <img src="{% static '/media/background/bangkok.jpg' %}" alt="Asok & Phrom Phong district, Bangkok" loading="lazy" width="400" height="192" class="h-48 w-full object-cover transition duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                <div class="absolute inset-x-0 bottom-0 space-y-1 p-6 text-white">
-                    <span class="text-lg font-semibold">Krabi</span>
-                    <span class="text-xs uppercase tracking-[0.3em] text-white/70">Eco-led coastal escapes</span>
+                <div class="absolute inset-x-0 bottom-0 space-y-1 p-5 text-white">
+                    <span class="text-lg font-semibold">Asok & Phrom Phong</span>
+                    <span class="text-xs uppercase tracking-[0.3em] text-white/70">BTS/MRT interchange zone</span>
                 </div>
             </a>
-            <a href="/property/search/?place=Pattani,%20Thailand&latitude=6.7006963&longitude=101.4339148&place_id=none&fature_type=circle" class="group relative overflow-hidden rounded-3xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg">
-                <img src="{% static '/media/background/pattani.jpg' %}" alt="Pattani" loading="lazy" class="h-56 w-full object-cover transition duration-500 group-hover:scale-105">
+            <a href="/property/search/?place=Ari,%20Bangkok&latitude=13.7788&longitude=100.5451&fature_type=locality&building__type=residence" class="group relative overflow-hidden rounded-3xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg" aria-label="Browse properties in Ari & Ladprao">
+                <img src="{% static '/media/background/bangkok.jpg' %}" alt="Ari & Ladprao district, Bangkok" loading="lazy" width="400" height="192" class="h-48 w-full object-cover transition duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                <div class="absolute inset-x-0 bottom-0 space-y-1 p-6 text-white">
-                    <span class="text-lg font-semibold">Pattani</span>
-                    <span class="text-xs uppercase tracking-[0.3em] text-white/70">Emerging seaside investments</span>
+                <div class="absolute inset-x-0 bottom-0 space-y-1 p-5 text-white">
+                    <span class="text-lg font-semibold">Ari & Ladprao</span>
+                    <span class="text-xs uppercase tracking-[0.3em] text-white/70">Family-friendly neighbourhoods</span>
                 </div>
             </a>
-            <a href="/property/search/?place=Kanchanaburi,%20Thailand&latitude=14.6701192&longitude=99.0128926&place_id=none&fature_type=circle" class="group relative overflow-hidden rounded-3xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg">
-                <img src="{% static '/media/background/kanchanaburi.jpg' %}" alt="Kanchanaburi" loading="lazy" class="h-56 w-full object-cover transition duration-500 group-hover:scale-105">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                <div class="absolute inset-x-0 bottom-0 space-y-1 p-6 text-white">
-                    <span class="text-lg font-semibold">Kanchanaburi</span>
-                    <span class="text-xs uppercase tracking-[0.3em] text-white/70">Riverfront retreats &amp; eco estates</span>
+        </div>
+        <div class="text-center">
+            <a href="/property/search/?place=Bangkok,%20Thailand&latitude=13.7563309&longitude=100.5017651&place_id=ChIJ82ENKDJgHTERIEjiXbIAAQE&fature_type=locality" class="btn-secondary">View all Bangkok areas</a>
+        </div>
+    </div>
+</section>
+
+<!-- Other Destinations: Secondary Focus -->
+<section id="other-destinations" class="bg-background py-12">
+    <div class="container space-y-6">
+        <div class="space-y-2 text-center">
+            <span class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Beyond Bangkok</span>
+            <h2 class="text-2xl font-heading font-semibold text-foreground">Explore other destinations in Thailand</h2>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-3 lg:grid-cols-4">
+            <a href="/property/search/?place=Phuket,%20Thailand&latitude=7.9843109&longitude=98.3307468&place_id=none&fature_type=circle" class="group relative overflow-hidden rounded-2xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg" aria-label="Browse properties in Phuket">
+                <img src="{% static '/media/background/Phuket.jpg' %}" alt="Phuket, Thailand" loading="lazy" width="300" height="160" class="h-40 w-full object-cover transition duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+                <div class="absolute inset-x-0 bottom-0 space-y-0.5 p-4 text-white">
+                    <span class="text-base font-semibold">Phuket</span>
+                    <span class="text-xs uppercase tracking-[0.2em] text-white/70">Resort villas</span>
+                </div>
+            </a>
+            <a href="/property/search/?place=Krabi,%20Thailand&latitude=8.1191811&longitude=99.1013498&place_id=none&fature_type=circle" class="group relative overflow-hidden rounded-2xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg" aria-label="Browse properties in Krabi">
+                <img src="{% static '/media/background/krabi.jpg' %}" alt="Krabi, Thailand" loading="lazy" width="300" height="160" class="h-40 w-full object-cover transition duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+                <div class="absolute inset-x-0 bottom-0 space-y-0.5 p-4 text-white">
+                    <span class="text-base font-semibold">Krabi</span>
+                    <span class="text-xs uppercase tracking-[0.2em] text-white/70">Coastal escapes</span>
+                </div>
+            </a>
+            <a href="/property/search/?place=Chiang%20Mai,%20Thailand&latitude=18.7883439&longitude=98.9853008&place_id=none&fature_type=locality" class="group relative overflow-hidden rounded-2xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg" aria-label="Browse properties in Chiang Mai">
+                <img src="{% static '/media/background/bangkok.jpg' %}" alt="Chiang Mai, Thailand" loading="lazy" width="300" height="160" class="h-40 w-full object-cover transition duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+                <div class="absolute inset-x-0 bottom-0 space-y-0.5 p-4 text-white">
+                    <span class="text-base font-semibold">Chiang Mai</span>
+                    <span class="text-xs uppercase tracking-[0.2em] text-white/70">Mountain retreats</span>
+                </div>
+            </a>
+            <a href="/property/search/?place=Kanchanaburi,%20Thailand&latitude=14.6701192&longitude=99.0128926&place_id=none&fature_type=circle" class="group relative overflow-hidden rounded-2xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg" aria-label="Browse properties in Kanchanaburi">
+                <img src="{% static '/media/background/kanchanaburi.jpg' %}" alt="Kanchanaburi, Thailand" loading="lazy" width="300" height="160" class="h-40 w-full object-cover transition duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+                <div class="absolute inset-x-0 bottom-0 space-y-0.5 p-4 text-white">
+                    <span class="text-base font-semibold">Kanchanaburi</span>
+                    <span class="text-xs uppercase tracking-[0.2em] text-white/70">Riverfront estates</span>
                 </div>
             </a>
         </div>
     </div>
 </section>
 
-<section class="bg-background py-16">
-    <div class="container space-y-12">
-        <div class="grid gap-10 lg:grid-cols-2 lg:items-center">
-            <div class="space-y-4">
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Developer &amp; agent partners</p>
-                <h2 class="text-3xl font-heading font-semibold text-foreground">Market to globally qualified buyers with zero guesswork</h2>
-                <p class="text-sm text-muted-foreground">Showcase your launch inventory to a worldwide audience, integrate your CRM, and receive analytics on lead quality, engagement, and conversion funnels.</p>
-                <ul class="space-y-3 text-sm text-muted-foreground">
-                    <li class="flex items-start gap-3"><i class="bi bi-check2-circle text-primary"></i><span>Dedicated campaign hub with heatmaps, lead velocity, and conversion tracking.</span></li>
-                    <li class="flex items-start gap-3"><i class="bi bi-check2-circle text-primary"></i><span>Professional media management—video, 3D, drone assets optimised for Splide galleries.</span></li>
-                    <li class="flex items-start gap-3"><i class="bi bi-check2-circle text-primary"></i><span>Buyer concierge follows up in English, Thai, Chinese, and Malay within 24 hours.</span></li>
-                </ul>
+<!-- Developer Partners: Demoted Section -->
+<section class="bg-muted/20 py-12">
+    <div class="container">
+        <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+            <div class="flex flex-col items-center gap-6 lg:flex-row lg:justify-between">
+                <div class="text-center lg:text-left">
+                    <span class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">For developers &amp; agents</span>
+                    <h2 class="mt-2 text-2xl font-heading font-semibold text-foreground">Market to globally qualified buyers</h2>
+                    <p class="mt-2 text-sm text-muted-foreground">Showcase your Bangkok launches to international buyers. Get analytics, lead tracking, and multilingual buyer support.</p>
+                </div>
                 <div class="flex flex-wrap gap-3">
-                    <a href="/advertise/performance/" class="btn bg-primary text-white hover:bg-primary/90">Access partner dashboard</a>
-                    <a href="mailto:partners@wizerproperties.com" class="btn-secondary">Book a strategy session</a>
+                    <a href="/advertise/performance/" class="btn bg-primary text-white hover:bg-primary/90 whitespace-nowrap">Partner dashboard</a>
+                    <a href="mailto:partners@wizerproperties.com" class="btn-secondary whitespace-nowrap">Contact us</a>
                 </div>
-            </div>
-            <div class="rounded-3xl border border-border bg-card p-8 shadow-lg">
-                <h3 class="text-lg font-semibold text-foreground">What our partners see</h3>
-                <dl class="mt-6 grid gap-6 sm:grid-cols-2">
-                    <div class="space-y-1">
-                        <dt class="text-3xl font-bold text-primary">+46%</dt>
-                        <dd class="text-sm text-muted-foreground">Average lift in qualified overseas enquiries after joining the platform.</dd>
-                    </div>
-                    <div class="space-y-1">
-                        <dt class="text-3xl font-bold text-primary">12 days</dt>
-                        <dd class="text-sm text-muted-foreground">Median time-to-offer for spotlight listings with virtual tours.</dd>
-                    </div>
-                    <div class="space-y-1">
-                        <dt class="text-3xl font-bold text-primary">4 languages</dt>
-                        <dd class="text-sm text-muted-foreground">Buyer support coverage—aligned with UX best practices to build trust.</dd>
-                    </div>
-                    <div class="space-y-1">
-                        <dt class="text-3xl font-bold text-primary">Real-time</dt>
-                        <dd class="text-sm text-muted-foreground">Exposure analytics across landing page sections and ad placements.</dd>
-                    </div>
-                </dl>
             </div>
         </div>
     </div>
 </section>
 
-<section class="bg-muted/30 py-16">
+<!-- Blog & Guides: Fixed Duplicates -->
+<section class="bg-background py-16">
     <div class="container space-y-8">
-        <div class="space-y-4 text-center">
-            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Insights &amp; guides</p>
-            <h2 class="text-3xl font-heading font-semibold text-foreground">Understand Thai property regulations, financing, and investment trends</h2>
-            <p class="text-sm text-muted-foreground">Stay ahead with actionable resources curated for global buyers navigating local legislation.</p>
+        <div class="space-y-3 text-center">
+            <span class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Insights &amp; guides</span>
+            <h2 class="text-3xl font-heading font-semibold text-foreground">Essential guides for Bangkok property buyers</h2>
+            <p class="text-sm text-muted-foreground">Learn about ownership structures, financing, taxes, and investment strategies tailored for international buyers.</p>
         </div>
-        <div class="grid gap-8 md:grid-cols-3">
+        <div class="grid gap-6 md:grid-cols-3">
             <article class="group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
                 <a href="/blogs/can-foreigners-buy-property-in-thailand-6b5d8" class="flex flex-1 flex-col">
                     <div class="relative h-52 overflow-hidden">
-                        <img loading="lazy" src="http://wizerproperties.com/media/blog/banner_images/Best-Ways-for-Foreigners-To-Own-Property-In-Thailand.jpg" alt="Can Foreigners Buy Property in Thailand? Here’s What You Need to Know" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+                        <img loading="lazy" src="https://wizerproperties.com/media/blog/banner_images/Best-Ways-for-Foreigners-To-Own-Property-In-Thailand.jpg" alt="Can Foreigners Buy Property in Thailand? Here's What You Need to Know" width="400" height="208" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent"></div>
                         <span class="absolute left-4 top-4 inline-flex rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white">Legal</span>
                     </div>
                     <div class="flex flex-1 flex-col gap-4 p-6">
-                        <h3 class="text-lg font-semibold text-foreground">Can Foreigners Buy Property in Thailand? Here’s What You Need to Know</h3>
-                        <p class="text-sm text-muted-foreground">The definitive guide to ownership structures, leasehold vs freehold, and the documents you’ll need before wiring funds.</p>
+                        <h3 class="text-lg font-semibold text-foreground">Can Foreigners Buy Property in Thailand? Here's What You Need to Know</h3>
+                        <p class="text-sm text-muted-foreground">The definitive guide to ownership structures, leasehold vs freehold, and the documents you'll need before wiring funds.</p>
                         <div class="mt-auto flex items-center justify-between text-xs text-muted-foreground">
                             <span>10 Oct, 2024</span>
                             <span>2 mins read</span>
@@ -470,13 +543,13 @@
             <article class="group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
                 <a href="/blogs/can-foreigners-buy-property-in-thailand" class="flex flex-1 flex-col">
                     <div class="relative h-52 overflow-hidden">
-                        <img loading="lazy" src="http://wizerproperties.com/media/blog/banner_images/villas-in-thailand-qcysqee9im1lxtiyefz5cyxm4ow2kmymlrwlmib4go.jpg" alt="Can Foreigners Buy Property in Thailand? Here’s the Ultimate Guide" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+                        <img loading="lazy" src="https://wizerproperties.com/media/blog/banner_images/villas-in-thailand-qcysqee9im1lxtiyefz5cyxm4ow2kmymlrwlmib4go.jpg" alt="Bangkok Property Investment Guide: Financing & Tax Strategies" width="400" height="208" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent"></div>
                         <span class="absolute left-4 top-4 inline-flex rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white">Investment</span>
                     </div>
                     <div class="flex flex-1 flex-col gap-4 p-6">
-                        <h3 class="text-lg font-semibold text-foreground">Can Foreigners Buy Property in Thailand? Here’s the Ultimate Guide</h3>
-                        <p class="text-sm text-muted-foreground">Compare ownership vehicles, tax implications, and financing options for condos, villas, and mixed-use assets.</p>
+                        <h3 class="text-lg font-semibold text-foreground">Bangkok Property Investment Guide: Financing &amp; Tax Strategies</h3>
+                        <p class="text-sm text-muted-foreground">Compare ownership vehicles, tax implications, and financing options for condos, villas, and mixed-use assets in Bangkok.</p>
                         <div class="mt-auto flex items-center justify-between text-xs text-muted-foreground">
                             <span>10 Oct, 2024</span>
                             <span>3 mins read</span>
@@ -487,12 +560,12 @@
             <article class="group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
                 <a href="/blogs/can-foreigners-buy-property-in-thailand-6b5d8" class="flex flex-1 flex-col">
                     <div class="relative h-52 overflow-hidden">
-                        <img loading="lazy" src="http://wizerproperties.com/media/blog/banner_images/Best-Ways-for-Foreigners-To-Own-Property-In-Thailand.jpg" alt="Thailand New-Build Checklist for Remote Buyers" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+                        <img loading="lazy" src="https://wizerproperties.com/media/blog/banner_images/Best-Ways-for-Foreigners-To-Own-Property-In-Thailand.jpg" alt="Bangkok New-Build Checklist for Remote Buyers" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent"></div>
                         <span class="absolute left-4 top-4 inline-flex rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white">Strategy</span>
                     </div>
                     <div class="flex flex-1 flex-col gap-4 p-6">
-                        <h3 class="text-lg font-semibold text-foreground">Thailand New-Build Checklist for Remote Buyers</h3>
+                        <h3 class="text-lg font-semibold text-foreground">Bangkok New-Build Checklist for Remote Buyers</h3>
                         <p class="text-sm text-muted-foreground">Follow our eight-step playbook covering due diligence, financing, and handover so nothing falls through the cracks.</p>
                         <div class="mt-auto flex items-center justify-between text-xs text-muted-foreground">
                             <span>10 Oct, 2024</span>
@@ -501,6 +574,9 @@
                     </div>
                 </a>
             </article>
+        </div>
+        <div class="text-center">
+            <a href="/blogs/" class="btn-secondary">View all guides</a>
         </div>
     </div>
 </section>

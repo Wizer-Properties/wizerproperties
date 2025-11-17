@@ -123,8 +123,8 @@
 
         <section class="related-blogs space-y-6 rounded-3xl border border-border bg-card/95 p-8 shadow-lg backdrop-blur" post-id="{{ post.id }}" data-post-categories="{% for category in post.categories.all %}{{ category.name }}{% if not forloop.last %}|{% endif %}{% endfor %}">
             <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                    <p class="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Related reads</p>
+                <div class="space-y-2">
+                    <span class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Related reads</span>
                     <h2 class="text-2xl font-heading font-semibold text-foreground">More articles you might enjoy</h2>
                 </div>
             </div>
