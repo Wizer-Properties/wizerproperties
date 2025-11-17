@@ -18,6 +18,10 @@ secrets.json
 
 # Ignore environment-specific settings
 .env
+.env.*
+*.env
+demo.env
+src/demo.env
 
 # Ignore IDE and code editor settings (customize as needed)
 .vscode/
@@ -27,7 +31,30 @@ secrets.json
 
 # Ignore dependency management files (customize as needed)
 venv/
+.venv/
 node_modules/
+
+# Ignore macOS system files
+.DS_Store
+**/.DS_Store
+.AppleDouble
+.LSOverride
+
+# Ignore temporary files and directories
+tmp/
+*.tmp
+*.bak
+*.swp
+*.swo
+*~
+
+# Ignore editor directories
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.sublime-project
+*.sublime-workspace
 
 src/wizerproperties/media/
 static_root/
