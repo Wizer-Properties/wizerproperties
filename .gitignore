@@ -63,3 +63,7 @@ static_root/
 nginx/
 certbot/
 
+# Documentation and scripts
+docs/
+scripts/
+
