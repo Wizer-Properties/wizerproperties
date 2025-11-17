@@ -25,5 +25,12 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB_HOST=${POSTGRES_HOST}
 
+  assets:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ..:/app
+    command: sh -c "npm ci && npm run tailwind:watch"
+
 volumes:
   postgres_data:

@@ -1,3 +1,225 @@
+$(function () {
+  function loaderTemplate() {
+    return (
+      '<div class="splide__slide reel-slide loader-slide">' +
+      '<article class="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm">' +
+      '<div class="aspect-[9/16] w-full animate-pulse bg-muted"></div>' +
+      '<div class="flex flex-1 flex-col gap-3 p-4">' +
+      '<div class="space-y-2">' +
+      '<span class="block h-4 w-3/4 rounded bg-muted"></span>' +
+      '<span class="block h-3 w-1/2 rounded bg-muted/80"></span>' +
+      "</div>" +
+      '<span class="block h-3 w-1/3 rounded bg-muted/70"></span>' +
+      "</div>" +
+      "</article>" +
+      "</div>"
+    );
+  }
+
+  function embedTemplate(data) {
+    if (!data || !data.social_media || !data.url) return "";
+    if (data.social_media === "youtube") {
+      var parts = data.url.split("/");
+      var videoId = parts[parts.length - 1];
+      var embedUrl = "https://youtube.com/embed/" + videoId;
+      return '<iframe class="h-full w-full" src="' + embedUrl + '" title="YouTube video" frameborder="0" allowfullscreen></iframe>';
+    }
+    if (data.social_media === "titTok") {
+      var tiktokParts = data.url.split("/video/");
+      var tiktokId = tiktokParts[1];
+      var tiktokEmbed = "https://www.tiktok.com/embed/v2/" + tiktokId;
+      return '<iframe class="h-full w-full" src="' + tiktokEmbed + '" title="TikTok video" frameborder="0" allowfullscreen></iframe>';
+    }
+    if (data.social_media === "instagram") {
+      var instaParts = data.url.split("/");
+      var code = instaParts[4];
+      var instaEmbed = "https://www.instagram.com/p/" + code + "/embed/";
+      return '<iframe class="h-full w-full" src="' + instaEmbed + '" title="Instagram video" frameborder="0" allowfullscreen></iframe>';
+    }
+    return '<iframe class="h-full w-full" src="' + data.url + '" title="Video" frameborder="0" allowfullscreen></iframe>';
+  }
+
+  function reelTemplate(data) {
+    var agent = data && data.user ? data.user.agent : null;
+    var developer = data && data.user ? data.user.developer : null;
+    var manager = agent || developer;
+    var managerName = manager && manager.company_name ? manager.company_name : "Wizerproperties partner";
+    var categoryLabel = data && data.category ? data.category : "Reel";
+
+    return (
+      '<div class="splide__slide reel-slide">' +
+      '<article class="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:shadow-lg">' +
+      '<div class="relative aspect-[9/16] w-full overflow-hidden bg-muted">' +
+      embedTemplate(data) +
+      "</div>" +
+      '<div class="flex flex-1 flex-col gap-4 p-4">' +
+      '<div class="space-y-1">' +
+      '<p class="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-primary">' +
+      categoryLabel +
+      "</p>" +
+      '<h3 class="text-base font-semibold text-foreground">' +
+      (data && data.property_title ? data.property_title : "Property reel") +
+      "</h3>" +
+      '<p class="text-xs text-muted-foreground">Managed by ' +
+      managerName +
+      "</p>" +
+      "</div>" +
+      '<div class="mt-auto flex items-center justify-between gap-3 text-xs text-muted-foreground">' +
+      '<span class="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1">' +
+      '<span class="size-2.5 rounded-full bg-primary"></span>' +
+      (data && data.social_media ? data.social_media.charAt(0).toUpperCase() + data.social_media.slice(1) : "Platform") +
+      "</span>" +
+      '<a href="/property/details/' +
+      (data && data.property ? data.property : "") +
+      '/" class="btn-secondary min-w-[140px] justify-center text-xs">View listing</a>' +
+      "</div>" +
+      "</div>" +
+      "</article>" +
+      "</div>"
+    );
+  }
+
+  var reelsSlider = new Splide(".reels-slider", {
+    perPage: 4,
+    gap: 20,
+    pagination: false,
+    breakpoints: {
+      1200: { perPage: 3 },
+      992: { perPage: 2 },
+      640: { perPage: 1 },
+    },
+  }).mount();
+
+  var reelsNext;
+  var isLoadingReels = false;
+  var selectedCategory = "";
+  var categoryTriggered = false;
+  var firstLoad = true;
+
+  function resetFilterStyles() {
+    $(".reels-filter-btns button")
+      .removeClass("activate")
+      .removeClass("bg-primary text-primary-foreground border-primary shadow")
+      .addClass("border-border bg-card text-foreground");
+  }
+
+  function setFilterActive($button) {
+    resetFilterStyles();
+    $button.addClass("activate bg-primary text-primary-foreground border-primary shadow");
+  }
+
+  function clearSlides() {
+    reelsSlider.remove(".reel-slide");
+  }
+
+  function appendLoaderSlides(count) {
+    for (var i = 0; i < count; i++) {
+      reelsSlider.add(loaderTemplate());
+    }
+  }
+
+  function removeLoaderSlides() {
+    reelsSlider.remove(".loader-slide");
+  }
+
+  function updateEmptyState(hasResults) {
+    if (hasResults) {
+      $(".no-reels").html("");
+    } else {
+      $(".no-reels").html('<p class="py-12 text-sm text-muted-foreground">No reels available for this category yet.</p>');
+    }
+  }
+
+  function fetchReels(nextPage) {
+    if (isLoadingReels) return;
+
+    var pageSize = 4;
+    if (window.innerWidth <= 1200) pageSize = 3;
+    if (window.innerWidth <= 768) pageSize = 2;
+    if (window.innerWidth <= 480) pageSize = 1;
+
+    isLoadingReels = true;
+
+    $.ajax({
+      url: "/advertise/api/reel/suggested/",
+      type: "GET",
+      data: {
+        page_size: pageSize,
+        page: nextPage,
+        category: selectedCategory || undefined,
+      },
+      headers: { "X-CSRFToken": csrfToken },
+      beforeSend: function () {
+        if (categoryTriggered) {
+          clearSlides();
+        }
+        appendLoaderSlides(pageSize);
+      },
+      success: function (response) {
+        isLoadingReels = false;
+        var results = response && response.results ? response.results : [];
+
+        if (firstLoad && (!response || response.count === 0)) {
+          updateEmptyState(false);
+          clearSlides();
+          removeLoaderSlides();
+          reelsNext = null;
+          return;
+        }
+
+        firstLoad = false;
+        updateEmptyState(results.length > 0);
+
+        results.forEach(function (reel) {
+          reelsSlider.add(reelTemplate(reel));
+        });
+
+        removeLoaderSlides();
+
+        if (response && response.next) {
+          appendLoaderSlides(pageSize);
+        }
+
+        reelsNext = response ? response.next : null;
+        categoryTriggered = false;
+      },
+      error: function (error) {
+        console.error(error);
+        isLoadingReels = false;
+        categoryTriggered = false;
+        removeLoaderSlides();
+      },
+    });
+  }
+
+  fetchReels();
+
+  reelsSlider.on("moved", function (newIndex) {
+    if (!reelsNext) return;
+    var totalSlides = reelsSlider.length;
+    if (newIndex >= totalSlides - reelsSlider.options.perPage - 1) {
+      fetchReels(reelsNext);
+    }
+  });
+
+  $(document).on("click", ".reels-filter-btns button", function () {
+    var $button = $(this);
+    var alreadyActive = $button.hasClass("bg-primary");
+
+    if (alreadyActive && selectedCategory === $button.val()) {
+      selectedCategory = "";
+      setFilterActive($(".reels-filter-btns button[value='']"));
+    } else {
+      selectedCategory = $button.val();
+      setFilterActive($button);
+    }
+
+    categoryTriggered = true;
+    firstLoad = true;
+    reelsNext = null;
+    fetchReels();
+  });
+});
 $(document).ready(function(){
     function loader_tmp(){
         return  '<div class="splide__slide comparison-slider-box list_loader">'+

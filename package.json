@@ -1,0 +1,40 @@
+{
+  "name": "wizerproperties",
+  "version": "1.0.0",
+  "description": "> Note: You should have installed docker to your machine for running successfully.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "npm run tailwind:watch",
+    "build": "npm run tailwind:build",
+    "tailwind:build": "tailwindcss -i ./src/wizerproperties/static/src/tailwind.css -o ./src/wizerproperties/static/css/tailwind.css --minify",
+    "tailwind:watch": "tailwindcss -i ./src/wizerproperties/static/src/tailwind.css -o ./src/wizerproperties/static/css/tailwind.css --watch",
+    "lint:css": "prettier --check \"src/wizerproperties/static/src/**/*.css\"",
+    "format:css": "prettier --write \"src/wizerproperties/static/src/**/*.css\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VaidTech/wizerproperties.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/VaidTech/wizerproperties/issues"
+  },
+  "homepage": "https://github.com/VaidTech/wizerproperties#readme",
+  "devDependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.19",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.7.1",
+    "tailwindcss": "^3.4.14",
+    "tailwindcss-animate": "^1.0.7"
+  }
+}

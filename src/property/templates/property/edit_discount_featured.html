@@ -4,228 +4,63 @@
 
 {% block extend_head %}
 <title>{{ page_title }}</title>
-<link rel="stylesheet" href="{% static '/css/auth.css' %}?v=1.01" />
-<style>
-    .form-container {
-        background: white;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        padding: 30px;
-        margin: 20px auto;
-        max-width: 600px;
-    }
-    
-    .form-title {
-        text-align: center;
-        margin-bottom: 30px;
-        color: #333;
-        font-weight: 600;
-    }
-    
-    .form-group {
-        margin-bottom: 20px;
-    }
-    
-    .form-label {
-        font-weight: 500;
-        color: #333;
-        margin-bottom: 8px;
-        display: block;
-    }
-    
-    .form-control {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        font-size: 14px;
-        transition: border-color 0.3s;
-    }
-    
-    .form-control:focus {
-        outline: none;
-        border-color: #007bff;
-        box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
-    }
-    
-    .btn-submit {
-        background: #007bff;
-        color: white;
-        padding: 12px 30px;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background 0.3s;
-        width: 100%;
-    }
-    
-    .btn-submit:hover {
-        background: #0056b3;
-    }
-    
-    .btn-cancel {
-        background: #6c757d;
-        color: white;
-        padding: 12px 30px;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background 0.3s;
-        text-decoration: none;
-        display: inline-block;
-        text-align: center;
-        margin-top: 10px;
-        width: 100%;
-    }
-    
-    .btn-cancel:hover {
-        background: #545b62;
-        color: white;
-        text-decoration: none;
-    }
-    
-    .alert {
-        padding: 12px;
-        margin-bottom: 20px;
-        border-radius: 5px;
-    }
-    
-    .alert-danger {
-        background: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-    }
-    
-    .alert-success {
-        background: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-    }
-    
-    .property-info {
-        background: #f8f9fa;
-        padding: 15px;
-        border-radius: 5px;
-        margin-bottom: 20px;
-        font-size: 14px;
-    }
-    
-    .property-info strong {
-        color: #495057;
-    }
-    
-    .info-row {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 8px;
-    }
-    
-    .info-row:last-child {
-        margin-bottom: 0;
-    }
-</style>
 {% endblock extend_head %}
 
 {% block content %}
-<div class="container my-5">
-    <div class="form-container">
-        <h2 class="form-title">{{ page_title }}</h2>
-        
-        <!-- Property Information Display -->
-        {% if property_type == 'discount' and discount_property %}
-            <div class="property-info">
-                <h5 style="margin-bottom: 15px; color: #495057;">Property Information</h5>
-                <div class="info-row">
-                    <span><strong>Property:</strong> {{ discount_property.property.title|default:"Property Deleted" }}</span>
-                    <span><strong>Building:</strong> 
-                        {% if discount_property.property and discount_property.property.building %}
-                            {{ discount_property.property.building.title }}
-                        {% else %}
-                            Building Deleted
-                        {% endif %}
-                    </span>
-                </div>
-                <div class="info-row">
-                    <span><strong>Current Expiry:</strong> {{ discount_property.period|date:"M d, Y" }}</span>
-                    <span><strong>Total Clicks:</strong> {{ discount_property.number_of_clicked }}</span>
-                </div>
-                <div class="info-row">
-                    <span><strong>View Time:</strong> {{ discount_property.duration_without_microseconds }}</span>
-                    <span><strong>Created:</strong> {{ discount_property.created_at|date:"M d, Y" }}</span>
-                </div>
+<section class="bg-muted/40 py-12">
+    <div class="container max-w-3xl">
+        <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
+            <div class="space-y-3">
+                <p class="text-xs font-semibold uppercase tracking-[0.4em] text-primary">{{ property_type|title }} promotion</p>
+                <h1 class="text-3xl font-heading font-semibold text-foreground">{{ page_title }}</h1>
+                <p class="text-sm text-muted-foreground">Update the active period of your {{ property_type }} promotion.</p>
             </div>
-        {% elif property_type == 'featured' and featured_property %}
-            <div class="property-info">
-                <h5 style="margin-bottom: 15px; color: #495057;">Property Information</h5>
-                <div class="info-row">
-                    <span><strong>Property:</strong> {{ featured_property.property.title|default:"Property Deleted" }}</span>
-                    <span><strong>Building:</strong> 
-                        {% if featured_property.property and featured_property.property.building %}
-                            {{ featured_property.property.building.title }}
-                        {% else %}
-                            Building Deleted
-                        {% endif %}
-                    </span>
-                </div>
-                <div class="info-row">
-                    <span><strong>Current Expiry:</strong> 
-                        {% if featured_property.expiry_date %}
-                            {{ featured_property.expiry_date|date:"M d, Y" }}
-                        {% else %}
-                            No Expiry Set
-                        {% endif %}
-                    </span>
-                    <span><strong>Total Clicks:</strong> {{ featured_property.number_of_clicked }}</span>
-                </div>
-                <div class="info-row">
-                    <span><strong>View Time:</strong> {{ featured_property.duration_without_microseconds }}</span>
-                    <span><strong>Created:</strong> {{ featured_property.created_at|date:"M d, Y" }}</span>
-                </div>
-            </div>
-        {% endif %}
-        
-        <form method="post">
-            {% csrf_token %}
-            
-            <div class="form-group">
-                <label class="form-label" for="expiry_date">New Expiry Date *</label>
-                <input type="date" 
-                       name="expiry_date" 
-                       id="expiry_date" 
-                       class="form-control" 
-                       required
-                       value="{% if property_type == 'discount' and discount_property.period %}{{ discount_property.period|date:'Y-m-d' }}{% elif property_type == 'featured' and featured_property.expiry_date %}{{ featured_property.expiry_date|date:'Y-m-d' }}{% endif %}">
-                <small style="color: #6c757d; font-size: 12px;">
-                    Update the expiry date for this {{ property_type }} property
-                </small>
-            </div>
-            
-            <button type="submit" class="btn-submit">
-                Update {{ property_type|title }} Property
-            </button>
-            
-            {% if property_type == 'discount' %}
-                <a href="{% url 'property:discount_list' %}" class="btn-cancel">
-                    Cancel
-                </a>
-            {% else %}
-                <a href="{% url 'property:featured_list' %}" class="btn-cancel">
-                    Cancel
-                </a>
-            {% endif %}
-        </form>
-    </div>
-</div>
-{% endblock content %}
 
-{% block extend_script %}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Set minimum date to today
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('expiry_date').min = today;
-    });
-</script>
-{% endblock extend_script %}
+            {% if property_type == 'discount' and discount_property %}
+            <div class="mt-6 space-y-3 rounded-2xl border border-border bg-secondary/30 p-4 text-sm text-muted-foreground">
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <span class="font-semibold text-foreground">{{ discount_property.property.title|default:"Property Deleted" }}</span>
+                    <span class="rounded-full border border-border bg-card px-3 py-1 text-xs font-semibold text-foreground">{{ discount_property.property.building.title|default:"Building Deleted" }}</span>
+                </div>
+                <div class="grid gap-3 sm:grid-cols-2">
+                    <p><strong class="text-foreground">Current expiry:</strong> {{ discount_property.period|date:"M d, Y" }}</p>
+                    <p><strong class="text-foreground">Clicks:</strong> {{ discount_property.number_of_clicked }}</p>
+                    <p><strong class="text-foreground">View time:</strong> {{ discount_property.duration_without_microseconds }}</p>
+                    <p><strong class="text-foreground">Created:</strong> {{ discount_property.created_at|date:"M d, Y" }}</p>
+                </div>
+            </div>
+            {% elif property_type == 'featured' and featured_property %}
+            <div class="mt-6 space-y-3 rounded-2xl border border-border bg-secondary/30 p-4 text-sm text-muted-foreground">
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <span class="font-semibold text-foreground">{{ featured_property.property.title|default:"Property Deleted" }}</span>
+                    <span class="rounded-full border border-border bg-card px-3 py-1 text-xs font-semibold text-foreground">{{ featured_property.property.building.title|default:"Building Deleted" }}</span>
+                </div>
+                <div class="grid gap-3 sm:grid-cols-2">
+                    <p><strong class="text-foreground">Current expiry:</strong> {% if featured_property.expiry_date %}{{ featured_property.expiry_date|date:"M d, Y" }}{% else %}No expiry set{% endif %}</p>
+                    <p><strong class="text-foreground">Clicks:</strong> {{ featured_property.number_of_clicked }}</p>
+                    <p><strong class="text-foreground">View time:</strong> {{ featured_property.duration_without_microseconds }}</p>
+                    <p><strong class="text-foreground">Created:</strong> {{ featured_property.created_at|date:"M d, Y" }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <form method="post" class="mt-8 space-y-6">
+                {% csrf_token %}
+                <div class="space-y-2">
+                    <label class="form-label text-sm font-semibold text-foreground" for="expiry_date">New Expiry Date <span class="text-destructive">*</span></label>
+                    <input type="date" name="expiry_date" id="expiry_date" class="input" required value="{% if property_type == 'discount' and discount_property.period %}{{ discount_property.period|date:'Y-m-d' }}{% elif property_type == 'featured' and featured_property.expiry_date %}{{ featured_property.expiry_date|date:'Y-m-d' }}{% endif %}">
+                    <p class="text-xs text-muted-foreground">Select when the {{ property_type }} promotion should end.</p>
+                </div>
+
+                <button type="submit" class="btn w-full justify-center">Update Expiry</button>
+
+                {% if property_type == 'discount' %}
+                    <a href="{% url 'property:discount_list' %}" class="btn-secondary w-full justify-center">Cancel</a>
+                {% else %}
+                    <a href="{% url 'property:featured_list' %}" class="btn-secondary w-full justify-center">Cancel</a>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

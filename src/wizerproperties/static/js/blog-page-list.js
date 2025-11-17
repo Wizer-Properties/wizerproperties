@@ -1,139 +1,161 @@
-// filter icon //
-$(document).ready(function () {
+document.addEventListener("DOMContentLoaded", () => {
+  const grid = document.querySelector("[data-blog-grid]");
+  const loader = document.querySelector("[data-blog-loader]");
+  const emptyState = document.querySelector("[data-blog-empty]");
+  const loadMoreButton = document.querySelector("[data-blog-load]");
+  const categorySelect = document.querySelector(".blog-category-select-filter");
+  const toggleButtons = document.querySelectorAll("[data-blog-toggle]");
 
+  if (!grid) return;
 
-    var blogContainer = $('.blog-content-container');
-    var loader = $('.blog-list-loader img');
-    var currentPage = 1;
-    var isLoading = false;
+  const state = {
+    page: 1,
+    loading: false,
+    hasNext: true,
+    category: categorySelect ? categorySelect.value : "",
+    most_read: initialBlogFilters?.most_read || false,
+    most_liked: initialBlogFilters?.most_liked || false,
+    most_recent: initialBlogFilters?.most_recent || false,
+  };
 
-    // ===================== Filter click event =====================   
-    $('  .most-read-filter, .most-liked-filter, .most-recent-filter, .blog-category-select-filter').click(function () { 
-        // Remove active class from all filter    
-        var isActive = $(this).attr('active-filter') === 'true';
-        $(this).attr('active-filter', isActive ? 'false' : 'true');
-
-        // Filter data
-        var filterData = {}
-
-        // Get category filter value
-        if ($(".blog-category-select-filter").attr('filter-name') === 'category') {
-            filterData.category = $(".blog-category-select-filter").val();
-        }
-
-        // Get most read filter value
-        if ($(".most-read-filter").attr('filter-name') === 'most-read') {
-            filterData.most_read = $(".most-read-filter").attr('active-filter') === 'true' ? true : false;
-        }
-
-        // Get most liked filter value
-        if ($(".most-liked-filter").attr('filter-name') === 'most-liked') {
-            filterData.most_liked = $(".most-liked-filter").attr('active-filter') === 'true' ? true : false;
-        }
-
-        // Get most recent filter value
-        if ($(".most-recent-filter").attr('filter-name') === 'most-recent') {
-            filterData.most_recent = $(".most-recent-filter").attr('active-filter') === 'true' ? true : false;
-        }
-
-        filterData.page = 1
-
-        // Fetch blog posts
-        fetchBlogPosts(filterData);
+  const updateToggleAppearance = () => {
+    toggleButtons.forEach((button) => {
+      const key = button.getAttribute("data-blog-toggle");
+      const isActive = state[key];
+      button.setAttribute("aria-pressed", String(isActive));
+      button.classList.toggle("btn", isActive);
+      button.classList.toggle("btn-secondary", !isActive);
     });
+  };
 
-    // ===================== Fetch blog posts ===================== 
-    function fetchBlogPosts(params = {}) {
-        if (isLoading) return;
-        isLoading = true;
+  const showLoader = (visible) => {
+    if (!loader) return;
+    loader.classList.toggle("hidden", !visible);
+  };
 
-        // Start loader
-        loader.show();
+  const setEmptyState = (visible) => {
+    if (!emptyState) return;
+    emptyState.classList.toggle("hidden", !visible);
+  };
 
-        // Render blog cards
-        $.ajax({
-            url: '/blogs/api/posts/',
-            type: 'GET',
-            data: { page: currentPage, ...params },
-            success: function (response) {
-                var blogCards = '';
+  const updateLoadMoreVisibility = () => {
+    if (!loadMoreButton) return;
+    loadMoreButton.classList.toggle("hidden", !state.hasNext);
+  };
 
-                response.results.forEach(post => {
-                    blogCards += renderBlogCards(post);
-                });
-                
-                if (currentPage === 1 || params.page === 1) {
-                    blogContainer.html(blogCards);
-                } else {
-                    blogContainer.append(blogCards);
-                }
+  const buildQueryParams = () => {
+    const params = new URLSearchParams();
+    params.set("page", state.page);
+    if (state.category) params.set("category", state.category);
+    if (state.most_read) params.set("most_read", "true");
+    if (state.most_liked) params.set("most_liked", "true");
+    if (state.most_recent) params.set("most_recent", "true");
+    return params.toString();
+  };
 
-                currentPage++;
-                
-                // Check if there are more pages to load
-                if (!response.links.next) {
-                    $('.no-more-blogs').removeClass('d-none');
-                    $(window).off('scroll', scrollHandler);
-                }
-            },
-            error: function (error) {
-                console.log('Error fetching blog posts:', error);
-            },
-            complete: function () {
-                // Stop loader
-                loader.hide();
-                isLoading = false;
-            }
-        });
+  const formatCategories = (categories = []) =>
+    categories
+      .map(
+        (category) =>
+          `<span class="rounded-full border border-border/70 bg-background/80 px-3 py-1 text-xs font-medium text-muted-foreground">${category}</span>`
+      )
+      .join("");
+
+  const renderCard = (post) => {
+    const banner = post.banner_image || "/static/media/logo.png";
+    const title = post.title || "Untitled";
+    const subtitle = post.subtitle || "";
+    const created = post.created_at || "";
+    const readTime = post.estimated_read_time ? `${post.estimated_read_time} min read` : "";
+    const likes = typeof post.total_likes === "number" ? `${post.total_likes} likes` : "";
+    const views = typeof post.total_read_count === "number" ? `${post.total_read_count} views` : "";
+
+    return `
+      <article class="group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card/95 shadow-lg transition hover:-translate-y-1 hover:shadow-xl">
+        <a href="/blogs/${post.slug}" class="relative block overflow-hidden">
+          <img src="${banner}" alt="${title}" class="h-52 w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
+          <div class="absolute inset-x-4 bottom-4 flex flex-wrap gap-2">
+            ${formatCategories(post.categories || [])}
+          </div>
+        </a>
+        <div class="flex flex-1 flex-col gap-4 p-6">
+          <div class="space-y-3">
+            <p class="text-xs uppercase tracking-[0.3em] text-muted-foreground">${created}</p>
+            <a href="/blogs/${post.slug}" class="text-lg font-semibold text-foreground transition hover:text-primary">${title}</a>
+            <p class="text-sm text-muted-foreground line-clamp-3">${subtitle}</p>
+          </div>
+          <div class="mt-auto flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
+            ${likes ? `<span class="inline-flex items-center gap-1"><i class="bi bi-hand-thumbs-up"></i>${likes}</span>` : ""}
+            ${views ? `<span class="inline-flex items-center gap-1"><i class="bi bi-eye"></i>${views}</span>` : ""}
+            ${readTime ? `<span class="inline-flex items-center gap-1"><i class="bi bi-clock-history"></i>${readTime}</span>` : ""}
+          </div>
+        </div>
+      </article>
+    `;
+  };
+
+  const fetchPosts = async ({ reset = false } = {}) => {
+    if (state.loading || (!state.hasNext && !reset)) return;
+
+    state.loading = true;
+    showLoader(true);
+    if (reset) {
+      state.page = 1;
+      state.hasNext = true;
+      grid.innerHTML = "";
+      setEmptyState(false);
     }
 
-    // ===================== Render blog cards =====================     
-    function renderBlogCards(post) {
+    try {
+      const response = await fetch(`/blogs/api/posts/?${buildQueryParams()}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch posts: ${response.status}`);
+      }
 
-        // Render blog categories
-        function blogCategories(post){
-            var categories = '';
-            post.categories.forEach(category => {
-                categories += `<span class="blog-category">${category}</span>`;
-            });
-            return categories;
-        }
+      const data = await response.json();
+      const cards = data.results?.map(renderCard).join("") || "";
+      if (state.page === 1 && !cards) {
+        setEmptyState(true);
+      } else {
+        grid.insertAdjacentHTML("beforeend", cards);
+      }
 
-        // Render blog card
-        return `
-            <div class="col-md-6 col-lg-4">
-                <a href="/blogs/${post.slug}">
-                    <div class="blog-card mb-5">
-                        <div class="blog-img">
-                            <img loading="lazy" src="${post.banner_image}" alt="${post.title}"/>
-                        </div>
-                        <div class="blog-content">
-                            ${blogCategories(post)}
-                            <h5 class="blog-title">${post.title}</h5>
-                            <p class="blog-excerpt mt-3">${post.subtitle}</p>
-                            <div class="blog-info mt-4">
-                                <span class="blog-likes">${post.total_likes} likes</span>
-                                <span class="blog-views">${post.total_read_count} views</span>
-                                <span class="blog-read-time">${post.estimated_read_time} Mins Read</span>
-                                <span class="blog-create-date">${post.created_at}</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        `
+      state.page += 1;
+      state.hasNext = Boolean(data.links?.next);
+      updateLoadMoreVisibility();
+    } catch (error) {
+      console.error("Error fetching blog posts:", error);
+      setEmptyState(true);
+      state.hasNext = false;
+      updateLoadMoreVisibility();
+    } finally {
+      state.loading = false;
+      showLoader(false);
     }
+  };
 
-    // ===================== Scroll handler ===================== 
-    function scrollHandler() {
-        if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
-            fetchBlogPosts();
-        }
-    }
+  if (categorySelect) {
+    categorySelect.addEventListener("change", (event) => {
+      state.category = event.target.value;
+      fetchPosts({ reset: true });
+    });
+  }
 
-    // ===================== Initial load ===================== 
-    fetchBlogPosts();
-        
-    // Attach scroll event handler
-    $(window).on('scroll', scrollHandler);
+  toggleButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const key = button.getAttribute("data-blog-toggle");
+      state[key] = !state[key];
+      updateToggleAppearance();
+      fetchPosts({ reset: true });
+    });
+  });
+
+  if (loadMoreButton) {
+    loadMoreButton.addEventListener("click", () => {
+      fetchPosts();
+    });
+  }
+
+  updateToggleAppearance();
+  fetchPosts({ reset: true });
 });

@@ -3,504 +3,397 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Update building</title>
-<link rel="stylesheet" href="{% static '/css/auth.css' %}?v=1.01" />
-<style>
-    [label-name="latitude"],
-    [label-name="longitude"] {
-        display: none;
-    }
-</style>
+<title>Edit building</title>
 {% endblock extend_head %}
 
 {% block content %}
-<section id="create_building">
-    <div class="container">
+<section class="bg-muted/30 py-12">
+    <div class="container max-w-6xl space-y-10">
+        <header class="space-y-4">
+            <p class="text-xs font-semibold uppercase tracking-[0.4em] text-primary">Buildings</p>
+            <div class="space-y-2">
+                <h1 class="text-3xl font-heading font-semibold text-foreground">Edit building</h1>
+                <p class="max-w-2xl text-sm text-muted-foreground">
+                    Review and refine your project data, amenities, and media to keep buyers informed with the latest details.
+                </p>
+            </div>
+        </header>
 
+        <form id="building-update-form" method="post" enctype="multipart/form-data" class="space-y-10">
+            {% csrf_token %}
 
-        <div class="light-form-box">
-            <h1 class="form-title">Update Building</h1>
+            <div class="space-y-4">
+                <div class="success-message space-y-2 text-sm text-emerald-600"></div>
+                <div class="error-message space-y-2 text-sm text-destructive"></div>
+            </div>
 
-            <form id="building-update-form" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="authForm">
-                    <div class="success-message">
-                        <!-- <span class="authSuccessMessage"></span> -->
+            <section class="card space-y-6">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h2 class="text-lg font-semibold text-foreground">Project Snapshot</h2>
+                        <p class="text-sm text-muted-foreground">Edit the core business details for your building.</p>
                     </div>
-                    <div class="error-message">
-                        <!-- <span class="authErrorMessage"></span> -->
-                    </div>
-
-                    <div class="authFormDiv">
-                        <!-- <span class="authErrorMessage">Message</span> -->
-                        <input name="title" type="text" class="authInput" placeholder="Title"
-                            value="{{ building.title }}" required>
-                        <div class="authlabelline authcompleteProfileLabe">Title</div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="authFormDiv" formatted-price="input" typing="false">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="lowest_price" type="number" class="authInput" placeholder="Lowest Price"
-                                    value="{{ building.lowest_price }}" required>
-                                <div class="authlabelline authcompleteProfileLabe">Lowest Price</div>
-                                 <balance>{{ building.formatted_lowest_price }}</balance>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv" formatted-price="input" typing="false">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="highest_price" type="number" class="authInput" placeholder="Highest Price"
-                                    value="{{ building.highest_price }}" required>
-                                <div class="authlabelline authcompleteProfileLabe">Highest Price</div>
-                                <balance>{{ building.formatted_highest_price }}</balance>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <select name="type" id="type_select" type="text" class="authInput authSelectInput"
-                                placeholder="Select Building Type" required>
-                                    <option value="">........</option>
-                                    <option value="residence" {% if building.type == 'residence' %}selected{% endif %}>
-                                        Residence
-                                    </option>
-                                    <option value="commercial" {% if building.type == 'commercial' %}selected{% endif %}>
-                                        Commercial
-                                    </option>
-                                </select>
-                                <div class="authlabelline authcompleteProfileLabe">Type</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6" id="sub_type_container">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <select name="sub_type" id="sub_type_select" type="text" class="authInput authSelectInput"
-                                    placeholder="Select Building Sub Type">
-                                    <option value="">........</option>
-                                    {% if building.type == "residence" %}
-                                        {% for value, label in residence_sub_types.items %}
-                                            <option value="{{ value }}" {% if building.sub_type == value %}selected{% endif %}>{{ label }}</option>
-                                        {% endfor %}
-                                    {% elif building.type == "commercial" %}
-                                        {% for value, label in commercial_sub_types.items %}
-                                            <option value="{{ value }}" {% if building.sub_type == value %}selected{% endif %}>{{ label }}</option>
-                                        {% endfor %}
-                                    {% endif %}
-                                </select>
-                                <div class="authlabelline authcompleteProfileLabe">Sub Type</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <select name="quota" type="text" class="authInput authSelectInput"
-                                    placeholder="Select Quota Type" required>
-                                    <option value="">........</option>
-                                    <option value="thai" {% if building.quota == 'thai' %}selected{% endif %}>
-                                        Thai
-                                    </option>
-                                    <option value="foreign" {% if building.quota == 'foreign' %}selected{% endif %}>
-                                        Foreign
-                                    </option>
-                                </select>
-                                <div class="authlabelline authcompleteProfileLabe">Quota</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <select name="furnishing" type="text" class="authInput authSelectInput"
-                                    placeholder="Select Furnishing Type" required>
-                                    <option value="">........</option>
-                                    <option value="partly" {% if building.furnishing == 'partly' %}selected{% endif %}>
-                                        Partly
-                                    </option>
-                                    <option value="fully" {% if building.furnishing == 'fully' %}selected{% endif %}>
-                                        Fully
-                                    </option>
-                                </select>
-                                <div class="authlabelline authcompleteProfileLabe">Furnishing</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <select id="status" name="status" type="text" class="authInput authSelectInput"
-                                    placeholder="Select Project Status" required>
-                                    <option value="">........</option>
-                                    <option value="to_be_commenced" {% if building.status == 'to_be_commenced' %}selected{% endif %}>
-                                        To Be Commenced
-                                    </option>
-                                    <option value="under_construction" {% if building.status == 'under_construction' %}selected{% endif %}>
-                                        Under Construction
-                                    </option>
-                                    <option value="completed" {% if building.status == 'completed' %}selected{% endif %}>
-                                        Completed
-                                    </option>
-                                </select>
-                                <div class="authlabelline authcompleteProfileLabe">Project Status</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div id="constructionYearDiv" class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input id="construction_year" name="construction_year" type="number" class="authInput"
-                                    placeholder="Enter Year (2000 - current year)" min="2000"
-                                    value="{{ building.construction_year }}">
-                                <div class="authlabelline authcompleteProfileLabe">Construction Year (2000 -
-                                    Current Year)</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="authFormDiv">
-                        <!-- <span class="authErrorMessage">Message</span> -->
-                        <input name="address" type="text" class="authInput pac-input" placeholder="Address"
-                            value="{{ building.address }}" required>
-                        <div class="authlabelline authcompleteProfileLabe">Address</div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="province" label="province" type="text" class="authInput"
-                                    placeholder="Province" value="{{ building.province }}" required>
-                                <div class="authlabelline authcompleteProfileLabe">Province</div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="district" label="district" type="text" class="authInput"
-                                    placeholder="District" value="{{ building.district }}" required>
-                                <div class="authlabelline authcompleteProfileLabe">District</div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="sub_district" label="sub-district" type="text" class="authInput"
-                                    placeholder="Sub-District" value="{{ building.sub_district }}">
-                                <div class="authlabelline authcompleteProfileLabe">Sub-District</div>
-                            </div>
-                        </div>
-
-                        <input name="latitude" label="latitude" label-name="latitude" type="text" class="authInput"
-                            placeholder="Latitude" value="{{ building.latitude }}">
-                        <input name="longitude" label="longitude" label-name="longitude" type="text" class="authInput"
-                            placeholder="Longitude" value="{{ building.longitude }}">
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="project_total_area" type="number" class="authInput"
-                                    placeholder="Project Total Area" value="{{ building.project_total_area }}" required>
-                                <div class="authlabelline authcompleteProfileLabe">Project Total Area</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="total_floors" type="number" class="authInput" placeholder="Total Floor"
-                                    value="{{ building.total_floors }}" required>
-                                <div class="authlabelline authcompleteProfileLabe">Total Floor</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="total_units_for_sale" type="number" class="authInput"
-                                    placeholder="Total Units For Sale" value="{{ building.total_units_for_sale }}"
-                                    required>
-                                <div class="authlabelline authcompleteProfileLabe">Total Units For Sale</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="distance_from_location_to_BTS_or_MRT" type="number" class="authInput"
-                                    placeholder="Distance From Location to BTS/MRT"
-                                    value="{{ building.distance_from_location_to_BTS_or_MRT }}" required>
-                                <div class="authlabelline authcompleteProfileLabe">Distance From Location to BTS/MRT
-                                    (Mile)</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="distance_from_location_to_ARL" type="number" class="authInput"
-                                    placeholder="Distance From Location to ARL"
-                                    value="{{ building.distance_from_location_to_ARL }}" required>
-                                <div class="authlabelline authcompleteProfileLabe">Distance From Location to ARL (Mile)
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="view" type="text" class="authInput" placeholder="View"
-                                    value="{{ building.view }}" required>
-                                <div class="authlabelline authcompleteProfileLabe">View</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="facility_view" type="text" class="authInput" placeholder="Facility View"
-                                    value="{{ building.facility_view }}">
-                                <div class="authlabelline authcompleteProfileLabe">
-                                    Facility View ( e.g. https://my.matterport.com/show/?m=tHeZn1V85YQ)
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="location_view" type="text" class="authInput" placeholder="Location View"
-                                    value="{{ building.location_view }}">
-                                <div class="authlabelline authcompleteProfileLabe">
-                                    Location View ( e.g. https://my.matterport.com/show/?m=tHeZn1V85YQ)
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-6">
-
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_freehold" class="form-check-input" type="checkbox"
-                                            id="freehold" {% if building.have_freehold %}checked{% endif %}>
-                                        <label class="form-check-label" for="freehold">
-                                            Freehold
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_leasehold" class="form-check-input" type="checkbox"
-                                            id="leasehold" {% if building.have_leasehold %}checked{% endif %}>
-                                        <label class="form-check-label" for="leasehold">
-                                            Leasehold
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_infinity_pool" class="form-check-input" type="checkbox"
-                                            id="infinity_pool" {% if building.have_infinity_pool %}checked{% endif %}>
-                                        <label class="form-check-label" for="infinity_pool">
-                                            Infinity Pool
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_pets_allowed" class="form-check-input" type="checkbox"
-                                            id="pets_allowed" {% if building.have_pets_allowed %}checked{% endif %}>
-                                        <label class="form-check-label" for="pets_allowed">
-                                            Pets Allowed
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_sauna" class="form-check-input" type="checkbox" id="sauna" 
-                                        {% if building.have_sauna %}checked{% endif %}>
-                                        <label class="form-check-label" for="sauna">
-                                            Sauna
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_sky_lounge" class="form-check-input" type="checkbox"
-                                            id="sky_lounge" {% if building.have_sky_lounge %}checked{% endif %}>
-                                        <label class="form-check-label" for="sky_lounge">
-                                            Rooftop Pool
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_fitness_area" class="form-check-input" type="checkbox"
-                                            id="fitness_area" {% if building.have_fitness_area %}checked{% endif %}>
-                                        <label class="form-check-label" for="fitness_area">
-                                            Fitness Area
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_grocery" class="form-check-input" type="checkbox" id="grocery"
-                                            {% if building.have_grocery %}checked{% endif %}>
-                                        <label class="form-check-label" for="grocery">
-                                            Grocery
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="authFormDiv textarea">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <textarea name="description" type="text" class="authInput profileCompanyDeatils"
-                                    placeholder="Description" required>{{ building.description }}</textarea>
-                                <div class="authlabelline authcompleteProfileLabe">Description</div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="row">
-
-                        <div class="col-lg-6">
-                            <div class="uploaded-file-with-view">
-                                <div class="authFormDiv">
-                                    <!-- <span class="authErrorMessage">Message</span> -->
-                                    <input name="images" type="file" accept="image/*" class="authInput authFile"
-                                        multiple>
-                                    <div class="fileName"> Upload Building Images </div>
-                                </div>
-
-                                <div class="uploaded-file-view-area">
-                                    {% for image in images %}
-                                    {% if image.file %}
-                                    <div class="uploaded-file-view-img">
-                                        <button class="remove-image" data-id="{{ image.id }}"><i
-                                                class="bi bi-x"></i></button>
-                                        <img src="{{ image.file.url }}" alt="Building Image">
-                                    </div>
-                                    {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="col-lg-6">
-                            <div class="uploaded-file-with-view">
-                                <div class="authFormDiv">
-                                    <!-- <span class="authErrorMessage">Message</span> -->
-                                    <input name="unit_floor_plans" type="file" accept="image/*"
-                                        class="authInput authFile" multiple>
-                                    <div class="fileName"> Upload Unit Floor Plan Images </div>
-                                </div>
-
-                                <div class="uploaded-file-view-area">
-                                    {% for unit_floor_plan in unit_floor_plans %}
-                                    {% if unit_floor_plan.file %}
-                                    <div class="uploaded-file-view-img">
-                                        <button class="remove-image" data-id="{{ unit_floor_plan.id }}"><i
-                                                class="bi bi-x"></i></button>
-                                        <img src="{{ unit_floor_plan.file.url }}" alt="Building Image">
-                                    </div>
-                                    {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="col-lg-6">
-                            <div class="uploaded-file-with-view">
-                                <div class="authFormDiv">
-                                    <!-- <span class="authErrorMessage">Message</span> -->
-                                    <input name="master_plans" type="file" accept="image/*" class="authInput authFile"
-                                        multiple>
-                                    <div class="fileName"> Upload Master Plan Images </div>
-                                </div>
-
-                                <div class="uploaded-file-view-area">
-                                    {% for master_plan in master_plans %}
-                                    {% if master_plan.file %}
-                                    <div class="uploaded-file-view-img">
-                                        <button class="remove-image" data-id="{{ master_plan.id }}"><i
-                                                class="bi bi-x"></i></button>
-                                        <img src="{{ master_plan.file.url }}" alt="Building Image">
-                                    </div>
-                                    {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="col-lg-6">
-                            <div class="uploaded-file-with-view">
-                                <div class="authFormDiv">
-                                    <!-- <span class="authErrorMessage">Message</span> -->
-                                    <input name="videos" type="file" accept="video/*" class="authInput authFile">
-                                    <div class="fileName"> Upload Video </div>
-                                </div>
-
-                                <div class="uploaded-file-view-area">
-                                    {% for video in videos %}
-                                    {% if video.file %}
-                                        <a href="{{ video.file.url }}" target="_blank" alt="Building Video">{{ video.file.url }}</a>
-                                    {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="uploaded-file-with-view">
-                                <div class="authFormDiv">
-                                    <!-- <span class="authErrorMessage">Message</span> -->
-                                    <input name="aerial_drone_videos" type="file" accept="video/*"
-                                        class="authInput authFile">
-                                    <div class="fileName"> Upload Aerial Drone Video </div>
-                                </div>
-
-                                <div class="uploaded-file-view-area">
-                                    {% for aerial_drone_video in aerial_drone_videos %}
-                                    {% if aerial_drone_video.file %}
-                                    <a href="{{ aerial_drone_video.file.url }}" target="_blank" alt="Building aerial drone video">
-                                        {{ aerial_drone_video.file.url }}
-                                    </a>
-                                    {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-
-                    <button type="submit" class="authButton completeProfileButton" id="create-property">
-                        <span id="updateBuildingButtonText">Update building</span>
-                        <div id="loadingSpinner" class="spinner-border" role="status" style="display: none;">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </button>
                 </div>
-            </form>
-        </div>
+
+                <div class="grid gap-6 md:grid-cols-2">
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Title <span class="text-destructive">*</span></span>
+                        <input name="title" type="text" class="input" value="{{ building.title }}" placeholder="Project title" required>
+                    </label>
+
+                    <div class="flex flex-col gap-2" formatted-price="input" {% if building.formatted_lowest_price %}typing="false"{% endif %}>
+                        <div class="flex items-center justify-between">
+                            <span class="label">Lowest Price <span class="text-destructive">*</span></span>
+                            <span class="text-xs text-muted-foreground">THB</span>
+                        </div>
+                        <input name="lowest_price" type="number" class="input" value="{{ building.lowest_price }}" placeholder="Lowest asking price" required>
+                        {% if building.formatted_lowest_price %}
+                        <balance>{{ building.formatted_lowest_price }}</balance>
+                        {% endif %}
+                    </div>
+
+                    <div class="flex flex-col gap-2" formatted-price="input" {% if building.formatted_highest_price %}typing="false"{% endif %}>
+                        <div class="flex items-center justify-between">
+                            <span class="label">Highest Price <span class="text-destructive">*</span></span>
+                            <span class="text-xs text-muted-foreground">THB</span>
+                        </div>
+                        <input name="highest_price" type="number" class="input" value="{{ building.highest_price }}" placeholder="Highest asking price" required>
+                        {% if building.formatted_highest_price %}
+                        <balance>{{ building.formatted_highest_price }}</balance>
+                        {% endif %}
+                    </div>
+
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Building Type <span class="text-destructive">*</span></span>
+                        <select name="type" id="type_select" class="input" required>
+                            <option value="">Select type</option>
+                            <option value="residence" {% if building.type == 'residence' %}selected{% endif %}>Residence</option>
+                            <option value="commercial" {% if building.type == 'commercial' %}selected{% endif %}>Commercial</option>
+                        </select>
+                    </label>
+
+                    <div class="flex flex-col gap-2 {% if not building.type %}hidden{% endif %}" id="sub_type_container">
+                        <span class="label">Sub Type</span>
+                        <select name="sub_type" id="sub_type_select" class="input">
+                            <option value="">Select sub type</option>
+                            {% if building.type == "residence" %}
+                                {% for value, label in residence_sub_types.items %}
+                                    <option value="{{ value }}" {% if building.sub_type == value %}selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
+                            {% elif building.type == "commercial" %}
+                                {% for value, label in commercial_sub_types.items %}
+                                    <option value="{{ value }}" {% if building.sub_type == value %}selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Quota <span class="text-destructive">*</span></span>
+                        <select name="quota" class="input" required>
+                            <option value="">Select quota</option>
+                            <option value="thai" {% if building.quota == 'thai' %}selected{% endif %}>Thai</option>
+                            <option value="foreign" {% if building.quota == 'foreign' %}selected{% endif %}>Foreign</option>
+                        </select>
+                    </label>
+
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Furnishing <span class="text-destructive">*</span></span>
+                        <select name="furnishing" class="input" required>
+                            <option value="">Select furnishing level</option>
+                            <option value="partly" {% if building.furnishing == 'partly' %}selected{% endif %}>Partly</option>
+                            <option value="fully" {% if building.furnishing == 'fully' %}selected{% endif %}>Fully</option>
+                        </select>
+                    </label>
+
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Project Status <span class="text-destructive">*</span></span>
+                        <select id="status" name="status" class="input" required>
+                            <option value="">Select status</option>
+                            <option value="to_be_commenced" {% if building.status == 'to_be_commenced' %}selected{% endif %}>To Be Commenced</option>
+                            <option value="under_construction" {% if building.status == 'under_construction' %}selected{% endif %}>Under Construction</option>
+                            <option value="completed" {% if building.status == 'completed' %}selected{% endif %}>Completed</option>
+                        </select>
+                    </label>
+
+                    <label class="flex flex-col gap-2 {% if building.status != 'completed' %}hidden{% endif %}" id="constructionYearDiv">
+                        <span class="label">Completion Year <span class="text-destructive">*</span></span>
+                        <input id="construction_year" name="construction_year" type="number" class="input" min="2000" value="{{ building.construction_year }}" placeholder="YYYY">
+                        <span class="text-xs text-muted-foreground">Enter a year between 2000 and the current year.</span>
+                    </label>
+                </div>
+            </section>
+
+            <section class="card space-y-6">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h2 class="text-lg font-semibold text-foreground">Location</h2>
+                        <p class="text-sm text-muted-foreground">Keep address information aligned with Google Maps.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Address <span class="text-destructive">*</span></span>
+                        <input name="address" type="text" class="input pac-input" value="{{ building.address }}" placeholder="Street, neighborhood" required>
+                    </label>
+
+                    <div class="grid gap-6 md:grid-cols-3">
+                        <label class="flex flex-col gap-2">
+                            <span class="label">Province <span class="text-destructive">*</span></span>
+                            <input name="province" label="province" type="text" class="input" value="{{ building.province }}" placeholder="Province" required>
+                        </label>
+                        <label class="flex flex-col gap-2">
+                            <span class="label">District <span class="text-destructive">*</span></span>
+                            <input name="district" label="district" type="text" class="input" value="{{ building.district }}" placeholder="District" required>
+                        </label>
+                        <label class="flex flex-col gap-2">
+                            <span class="label">Sub District</span>
+                            <input name="sub_district" label="sub-district" type="text" class="input" value="{{ building.sub_district }}" placeholder="Sub district">
+                        </label>
+                    </div>
+                </div>
+
+                <input type="hidden" name="latitude" label="latitude" label-name="latitude" value="{{ building.latitude }}">
+                <input type="hidden" name="longitude" label="longitude" label-name="longitude" value="{{ building.longitude }}">
+            </section>
+
+            <section class="card space-y-6">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h2 class="text-lg font-semibold text-foreground">Project Metrics</h2>
+                        <p class="text-sm text-muted-foreground">Update sizing and proximity data to reflect current status.</p>
+                    </div>
+                </div>
+
+                <div class="grid gap-6 md:grid-cols-3">
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Total Area (sqm) <span class="text-destructive">*</span></span>
+                        <input name="project_total_area" type="number" step="0.1" min="0" class="input" value="{{ building.project_total_area }}" placeholder="Project total area" required>
+                    </label>
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Total Floors <span class="text-destructive">*</span></span>
+                        <input name="total_floors" type="number" min="0" class="input" value="{{ building.total_floors }}" placeholder="Total floors" required>
+                    </label>
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Units for Sale <span class="text-destructive">*</span></span>
+                        <input name="total_units_for_sale" type="number" min="0" class="input" value="{{ building.total_units_for_sale }}" placeholder="Units for sale" required>
+                    </label>
+                </div>
+
+                <div class="grid gap-6 md:grid-cols-2">
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Distance to BTS / MRT (mile) <span class="text-destructive">*</span></span>
+                        <input name="distance_from_location_to_BTS_or_MRT" type="number" step="0.1" min="0" class="input" value="{{ building.distance_from_location_to_BTS_or_MRT }}" placeholder="Distance to BTS/MRT" required>
+                    </label>
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Distance to ARL (mile) <span class="text-destructive">*</span></span>
+                        <input name="distance_from_location_to_ARL" type="number" step="0.1" min="0" class="input" value="{{ building.distance_from_location_to_ARL }}" placeholder="Distance to ARL" required>
+                    </label>
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Primary View <span class="text-destructive">*</span></span>
+                        <input name="view" type="text" class="input" value="{{ building.view }}" placeholder="Views and vistas" required>
+                    </label>
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Facility Tour URL</span>
+                        <input name="facility_view" type="url" class="input" value="{{ building.facility_view }}" placeholder="https://">
+                        <span class="text-xs text-muted-foreground">Add virtual tours or 360° experiences.</span>
+                    </label>
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Location Tour URL</span>
+                        <input name="location_view" type="url" class="input" value="{{ building.location_view }}" placeholder="https://">
+                        <span class="text-xs text-muted-foreground">Share neighborhood or lifestyle footage.</span>
+                    </label>
+                </div>
+            </section>
+
+            <section class="card space-y-6">
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h2 class="text-lg font-semibold text-foreground">Ownership & Amenities</h2>
+                    <p class="text-sm text-muted-foreground">Reflect the features and exclusive perks residents enjoy.</p>
+                </div>
+            </div>
+
+            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
+                    <input name="have_freehold" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="freehold" {% if building.have_freehold %}checked{% endif %}>
+                    <span class="text-sm font-medium text-foreground">Freehold</span>
+                </label>
+                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
+                    <input name="have_leasehold" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="leasehold" {% if building.have_leasehold %}checked{% endif %}>
+                    <span class="text-sm font-medium text-foreground">Leasehold</span>
+                </label>
+                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
+                    <input name="have_infinity_pool" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="infinity_pool" {% if building.have_infinity_pool %}checked{% endif %}>
+                    <span class="text-sm font-medium text-foreground">Infinity Pool</span>
+                </label>
+                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
+                    <input name="have_pets_allowed" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="pets_allowed" {% if building.have_pets_allowed %}checked{% endif %}>
+                    <span class="text-sm font-medium text-foreground">Pets Allowed</span>
+                </label>
+                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
+                    <input name="have_sauna" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="sauna" {% if building.have_sauna %}checked{% endif %}>
+                    <span class="text-sm font-medium text-foreground">Sauna</span>
+                </label>
+                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
+                    <input name="have_rooftop_pool" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="rooftop_pool" {% if building.have_sky_lounge or building.have_rooftop_pool %}checked{% endif %}>
+                    <span class="text-sm font-medium text-foreground">Rooftop Pool</span>
+                </label>
+                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
+                    <input name="have_fitness_area" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="fitness_area" {% if building.have_fitness_area %}checked{% endif %}>
+                    <span class="text-sm font-medium text-foreground">Fitness Area</span>
+                </label>
+                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
+                    <input name="have_grocery" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="grocery" {% if building.have_grocery %}checked{% endif %}>
+                    <span class="text-sm font-medium text-foreground">On-site Grocery</span>
+                </label>
+            </div>
+            </section>
+
+            <section class="card space-y-6">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h2 class="text-lg font-semibold text-foreground">Description</h2>
+                        <p class="text-sm text-muted-foreground">Ensure your narrative highlights the latest milestones.</p>
+                    </div>
+                </div>
+
+                <label class="flex flex-col gap-2">
+                    <span class="label">Description <span class="text-destructive">*</span></span>
+                    <textarea name="description" class="textarea min-h-[220px]" placeholder="Update your building story..." required>{{ building.description }}</textarea>
+                </label>
+            </section>
+
+            <section class="card space-y-6">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h2 class="text-lg font-semibold text-foreground">Media Library</h2>
+                        <p class="text-sm text-muted-foreground">Replace or append assets to keep marketing collateral fresh.</p>
+                    </div>
+                    <p class="text-xs text-muted-foreground">Deleting an asset will remove it after you save.</p>
+                </div>
+
+                <div class="grid gap-6 lg:grid-cols-2">
+                    <div class="uploaded-file-with-view space-y-3">
+                        <label class="flex flex-col gap-2">
+                            <span class="label">Building Images</span>
+                            <input name="images" type="file" accept="image/*" class="input cursor-pointer" multiple>
+                        </label>
+                        <div class="fileName text-xs text-muted-foreground">Upload additional building images</div>
+                        <div class="uploaded-file-view-area grid grid-cols-2 gap-3">
+                            {% for image in images %}
+                            {% if image.file %}
+                            <div class="group relative overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+                                <button type="button" class="remove-image absolute right-2 top-2 inline-flex size-8 items-center justify-center rounded-full border border-border bg-black/70 text-white opacity-0 transition group-hover:opacity-100" data-id="{{ image.id }}">
+                                    <i class="bi bi-x"></i>
+                                    <span class="sr-only">Remove image</span>
+                                </button>
+                                <img src="{{ image.file.url }}" alt="Building Image" class="h-40 w-full object-cover">
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="uploaded-file-with-view space-y-3">
+                        <label class="flex flex-col gap-2">
+                            <span class="label">Unit Floor Plans</span>
+                            <input name="unit_floor_plans" type="file" accept="image/*" class="input cursor-pointer" multiple>
+                        </label>
+                        <div class="fileName text-xs text-muted-foreground">Upload additional unit floor plan images</div>
+                        <div class="uploaded-file-view-area grid grid-cols-2 gap-3">
+                            {% for unit_floor_plan in unit_floor_plans %}
+                            {% if unit_floor_plan.file %}
+                            <div class="group relative overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+                                <button type="button" class="remove-image absolute right-2 top-2 inline-flex size-8 items-center justify-center rounded-full border border-border bg-black/70 text-white opacity-0 transition group-hover:opacity-100" data-id="{{ unit_floor_plan.id }}">
+                                    <i class="bi bi-x"></i>
+                                    <span class="sr-only">Remove floor plan</span>
+                                </button>
+                                <img src="{{ unit_floor_plan.file.url }}" alt="Floor Plan" class="h-40 w-full object-cover">
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="uploaded-file-with-view space-y-3">
+                        <label class="flex flex-col gap-2">
+                            <span class="label">Master Plans</span>
+                            <input name="master_plans" type="file" accept="image/*" class="input cursor-pointer" multiple>
+                        </label>
+                        <div class="fileName text-xs text-muted-foreground">Upload additional master plan images</div>
+                        <div class="uploaded-file-view-area grid grid-cols-2 gap-3">
+                            {% for master_plan in master_plans %}
+                            {% if master_plan.file %}
+                            <div class="group relative overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+                                <button type="button" class="remove-image absolute right-2 top-2 inline-flex size-8 items-center justify-center rounded-full border border-border bg-black/70 text-white opacity-0 transition group-hover:opacity-100" data-id="{{ master_plan.id }}">
+                                    <i class="bi bi-x"></i>
+                                    <span class="sr-only">Remove master plan</span>
+                                </button>
+                                <img src="{{ master_plan.file.url }}" alt="Master Plan" class="h-40 w-full object-cover">
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="uploaded-file-with-view space-y-3">
+                        <label class="flex flex-col gap-2">
+                            <span class="label">Project Video</span>
+                            <input name="videos" type="file" accept="video/*" class="input cursor-pointer">
+                        </label>
+                        <div class="fileName text-xs text-muted-foreground">Upload new project walkthrough video</div>
+                        <div class="uploaded-file-view-area space-y-2">
+                            {% for video in videos %}
+                            {% if video.file %}
+                            <a href="{{ video.file.url }}" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 rounded-md border border-border bg-card/60 px-3 py-2 text-sm text-foreground transition hover:border-primary hover:text-primary">
+                                <i class="bi bi-play-circle"></i> {{ video.file.url }}
+                            </a>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="uploaded-file-with-view space-y-3 lg:col-span-2">
+                        <label class="flex flex-col gap-2">
+                            <span class="label">Aerial Drone Video</span>
+                            <input name="aerial_drone_videos" type="file" accept="video/*" class="input cursor-pointer">
+                        </label>
+                        <div class="fileName text-xs text-muted-foreground">Upload refreshed drone footage</div>
+                        <div class="uploaded-file-view-area space-y-2">
+                            {% for aerial_drone_video in aerial_drone_videos %}
+                            {% if aerial_drone_video.file %}
+                            <a href="{{ aerial_drone_video.file.url }}" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 rounded-md border border-border bg-card/60 px-3 py-2 text-sm text-foreground transition hover:border-primary hover:text-primary">
+                                <i class="bi bi-play-circle"></i> {{ aerial_drone_video.file.url }}
+                            </a>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="flex items-center justify-end gap-4">
+                <a href="/dashboard" class="btn-secondary min-w-[140px] justify-center">Cancel</a>
+                <button type="submit" class="btn min-w-[160px] justify-center">
+                    <span id="updateBuildingButtonText">Save changes</span>
+                    <div id="loadingSpinner" class="spinner-border" role="status" style="display: none;">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </button>
+            </div>
+        </form>
     </div>
 </section>
 {% endblock %}
+
 {% block extend_script %}
 <script type="text/javascript">
-    var updateBuildingAPIUrl = "{% url 'building:api:update' building.id %}"
+    var updateBuildingAPIUrl = "{% url 'building:api:update' building.id %}";
     var residenceSubTypes = {{ residence_sub_types|safe }};
     var commercialSubTypes = {{ commercial_sub_types|safe }};
 </script>
-<script src="{% static 'js/building/update_building.js' %}?v=1.02"></script>
+<script src="{% static 'js/building/update_building.js' %}?v=2.00"></script>
 {% endblock extend_script %}
+

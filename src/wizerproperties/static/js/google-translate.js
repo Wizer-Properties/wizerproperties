@@ -1,48 +1,100 @@
 function googleTranslateElementInit() {
-  new google.translate.TranslateElement({
-    pageLanguage: 'en',
-    includedLanguages: 'en,th,zh-CN',
-    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-  }, 'google_translate_element');
+  new google.translate.TranslateElement(
+    {
+      pageLanguage: "en",
+      includedLanguages: "en,th,zh-CN",
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+    },
+    "google_translate_element"
+  );
 }
 
+function setLanguageLabel(languageCode) {
+  const labelMap = {
+    "/en/en": "EN",
+    "/en/th": "TH",
+    "/en/zh-CN": "ZH",
+  };
 
-function googleTranslateCookie() {
-  var getLang = Cookies.get('googtrans');
-  if ([null, undefined].includes(getLang)) return;
-  var langShot = 'EN'
-
-  if (getLang.includes('/en/en')) {
-    langShot = 'EN'
-  } else if (getLang.includes('/en/th')) {
-    langShot = 'TH'
-  } else if (getLang.includes('/en/zh-CN')) {
-    langShot = 'ZH'
-  }
-
-  $('#custom_translate_dropdown').text(langShot);
-}
-
-googleTranslateCookie()
-
-$(document).ready(function() {
-  $('.dropdown-item').click(function() {
-    var getLang = Cookies.get('googtrans');
-
-    if (![null, undefined].includes(getLang)) {
-      Cookies.remove('googtrans'); // for current domain
-      Cookies.remove('googtrans', { domain: '.wizerproperties.com' }); // For subdomains
-      Cookies.remove('googtrans', { domain: 'wizerproperties.com' }); // For main domain
-    }
-
-    var language = $(this).data('language');
-
-    
-    setTimeout(function() {
-      Cookies.set('googtrans', language); // for current domain
-      Cookies.set('googtrans', language, { domain: '.wizerproperties.com' }); // For subdomains
-      Cookies.set('googtrans', language, { domain: 'wizerproperties.com' }); // For main domain
-        window.location.reload();
-    }, 500);
+  const label = labelMap[languageCode] ?? "EN";
+  document.querySelectorAll("[data-translate-label]").forEach((node) => {
+    node.textContent = label;
   });
-});
+}
+
+function handleGoogleTranslateCookie() {
+  const stored = Cookies.get("googtrans");
+  if (!stored) {
+    setLanguageLabel("/en/en");
+    return;
+  }
+  setLanguageLabel(stored);
+}
+
+function removeGoogleTranslateCookie() {
+  Cookies.remove("googtrans");
+  Cookies.remove("googtrans", { domain: ".wizerproperties.com" });
+  Cookies.remove("googtrans", { domain: "wizerproperties.com" });
+}
+
+function initTranslateDropdowns() {
+  const components = document.querySelectorAll("[data-translate]");
+  const closeAllMenus = () => {
+    components.forEach((component) => {
+      const menu = component.querySelector("[data-translate-menu]");
+      const trigger = component.querySelector("[data-translate-trigger]");
+      if (menu && trigger) {
+        menu.classList.add("hidden");
+        trigger.setAttribute("aria-expanded", "false");
+      }
+    });
+  };
+
+  components.forEach((component) => {
+    const trigger = component.querySelector("[data-translate-trigger]");
+    const menu = component.querySelector("[data-translate-menu]");
+    const options = component.querySelectorAll("[data-language]");
+
+    if (!trigger || !menu) return;
+
+    trigger.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const isHidden = menu.classList.contains("hidden");
+      closeAllMenus();
+      if (isHidden) {
+        menu.classList.remove("hidden");
+        trigger.setAttribute("aria-expanded", "true");
+      }
+    });
+
+    menu.addEventListener("click", (event) => {
+      event.stopPropagation();
+    });
+
+    options.forEach((option) => {
+      option.addEventListener("click", () => {
+        const language = option.getAttribute("data-language");
+        if (!language) return;
+
+        removeGoogleTranslateCookie();
+        setTimeout(() => {
+          Cookies.set("googtrans", language);
+          Cookies.set("googtrans", language, { domain: ".wizerproperties.com" });
+          Cookies.set("googtrans", language, { domain: "wizerproperties.com" });
+          window.location.reload();
+        }, 300);
+      });
+    });
+  });
+
+  document.addEventListener("click", () => {
+    closeAllMenus();
+  });
+}
+
+handleGoogleTranslateCookie();
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initTranslateDropdowns);
+} else {
+  initTranslateDropdowns();
+}

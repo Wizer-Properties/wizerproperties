@@ -3,56 +3,61 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Create Schedule</title>
+<title>Schedule viewing</title>
 <link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
 <link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
-<link rel="stylesheet" href="{% static '/css/search-page.css' %}?v=1.02" />
-<link rel="stylesheet" href="{% static '/css/create-schedule.css' %}?v=1.00" />
 {% endblock extend_head %}
 
 {% block content %}
 
-<section id="create-schedule">
-    <div class="container">
-        <h1 class="section-title create-schedule-title"> </h1>
+<section class="bg-muted/30 py-16 sm:py-20">
+    <div class="container max-w-6xl space-y-10">
+        <header class="space-y-4 text-center">
+            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-primary">Schedule visit</p>
+            <h1 class="create-schedule-title text-3xl font-heading font-semibold text-foreground sm:text-4xl"></h1>
+            <p class="mx-auto max-w-2xl text-sm text-muted-foreground sm:text-base">
+                Choose a slot that works for you. We’ll confirm availability instantly and send you a calendar-ready summary.
+            </p>
+        </header>
 
-        <div class="alert_messages"></div>
+        <div class="alert_messages space-y-3"></div>
 
-        <div class="row mt-4">
-            <div class="col-lg-6">
-                <div label-name="update-date-field"></div>
-                <h1 class="section-title"> Pick a date </h1>
-
-                <div class="splide date-picker-splide">
-                    <div class="splide__track">
-                        <div class="splide__list">
-
-                            <!-- from date -->
-
+        <div class="grid gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+            <div class="space-y-6 rounded-3xl border border-border bg-card/95 p-6 shadow-xl backdrop-blur">
+                <div label-name="update-date-field" class="text-xs text-muted-foreground"></div>
+                <div class="space-y-4">
+                    <h2 class="text-lg font-semibold text-foreground">Select a date</h2>
+                    <div class="splide date-picker-splide" aria-label="Available dates">
+                        <div class="splide__track">
+                            <div class="splide__list"></div>
                         </div>
                     </div>
                 </div>
 
-
-                <h1 class="section-title"> Pick a time </h1>
-                <div class="splide time-picker-splide">
-                    <div class="splide__track">
-                        <div class="splide__list">
-
-                            <!-- from time -->
-
+                <div class="space-y-4">
+                    <h2 class="text-lg font-semibold text-foreground">Select a time</h2>
+                    <div class="splide time-picker-splide" aria-label="Available time slots">
+                        <div class="splide__track">
+                            <div class="splide__list"></div>
                         </div>
                     </div>
                 </div>
 
-
-                <h1 class="section-title display-time"></h1>
-                <button class="create-schedule-btn d-none"> Confirm </button>
+                <div class="space-y-3">
+                    <h3 class="display-time text-sm font-semibold text-foreground"></h3>
+                    <button type="button" class="create-schedule-btn btn w-full justify-center sm:w-auto hidden">Confirm visit</button>
+                </div>
             </div>
 
-
-            <div class="col-lg-6 property-single-box">
-                <!-- from dom -->
+            <div class="property-single-box space-y-6 rounded-3xl border border-border bg-card/95 p-6 shadow-xl backdrop-blur">
+                <div class="animate-pulse space-y-4" data-property-skeleton>
+                    <div class="h-40 w-full rounded-2xl bg-muted/50"></div>
+                    <div class="space-y-2">
+                        <div class="h-4 w-1/2 rounded bg-muted/60"></div>
+                        <div class="h-4 w-3/4 rounded bg-muted/50"></div>
+                        <div class="h-4 w-2/3 rounded bg-muted/40"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -63,5 +68,5 @@
 {% block extend_script %}
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 <script src="{% static 'js/libraries/splide.min.js' %}?v=1.00"></script>
-<script src="{% static '/js/create-schedule.js' %}?v=1.00"></script>
+<script src="{% static '/js/create-schedule.js' %}?v=2.00"></script>
 {% endblock extend_script %}

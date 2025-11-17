@@ -1,23 +1,110 @@
-$(document).ready(function(){
-    $('.menu-box').click(function(){
-        $('.header-side-nav').slideToggle(100)
+document.addEventListener("DOMContentLoaded", () => {
+  const mobileTrigger = document.querySelector("[data-mobile-nav-trigger]");
+  const mobilePanel = document.querySelector("[data-mobile-nav-panel]");
+  const confirmationDialog = document.querySelector("[data-confirmation-dialog]");
+  const confirmationCloseButtons = confirmationDialog
+    ? confirmationDialog.querySelectorAll("[data-confirmation-close], [data-confirmation-dismiss]")
+    : [];
+  const authModal = document.querySelector("[data-auth-modal]");
+  const authModalClose = authModal ? authModal.querySelector("[data-auth-modal-close]") : null;
 
-        var is_menu_open = $('body').attr('is-menu-open');
-        if(is_menu_open == 'true'){
-            $('body').attr('is-menu-open', 'false');
-        }else{
-            $('body').attr('is-menu-open', 'true');
-        }
+  const toggleMobileNav = (forceState) => {
+    if (!mobilePanel || !mobileTrigger) return;
+    const isOpen = forceState !== undefined ? forceState : mobilePanel.hasAttribute("hidden");
+    if (isOpen) {
+      mobilePanel.removeAttribute("hidden");
+      mobileTrigger.setAttribute("aria-expanded", "true");
+      document.body.classList.add("overflow-hidden", "lg:overflow-visible");
+    } else {
+      mobilePanel.setAttribute("hidden", "");
+      mobileTrigger.setAttribute("aria-expanded", "false");
+      document.body.classList.remove("overflow-hidden");
+    }
+  };
+
+  mobileTrigger?.addEventListener("click", () => toggleMobileNav());
+
+  document.addEventListener("click", (event) => {
+    if (!mobilePanel || !mobileTrigger) return;
+    const isClickInside =
+      mobilePanel.contains(event.target) || mobileTrigger.contains(event.target);
+    if (!isClickInside && !mobilePanel.hasAttribute("hidden")) {
+      toggleMobileNav(false);
+    }
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth >= 1024) {
+      toggleMobileNav(false);
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      toggleMobileNav(false);
+      if (confirmationDialog && !confirmationDialog.classList.contains("hidden")) {
+        confirmationDialog.classList.add("hidden");
+      }
+      if (authModal && !authModal.classList.contains("hidden")) {
+        authModal.classList.add("hidden");
+      }
+    }
+  });
+
+  confirmationCloseButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      confirmationDialog.classList.add("hidden");
     });
+  });
 
-    
+  confirmationDialog?.addEventListener("click", (event) => {
+    if (event.target === confirmationDialog) {
+      confirmationDialog.classList.add("hidden");
+    }
+  });
 
-    $(document).on('click', function(e){
-        if(
-            !$(e.target).closest('.header-side-nav').length &&
-            !$(e.target).closest('.menu-box').length
-        ){
-            $('.header-side-nav').slideUp(100)
+  authModalClose?.addEventListener("click", () => authModal.classList.add("hidden"));
+  authModal?.addEventListener("click", (event) => {
+    if (event.target === authModal) {
+      authModal.classList.add("hidden");
+    }
+  });
+
+  const header = document.querySelector("[data-site-header]");
+  const brandLarge = header?.querySelector("[data-brand-large]");
+  const brandCompact = header?.querySelector("[data-brand-compact]");
+
+  if (header && brandLarge && brandCompact) {
+    const updateBrandState = () => {
+      const isScrolled = window.scrollY > 40;
+      if (isScrolled) {
+        if (!brandLarge.classList.contains("hidden")) {
+          brandLarge.classList.add("hidden");
         }
+        brandCompact.classList.remove("hidden");
+      } else {
+        brandLarge.classList.remove("hidden");
+        if (!brandCompact.classList.contains("hidden")) {
+          brandCompact.classList.add("hidden");
+        }
+      }
+    };
+
+    updateBrandState();
+    window.addEventListener("scroll", updateBrandState, { passive: true });
+  }
+
+  const desktopNavGroups = document.querySelectorAll("[data-nav-group]");
+  if (desktopNavGroups.length > 1) {
+    desktopNavGroups.forEach((group) => {
+      group.addEventListener("toggle", () => {
+        if (!group.open) return;
+        desktopNavGroups.forEach((other) => {
+          if (other !== group) {
+            other.removeAttribute("open");
+          }
+        });
+      });
     });
-})
+  }
+});

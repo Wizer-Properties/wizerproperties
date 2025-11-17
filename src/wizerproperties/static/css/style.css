@@ -157,7 +157,7 @@ table.dataTable.no-footer{
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover{
-    background: #15c1b947 !important;
+    background: rgba(21, 193, 185, 0.28) !important;
     color: #212529 !important;
 }
 

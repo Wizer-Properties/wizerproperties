@@ -1,589 +1,517 @@
 {% extends "base.html" %}
 {% load static %}
-{% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Developer or agent</title>
+<title>Developer or Agent Dashboard</title>
 <link rel="stylesheet" href="{% static '/css/libraries/dataTables.min.css' %}" />
-<link rel="stylesheet" href="{% static '/css/auth.css' %}?v=1.01" />
-<link rel="stylesheet" href="{% static '/css/dashboard.css' %}?v=1.01" />
 <style>
-    #loginButtonText {
-        margin: 0;
-        padding: 0;
-        font-size: inherit;
-    }
-    
-    /* Enhanced Dashboard Styling */
-    .dashboard-single-card {
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        color: white;
+    /* Modern Toggle Switch */
+    .toggle-switch {
         position: relative;
-        overflow: hidden;
+        display: inline-block;
+        width: 44px;
+        height: 24px;
     }
     
-    .dashboard-single-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
     }
     
-    .dashboard-single-card i {
+    .toggle-slider {
         position: absolute;
-        top: 20px;
-        right: 20px;
-        font-size: 2.5rem;
-        opacity: 0.3;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #cbd5e1;
+        transition: 0.3s;
+        border-radius: 24px;
     }
     
-    .single-card-value {
-        padding: 25px;
-        position: relative;
-        z-index: 2;
+    .toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: 0.3s;
+        border-radius: 50%;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     }
     
-    .single-card-value span {
-        font-size: 2.5rem;
-        font-weight: bold;
-        display: block;
-        margin-bottom: 5px;
+    .toggle-switch input:checked + .toggle-slider {
+        background-color: #10b981;
     }
     
-    .single-card-value p {
-        margin: 0;
-        font-size: 1rem;
-        opacity: 0.9;
+    .toggle-switch input:checked + .toggle-slider:before {
+        transform: translateX(20px);
     }
     
-    /* Table styling improvements */
-    .table-area {
-        background: white;
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    .toggle-switch input:focus + .toggle-slider {
+        outline: 2px solid #10b981;
+        outline-offset: 2px;
     }
     
-    .dashboard-data-table {
-        margin: 0;
-        border: none;
-        width: 100% !important;
+    /* DataTables customization */
+    .dataTables_wrapper .dataTables_filter input {
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 14px;
     }
     
-    .dashboard-data-table thead th {
-        background: #f8f9fa;
-        border: none;
-        font-weight: 600;
-        color: #495057;
-        padding: 15px 12px;
-    }
-    
-    .dashboard-data-table tbody td {
-        border: none;
-        border-bottom: 1px solid #f1f3f4;
-        padding: 12px;
-        vertical-align: middle;
-    }
-    
-    .dashboard-data-table tbody tr:hover {
-        background-color: #f8f9fa;
-    }
-    
-    .badge {
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: 500;
-    }
-    
-    .link {
-        color: #007bff;
-        text-decoration: none;
-        margin-right: 10px;
-        font-size: 0.9rem;
-    }
-    
-    .link:hover {
-        color: #0056b3;
-        text-decoration: underline;
-    }
-    
-    /* Quick Actions hover effects */
-    .quick-action-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    
-    .quick-action-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-    }
-    
-    /* Responsive improvements */
-    @media (max-width: 768px) {
-        .single-card-value span {
-            font-size: 2rem;
-        }
-        
-        .dashboard-single-card i {
-            font-size: 2rem;
-        }
-        
-        .single-card-value {
-            padding: 20px;
-        }
-        
-        .quick-action-card {
-            margin-bottom: 15px;
-        }
+    .dataTables_wrapper .dataTables_filter input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     }
 </style>
 {% endblock extend_head %}
 
 {% block content %}
-<!-- <div class="container-fluid">
-    <div class="row how-it-work-row">
-        <div class="col-lg-8 order-lg-2 login-form-box">
-            <div class="logo completeProfileLogo">
-                <a href="/">
-                    <img src="{% static 'media/logo.png' %}" alt="logo">
-                </a>
+<div class="min-h-screen bg-gray-50 py-8">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
+            <p class="mt-2 text-sm text-gray-600">Manage your buildings, properties, and promotional campaigns</p>
+        </div>
+
+        <!-- Statistics Cards Grid -->
+        <div class="mb-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <!-- Buildings Card -->
+            <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 p-6 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                <div class="relative z-10">
+                    <div class="mb-2 flex items-center justify-between">
+                        <p class="text-sm font-medium text-white/90">Buildings</p>
+                        <svg class="h-8 w-8 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                    </div>
+                    <p class="text-3xl font-bold text-white">{{ total_buildings }}</p>
+                </div>
+                <div class="absolute right-0 top-0 h-24 w-24 rounded-full bg-white/10 blur-2xl"></div>
             </div>
 
-            <div class="authArea completeProfileArea">
-                <p>Developer/Agent Dashboard</p>
+            <!-- Properties Card -->
+            <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 p-6 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                <div class="relative z-10">
+                    <div class="mb-2 flex items-center justify-between">
+                        <p class="text-sm font-medium text-white/90">Properties</p>
+                        <svg class="h-8 w-8 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                        </svg>
+                    </div>
+                    <p class="text-3xl font-bold text-white">{{ total_properties }}</p>
+                </div>
+                <div class="absolute right-0 top-0 h-24 w-24 rounded-full bg-white/10 blur-2xl"></div>
             </div>
 
-        </div>
-        <div class="col-lg-4 order-lg-1 login-des-box">
-            <div class="authTextArea">
-                <a type="button" class="authSignUpButton" href="{% url 'user:logout' %}">Logout</a>
+            <!-- Active Properties Card -->
+            <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 p-6 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                <div class="relative z-10">
+                    <div class="mb-2 flex items-center justify-between">
+                        <p class="text-sm font-medium text-white/90">Active Properties</p>
+                        <svg class="h-8 w-8 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <p class="text-3xl font-bold text-white" id="active-properties-count">{{ active_properties_count }}</p>
+                </div>
+                <div class="absolute right-0 top-0 h-24 w-24 rounded-full bg-white/10 blur-2xl"></div>
             </div>
-        </div>
-    </div>
-</div> -->
 
-<section id="dashboard-cards-list-area" class="my-5">
-    <div class="container">
-        <!-- Main Statistics Row -->
-        <div class="row mb-4">
-            <div class="col-lg-3 col-md-6 col-sm-12 dashboard-card">
-                <div class="dashboard-single-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                    <div class="single-card-value">
-                        <span>{{ total_buildings }}</span>
-                        <p>Buildings</p>
+            <!-- Credit Balance Card -->
+            <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 p-6 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                <div class="relative z-10">
+                    <div class="mb-2 flex items-center justify-between">
+                        <p class="text-sm font-medium text-white/90">Credit Balance</p>
+                        <svg class="h-8 w-8 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v2a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
                     </div>
-                    <i class="bi bi-buildings"></i>
+                    <p class="text-3xl font-bold text-white">
+                        {% if request.user.user_type == 'agent' %}
+                            {{ request.user.agentprofile.credit_balance }}
+                        {% elif request.user.user_type == 'developer' %}
+                            {{ request.user.developerprofile.credit_balance }}
+                        {% endif %}
+                    </p>
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-12 dashboard-card">
-                <div class="dashboard-single-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-                    <div class="single-card-value">
-                        <span>{{ total_properties }}</span>
-                        <p>Properties</p>
-                    </div>
-                    <i class="bi bi-newspaper"></i>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-12 dashboard-card">
-                <div class="dashboard-single-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-                    <div class="single-card-value">
-                        <span id="active-properties-count">{{ active_properties_count }}</span>
-                        <p>Active Properties</p>
-                    </div>
-                    <i class="bi bi-send-arrow-up"></i>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-12 dashboard-card">
-                <div class="dashboard-single-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
-                    <div class="single-card-value">
-                        <span>
-                            {% if request.user.user_type == 'agent' %}
-                                {{ request.user.agentprofile.credit_balance }}
-                            {% elif request.user.user_type == 'developer' %}
-                                {{ request.user.developerprofile.credit_balance }}
-                            {% endif %}
-                        </span>
-                        <p>Credit Balance</p>
-                    </div>
-                    <i class="bi bi-wallet2"></i>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Promotional Properties Row -->
-        <div class="row mb-4">
-            <div class="col-lg-6 col-md-6 col-sm-12 dashboard-card">
-                <div class="dashboard-single-card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
-                    <div class="single-card-value">
-                        <span>{{ total_discount_properties }}</span>
-                        <p>Discount Properties</p>
-                    </div>
-                    <i class="bi bi-tag"></i>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12 dashboard-card">
-                <div class="dashboard-single-card" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
-                    <div class="single-card-value">
-                        <span>{{ total_featured_properties }}</span>
-                        <p>Featured Properties</p>
-                    </div>
-                    <i class="bi bi-star"></i>
-                </div>
+                <div class="absolute right-0 top-0 h-24 w-24 rounded-full bg-white/10 blur-2xl"></div>
             </div>
         </div>
-        
-    </div>
-</section>
 
-
-
-<section>
-    <div class="container">
-        <div class="row">
-
-            <div class="col-12 mb-5">
-                <div class="table-area">
-                    <table 
-                        class="dashboard-data-table" 
-                        id="building-table"
-                    >
-                    <caption> Buildings </caption>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Title</th>
-                                <th>Price</th>
-                                <th>Type</th>
-                                <th>Sub Type</th>
-                                <th>Total Units For Sale</th>
-                                <th>Address</th>
-                                <th>Project Total Area</th>
-                                <th>Total Floors</th>
-                                <th>Project Status</th>
-                                <th>Completion Date</th>
-                                <th>Status</th>
-                                <th class="th-edit-delete-see"> </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for building in buildings %}
-                            <tr id="building-{{ building.id }}">
-                                <td>{{ building.id }}</td>
-                                <td>{{ building.title }}</td>
-                                <td>{{ building.price }}</td>
-                                <td>{{ building.get_type_display }}</td>
-                                <td>{{ building.get_sub_type_display }}</td>
-                                <td>{{ building.total_units_for_sale }}</td>
-                                <td>{{ building.address }}</td>
-                                <td>{{ building.project_total_area }}</td>
-                                <td>{{ building.total_floors }}</td>
-                                <td>{{ building.get_status_display }}</td>
-                                <td>{{ building.construction_year }}</td>
-                                <td>
-                                    <label class="switch">
-                                        <input type="checkbox" class="toggle-active" data-id="{{ building.id }}"
-                                            data-item="building"
-                                            data-api-url="{% url 'building:api:update' building.id %}"
-                                            {% if building.is_active %}checked{% endif %}>
-                                        <span class="slider round"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <div class="td-edit-delete-see">
-                                        <a class="link edit-button" href="{% url 'building:update' building.id %}">Edit</a>
-                                        <button class="link delete-building delete-button" data-id="{{ building.id }}"
-                                            data-api-url="{% url 'building:api:delete' building.id %}">Delete</button>
-                                        <a class="link" href="{% url 'building:get' building.id %}">See More</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+        <!-- Promotional Properties Cards -->
+        <div class="mb-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <!-- Discount Properties Card -->
+            <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-orange-400 to-yellow-400 p-6 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                <div class="relative z-10">
+                    <div class="mb-2 flex items-center justify-between">
+                        <p class="text-sm font-medium text-white/90">Discount Properties</p>
+                        <svg class="h-8 w-8 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                        </svg>
+                    </div>
+                    <p class="text-3xl font-bold text-white">{{ total_discount_properties }}</p>
                 </div>
+                <div class="absolute right-0 top-0 h-24 w-24 rounded-full bg-white/10 blur-2xl"></div>
             </div>
 
-        </div>
-    </div>
-</section>
-
-<section>
-    <div class="container">
-        <div class="row">
-            <div class="col-12 mb-5">
-                <div class="table-area">
-                    <table class="dashboard-data-table" id="property-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Building</th>
-                                <th>Unit ID</th>
-                                <th>Title</th>
-                                <th>Price</th>
-                                <th>Floor Number</th>
-                                <th>Area</th>
-                                <th>Bedroom</th>
-                                <th>Bathroom</th>
-                                <th>Balcony</th>
-                                <th>Car Parking</th>
-                                <th>Status</th>
-                                <th class="th-edit-delete-see"> </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for property in properties %}
-                            <tr id="property-{{ property.id }}">
-                                <td>{{ property.id }}</td>
-                                <td>{{ property.building }}</td>
-                                <td>{{ property.unit_id }}</td>
-                                <td>{{ property.title }}</td>
-                                <td>{{ property.format_price }}</td>
-                                <td>{{ property.floor_number }}</td>
-                                <td>{{ property.unit_area }}</td>
-                                <td>{{ property.number_of_bedroom }}</td>
-                                <td>{{ property.number_of_bathroom }}</td>
-                                <td>{{ property.number_of_balcony }}</td>
-                                <td>{{ property.number_of_car_parking }}</td>
-                                <td>
-                                    <label class="switch">
-                                        <input type="checkbox" class="toggle-active" data-id="{{ property.id }}"
-                                            data-item="property"
-                                            data-api-url="{% url 'property:api:update' property.id %}"
-                                            {% if property.is_active %}checked{% endif %}>
-                                        <span class="slider round"></span>
-                                    </label>
-                                </td>
-                                <td>
-                                    <div class="td-edit-delete-see">
-                                        <a class="link edit-button" href="{% url 'property:update' property.id %}">Edit</a>
-                                        <button class="link delete-property delete-button" data-id="{{ property.id }}"
-                                            data-api-url="{% url 'property:api:delete' property.id %}">Delete</button>
-                                        <a class="link" href="{% url 'property:get' property.id %}">See More</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+            <!-- Featured Properties Card -->
+            <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-teal-300 to-pink-300 p-6 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                <div class="relative z-10">
+                    <div class="mb-2 flex items-center justify-between">
+                        <p class="text-sm font-medium text-white/90">Featured Properties</p>
+                        <svg class="h-8 w-8 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                        </svg>
+                    </div>
+                    <p class="text-3xl font-bold text-white">{{ total_featured_properties }}</p>
                 </div>
+                <div class="absolute right-0 top-0 h-24 w-24 rounded-full bg-white/10 blur-2xl"></div>
             </div>
         </div>
-    </div>
-</section>
 
-<!-- Discount Properties Section -->
-<section class="mb-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="table-area">
-                    <table class="dashboard-data-table" id="discount-property-table">
-                        <thead>
-                            <tr>
-                                <th>Property</th>
-                                <th>Building</th>
-                                <th>Expiry Date</th>
-                                <th>Clicks</th>
-                                <th>View Time</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for discount in discount_properties %}
-                            <tr>
-                                <td>
-                                    {% if discount.property %}
-                                        <a href="{% url 'property:get' discount.property.id %}?discounted=true" target="_blank" style="color: #007bff; text-decoration: none;">
-                                            <strong>{{ discount.property.title|default:"No Title" }}</strong>
-                                        </a>
-                                    {% else %}
-                                        <span class="text-muted">Property Deleted</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if discount.property and discount.property.building %}
-                                        {{ discount.property.building.title }}
-                                    {% else %}
-                                        <span class="text-muted">-</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    <span class="badge" style="background: #f8f9fa; color: #495057;">
-                                        {{ discount.period|date:"M d, Y" }}
+        <!-- Buildings Table Section -->
+        <div class="mb-8 overflow-hidden rounded-xl bg-white shadow-sm">
+            <div class="border-b border-gray-200 bg-gray-50 px-6 py-4">
+                <h2 class="text-lg font-semibold text-gray-900">Buildings</h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full" id="building-table">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Title</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Price</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Type</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Sub Type</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Units</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Address</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Area</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Floors</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Year</th>
+                            <th class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">Active</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                        {% for building in buildings %}
+                        <tr id="building-{{ building.id }}" class="hover:bg-gray-50">
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-900">{{ building.id }}</td>
+                            <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ building.title }}</td>
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ building.price }}</td>
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ building.get_type_display }}</td>
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ building.get_sub_type_display }}</td>
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ building.total_units_for_sale }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-500">{{ building.address|truncatewords:5 }}</td>
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ building.project_total_area }}</td>
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ building.total_floors }}</td>
+                            <td class="whitespace-nowrap px-6 py-4">
+                                <span class="inline-flex rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800">{{ building.get_status_display }}</span>
+                            </td>
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ building.construction_year }}</td>
+                            <td class="whitespace-nowrap px-6 py-4 text-center">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" class="toggle-active" data-id="{{ building.id }}"
+                                        data-item="building"
+                                        data-api-url="{% url 'building:api:update' building.id %}"
+                                        {% if building.is_active %}checked{% endif %}>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </td>
+                            <td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+                                <div class="flex items-center justify-end gap-3">
+                                    <a href="{% url 'building:update' building.id %}" class="text-blue-600 hover:text-blue-900">Edit</a>
+                                    <button class="delete-building text-red-600 hover:text-red-900" data-id="{{ building.id }}"
+                                        data-api-url="{% url 'building:api:delete' building.id %}">Delete</button>
+                                    <a href="{% url 'building:get' building.id %}" class="text-gray-600 hover:text-gray-900">View</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Properties Table Section -->
+        <div class="mb-8 overflow-hidden rounded-xl bg-white shadow-sm">
+            <div class="border-b border-gray-200 bg-gray-50 px-6 py-4">
+                <h2 class="text-lg font-semibold text-gray-900">Properties</h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full" id="property-table">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Building</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Unit ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Title</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Price</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Floor</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Area</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Bed</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Bath</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Balcony</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Parking</th>
+                            <th class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">Active</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                        {% for property in properties %}
+                        <tr id="property-{{ property.id }}" class="hover:bg-gray-50">
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-900">{{ property.id }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-500">{{ property.building }}</td>
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ property.unit_id }}</td>
+                            <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ property.title }}</td>
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ property.format_price }}</td>
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ property.floor_number }}</td>
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ property.unit_area }}</td>
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ property.number_of_bedroom }}</td>
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ property.number_of_bathroom }}</td>
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ property.number_of_balcony }}</td>
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ property.number_of_car_parking }}</td>
+                            <td class="whitespace-nowrap px-6 py-4 text-center">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" class="toggle-active" data-id="{{ property.id }}"
+                                        data-item="property"
+                                        data-api-url="{% url 'property:api:update' property.id %}"
+                                        {% if property.is_active %}checked{% endif %}>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </td>
+                            <td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+                                <div class="flex items-center justify-end gap-3">
+                                    <a href="{% url 'property:update' property.id %}" class="text-blue-600 hover:text-blue-900">Edit</a>
+                                    <button class="delete-property text-red-600 hover:text-red-900" data-id="{{ property.id }}"
+                                        data-api-url="{% url 'property:api:delete' property.id %}">Delete</button>
+                                    <a href="{% url 'property:get' property.id %}" class="text-gray-600 hover:text-gray-900">View</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Discount Properties Table Section -->
+        {% if discount_properties %}
+        <div class="mb-8 overflow-hidden rounded-xl bg-white shadow-sm">
+            <div class="border-b border-gray-200 bg-gray-50 px-6 py-4">
+                <h2 class="text-lg font-semibold text-gray-900">Discount Properties</h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full" id="discount-property-table">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Property</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Building</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Expiry Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Clicks</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">View Time</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Status</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                        {% for discount in discount_properties %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 text-sm">
+                                {% if discount.property %}
+                                    <a href="{% url 'property:get' discount.property.id %}?discounted=true" target="_blank" class="font-medium text-blue-600 hover:text-blue-900">
+                                        {{ discount.property.title|default:"No Title" }}
+                                    </a>
+                                {% else %}
+                                    <span class="text-gray-400">Property Deleted</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-500">
+                                {% if discount.property and discount.property.building %}
+                                    {{ discount.property.building.title }}
+                                {% else %}
+                                    <span class="text-gray-400">-</span>
+                                {% endif %}
+                            </td>
+                            <td class="whitespace-nowrap px-6 py-4 text-sm">
+                                <span class="inline-flex rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-800">
+                                    {{ discount.period|date:"M d, Y" }}
+                                </span>
+                            </td>
+                            <td class="whitespace-nowrap px-6 py-4 text-sm">
+                                <span class="inline-flex rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800">
+                                    {{ discount.number_of_clicked }}
+                                </span>
+                            </td>
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ discount.duration_without_microseconds }}</td>
+                            <td class="whitespace-nowrap px-6 py-4 text-sm">
+                                {% if discount.period >= today %}
+                                    <span class="inline-flex rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800">Active</span>
+                                {% else %}
+                                    <span class="inline-flex rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-800">Expired</span>
+                                {% endif %}
+                            </td>
+                            <td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+                                <div class="flex items-center justify-end gap-3">
+                                    <a href="{% url 'property:edit_discount' discount.id %}" class="text-blue-600 hover:text-blue-900">Edit</a>
+                                    <a href="{% url 'property:delete_discount' discount.id %}" class="text-red-600 hover:text-red-900">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Featured Properties Table Section -->
+        {% if featured_properties %}
+        <div class="mb-8 overflow-hidden rounded-xl bg-white shadow-sm">
+            <div class="border-b border-gray-200 bg-gray-50 px-6 py-4">
+                <h2 class="text-lg font-semibold text-gray-900">Featured Properties</h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full" id="featured-property-table">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Property</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Building</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Expiry Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Clicks</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">View Time</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Status</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                        {% for featured in featured_properties %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 text-sm">
+                                {% if featured.property %}
+                                    <a href="{% url 'property:get' featured.property.id %}?featured=true" target="_blank" class="font-medium text-blue-600 hover:text-blue-900">
+                                        {{ featured.property.title|default:"No Title" }}
+                                    </a>
+                                {% else %}
+                                    <span class="text-gray-400">Property Deleted</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-500">
+                                {% if featured.property and featured.property.building %}
+                                    {{ featured.property.building.title }}
+                                {% else %}
+                                    <span class="text-gray-400">-</span>
+                                {% endif %}
+                            </td>
+                            <td class="whitespace-nowrap px-6 py-4 text-sm">
+                                {% if featured.expiry_date %}
+                                    <span class="inline-flex rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-800">
+                                        {{ featured.expiry_date|date:"M d, Y" }}
                                     </span>
-                                </td>
-                                <td>
-                                    <span class="badge" style="background: #e3f2fd; color: #1565c0;">
-                                        {{ discount.number_of_clicked }}
-                                    </span>
-                                </td>
-                                <td>{{ discount.duration_without_microseconds }}</td>
-                                <td>
-                                    {% if discount.period >= today %}
-                                        <span class="badge" style="background: #d4edda; color: #155724;">Active</span>
+                                {% else %}
+                                    <span class="inline-flex rounded-full bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-800">No Expiry</span>
+                                {% endif %}
+                            </td>
+                            <td class="whitespace-nowrap px-6 py-4 text-sm">
+                                <span class="inline-flex rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800">
+                                    {{ featured.number_of_clicked }}
+                                </span>
+                            </td>
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{{ featured.duration_without_microseconds }}</td>
+                            <td class="whitespace-nowrap px-6 py-4 text-sm">
+                                {% if featured.expiry_date %}
+                                    {% if featured.expiry_date >= today %}
+                                        <span class="inline-flex rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800">Active</span>
                                     {% else %}
-                                        <span class="badge" style="background: #f8d7da; color: #721c24;">Expired</span>
+                                        <span class="inline-flex rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-800">Expired</span>
                                     {% endif %}
-                                </td>
-                                <td>
-                                    <div class="td-edit-delete-see">
-                                        <a href="{% url 'property:edit_discount' discount.id %}" class="link" style="color: #28a745;">Edit</a>
-                                        <a href="{% url 'property:delete_discount' discount.id %}" class="link" style="color: #dc3545;">Delete</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+                                {% else %}
+                                    <span class="inline-flex rounded-full bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-800">No Expiry</span>
+                                {% endif %}
+                            </td>
+                            <td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+                                <div class="flex items-center justify-end gap-3">
+                                    <a href="{% url 'property:edit_featured' featured.id %}" class="text-blue-600 hover:text-blue-900">Edit</a>
+                                    <a href="{% url 'property:delete_featured' featured.id %}" class="text-red-600 hover:text-red-900">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Scheduled Tours Table Section -->
+        <div class="mb-8 overflow-hidden rounded-xl bg-white shadow-sm">
+            <div class="border-b border-gray-200 bg-gray-50 px-6 py-4">
+                <h2 class="text-lg font-semibold text-gray-900">Scheduled Tours</h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full" id="property-visit-schedule">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Title</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Address</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Type</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Date</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                        <!-- Data loaded via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Shared Reels Table Section -->
+        <div class="mb-8 overflow-hidden rounded-xl bg-white shadow-sm">
+            <div class="border-b border-gray-200 bg-gray-50 px-6 py-4">
+                <h2 class="text-lg font-semibold text-gray-900">Shared Reels</h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full" id="shared-reels-table">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Social Media</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Category</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Property</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">URL</th>
+                            <th class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">Status</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                        <!-- Data loaded via JavaScript -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-</section>
-
-<!-- Featured Properties Section -->
-<section class="mb-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="table-area">
-                    <table class="dashboard-data-table" id="featured-property-table">
-                        <thead>
-                            <tr>
-                                <th>Property</th>
-                                <th>Building</th>
-                                <th>Expiry Date</th>
-                                <th>Clicks</th>
-                                <th>View Time</th>
-                                <th>Status</th>
-                                <th class="th-edit-delete-see">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for featured in featured_properties %}
-                            <tr>
-                                <td>
-                                    {% if featured.property %}
-                                        <a href="{% url 'property:get' featured.property.id %}?featured=true" target="_blank" style="color: #007bff; text-decoration: none;">
-                                            <strong>{{ featured.property.title|default:"No Title" }}</strong>
-                                        </a>
-                                    {% else %}
-                                        <span class="text-muted">Property Deleted</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if featured.property and featured.property.building %}
-                                        {{ featured.property.building.title }}
-                                    {% else %}
-                                        <span class="text-muted">-</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if featured.expiry_date %}
-                                        <span class="badge" style="background: #f8f9fa; color: #495057;">
-                                            {{ featured.expiry_date|date:"M d, Y" }}
-                                        </span>
-                                    {% else %}
-                                        <span class="badge" style="background: #fff3cd; color: #856404;">No Expiry</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    <span class="badge" style="background: #e3f2fd; color: #1565c0;">
-                                        {{ featured.number_of_clicked }}
-                                    </span>
-                                </td>
-                                <td>{{ featured.duration_without_microseconds }}</td>
-                                <td>
-                                    {% if featured.expiry_date %}
-                                        {% if featured.expiry_date >= today %}
-                                            <span class="badge" style="background: #d4edda; color: #155724;">Active</span>
-                                        {% else %}
-                                            <span class="badge" style="background: #f8d7da; color: #721c24;">Expired</span>
-                                        {% endif %}
-                                    {% else %}
-                                        <span class="badge" style="background: #fff3cd; color: #856404;">No Expiry</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    <div class="td-edit-delete-see">
-                                        <a href="{% url 'property:edit_featured' featured.id %}" class="link" style="color: #28a745;">Edit</a>
-                                        <a href="{% url 'property:delete_featured' featured.id %}" class="link" style="color: #dc3545;">Delete</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section>
-    <div class="container">
-        <div class="row">
-            <div class="col-12 mb-5">
-                <div class="table-area">
-                    <table class="mid-table" id="property-visit-schedule">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Title</th>
-                                <th>Address</th>
-                                <th>Status</th>
-                                <th>Type</th>
-                                <th>Date</th>
-                                <th class="th-see-more">  </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- calling from dom -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section>
-    <div class="container">
-        <div class="row">
-            <div class="col-12 mb-5">
-                <div class="table-area">
-                    <table class="mid-table" id="shared-reels-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Social Media</th>
-                                <th>Category</th>
-                                <th>Property</th> </th>
-                                <th>URL</th>
-                                <th>Status</th>
-                                <th class="th-see-more">  </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- calling from dom -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
+</div>
 {% endblock %}
-
 
 {% block extend_script %}
 <script>
-    var user_type = 'dev_agent'
+    var user_type = 'dev_agent';
 </script>
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 <script src="{% static '/js/libraries/dataTables.min.js' %}?v=1.00"></script>
-<script src="{% static '/js/dashboard.js' %}?v=1.04"></script>
+<script src="{% static '/js/dashboard.js' %}?v=1.05"></script>
 <script src="{% static 'js/toggle_active_status.js' %}?v=1.02"></script>
 <script src="{% static '/js/building/delete_building.js' %}?v=1.01"></script>
 <script src="{% static '/js/property/delete_property.js' %}?v=1.01"></script>

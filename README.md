@@ -17,7 +17,7 @@ Create a .env file in project src directory following demo.env file.
 #### Build
 
 ```sh
-sudo docker compose -f docker-compose-dev.yml build
+sudo docker compose -f src/docker-compose-dev.yml build
 ```
 
 ##### Case-Insensitive Field Configuration in Postgresql
@@ -57,13 +57,13 @@ https://docs.djangoproject.com/en/4.2/ref/contrib/postgres/operations/#managing-
 ##### Migrate
 
 ```sh
-sudo docker compose -f docker-compose-dev.yml run --rm web python manage.py migrate
+sudo docker compose -f src/docker-compose-dev.yml run --rm web python manage.py migrate
 ```
 
 ##### Up
 
 ```sh
-sudo docker compose -f docker-compose-dev.yml up
+sudo docker compose -f src/docker-compose-dev.yml up
 ```
 
 ### Install Packages Via Poetry
@@ -85,11 +85,11 @@ Create a default.conf in src/nginx/conf/ folder and write configuration step by 
 ```
 ### Get new certificate
 ```
-sudo docker compose run --rm certbot certonly --webroot --webroot-path /var/www/certbot/ -d wizerproperties.com -d www.wizerproperties.com
+sudo docker compose -f src/docker-compose.yml run --rm certbot certonly --webroot --webroot-path /var/www/certbot/ -d wizerproperties.com -d www.wizerproperties.com
 ``` 
 ### For renew certificate
 ```
-sudo docker compose run --rm certbot renew
+sudo docker compose -f src/docker-compose.yml run --rm certbot renew
 ```
 ## Admin Customization
 
@@ -106,6 +106,32 @@ from core.admin import custom_admin_site
 custom_admin_site.register(ModelName)
 ```
 >Note: Replace ModelName with the actual model class being registered.
+
+## Tailwind CSS with Docker (assets service)
+
+We use a lightweight Node assets service to build/watch Tailwind CSS via the scripts already defined in `package.json`:
+- `npm run tailwind:build` – builds CSS once
+- `npm run tailwind:watch` – watches and rebuilds on file changes
+
+### Development (watch mode)
+Bring up Django and the Tailwind watcher together:
+```sh
+sudo docker compose -f src/docker-compose-dev.yml up --build
+```
+This starts an `assets` service based on `node:20-alpine` that runs:
+```sh
+npm ci && npm run tailwind:watch
+```
+Tailwind outputs to `src/wizerproperties/static/css/tailwind.css` and updates automatically on save.
+
+### Production (one-off build)
+Run a one-off Tailwind build, then bring the stack up and collect static files:
+```sh
+sudo docker compose -f src/docker-compose.yml run --rm assets sh -c "npm ci && npm run tailwind:build"
+sudo docker compose -f src/docker-compose.yml up -d --build
+sudo docker compose -f src/docker-compose.yml exec web python manage.py collectstatic --noinput
+```
+Nginx serves static files from `wizerproperties/static_root/` which is already mounted in the production compose file.
 
 ### Model Registration with Admin Customization
 For models that require custom admin options (e.g., `list_display`, `search_fields`), use the `@admin.register` decorator with the `custom_admin_site`:

@@ -1,381 +1,571 @@
-{% load static %} {% load widget_tweaks %}
+{% load static %}{% load widget_tweaks %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="google-site-verification" content="ukDMvU6kD_5dgGjHfNcZoPO6onK_AC2I_9bdMgvn4_k" />
     <link rel="icon" href="{% static 'media/icons/favicon.ico' %}" type="image/x-icon">
 
-    <!-- for all -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="{% static 'css/libraries/bootstrap-icons.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/libraries/bootstrap.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/libraries/fontawesome-all.min.css' %}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}?v=1.00" />
 
     {% block extend_head %}{% endblock extend_head %}
+
+    <!-- Legacy styles kept temporarily for views pending migration -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{% static '/css/auth.css' %}?v=1.02" />
     <link rel="stylesheet" href="{% static 'css/header.css' %}?v=1.05" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.09" />
-    <link href = "https://fonts.googleapis.com/icon?family=Material+Icons" rel = "stylesheet">
-
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-MRZK1TTB7H"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-MRZK1TTB7H');
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-MRZK1TTB7H');
     </script>
-
 </head>
 
-<body>
-    <main>
+{% url 'dashboard' as dashboard_url %}
+{% url 'property:search' as property_search_url %}
+{% url 'blogs:blog_list' as blog_list_url %}
+{% url 'contact' as contact_url %}
+{% url 'about-us' as about_url %}
+{% url 'user:profile_settings' as profile_settings_url %}
+{% url 'building:create' as create_building_url %}
+{% url 'property:create' as create_property_url %}
+{% url 'property:comparison' as comparison_property_url %}
+{% url 'property:favorite_list' as favorite_list_property_url %}
+{% url 'property:discount_list' as discount_property_url %}
+{% url 'property:featured_list' as featured_property_url %}
+{% url 'property:create_discount' as create_discount_property_url %}
+{% url 'property:create_featured' as create_featured_property_url %}
+{% url 'advertise:create_reels' as create_reels_url %}
+{% url 'advertise:analytics' as ads_analytics_url %}
+{% url 'advertise:performance' as ads_performance_url %}
+{% url 'reels' as reels_url %}
 
-        {% url 'user:profile_settings' as profile_settings_url %}
-        {% url 'building:create' as create_building_url %}
-        {% url 'property:create' as create_property_url %}
-        {% url 'property:comparison' as comparison_property_url %}
-        {% url 'property:favorite_list' as favorite_list_property_url %}
-        {% url 'property:discount_list' as discount_property_url %}
-        {% url 'property:featured_list' as featured_property_url %}
-        {% url 'property:create_discount' as create_discount_property_url %}
-        {% url 'property:create_featured' as create_featured_property_url %}
-        {% url 'advertise:create_reels' as create_reels_url %}
-        {% url 'advertise:analytics' as ads_analytics_url %}
-        {% url 'advertise:performance' as ads_performance_url %}
-        {% url 'reels' as reels_url %}
-
-        <header class="wip-header {% if not request.path == '/' %}other-page-header{% endif %}">
-            <div class="header">
-                <div class="header-box header-left-box">
-                    <div class="wip-logo">
-                        <a href="/">
-                            <img src="{% static 'media/logo.png' %}" alt="logo">
-                        </a>
-                    </div>
+<body class="min-h-screen bg-background text-foreground font-sans antialiased">
+    <div class="flex min-h-screen flex-col">
+        <header class="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur" data-site-header>
+            <div class="container flex h-20 items-center justify-between gap-6">
+                <div class="flex items-center gap-6">
+                    <a href="/" class="flex items-center gap-3 rounded-full p-1 transition hover:opacity-80" data-brand>
+                        <img src="{% static 'media/logo.png' %}" alt="WiSER Properties" class="h-10 w-auto transition-all duration-300" data-brand-large>
+                        <img src="{% static 'media/icons/favicon.ico' %}" alt="WiSER Properties" class="hidden size-9 rounded-full transition-all duration-300" data-brand-compact>
+                        <span class="sr-only">WiSER Properties</span>
+                    </a>
                 </div>
 
-                <div class="header-box header-middle-box">
-                    <!-- empty -->
-                </div>
-
-                <div class="header-box header-right-box position-relative">
-                    
-                    <div class="d-flex gap-4">
-                        {% if not request.user.is_authenticated %}
-                        <a href="{% url 'user:login' %}" class="header-box-link">
-                            Sign in/Register
-                        </a>
-                        {% endif %}
-                        {% include 'googletranslate/translate.html' %}
-
-                        <div class="menu-box {% if user.is_authenticated %}menu-box-user{% endif %}">
-                            {% if user.is_authenticated %}
-                            <div class="menu-box-img">
-                                {% if request.user.user_type == "developer" %}
-                                <img src="{{ request.user.developerprofile.company_logo.url }}" alt="Company Logo">
-                                {% elif request.user.user_type == "agent" %}
-                                <img src="{{ request.user.agentprofile.company_logo.url }}" alt="Company Logo">
-                                {% else %}
-                                <img src="{% static 'media/default-avatar.jpg' %}" alt="">
+                <nav class="hidden items-center gap-4 text-sm font-medium text-muted-foreground lg:flex">
+                    <details class="nav-group" data-nav-group>
+                        <summary class="nav-trigger">
+                            <span>Marketplace</span>
+                            <svg class="size-3 transition group-open:-rotate-180" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="m4 6 4 4 4-4" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </summary>
+                        <div class="nav-popover">
+                            <p class="nav-section-title">For buyers</p>
+                            <div class="nav-popover-stack">
+                                <a href="{{ property_search_url }}" class="nav-menu-link {% if request.path == property_search_url %}nav-menu-active{% endif %}">
+                                    <span class="nav-menu-label">Search homes</span></br>
+                                    <span class="nav-menu-description">Browse listings by city, budget, and amenities.</span>
+                                </a>
+                                <a href="{{ comparison_property_url }}" class="nav-menu-link {% if request.path == comparison_property_url %}nav-menu-active{% endif %}">
+                                    <span class="nav-menu-label">Compare properties</span></br>
+                                    <span class="nav-menu-description">Evaluate floor plans, pricing, and incentives side-by-side.</span>
+                                </a>
+                                {% if request.user.is_authenticated and request.user.user_type == "prospect" %}
+                                    <a href="{{ favorite_list_property_url }}" class="nav-menu-link {% if request.path == favorite_list_property_url %}nav-menu-active{% endif %}">
+                                        <span class="nav-menu-label">Saved listings</span></br>
+                                        <span class="nav-menu-description">Quickly revisit the homes you’ve shortlisted.</span>
+                                    </a>
                                 {% endif %}
                             </div>
-                            {% endif %}
-                            <div class="mobile-menu">
-                                <span></span>
-                                <span></span>
-                                <span></span>
+                            <p class="nav-section-title">Featured picks</p>
+                            <div class="nav-popover-stack">
+                                <a href="{{ featured_property_url }}" class="nav-menu-link {% if request.path == featured_property_url %}nav-menu-active{% endif %}">
+                                    <span class="nav-menu-label">Featured homes</span></br>
+                                    <span class="nav-menu-description">Explore curated projects with exclusive visibility.</span>
+                                </a>
+                                <a href="{{ reels_url }}" class="nav-menu-link {% if request.path == reels_url %}nav-menu-active{% endif %}">
+                                    <span class="nav-menu-label">Property reels</span></br>
+                                    <span class="nav-menu-description">Watch short-form video tours from verified partners.</span>
+                                </a>
                             </div>
                         </div>
+                    </details>
+
+                    <details class="nav-group" data-nav-group>
+                        <summary class="nav-trigger">
+                            <span>Sell & Advertise</span>
+                            <svg class="size-3 transition group-open:-rotate-180" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="m4 6 4 4 4-4" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </summary>
+                        <div class="nav-popover">
+                            {% if request.user.is_authenticated and request.user.user_type in "developer,agent" %}
+                                <p class="nav-section-title">Partner tools</p>
+                                <div class="nav-popover-stack">
+                                    <a href="{{ create_property_url }}" class="nav-menu-link {% if request.path == create_property_url %}nav-menu-active{% endif %}">
+                                        <span class="nav-menu-label">List a property</span></br>
+                                        <span class="nav-menu-description">Publish new residential listings in minutes.</span>
+                                    </a>
+                                    <a href="{{ create_building_url }}" class="nav-menu-link {% if request.path == create_building_url %}nav-menu-active{% endif %}">
+                                        <span class="nav-menu-label">Add a project</span></br>
+                                        <span class="nav-menu-description">Launch a new development with branding-ready assets.</span>
+                                    </a>
+                                    <a href="{{ create_reels_url }}" class="nav-menu-link {% if request.path == create_reels_url %}nav-menu-active{% endif %}">
+                                        <span class="nav-menu-label">Create reels</span></br>
+                                        <span class="nav-menu-description">Produce vertical video ads that plug into campaign funnels.</span>
+                                    </a>
+                                </div>
+                                <p class="nav-section-title">Campaign performance</p>
+                                <div class="nav-popover-stack">
+                                    <a href="{{ ads_analytics_url }}" class="nav-menu-link {% if request.path == ads_analytics_url %}nav-menu-active{% endif %}">
+                                        <span class="nav-menu-label">Analytics</span></br>
+                                        <span class="nav-menu-description">Track ad spend, engagement, and qualified inquiry volume.</span>
+                                    </a>
+                                    <a href="{{ ads_performance_url }}" class="nav-menu-link {% if request.path == ads_performance_url %}nav-menu-active{% endif %}">
+                                        <span class="nav-menu-label">Ads performance</span></br>
+                                        <span class="nav-menu-description">Review campaign benchmarks and optimize placements.</span>
+                                    </a>
+                                </div>
+                            {% else %}
+                                <p class="nav-section-title">Become a partner</p>
+                                <div class="nav-popover-stack">
+                                    <a href="{% url 'user:login' %}" class="nav-menu-link">
+                                        <span class="nav-menu-label">Sign in to publish</span></br>
+                                        <span class="nav-menu-description">Access listing management, analytics, and creative tools.</span>
+                                    </a>
+                                    <a href="{{ contact_url }}" class="nav-menu-link {% if request.path == contact_url %}nav-menu-active{% endif %}">
+                                        <span class="nav-menu-label">Talk to our team</span></br>
+                                        <span class="nav-menu-description">Schedule a walkthrough of WiSER’s advertising platform.</span>
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </details>
+
+                    <details class="nav-group" data-nav-group>
+                        <summary class="nav-trigger">
+                            <span>Insights & Tools</span>
+                            <svg class="size-3 transition group-open:-rotate-180" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="m4 6 4 4 4-4" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </summary>
+                        <div class="nav-popover">
+                            <p class="nav-section-title">Market guidance</p>
+                            <div class="nav-popover-stack">
+                                <a href="#" class="nav-menu-link">
+                                    <span class="nav-menu-label">Mortgage navigator</span></br>
+                                    <span class="nav-menu-description">Compare financing partners and lock pre-approvals.</span>
+                                </a>
+                                <a href="#" class="nav-menu-link">
+                                    <span class="nav-menu-label">Prices & trends</span></br>
+                                    <span class="nav-menu-description">See neighborhood appreciation and inventory shifts.</span>
+                                </a>
+                                <a href="{{ blog_list_url }}" class="nav-menu-link {% if request.path == blog_list_url %}nav-menu-active{% endif %}">
+                                    <span class="nav-menu-label">Insights library</span></br>
+                                    <span class="nav-menu-description">Guides, playbooks, and expert commentary.</span>
+                                </a>
+                            </div>
+                            <p class="nav-section-title">Growth programs</p>
+                            <div class="nav-popover-stack">
+                                <a href="#" class="nav-menu-link">
+                                    <span class="nav-menu-label">Find a developer</span></br>
+                                    <span class="nav-menu-description">Match with vetted partners for co-marketing and JV deals.</span>
+                                </a>
+                                <a href="#" class="nav-menu-link">
+                                    <span class="nav-menu-label">Commercial listings</span></br>
+                                    <span class="nav-menu-description">Surface offices, retail, and investment-ready assets.</span>
+                                </a>
+                                <a href="#" class="nav-menu-link">
+                                    <span class="nav-menu-label">International desk</span></br>
+                                    <span class="nav-menu-description">Access cross-border projects and residency programs.</span>
+                                </a>
+                            </div>
+                        </div>
+                    </details>
+
+                    {% if user.is_authenticated and user.is_complete_profile %}
+                        <a href="{{ dashboard_url }}" class="nav-pill {% if request.path == dashboard_url %}nav-pill-active{% endif %}">Dashboard</a>
+                    {% endif %}
+                </nav>
+
+                <div class="flex items-center gap-4">
+                    {% include 'googletranslate/translate.html' %}
+
+                    {% if request.user.is_authenticated and request.user.user_type in "developer,agent" %}
+                        <a href="{{ create_property_url }}" class="hidden rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/80 sm:inline-flex">List a property</a>
+                    {% else %}
+                        <a href="{{ contact_url }}" class="hidden rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground transition hover:bg-card/60 sm:inline-flex">Talk to an advisor</a>
+                    {% endif %}
+
+                    {% if not request.user.is_authenticated %}
+                        <a href="{% url 'user:login' %}" class="hidden rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground transition hover:bg-card/60 sm:inline-flex">Sign in / Register</a>
+                    {% endif %}
+
+                    {% if request.user.is_authenticated %}
+                        <details class="relative hidden lg:block">
+                            <summary class="flex cursor-pointer list-none items-center gap-2 rounded-full border border-border bg-card/70 px-2 py-1 text-sm font-medium text-foreground shadow-sm transition hover:bg-card/90">
+                                <span class="inline-flex size-9 items-center justify-center overflow-hidden rounded-full bg-secondary">
+                                    {% if request.user.user_type == "developer" %}
+                                        <img src="{{ request.user.developerprofile.company_logo.url }}" alt="Company Logo" class="size-full object-cover">
+                                    {% elif request.user.user_type == "agent" %}
+                                        <img src="{{ request.user.agentprofile.company_logo.url }}" alt="Company Logo" class="size-full object-cover">
+                                    {% else %}
+                                        <img src="{% static 'media/default-avatar.jpg' %}" alt="User avatar" class="size-full object-cover">
+                                    {% endif %}
+                                </span>
+                                <span class="hidden text-sm font-semibold text-foreground xl:inline">
+                                    {{ request.user.get_full_name|default:request.user.email }}
+                                </span>
+                            </summary>
+                            <div class="absolute right-0 mt-2 w-64 overflow-hidden rounded-xl border border-border bg-card/95 shadow-xl backdrop-blur">
+                                <div class="space-y-1 p-2">
+                                    <p class="px-2 text-xs uppercase tracking-wide text-muted-foreground">Quick links</p>
+                                    <a href="{{ profile_settings_url }}" class="nav-sheet-link {% if request.path == profile_settings_url %}nav-sheet-active{% endif %}">Profile Settings</a>
+                                    {% if request.user.user_type == "developer" or request.user.user_type == "agent" %}
+                                        <a href="{{ ads_analytics_url }}" class="nav-sheet-link {% if request.path == ads_analytics_url %}nav-sheet-active{% endif %}">Analytics</a>
+                                        <a href="{{ ads_performance_url }}" class="nav-sheet-link {% if request.path == ads_performance_url %}nav-sheet-active{% endif %}">Ads Performance</a>
+                                    {% endif %}
+                                    {% if request.user.user_type == "prospect" %}
+                                        <a href="{{ comparison_property_url }}" class="nav-sheet-link {% if request.path == comparison_property_url %}nav-sheet-active{% endif %}">Comparison</a>
+                                        <a href="{{ favorite_list_property_url }}" class="nav-sheet-link {% if request.path == favorite_list_property_url %}nav-sheet-active{% endif %}">Favorites</a>
+                                    {% endif %}
+                                    <a href="{% url 'user:logout' %}" class="nav-sheet-link text-destructive hover:text-destructive">Log out</a>
+                                </div>
+                            </div>
+                        </details>
+                    {% endif %}
+
+                    <button type="button" class="inline-flex size-10 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm transition hover:bg-card/80 lg:hidden" data-mobile-nav-trigger aria-label="Toggle navigation">
+                        <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 7h16M4 12h16M4 17h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="border-t border-border bg-background/95 shadow-sm lg:hidden" data-mobile-nav-panel hidden>
+                <div class="container space-y-6 py-6">
+                    <div class="grid gap-3">
+                        {% if request.user.is_authenticated and request.user.user_type in "developer,agent" %}
+                            <a href="{{ create_property_url }}" class="btn w-full justify-center">List a property</a>
+                        {% else %}
+                            <a href="{{ contact_url }}" class="btn w-full justify-center">Talk to an advisor</a>
+                        {% endif %}
                     </div>
 
-                    <div class="header-side-nav">
-                        <div class="nav-group">
-                            {% if user.is_authenticated and user.is_complete_profile %}
-                                <a class="nav-link {% if request.path == '/dashboard/' %}active-nav{% endif %}"
-                                    href="/dashboard">Dashboard</a>
-                                {% if request.user.user_type == "developer" or request.user.user_type == "agent" %}
-                                <a class="nav-link {% if request.path == create_building_url %}active-nav{% endif %}"
-                                    href="{{ create_building_url }}">Building</a>
-                                <a class="nav-link {% if request.path == create_property_url %}active-nav{% endif %}"
-                                    href="{{ create_property_url }}">Property</a>
-                                <a class="nav-link {% if request.path == discount_property_url %}active-nav{% endif %}"
-                                    href="{{ discount_property_url }}">Discount Properties</a>
-                                <a class="nav-link {% if request.path == featured_property_url %}active-nav{% endif %}"
-                                    href="{{ featured_property_url }}">Featured Properties</a>
-                                <a class="nav-link {% if request.path == create_reels_url %}active-nav{% endif %}"
-                                    href="{{ create_reels_url }}">Create Reels</a>
+                    <nav class="space-y-3 text-sm font-medium text-muted-foreground">
+                        <details class="nav-mobile-group">
+                            <summary class="nav-mobile-trigger">Marketplace</summary>
+                            <div class="nav-mobile-stack">
+                                <a href="{{ property_search_url }}" class="nav-mobile-link {% if request.path == property_search_url %}nav-mobile-active{% endif %}">Search homes</a>
+                                <a href="{{ comparison_property_url }}" class="nav-mobile-link {% if request.path == comparison_property_url %}nav-mobile-active{% endif %}">Compare properties</a>
+                                {% if request.user.is_authenticated and request.user.user_type == "prospect" %}
+                                    <a href="{{ favorite_list_property_url }}" class="nav-mobile-link {% if request.path == favorite_list_property_url %}nav-mobile-active{% endif %}">Saved listings</a>
                                 {% endif %}
-        
-                                {% if request.user.user_type == "prospect" %}
-                                <a class="nav-link {% if request.path == comparison_property_url %}active-nav{% endif %}" 
-                                    href="{{ comparison_property_url }}">
-                                    Comparison
-                                </a>
-                                
-                                <a class="nav-link {% if request.path == favorite_list_property_url %}active-nav{% endif %}" 
-                                    href="{{ favorite_list_property_url }}">
-                                    Favorite List
-                                </a>
-                                {% endif %} 
-                            {% endif %}
-        
-                            <a class="nav-link {% if request.path == reels_url %}active-nav{% endif %}" href="{% url 'reels' %}">Reels</a>
-                            <a class="nav-link" href="#">Mortgages</a>
-                            <a class="nav-link" href="#">Prices And Trends</a>
-                            <a class="nav-link" href="#">Find A Developer</a>
-                            <a class="nav-link" href="#">Commercial</a>
-                            <a class="nav-link" href="#">International</a>
+                                <a href="{{ featured_property_url }}" class="nav-mobile-link {% if request.path == featured_property_url %}nav-mobile-active{% endif %}">Featured homes</a>
+                                <a href="{{ reels_url }}" class="nav-mobile-link {% if request.path == reels_url %}nav-mobile-active{% endif %}">Property reels</a>
+                            </div>
+                        </details>
+
+                        <details class="nav-mobile-group">
+                            <summary class="nav-mobile-trigger">Sell & Advertise</summary>
+                            <div class="nav-mobile-stack">
+                                {% if request.user.is_authenticated and request.user.user_type in "developer,agent" %}
+                                    <a href="{{ create_property_url }}" class="nav-mobile-link {% if request.path == create_property_url %}nav-mobile-active{% endif %}">List a property</a>
+                                    <a href="{{ create_building_url }}" class="nav-mobile-link {% if request.path == create_building_url %}nav-mobile-active{% endif %}">Add a project</a>
+                                    <a href="{{ create_reels_url }}" class="nav-mobile-link {% if request.path == create_reels_url %}nav-mobile-active{% endif %}">Create reels</a>
+                                    <a href="{{ ads_analytics_url }}" class="nav-mobile-link {% if request.path == ads_analytics_url %}nav-mobile-active{% endif %}">Analytics</a>
+                                    <a href="{{ ads_performance_url }}" class="nav-mobile-link {% if request.path == ads_performance_url %}nav-mobile-active{% endif %}">Ads performance</a>
+                                {% else %}
+                                    <a href="{% url 'user:login' %}" class="nav-mobile-link">Sign in to publish</a>
+                                    <a href="{{ contact_url }}" class="nav-mobile-link {% if request.path == contact_url %}nav-mobile-active{% endif %}">Talk to our team</a>
+                                {% endif %}
+                            </div>
+                        </details>
+
+                        <details class="nav-mobile-group">
+                            <summary class="nav-mobile-trigger">Insights & Tools</summary>
+                            <div class="nav-mobile-stack">
+                                <a href="#" class="nav-mobile-link">Mortgage navigator</a>
+                                <a href="#" class="nav-mobile-link">Prices & trends</a>
+                                <a href="{{ blog_list_url }}" class="nav-mobile-link {% if request.path == blog_list_url %}nav-mobile-active{% endif %}">Insights library</a>
+                                <a href="#" class="nav-mobile-link">Find a developer</a>
+                                <a href="#" class="nav-mobile-link">Commercial listings</a>
+                                <a href="#" class="nav-mobile-link">International desk</a>
+                            </div>
+                        </details>
+
+                        {% if user.is_authenticated and user.is_complete_profile %}
+                            <a href="{{ dashboard_url }}" class="nav-mobile-link {% if request.path == dashboard_url %}nav-mobile-active{% endif %}">Dashboard</a>
+                        {% endif %}
+                    </nav>
+
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Language</span>
+                            {% include 'googletranslate/translate.html' %}
                         </div>
 
                         {% if request.user.is_authenticated %}
-                            <hr>
-
-                            <div class="nav-group">
-                                <a class="nav-link {% if request.path == profile_settings_url %}active-nav{% endif %}"
-                                    href="{{ profile_settings_url }}">Profile settings</a>
-            
-                                {% if request.user.user_type == "prospect" %}
-                                <a 
-                                    class="nav-link {% if request.path == comparison_property_url %}active-nav{% endif %}" 
-                                    href="{{ comparison_property_url }}">
-                                    Comparison
-                                </a>
-            
-                                <a 
-                                    class="nav-link {% if request.path == favorite_list_property_url %}active-nav{% endif %}" 
-                                    href="{{ favorite_list_property_url }}">
-                                    Favorite List
-                                </a>
-                                {% endif %}
-                                
+                            <div class="space-y-2">
+                                <p class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Account</p>
+                                <a href="{{ profile_settings_url }}" class="nav-mobile-link {% if request.path == profile_settings_url %}nav-mobile-active{% endif %}">Profile Settings</a>
                                 {% if request.user.user_type == "developer" or request.user.user_type == "agent" %}
-                                <a class="nav-link {% if request.path == ads_analytics_url %}active-nav{% endif %}"
-                                    href="{{ads_analytics_url}}">Analytics</a>
-                                <a class="nav-link {% if request.path == ads_performance_url %}active-nav{% endif %}"
-                                    href="{{ ads_performance_url }}">Ads Performance</a>
+                                    <a href="{{ ads_analytics_url }}" class="nav-mobile-link {% if request.path == ads_analytics_url %}nav-mobile-active{% endif %}">Analytics</a>
+                                    <a href="{{ ads_performance_url }}" class="nav-mobile-link {% if request.path == ads_performance_url %}nav-mobile-active{% endif %}">Ads Performance</a>
                                 {% endif %}
-            
-                                <a class="nav-link" href="{% url 'user:logout' %}">Log out</a>
+                                {% if request.user.user_type == "prospect" %}
+                                    <a href="{{ comparison_property_url }}" class="nav-mobile-link {% if request.path == comparison_property_url %}nav-mobile-active{% endif %}">Comparison</a>
+                                    <a href="{{ favorite_list_property_url }}" class="nav-mobile-link {% if request.path == favorite_list_property_url %}nav-mobile-active{% endif %}">Saved properties</a>
+                                {% endif %}
+                                <a href="{% url 'user:logout' %}" class="nav-mobile-link text-destructive hover:text-destructive">Log out</a>
+                            </div>
+                        {% else %}
+                            <a href="{% url 'user:login' %}" class="btn w-full justify-center text-center">Sign in / Register</a>
                         {% endif %}
-
-                        </div>
                     </div>
                 </div>
-
             </div>
         </header>
-        
 
+        <main class="flex-1">
+            {% block content %}{% endblock %}
+        </main>
 
-        {% block content %}{% endblock %}
-    </main>
-
-
-    <!-- log in modal -->
-    <div class="log-in-modal">
-        <div class="log-in-modal-overlay" log-modal-btn="close"></div>
-        <div class="log-in-modal-body">
-            <div class="log-in-modal-header">
-                <div class="logo">
-                    <img src="{% static 'media/logo.png' %}" alt="logo">
-                </div>
-                <button class="log-in-close-btn" log-modal-btn="close">
-                    <i class="bi bi-x-lg"></i>
+        <!-- Authentication Modal -->
+        <div class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 px-4 backdrop-blur-sm" role="dialog" aria-modal="true" data-auth-modal>
+            <div class="relative w-full max-w-md rounded-2xl border border-border bg-card p-8 shadow-2xl">
+                <button class="absolute right-4 top-4 inline-flex size-9 items-center justify-center rounded-full border border-border bg-secondary/50 text-muted-foreground transition hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" type="button" data-auth-modal-close aria-label="Close">
+                    <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6L6 18" />
+                        <path d="M6 6l12 12" />
+                    </svg>
                 </button>
-            </div>
-            <div class="log-in-modal-form">
-                <h1 class="auth-section-title py-3"> Login to <b>Wizer Properties</b> </h1>
-                <div class="auth-input-wrapper">
-                    <label>User email</label>
-                    <input type="text" name="email" placeholder="Your email">
-                </div>
 
-                <div class="auth-input-wrapper">
-                    <label>Password</label>
-                    <div box-type="password">
-                        <input type="password" name="password" placeholder="Password">
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3">
+                        <img src="{% static 'media/logo.png' %}" alt="Wizer Properties" class="h-10 w-auto">
+                        <h1 class="text-xl font-semibold text-foreground">Log in to <span class="text-primary">WiSER Properties</span></h1>
                     </div>
-                </div>
 
-                <div class="auth-response-messages"></div>
-                <button type="submit" class="auth-form-btn" button-name="log-in">
-                    Login
-                </button>
+                    <form class="space-y-4" data-auth-login-form novalidate>
+                        <div class="space-y-4">
+                            <label class="flex flex-col gap-2" for="email">
+                                <span class="label">Email</span>
+                                <input id="email" type="email" name="email" placeholder="you@example.com" class="input" autocomplete="username" aria-describedby="email-error">
+                                <span id="email-error" class="sr-only" role="alert"></span>
+                            </label>
 
-                <div class="or-line">
-                    <span></span>
-                    OR
-                    <span></span>
-                </div>
+                            <label class="flex flex-col gap-2" for="password">
+                                <span class="label">Password</span>
+                                <input id="password" type="password" name="password" placeholder="••••••••" class="input" autocomplete="current-password" aria-describedby="password-error">
+                                <span id="password-error" class="sr-only" role="alert"></span>
+                            </label>
+                        </div>
 
-                <form action="{% url 'google_login' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="auth-form-btn">
-                        <img width="20" src=" {% static 'media/icons/google_icon.webp' %}" alt="Google">
-                        <span class="ps-2"> Login with Google </span>
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
+                        <div class="space-y-3">
+                            <div class="auth-response-messages"></div>
+                            <button type="submit" class="btn w-full justify-center" button-name="log-in">Log In</button>
+                        </div>
+                    </form>
 
+                    <div class="flex items-center gap-3 text-xs uppercase tracking-wide text-muted-foreground">
+                        <span class="h-px flex-1 bg-border"></span>
+                        or continue with
+                        <span class="h-px flex-1 bg-border"></span>
+                    </div>
 
-    <!-- Reusable Confirmation Modal -->
-    <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel"
-    aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmationModalLabel"></h5>
-                    <button type="button" class="close confirm-modal-close-icon" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="bi bi-x-lg"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p id="confirmationModalBody"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn" id="confirmButton"></button>
+                    <form action="{% url 'google_login' %}" method="post" class="space-y-3">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-secondary w-full justify-center">
+                            <img width="20" src="{% static 'media/icons/google_icon.webp' %}" alt="Google">
+                            <span>Login with Google</span>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content-area">
-                <div class="footer-links">
-                    <a href="/contact/">Contact Us</a>
-                    <a href="/privacy/">Privacy</a>
-                    <a href="/about-us/">About Us</a>
-                    <a href="/blogs/">Blogs</a>
+        <!-- Reusable Confirmation Dialog -->
+        <div class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 px-4 backdrop-blur-sm" data-confirmation-dialog>
+            <div class="w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-card shadow-2xl">
+                <div class="flex items-center justify-between border-b border-border px-6 py-4">
+                    <h2 class="text-lg font-semibold" id="confirmationModalLabel"></h2>
+                    <button class="inline-flex size-9 items-center justify-center rounded-full border border-border bg-secondary/60 text-muted-foreground transition hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" type="button" data-confirmation-close aria-label="Close">
+                        <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 6L6 18" />
+                            <path d="M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="px-6 py-5 text-sm text-muted-foreground" id="confirmationModalBody"></div>
+                <div class="flex items-center justify-end gap-3 border-t border-border bg-muted/40 px-6 py-4">
+                    <button type="button" class="btn-secondary min-w-[110px] justify-center" data-confirmation-dismiss>Close</button>
+                    <button type="button" class="btn min-w-[110px] justify-center" id="confirmButton"></button>
+                </div>
+            </div>
+        </div>
+
+        <footer class="border-t border-border bg-background py-12">
+            <div class="container flex flex-col gap-8 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
+                <div class="flex flex-wrap gap-x-6 gap-y-3">
+                    <a href="/contact/" class="transition hover:text-foreground">Contact Us</a>
+                    <a href="/privacy/" class="transition hover:text-foreground">Privacy</a>
+                    <a href="/about-us/" class="transition hover:text-foreground">About Us</a>
+                    <a href="/blogs/" class="transition hover:text-foreground">Blogs</a>
                 </div>
 
-                <div class="footer-social-links">
-                    <a target="_blank" href="">
+                <div class="flex items-center gap-4 text-lg text-muted-foreground">
+                    <a target="_blank" rel="noreferrer" href="#" class="transition hover:text-primary">
                         <i class="bi bi-facebook"></i>
                     </a>
-                    <a target="_blank" href="">
+                    <a target="_blank" rel="noreferrer" href="#" class="transition hover:text-primary">
                         <i class="bi bi-youtube"></i>
                     </a>
-                    <a target="_blank" href="">
+                    <a target="_blank" rel="noreferrer" href="#" class="transition hover:text-primary">
                         <i class="bi bi-twitter-x"></i>
                     </a>
                 </div>
             </div>
 
-            <p class="copy-right">
-                © Copyright - WiSERPROPERTIES - Developed by
-                <a href="https://vaid.tech" target="_blank"> Vaidtech </a>
-            </p>
-        </div>
-    </footer>
+            <div class="container mt-6 text-xs text-muted-foreground">
+                <p>© {{ now|date:"Y" }} WiSERPROPERTIES — Developed by <a href="https://vaid.tech" target="_blank" rel="noreferrer" class="underline decoration-dotted underline-offset-4 transition hover:text-primary">Vaidtech</a></p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        {% if request.user.is_authenticated %}
+            var user_type = '{{ request.user.user_type }}';
+        {% else %}
+            var user_type = false;
+        {% endif %}
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
+    <script src="{% static 'js/libraries/jquery.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}?v=1.01"></script>
+    <script src="{% static 'js/header.js' %}?v=2.00"></script>
+
+    <script async src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_API_KEY }}&libraries=places&callback=initializeMap"></script>
+    <script src="{% static 'js/g_map.js' %}?v=1.00"></script>
+    <script>
+        var csrfToken = "{{ csrf_token }}";
+
+        let modalParentClass = "";
+        let modalOnConfirm = null;
+        let confirmationHandlerAttached = false;
+
+        function applyModalParentClass(dialog, parentClass) {
+            if (!dialog) return;
+
+            if (modalParentClass) {
+                modalParentClass.split(/\s+/).filter(Boolean).forEach(cls => dialog.classList.remove(cls));
+                modalParentClass = "";
+            }
+
+            if (parentClass) {
+                var classes = Array.isArray(parentClass) ? parentClass : String(parentClass).split(/\s+/).filter(Boolean);
+                if (classes.length) {
+                    classes.forEach(cls => dialog.classList.add(cls));
+                    modalParentClass = classes.join(" ");
+                }
+            }
+        }
+
+        function handleConfirmButtonClick(event) {
+            if (event.currentTarget.getAttribute("data-button-type") === "hidden") {
+                return;
+            }
+
+            if (typeof modalOnConfirm === "function") {
+                modalOnConfirm(event);
+            }
+        }
+
+        function showModal(data) {
+            const dialog = document.querySelector("[data-confirmation-dialog]");
+            if (!dialog) return;
+
+            const labelNode = dialog.querySelector("#confirmationModalLabel");
+            const bodyNode = dialog.querySelector("#confirmationModalBody");
+            const confirmButton = dialog.querySelector("#confirmButton");
+            const dismissButton = dialog.querySelector("[data-confirmation-dismiss]");
+
+            applyModalParentClass(dialog, data?.parentClass || "");
+
+            labelNode.innerHTML = data?.modalTitle ?? "";
+            bodyNode.innerHTML = data?.modalBody ?? "";
+
+            confirmButton.textContent = data?.confirmButtonLabel ?? "Confirm";
+            confirmButton.style.display = "inline-flex";
+
+            confirmButton.classList.remove("bg-destructive", "hover:bg-destructive/90", "text-destructive-foreground");
+            confirmButton.removeAttribute("data-button-type");
+
+            if (data?.confirmButtonType === "danger") {
+                confirmButton.classList.add("bg-destructive", "hover:bg-destructive/90", "text-destructive-foreground");
+                confirmButton.setAttribute("data-button-type", "danger");
+            } else if (data?.confirmButtonType === "hidden") {
+                confirmButton.style.display = "none";
+                confirmButton.setAttribute("data-button-type", "hidden");
+            } else {
+                confirmButton.setAttribute("data-button-type", "success");
+            }
+
+            if (data?.hide_dismiss_button) {
+                dismissButton.classList.add("hidden");
+            } else {
+                dismissButton.classList.remove("hidden");
+            }
+
+            modalOnConfirm = typeof data?.onConfirm === "function" ? data.onConfirm : null;
+
+            if (confirmButton && !confirmationHandlerAttached) {
+                confirmButton.addEventListener("click", handleConfirmButtonClick);
+                confirmationHandlerAttached = true;
+            }
+
+            dialog.classList.remove("hidden");
+        }
+
+        function hideModal() {
+            const dialog = document.querySelector("[data-confirmation-dialog]");
+            if (!dialog) return;
+            applyModalParentClass(dialog, "");
+            modalOnConfirm = null;
+            dialog.classList.add("hidden");
+        }
+
+        function formatBalance(number) {
+            const parts = String(number).split(".");
+            const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return parts.length > 1 ? integerPart + "." + parts[1] : integerPart;
+        }
+
+        window.showModal = showModal;
+        window.hideModal = hideModal;
+        window.formatBalance = formatBalance;
+    </script>
+    <script>
+        var login_url = "{% url 'user:login' %}";
+    </script>
+    <script src="{% static 'js/auth/login.js' %}?v=1.02"></script>
+    <script src="{% static 'js/google-translate.js' %}?v=2.00"></script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    {% block extend_script %}{% endblock extend_script %}
 </body>
 
-<script>
-    {% if request.user.is_authenticated %}
-        var user_type = '{{request.user.user_type}}'
-    {% else %}
-        var user_type = false
-    {% endif %}
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
-<script src="{% static 'js/libraries/jquery.min.js' %}"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-<script src="{% static 'js/libraries/fontawesome-all.min.js' %}"></script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-<script src="{% static 'js/main.js' %}?v=1.01"></script>
-<script src="{% static 'js/header.js' %}?v=1.02"></script>
-
-<script async
-    src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_API_KEY }}&libraries=places&callback=initializeMap">
-    </script>
-
-<script src="{% static 'js/g_map.js' %}?v=1.00"></script>
-<script>
-    var csrfToken = "{{ csrf_token }}"
-
-
-    // For modal
-    function showModal(data) {
-        var modal = $('#confirmationModal');
-        modal.find(".modal-title").html(data?.modalTitle);
-        modal.find(".modal-body").html(data?.modalBody);
-        modal.find("#confirmButton").html(data?.confirmButtonLabel);
-        modal.modal("show");
-        modal.addClass(data?.parentClass)
-
-        $('#confirmButton').css({
-            'background-color' : '#417e41',
-            'display': 'block',
-            'color' : '#fff'
-        });
-
-        if(data?.confirmButtonType == 'success'){
-            $('#confirmButton').css({
-                'background-color' : '#417e41',
-                'display': 'block',
-                'color' : '#fff'
-            })
-        }else if(data?.confirmButtonType == 'danger'){
-            $('#confirmButton').css({
-                'display': 'block',
-                'background-color' : '#e25c5c',
-                'color' : '#fff'
-            })
-        }else if(data?.confirmButtonType == 'hidden'){
-            $('#confirmButton').css({
-                'display': 'none',
-            })
-        };
-
-        if(data?.hide_dismiss_button){
-            $('[data-bs-dismiss]').css({
-                'display': 'none',
-            })
-        }else{
-            $('[data-bs-dismiss]').css({
-                'display': 'block',
-            })
-        }
-    };
-
-
-    function formatBalance(number) {
-        var parts = String(number).split('.');
-        var integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        var formattedNumber = parts.length > 1 ? integerPart+'.'+parts[1] : integerPart;
-        return formattedNumber;
-    };
-
-    /*
-        var modal_option = {
-            modalTitle : "any", // modal title text
-            modalBody : "any", // modal body text
-            confirmButtonLabel : "any", // action button text
-            parentClass : "any", // adding a class with #confirmationModal
-            confirmButtonType : 'success/danger/hidden', // default is 'success'
-            hide_dismiss_button : 'true/false', // default is false
-        };
-
-        // pop up the modal by calling "showModal"
-        showModal(modal_option);    
-    */ 
-</script>
-<script>
-    var login_url = "{% url 'user:login' %}"
-</script>
-<script src="{% static 'js/auth/login.js' %}?v=1.01"></script>
-<script src="{% static 'js/google-translate.js' %}?v=1.01"></script>
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-{% block extend_script %}{% endblock extend_script %}
 </html>
+

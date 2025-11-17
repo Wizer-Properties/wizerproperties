@@ -3,134 +3,124 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Advertise Analytics</title>
+<title>Advertise performance</title>
 <link rel="stylesheet" href="{% static '/css/libraries/dataTables.min.css' %}" />
-<link rel="stylesheet" href="{% static '/css/auth.css' %}?v=1.01" />
-<link rel="stylesheet" href="{% static '/css/dashboard.css' %}?v=1.01" />
-<link rel="stylesheet" href="{% static '/css/analytics-and-performance.css' %}?v=1.01" />
 {% endblock extend_head %}
 
-
-
-
 {% block content %}
-<section>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-12 mb-5">
-                <div class="table-area">
+<section class="bg-muted/30 py-12">
+    <div class="container max-w-6xl space-y-10">
+        <header class="space-y-4">
+            <p class="text-xs font-semibold uppercase tracking-[0.4em] text-primary">Advertise</p>
+            <div class="space-y-2">
+                <h1 class="text-3xl font-heading font-semibold text-foreground">Campaign performance</h1>
+                <p class="max-w-3xl text-sm text-muted-foreground">
+                    Review every running placement, compare engagement at a glance, and open deeper analytics to optimise your media spend.
+                </p>
+            </div>
+        </header>
 
-                    <h1 class="table-title">Advertise Analytics</h1>
-
-                    <table class="dashboard-data-table" id="advertise-table">
-                        <thead>
-                            <tr>
-                                <th>Ads name</th>
-                                <th>Type</th>
-                                <th>Create time</th>
-                                <th>End time</th>
-                                <th class="th-edit-delete-see"> </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- dom -->
-                        </tbody>
-                    </table>
-
+        <section class="card space-y-6">
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h2 class="text-lg font-semibold text-foreground">Active advertisements</h2>
+                    <p class="text-sm text-muted-foreground">Search and filter to inspect duration, placement, and status.</p>
                 </div>
             </div>
-        </div>
+
+            <div class="table-area relative overflow-hidden rounded-2xl border border-border">
+                <div class="overflow-x-auto">
+                    <table class="dashboard-data-table w-full min-w-[720px] text-sm text-foreground" id="advertise-table">
+                        <thead class="text-xs uppercase tracking-widest text-muted-foreground">
+                            <tr>
+                                <th scope="col" class="py-3 pr-4 text-left">Campaign</th>
+                                <th scope="col" class="py-3 pr-4 text-left">Placement</th>
+                                <th scope="col" class="py-3 pr-4 text-left">Start date</th>
+                                <th scope="col" class="py-3 pr-4 text-left">End date</th>
+                                <th scope="col" class="py-3 text-right">Analytics</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
     </div>
 </section>
 
-
-<div class="modal fade" id="analytics-details" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content p-3">
-
-            <div class="d-flex justify-content-end mb-2">
-                <button class="close-analytics-modal"> 
-                    <i class="bi bi-x-lg"></i> 
+<div class="hidden" modal-name="analytics-details" aria-hidden="true">
+    <div class="fixed inset-0 z-50 flex items-center justify-center px-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" data-modal-close></div>
+        <div class="relative z-10 w-full max-w-5xl space-y-6 overflow-hidden rounded-2xl border border-border bg-card shadow-2xl">
+            <div class="flex items-center justify-between border-b border-border px-6 py-4">
+                <div>
+                    <h2 class="text-lg font-semibold text-foreground">Campaign analytics</h2>
+                    <p class="text-sm text-muted-foreground">Conversion, viewing time, and audience insights.</p>
+                </div>
+                <button type="button" class="inline-flex size-9 items-center justify-center rounded-full border border-border bg-secondary/60 text-muted-foreground transition hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" data-modal-close aria-label="Close dialog">
+                    <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6L6 18" />
+                        <path d="M6 6l12 12" />
+                    </svg>
                 </button>
             </div>
 
-
-            <div class="row">
-                <div class="col-lg-4 col-6 dashboard-card">
-                    <div class="dashboard-single-card">
-                        <div class="single-card-value">
-                            <span label-name="number_of_clicked"> - </span>
-                            <p>Ads clicks</p>
-                        </div>
-                        <i class="bi bi-megaphone"></i>
+            <div class="px-6">
+                <div class="grid gap-4 sm:grid-cols-3">
+                    <div class="rounded-xl border border-border bg-secondary/40 p-4 shadow-sm">
+                        <p class="text-xs font-medium uppercase tracking-widest text-muted-foreground">Ads clicks</p>
+                        <p class="mt-2 text-2xl font-semibold text-foreground" label-name="number_of_clicked">--</p>
                     </div>
-                </div>
-                <div class="col-lg-4 col-6 dashboard-card">
-                    <div class="dashboard-single-card">
-                        <div class="single-card-value">
-                            <span label-name="formatted_view_time">-</span>
-                            <p>View time</p>
-                        </div>
-                        <i class="bi bi-alarm"></i>
+                    <div class="rounded-xl border border-border bg-secondary/40 p-4 shadow-sm">
+                        <p class="text-xs font-medium uppercase tracking-widest text-muted-foreground">View time</p>
+                        <p class="mt-2 text-2xl font-semibold text-foreground" label-name="formatted_view_time">--</p>
                     </div>
-                </div>
-    
-                <div class="col-lg-4 col-6 dashboard-card">
-                    <div class="dashboard-single-card">
-                        <div class="single-card-value">
-                            <span label-name="conversion_rate">
-                                -
-                            </span>
-                            <p> Conversion rate </p>
-                        </div>
-                        <i class="bi bi-graph-up"></i>
+                    <div class="rounded-xl border border-border bg-secondary/40 p-4 shadow-sm">
+                        <p class="text-xs font-medium uppercase tracking-widest text-muted-foreground">Conversion rate</p>
+                        <p class="mt-2 text-2xl font-semibold text-foreground" label-name="conversion_rate">--</p>
                     </div>
                 </div>
             </div>
 
-
-            <div class="mt-4">
-                <h1 class="table-title">Location Analytics</h1>
-
-                <table class="dashboard-data-table" id="location-table">
-                    <thead>
-                        <tr>
-                            <th>Location</th>
-                            <th>Number of view</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- dom -->
-                    </tbody>
-                </table>
+            <div class="px-6">
+                <div class="table-area relative overflow-hidden rounded-2xl border border-border">
+                    <div class="overflow-x-auto">
+                        <table class="dashboard-data-table w-full min-w-[420px] text-sm text-foreground" id="location-table">
+                            <thead class="text-xs uppercase tracking-widest text-muted-foreground">
+                                <tr>
+                                    <th scope="col" class="py-3 pr-4 text-left">Location</th>
+                                    <th scope="col" class="py-3 text-right">Views</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
-
-            <div class="analytics-chart-area">
-                <div id="gender-analytics" class="analytics-charts"></div>
+            <div class="px-6 pb-6">
+                <div class="relative flex min-h-[280px] items-center justify-center rounded-xl border border-dashed border-border bg-secondary/40">
+                    <div id="gender-analytics" class="h-[260px] w-full"></div>
+                    <div class="pointer-events-none absolute inset-0 hidden items-center justify-center bg-background/70 backdrop-blur-sm" data-gender-loader>
+                        <span class="size-10 animate-spin rounded-full border-2 border-primary border-t-transparent"></span>
+                        <span class="sr-only">Loading gender analytics</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
 
-
-
-
-
 {% block extend_script %}
 <script>
-    var ADS_LIST = '/advertise/api/advertisement/list/'
-    var ADS_ANALYTICS = function(id){
-        return '/advertise/api/advertisement/'+id+'/analytics/'
+    var ADS_LIST = '/advertise/api/advertisement/list/';
+    var ADS_ANALYTICS = function (id) {
+        return '/advertise/api/advertisement/' + id + '/analytics/';
     };
 </script>
-
-
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 <script src="{% static '/js/libraries/dataTables.min.js' %}?v=1.00"></script>
 <script src="{% static '/js/libraries/echarts.min.js' %}?v=1.00"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" 
-    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-<script src="{% static '/js/advertise/performance.js' %}?v=1.00"></script>
+<script src="{% static '/js/advertise/performance.js' %}?v=2.00"></script>
 {% endblock extend_script %}

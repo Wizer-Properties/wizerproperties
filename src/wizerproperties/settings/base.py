@@ -171,14 +171,19 @@ AUTH_USER_MODEL = "user.User"
 SITE_HOST = config("SITE_HOST", default="http://localhost:8000")
 
 # EMAIL
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = config("EMAIL_HOST", default="smtp.gmail.com")
 EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)
-EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="emailorproviderusername")
-EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="emailpassword")
+EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
 EMAIL_USE_TLS = True
+FROM_EMAIL = config("FROM_EMAIL", default="")
 
-FROM_EMAIL = config("FROM_EMAIL", default="emailorprovider@gmail.com")
+# Use console backend for development if email settings are not configured
+# This allows emails to be printed to console instead of failing
+if not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD or not FROM_EMAIL:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 # Define the expiration period for confirmation codes (in minutes)
 CONFIRMATION_CODE_EXPIRATION_TIME = 1440

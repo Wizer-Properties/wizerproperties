@@ -1,139 +1,86 @@
 {% extends "base.html" %}
 {% load static %}
 {% block extend_head %}
-<title>WIZER | Blog</title>
-<!-- all css here -->
-    <link rel="stylesheet" href="{% static '/css/new-search-page.css' %}?v=1.07" />
-    <link rel="stylesheet" href="{% static '/css/search-page.css' %}?v=1.05" />
-    <link rel="stylesheet" href="{% static '/css/blog-page.css' %}?v=1.01"/>
-    <link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
-    <link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
+<title>WiSER | Insights & Stories</title>
+<link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
+<link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
 {% endblock extend_head %}
 
-
 {% block content %}
-<!-- adds  -->
-<section>
-    <div class="top-banner  mb-5">
-        <div class="container">
-            <div class="col-lg-8 col-md-8 col-11 mx-auto">
-                <div class="splide ads-banner-slider">
+<section class="bg-muted/30 py-14 sm:py-20">
+    <div class="container max-w-6xl space-y-14">
+        <div class="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+            <div class="space-y-5">
+                <p class="text-xs font-semibold uppercase tracking-[0.35em] text-primary">Insights & News</p>
+                <h1 class="text-3xl font-heading font-semibold text-foreground sm:text-4xl">
+                    Stories shaping Thailand’s property market
+                </h1>
+                <p class="max-w-2xl text-sm text-muted-foreground sm:text-base">
+                    Explore developer launches, financing trends, and investor playbooks curated by the WiSER editorial team. Filter articles by the topics you care about and stay ahead of every release.
+                </p>
+            </div>
+            <div class="rounded-3xl border border-border bg-card/95 p-6 shadow-lg backdrop-blur">
+                <div class="splide ads-banner-slider" aria-label="Sponsored property highlights">
                     <div class="splide__track">
-                        <div class="splide__list ">
-                            <!-- from dom -->
-                            
-                        </div>
+                        <div class="splide__list"></div>
                     </div>
                 </div>
+                <p class="mt-3 text-center text-[11px] uppercase tracking-[0.35em] text-muted-foreground">Sponsored listings</p>
             </div>
         </div>
-    </div>
-</section>
 
-<section>
-    <div class="container">
-        <!-- filter -->
-        <div class="all-filter-option">
-            <div class="filter-option-area">
-                <div class="filter-single-box category-filter" pop-target="A" filter-name="" active-filter="false">
-                    <div class="center">
-                        <div>
-                            <div class="filter-icon">
-                                <i class="bi bi-border-all"></i>
-                            </div>
-                            <div class="filter-label" filter-label-name="category">
-                                Category
-                            </div>
-                        </div>
-                    </div>
+        <div class="space-y-6">
+            <div class="flex flex-col gap-4 rounded-3xl border border-border bg-card/95 p-6 shadow-lg backdrop-blur sm:flex-row sm:items-center sm:justify-between">
+                <div class="flex flex-wrap items-center gap-3">
+                    <label class="flex items-center gap-2 text-sm text-muted-foreground">
+                        <span class="text-xs font-semibold uppercase tracking-[0.25em] text-primary">Category</span>
+                        <select class="blog-category-select-filter input w-40 text-sm" filter-name="category" data-blog-filter="category">
+                            <option value="">All</option>
+                            {% for category in categories %}
+                                <option value="{{ category.name }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
                 </div>
-
-                <div pop-element="A">
-                    <div class="search-pop-up-box">
-                        <div class="search-pop-up-select-box" label="category">
-                            <select name="nearby" class="blog-category-select-filter" filter-name="category">
-                                <option value="">All</option>
-                                {% for category in categories %}
-                                    <option value="{{ category.name }}">{{ category.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- =========================================== -->
-
-                <div class="filter-single-box most-read-filter" pop-target="price-box" tag-name="price" filter-name="most-read" active-filter="false">
-                    <div class="center">
-                        <div>
-                            <div class="filter-icon">
-                                <i class="bi bi-book"></i>
-                                <i class="bi bi-book-fill"></i>
-                            </div>
-                            <div class="filter-label" filter-label-name="most-read">
-                                Most read
-                            </div>
-                        </div>
-                    </div>
-                </div>
-           
-
-                  <!-- =========================================== -->
-
-                <div class="filter-single-box most-liked-filter" pop-target="property-type" active-filter="false" filter-name="most-liked">
-                    <div class="center">
-                        <div>
-                            <div class="filter-icon">
-                                <i class="bi bi-hand-thumbs-up"></i>
-                                <i class="bi bi-hand-thumbs-up-fill"></i>
-
-                            </div>
-                            <div class="filter-label" label-value="property-type">
-                                Most Liked
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- =========================================== -->
-
-                <div class="filter-single-box most-recent-filter" pop-target="bed-box" filter-name="most-recent" active-filter="false">
-                    <div class="center">
-                        <div>
-                            <div class="filter-icon">
-                                <i class="bi bi-clock"></i>
-                                <i class="bi bi-clock-fill"></i>
-                            </div>
-                            <div class="filter-label" filter-label-name="most-recent">
-                                Most Recent
-                            </div>
-                        </div>
-                    </div>
+                <div class="flex flex-wrap items-center gap-2" data-blog-toggle-group>
+                    <button type="button" class="btn-secondary px-3 py-1 text-xs" data-blog-toggle="most-read" aria-pressed="false">
+                        Most read
+                    </button>
+                    <button type="button" class="btn-secondary px-3 py-1 text-xs" data-blog-toggle="most-liked" aria-pressed="false">
+                        Most liked
+                    </button>
+                    <button type="button" class="btn-secondary px-3 py-1 text-xs" data-blog-toggle="most-recent" aria-pressed="false">
+                        Most recent
+                    </button>
                 </div>
             </div>
         </div>
 
-        <!-- blogs cards -->
-        <div class="blog-cards mt-5">
-            <div class="row blog-content-container">
-            </div>
-            <div class="blog-list-loader">
-                <img class="loader" src="{% static '/media/loader.gif' %}" alt="loader">
-            </div>
-            <div class="no-more-blogs d-none">
-                <p class="text-center">No more blogs to load</p>
+        <div class="space-y-10">
+            <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3" data-blog-grid></div>
+            <div class="flex flex-col items-center gap-4">
+                <div class="hidden items-center gap-2 text-xs text-muted-foreground" data-blog-loader>
+                    <span class="inline-flex size-3 animate-spin rounded-full border-2 border-primary/20 border-t-primary"></span>
+                    Loading stories…
+                </div>
+                <p class="hidden text-sm text-muted-foreground" data-blog-empty>No stories match your filters yet. Try selecting a different category.</p>
+                <button type="button" class="btn-secondary hidden px-6 py-2 text-sm" data-blog-load>Load more stories</button>
             </div>
         </div>
     </div>
 </section>
 {% endblock %}
 
-
 {% block extend_script %}
-<!-- all js here -->
- <script src="{% static '/js/libraries/splide.min.js' %}"></script>
- <script src="{% static '/js/blog-page-list.js' %}?v=1.01"></script>
- <script src="{% static '/js/blog-ads.js' %}?v=1.05"></script>
-
-
+<script type="text/javascript">
+    const initialBlogFilters = {
+        category: "",
+        most_read: false,
+        most_liked: false,
+        most_recent: false,
+    };
+</script>
+<script src="{% static '/js/libraries/splide.min.js' %}"></script>
+<script src="{% static '/js/blog-ads.js' %}?v=1.05"></script>
+<script src="{% static '/js/blog-page-list.js' %}?v=2.00"></script>
 {% endblock extend_script %}

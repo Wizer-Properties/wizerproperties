@@ -3,79 +3,121 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Contact</title>
-<link rel="stylesheet" href="{% static '/css/contact.css' %}?v=1.00" />
+<title>Contact WiSER Properties</title>
 {% endblock extend_head %}
 
 {% block content %}
+<section class="relative overflow-hidden bg-muted/30 py-16 sm:py-20">
+    <div class="absolute inset-0 -z-10">
+        <img src="{% static 'media/background/auth-page-bg.webp' %}" alt="" class="h-full w-full object-cover opacity-40">
+        <div class="absolute inset-0 bg-background/85 backdrop-blur-sm"></div>
+    </div>
 
+    <div class="container relative z-10 max-w-5xl space-y-12">
+        <header class="space-y-4 text-center">
+            <span class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Contact WiSER Properties</span>
+            <h1 class="text-3xl font-heading font-semibold text-foreground sm:text-4xl">We’re here to help you move forward</h1>
+            <p class="mx-auto max-w-2xl text-sm text-muted-foreground">
+                Tell us how we can support your investment journey. Our advisory team reviews every message and responds within one business day.
+            </p>
+        </header>
 
-<section class="contact-us-section">
-    <div class="container">
-
-        <div class="row position-relative contact-us-row">
-            <div class="col-md-4 contact-us-area contact-us-info">
-                <h1> Contact Info </h1>
-
-                <div class="contact-info-in-details">
-                    <i class="bi bi-geo-alt"></i>
-                    <span>
-                        Ayutthaya, Phra Nakhon Si Ayutthaya District, Thailand
-                    </span>
+        <div class="grid gap-8 lg:grid-cols-[1fr_1.4fr]">
+            <aside class="space-y-6 rounded-3xl border border-border bg-card/95 p-8 shadow-xl backdrop-blur">
+                <div class="space-y-2">
+                    <h2 class="text-xl font-semibold text-foreground">Reach us directly</h2>
+                    <p class="text-sm text-muted-foreground">
+                        Prefer a quick conversation? Contact the team and we’ll make sure you’re routed to the right specialist.
+                    </p>
                 </div>
 
-                <div class="contact-info-in-details">
-                    <i class="bi bi-envelope-at"></i>
-                    <span>
-                        jhon@doe.com
-                    </span>
-                </div>
-
-                <div class="contact-info-in-details">
-                    <i class="bi bi-telephone"></i>
-                    <span>
-                        +60 xxxxxxxx
-                    </span>
-                </div>
-            </div>
-            <div class="col-md-9 ms-auto contact-us-area">
-                <div class="col-md-10 ms-auto">
-                    <h1> Send a message </h1>
-
-                    <div class="contact-form">
-                        <div class="row">
-                            <div class="col-12">
-                                <label> Email Address </label>
-                                <input type="email" name="email" placeholder="E.g. jhon@doe.com">
-                            </div>
-    
-                            <div class="col-12">
-                                <label> Subject </label>
-                                <input type="text" name="subject" placeholder="E.g. This is for...">
-                            </div>
-    
-                            <div class="col-12">
-                                <label> Write Your Message Here </label>
-                                <textarea name="body" rows="5" placeholder="E.g. Hello..."></textarea>
-                            </div>
+                <dl class="space-y-4">
+                    <div class="flex items-start gap-3 rounded-2xl border border-border/70 bg-background/70 p-4">
+                        <div class="flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                            <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 21c-4.97-4.39-8-7.76-8-11.5A8 8 0 0 1 12 1a8 8 0 0 1 8 8.5c0 3.74-3.03 7.11-8 11.5Z" />
+                                <circle cx="12" cy="9" r="2.5" />
+                            </svg>
                         </div>
-
-                        <div class="warrning-text"></div>
-
-                        <div class="submit-button">
-                            <button class="link"> Submit </button>
+                        <div class="space-y-1">
+                            <dt class="text-sm font-semibold text-foreground">Visit us</dt>
+                            <dd class="text-sm text-muted-foreground">Ayutthaya, Phra Nakhon Si Ayutthaya District, Thailand</dd>
                         </div>
                     </div>
-                </div>
 
+                    <div class="flex items-start gap-3 rounded-2xl border border-border/70 bg-background/70 p-4">
+                        <div class="flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                            <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m4 4 16 8-16 8 4-8-4-8Z" />
+                                <path d="m12 12 8 8" />
+                                <path d="m12 12-8 8" />
+                            </svg>
+                        </div>
+                        <div class="space-y-1">
+                            <dt class="text-sm font-semibold text-foreground">Email</dt>
+                            <dd class="text-sm text-muted-foreground">hello@wizerproperties.com</dd>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-3 rounded-2xl border border-border/70 bg-background/70 p-4">
+                        <div class="flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                            <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.12 2h3a2 2 0 0 1 2 1.72 12.44 12.44 0 0 0 .67 2.81 2 2 0 0 1-.45 2.11l-1.27 1.27a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.44 12.44 0 0 0 2.81.67A2 2 0 0 1 22 16.92Z" />
+                            </svg>
+                        </div>
+                        <div class="space-y-1">
+                            <dt class="text-sm font-semibold text-foreground">Phone</dt>
+                            <dd class="text-sm text-muted-foreground">+66 (0) 2 345 6789</dd>
+                        </div>
+                    </div>
+                </dl>
+
+                <div class="space-y-2 rounded-2xl border border-primary/30 bg-primary/5 p-4 text-sm text-muted-foreground">
+                    <p class="font-semibold text-foreground">Operating hours</p>
+                    <p>Monday to Friday, 9am – 6pm ICT (GMT+7)</p>
+                    <p>We do our best to respond within one business day.</p>
+                </div>
+            </aside>
+
+            <div class="rounded-3xl border border-border bg-card/95 p-8 shadow-xl backdrop-blur">
+                <form class="space-y-6" data-contact-form novalidate>
+                    {% csrf_token %}
+                    <div class="space-y-3" data-contact-alerts aria-live="polite"></div>
+                    <div class="space-y-3 text-sm text-destructive" data-contact-errors aria-live="assertive"></div>
+
+                    <div class="grid gap-4">
+                        <label class="flex flex-col gap-2">
+                            <span class="label">Email address <span class="text-destructive">*</span></span>
+                            <input type="email" name="email" class="input" placeholder="you@example.com" autocomplete="email" required data-contact-input="email">
+                        </label>
+                        <label class="flex flex-col gap-2">
+                            <span class="label">Subject <span class="text-destructive">*</span></span>
+                            <input type="text" name="subject" class="input" placeholder="Tell us what you need" required data-contact-input="subject">
+                        </label>
+                        <label class="flex flex-col gap-2">
+                            <span class="label">How can we help? <span class="text-destructive">*</span></span>
+                            <textarea name="body" rows="5" class="textarea min-h-[200px]" placeholder="Share any details that will help us prepare the right answer." required data-contact-input="body"></textarea>
+                        </label>
+                    </div>
+
+                    <div class="space-y-2 text-xs text-muted-foreground">
+                        <p>By submitting this form you agree that WiSER Properties may contact you about your enquiry in line with our privacy policy.</p>
+                    </div>
+
+                    <button type="submit" class="btn w-full justify-center sm:w-auto disabled:cursor-not-allowed disabled:opacity-50" data-contact-submit>
+                        <span data-contact-submit-text>Send message</span>
+                        <span class="ml-2 hidden items-center gap-2 text-xs" data-contact-submit-spinner>
+                            <span class="inline-flex size-3 animate-spin rounded-full border-2 border-primary/20 border-t-primary"></span>
+                            Sending…
+                        </span>
+                    </button>
+                </form>
             </div>
         </div>
     </div>
 </section>
-
-
 {% endblock %}
 
 {% block extend_script %}
-<script src="{% static '/js/contact-us.js' %}?v=1.00"></script>
+<script src="{% static '/js/contact-us.js' %}?v=2.00"></script>
 {% endblock extend_script %}

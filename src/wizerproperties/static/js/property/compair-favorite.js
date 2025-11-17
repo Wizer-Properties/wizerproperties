@@ -1,153 +1,338 @@
-$(document).ready(function(){
+/**
+ * Modern Compare/Favorite Property Actions
+ * Handles adding/removing properties from compare and favorite lists
+ * Uses fetch API, no jQuery dependencies
+ * Integrates with card factory button states
+ */
 
-    function loader(dom){
-        var loader_file = '<img src="/static/media/loader.svg" alt="loading...">';
-        dom.html(loader_file)
-    };
+(function () {
+  "use strict";
 
-    var compare_req = false;
+  // Get CSRF token from global or meta tag
+  const getCSRFToken = () => {
+    if (typeof csrfToken !== "undefined") return csrfToken;
+    const meta = document.querySelector('meta[name="csrf-token"]');
+    return meta ? meta.getAttribute("content") : "";
+  };
 
-    $(document).on('click', '.add-to-compare[added="false"]', function(){
-        if(compare_req) return;
-        var this_btn = $(this);
-        var get_html = $(this).html();
-        compare_req = true;
+  const csrf = getCSRFToken();
 
-        $.ajax({
-            url: '/property/api/compare/create/',
-            data : {
-                property : $(this).attr('index')
-            },
-            type: 'POST',
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            beforeSend: function() {
-                loader(this_btn);
-            },
-            success : function (data) {
-                this_btn.attr('added', 'true');
-                this_btn.html(get_html);
-                compare_req = false;
-            },
-            error: function (error) {
-                console.log("error");
-                this_btn.html(get_html);
-                compare_req = false;
-            }
+  // Loading state management
+  let compareRequestInFlight = false;
+  let favoriteRequestInFlight = false;
+
+  // Loader SVG (inline for performance)
+  const loaderSVG = `<img src="/static/media/loader.svg" alt="Loading..." class="size-4 animate-spin" />`;
+
+  /**
+   * Show loading state on button
+   */
+  const showLoader = (button) => {
+    const originalHTML = button.innerHTML;
+    button.dataset.originalHtml = originalHTML;
+    button.disabled = true;
+    button.innerHTML = loaderSVG;
+    button.setAttribute("aria-busy", "true");
+  };
+
+  /**
+   * Restore button to original state
+   */
+  const restoreButton = (button, isAdded) => {
+    const originalHTML = button.dataset.originalHtml || button.innerHTML;
+    button.disabled = false;
+    button.removeAttribute("aria-busy");
+    button.setAttribute("added", isAdded ? "true" : "false");
+    
+    // Update icon based on button type and state
+    const isFavorite = button.classList.contains("add-to-favorite");
+    const isCompare = button.classList.contains("add-to-compare");
+    
+    if (isFavorite) {
+      button.innerHTML = `<i class="bi bi-${isAdded ? "heart-fill" : "heart"}"></i><span class="sr-only">Favorite</span>`;
+    } else if (isCompare) {
+      button.innerHTML = `<i class="bi bi-${isAdded ? "check2" : "arrow-left-right"}"></i><span class="sr-only">Compare</span>`;
+    } else {
+      button.innerHTML = originalHTML;
+    }
+  };
+
+  /**
+   * Handle API errors with user feedback
+   */
+  const handleError = (button, error, action) => {
+    console.error(`Failed to ${action} property:`, error);
+    const wasAdded = button.getAttribute("added") === "true";
+    restoreButton(button, wasAdded);
+    
+    // Optional: Show toast/alert notification
+    // You can integrate with a notification system here
+  };
+
+  /**
+   * Add property to compare list
+   */
+  const addToCompare = async (button) => {
+    if (compareRequestInFlight) return;
+    
+    const propertyId = button.getAttribute("index");
+    if (!propertyId) {
+      console.error("Property ID missing from compare button");
+      return;
+    }
+
+    compareRequestInFlight = true;
+    showLoader(button);
+
+    try {
+      const response = await fetch("/property/api/compare/create/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrf,
+        },
+        credentials: "same-origin",
+        body: JSON.stringify({ property: propertyId }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || `HTTP ${response.status}`);
+      }
+
+      const data = await response.json().catch(() => ({}));
+      
+      // Update button state
+      restoreButton(button, true);
+      
+      // Emit event for count syncing
+      window.dispatchEvent(
+        new CustomEvent("compare:added", {
+          detail: { propertyId },
         })
-    });
+      );
 
+      // Optional: Add visual feedback effect
+      const effect = button.getAttribute("effect") || "pulse";
+      if (effect === "pulse") {
+        button.classList.add("animate-pulse");
+        setTimeout(() => button.classList.remove("animate-pulse"), 1000);
+      }
+    } catch (error) {
+      handleError(button, error, "add to compare");
+    } finally {
+      compareRequestInFlight = false;
+    }
+  };
 
-    $(document).on('click', '.add-to-compare[added="true"]', function(){
-        if(compare_req) return;
-        var this_btn = $(this);
-        var get_html = $(this).html();
-        compare_req = true;
+  /**
+   * Remove property from compare list
+   */
+  const removeFromCompare = async (button) => {
+    if (compareRequestInFlight) return;
+    
+    const propertyId = button.getAttribute("index");
+    if (!propertyId) {
+      console.error("Property ID missing from compare button");
+      return;
+    }
 
-        $.ajax({
-            url: '/property/api/compare/delete/',
-            data: {
-                property : this_btn.attr('index')
-            },
-            type: 'DELETE',
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            beforeSend: function() {
-                loader(this_btn);
-            },
-            success : function (data) {
-                this_btn.attr('added', 'false');
-                this_btn.html(get_html);
-                compare_req = false;
-            },
-            error: function (error) {
-                console.log("error");
-                this_btn.html(get_html);
-                compare_req = false;
-            }
+    compareRequestInFlight = true;
+    showLoader(button);
+
+    try {
+      const response = await fetch("/property/api/compare/delete/", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrf,
+        },
+        credentials: "same-origin",
+        body: JSON.stringify({ property: propertyId }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || `HTTP ${response.status}`);
+      }
+
+      // Update button state
+      restoreButton(button, false);
+      
+      // Emit event for count syncing
+      window.dispatchEvent(
+        new CustomEvent("compare:removed", {
+          detail: { propertyId },
         })
-    });
+      );
+    } catch (error) {
+      handleError(button, error, "remove from compare");
+    } finally {
+      compareRequestInFlight = false;
+    }
+  };
 
+  /**
+   * Add property to favorites
+   */
+  const addToFavorite = async (button) => {
+    if (favoriteRequestInFlight) return;
+    
+    const propertyId = button.getAttribute("index");
+    if (!propertyId) {
+      console.error("Property ID missing from favorite button");
+      return;
+    }
 
+    favoriteRequestInFlight = true;
+    showLoader(button);
 
-    var favorite_req = false;
+    try {
+      const response = await fetch("/property/api/prospect-favorite/add/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrf,
+        },
+        credentials: "same-origin",
+        body: JSON.stringify({ property: propertyId }),
+      });
 
-    $(document).on('click', '.add-to-favorite[added="false"]', function(){
-        if(favorite_req) return;
-        var this_btn = $(this);
-        var get_html = $(this).html();
-        favorite_req = true;
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || `HTTP ${response.status}`);
+      }
 
-        $.ajax({
-            url: '/property/api/prospect-favorite/add/',
-            data : {
-                property : $(this).attr('index')
-            },
-            type: 'POST',
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            beforeSend: function() {
-                loader(this_btn);
-            },
-            success : function (data) {
-                this_btn.attr('added', 'true');
-                this_btn.html(get_html);
-                favorite_req = false;
-            },
-            error: function (error) {
-                console.log("error");
-                this_btn.html(get_html);
-                favorite_req = false;
-            }
+      const data = await response.json().catch(() => ({}));
+      
+      // Update button state
+      restoreButton(button, true);
+      
+      // Emit event for count syncing
+      window.dispatchEvent(
+        new CustomEvent("favorite:added", {
+          detail: { propertyId },
         })
-    });
+      );
 
+      // Optional: Add visual feedback effect
+      const effect = button.getAttribute("effect") || "pulse";
+      if (effect === "pulse") {
+        button.classList.add("animate-pulse");
+        setTimeout(() => button.classList.remove("animate-pulse"), 1000);
+      }
+    } catch (error) {
+      handleError(button, error, "add to favorites");
+    } finally {
+      favoriteRequestInFlight = false;
+    }
+  };
 
-    $(document).on('click', '.add-to-favorite[added="true"]', function(){
-        if(favorite_req) return;
-        var this_btn = $(this);
-        var get_html = $(this).html();
-        favorite_req = true;
+  /**
+   * Remove property from favorites
+   */
+  const removeFromFavorite = async (button) => {
+    if (favoriteRequestInFlight) return;
+    
+    const propertyId = button.getAttribute("index");
+    if (!propertyId) {
+      console.error("Property ID missing from favorite button");
+      return;
+    }
 
-        $.ajax({
-            url: '/property/api/prospect-favorite/remove/',
-            data : {
-                property : $(this).attr('index')
-            },
-            type: 'DELETE',
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            beforeSend: function() {
-                loader(this_btn);
-            },
-            success : function (data) {
-                this_btn.attr('added', 'false');
-                this_btn.html(get_html);
-                favorite_req = false;
+    favoriteRequestInFlight = true;
+    showLoader(button);
 
-                try {
-                    if(favorite_removable){
-                        this_btn.parents('.property-single-box').remove();
-                    };
-                } catch {}
-            },
-            error: function (error) {
-                console.log("error")
-                this_btn.html(get_html);
-                favorite_req = false;
-            }
+    try {
+      const response = await fetch("/property/api/prospect-favorite/remove/", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrf,
+        },
+        credentials: "same-origin",
+        body: JSON.stringify({ property: propertyId }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || `HTTP ${response.status}`);
+      }
+
+      // Update button state
+      restoreButton(button, false);
+      
+      // Emit event for count syncing and card removal
+      window.dispatchEvent(
+        new CustomEvent("favorite:removed", {
+          detail: { propertyId },
         })
+      );
+
+      // Remove card from favorites list if on favorites page
+      // This maintains backward compatibility with favorite-list.js
+      const cardContainer = button.closest("[data-property-card]") || 
+                           button.closest(".property-single-box");
+      if (cardContainer && typeof favorite_removable !== "undefined" && favorite_removable) {
+        cardContainer.remove();
+      }
+    } catch (error) {
+      handleError(button, error, "remove from favorites");
+    } finally {
+      favoriteRequestInFlight = false;
+    }
+  };
+
+  /**
+   * Handle button clicks with event delegation
+   */
+  const handleButtonClick = (event) => {
+    const button = event.target.closest(".add-to-favorite, .add-to-compare");
+    if (!button) return;
+
+    // Check if user is authenticated
+    const addedAttr = button.getAttribute("added");
+    if ([undefined, null, "null", "undefined"].includes(addedAttr)) {
+      window.location.href = "/user/login/";
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const isAdded = addedAttr === "true";
+    const isFavorite = button.classList.contains("add-to-favorite");
+    const isCompare = button.classList.contains("add-to-compare");
+
+    if (isFavorite) {
+      if (isAdded) {
+        removeFromFavorite(button);
+      } else {
+        addToFavorite(button);
+      }
+    } else if (isCompare) {
+      if (isAdded) {
+        removeFromCompare(button);
+      } else {
+        addToCompare(button);
+      }
+    }
+  };
+
+  // Initialize event listeners when DOM is ready
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+      document.addEventListener("click", handleButtonClick);
     });
+  } else {
+    document.addEventListener("click", handleButtonClick);
+  }
 
-
-    $(document).on('click', '.add-to-favorite , .add-to-compare', function(){
-        if( [undefined, null, 'null', 'undefined'].includes( $(this).attr('added')) ){
-            window.location.href = '/user/login/';
-        };
-    });
-
-})
+  // Export functions for potential external use
+  window.PropertyCompareFavorite = {
+    addToCompare,
+    removeFromCompare,
+    addToFavorite,
+    removeFromFavorite,
+  };
+})();

@@ -1,5 +1,6 @@
 $(document).ready(function () {
     var constructionYearInput = $("input[name='construction_year']");
+    var descriptionModal = $("[data-description-modal]");
 
     // Change event listener to the construction year field
     constructionYearInput.on("change", function () {
@@ -121,7 +122,7 @@ $(document).ready(function () {
                 generateBuildingDescription.show(); // Show the text
                 previousBuildingDescription = response.generated_building_description;
                 $(".error-message").html("");
-                $('body').attr('open-modal', 'building-description');
+                openDescriptionModal();
                 $('.created-description-textarea').val(response.generated_building_description);
             },
             error: function (error) {
@@ -239,26 +240,20 @@ $(document).ready(function () {
 
     $('.add-to-description-field').click(function(){
         $('textarea[name="description"]').val($('.created-description-textarea').val());
-        $('body').attr('open-modal', 'false');
+        closeDescriptionModal();
     });
 
-    $('[ai-close-modal="description"]').click(function(){
-        $('body').attr('open-modal', 'false');
-    })
-    
     //  Project status and construction year related ------------------ start
     var statusSelect = $('#status');
     var constructionYearDiv = $('#constructionYearDiv');
     var constructionYearInput = $('#construction_year');
 
     function updateConstructionYearVisibility() {
-        if (statusSelect.val() === 'completed') {
-            constructionYearDiv.show();
-            constructionYearInput.prop('required', true);
-        } else {
-            constructionYearDiv.hide();
-            constructionYearInput.prop('required', false);
-            constructionYearInput.val(null); // Clear the value if hidden
+        var isCompleted = statusSelect.val() === 'completed';
+        constructionYearDiv.toggleClass('hidden', !isCompleted);
+        constructionYearInput.prop('required', isCompleted);
+        if (!isCompleted) {
+            constructionYearInput.val(null);
         }
     }
 
@@ -272,7 +267,7 @@ $(document).ready(function () {
 
     function updateSubTypeOptions(subTypes) {
         subTypeSelect.empty();
-        subTypeSelect.append('<option value="">........</option>');
+        subTypeSelect.append('<option value="">Select sub type</option>');
         $.each(subTypes, function(value, label) {
             subTypeSelect.append('<option value="' + value + '">' + label + '</option>');
         });
@@ -280,9 +275,10 @@ $(document).ready(function () {
 
     function toggleSubTypeVisibility() {
         var typeValue = $('#type_select').val();
+        var container = $('#sub_type_container');
         if (typeValue) {
-            $('#sub_type_container .authFormDiv').show();
-            $('#sub_type_select').prop('required', true);
+            container.removeClass('hidden');
+            subTypeSelect.prop('required', true);
 
             if (typeValue == 'residence') {
                 updateSubTypeOptions(residenceSubTypes);
@@ -290,8 +286,8 @@ $(document).ready(function () {
                 updateSubTypeOptions(commercialSubTypes);
             }
         } else {
-            $('#sub_type_container .authFormDiv').hide();
-            $('#sub_type_select').prop('required', false).val('');
+            container.addClass('hidden');
+            subTypeSelect.prop('required', false).val('');
         }
     }
 
@@ -299,4 +295,22 @@ $(document).ready(function () {
 
     $('select[name="type"]').on('change', toggleSubTypeVisibility);
     // --------------------------------- end
+
+    function openDescriptionModal() {
+        descriptionModal.removeClass('hidden');
+        $('body').addClass('overflow-hidden');
+    }
+
+    function closeDescriptionModal() {
+        descriptionModal.addClass('hidden');
+        $('body').removeClass('overflow-hidden');
+    }
+
+    $('[data-description-close]').on('click', closeDescriptionModal);
+
+    descriptionModal.on('click', function(event) {
+        if (event.target === this) {
+            closeDescriptionModal();
+        }
+    });
 });

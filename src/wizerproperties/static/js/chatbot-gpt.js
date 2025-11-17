@@ -1,64 +1,127 @@
-$(function(){
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.querySelector("[data-chat-form]");
+  const input = document.querySelector("[data-chat-input]");
+  const sendButton = document.querySelector("[data-chat-send]");
+  const statusText = document.querySelector("[data-chat-status]");
+  const historyContainer = document.querySelector("[data-chat-history]");
+  const messagesList = document.querySelector("[data-chat-messages]");
+  const emptyState = messagesList ? messagesList.querySelector("[data-chat-empty]") : null;
+  const promptButtons = document.querySelectorAll("[data-chat-prompt]");
 
-    function scroll_bown(){
-        $('.chat-history').animate({
-            scrollTop: $('.chat-history').offset().top 
-        }, 800);
+  if (!form || !input || !sendButton || !messagesList || !historyContainer) return;
+
+  const scrollToBottom = () => {
+    historyContainer.scrollTo({ top: historyContainer.scrollHeight, behavior: "smooth" });
+  };
+
+  const setLoading = (isLoading) => {
+    if (isLoading) {
+      sendButton.setAttribute("disabled", "disabled");
+      statusText?.removeAttribute("hidden");
+    } else {
+      sendButton.removeAttribute("disabled");
+      statusText?.setAttribute("hidden", "hidden");
     }
+  };
 
-    $(".chatbot-send-btn").click(function(){
-        var this_ = $(this)
-        var content = $(".class-chatbot-input").val()
-        if (content.trim().length == 0) return;
+  const createMessageNode = (role, content) => {
+    const li = document.createElement("li");
+    li.className = "flex";
 
-        var chatHistory = $(".chat-history")
-        chatHistory.css("display", "block")
-        
-        var chatArea = chatHistory.find("ul").find(".chat-content-area")
+    const bubble = document.createElement("div");
+    bubble.className = role === "user"
+      ? "ml-auto max-w-[80%] rounded-2xl rounded-br-md bg-primary px-4 py-3 text-sm font-medium text-white shadow-sm"
+      : "mr-auto max-w-[80%] rounded-2xl rounded-bl-md border border-border bg-muted/60 px-4 py-3 text-sm text-foreground shadow-sm";
+    bubble.textContent = content;
 
-        var contentHtml = '<li class="clearfix">' +
-                '<div class="message my-message">' + content + '</div>'
-            '</li>'
+    li.appendChild(bubble);
+    return li;
+  };
 
-        $(".chatbot-loader").css("display", "block")
-        chatArea.append(contentHtml)
+  const appendMessage = (role, content) => {
+    if (!content) return;
+    if (emptyState && !emptyState.hasAttribute("hidden")) {
+      emptyState.setAttribute("hidden", "hidden");
+    }
+    messagesList.appendChild(createMessageNode(role, content));
+    scrollToBottom();
+  };
 
-        this_.attr("disabled", "");
-        scroll_bown()
+  const parseAssistantMessage = (payload) => {
+    try {
+      const data = typeof payload === "string" ? JSON.parse(payload) : payload;
+      const choice = data?.choices?.[0]?.message?.content;
+      return choice || "I’m here if you have more questions.";
+    } catch (error) {
+      console.warn("Failed to parse Home Helper AI response", error);
+      return "Here’s what I found. Please try again if you need more detail.";
+    }
+  };
 
-        $.ajax({
-            url: "/core/api/chatbot-gpt-api/",
-            method: "POST",
-            headers: {
-                "X-CSRFToken": csrfToken
-            },
-            data: {
-                content: content
-            },
-            success: function(res){
-                var data = JSON.parse(res.data)
+  const autoResizeInput = () => {
+    input.style.height = "auto";
+    input.style.height = `${Math.min(input.scrollHeight, 200)}px`;
+  };
 
-                $(".chatbot-loader").css("display", "none")
+  autoResizeInput();
 
-                chatArea.append('<li class="clearfix">' +
-                    '<div class="message other-message float-right">' + data.choices[0].message.content + "</div>" +
-                "</li>")
+  input.addEventListener("input", () => {
+    autoResizeInput();
+  });
 
-                $(".class-chatbot-input").val("")
-                this_.removeAttr("disabled")
-                scroll_bown()
-            },
-            error: function(err){
-                $(".chatbot-loader").css("display", "none")
-                this_.removeAttr("disabled")
-            }
-        })
-    })
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      form.requestSubmit();
+    }
+  });
 
-    $(".class-chatbot-input").keypress(function(event) {
-        if (event.keyCode === 13) {
-            $(".chatbot-send-btn").click();
-        }
+  promptButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      input.value = button.textContent?.trim() || "";
+      autoResizeInput();
+      input.focus();
     });
+  });
 
-})
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const value = input.value.trim();
+    if (!value) return;
+
+    appendMessage("user", value);
+    setLoading(true);
+    input.value = "";
+    autoResizeInput();
+
+    const body = new URLSearchParams();
+    body.append("content", value);
+
+    try {
+      const response = await fetch("/core/api/chatbot-gpt-api/", {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": typeof csrfToken !== "undefined" ? csrfToken : "",
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+        },
+        body,
+        credentials: "same-origin",
+      });
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+
+      const result = await response.json();
+      const assistantMessage = parseAssistantMessage(result?.data);
+      appendMessage("assistant", assistantMessage);
+    } catch (error) {
+      console.error("Home Helper AI request failed", error);
+      appendMessage("assistant", "Sorry, I couldn’t reach the Home Helper service. Please try again in a moment.");
+    } finally {
+      setLoading(false);
+      input.focus();
+    }
+  });
+});

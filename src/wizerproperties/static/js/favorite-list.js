@@ -1,229 +1,158 @@
-$(document).ready(function(){
+"use strict";
 
+(function () {
+  const CardFactory = window.PropertyCardFactory;
+  if (!CardFactory || typeof CardFactory.createCard !== "function") return;
 
-    function loader_tmp(){
-        return '<div class="col-sm-6 col-lg-4 col-xl-3 mb-4 searching-loader">'+
-                    '<div class="search-result-box-wrapper">'+
-                        '<div class="search-result-box-img mb-2">'+
-                            '<span class="skeleton-box" style="width: 100%; height: 200px;"></span>'+
-                        '</div>'+
-                        '<div class="search-result-box">'+
-                            '<h1> <span class="skeleton-box" style="width: 100%; height: 20px;"></span> </h1>'+
-                            '<div class="location">'+
-                                '<span class="skeleton-box" style="width: 100%; height: 20px;"></span>'+
-                            '</div>'+
-                            '<p class="sub-title">'+
-                                '<span class="skeleton-box" style="width: 100%; height: 21px;"></span>'+
-                            '</p>'+
+  const listNode = document.querySelector("#favorite-list");
+  const countNode = document.querySelector("[label='available-properties']");
+  const emptyState = document.querySelector("[data-empty-state]");
 
-                            '<p class="details">'+
-                                '<span class="skeleton-box" style="width: 100%; height: 40px;"></span>'+
-                            '</p>'+
-                            '<div class="d-flex">'+
-                                '<span class="skeleton-box me-2" style="width: 40px; height: 30px;"></span>'+
-                                '<span class="skeleton-box me-2" style="width: 40px; height: 30px;"></span>'+
-                                '<span class="skeleton-box" style="width: 40px; height: 30px;"></span>'+
-                            '</div>'+
-                        '</div>'+
-                    '</div>'+
-                '</div>'
-    };
-    
-    
+  if (!listNode) return;
 
-    function property_facility_tmp(data){
-        var facility_tmp = '';
+  const state = {
+    next: 1,
+    loading: false,
+    observer: null,
+    total: 0,
+  };
 
-        if(data?.have_freehold){
-            facility_tmp += '<span>Freehold</span>'
-        };
+  const csrf = typeof csrfToken !== "undefined" ? csrfToken : "";
+  const perPage = 9;
+  const userType = typeof user_type !== "undefined" ? user_type : null;
+  const showActions = !["agent", "developer"].includes(userType || "");
+  const favoriteEffect = localStorage.getItem("favorite-effect") || "pulse";
 
-        if(data?.have_leasehold){
-            facility_tmp += '<span>Leasehold</span>'
-        };
-        
-        if(data?.construction_year){
-            facility_tmp += '<span> Year Built '+data?.construction_year+'</span>'
-        };
+  const createLoader = () => {
+    const wrapper = document.createElement("div");
+    wrapper.className = "property-single-box animate-pulse rounded-2xl border border-border bg-card p-6 shadow-sm";
+    wrapper.innerHTML = `
+      <div class="aspect-video w-full rounded-xl bg-muted"></div>
+      <div class="mt-4 space-y-3">
+        <div class="h-4 w-3/4 rounded bg-muted"></div>
+        <div class="h-4 w-1/2 rounded bg-muted"></div>
+        <div class="h-3 w-full rounded bg-muted"></div>
+      </div>
+    `;
+    wrapper.dataset.loader = "true";
+    return wrapper;
+  };
 
-        if(data?.quota){
-            facility_tmp += '<span> '+data?.quota+' Quota </span>'
-        };
+  const mountCard = (card) => {
+    const splideElement = card.querySelector(".splide");
+    if (!splideElement || splideElement.dataset.splideMounted === "true") return;
+    const splide = new Splide(splideElement, {
+      perPage: 1,
+      gap: "0.75rem",
+      pagination: false,
+      arrows: true,
+    });
+    splide.mount();
+    splideElement.dataset.splideMounted = "true";
+  };
 
-        if(data?.distance_from_location_to_BTS_or_MRT){
-            facility_tmp += '<span> BTS Or MRT : '+data?.distance_from_location_to_BTS_or_MRT+'</span>'
-        };
+  const renderFavorites = (items = []) => {
+    const fragment = document.createDocumentFragment();
+    items.forEach((item) => {
+      const property = item?.property_info;
+      if (!property) return;
+      const card = CardFactory.createCard(property, {
+        showActions,
+        favoriteEffect,
+        enableMediaButtons: false,
+        scheduleUrl: (p) => `/schedule/create_schedule/?type=property&id=${p?.id ?? ""}`,
+        contactEmail: (p) => p?.developer_email || null,
+      });
+      const wrapper = document.createElement("div");
+      wrapper.className = "property-single-box";
+      wrapper.appendChild(card);
+      fragment.appendChild(wrapper);
+      mountCard(card);
+    });
+    listNode.appendChild(fragment);
+  };
 
-        if(data?.distance_from_location_to_ARL){
-            facility_tmp += '<span> ART : '+data?.distance_from_location_to_ARL+'</span>'
-        };
+  const clearLoaders = () => {
+    listNode.querySelectorAll("[data-loader]").forEach((node) => node.remove());
+  };
 
-        if(data?.have_pets_allowed){
-            facility_tmp += '<span> Pet Friendly </span>'
-        };
-        
-        if(data?.view){
-            facility_tmp += '<span>'+data?.view+'</span>'
-        };
-
-        if(data?.have_infinity_pool){
-            facility_tmp += '<span>Infinity Pool</span>'
-        };
-
-        if(data?.have_fitness_area){
-            facility_tmp += '<span>Gym</span>'
-        };
-
-        if(data?.have_sky_lounge){
-            facility_tmp += '<span>Sky Lounge</span>'
-        };
-
-        return facility_tmp;
-    };
-
-
-    function property_list_tmp(value){
-        var data = value?.property_info;
-
-        return  '<div class="col-sm-6 col-lg-4 col-xl-3 mb-4 property-single-box">'+
-                    '<div class="compare-favorite-btn-area">'+
-                        '<button class="add-to-favorite" added="'+data?.is_favorited+'" index="'+data?.id+'">'+
-                            '<i class="bi bi-heart-fill"></i>'+
-                            '<span> Favorite </span>'+
-                        '</button>' +
-                        '<button class="add-to-compare" added="'+data?.is_compared+'" index="'+data?.id+'">'+
-                            '<i class="bi bi-arrow-left-right"></i>'+
-                            '<i class="bi bi-check2"></i>'+
-                            '<span> Compare </span>'+
-                        '</button>'+
-                    '</div>'+
-                    '<a href="/property/details/'+data?.id+'/" class="search-result-box-wrapper">'+
-                        '<div class="search-result-box-img">'+
-                            '<img src="'+data?.default_image+'" alt="'+data?.title+'" loading="lazy">' +
-                        '</div>'+
-                        '<div class="search-result-box mt-2">'+
-                            '<h1 class="card-title"> '+data?.title+' </h1>'+
-                            '<div class="location">'+
-                                '<div class="icon">'+
-                                    '<i class="bi bi-geo-alt"></i>'+
-                                    data?.address+
-                                '</div>'+
-                            '</div>'+
-                            '<p class="sub-title">'+
-                            data?.number_of_bedroom+
-                            ' bedroom ' +
-                            data?.building_type+
-                            ' for sale at ' +
-                            data?.title+
-                            '</p>'+
-                            '<p class="details"> '+ data?.description+' </p>'+
-
-                            '<div class="property-contains">'+
-                                '<div class="property-short-info-box">'+
-                                    '<div class="property-short-info-icon">'+
-                                        '<img src="/static/media/icons/bed.svg" alt="bed-icon">'+
-                                    '</div>'+
-                                    '<span class="property-value"> '+ data?.number_of_bedroom+' </span>'+
-                                    '<span class="property-label">Beds</span>'+
-                                '</div>'+
-                                '<div class="property-short-info-box">'+
-                                    '<div class="property-short-info-icon">'+
-                                        '<img src="/static/media/icons/bath.svg" alt="bath-icon">'+
-                                    '</div>'+
-                                    '<span class="property-value"> '+ data?.number_of_bathroom +' </span>'+
-                                    '<span class="property-label">Baths</span>'+
-                                '</div>'+
-                                '<div class="property-short-info-box">'+
-                                    '<div class="property-short-info-icon">'+
-                                        '<img src="/static/media/icons/plan-size.svg" alt="plan-size-icon">'+
-                                    '</div>'+
-                                    '<span class="property-value"> '+ data?.unit_area+ '</span>'+
-                                    '<span class="property-label"> sqm</span>'+
-                                '</div>'+
-                                '<div class="property-short-info-box">'+
-                                    '<div class="property-short-info-icon">'+
-                                        '<img src="/static/media/icons/stairs.svg" alt="stairs-icon">'+
-                                    '</div>'+
-                                    '<span class="property-value"> '+ data?.floor_number+' </span>'+
-                                    '<span class="property-label">Floor</span>'+
-                                '</div>'+
-                            '</div>'+
-                            '<div class="property-faciluty">'+
-                                property_facility_tmp(data) +
-                            '</div>'+
-                        '</div>'+
-
-                    '</a>'+
-                '</div>'
+  const addLoaders = () => {
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < Math.min(perPage, 4); i += 1) {
+      fragment.appendChild(createLoader());
     }
-    
+    listNode.appendChild(fragment);
+  };
 
-    var prams_list = {
-        page_size : 10,
+  const updateEmptyState = () => {
+    if (!emptyState) return;
+    const hasCards = listNode.querySelectorAll(".property-single-box").length > 0;
+    emptyState.classList.toggle("hidden", hasCards);
+  };
+
+  const fetchFavorites = async () => {
+    if (!state.next || state.loading) return;
+    state.loading = true;
+    addLoaders();
+
+    try {
+      const params = new URLSearchParams({
+        page_size: perPage,
+        page: state.next,
+      });
+      const response = await fetch(`/property/api/prospect-favorite/list/?${params.toString()}`, {
+        headers: { "X-CSRFToken": csrf },
+        credentials: "same-origin",
+      });
+      if (!response.ok) throw new Error(`Request failed with status ${response.status}`);
+
+      const data = await response.json();
+      state.next = data?.next || null;
+      state.total = data?.count ?? 0;
+      if (countNode) {
+        countNode.textContent = state.total.toString();
+      }
+
+      clearLoaders();
+      renderFavorites(data?.results || []);
+      updateEmptyState();
+    } catch (error) {
+      console.error("Failed to load favorites", error);
+      clearLoaders();
+      updateEmptyState();
+    } finally {
+      state.loading = false;
     }
+  };
 
-    var next_property = 1;
+  const initObserver = () => {
+    const sentinel = document.createElement("div");
+    sentinel.className = "h-1";
+    listNode.appendChild(sentinel);
 
-    function searching(search_type){ 
-        var search_param = prams_list;
+    state.observer = new IntersectionObserver((entries) => {
+      const [entry] = entries;
+      if (entry.isIntersecting && state.next) {
+        fetchFavorites();
+      }
+    }, { rootMargin: "800px" });
 
-        if(next_property) search_param.page = next_property;
-        if([null].includes(next_property)) return;
+    state.observer.observe(sentinel);
+  };
 
-        $.ajax({
-            url: '/property/api/prospect-favorite/list/',
-            type: 'GET',
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            beforeSend: function() {
-                $('#favorite-list').append(
-                    loader_tmp() + loader_tmp() + loader_tmp()
-                );
-            },
-            success: function (data) {
-                $('[label="available-properties"]').html(data?.count);
+  window.addEventListener("favorite:removed", () => {
+    state.total = Math.max(state.total - 1, 0);
+    if (countNode) {
+      countNode.textContent = state.total.toString();
+    }
+    updateEmptyState();
+    if (state.next && listNode.querySelectorAll(".property-single-box").length < perPage) {
+      fetchFavorites();
+    }
+  });
 
-                next_property = data?.next;
-                var new_data = data?.results;
-                var search_dom = '';
+  initObserver();
+  fetchFavorites();
+})();
 
-                for (let i = 0; i < new_data.length; i++) {
-                    search_dom += property_list_tmp(new_data[i])
-                };
 
-                if(search_type == 'filter'){
-                    $('#favorite-list').html(search_dom);
-                }else{
-                    $('#favorite-list').append(search_dom);
-                };
-
-                active_free_scrolling = false;
-                last_property_box = $('.property-single-box').last();
-
-                $('.searching-loader').remove();
-
-                if(new_data?.length == 0){
-                    $('#favorite-list').html('<p style="font-size: 20px; text-align:center;"><i class="bi bi-dropbox"></i> &nbsp;  No data available </p>')
-                    $('#favorite-list').css({
-                        'display' : 'grid',
-                        'place-items' : 'center',
-                        'min-height' : '400px'
-                    })
-                };
-            },
-            error: function (error) {
-                active_free_scrolling = false;
-                $('.searching-loader').remove();
-                $('#favorite-list').html('<p style="font-size: 20px; text-align:center;"> <i class="bi bi-exclamation-diamond"></i>  &nbsp; Something is wrong </p>')
-                $('#favorite-list').css({
-                    'display' : 'grid',
-                    'place-items' : 'center',
-                    'min-height' : '400px'
-                })
-            }
-        });
-    };
-
-    searching("search");
-});

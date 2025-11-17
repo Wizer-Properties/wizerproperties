@@ -3,342 +3,281 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Update property</title>
-<link rel="stylesheet" href="{% static '/css/auth.css' %}?v=1.00" />
-<link rel="stylesheet" href="{% static '/css/libraries/bootstrap-datepicker3.css' %}" />
+<title>Edit property listing</title>
 {% endblock extend_head %}
 
 {% block content %}
+<section class="bg-muted/30 py-12">
+    <div class="container max-w-6xl space-y-10">
+        <header class="space-y-4">
+            <p class="text-xs font-semibold uppercase tracking-[0.4em] text-primary">Properties</p>
+            <div class="space-y-2">
+                <h1 class="text-3xl font-heading font-semibold text-foreground">Edit property listing</h1>
+                <p class="max-w-2xl text-sm text-muted-foreground">
+                    Update the core details, availability, and media assets for this unit. Changes go live immediately after saving.
+                </p>
+            </div>
+        </header>
 
+        <form id="property-update-form" method="post" enctype="multipart/form-data" class="space-y-10">
+            {% csrf_token %}
 
-<section id="create_property">
-    <div class="container">
+            <div class="space-y-4">
+                <div class="success-message space-y-2 text-sm text-emerald-600"></div>
+                <div class="error-message space-y-2 text-sm text-destructive"></div>
+            </div>
 
-
-        <div class="light-form-box">
-            <h1 class="form-title"> Update Property </h1>
-            <form id="property-update-form" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="authForm">
-                    <div class="success-message">
-                        <!-- <span class="authSuccessMessage"></span> -->
+            <section class="card space-y-6">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h2 class="text-lg font-semibold text-foreground">Listing Overview</h2>
+                        <p class="text-sm text-muted-foreground">Headline and pricing information shown to prospects.</p>
                     </div>
-                    <div class="error-message">
-                        <!-- <span class="authErrorMessage"></span> -->
-                    </div>
-
-                    <div class="authFormDiv">
-                        <!-- <span class="authErrorMessage">Message</span> -->
-                        <input name="title" type="text" class="authInput" placeholder="Title"
-                            value="{{ property.title }}" required>
-                        <div class="authlabelline authcompleteProfileLabe">Title</div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="authFormDiv" formatted-price="input" typing="false">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="price" type="number" class="authInput" placeholder="Price"
-                                    value="{{ property.price }}" required>
-                                <div class="authlabelline authcompleteProfileLabe">Price</div>
-                                 <balance>{{ property.format_price }}</balance>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv" formatted-price="input" typing="false">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="price_per_sqm" type="number" class="authInput" placeholder="Price per sqm"
-                                    value="{{ property.price_per_sqm }}" required>
-                                <div class="authlabelline authcompleteProfileLabe">Price Per Sqm</div>
-                                 <balance>{{ property.format_price_per_sqm }}</balance>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <select name="building" type="text" class="authInput authSelectInput"
-                                    placeholder="Building" required>
-
-                                    <option value="">........</option>
-                                    {% for building in buildings %}
-                                    <option value="{{ building.id }}" {% if building.id == property.building.id %}selected{% endif %}>
-                                        {{ building.title }}
-                                    </option>
-                                    {% endfor %}
-                                </select>
-                                <div class="authlabelline authcompleteProfileLabe">Building</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="unit_id" type="text" class="authInput" placeholder="Unit ID"
-                                    value="{{ property.unit_id }}" required>
-                                <div class="authlabelline authcompleteProfileLabe">Unit ID</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="floor_number" type="text" class="authInput" placeholder="Floor"
-                                    value="{{ property.floor_number }}" required>
-                                <div class="authlabelline authcompleteProfileLabe">Floor</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="unit_area" type="number" class="authInput" placeholder="Unit Area"
-                                    value="{{ property.unit_area }}" required>
-                                <div class="authlabelline authcompleteProfileLabe">Unit Area</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="interior_view" type="url" class="authInput" placeholder="Interior View"
-                                    value="{{ property.interior_view }}">
-                                <div class="authlabelline authcompleteProfileLabe">
-                                    Interior View ( e.g. https://my.matterport.com/show/?m=tHeZn1V85YQ)
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="number_of_bathroom" type="number" class="authInput" placeholder="Bathroom"
-                                    value="{{ property.number_of_bathroom }}" required>
-                                <div class="authlabelline authcompleteProfileLabe">Bathroom</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="number_of_bedroom" type="number" class="authInput" placeholder="Bedroom"
-                                    value="{{ property.number_of_bedroom }}" required>
-                                <div class="authlabelline authcompleteProfileLabe">Bedroom</div>
-                            </div>
-
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="number_of_balcony" type="number" class="authInput" placeholder="Balcony"
-                                    value="{{ property.number_of_balcony }}" required>
-                                <div class="authlabelline authcompleteProfileLabe">Balcony</div>
-                            </div>
-
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="number_of_car_parking" type="number" class="authInput"
-                                    placeholder="Car Park" value="{{ property.number_of_car_parking }}" required>
-                                <div class="authlabelline authcompleteProfileLabe">Car Park</div>
-                            </div>
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="balcony_direction" type="text" class="authInput"
-                                    placeholder="Balcony Direction" value="{{ property.balcony_direction }}" required>
-                                <div class="authlabelline authcompleteProfileLabe">Balcony Direction</div>
-                            </div>
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="main_door_direction" type="text" class="authInput"
-                                    placeholder="Main Door Direction" value="{{ property.main_door_direction }}" required>
-                                <div class="authlabelline authcompleteProfileLabe">Main Door Direction</div>
-                            </div>
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <select name="unit_position" type="text" class="authInput authSelectInput"
-                                    placeholder="Select Unit Position" required>
-                                    <option value="">........</option>
-                                    <option value="left_corner" {% if property.unit_position == 'left_corner' %}selected{% endif %}>
-                                        Left Corner
-                                    </option>
-                                    <option value="right_corner" {% if property.unit_position == 'right_corner' %}selected{% endif %}>
-                                        Right Corner
-                                    </option>
-                                    <option value="center" {% if property.unit_position == 'center' %}selected{% endif %}>
-                                        Center
-                                    </option>
-                                </select>
-                                <div class="authlabelline authcompleteProfileLabe">Unit Position</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv textarea">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <textarea name="description" type="text" class="authInput profileCompanyDeatils"
-                                    placeholder="Description" required>{{ property.description }}</textarea>
-                                <div class="authlabelline authcompleteProfileLabe">Description</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-6">
-
-                            <div class="row property-options-area">
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_vacant" class="form-check-input" type="checkbox" id="vacant" {% if property.have_vacant %}checked{% endif %}>
-                                        <label class="form-check-label" for="vacant">
-                                            Vacant
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_owner_occupied" class="form-check-input" type="checkbox" id="owner_occupied" {% if property.have_owner_occupied %}checked{% endif %}>
-                                        <label class="form-check-label" for="owner_occupied">
-                                            Owner Occupied
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_bathtub" class="form-check-input" type="checkbox" id="bathtub" {% if property.have_bathtub %}checked{% endif %}>
-                                        <label class="form-check-label" for="bathtub">
-                                            Bathtub
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_duplex" class="form-check-input" type="checkbox" id="duplex" {% if property.have_duplex %}checked{% endif %}>
-                                        <label class="form-check-label" for="duplex">
-                                            Duplex
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_tenant_occupied" class="form-check-input" type="checkbox"
-                                        id="have_tenant_occupied" {% if property.have_tenant_occupied %}checked{% endif %}>
-                                        <label class="form-check-label" for="have_tenant_occupied">
-                                            Tenant Occupied
-                                        </label>
-                                    </div>
-                                </div>
-
-                                {% if property.have_tenant_occupied %}
-                                <div class="col-12 date_picker_box_wrapper">
-                                    <div class="authFormDiv">
-                                        <input 
-                                            type="text" 
-                                            class="authInput date_picker_box" 
-                                            placeholder="mm-dd-yyyy"
-                                            value="{{property.tenant_occupied_validity | date:'m-d-Y' }}"
-                                            required
-                                        >
-                                        <div class="authlabelline authcompleteProfileLabe">State i.e until Oct 2024</div>
-                                        <input 
-                                            type="date" 
-                                            name="tenant_occupied_validity"
-                                            class="authInput hidden_date_picker_box" 
-                                            value="{{property.tenant_occupied_validity | date:'Y-m-d' }}"
-                                            required
-                                        >
-                                    </div>
-                                </div>
-                                {% endif %}
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="uploaded-file-with-view">
-                                <div class="authFormDiv">
-                                    <!-- <span class="authErrorMessage">Message</span> -->
-                                    <input name="images" type="file" accept="image/*" class="authInput authFile"
-                                        multiple>
-                                    <div class="fileName"> Upload Images </div>
-                                </div>
-
-                                <div class="uploaded-file-view-area">
-                                    {% for image in images %}
-                                    {% if image.file %}
-                                    <div class="uploaded-file-view-img">
-                                        <button class="remove-image" data-id="{{ image.id }}"><i
-                                                class="bi bi-x"></i></button>
-                                        <img src="{{ image.file.url }}" alt="Property Image">
-                                    </div>
-                                    {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="uploaded-file-with-view">
-                                <div class="authFormDiv">
-                                    <!-- <span class="authErrorMessage">Message</span> -->
-                                    <input name="videos" type="file" accept="video/*" class="authInput authFile">
-                                    <div class="fileName">Upload video</div>
-                                </div>
-
-                                <div class="uploaded-file-view-area">
-                                    {% for video in videos %}
-                                    {% if video.file %}
-                                    <a href="{{ video.file.url }}" target="_blank" alt="Property Video">{{ video.file.url }}</a>
-                                    {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <button type="submit" class="authButton completeProfileButton" id="create-property">
-                        <span id="updatePropertyButtonText">Update Property</span>
-                        <div id="loadingSpinner" class="spinner-border" role="status" style="display: none;">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </button>
                 </div>
-            </form>
-        </div>
+
+                <div class="grid gap-6 md:grid-cols-2">
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Title <span class="text-destructive">*</span></span>
+                        <input name="title" type="text" class="input" placeholder="Ex: Corner 2BR with River View" value="{{ property.title }}" required>
+                    </label>
+                    <div class="flex flex-col gap-2" formatted-price="input">
+                        <div class="flex items-center justify-between">
+                            <span class="label">Sale Price <span class="text-destructive">*</span></span>
+                            <span class="text-xs text-muted-foreground">THB</span>
+                        </div>
+                        <input name="price" type="number" min="0" step="0.1" class="input" placeholder="Ex: 12,500,000" value="{{ property.price }}" required>
+                        <span class="text-xs text-muted-foreground">{{ property.format_price }}</span>
+                    </div>
+                    <div class="flex flex-col gap-2" formatted-price="input">
+                        <div class="flex items-center justify-between">
+                            <span class="label">Price per sqm <span class="text-destructive">*</span></span>
+                            <span class="text-xs text-muted-foreground">THB</span>
+                        </div>
+                        <input name="price_per_sqm" type="number" min="0" step="0.1" class="input" placeholder="Ex: 185,000" value="{{ property.price_per_sqm }}" required>
+                        <span class="text-xs text-muted-foreground">{{ property.format_price_per_sqm }}</span>
+                    </div>
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Building <span class="text-destructive">*</span></span>
+                        <select name="building" class="input" required>
+                            <option value="">Select building</option>
+                            {% for building in buildings %}
+                                <option value="{{ building.id }}" {% if building.id == property.building.id %}selected{% endif %}>{{ building.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                </div>
+            </section>
+
+            <section class="card space-y-6">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h2 class="text-lg font-semibold text-foreground">Unit Specifications</h2>
+                        <p class="text-sm text-muted-foreground">Dimensions, identifiers, and bedroom/bathroom counts.</p>
+                    </div>
+                </div>
+
+                <div class="grid gap-6 md:grid-cols-3">
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Unit ID <span class="text-destructive">*</span></span>
+                        <input name="unit_id" type="text" class="input" placeholder="Ex: A-09B" value="{{ property.unit_id }}" required>
+                    </label>
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Floor <span class="text-destructive">*</span></span>
+                        <input name="floor_number" type="text" class="input" placeholder="Ex: 9" value="{{ property.floor_number }}" required>
+                    </label>
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Unit Area (sqm) <span class="text-destructive">*</span></span>
+                        <input name="unit_area" type="number" min="0" step="0.1" class="input" placeholder="Ex: 68.5" value="{{ property.unit_area }}" required>
+                    </label>
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Bedrooms <span class="text-destructive">*</span></span>
+                        <input name="number_of_bedroom" type="number" min="0" class="input" placeholder="Ex: 2" value="{{ property.number_of_bedroom }}" required>
+                    </label>
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Bathrooms <span class="text-destructive">*</span></span>
+                        <input name="number_of_bathroom" type="number" min="0" class="input" placeholder="Ex: 2" value="{{ property.number_of_bathroom }}" required>
+                    </label>
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Balconies <span class="text-destructive">*</span></span>
+                        <input name="number_of_balcony" type="number" min="0" class="input" placeholder="Ex: 1" value="{{ property.number_of_balcony }}" required>
+                    </label>
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Car Parks <span class="text-destructive">*</span></span>
+                        <input name="number_of_car_parking" type="number" min="0" class="input" placeholder="Ex: 1" value="{{ property.number_of_car_parking }}" required>
+                    </label>
+                </div>
+            </section>
+
+            <section class="card space-y-6">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h2 class="text-lg font-semibold text-foreground">Orientation & Views</h2>
+                        <p class="text-sm text-muted-foreground">Capture what residents see and how light flows through.</p>
+                    </div>
+                </div>
+
+                <div class="grid gap-6 md:grid-cols-2">
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Interior 360° Tour URL</span>
+                        <input name="interior_view" type="url" class="input" placeholder="https://" value="{{ property.interior_view }}">
+                        <span class="text-xs text-muted-foreground">Link to a Matterport tour or similar experience.</span>
+                    </label>
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Balcony Direction <span class="text-destructive">*</span></span>
+                        <input name="balcony_direction" type="text" class="input" placeholder="Ex: North-East" value="{{ property.balcony_direction }}" required>
+                    </label>
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Main Door Direction <span class="text-destructive">*</span></span>
+                        <input name="main_door_direction" type="text" class="input" placeholder="Ex: South" value="{{ property.main_door_direction }}" required>
+                    </label>
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Unit Position <span class="text-destructive">*</span></span>
+                        <select name="unit_position" class="input" required>
+                            <option value="">Select position</option>
+                            <option value="left_corner" {% if property.unit_position == 'left_corner' %}selected{% endif %}>Left Corner</option>
+                            <option value="right_corner" {% if property.unit_position == 'right_corner' %}selected{% endif %}>Right Corner</option>
+                            <option value="center" {% if property.unit_position == 'center' %}selected{% endif %}>Center</option>
+                        </select>
+                    </label>
+                </div>
+            </section>
+
+            <section class="card space-y-6">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h2 class="text-lg font-semibold text-foreground">Availability & Features</h2>
+                        <p class="text-sm text-muted-foreground">Select the conditions that apply to this unit.</p>
+                    </div>
+                </div>
+
+                <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
+                        <input name="have_vacant" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="vacant" {% if property.have_vacant %}checked{% endif %}>
+                        <span class="text-sm font-medium text-foreground">Vacant</span>
+                    </label>
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
+                        <input name="have_owner_occupied" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="owner_occupied" {% if property.have_owner_occupied %}checked{% endif %}>
+                        <span class="text-sm font-medium text-foreground">Owner Occupied</span>
+                    </label>
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
+                        <input name="have_tenant_occupied" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="tenant_occupied" {% if property.have_tenant_occupied %}checked{% endif %}>
+                        <span class="text-sm font-medium text-foreground">Tenant Occupied</span>
+                    </label>
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
+                        <input name="have_bathtub" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="bathtub" {% if property.have_bathtub %}checked{% endif %}>
+                        <span class="text-sm font-medium text-foreground">Bathtub</span>
+                    </label>
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
+                        <input name="have_duplex" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="duplex" {% if property.have_duplex %}checked{% endif %}>
+                        <span class="text-sm font-medium text-foreground">Duplex Layout</span>
+                    </label>
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
+                        <input name="have_pets_allowed" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="pets_allowed" {% if property.have_pets_allowed %}checked{% endif %}>
+                        <span class="text-sm font-medium text-foreground">Pet Friendly</span>
+                    </label>
+                </div>
+
+                <div class="rounded-xl border border-dashed border-border bg-secondary/40 p-4 {% if not property.have_tenant_occupied %}hidden{% endif %}" data-tenant-validity>
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Tenant Occupied Until</span>
+                        <input name="tenant_occupied_validity" type="date" class="input" min="{{ now|date:'Y-m-d' }}" value="{{ property.tenant_occupied_validity|date:'Y-m-d' }}">
+                        <span class="text-xs text-muted-foreground">Select the date when the unit becomes available.</span>
+                    </label>
+                </div>
+            </section>
+
+            <section class="card space-y-6">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h2 class="text-lg font-semibold text-foreground">Narrative & Highlights</h2>
+                        <p class="text-sm text-muted-foreground">Craft an engaging description that reflects updates and selling points.</p>
+                    </div>
+                </div>
+
+                <label class="flex flex-col gap-2">
+                    <span class="label">Description <span class="text-destructive">*</span></span>
+                    <textarea name="description" class="textarea min-h-[220px]" placeholder="Highlight the unit’s strengths, views, finishes, and nearby amenities." required>{{ property.description }}</textarea>
+                </label>
+            </section>
+
+            <section class="card space-y-6">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h2 class="text-lg font-semibold text-foreground">Media Library</h2>
+                        <p class="text-sm text-muted-foreground">Refresh the listing with updated imagery and videos.</p>
+                    </div>
+                    <p class="text-xs text-muted-foreground">Images: JPG/PNG • Video: MP4/MOV</p>
+                </div>
+
+                <div class="grid gap-6 lg:grid-cols-2">
+                    <div class="space-y-4">
+                        <label class="flex flex-col gap-2">
+                            <span class="label">Add Property Images</span>
+                            <input name="images" type="file" accept="image/*" class="input cursor-pointer" multiple>
+                        </label>
+                        <p class="text-xs text-muted-foreground">Upload additional photos to replace or complement the existing gallery.</p>
+                        <div class="uploaded-file-view-area grid gap-4 md:grid-cols-2" data-existing-images>
+                            {% for image in images %}
+                                {% if image.file %}
+                                    <div class="group relative overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+                                        <img src="{{ image.file.url }}" alt="Property image {{ forloop.counter }}" class="h-40 w-full object-cover">
+                                        <button type="button" class="absolute right-2 top-2 inline-flex size-8 items-center justify-center rounded-full border border-border bg-background/90 text-muted-foreground transition hover:bg-destructive hover:text-destructive-foreground remove-image" data-id="{{ image.id }}">
+                                            <span class="sr-only">Remove image</span>
+                                            <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M18 6L6 18" />
+                                                <path d="M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                {% endif %}
+                            {% empty %}
+                                <p class="text-sm text-muted-foreground">No images uploaded yet.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <label class="flex flex-col gap-2">
+                            <span class="label">Replace Property Video</span>
+                            <input name="videos" type="file" accept="video/*" class="input cursor-pointer">
+                        </label>
+                        <p class="text-xs text-muted-foreground">Upload a new walkthrough or highlight reel to replace the existing file.</p>
+                        <div class="space-y-3 rounded-xl border border-border bg-secondary/40 p-4 text-sm text-muted-foreground" data-existing-video>
+                            {% for video in videos %}
+                                {% if video.file %}
+                                    <div class="flex items-center justify-between gap-4 rounded-lg border border-border bg-background/70 px-3 py-2">
+                                        <div class="flex flex-1 flex-col">
+                                            <span class="font-medium text-foreground">Current video</span>
+                                            <span class="truncate text-xs text-muted-foreground">{{ video.file.name }}</span>
+                                        </div>
+                                        <a href="{{ video.file.url }}" target="_blank" class="btn-secondary min-w-[120px] justify-center">Preview</a>
+                                    </div>
+                                {% endif %}
+                            {% empty %}
+                                <p>No video uploaded yet.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="flex items-center justify-end gap-4">
+                <a href="/dashboard" class="btn-secondary min-w-[140px] justify-center">Cancel</a>
+                <button type="submit" class="btn min-w-[160px] justify-center">
+                    <span id="updatePropertyButtonText">Save changes</span>
+                    <div id="loadingSpinner" class="spinner-border" role="status" style="display: none;">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </button>
+            </div>
+        </form>
     </div>
 </section>
-
 {% endblock %}
-{% block extend_script %}
-<script src="{% static 'js/libraries/bootstrap-datepicker3.js' %}?v=1.00"></script>
-<script>
-    var updatePropertyAPIUrl = "{% url 'property:api:update' property.id %}"
 
-    function init_datepacker(){
-        $('.date_picker_box')
-        .datepicker({
-            format : 'mm-dd-yyyy',
-            disableTouchKeyboard : true,
-            autoclose : true,
-            startDate: '0d'
-        })
-        .on('changeDate', function(e) {
-            var get_parent = $(this).parents('.date_picker_box_wrapper');
-            if(get_parent?.length == 0) return;
-            var get_date_split = $(this).val()?.split("-");
-            var format_date = get_date_split[2]+'-'+get_date_split[0]+'-'+get_date_split[1]
-            get_parent.find('.hidden_date_picker_box').val(format_date)
-        })
-        .on('clearDate', function(e) {
-            var get_parent = $(this).parents('.date_picker_box_wrapper');
-            if(get_parent?.length == 0) return;
-            get_parent.find('.hidden_date_picker_box').val('0000-00-00')
-        });
-    }
-    {% if property.have_tenant_occupied %}
-    init_datepacker()
-    {% endif %}
+{% block extend_script %}
+<script>
+    var updatePropertyAPIUrl = "{% url 'property:api:update' property.id %}";
 </script>
-<script src="{% static 'js/property/update_property.js' %}?v=1.01"></script>
+<script src="{% static 'js/property/update_property.js' %}?v=2.00"></script>
 {% endblock extend_script %}

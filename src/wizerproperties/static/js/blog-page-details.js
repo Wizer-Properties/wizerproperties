@@ -1,217 +1,157 @@
-$(function(){
+$(function () {
+  const likeButton = $(".blog-like-btn");
+  const dislikeButton = $(".blog-unlike-btn");
+  const relatedContainer = $(".related-blogs");
+  const csrfTokenValue = typeof csrfToken !== "undefined" && csrfToken ? csrfToken : (document.querySelector('input[name="csrfmiddlewaretoken"]')?.value || "");
+  const postId = relatedContainer.attr("post-id");
+  const categoriesRaw = relatedContainer.data("post-categories");
+  const postCategories = typeof categoriesRaw === "string" && categoriesRaw.length
+    ? categoriesRaw.split("|").map((item) => item.trim()).filter(Boolean)
+    : [];
 
-     // ===================== Like button click event ===================== 
-     $('.blog-like-btn').click(function () {
-        var likeDone = $(this).attr('like-done') === 'true';
-        var postId = $(this).attr('post-id');
+  function toggleIcons(button, isActive) {
+    button.find('[data-icon="default"]').toggleClass("hidden", isActive);
+    button.find('[data-icon="active"]').toggleClass("hidden", !isActive);
+  }
 
-        // Toggle like-done attribute
-        $(this).attr('like-done', likeDone ? 'false' : 'true');
+  function updateIcons() {
+    toggleIcons(likeButton, likeButton.attr("like-done") === "true");
+    toggleIcons(dislikeButton, dislikeButton.attr("unlike-done") === "true");
+  }
 
-        // Set unlike-done to false when like-done is true
-        if (!likeDone) {
-            $('.blog-unlike-btn').attr('unlike-done', 'false');
-        }
+  likeButton.on("click", function () {
+    const isLiked = $(this).attr("like-done") === "true";
+    $(this).attr("like-done", isLiked ? "false" : "true");
+    if (!isLiked) {
+      dislikeButton.attr("unlike-done", "false");
+    }
+    updateIcons();
 
-        // Update the icons
-        updateIcons();
+    $.ajax({
+      url: `/blogs/api/posts/post-like-dislike/`,
+      type: "POST",
+      headers: { "X-CSRFToken": csrfTokenValue },
+      data: { interaction_type: isLiked ? "undo" : "like", post_id: postId },
+    });
+  });
 
-        // Send like request to server
-        $.ajax({
-            url: `/blogs/api/posts/post-like-dislike/`,
-            type: 'POST',
-            headers: {
-                'X-CSRFToken': csrf_token
-            },
-            data: { interaction_type: likeDone ? 'undo' : 'like', post_id: postId },
-            success: function (response) {},
-            error: function (error) {}
-        });
+  dislikeButton.on("click", function () {
+    const isDisliked = $(this).attr("unlike-done") === "true";
+    $(this).attr("unlike-done", isDisliked ? "false" : "true");
+    if (!isDisliked) {
+      likeButton.attr("like-done", "false");
+    }
+    updateIcons();
+
+    $.ajax({
+      url: `/blogs/api/posts/post-like-dislike/`,
+      type: "POST",
+      headers: { "X-CSRFToken": csrfTokenValue },
+      data: { interaction_type: isDisliked ? "undo" : "dislike", post_id: postId },
+    });
+  });
+
+  updateIcons();
+
+  function renderRelatedPosts(posts = []) {
+    const list = relatedContainer.find(".related-blog-list");
+    if (!list.length) return;
+
+    const cards = posts
+      .map((post) => {
+        const banner = post.banner_image || "/static/media/logo.png";
+        const readTime = post.estimated_read_time ? `${post.estimated_read_time} min read` : "";
+        const likes = typeof post.total_likes === "number" ? `${post.total_likes} likes` : "";
+        const views = typeof post.total_read_count === "number" ? `${post.total_read_count} views` : "";
+
+        const categories = (post.categories || [])
+          .map(
+            (category) =>
+              `<span class="rounded-full border border-border/60 bg-background/80 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">${category}</span>`
+          )
+          .join("");
+
+        return `
+          <a href="/blogs/${post.slug}/" class="group flex gap-4 overflow-hidden rounded-2xl border border-border bg-card/95 p-4 shadow transition hover:-translate-y-1 hover:shadow-lg">
+            <div class="aspect-[4/3] w-32 overflow-hidden rounded-xl bg-muted/50">
+              <img src="${banner}" alt="${post.title}" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
+            </div>
+            <div class="flex flex-1 flex-col gap-3">
+              <div class="flex flex-wrap gap-2 text-[11px] uppercase tracking-[0.3em] text-primary">
+                ${categories}
+              </div>
+              <h3 class="text-sm font-semibold text-foreground transition group-hover:text-primary">${post.title}</h3>
+              <div class="mt-auto flex flex-wrap items-center gap-4 text-[11px] text-muted-foreground">
+                ${likes ? `<span class="inline-flex items-center gap-1"><i class="bi bi-hand-thumbs-up"></i>${likes}</span>` : ""}
+                ${views ? `<span class="inline-flex items-center gap-1"><i class="bi bi-eye"></i>${views}</span>` : ""}
+                ${readTime ? `<span class="inline-flex items-center gap-1"><i class="bi bi-clock-history"></i>${readTime}</span>` : ""}
+              </div>
+            </div>
+          </a>
+        `;
+      })
+      .join("");
+
+    list.html(cards || `<p class="text-sm text-muted-foreground">No related posts yet—check back soon.</p>`);
+  }
+
+  function fetchRelatedPosts() {
+    if (!relatedContainer.length) return;
+
+    const readPosts = JSON.parse(localStorage.getItem("read_posts_id") || "[]");
+    const categories = JSON.parse(localStorage.getItem("post_categories_name") || "[]");
+
+    $.ajax({
+      url: `/blogs/api/posts/related-posts/`,
+      type: "GET",
+      data: {
+        current_post_id: postId,
+        read_posts_id: readPosts,
+        post_categories_name: categories,
+      },
+      success: renderRelatedPosts,
+    });
+  }
+
+  function storeReaderContext(postIdValue, postCategoriesValue) {
+    const readPosts = JSON.parse(localStorage.getItem("read_posts_id") || "[]");
+    const storedCategories = JSON.parse(localStorage.getItem("post_categories_name") || "[]");
+
+    if (postIdValue && !readPosts.includes(postIdValue)) readPosts.push(postIdValue);
+    postCategoriesValue.forEach((category) => {
+      if (!storedCategories.includes(category)) storedCategories.push(category);
     });
 
-    // ===================== Unlike button click event =====================
-    $('.blog-unlike-btn').click(function () {
-        var unlikeDone = $(this).attr('unlike-done') === 'true';
-        var postId = $(this).attr('post-id');
+    while (readPosts.length > 10) readPosts.shift();
+    while (storedCategories.length > 10) storedCategories.shift();
 
-        // Toggle unlike-done attribute
-        $(this).attr('unlike-done', unlikeDone ? 'false' : 'true');
+    localStorage.setItem("read_posts_id", JSON.stringify(readPosts));
+    localStorage.setItem("post_categories_name", JSON.stringify(storedCategories));
+  }
 
-        // Set like-done to false when unlike-done is true
-        if (!unlikeDone) {
-            $('.blog-like-btn').attr('like-done', 'false');
-        }
+  storeReaderContext(postId, postCategories);
+  fetchRelatedPosts();
 
-        // Update the icons
-        updateIcons();
+  const startTime = new Date().getTime();
 
-        // Send unlike request to server
-        $.ajax({
-            url: `/blogs/api/posts/post-like-dislike/`,
-            type: 'POST',
-            headers: {
-                'X-CSRFToken': csrf_token
-            },
-            data: { interaction_type: unlikeDone ? 'undo' : 'dislike', post_id: postId },
-            success: function (response) {},
-            error: function (error) {}
-        });
+  function calculateTimeSpent() {
+    const endTime = new Date().getTime();
+    return Math.round((endTime - startTime) / 1000);
+  }
+
+  window.addEventListener("beforeunload", function () {
+    const timeSpent = calculateTimeSpent();
+
+    if (!postId) return;
+
+    $.ajax({
+      url: `/blogs/api/posts/save-read-time/`,
+      type: "POST",
+      headers: { "X-CSRFToken": csrfTokenValue },
+      data: {
+        time_spent: timeSpent,
+        post_id: postId,
+      },
     });
-
-    //  ===================== Update the icons based on the state of like-done and unlike-done =====================
-    function updateIcons() {
-        // Handle like button icons
-        if ($('.blog-like-btn').attr('like-done') === 'true') {
-            $('.blog-like-btn i:first-child').hide();
-            $('.blog-like-btn i:last-child').show();
-        } else {
-            $('.blog-like-btn i:first-child').show();
-            $('.blog-like-btn i:last-child').hide();
-        }
-
-        // Handle unlike button icons
-        if ($('.blog-unlike-btn').attr('unlike-done') === 'true') {
-            $('.blog-unlike-btn i:first-child').hide();
-            $('.blog-unlike-btn i:last-child').show();
-        } else {
-            $('.blog-unlike-btn i:first-child').show();
-            $('.blog-unlike-btn i:last-child').hide();
-        }
-    }
-
-    // ===================== Fetch related posts =====================
-    function fetchRelatedPosts(){
-        var relatedBlogsContainer = $('.related-blogs');
-
-        // Get read posts id and post categories name from local storage
-        var read_posts_id = localStorage.getItem('read_posts_id') || [];
-        var post_categories_name = localStorage.getItem('post_categories_name') || [];
-        var current_postId = relatedBlogsContainer.attr('post-id');
-
-        $.ajax({
-            url: `/blogs/api/posts/related-posts/`,
-            type: 'GET',
-            data: {
-                current_post_id: current_postId,
-                read_posts_id: read_posts_id,
-                post_categories_name: post_categories_name
-            },
-            success: function (response) {
-                renderRelatedPosts(response);
-            },
-            error: function (error) {}
-        });
-    }
-
-    // Initial load
-    fetchRelatedPosts()
-
-    // ===================== Render related posts =====================
-    function renderRelatedPosts(posts) {
-
-        // Render blog categories
-        function blogCategories(post){
-            var categories = '';
-            post.categories.forEach(category => {
-                categories += `<span class="blog-category">${category}</span>`;
-            });
-            return categories;
-        }
-
-        var relatedBlogsContainer = $('.related-blogs');
-        var relatedBlogsList = relatedBlogsContainer.find('.related-blog-list');
-        var relatedBlogsListHtml = '';
-
-        posts.forEach(post => {
-            relatedBlogsListHtml += `<a href="/blogs/${post.slug}/">
-                        <div class="row pt-3">
-                        <div class="col-md-4">
-                            <div class="realted-blog-card-img">
-                                <img src="${post.banner_image}" alt="${post.title}">
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="related-blog-card-info">
-                                <div class="blog-categories">
-                                    ${blogCategories(post)}
-                                </div>
-                                <h5 class="blog-title">${post.title}</h5>
-
-                                <div class="blog-info mt-3">
-                                    <span class="blog-likes">${post.total_likes} likes</span>
-                                    <span class="blog-views">${post.total_read_count} views</span>
-                                    <span class="blog-read-time">${post.estimated_read_time} Mins Read</span>
-                                    <span class="blog-create-date">${post.created_at}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </a>`
-        });
-
-        relatedBlogsList.html(relatedBlogsListHtml);
-    }
-
-    // ===================== Store read post id and categories name in local storage =====================  
-    function storeReadPostsIdAndCategoriesName(post_id, post_categories) {
-        // Retrieve read_posts_id and post_categories_name from localStorage, or use empty arrays if not found
-        var read_posts_id = JSON.parse(localStorage.getItem('read_posts_id')) || [];
-        var post_categories_name = JSON.parse(localStorage.getItem('post_categories_name')) || [];
-
-        // Check if post_id is already in read_posts_id
-        if (!read_posts_id.includes(post_id)) {
-            read_posts_id.push(post_id);
-        }
-
-        // Check if post_categories is an array and if categories are already in post_categories_name
-        post_categories.forEach(function(category) {
-            if (!post_categories_name.includes(category)) {
-                post_categories_name.push(category);
-            }
-        });
-
-        // Only store latest 10 posts id and categories name
-        if (read_posts_id.length > 10) {
-            read_posts_id.shift();
-        }
-        if (post_categories_name.length > 10) {
-            post_categories_name.shift();
-        }
-
-        // Store updated arrays back in localStorage (convert arrays to JSON strings)
-        localStorage.setItem('read_posts_id', JSON.stringify(read_posts_id));
-        localStorage.setItem('post_categories_name', JSON.stringify(post_categories_name));
-    }
-
-    storeReadPostsIdAndCategoriesName(post_id, post_categories);
-
-    // ===================== Calculate total read time of users =====================
-    let startTime = new Date().getTime();
-
-    // Function to calculate time spent on the page
-    function calculateTimeSpent() {
-        let endTime = new Date().getTime();
-        let timeSpent = Math.round((endTime - startTime) / 1000); // in seconds
-        return timeSpent;
-    }
-
-    // Event when user leaves the page or closes the tab
-    window.addEventListener("beforeunload", function () {
-        let timeSpent = calculateTimeSpent();
-
-        $.ajax({
-            url: `/blogs/api/posts/save-read-time/`,
-            type: 'POST',
-            headers: {
-                'X-CSRFToken': csrf_token
-            },
-            data: {
-                time_spent: timeSpent,
-                post_id: post_id
-            },
-            success: function (response) {},
-            error: function (error) {}
-        });
-    });
-
-})
+  });
+});

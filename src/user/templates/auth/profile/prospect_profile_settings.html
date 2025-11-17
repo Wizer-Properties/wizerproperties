@@ -3,82 +3,159 @@
 
 {% block profile %}
 
-<!--- Complete Profile Form Start --->
-
-<div class="authForm">
-    <div class="success-message">
-        <!-- <span class="authSuccessMessage"></span> -->
-    </div>
-    <div class="error-message">
-        <!-- <span class="authErrorMessage"></span> -->
-    </div>
-    <div class="authFormDiv">
-        <!-- <span class="authErrorMessage">Message</span> -->
-        <input name="email" type="email" class="authInput" placeholder="Email" value="{{ request.user.email }}"
-            readonly>
-        <div class="authlabelline authcompleteProfileLabe">Email</div>
-    </div>
-    <div class="authFormDiv">
-        <!-- <span class="authErrorMessage">Message</span> -->
-        <input name="first_name" type="text" class="authInput" placeholder="First Name" value="{{ profile.first_name }}"
-            required>
-        <div class="authlabelline authcompleteProfileLabe">First Name</div>
-    </div>
-    <div class="authFormDiv">
-        <!-- <span class="authErrorMessage">Message</span> -->
-        <input name="last_name" type="text" class="authInput" placeholder="Last Name" value="{{ profile.last_name }}"
-            required>
-        <div class="authlabelline authcompleteProfileLabe">Last Name</div>
+<div class="space-y-6">
+    <div class="space-y-2">
+        <label for="email" class="text-sm font-medium text-muted-foreground">
+            Email address
+        </label>
+        <input
+            id="email"
+            name="email"
+            type="email"
+            value="{{ request.user.email }}"
+            readonly
+            aria-readonly="true"
+            aria-label="Your email address"
+            class="w-full rounded-xl border border-border bg-muted px-4 py-3 text-base text-muted-foreground shadow-sm cursor-not-allowed"
+        >
     </div>
 
-    <div class="d-flex">
-        <div class="phone_code_area">
-            <div class="authFormDiv">
-                <!-- <span class="authErrorMessage">Message</span> -->
-                <select name="phone_code" type="text" id="phone_code" class="authInput authSelectInput"
-                    placeholder="Code" required>
-                    <option value="+66">+66</option>
+    <div class="space-y-2">
+        <label for="first_name" class="text-sm font-medium text-muted-foreground">
+            First Name
+        </label>
+        <input
+            id="first_name"
+            name="first_name"
+            type="text"
+            placeholder="First Name"
+            value="{{ profile.first_name }}"
+            required
+            aria-required="true"
+            aria-describedby="first-name-error"
+            aria-invalid="false"
+            autocomplete="given-name"
+            class="w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+        >
+        <div id="first-name-error" class="sr-only" role="alert"></div>
+    </div>
+
+    <div class="space-y-2">
+        <label for="last_name" class="text-sm font-medium text-muted-foreground">
+            Last Name
+        </label>
+        <input
+            id="last_name"
+            name="last_name"
+            type="text"
+            placeholder="Last Name"
+            value="{{ profile.last_name }}"
+            required
+            aria-required="true"
+            aria-describedby="last-name-error"
+            aria-invalid="false"
+            autocomplete="family-name"
+            class="w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+        >
+        <div id="last-name-error" class="sr-only" role="alert"></div>
+    </div>
+
+    <div class="space-y-2">
+        <label for="phone_number" class="text-sm font-medium text-muted-foreground">
+            Phone Number
+        </label>
+        <div class="flex gap-3">
+            <select
+                id="phone_code"
+                name="phone_code"
+                required
+                aria-required="true"
+                aria-label="Country code"
+                class="w-40 rounded-xl border border-border bg-background px-3 py-3 text-sm text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            >
+                <option value="+66">🇹🇭 +66 (TH)</option>
+                <option value="+60">🇲🇾 +60 (MY)</option>
+                <option value="+65">🇸🇬 +65 (SG)</option>
+                <option value="+852">🇭🇰 +852 (HK)</option>
+                <option value="+86">🇨🇳 +86 (CN)</option>
+                <option value="+886">🇹🇼 +886 (TW)</option>
+                <option value="+84">🇻🇳 +84 (VN)</option>
+                <option value="+62">🇮🇩 +62 (ID)</option>
+                <option value="+63">🇵🇭 +63 (PH)</option>
+                <option value="+95">🇲🇲 +95 (MM)</option>
+                <option value="+855">🇰🇭 +855 (KH)</option>
+                <option value="+856">🇱🇦 +856 (LA)</option>
+                <option value="+673">🇧🇳 +673 (BN)</option>
                 </select>
-            </div>
+            <input
+                id="phone_number"
+                name="phone_number"
+                type="tel"
+                placeholder="Phone Number"
+                value="{{ profile.phone_number|cut:'+66' }}"
+                required
+                aria-required="true"
+                aria-describedby="phone-error"
+                aria-invalid="false"
+                autocomplete="tel"
+                class="flex-1 rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            >
         </div>
-
-        <div class="phone_number_area">
-            <div class="authFormDiv">
-                <!-- <span class="authErrorMessage">Message</span> -->
-                <input name="phone_number" type="tel" class="authInput" placeholder="Phone Number"
-                    value="{{ profile.phone_number|cut:'+66' }}" required>
-                <div class="authlabelline authcompleteProfileLabe">Phone Number</div>
-            </div>
-        </div>
+        <div id="phone-error" class="sr-only" role="alert"></div>
     </div>
 
-    <div class="authFormDiv">
-        <!-- <span class="authErrorMessage">Message</span> -->
-        <select name="gender" type="text" id="emailInput" class="authInput authSelectInput" placeholder="Gender"
-            required>
-            <option value="">........</option>
+    <div class="space-y-2">
+        <label for="gender" class="text-sm font-medium text-muted-foreground">
+            Gender
+        </label>
+        <select
+            id="gender"
+            name="gender"
+            required
+            aria-required="true"
+            aria-describedby="gender-error"
+            aria-invalid="false"
+            class="w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+        >
+            <option value="">Select Gender</option>
             <option value="male" {% if profile.gender == 'male' %}selected{% endif %}>Male</option>
             <option value="female" {% if profile.gender == 'female' %}selected{% endif %}>Female</option>
         </select>
-        <div class="authlabelline authcompleteProfileLabe">Gender</div>
+        <div id="gender-error" class="sr-only" role="alert"></div>
     </div>
-    <div class="authFormDiv">
-        <!-- <span class="authErrorMessage">Message</span> -->
-        <input name="address" type="text" class="authInput pac-input" placeholder="Address" value="{{ profile.address }}"
-            required>
-        <div class="authlabelline authcompleteProfileLabe">Address</div>
-    </div>
-    <input name="latitude" label="latitude" label-name="latitude" type="text" class="authInput" placeholder="Latitude">
-    <input name="longitude" label="longitude" label-name="longitude" type="text" class="authInput" placeholder="Longitude">
 
-    <button type="submit" class="authButton completeProfileButton">
+    <div class="space-y-2">
+        <label for="address" class="text-sm font-medium text-muted-foreground">
+            Address
+        </label>
+        <input
+            id="address"
+            name="address"
+            type="text"
+            class="pac-input w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            placeholder="Address"
+            value="{{ profile.address }}"
+            required
+            aria-required="true"
+            aria-describedby="address-error"
+            aria-invalid="false"
+            autocomplete="street-address"
+        >
+        <div id="address-error" class="sr-only" role="alert"></div>
+    </div>
+
+    <input name="latitude" label="latitude" label-name="latitude" type="text" placeholder="Latitude" style="display:none;" aria-hidden="true">
+    <input name="longitude" label="longitude" label-name="longitude" type="text" placeholder="Longitude" style="display:none;" aria-hidden="true">
+
+    <button
+        type="submit"
+        class="inline-flex w-full items-center justify-center gap-3 rounded-xl bg-primary px-5 py-3 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/30 transition hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50 disabled:cursor-not-allowed"
+        id="update-profile-button"
+        aria-label="Update your profile"
+        aria-busy="false"
+    >
         <span id="loginButtonText">Update Profile</span>
-        <div id="loadingSpinner" class="spinner-border" role="status" style="display: none;">
-            <span class="sr-only">Loading...</span>
-        </div>
     </button>
 </div>
-
-<!--- Complete Profile Form End --->
 
 {% endblock %}

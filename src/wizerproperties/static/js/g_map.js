@@ -19,6 +19,7 @@ async function initializeMap() {
     };
 
     var search_input = document.getElementById("gm-search-input");
+    if (search_input && search_input instanceof HTMLInputElement) {
     var search_box = new google.maps.places.Autocomplete(search_input, options);
 
     google.maps.event.addListener(search_box, 'place_changed', function(){
@@ -67,11 +68,14 @@ async function initializeMap() {
 
         window.location.href = redirectPath + '?place='+search_input.value
     })
+    }
 
 
     var gac_input = document.querySelectorAll(".pac-input");
 
     for (let i = 0; i < gac_input.length; i++) {        
+        // Check if element is a valid HTMLInputElement
+        if (gac_input[i] instanceof HTMLInputElement) {
         var autocomplete = new google.maps.places.Autocomplete(gac_input[i], options);
         
         google.maps.event.addListener(autocomplete, 'place_changed', function(){
@@ -80,20 +84,20 @@ async function initializeMap() {
 
             for (let i = 0; i < address_data.length; i++) {
                 if(address_data[i]?.types.includes('administrative_area_level_1')){
-                    if($('[label="province"]')){
+                        if($('[label="province"]').length){
                         $('[label="province"]').val(address_data[i]?.long_name)
                     };
                 }else if(
                     address_data[i]?.types.includes('administrative_area_level_2') ||
                     address_data[i]?.types.includes('sublocality_level_1')
                 ){
-                    if($('[label="district"]')){
+                        if($('[label="district"]').length){
                         $('[label="district"]').val(address_data[i]?.long_name)
                     };
                 }else if(
                     address_data[i]?.types.includes('locality')
                 ){
-                    if($('[label="sub-district"]')){
+                        if($('[label="sub-district"]').length){
                         $('[label="sub-district"]').val(address_data[i]?.long_name)
                     };
                 };
@@ -107,6 +111,7 @@ async function initializeMap() {
                 $('[label-name="longitude"]').val(longitude);
             }
         });
+        }
     };
 
 

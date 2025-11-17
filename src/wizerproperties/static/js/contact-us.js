@@ -1,69 +1,114 @@
-$(document).ready(function(){
-    
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.querySelector("[data-contact-form]");
+  if (!form) return;
 
-    $('.submit-button button').click(function(){
-        var get_email = $('[name="email"]').val();
-        var get_subject = $('[name="subject"]').val();
-        var get_body = $('[name="body"]').val();
-        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const alertsRegion = form.querySelector("[data-contact-alerts]");
+  const errorsRegion = form.querySelector("[data-contact-errors]");
+  const submitButton = form.querySelector("[data-contact-submit]");
+  const submitText = submitButton?.querySelector("[data-contact-submit-text]");
+  const submitSpinner = submitButton?.querySelector("[data-contact-submit-spinner]");
 
-        if($('.alert').length > 0){
-            $('.alert').remove()
-        };
+  const inputs = {
+    email: form.querySelector('[data-contact-input="email"]'),
+    subject: form.querySelector('[data-contact-input="subject"]'),
+    body: form.querySelector('[data-contact-input="body"]'),
+  };
 
-        $('.warrning-text').html('');
-        if(
-            get_email.trim() == '' ||
-            !emailRegex.test(get_email)
-        ){
-            $('.warrning-text').append('<p> Wrong email. </p>');
-        };
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        if(get_subject.trim() == '') $('.warrning-text').append('<p> Subject is empty. </p>');
-        if(get_body.trim() == '') $('.warrning-text').append('<p> Message is empty. </p>');
+  const resetMessages = () => {
+    alertsRegion.innerHTML = "";
+    errorsRegion.innerHTML = "";
+  };
 
-        if(
-            get_email.trim() == '' ||
-            !emailRegex.test(get_email) ||
-            get_subject.trim() == '' ||
-            get_body.trim() == ''
-        ){
-            return;
-        };
+  const renderAlert = (message, variant = "success") => {
+    const div = document.createElement("div");
+    div.className = variant === "success" ? "alert alert-success" : "alert alert-danger";
+    div.setAttribute("role", "alert");
+    div.textContent = message;
+    alertsRegion.appendChild(div);
+  };
 
-        var data = {
-            email : get_email,
-            subject : get_subject,
-            body : get_body
-        };
+  const renderErrors = (messages) => {
+    if (!messages.length) return;
 
-        sending_message(data, $(this));
+    const list = document.createElement("ul");
+    list.className = "space-y-1";
+
+    messages.forEach((message) => {
+      const item = document.createElement("li");
+      item.className = "flex items-start gap-2";
+      item.innerHTML = `<span class="mt-0.5 inline-flex size-1.5 rounded-full bg-destructive"></span><span>${message}</span>`;
+      list.appendChild(item);
     });
 
+    errorsRegion.appendChild(list);
+  };
 
-    function sending_message(data, submit_btn_dom){
-        $.ajax({
-            url: '/core/api/contact/',
-            type: 'POST',
-            data: data,
-            headers: {
-                'X-CSRFToken': csrfToken,
-            },
-            beforeSend : function (){
-                var loader_file = '<img src="/static/media/loader.svg" alt="loading...">';
-                submit_btn_dom.prepend(loader_file);
-            },
-            success : function (data) {
-                submit_btn_dom.html('Submit');
-                $('.contact-form').prepend('<div class="alert alert-success" role="alert"> Your message successfully sent. </div>');
-                $('[name="email"]').val('');
-                $('[name="subject"]').val('');
-                $('[name="body"]').val('');
-            },
-            error: function (error) {
-                submit_btn_dom.html('Submit');
-                $('.contact-form').prepend('<div class="alert alert-danger" role="alert"> Message could not be sent. Something is wrong. </div>');
-            }
-        });
+  const setLoading = (isLoading) => {
+    if (!submitButton) return;
+    submitButton.disabled = isLoading;
+
+    if (submitText) {
+      submitText.classList.toggle("hidden", isLoading);
     }
+    if (submitSpinner) {
+      submitSpinner.classList.toggle("hidden", !isLoading);
+    }
+  };
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    resetMessages();
+
+    const email = inputs.email?.value.trim() ?? "";
+    const subject = inputs.subject?.value.trim() ?? "";
+    const body = inputs.body?.value.trim() ?? "";
+
+    const errors = [];
+    if (!email || !emailRegex.test(email)) {
+      errors.push("Enter a valid email address.");
+    }
+    if (!subject) {
+      errors.push("Add a subject so we can triage your request.");
+    }
+    if (!body) {
+      errors.push("Share a few details about what you need help with.");
+    }
+
+    if (errors.length) {
+      renderErrors(errors);
+      return;
+    }
+
+    const payload = {
+      email,
+      subject,
+      body,
+    };
+
+    try {
+      setLoading(true);
+      const response = await fetch("/core/api/contact/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": typeof csrfToken !== "undefined" ? csrfToken : "",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+
+      renderAlert("Thanks for reaching out. A member of the team will contact you shortly.");
+      form.reset();
+    } catch (error) {
+      console.error("Contact form submission failed", error);
+      renderAlert("We couldn’t send your message right now. Please try again in a moment.", "danger");
+    } finally {
+      setLoading(false);
+    }
+  });
 });

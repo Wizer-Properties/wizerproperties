@@ -6,85 +6,17 @@
 <title>Search property</title>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet" />
-<link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
-<link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
-<link rel="stylesheet" href="{% static '/css/search-page.css' %}?v=1.05" />
-<link rel="stylesheet" href="{% static '/css/new-search-page.css' %}?v=1.07" />
-
-<style>
-
-    body{
-        background-color: #f7fbff;
-    }
-
-    @media screen and (max-width: 600px){
-        .w-100.px-5 {
-            padding: 5px 10px !important;
-            margin: 0;
-        }
-
-        .property-single-box{
-            padding: 0 !important;
-        }
-
-        #search-result .row{
-            margin: 0 !important;
-        }
-    }
-</style>
+<link rel="stylesheet" href="{% static 'css/libraries/splide.min.css' %}?v=2.0" />
 {% endblock extend_head %}
 
 {% block content %}
-
-<div class="top-banner mb-5">
+<section class="bg-muted/40 py-6">
     <div class="container">
-        <div class="col-lg-8 col-md-8 col-11 mx-auto">
+        <div class="top-banner overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
             <div class="splide ads-banner-slider">
                 <div class="splide__track">
                     <div class="splide__list">
-                        <!-- from dom -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-{% include "search-filter-box.html" %}
-
-<section id="sorting-map">
-    <div class="container">
-        <div class="sorting-map-wrapper">
-            <h1 class="section-title search-area"></h1>
-            <div class="sorting-map-container">
-                <div>
-                    <p class="section-scripts m-0">
-                        <b>
-                            <span label="available-properties">- -</span>
-                        </b>
-                         Properties available
-                    </p>
-                </div>
-    
-                <div class="sorting-map-box">
-                    <a href="" label-name="view-tag">
-                        <i class="bi bi-map"></i>
-                        Map view
-                    </a>
-    
-                    <button class="sorting-btn" pop-target="sorting-box">
-                        <i class="bi bi-chevron-expand"></i>
-                        <span>
-                            Sorting : 
-                            <span label="sorting-type"> Default </span>
-                        </span>
-                    </button>
-    
-                    <div class="sorting-list-box" pop-element="sorting-box">
-                        <li active="true" value="-created_at"> Default <i class="bi bi-check2"></i></li>
-                        <li active="false" value="-price"> Highest price <i class="bi bi-check2"></i></li>
-                        <li active="false" value="price"> Lowest price <i class="bi bi-check2"></i></li>
+                        <!-- populated via ads.js -->
                     </div>
                 </div>
             </div>
@@ -92,127 +24,82 @@
     </div>
 </section>
 
-<section id="search-result">
-    <div class="container">
-        <div>
+{% include "components/property/filter-panel.html" %}
 
-            <div id="search-result-list">
-                <div class="col-lg-12 mb-5 searching-loader">
-                    <div class="search-result-box-wrapper">
-                        <div class="row">
-                            <div class="col-lg-5 col-xl-4">
-                                <div class="search-result-box-img">
-                                    <span class="skeleton-box" style="width: 100%; height: 240px;"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-7 col-xl-5">
-                                <div>
-                                    <h1> <span class="skeleton-box" style="width: 100%; height: 20px;"></span> </h1>
-                                    <div class="location">
-                                        <span class="skeleton-box" style="width: 100%; height: 20px;"></span>
-                                    </div>
-                                    <p class="sub-title">
-                                        <span class="skeleton-box" style="width: 100%; height: 21px;"></span>
-                                    </p>
-    
-                                    <p class="details">
-                                        <span class="skeleton-box" style="width: 100%; height: 40px;"></span>
-                                    </p>
-                                    <div class="d-flex">
-                                        <span class="skeleton-box me-2" style="width: 40px; height: 30px;"></span>
-                                        <span class="skeleton-box me-2" style="width: 40px; height: 30px;"></span>
-                                        <span class="skeleton-box" style="width: 40px; height: 30px;"></span>
-                                    </div>
-                                </div>
-                            </div>
+<section id="sorting-map" class="bg-muted/40 py-6">
+    <div class="container">
+        <div class="sorting-map-wrapper flex flex-col gap-4 rounded-2xl border border-border bg-card p-4 shadow-sm md:flex-row md:items-center md:justify-between">
+            <h1 class="section-title search-area text-xl font-semibold text-foreground"></h1>
+            <div class="sorting-map-container flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                <p class="section-scripts m-0 flex items-center gap-2 text-sm">
+                    <b class="text-foreground"><span label="available-properties">- -</span></b>
+                    Properties available
+                </p>
+                <div class="sorting-map-box flex items-center gap-3">
+                    <a href="" label-name="view-tag" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1 text-xs font-semibold text-foreground transition hover:bg-secondary/60">
+                        <i class="bi bi-map"></i>
+                        Map view
+                    </a>
+                    <div class="relative">
+                        <button class="sorting-btn inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1 text-xs font-semibold text-foreground transition hover:bg-secondary/60" pop-target="sorting-box">
+                            <i class="bi bi-chevron-expand"></i>
+                            <span>Sorting : <span label="sorting-type">Default</span></span>
+                        </button>
+                        <div class="sorting-list-box absolute right-0 z-20 mt-2 hidden min-w-[180px] rounded-2xl border border-border bg-card text-sm shadow-lg" pop-element="sorting-box">
+                            <li active="true" value="-created_at" class="flex items-center justify-between px-4 py-2 hover:bg-secondary/40">Default <i class="bi bi-check2"></i></li>
+                            <li active="false" value="-price" class="flex items-center justify-between px-4 py-2 hover:bg-secondary/40">Highest price <i class="bi bi-check2"></i></li>
+                            <li active="false" value="price" class="flex items-center justify-between px-4 py-2 hover:bg-secondary/40">Lowest price <i class="bi bi-check2"></i></li>
                         </div>
                     </div>
                 </div>
             </div>
-
-
-            <div class="col-lg-3 d-none">
-                <div id="search-map" style="width: 100%; height: 300px;"></div>
-
-                <div class="suggested-properties-area">
-                    <div class="suggested-properties" sugested-type="discount-properties">
-                        <h1> Developers Exclusive Deals- Last Chance to Buy! </h1>
-                        <li> <span class="skeleton-box me-2" style="width: 100%; height: 30px;"></span> </li>
-                        <li> <span class="skeleton-box me-2" style="width: 100%; height: 30px;"></span> </li>
-                        <li> <span class="skeleton-box me-2" style="width: 100%; height: 30px;"></span> </li>
-                    </div>
-                    
-                    <div class="suggested-properties" sugested-type="new-properties">
-                        <h1> New Homes Exclusive- Off Plan Opportunities </h1>
-                        <li> <span class="skeleton-box me-2" style="width: 100%; height: 30px;"></span> </li>
-                        <li> <span class="skeleton-box me-2" style="width: 100%; height: 30px;"></span> </li>
-                        <li> <span class="skeleton-box me-2" style="width: 100%; height: 30px;"></span> </li>
-                    </div>
-
-                    <div class="suggested-properties" sugested-type="popular-properties">
-                        <h1> Trending Developments- The Most Searched </h1>
-                        <li> <span class="skeleton-box me-2" style="width: 100%; height: 30px;"></span> </li>
-                        <li> <span class="skeleton-box me-2" style="width: 100%; height: 30px;"></span> </li>
-                        <li> <span class="skeleton-box me-2" style="width: 100%; height: 30px;"></span> </li>
-                    </div>
-
-                    <div class="suggested-properties" sugested-type="popular-buildings">
-                        <h1> Popular Buildings </h1>
-                        <li> <span class="skeleton-box me-2" style="width: 100%; height: 30px;"></span> </li>
-                        <li> <span class="skeleton-box me-2" style="width: 100%; height: 30px;"></span> </li>
-                        <li> <span class="skeleton-box me-2" style="width: 100%; height: 30px;"></span> </li>
-                    </div>
-                </div>
-
-
-            </div>
         </div>
     </div>
-    <div id="search-freescroll"></div>
 </section>
 
+<section id="search-result" class="bg-muted/30 py-10">
+    <div class="container">
+        <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)]">
+            <div id="search-result-list" class="space-y-6"></div>
+            <div id="search-freescroll"></div>
+        </div>
+    </div>
+</section>
+
+{% include "components/property/card.html" %}
 
 <div class="modal fade _3d_model_dialog" id="_3d_view_dialog" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document"> 
-        <div class="modal-content">
-            <button class="_3d_model_close close_3d_view_dialog">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content overflow-hidden rounded-2xl border border-border">
+            <button class="_3d_model_close close_3d_view_dialog absolute right-4 top-4 inline-flex size-10 items-center justify-center rounded-full border border-border bg-secondary/70 text-muted-foreground transition hover:bg-secondary">
                 <i class="bi bi-x-lg"></i>
             </button>
-
-            <div class="_3d_model_display">
-                
-            </div>
+            <div class="_3d_model_display aspect-video bg-black/80"></div>
         </div>
     </div>
 </div>
-
 
 <div class="modal fade _3d_model_dialog" id="_3d_drone_view" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document"> 
-        <div class="modal-content">
-            <button class="_3d_model_close close_3d_drone_view">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content overflow-hidden rounded-2xl border border-border">
+            <button class="_3d_model_close close_3d_drone_view absolute right-4 top-4 inline-flex size-10 items-center justify-center rounded-full border border-border bg-secondary/70 text-muted-foreground transition hover:bg-secondary">
                 <i class="bi bi-x-lg"></i>
             </button>
-
-            <div class="_3d_model_display">
+            <div class="_3d_model_display aspect-video bg-black/80">
                 <video
-                        id="_3d_model_display_video"
-                        class="video-js"
-                        controls
-                        preload="auto"
-                        data-setup="{}"
-                  >
-                    <p class="vjs-no-js">
-                        To view this video please enable JavaScript, and consider upgrading to a web browser that
-                    </p>
-                  </video>
+                    id="_3d_model_display_video"
+                    class="video-js h-full w-full"
+                    controls
+                    preload="auto"
+                    data-setup="{}"
+                >
+                    <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that supports HTML5 video.</p>
+                </video>
             </div>
         </div>
     </div>
 </div>
-
 {% endblock %}
-
 
 {% block extend_script %}
 <script>
@@ -226,9 +113,10 @@
 <script src="{% static 'js/libraries/lodash.min.js' %}"></script>
 <script src="{% static 'js/libraries/splide.min.js' %}"></script>
 <script src="{% static 'js/libraries/noframework.waypoints.min.js' %}"></script>
-<script src="{% static '/js/filter-init.js' %}?v=1.01"></script>
+<script src="{% static 'js/property/card-factory.js' %}?v=1.00"></script>
+<script src="{% static '/js/property/filter-init.js' %}?v=2.00"></script>
 <script src="{% static '/js/time-count-down.js' %}?v=1.00"></script>
-<script src="{% static '/js/property/search.js' %}?v=1.07"></script>
-<script src="{% static '/js/property/compair-favorite.js' %}?v=1.00"></script>
+<script src="{% static '/js/property/search.js' %}?v=2.00"></script>
+<script src="{% static '/js/property/compair-favorite.js' %}?v=2.00"></script>
 <script src="{% static '/js/ads.js' %}?v=1.04"></script>
 {% endblock extend_script %}

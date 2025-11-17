@@ -3,105 +3,105 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Create Reels</title>
-<link rel="stylesheet" href="{% static '/css/auth.css' %}?v=1.00" />
+<title>{% if action_type == 'edit' %}Update property reel{% else %}Share property reel{% endif %}</title>
 {% endblock extend_head %}
 
-
 {% block content %}
-<section id="create_reels">
-    <div class="container">
+<section class="bg-muted/30 py-12">
+    <div class="container max-w-4xl space-y-10">
+        <header class="space-y-4">
+            <p class="text-xs font-semibold uppercase tracking-[0.4em] text-primary">Advertise</p>
+            <div class="space-y-2">
+                <h1 class="text-3xl font-heading font-semibold text-foreground">
+                    {% if action_type == 'edit' %}Update property reel{% else %}Share property reel{% endif %}
+                </h1>
+                <p class="text-sm text-muted-foreground">
+                    Publish short-form video content to spotlight your listings. Provide the destination link, platform, and associated property so prospects can dive straight in.
+                </p>
+            </div>
+        </header>
 
-        <div class="light-form-box">
-            <h1 class="form-title"> Share Reels </h1>
-            <form id="reels-create-form" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="authForm">
-                    <div class="success-message">
-                        <!-- <span class="authSuccessMessage"></span> -->
+        <form id="reels-create-form" method="post" enctype="multipart/form-data" class="space-y-8">
+            {% csrf_token %}
+
+            <div class="space-y-4">
+                <div class="success-message space-y-2 text-sm text-emerald-600"></div>
+                <div class="error-message space-y-2 text-sm text-destructive"></div>
+            </div>
+
+            <section class="card space-y-6">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h2 class="text-lg font-semibold text-foreground">Reel details</h2>
+                        <p class="text-sm text-muted-foreground">Link to the published content and define how it should be categorised.</p>
                     </div>
-                    <div class="error-message">
-                        <!-- <span class="authErrorMessage"></span> -->
-                    </div>
-
-                    <div class="authFormDiv">
-                        <input name="url" type="url" class="authInput" placeholder="Title" required>
-                        <div class="authlabelline authcompleteProfileLabe">URL</div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <select name="social_media" type="text" class="authInput authSelectInput" placeholder="Social Media" required>
-                                    <option value="">........</option>
-                                    <option value="youtube">Youtube</option>
-                                    <option value="titTok">TitTok</option>
-                                    <option value="instagram">Instagram</option>
-                                </select>
-                                <div class="authlabelline authcompleteProfileLabe">Social Media</div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <select name="category" type="text" class="authInput authSelectInput" placeholder="Category" required>
-                                    <option value="">........</option>
-                                    <option value="advice">Advice</option>
-                                    <option value="info">Info</option>
-                                    <option value="tour">Tour</option>
-                                </select>
-                                <div class="authlabelline authcompleteProfileLabe">Category</div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <select name="property" type="text" class="authInput authSelectInput" placeholder="Property" required>
-                                    <option value="">........</option>
-                                    {% for property in properties %}
-                                    <option value="{{ property.id }}">{{ property.title }}</option>
-                                    {% endfor %}
-                                </select>
-                                <div class="authlabelline authcompleteProfileLabe">Property</div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <button type="submit" class="authButton completeProfileButton mt-2" id="create-reel">
-                        <span id="createReelButtonText">
-                            {% if action_type == 'create' %}
-                                Create
-                            {% elif action_type == 'edit' %}
-                                Update
-                            {% endif %}
-
-                            reel
-                        </span>
-                        <div id="loadingSpinner" class="spinner-border" role="status" style="display: none;">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </button>
                 </div>
-            </form>
-        </div>
+
+                <div class="grid gap-6 md:grid-cols-2">
+                    <label class="flex flex-col gap-2 md:col-span-2">
+                        <span class="label">Content URL <span class="text-destructive">*</span></span>
+                        <input name="url" type="url" class="input" placeholder="https://www.youtube.com/watch?v=..." required>
+                        <span class="text-xs text-muted-foreground">Provide a shareable link from YouTube, TikTok, or Instagram.</span>
+                    </label>
+
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Social platform <span class="text-destructive">*</span></span>
+                        <select name="social_media" class="input" required>
+                            <option value="">Select platform</option>
+                            <option value="youtube">YouTube</option>
+                            <option value="titTok">TikTok</option>
+                            <option value="instagram">Instagram</option>
+                        </select>
+                    </label>
+
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Category <span class="text-destructive">*</span></span>
+                        <select name="category" class="input" required>
+                            <option value="">Select category</option>
+                            <option value="advice">Advice</option>
+                            <option value="info">Info</option>
+                            <option value="tour">Tour</option>
+                        </select>
+                    </label>
+
+                    <label class="flex flex-col gap-2 md:col-span-2">
+                        <span class="label">Featured property <span class="text-destructive">*</span></span>
+                        <select name="property" class="input" required>
+                            <option value="">Select property</option>
+                            {% for property in properties %}
+                                <option value="{{ property.id }}">{{ property.title }}</option>
+                            {% endfor %}
+                        </select>
+                        <span class="text-xs text-muted-foreground">The listing associated with this reel.</span>
+                    </label>
+                </div>
+            </section>
+
+            <div class="flex items-center justify-end gap-4">
+                <a href="/dashboard" class="btn-secondary min-w-[140px] justify-center">Cancel</a>
+                <button type="submit" class="btn min-w-[160px] justify-center">
+                    <span id="createReelButtonText">
+                        {% if action_type == 'create' %}Share reel{% else %}Update reel{% endif %}
+                    </span>
+                    <div id="loadingSpinner" class="spinner-border" role="status" style="display: none;">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </button>
+            </div>
+        </form>
     </div>
 </section>
 {% endblock %}
 
-
 {% block extend_script %}
-
 <script>
-    var REEL_ID = '{{reel_id}}'
+    var REEL_ID = '{{ reel_id }}';
 </script>
-
 {% if action_type == 'create' %}
-<script src="{% static 'js/advertise/create-reels.js' %}?v=1.00"></script>
+<script src="{% static 'js/advertise/create-reels.js' %}?v=2.00"></script>
 {% endif %}
 
 {% if action_type == 'edit' %}
-<script src="{% static 'js/advertise/edit-reels.js' %}?v=1.00"></script>
+<script src="{% static 'js/advertise/edit-reels.js' %}?v=2.00"></script>
 {% endif %}
-
 {% endblock extend_script %}

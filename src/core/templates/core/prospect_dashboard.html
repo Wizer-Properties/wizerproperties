@@ -1,191 +1,239 @@
 {% extends "base.html" %}
 {% load static %}
-{% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Prospect</title>
+<title>Prospect Dashboard</title>
 <link rel="stylesheet" href="{% static '/css/libraries/dataTables.min.css' %}" />
-<link rel="stylesheet" href="{% static '/css/auth.css' %}?v=1.01" />
-<link rel="stylesheet" href="{% static '/css/dashboard.css' %}?v=1.01" />
 <style>
-    #loginButtonText {
-        margin: 0;
-        padding: 0;
-        font-size: inherit;
+    /* Modern Toggle Switch */
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 44px;
+        height: 24px;
+    }
+    
+    .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    
+    .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #cbd5e1;
+        transition: 0.3s;
+        border-radius: 24px;
+    }
+    
+    .toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: 0.3s;
+        border-radius: 50%;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+    
+    .toggle-switch input:checked + .toggle-slider {
+        background-color: #10b981;
+    }
+    
+    .toggle-switch input:checked + .toggle-slider:before {
+        transform: translateX(20px);
+    }
+    
+    .toggle-switch input:focus + .toggle-slider {
+        outline: 2px solid #10b981;
+        outline-offset: 2px;
+    }
+    
+    /* DataTables customization */
+    .dataTables_wrapper .dataTables_filter input {
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+    
+    .dataTables_wrapper .dataTables_filter input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    
+    /* Quick Action Cards */
+    .quick-action-card {
+        transition: all 0.3s ease;
+    }
+    
+    .quick-action-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     }
 </style>
 {% endblock extend_head %}
 
 {% block content %}
-<!-- <div class="container-fluid">
-    <div class="row how-it-work-row">
-        <div class="col-lg-8 order-lg-2 login-form-box">
-            <div class="logo completeProfileLogo">
-                <a href="/">
-                    <img src="{% static 'media/logo.png' %}" alt="logo">
+<div class="min-h-screen bg-gray-50 py-8">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">My Dashboard</h1>
+            <p class="mt-2 text-sm text-gray-600">Track your property comparisons, reviews, and scheduled tours</p>
+        </div>
+
+        <!-- Statistics Cards Grid -->
+        <div class="mb-8 grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <!-- Comparisons Card -->
+            <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 p-6 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                <div class="relative z-10">
+                    <div class="mb-2 flex items-center justify-between">
+                        <p class="text-sm font-medium text-white/90">Comparisons</p>
+                        <svg class="h-8 w-8 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
+                        </svg>
+                    </div>
+                    <p class="text-3xl font-bold text-white">{{ total_comparisons }}</p>
+                </div>
+                <div class="absolute right-0 top-0 h-24 w-24 rounded-full bg-white/10 blur-2xl"></div>
+            </div>
+
+            <!-- Reviews Card -->
+            <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 p-6 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                <div class="relative z-10">
+                    <div class="mb-2 flex items-center justify-between">
+                        <p class="text-sm font-medium text-white/90">Reviews</p>
+                        <svg class="h-8 w-8 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <p class="text-3xl font-bold text-white">{{ total_reviews }}</p>
+                </div>
+                <div class="absolute right-0 top-0 h-24 w-24 rounded-full bg-white/10 blur-2xl"></div>
+            </div>
+
+            <!-- Schedules Card -->
+            <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 p-6 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                <div class="relative z-10">
+                    <div class="mb-2 flex items-center justify-between">
+                        <p class="text-sm font-medium text-white/90">Schedules</p>
+                        <svg class="h-8 w-8 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <p class="text-3xl font-bold text-white">{{ total_schedules }}</p>
+                </div>
+                <div class="absolute right-0 top-0 h-24 w-24 rounded-full bg-white/10 blur-2xl"></div>
+            </div>
+
+            <!-- Accepted Schedules Card -->
+            <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 p-6 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                <div class="relative z-10">
+                    <div class="mb-2 flex items-center justify-between">
+                        <p class="text-sm font-medium text-white/90">Accepted</p>
+                        <svg class="h-8 w-8 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <p class="text-3xl font-bold text-white">{{ total_accepted_schedules }}</p>
+                </div>
+                <div class="absolute right-0 top-0 h-24 w-24 rounded-full bg-white/10 blur-2xl"></div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+            <!-- Scheduled Tours Table Section -->
+            <div class="lg:col-span-2">
+                <div class="overflow-hidden rounded-xl bg-white shadow-sm">
+                    <div class="border-b border-gray-200 bg-gray-50 px-6 py-4">
+                        <h2 class="text-lg font-semibold text-gray-900">Scheduled Tours</h2>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full" id="property-visit-schedule">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">ID</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Title</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Address</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Type</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">Date</th>
+                                    <th class="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 bg-white">
+                                <!-- Data loaded via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions Sidebar -->
+            <div class="space-y-6">
+                <!-- Comparison List Card -->
+                <a href="{% url 'property:comparison' %}" class="quick-action-card block overflow-hidden rounded-xl bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-pink-100">
+                            <svg class="h-8 w-8 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
+                            </svg>
+                        </div>
+                        <h3 class="mb-2 text-lg font-semibold text-gray-900">Comparison List</h3>
+                        <p class="mb-4 text-sm text-gray-600">Compare properties side by side</p>
+                        <span class="text-sm font-medium text-blue-600 hover:text-blue-700">See more →</span>
+                    </div>
+                </a>
+
+                <!-- Saved Properties Card -->
+                <a href="{% url 'property:favorite_list' %}" class="quick-action-card block overflow-hidden rounded-xl bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
+                            <svg class="h-8 w-8 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                            </svg>
+                        </div>
+                        <h3 class="mb-2 text-lg font-semibold text-gray-900">Saved Properties</h3>
+                        <p class="mb-4 text-sm text-gray-600">View your favorite listings</p>
+                        <span class="text-sm font-medium text-blue-600 hover:text-blue-700">See more →</span>
+                    </div>
+                </a>
+
+                <!-- My Reviews Card -->
+                <a href="#" class="quick-action-card block overflow-hidden rounded-xl bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-yellow-100">
+                            <svg class="h-8 w-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                            </svg>
+                        </div>
+                        <h3 class="mb-2 text-lg font-semibold text-gray-900">My Reviews</h3>
+                        <p class="mb-4 text-sm text-gray-600">Manage your property reviews</p>
+                        <span class="text-sm font-medium text-blue-600 hover:text-blue-700">See more →</span>
+                    </div>
                 </a>
             </div>
-
-            <div class="authArea completeProfileArea">
-                <p>Developer/Agent Dashboard</p>
-            </div>
-
-        </div>
-        <div class="col-lg-4 order-lg-1 login-des-box">
-            <div class="authTextArea">
-                <a type="button" class="authSignUpButton" href="{% url 'user:logout' %}">Logout</a>
-            </div>
         </div>
     </div>
-</div> -->
-
-<section id="dashboard-cards-list-area" class="my-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-6 dashboard-card">
-                <div class="dashboard-single-card">
-                    <div class="single-card-value">
-                        <span>{{ total_comparisons }}</span>
-                        <p>Comparisons</p>
-                    </div>
-                    <i class="bi bi-layout-text-window-reverse"></i>
-                </div>
-            </div>
-            <div class="col-lg-3 col-6 dashboard-card">
-                <div class="dashboard-single-card">
-                    <div class="single-card-value">
-                        <span>{{ total_reviews }}</span>
-                        <p>Reviews</p>
-                    </div>
-                    <i class="bi bi-journal-medical"></i>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-6 dashboard-card">
-                <div class="dashboard-single-card">
-                    <div class="single-card-value">
-                        <span>{{ total_schedules }}</span>
-                        <p>Schedules</p>
-                    </div>
-                    <i class="bi bi-calendar-week"></i>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-6 dashboard-card">
-                <div class="dashboard-single-card">
-                    <div class="single-card-value">
-                        <span>{{ total_accepted_schedules }}</span>
-                        <p>Accepted Schedules</p>
-                    </div>
-                    <i class="bi bi-calendar-check"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-
-<section> 
-    <div class="container">
-        <div class="row">
-
-            <div class="col-lg-9 mb-5">
-                <div class="table-area property-visit-schedule-table">
-                    <h1 class="table-title">Scheduled Tours</h1>
-                    <table class="mid-table" id="property-visit-schedule">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Title</th>
-                                <th>Address</th>
-                                <th>Status</th>
-                                <th>Type</th>
-                                <th style="width: 120px;">Date</th>
-                                <th class="th-see-more"> </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- calling from dom -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-
-            <div class="col-lg-3">
-                <div class="row">
-                    <div class="col-lg-12 col-6 mb-5">
-                        <a href="{{comparison_property_url}}" class="mb-4 d-block">
-                            <div class="expand-box">
-                                <div class="expand-box-icon">
-                                    <i class="material-symbols-outlined compare-icon">
-                                        compare
-                                    </i>
-                                </div>
-                                <h1 class="expand-box-title">
-                                    Comparison List
-                                </h1>
-
-                                <div class="expand-box-cta link">
-                                    See more
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-lg-12 col-6 mb-5">
-                        <a href="{{favorite_list_property_url}}" class="mb-4 d-block">
-                            <div class="expand-box">
-                                <div class="expand-box-icon">
-                                    <i class="bi bi-heart-fill"></i>
-                                </div>
-                                <h1 class="expand-box-title">
-                                    Favorite List
-                                </h1>
-
-                                <div class="expand-box-cta link">
-                                    See more
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-lg-12 col-6 mb-5">
-                        <a href="#" class="mb-4 d-block">
-                            <div class="expand-box">
-                                <div class="expand-box-icon">
-                                    <i class="material-symbols-outlined grade-icon">
-                                        grade
-                                    </i>
-                                </div>
-                                <h1 class="expand-box-title">
-                                    My Reviews
-                                </h1>
-
-                                <div class="expand-box-cta link">
-                                    See more
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-
-
-        </div>
-    </div>
-</section>
-
+</div>
 {% endblock %}
-
 
 {% block extend_script %}
 <script>
-    var user_type = 'prospect'
+    var user_type = 'prospect';
 </script>
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 <script src="{% static '/js/libraries/dataTables.min.js' %}?v=1.00"></script>
-<script src="{% static '/js/dashboard.js' %}?v=1.04"></script>
+<script src="{% static '/js/dashboard.js' %}?v=1.05"></script>
 {% endblock extend_script %}

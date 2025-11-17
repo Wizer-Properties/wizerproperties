@@ -4,471 +4,380 @@
 
 {% block extend_head %}
 <title>Create building</title>
-<link href="{% static 'css/gptchat.css' %}?v=1.00" rel="stylesheet" />
-<link rel="stylesheet" href="{% static '/css/auth.css' %}?v=1.01" />
-<style>
-    [label-name="latitude"],
-    [label-name="longitude"]{
-        display: none;
-    }
-</style>
 {% endblock extend_head %}
 
 {% block content %}
-<section id="create_building">
-    <div class="container">
+<section class="bg-muted/30 py-12">
+    <div class="container max-w-6xl space-y-10">
+        <header class="space-y-4">
+            <p class="text-xs font-semibold uppercase tracking-[0.4em] text-primary">Buildings</p>
+            <div class="space-y-2">
+                <h1 class="text-3xl font-heading font-semibold text-foreground">Create a New Building</h1>
+                <p class="max-w-2xl text-sm text-muted-foreground">
+                    Capture essential project information, media, and amenities to showcase your development with a premium-quality profile.
+                    Fields marked with <span class="text-destructive">*</span> are required.
+                </p>
+            </div>
+        </header>
 
+        <form id="building-create-form" method="post" enctype="multipart/form-data" class="space-y-10">
+            {% csrf_token %}
 
-        <div class="light-form-box">
-            <h1 class="form-title">Create Building</h1>
+            <div class="space-y-4">
+                <div class="success-message space-y-2 text-sm text-emerald-600"></div>
+                <div class="error-message space-y-2 text-sm text-destructive"></div>
+            </div>
 
-            <form id="building-create-form" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="authForm">
-                    <div class="success-message">
-                        <!-- <span class="authSuccessMessage"></span> -->
+            <section class="card space-y-6">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h2 class="text-lg font-semibold text-foreground">Project Snapshot</h2>
+                        <p class="text-sm text-muted-foreground">Key identifiers and commercial attributes for the project.</p>
                     </div>
-                    <div class="error-message">
-                        <!-- <span class="authErrorMessage"></span> -->
-                    </div>
-
-                    <div class="authFormDiv">
-                        <!-- <span class="authErrorMessage">Message</span> -->
-                        <input name="title" type="text" class="authInput" placeholder="Title" required>
-                        <div class="authlabelline authcompleteProfileLabe">Title</div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="authFormDiv" formatted-price="input">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="lowest_price" type="number" step="0.1" min="0" class="authInput"
-                                    placeholder="Lowest Price" required>
-                                <div class="authlabelline authcompleteProfileLabe">Lowest Price</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv" formatted-price="input">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="highest_price" type="number" step="0.1" min="0" class="authInput"
-                                    placeholder="Highest Price" required>
-                                <div class="authlabelline authcompleteProfileLabe">Highest Price</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <select name="type" id="type_select" type="text" class="authInput authSelectInput"
-                                    placeholder="Select Building Type" required>
-                                    <option value="">........</option>
-                                    <option value="residence">Residence</option>
-                                    <option value="commercial">Commercial</option>
-                                </select>
-                                <div class="authlabelline authcompleteProfileLabe">Type</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6" id="sub_type_container">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <select name="sub_type" id="sub_type_select" type="text" class="authInput authSelectInput"
-                                    placeholder="Select Building Sub Type">
-                                    <option value="">........</option>
-                                </select>
-                                <div class="authlabelline authcompleteProfileLabe">Sub Type</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <select name="quota" type="text" class="authInput authSelectInput"
-                                    placeholder="Select Quota Type" required>
-                                    <option value="">........</option>
-                                    <option value="thai">Thai</option>
-                                    <option value="foreign">Foreign</option>
-                                </select>
-                                <div class="authlabelline authcompleteProfileLabe">Quota</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <select name="furnishing" type="text" class="authInput authSelectInput"
-                                    placeholder="Select Furnishing Type" required>
-                                    <option value="">........</option>
-                                    <option value="partly">Partly</option>
-                                    <option value="fully">Fully</option>
-                                </select>
-                                <div class="authlabelline authcompleteProfileLabe">Furnishing</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <select id="status" name="status" type="text" class="authInput authSelectInput"
-                                    placeholder="Select Project Status" required>
-                                    <option value="">........</option>
-                                    <option value="to_be_commenced">To Be Commenced</option>
-                                    <option value="under_construction">Under Construction</option>
-                                    <option value="completed">Completed</option>
-                                </select>
-                                <div class="authlabelline authcompleteProfileLabe">Project Status</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div id="constructionYearDiv" class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input id="construction_year" name="construction_year" type="number" class="authInput"
-                                    placeholder="Enter Year (2000 - current year)" min="2000" required>
-                                <div class="authlabelline authcompleteProfileLabe">Completion Date (2000 -
-                                    Current Year)</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="authFormDiv">
-                        <!-- <span class="authErrorMessage">Message</span> -->
-                        <input name="address" type="text" class="authInput pac-input" placeholder="Address" required>
-                        <div class="authlabelline authcompleteProfileLabe">Address</div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="province" label="province" type="text" class="authInput"
-                                    placeholder="Province" required>
-                                <div class="authlabelline authcompleteProfileLabe">Province</div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="district" label="district" type="text" class="authInput"
-                                    placeholder="District" required>
-                                <div class="authlabelline authcompleteProfileLabe">District</div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="sub_district" label="sub-district" type="text" class="authInput"
-                                    placeholder="Sub-District">
-                                <div class="authlabelline authcompleteProfileLabe">Sub-District</div>
-                            </div>
-                        </div>
-                        <input name="latitude" label="latitude" label-name="latitude" type="text" class="authInput"
-                            placeholder="Latitude">
-                        <input name="longitude" label="longitude" label-name="longitude" type="text" class="authInput"
-                            placeholder="Longitude">
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="project_total_area" type="number" step="0.1" min="0" class="authInput"
-                                    placeholder="Project Total Area (sqm)" required>
-                                <div class="authlabelline authcompleteProfileLabe">Project Total Area (sqm)</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="total_floors" type="number" min="0" class="authInput"
-                                    placeholder="Total Floor" required>
-                                <div class="authlabelline authcompleteProfileLabe">Total Floor</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="total_units_for_sale" type="number" min="0" class="authInput"
-                                    placeholder="Total Units For Sale" required>
-                                <div class="authlabelline authcompleteProfileLabe">Total Units For Sale</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="distance_from_location_to_BTS_or_MRT" type="number" step="0.1" min="0"
-                                    class="authInput" placeholder="Distance From Location to BTS/MRT" required>
-                                <div class="authlabelline authcompleteProfileLabe">Distance From Location to BTS/MRT
-                                    (Mile)</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="distance_from_location_to_ARL" type="number" class="authInput" step="0.1"
-                                    min="0" placeholder="Distance From Location to ARL" required>
-                                <div class="authlabelline authcompleteProfileLabe">Distance From Location to ARL (Mile)
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="view" type="text" class="authInput" placeholder="View" required>
-                                <div class="authlabelline authcompleteProfileLabe">View</div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="facility_view" type="url" class="authInput" placeholder="Facility View">
-                                <div class="authlabelline authcompleteProfileLabe">
-                                    Facility View ( e.g. https://my.matterport.com/show/?m=tHeZn1V85YQ)
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="authFormDiv">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <input name="location_view" type="url" class="authInput" placeholder="Location View">
-                                <div class="authlabelline authcompleteProfileLabe">
-                                    Location View ( e.g. https://my.matterport.com/show/?m=tHeZn1V85YQ)
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-6">
-
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_freehold" class="form-check-input" type="checkbox"
-                                            id="freehold">
-                                        <label class="form-check-label" for="freehold">
-                                            Freehold
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_leasehold" class="form-check-input" type="checkbox"
-                                            id="leasehold">
-                                        <label class="form-check-label" for="leasehold">
-                                            Leasehold
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_infinity_pool" class="form-check-input" type="checkbox"
-                                            id="infinity_pool">
-                                        <label class="form-check-label" for="infinity_pool">
-                                            Infinity Pool
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_pets_allowed" class="form-check-input" type="checkbox"
-                                            id="pets_allowed">
-                                        <label class="form-check-label" for="pets_allowed">
-                                            Pets Allowed
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_sauna" class="form-check-input" type="checkbox" id="sauna">
-                                        <label class="form-check-label" for="sauna">
-                                            Sauna
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_rooftop_pool" class="form-check-input" type="checkbox"
-                                            id="rooftop_pool">
-                                        <label class="form-check-label" for="rooftop_pool">
-                                            Rooftop Pool
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_fitness_area" class="form-check-input" type="checkbox"
-                                            id="fitness_area">
-                                        <label class="form-check-label" for="fitness_area">
-                                            Fitness Area
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input name="have_grocery" class="form-check-input" type="checkbox"
-                                            id="grocery">
-                                        <label class="form-check-label" for="grocery">
-                                            Grocery
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="col-lg-6">
-                            <button type="button" id="generate-building-description"  class="generating-btn">
-                                <span id="generateBuildingDescription" class="p-0">Generate Description</span>
-                                <div id="descriptionLoadingSpinner" class="spinner-border" role="status"
-                                    style="display: none;">
-                                    <span class="sr-only">Loading...</span>
-                                </div>
-                            </button>
-                            <div class="authFormDiv textarea">
-                                <!-- <span class="authErrorMessage">Message</span> -->
-                                <textarea name="description" type="text" class="authInput profileCompanyDeatils"
-                                    placeholder="Description" required></textarea>
-                                <div class="authlabelline authcompleteProfileLabe">Description</div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="row">
-
-                        <div class="col-lg-6">
-                            <div class="uploaded-file-with-view">
-                                <div class="authFormDiv">
-                                    <!-- <span class="authErrorMessage">Message</span> -->
-                                    <input name="images" type="file" accept="image/*" class="authInput authFile"
-                                        required multiple>
-                                    <div class="fileName"> Upload Building Images </div>
-                                </div>
-
-                                <div class="uploaded-file-view-area">
-                                    <!-- dom area -->
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="col-lg-6">
-                            <div class="uploaded-file-with-view">
-                                <div class="authFormDiv">
-                                    <!-- <span class="authErrorMessage">Message</span> -->
-                                    <input name="unit_floor_plans" type="file" accept="image/*"
-                                        class="authInput authFile" required multiple>
-                                    <div class="fileName"> Upload Unit Floor Plan Images </div>
-                                </div>
-
-                                <div class="uploaded-file-view-area">
-                                    <!-- dom area -->
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="col-lg-6">
-                            <div class="uploaded-file-with-view">
-                                <div class="authFormDiv">
-                                    <!-- <span class="authErrorMessage">Message</span> -->
-                                    <input name="master_plans" type="file" accept="image/*" class="authInput authFile"
-                                        required multiple>
-                                    <div class="fileName"> Upload Master Plan Images </div>
-                                </div>
-
-                                <div class="uploaded-file-view-area">
-                                    <!-- dom area -->
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="col-lg-6">
-                            <div class="uploaded-file-with-view">
-                                <div class="authFormDiv">
-                                    <!-- <span class="authErrorMessage">Message</span> -->
-                                    <input name="videos" type="file" accept="video/*" class="authInput authFile"
-                                        required>
-                                    <div class="fileName"> Upload Video </div>
-                                </div>
-
-                                <div class="uploaded-file-view-area">
-                                    <!-- dom area -->
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <div class="uploaded-file-with-view">
-                                <div class="authFormDiv">
-                                    <!-- <span class="authErrorMessage">Message</span> -->
-                                    <input name="aerial_drone_videos" type="file" accept="video/*"
-                                        class="authInput authFile" required>
-                                    <div class="fileName"> Upload Aerial Drone Video </div>
-                                </div>
-
-                                <div class="uploaded-file-view-area">
-                                    <!-- dom area -->
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-
-                    <button type="submit" class="authButton completeProfileButton" id="create-property">
-                        <span id="createBuildingButtonText">Create Building</span>
-                        <div id="loadingSpinner" class="spinner-border" role="status" style="display: none;">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </button>
                 </div>
-            </form>
-        </div>
+
+                <div class="grid gap-6 md:grid-cols-2">
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Title <span class="text-destructive">*</span></span>
+                        <input name="title" type="text" class="input" placeholder="Ex: Skyline Residences" required>
+                    </label>
+
+                    <div class="flex flex-col gap-2" formatted-price="input">
+                        <div class="flex items-center justify-between">
+                            <span class="label">Lowest Price <span class="text-destructive">*</span></span>
+                            <span class="text-xs text-muted-foreground">THB</span>
+                        </div>
+                        <input name="lowest_price" type="number" step="0.1" min="0" class="input" placeholder="ex: 4,500,000" required>
+                    </div>
+
+                    <div class="flex flex-col gap-2" formatted-price="input">
+                        <div class="flex items-center justify-between">
+                            <span class="label">Highest Price <span class="text-destructive">*</span></span>
+                            <span class="text-xs text-muted-foreground">THB</span>
+                        </div>
+                        <input name="highest_price" type="number" step="0.1" min="0" class="input" placeholder="ex: 12,900,000" required>
+                    </div>
+
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Building Type <span class="text-destructive">*</span></span>
+                        <select name="type" id="type_select" class="input" required>
+                            <option value="">Select type</option>
+                            <option value="residence">Residence</option>
+                            <option value="commercial">Commercial</option>
+                        </select>
+                    </label>
+
+                    <div class="flex flex-col gap-2" id="sub_type_container">
+                        <span class="label">Sub Type</span>
+                        <select name="sub_type" id="sub_type_select" class="input">
+                            <option value="">Select sub type</option>
+                        </select>
+                    </div>
+
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Quota <span class="text-destructive">*</span></span>
+                        <select name="quota" class="input" required>
+                            <option value="">Select quota</option>
+                            <option value="thai">Thai</option>
+                            <option value="foreign">Foreign</option>
+                        </select>
+                    </label>
+
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Furnishing <span class="text-destructive">*</span></span>
+                        <select name="furnishing" class="input" required>
+                            <option value="">Select furnishing level</option>
+                            <option value="partly">Partly</option>
+                            <option value="fully">Fully</option>
+                        </select>
+                    </label>
+
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Project Status <span class="text-destructive">*</span></span>
+                        <select id="status" name="status" class="input" required>
+                            <option value="">Select status</option>
+                            <option value="to_be_commenced">To Be Commenced</option>
+                            <option value="under_construction">Under Construction</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </label>
+
+                    <label class="flex flex-col gap-2 hidden" id="constructionYearDiv">
+                        <span class="label">Completion Year <span class="text-destructive">*</span></span>
+                        <input id="construction_year" name="construction_year" type="number" min="2000" class="input" placeholder="YYYY">
+                        <span class="text-xs text-muted-foreground">Enter a year between 2000 and the current year.</span>
+                    </label>
+                </div>
+            </section>
+
+            <section class="card space-y-6">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h2 class="text-lg font-semibold text-foreground">Location</h2>
+                        <p class="text-sm text-muted-foreground">Map-ready address details to power search and discovery.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Address <span class="text-destructive">*</span></span>
+                        <input name="address" type="text" class="input pac-input" placeholder="Street, neighborhood" required>
+                    </label>
+
+                    <div class="grid gap-6 md:grid-cols-3">
+                        <label class="flex flex-col gap-2">
+                            <span class="label">Province <span class="text-destructive">*</span></span>
+                            <input name="province" label="province" type="text" class="input" placeholder="Province" required>
+                        </label>
+                        <label class="flex flex-col gap-2">
+                            <span class="label">District <span class="text-destructive">*</span></span>
+                            <input name="district" label="district" type="text" class="input" placeholder="District" required>
+                        </label>
+                        <label class="flex flex-col gap-2">
+                            <span class="label">Sub District</span>
+                            <input name="sub_district" label="sub-district" type="text" class="input" placeholder="Sub district">
+                        </label>
+                    </div>
+                </div>
+
+                <input type="hidden" name="latitude" label="latitude" label-name="latitude">
+                <input type="hidden" name="longitude" label="longitude" label-name="longitude">
+            </section>
+
+            <section class="card space-y-6">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h2 class="text-lg font-semibold text-foreground">Project Metrics</h2>
+                        <p class="text-sm text-muted-foreground">Dimensions and figures that inform prospects.</p>
+                    </div>
+                </div>
+
+                <div class="grid gap-6 md:grid-cols-3">
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Total Area (sqm) <span class="text-destructive">*</span></span>
+                        <input name="project_total_area" type="number" step="0.1" min="0" class="input" placeholder="ex: 1,200" required>
+                    </label>
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Total Floors <span class="text-destructive">*</span></span>
+                        <input name="total_floors" type="number" min="0" class="input" placeholder="ex: 35" required>
+                    </label>
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Units for Sale <span class="text-destructive">*</span></span>
+                        <input name="total_units_for_sale" type="number" min="0" class="input" placeholder="ex: 280" required>
+                    </label>
+                </div>
+
+                <div class="grid gap-6 md:grid-cols-2">
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Distance to BTS / MRT (mile) <span class="text-destructive">*</span></span>
+                        <input name="distance_from_location_to_BTS_or_MRT" type="number" step="0.1" min="0" class="input" placeholder="ex: 0.3" required>
+                    </label>
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Distance to ARL (mile) <span class="text-destructive">*</span></span>
+                        <input name="distance_from_location_to_ARL" type="number" step="0.1" min="0" class="input" placeholder="ex: 1.1" required>
+                    </label>
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Primary View <span class="text-destructive">*</span></span>
+                        <input name="view" type="text" class="input" placeholder="Ex: River, Skyline" required>
+                    </label>
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Facility Tour URL</span>
+                        <input name="facility_view" type="url" class="input" placeholder="https://">
+                        <span class="text-xs text-muted-foreground">Embed virtual tours or 360° walkthroughs.</span>
+                    </label>
+                    <label class="flex flex-col gap-2">
+                        <span class="label">Location Tour URL</span>
+                        <input name="location_view" type="url" class="input" placeholder="https://">
+                        <span class="text-xs text-muted-foreground">Link to surrounding environment or neighborhood video.</span>
+                    </label>
+                </div>
+            </section>
+
+            <section class="card space-y-6">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h2 class="text-lg font-semibold text-foreground">Ownership & Amenities</h2>
+                        <p class="text-sm text-muted-foreground">Showcase lifestyle benefits and access rights.</p>
+                    </div>
+                </div>
+
+                <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
+                        <input name="have_freehold" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="freehold">
+                        <span class="text-sm font-medium text-foreground">Freehold</span>
+                    </label>
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
+                        <input name="have_leasehold" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="leasehold">
+                        <span class="text-sm font-medium text-foreground">Leasehold</span>
+                    </label>
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
+                        <input name="have_infinity_pool" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="infinity_pool">
+                        <span class="text-sm font-medium text-foreground">Infinity Pool</span>
+                    </label>
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
+                        <input name="have_pets_allowed" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="pets_allowed">
+                        <span class="text-sm font-medium text-foreground">Pets Allowed</span>
+                    </label>
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
+                        <input name="have_sauna" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="sauna">
+                        <span class="text-sm font-medium text-foreground">Sauna</span>
+                    </label>
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
+                        <input name="have_rooftop_pool" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="rooftop_pool">
+                        <span class="text-sm font-medium text-foreground">Rooftop Pool</span>
+                    </label>
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
+                        <input name="have_fitness_area" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="fitness_area">
+                        <span class="text-sm font-medium text-foreground">Fitness Area</span>
+                    </label>
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
+                        <input name="have_grocery" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="grocery">
+                        <span class="text-sm font-medium text-foreground">On-site Grocery</span>
+                    </label>
+                </div>
+            </section>
+
+            <section class="card space-y-6">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h2 class="text-lg font-semibold text-foreground">Narrative & AI Assist</h2>
+                        <p class="text-sm text-muted-foreground">Craft premium copy with optional AI support.</p>
+                    </div>
+                </div>
+
+                <div class="grid gap-6 lg:grid-cols-2">
+                    <div class="space-y-3">
+                        <button type="button" id="generate-building-description" class="btn-secondary w-full justify-center sm:w-auto">
+                            <span id="generateBuildingDescription">Generate Description</span>
+                            <div id="descriptionLoadingSpinner" class="spinner-border" role="status" style="display: none;">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </button>
+                        <p class="text-xs text-muted-foreground">Uses your building inputs to draft a professional overview. You can refine it in the modal.</p>
+                    </div>
+                    <label class="flex flex-col gap-2 lg:col-span-2">
+                        <span class="label">Description <span class="text-destructive">*</span></span>
+                        <textarea name="description" class="textarea min-h-[220px]" placeholder="Tell an engaging story about the development..." required></textarea>
+                    </label>
+                </div>
+            </section>
+
+            <section class="card space-y-6">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h2 class="text-lg font-semibold text-foreground">Media Uploads</h2>
+                        <p class="text-sm text-muted-foreground">High-resolution media helps buyers experience your project.</p>
+                    </div>
+                    <p class="text-xs text-muted-foreground">Accepted formats: JPG/PNG (images), MP4/MOV (video).</p>
+                </div>
+
+                <div class="grid gap-6 lg:grid-cols-2">
+                    <div class="uploaded-file-with-view space-y-3">
+                        <label class="flex flex-col gap-2">
+                            <span class="label">Building Images <span class="text-destructive">*</span></span>
+                            <input name="images" type="file" accept="image/*" class="input cursor-pointer" required multiple>
+                        </label>
+                        <div class="fileName text-xs text-muted-foreground">Upload Building Images</div>
+                        <div class="uploaded-file-view-area grid grid-cols-2 gap-3"></div>
+                    </div>
+
+                    <div class="uploaded-file-with-view space-y-3">
+                        <label class="flex flex-col gap-2">
+                            <span class="label">Unit Floor Plans <span class="text-destructive">*</span></span>
+                            <input name="unit_floor_plans" type="file" accept="image/*" class="input cursor-pointer" required multiple>
+                        </label>
+                        <div class="fileName text-xs text-muted-foreground">Upload Unit Floor Plan Images</div>
+                        <div class="uploaded-file-view-area grid grid-cols-2 gap-3"></div>
+                    </div>
+
+                    <div class="uploaded-file-with-view space-y-3">
+                        <label class="flex flex-col gap-2">
+                            <span class="label">Master Plans <span class="text-destructive">*</span></span>
+                            <input name="master_plans" type="file" accept="image/*" class="input cursor-pointer" required multiple>
+                        </label>
+                        <div class="fileName text-xs text-muted-foreground">Upload Master Plan Images</div>
+                        <div class="uploaded-file-view-area grid grid-cols-2 gap-3"></div>
+                    </div>
+
+                    <div class="uploaded-file-with-view space-y-3">
+                        <label class="flex flex-col gap-2">
+                            <span class="label">Showcase Video <span class="text-destructive">*</span></span>
+                            <input name="videos" type="file" accept="video/*" class="input cursor-pointer" required>
+                        </label>
+                        <div class="fileName text-xs text-muted-foreground">Upload Project Video</div>
+                        <div class="uploaded-file-view-area"></div>
+                    </div>
+
+                    <div class="uploaded-file-with-view space-y-3 lg:col-span-2">
+                        <label class="flex flex-col gap-2">
+                            <span class="label">Aerial Drone Video <span class="text-destructive">*</span></span>
+                            <input name="aerial_drone_videos" type="file" accept="video/*" class="input cursor-pointer" required>
+                        </label>
+                        <div class="fileName text-xs text-muted-foreground">Upload Aerial Drone Coverage</div>
+                        <div class="uploaded-file-view-area"></div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="flex items-center justify-end gap-4">
+                <a href="/dashboard" class="btn-secondary min-w-[140px] justify-center">Cancel</a>
+                <button type="submit" class="btn min-w-[160px] justify-center">
+                    <span id="createBuildingButtonText">Create building</span>
+                    <div id="loadingSpinner" class="spinner-border" role="status" style="display: none;">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </button>
+            </div>
+        </form>
     </div>
 </section>
 
-<div class="ai-generate-description-modal">
-    <div class="ai-generate-description-overloay" ai-close-modal="description"></div>
-    <div class="ai-generate-description-body">
-        <h1> Generated Description </h1>
-        <textarea class="created-description-textarea" placeholder="Generated description ..."></textarea>
-        
-        <section id="open-ai-chat-box">
-            <div class="re-generate-error-message my-2"></div>
-            <div class="clearfix open-ai-card">
-                <div class="chat-app">
-                    <div class="chat">
-                        <div class="chat-message clearfix">
-                            <div class="d-flex gap-2 mb-0 align-items-center">
-                                <input type="text" class="class-chatbot-input" name="instruction_of_modification" placeholder="Write What You Want...">
-                                <div class="input-group-prepend">
-                                    <button type="botton" class="regenerate-chatbot-send-btn">
-                                        <span><i class="bi bi-send"></i></span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+<!-- AI Generated Description Modal -->
+<div class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 px-4 backdrop-blur-sm" data-description-modal>
+    <div class="w-full max-w-3xl overflow-hidden rounded-2xl border border-border bg-card shadow-2xl">
+        <div class="flex items-center justify-between border-b border-border px-6 py-4">
+            <h2 class="text-lg font-semibold text-foreground">Generated Description</h2>
+            <button type="button" class="inline-flex size-9 items-center justify-center rounded-full border border-border bg-secondary/60 text-muted-foreground transition hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" data-description-close>
+                <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 6L6 18" />
+                    <path d="M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
 
-        <div class="ai-generate-description-footer">
-            <button ai-close-modal="description"> Cancel </button>
-            <button class="add-to-description-field"> Add </button>
+        <div class="space-y-6 px-6 py-6">
+            <textarea class="created-description-textarea textarea min-h-[220px]" placeholder="Generated description ..."></textarea>
+
+            <section class="space-y-3 rounded-xl border border-dashed border-border bg-muted/40 p-4">
+                <p class="text-sm font-semibold text-foreground">Need a tweak?</p>
+                <p class="text-xs text-muted-foreground">Provide guidance and let AI regenerate the copy.</p>
+                <div class="re-generate-error-message text-sm text-destructive"></div>
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+                    <input type="text" class="class-chatbot-input input" name="instruction_of_modification" placeholder="Ex: Highlight river views and nearby schools">
+                    <button type="button" class="regenerate-chatbot-send-btn btn sm:w-auto">
+                        <i class="bi bi-send text-base"></i>
+                        <span class="sr-only">Regenerate description</span>
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 border-t border-border bg-muted/50 px-6 py-4">
+            <button type="button" class="btn-secondary min-w-[120px] justify-center" data-description-close>Cancel</button>
+            <button type="button" class="btn min-w-[120px] justify-center add-to-description-field">Use Description</button>
         </div>
     </div>
 </div>
-
 {% endblock %}
+
 {% block extend_script %}
 <script type="text/javascript">
-    var createBuildingAPIUrl = "{% url 'building:api:create' %}"
-    var generateBuildingDescriptionAPIUrl = "{% url 'building:api:generate_description' %}"
-    var reGenerateBuildingDescriptionAPIUrl = "{% url 'building:api:re_generate_description' %}"
+    var createBuildingAPIUrl = "{% url 'building:api:create' %}";
+    var generateBuildingDescriptionAPIUrl = "{% url 'building:api:generate_description' %}";
+    var reGenerateBuildingDescriptionAPIUrl = "{% url 'building:api:re_generate_description' %}";
     var residenceSubTypes = {{ residence_sub_types|safe }};
     var commercialSubTypes = {{ commercial_sub_types|safe }};
 </script>
-<script src="{% static 'js/building/create_building.js' %}?v=1.06"></script>
+<script src="{% static 'js/building/create_building.js' %}?v=2.00"></script>
 {% endblock extend_script %}
+
