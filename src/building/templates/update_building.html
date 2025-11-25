@@ -10,7 +10,7 @@
 <section class="bg-muted/30 py-12">
     <div class="container max-w-6xl space-y-10">
         <header class="space-y-4">
-            <p class="text-xs font-semibold uppercase tracking-[0.4em] text-primary">Buildings</p>
+            <p class="text-xs font-semibold uppercase tracking-[0.4em] text-accent">Buildings</p>
             <div class="space-y-2">
                 <h1 class="text-3xl font-heading font-semibold text-foreground">Edit building</h1>
                 <p class="max-w-2xl text-sm text-muted-foreground">
@@ -216,36 +216,36 @@
             </div>
 
             <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
-                    <input name="have_freehold" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="freehold" {% if building.have_freehold %}checked{% endif %}>
+                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-accent/60">
+                    <input name="have_freehold" class="mt-1 size-4 rounded border-border text-accent focus:ring-accent" type="checkbox" id="freehold" {% if building.have_freehold %}checked{% endif %}>
                     <span class="text-sm font-medium text-foreground">Freehold</span>
                 </label>
-                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
-                    <input name="have_leasehold" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="leasehold" {% if building.have_leasehold %}checked{% endif %}>
+                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-accent/60">
+                    <input name="have_leasehold" class="mt-1 size-4 rounded border-border text-accent focus:ring-accent" type="checkbox" id="leasehold" {% if building.have_leasehold %}checked{% endif %}>
                     <span class="text-sm font-medium text-foreground">Leasehold</span>
                 </label>
-                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
-                    <input name="have_infinity_pool" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="infinity_pool" {% if building.have_infinity_pool %}checked{% endif %}>
+                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-accent/60">
+                    <input name="have_infinity_pool" class="mt-1 size-4 rounded border-border text-accent focus:ring-accent" type="checkbox" id="infinity_pool" {% if building.have_infinity_pool %}checked{% endif %}>
                     <span class="text-sm font-medium text-foreground">Infinity Pool</span>
                 </label>
-                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
-                    <input name="have_pets_allowed" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="pets_allowed" {% if building.have_pets_allowed %}checked{% endif %}>
+                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-accent/60">
+                    <input name="have_pets_allowed" class="mt-1 size-4 rounded border-border text-accent focus:ring-accent" type="checkbox" id="pets_allowed" {% if building.have_pets_allowed %}checked{% endif %}>
                     <span class="text-sm font-medium text-foreground">Pets Allowed</span>
                 </label>
-                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
-                    <input name="have_sauna" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="sauna" {% if building.have_sauna %}checked{% endif %}>
+                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-accent/60">
+                    <input name="have_sauna" class="mt-1 size-4 rounded border-border text-accent focus:ring-accent" type="checkbox" id="sauna" {% if building.have_sauna %}checked{% endif %}>
                     <span class="text-sm font-medium text-foreground">Sauna</span>
                 </label>
-                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
-                    <input name="have_rooftop_pool" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="rooftop_pool" {% if building.have_sky_lounge or building.have_rooftop_pool %}checked{% endif %}>
+                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-accent/60">
+                    <input name="have_rooftop_pool" class="mt-1 size-4 rounded border-border text-accent focus:ring-accent" type="checkbox" id="rooftop_pool" {% if building.have_sky_lounge or building.have_rooftop_pool %}checked{% endif %}>
                     <span class="text-sm font-medium text-foreground">Rooftop Pool</span>
                 </label>
-                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
-                    <input name="have_fitness_area" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="fitness_area" {% if building.have_fitness_area %}checked{% endif %}>
+                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-accent/60">
+                    <input name="have_fitness_area" class="mt-1 size-4 rounded border-border text-accent focus:ring-accent" type="checkbox" id="fitness_area" {% if building.have_fitness_area %}checked{% endif %}>
                     <span class="text-sm font-medium text-foreground">Fitness Area</span>
                 </label>
-                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
-                    <input name="have_grocery" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="grocery" {% if building.have_grocery %}checked{% endif %}>
+                <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-accent/60">
+                    <input name="have_grocery" class="mt-1 size-4 rounded border-border text-accent focus:ring-accent" type="checkbox" id="grocery" {% if building.have_grocery %}checked{% endif %}>
                     <span class="text-sm font-medium text-foreground">On-site Grocery</span>
                 </label>
             </div>

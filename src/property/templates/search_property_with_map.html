@@ -34,7 +34,7 @@
                     <b class="text-foreground"><span label="available-properties">- -</span></b>
                     Properties available
                 </p>
-                <button class="nav-link active-nav reset-map hidden rounded-full border border-border bg-secondary px-3 py-1 text-xs font-semibold text-foreground transition hover:bg-secondary/60">Reset map</button>
+                <button class="nav-link active-nav reset-map hidden rounded-full border border-border bg-secondary px-3 py-1 text-xs font-semibold text-foreground transition hover:border-accent/20 hover:bg-accent/10 hover:text-accent">Reset map</button>
             </div>
             <div class="grid grid-cols-1 gap-6" id="search-result-list">
                 <!-- Property cards loaded by JS -->
@@ -45,7 +45,7 @@
         </div>
 
         <div class="search-map-wrapper sticky top-24 h-[75vh] rounded-2xl border border-border bg-card shadow-sm">
-            <a href="" label-name="view-tag" class="search-list-redirect absolute right-4 top-4 inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1 text-xs font-semibold text-foreground transition hover:bg-secondary/60">
+            <a href="" label-name="view-tag" class="search-list-redirect absolute right-4 top-4 inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1 text-xs font-semibold text-foreground transition hover:border-accent/20 hover:bg-accent/10 hover:text-accent">
                 <i class="bi bi-list-task"></i>
                 List View
             </a>
@@ -59,6 +59,37 @@
     <div class="log-in-modal-body property-search-map-modal-body overflow-hidden rounded-2xl border border-border bg-card shadow-xl">
         <div class="detail-body"></div>
         <div class="nearby-items"></div>
+    </div>
+</div>
+<div class="modal fade _3d_model_dialog" id="_3d_view_dialog" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content overflow-hidden rounded-2xl border border-border">
+            <button class="_3d_model_close close_3d_view_dialog absolute right-4 top-4 z-50 inline-flex size-10 items-center justify-center rounded-full bg-black/50 text-white transition hover:bg-black/70">
+                <i class="bi bi-x-lg"></i>
+            </button>
+            <div class="_3d_model_display flex h-[80vh] w-full items-center justify-center bg-black/90"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade _3d_model_dialog" id="_3d_drone_view" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content overflow-hidden rounded-2xl border border-border">
+            <button class="_3d_model_close close_3d_drone_view absolute right-4 top-4 z-50 inline-flex size-10 items-center justify-center rounded-full bg-black/50 text-white transition hover:bg-black/70">
+                <i class="bi bi-x-lg"></i>
+            </button>
+            <div class="_3d_model_display flex h-[80vh] w-full items-center justify-center bg-black/90">
+                <video
+                    id="_3d_model_display_video"
+                    class="video-js h-full w-full"
+                    controls
+                    preload="auto"
+                    data-setup="{}"
+                >
+                    <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that supports HTML5 video.</p>
+                </video>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

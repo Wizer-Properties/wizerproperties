@@ -47,26 +47,26 @@
             <div class="space-y-6">
                 <div class="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.3em] text-primary">
                     {% for category in post.categories.all %}
-                        <span class="rounded-full border border-primary/40 bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary">{{ category.name }}</span>
+                        <span class="rounded-full border border-accent/40 bg-accent/10 px-3 py-1 text-[11px] font-semibold text-primary">{{ category.name }}</span>
                     {% endfor %}
                 </div>
                 <h1 class="text-3xl font-heading font-semibold text-foreground sm:text-4xl">{{ post.title }}</h1>
                 <p class="text-sm text-muted-foreground sm:text-base">{{ post.subtitle }}</p>
                 <div class="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
                     <span class="inline-flex items-center gap-1">
-                        <i class="bi bi-person-circle text-base text-primary"></i>
+                        <i class="bi bi-person-circle text-base text-accent"></i>
                         {{ post.creator.full_name }}
                     </span>
                     <span class="inline-flex items-center gap-1">
-                        <i class="bi bi-calendar3 text-base text-primary"></i>
+                        <i class="bi bi-calendar3 text-base text-accent"></i>
                         {{ post.created_at|date:"d F Y" }}
                     </span>
                     <span class="inline-flex items-center gap-1">
-                        <i class="bi bi-stopwatch text-base text-primary"></i>
+                        <i class="bi bi-stopwatch text-base text-accent"></i>
                         {{ post.estimated_read_time }} min read
                     </span>
                     <span class="inline-flex items-center gap-1">
-                        <i class="bi bi-heart text-base text-primary"></i>
+                        <i class="bi bi-heart text-base text-accent"></i>
                         {{ post.total_likes }} likes
                     </span>
                 </div>
@@ -76,7 +76,7 @@
                 <img src="{{ post.banner_image.url }}" alt="{{ post.title }}" loading="lazy" class="h-full w-full object-cover" />
             </figure>
 
-            <article class="blog-article prose prose-slate max-w-none text-muted-foreground prose-headings:text-foreground prose-a:text-primary prose-strong:text-foreground">
+            <article class="blog-article prose prose-slate max-w-none text-muted-foreground prose-headings:text-foreground prose-a:text-accent prose-strong:text-foreground">
                 {{ post.description|safe }}
             </article>
 
@@ -89,7 +89,7 @@
 
             <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                 <div class="flex items-center gap-3">
-                    <button type="button" class="blog-like-btn inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-xs font-medium text-muted-foreground transition hover:border-primary hover:text-primary" like-done="{{ is_liked }}" post-id="{{ post.id }}">
+                    <button type="button" class="blog-like-btn inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-xs font-medium text-muted-foreground transition hover:border-accent hover:text-accent" like-done="{{ is_liked }}" post-id="{{ post.id }}">
                         <i class="bi bi-hand-thumbs-up text-base" data-icon="default"></i>
                         <i class="bi bi-hand-thumbs-up-fill text-base hidden" data-icon="active"></i>
                         Appreciate
@@ -101,20 +101,20 @@
                     </button>
                 </div>
                 <div class="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-                    <span class="font-semibold uppercase tracking-[0.34em] text-[11px] text-primary">Share</span>
-                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 hover:border-primary hover:text-primary">
+                    <span class="font-semibold uppercase tracking-[0.34em] text-[11px] text-accent">Share</span>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 hover:border-accent hover:text-accent">
                         <i class="bi bi-facebook"></i> Facebook
                     </a>
-                    <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ post.title|urlencode }}" target="_blank" class="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 hover:border-primary hover:text-primary">
+                    <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ post.title|urlencode }}" target="_blank" class="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 hover:border-accent hover:text-accent">
                         <i class="bi bi-twitter-x"></i> X
                     </a>
-                    <a href="https://api.whatsapp.com/send?text={{ post.title|urlencode }}%20{{ request.build_absolute_uri|urlencode }}" target="_blank" class="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 hover:border-primary hover:text-primary">
+                    <a href="https://api.whatsapp.com/send?text={{ post.title|urlencode }}%20{{ request.build_absolute_uri|urlencode }}" target="_blank" class="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 hover:border-accent hover:text-accent">
                         <i class="bi bi-whatsapp"></i> WhatsApp
                     </a>
-                    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ post.title|urlencode }}" target="_blank" class="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 hover:border-primary hover:text-primary">
+                    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ post.title|urlencode }}" target="_blank" class="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 hover:border-accent hover:text-accent">
                         <i class="bi bi-linkedin"></i> LinkedIn
                     </a>
-                    <a href="mailto:?subject={{ post.title|urlencode }}&body={{ request.build_absolute_uri|urlencode }}" class="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 hover:border-primary hover:text-primary">
+                    <a href="mailto:?subject={{ post.title|urlencode }}&body={{ request.build_absolute_uri|urlencode }}" class="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1 hover:border-accent hover:text-accent">
                         <i class="bi bi-envelope"></i> Email
                     </a>
                 </div>
@@ -124,7 +124,7 @@
         <section class="related-blogs space-y-6 rounded-3xl border border-border bg-card/95 p-8 shadow-lg backdrop-blur" post-id="{{ post.id }}" data-post-categories="{% for category in post.categories.all %}{{ category.name }}{% if not forloop.last %}|{% endif %}{% endfor %}">
             <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div class="space-y-2">
-                    <span class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Related reads</span>
+                    <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Related reads</span>
                     <h2 class="text-2xl font-heading font-semibold text-foreground">More articles you might enjoy</h2>
                 </div>
             </div>

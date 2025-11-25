@@ -58,7 +58,7 @@
     }
     if (property.discount_period) {
       const countdown = document.createElement("div");
-      countdown.className = "rounded-full bg-secondary/80 px-3 py-1 text-xs font-medium text-foreground backdrop-blur";
+      countdown.className = "rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-primary backdrop-blur";
       countdown.dataset.dateCount = property.discount_period;
       fragments.appendChild(countdown);
     }
@@ -91,7 +91,7 @@
     const fragment = document.createDocumentFragment();
     features.forEach((feature) => {
       const chip = document.createElement("span");
-      chip.className = "inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-3 py-1 text-xs text-muted-foreground";
+      chip.className = "inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-3 py-1 text-xs font-medium text-primary";
       chip.textContent = feature;
       fragment.appendChild(chip);
     });

@@ -13,7 +13,7 @@
         <div class="absolute inset-0 bg-gradient-to-br from-primary/15 via-transparent to-primary/5"></div>
         <div class="relative flex h-full flex-col justify-between">
             <div>
-                <p class="text-sm font-semibold uppercase tracking-widest text-primary/80">
+                <p class="text-sm font-semibold uppercase tracking-widest text-accent">
                     Welcome back
                 </p>
                 <h2 class="mt-4 text-3xl font-heading font-semibold text-foreground">
@@ -25,7 +25,7 @@
             </div>
             <div class="mt-12 space-y-6">
                 <div class="flex items-start gap-4 rounded-2xl border border-border bg-background/60 p-5 shadow-sm backdrop-blur">
-                    <div class="mt-1 h-10 w-10 rounded-full bg-primary/10 text-primary">
+                    <div class="mt-1 h-10 w-10 rounded-full bg-accent/10 text-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto mt-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="flex items-start gap-4 rounded-2xl border border-border bg-background/60 p-5 shadow-sm backdrop-blur">
-                    <div class="mt-1 h-10 w-10 rounded-full bg-primary/10 text-primary">
+                    <div class="mt-1 h-10 w-10 rounded-full bg-accent/10 text-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto mt-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.5 19.5l4.5-4.5m0 0l4.5 4.5m-4.5-4.5v-6.75A2.25 2.25 0 0114.25 6h3" />
                         </svg>
@@ -97,7 +97,7 @@
                         <label for="password" class="text-sm font-medium text-muted-foreground">
                             Password
                         </label>
-                        <a href="{% url 'user:forgot_password' %}" class="text-sm font-medium text-primary transition hover:text-primary/80" aria-label="Forgot your password?">
+                        <a href="{% url 'user:forgot_password' %}" class="text-sm font-medium text-accent transition hover:text-accent/80" aria-label="Forgot your password?">
                             Forgot password?
                         </a>
                     </div>
@@ -138,7 +138,7 @@
                 {% csrf_token %}
                 <button
                     type="submit"
-                    class="inline-flex w-full items-center justify-center gap-3 rounded-xl border border-border bg-background px-5 py-3 text-base font-semibold text-foreground transition hover:border-primary hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                    class="inline-flex w-full items-center justify-center gap-3 rounded-xl border border-border bg-background px-5 py-3 text-base font-semibold text-foreground transition hover:border-accent hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                     aria-label="Continue with Google account"
                 >
                     <img width="20" height="20" src="{% static 'media/icons/google_icon.webp' %}" alt="Google logo" aria-hidden="true">
@@ -148,7 +148,7 @@
 
             <p class="text-center text-sm text-muted-foreground">
                 New here?
-                <a href="{% url 'user:signup' %}" class="font-semibold text-primary transition hover:text-primary/80">
+                <a href="{% url 'user:signup' %}" class="font-semibold text-accent transition hover:text-accent/80">
                     Create an account
                 </a>
             </p>

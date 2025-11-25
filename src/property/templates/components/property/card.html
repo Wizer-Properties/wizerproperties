@@ -1,5 +1,6 @@
+{% load static %}
 <template id="property-card-template">
-  <article class="group relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-lg" data-property-card>
+  <article class="group relative flex w-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-lg" data-property-card>
     <div class="absolute left-4 top-4 z-10 flex flex-col gap-2" data-card-badges></div>
     <div class="absolute right-4 top-4 z-10 flex gap-2" data-card-actions>
       <button class="add-to-favorite inline-flex size-9 items-center justify-center rounded-full border border-border bg-black/60 text-white backdrop-blur transition hover:bg-black/80" added="false" index="" effect="pulse" data-card-favorite>
@@ -32,7 +33,7 @@
         <a href="#" class="block space-y-1.5" data-card-link>
           <h3 class="line-clamp-2 text-lg font-semibold leading-tight text-foreground transition group-hover:text-primary sm:text-xl" data-card-title>Property title</h3>
           <div class="flex items-start gap-2 text-sm text-muted-foreground">
-            <i class="bi bi-geo-alt mt-0.5 flex-shrink-0 text-primary"></i>
+            <i class="bi bi-geo-alt mt-0.5 flex-shrink-0 text-accent"></i>
             <span class="line-clamp-2 flex-1" data-card-address>Address</span>
           </div>
         </a>
@@ -41,22 +42,22 @@
       <!-- Property Stats Grid -->
       <div class="grid grid-cols-2 gap-2.5 text-sm sm:grid-cols-4 sm:gap-3">
         <div class="flex flex-col items-center gap-1 rounded-lg border border-border bg-secondary/40 px-2.5 py-2 sm:px-3">
-          <i class="bi bi-bed text-primary"></i>
+          <i class="bi bi-bed text-accent"></i>
           <span class="font-semibold text-foreground" data-card-beds>—</span>
           <span class="text-xs text-muted-foreground">Beds</span>
         </div>
         <div class="flex flex-col items-center gap-1 rounded-lg border border-border bg-secondary/40 px-2.5 py-2 sm:px-3">
-          <i class="bi bi-bathtub text-primary"></i>
+          <i class="bi bi-bathtub text-accent"></i>
           <span class="font-semibold text-foreground" data-card-baths>—</span>
           <span class="text-xs text-muted-foreground">Baths</span>
         </div>
         <div class="flex flex-col items-center gap-1 rounded-lg border border-border bg-secondary/40 px-2.5 py-2 sm:px-3">
-          <i class="bi bi-rulers text-primary"></i>
+          <i class="bi bi-rulers text-accent"></i>
           <span class="font-semibold text-foreground" data-card-size>— sqm</span>
           <span class="text-xs text-muted-foreground">Size</span>
         </div>
         <div class="flex flex-col items-center gap-1 rounded-lg border border-border bg-secondary/40 px-2.5 py-2 sm:px-3">
-          <i class="bi bi-building text-primary"></i>
+          <i class="bi bi-building text-accent"></i>
           <span class="font-semibold text-foreground" data-card-floor>—</span>
           <span class="text-xs text-muted-foreground">Floor</span>
         </div>
@@ -67,11 +68,11 @@
       
       <!-- Action Buttons (3D/Drone) -->
       <div class="flex flex-wrap gap-2" data-card-action-buttons>
-        <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1.5 text-xs font-medium text-foreground transition hover:bg-secondary/60 hidden" data-card-3d>
+        <button type="button" class="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-3 py-1.5 text-xs font-medium text-primary transition hover:bg-accent/20 hidden" data-card-3d>
           <i class="bi bi-box-arrow-up-right"></i>
           <span>Interior 3D View</span>
         </button>
-        <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1.5 text-xs font-medium text-foreground transition hover:bg-secondary/60 hidden" data-card-drone>
+        <button type="button" class="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-3 py-1.5 text-xs font-medium text-primary transition hover:bg-accent/20 hidden" data-card-drone>
           <i class="bi bi-box-arrow-up-right"></i>
           <span>Aerial View</span>
         </button>
@@ -81,7 +82,7 @@
       <div class="mt-auto flex flex-col gap-4 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-between">
         <div class="flex items-center gap-3">
           <div class="size-10 flex-shrink-0 overflow-hidden rounded-full border border-border bg-muted">
-            <img src="/static/media/default-avatar.jpg" alt="Developer" class="h-full w-full object-cover" data-card-developer-image />
+            <img src="{% static 'media/default-avatar.jpg' %}" alt="Developer" class="h-full w-full object-cover" data-card-developer-image />
           </div>
           <div class="min-w-0 text-sm">
             <p class="truncate font-semibold text-foreground" data-card-developer-name>Developer</p>
@@ -93,7 +94,7 @@
             <i class="bi bi-calendar-check"></i>
             <span>Schedule viewing</span>
           </a>
-          <a href="#" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-4 py-2 text-sm font-medium text-foreground transition hover:bg-secondary/60" data-card-contact>
+          <a href="#" class="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-4 py-2 text-sm font-medium text-primary transition hover:bg-accent/20" data-card-contact>
             <i class="bi bi-envelope"></i>
             <span>Contact</span>
           </a>
