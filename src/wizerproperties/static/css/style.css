@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 :root{
-    --th-gradient-bg: linear-gradient(315deg, #140733 0%, #103bd4 54%);
-    --th-bg-color : #103bd4;
+    --th-gradient-bg: linear-gradient(315deg, #140733 0%, #7f1377 54%);
+    --th-bg-color : #7f1377;
     --th-color : #15C1B9;
     --th-color-1 : #7F1377;
 }
@@ -765,7 +765,7 @@ footer{
 }
 
 .generating-btn{
-    background: #103bd4;
+    background: #7f1377;
     color: #fff;
     padding: 8px 20px;
     border: none;

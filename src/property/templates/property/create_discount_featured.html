@@ -11,7 +11,7 @@
     <div class="container max-w-3xl">
         <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
             <div class="space-y-3">
-                <p class="text-xs font-semibold uppercase tracking-[0.4em] text-primary">{{ property_type|title }} promotion</p>
+                <p class="text-xs font-semibold uppercase tracking-[0.4em] text-accent">{{ property_type|title }} promotion</p>
                 <h1 class="text-3xl font-heading font-semibold text-foreground">{{ page_title }}</h1>
                 <p class="text-sm text-muted-foreground">Highlight a property with a time-limited {{ property_type }} promotion.</p>
             </div>
@@ -24,9 +24,9 @@
                 <div class="flex flex-wrap items-center justify-between gap-3">
                     <span class="font-medium text-foreground">Cost per promotion</span>
                     {% if property_type == 'discount' %}
-                        <span class="inline-flex items-center gap-2 rounded-full border border-border bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">{{ discount_cost }} credits</span>
+                        <span class="inline-flex items-center gap-2 rounded-full border border-border bg-accent/10 px-3 py-1 text-xs font-semibold text-primary">{{ discount_cost }} credits</span>
                     {% else %}
-                        <span class="inline-flex items-center gap-2 rounded-full border border-border bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">{{ featured_cost }} credits</span>
+                        <span class="inline-flex items-center gap-2 rounded-full border border-border bg-accent/10 px-3 py-1 text-xs font-semibold text-primary">{{ featured_cost }} credits</span>
                     {% endif %}
                 </div>
                 {% if not can_afford %}

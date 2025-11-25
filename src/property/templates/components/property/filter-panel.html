@@ -28,7 +28,7 @@
                     <div class="flex flex-wrap gap-2" data-active-filter-chips>
                         <!-- Active filter chips inserted via JS -->
                     </div>
-                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1 text-xs font-medium text-foreground transition hover:border-primary/60 hover:text-primary" data-filter-reset>
+                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1 text-xs font-medium text-foreground transition hover:border-accent/60 hover:text-accent" data-filter-reset>
                         <i class="bi bi-arrow-counterclockwise"></i>
                         <span>Reset all</span>
                     </button>
@@ -36,23 +36,23 @@
             </div>
 
             <div class="flex flex-wrap gap-3" data-filter-trigger-group>
-                <button type="button" data-filter-trigger="radius" aria-haspopup="true" aria-expanded="false" aria-controls="filter-popover-radius" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary">
+                <button type="button" data-filter-trigger="radius" aria-haspopup="true" aria-expanded="false" aria-controls="filter-popover-radius" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:text-accent">
                     <i class="bi bi-radar"></i>
                     <span data-filter-label="radius">Radius</span>
                 </button>
-                <button type="button" data-filter-trigger="price" aria-haspopup="true" aria-expanded="false" aria-controls="filter-popover-price" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary">
+                <button type="button" data-filter-trigger="price" aria-haspopup="true" aria-expanded="false" aria-controls="filter-popover-price" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:text-accent">
                     <i class="bi bi-tag"></i>
                     <span data-filter-label="price">Price</span>
                 </button>
-                <button type="button" data-filter-trigger="bedrooms" aria-haspopup="true" aria-expanded="false" aria-controls="filter-popover-bedrooms" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary">
+                <button type="button" data-filter-trigger="bedrooms" aria-haspopup="true" aria-expanded="false" aria-controls="filter-popover-bedrooms" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:text-accent">
                     <i class="bi bi-bed"></i>
                     <span data-filter-label="bedrooms">Bedrooms</span>
                 </button>
-                <button type="button" data-filter-trigger="property-type" aria-haspopup="true" aria-expanded="false" aria-controls="filter-popover-property-type" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary">
+                <button type="button" data-filter-trigger="property-type" aria-haspopup="true" aria-expanded="false" aria-controls="filter-popover-property-type" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:text-accent">
                     <i class="bi bi-building"></i>
                     <span data-filter-label="property-type">Property type</span>
                 </button>
-                <button type="button" data-filter-trigger="more" aria-haspopup="dialog" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary">
+                <button type="button" data-filter-trigger="more" aria-haspopup="dialog" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:text-accent">
                     <i class="bi bi-sliders"></i>
                     <span>More filters</span>
                 </button>
@@ -211,11 +211,11 @@
                     <div class="space-y-4">
                         <div class="flex items-center gap-3 rounded-xl border border-border bg-secondary/40 px-3 py-2 text-sm">
                             <div class="flex items-center gap-2">
-                                <input type="radio" name="building__type" value="residence" id="filter-type-residence" class="size-4 border-border text-primary focus:ring-primary/40" data-filter-input>
+                                <input type="radio" name="building__type" value="residence" id="filter-type-residence" class="size-4 border-border text-accent focus:ring-accent/40" data-filter-input>
                                 <label for="filter-type-residence" class="cursor-pointer">Residential</label>
                             </div>
                             <div class="flex items-center gap-2">
-                                <input type="radio" name="building__type" value="commercial" id="filter-type-commercial" class="size-4 border-border text-primary focus:ring-primary/40" data-filter-input>
+                                <input type="radio" name="building__type" value="commercial" id="filter-type-commercial" class="size-4 border-border text-accent focus:ring-accent/40" data-filter-input>
                                 <label for="filter-type-commercial" class="cursor-pointer">Commercial</label>
                             </div>
                         </div>
@@ -285,33 +285,33 @@
                             <div class="space-y-2 text-sm font-medium text-muted-foreground">
                                 <span>Quota</span>
                                 <div class="flex flex-wrap gap-2">
-                                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary" data-filter-toggle name="building__quota" value="thai">Thai</button>
-                                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary" data-filter-toggle name="building__quota" value="foreign">Foreign</button>
+                                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-accent/60 hover:text-accent" data-filter-toggle name="building__quota" value="thai">Thai</button>
+                                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-accent/60 hover:text-accent" data-filter-toggle name="building__quota" value="foreign">Foreign</button>
                             </div>
                         </div>
     
                             <div class="space-y-2 text-sm font-medium text-muted-foreground">
                                 <span>Furnishing</span>
                                 <div class="flex flex-wrap gap-2">
-                                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary" data-filter-toggle name="building__furnishing" value="partly">Partly</button>
-                                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary" data-filter-toggle name="building__furnishing" value="fully">Fully</button>
+                                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-accent/60 hover:text-accent" data-filter-toggle name="building__furnishing" value="partly">Partly</button>
+                                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-accent/60 hover:text-accent" data-filter-toggle name="building__furnishing" value="fully">Fully</button>
                             </div>
                         </div>
 
                             <div class="space-y-2 text-sm font-medium text-muted-foreground">
                                 <span>Ownership</span>
                                 <div class="flex flex-wrap gap-2">
-                                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary" data-filter-toggle name="building__have_freehold" value="true">Freehold</button>
-                                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary" data-filter-toggle name="building__have_leasehold" value="true">Leasehold</button>
+                                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-accent/60 hover:text-accent" data-filter-toggle name="building__have_freehold" value="true">Freehold</button>
+                                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-accent/60 hover:text-accent" data-filter-toggle name="building__have_leasehold" value="true">Leasehold</button>
                             </div>
                         </div>
 
                             <div class="space-y-2 text-sm font-medium text-muted-foreground">
                                 <span>Development status</span>
                                 <div class="flex flex-wrap gap-2">
-                                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary" data-filter-toggle name="building__status" value="to_be_commenced">To be commenced</button>
-                                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary" data-filter-toggle name="building__status" value="under_construction">Under construction</button>
-                                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary" data-filter-toggle name="building__status" value="completed">Completed</button>
+                                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-accent/60 hover:text-accent" data-filter-toggle name="building__status" value="to_be_commenced">To be commenced</button>
+                                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-accent/60 hover:text-accent" data-filter-toggle name="building__status" value="under_construction">Under construction</button>
+                                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-accent/60 hover:text-accent" data-filter-toggle name="building__status" value="completed">Completed</button>
                                 </div>
                             </div>
                         </div>

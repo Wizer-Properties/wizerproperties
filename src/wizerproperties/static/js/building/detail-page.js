@@ -149,7 +149,7 @@
 
     if (!items || items.length === 0) {
       const li = document.createElement("li");
-      li.className = "splide__slide h-[520px] flex items-center justify-center rounded-2xl bg-muted text-muted-foreground";
+      li.className = "splide__slide h-[80vh] flex items-center justify-center bg-white/5 text-white/60";
       li.textContent = "Media unavailable";
       els.galleryModalList.appendChild(li);
     } else {
@@ -158,14 +158,14 @@
         li.className = "splide__slide";
         if (type === "video" || type === "aerial_drone_video" || /\.(mp4|webm)$/i.test(item.file || "")) {
           li.innerHTML = `
-            <video class="h-[520px] w-full rounded-3xl border border-border object-contain bg-black" controls preload="metadata">
+            <video class="h-[80vh] w-full object-contain bg-black" controls preload="metadata">
               <source src="${item.file}" type="video/${item.file.endsWith(".webm") ? "webm" : "mp4"}" />
               Your browser does not support the video tag.
             </video>
           `;
         } else {
           li.innerHTML = `
-            <img src="${item.file}" alt="Gallery media" class="h-[520px] w-full rounded-3xl border border-border object-contain bg-black" loading="lazy" />
+            <img src="${item.file}" alt="Gallery media" class="h-[80vh] w-full object-contain bg-black" loading="lazy" />
           `;
         }
         els.galleryModalList.appendChild(li);
@@ -587,7 +587,7 @@
   function ratingStars(rating) {
     let html = "";
     for (let i = 1; i <= 5; i++) {
-      html += `<i class="bi ${i <= rating ? "bi-star-fill text-primary" : "bi-star text-muted-foreground"}" data-rating="${i}"></i>`;
+      html += `<i class="bi ${i <= rating ? "bi-star-fill text-accent" : "bi-star text-muted-foreground"}" data-rating="${i}"></i>`;
     }
     return html;
   }
@@ -606,7 +606,7 @@
             <p class="text-2xl font-semibold text-foreground">${average.toFixed(1)} / 5</p>
             <p class="text-sm text-muted-foreground">Based on <strong>${total}</strong> review${total === 1 ? "" : "s"}</p>
           </div>
-          <div class="flex items-center gap-2 text-xl text-primary">
+          <div class="flex items-center gap-2 text-xl text-accent">
             ${ratingStars(Math.round(average))}
           </div>
         </div>
@@ -616,7 +616,7 @@
       html += `
         <div class="mt-6 space-y-4 rounded-2xl border border-border bg-background p-4">
           <p class="text-sm font-semibold text-foreground">Share your experience</p>
-          <div class="flex items-center gap-2 text-xl text-primary give-rating">
+          <div class="flex items-center gap-2 text-xl text-accent give-rating">
             ${ratingStars(0)}
           </div>
           <textarea class="give-review input min-h-[140px]" placeholder="Tell us about the project..."></textarea>
@@ -736,7 +736,7 @@
     template.className = "view-the-reviews-box rounded-2xl border border-border bg-card p-4 shadow-sm";
     template.innerHTML = `
       <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
-        <span class="flex items-center gap-1 text-sm text-primary">
+        <span class="flex items-center gap-1 text-sm text-accent">
           ${ratingStars(review.rating)}
         </span>
         <span class="text-xs text-muted-foreground">

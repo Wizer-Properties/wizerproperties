@@ -12,7 +12,7 @@
   --popover: 0 0% 100%;
   --popover-foreground: 222.2 47.4% 11.2%;
 
-  --primary: 210 92% 45%;
+  --primary: 304 74% 29%;
   --primary-foreground: 0 0% 100%;
 
   --secondary: 210 40% 96%;
@@ -21,15 +21,15 @@
   --muted: 215 16% 90%;
   --muted-foreground: 215 25% 27%;
 
-  --accent: 160 84% 39%;
-  --accent-foreground: 160 88% 10%;
+  --accent: 177 80% 42%;
+  --accent-foreground: 0 0% 100%;
 
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 98%;
 
   --border: 214 32% 91%;
   --input: 214 22% 88%;
-  --ring: 210 92% 45%;
+  --ring: 304 74% 29%;
 
   --radius: 0.75rem;
 }
@@ -44,8 +44,8 @@
   --popover: 224 71% 4%;
   --popover-foreground: 213 31% 91%;
 
-  --primary: 213 94% 68%;
-  --primary-foreground: 222.2 47.4% 11.2%;
+  --primary: 304 74% 45%;
+  --primary-foreground: 0 0% 100%;
 
   --secondary: 215 27.9% 16.9%;
   --secondary-foreground: 210 40% 98%;
@@ -53,15 +53,15 @@
   --muted: 215 27.9% 16.9%;
   --muted-foreground: 217.9 10.6% 64.9%;
 
-  --accent: 173 80% 40%;
-  --accent-foreground: 173 100% 12%;
+  --accent: 177 80% 50%;
+  --accent-foreground: 0 0% 100%;
 
   --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 0 85.7% 97.3%;
 
   --border: 215 27.9% 16.9%;
   --input: 215 27.9% 16.9%;
-  --ring: 213 94% 68%;
+  --ring: 304 74% 45%;
 }
 
 @layer base {
@@ -89,7 +89,7 @@
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-md border border-transparent bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground shadow transition hover:bg-secondary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+    @apply inline-flex items-center justify-center gap-2 rounded-md border border-transparent bg-accent/10 px-4 py-2 text-sm font-medium text-primary shadow-sm transition hover:bg-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
   }
 
   .input {
@@ -109,11 +109,11 @@
   }
 
   .nav-pill {
-    @apply inline-flex items-center gap-2 rounded-full px-3 py-2 text-muted-foreground transition hover:bg-muted/40 hover:text-foreground;
+    @apply inline-flex items-center gap-2 rounded-full px-3 py-2 text-muted-foreground transition hover:bg-accent/10 hover:text-primary;
   }
 
   .nav-pill-active {
-    @apply bg-muted/60 text-foreground;
+    @apply bg-accent/10 text-primary;
   }
 
   .nav-group {
@@ -121,11 +121,11 @@
   }
 
   .nav-trigger {
-    @apply inline-flex cursor-pointer list-none items-center gap-1 rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition hover:bg-muted/40 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+    @apply inline-flex cursor-pointer list-none items-center gap-1 rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition hover:bg-accent/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
   }
 
   .nav-group[open] .nav-trigger {
-    @apply bg-muted/60 text-foreground;
+    @apply bg-accent/10 text-primary;
   }
 
   .nav-popover {
@@ -229,11 +229,11 @@
   }
 
   .filter-chip {
-    @apply rounded-full border border-border bg-secondary/50 px-3 py-1 text-sm font-medium text-muted-foreground transition hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+    @apply rounded-full border border-border bg-secondary/50 px-3 py-1 text-sm font-medium text-muted-foreground transition hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
   }
 
   .filter-chip-active {
-    @apply border-primary bg-primary/10 text-primary;
+    @apply border-accent bg-accent/10 text-primary;
   }
 }
 

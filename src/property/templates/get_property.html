@@ -47,19 +47,19 @@
                     <div class="space-y-6 p-6">
                         <div class="flex flex-wrap items-start justify-between gap-4">
                             <div class="space-y-3">
-                                <span class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Property</span>
+                                <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Property</span>
                                 <h1 class="text-3xl font-heading font-semibold text-foreground" data-property-title>Loading…</h1>
                                 <div class="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-                                    <i class="bi bi-geo-alt text-base text-primary"></i>
+                                    <i class="bi bi-geo-alt text-base text-accent"></i>
                                     <span data-property-address>Loading…</span>
                                 </div>
                                 <div class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs text-muted-foreground">
-                                    <span class="uppercase tracking-[0.25em] text-primary">Unit</span>
+                                    <span class="uppercase tracking-[0.25em] text-accent">Unit</span>
                                     <span class="font-semibold text-foreground" data-property-unit-id>—</span>
                                 </div>
                             </div>
                             <div class="flex flex-col items-end gap-3 text-right">
-                                <div class="rounded-xl border border-border bg-primary/10 px-4 py-3 text-right">
+                                <div class="rounded-xl border border-border bg-accent/10 px-4 py-3 text-right">
                                     <p class="text-sm font-medium text-muted-foreground">Asking Price</p>
                                     <p class="text-xl font-semibold text-primary" data-property-price>฿ –</p>
                                     <p class="text-xs text-muted-foreground" data-property-price-sqm>฿ – / sqm</p>
@@ -182,29 +182,29 @@
                             </div>
                         </div>
                         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-property-specifications>
-                            <div class="spec-card">
-                                <span class="spec-label">Balconies</span>
-                                <span class="spec-value" data-property-balcony>—</span>
+                            <div class="rounded-xl border border-border bg-secondary/20 p-4 transition hover:border-accent/40">
+                                <span class="block text-xs font-medium uppercase tracking-wider text-muted-foreground">Balconies</span>
+                                <span class="mt-1 block text-base font-semibold text-foreground" data-property-balcony>—</span>
                             </div>
-                            <div class="spec-card">
-                                <span class="spec-label">Car Parks</span>
-                                <span class="spec-value" data-property-carparks>—</span>
+                            <div class="rounded-xl border border-border bg-secondary/20 p-4 transition hover:border-accent/40">
+                                <span class="block text-xs font-medium uppercase tracking-wider text-muted-foreground">Car Parks</span>
+                                <span class="mt-1 block text-base font-semibold text-foreground" data-property-carparks>—</span>
                             </div>
-                            <div class="spec-card">
-                                <span class="spec-label">Availability</span>
-                                <span class="spec-value" data-property-availability>—</span>
+                            <div class="rounded-xl border border-border bg-secondary/20 p-4 transition hover:border-accent/40">
+                                <span class="block text-xs font-medium uppercase tracking-wider text-muted-foreground">Availability</span>
+                                <span class="mt-1 block text-base font-semibold text-foreground" data-property-availability>—</span>
                             </div>
-                            <div class="spec-card">
-                                <span class="spec-label">Orientation</span>
-                                <span class="spec-value" data-property-orientation>—</span>
+                            <div class="rounded-xl border border-border bg-secondary/20 p-4 transition hover:border-accent/40">
+                                <span class="block text-xs font-medium uppercase tracking-wider text-muted-foreground">Orientation</span>
+                                <span class="mt-1 block text-base font-semibold text-foreground" data-property-orientation>—</span>
                             </div>
-                            <div class="spec-card">
-                                <span class="spec-label">Door Direction</span>
-                                <span class="spec-value" data-property-door-direction>—</span>
+                            <div class="rounded-xl border border-border bg-secondary/20 p-4 transition hover:border-accent/40">
+                                <span class="block text-xs font-medium uppercase tracking-wider text-muted-foreground">Door Direction</span>
+                                <span class="mt-1 block text-base font-semibold text-foreground" data-property-door-direction>—</span>
                             </div>
-                            <div class="spec-card">
-                                <span class="spec-label">Unit Position</span>
-                                <span class="spec-value" data-property-position>—</span>
+                            <div class="rounded-xl border border-border bg-secondary/20 p-4 transition hover:border-accent/40">
+                                <span class="block text-xs font-medium uppercase tracking-wider text-muted-foreground">Unit Position</span>
+                                <span class="mt-1 block text-base font-semibold text-foreground" data-property-position>—</span>
                             </div>
                         </div>
                     </div>
@@ -216,46 +216,47 @@
                             <h2 class="text-lg font-semibold text-foreground">Building Snapshot</h2>
                             <p class="text-sm text-muted-foreground">Fast facts about {{ property.building.title }}.</p>
                         </div>
-                        <a href="{% url 'building:get' property.building.id %}" class="btn-secondary">
-                            View building
+                        <a href="{% url 'building:get' property.building.id %}" class="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-4 py-2 text-sm font-medium text-primary transition hover:bg-accent/20">
+                            <span>View building</span>
+                            <i class="bi bi-arrow-right"></i>
                         </a>
                     </div>
                     <div class="grid gap-6 lg:grid-cols-[220px,1fr]">
                         <div class="overflow-hidden rounded-xl border border-border bg-muted/60" data-building-thumbnail>
                             <div class="aspect-square flex items-center justify-center text-xs text-muted-foreground">Loading…</div>
                         </div>
-                        <dl class="grid gap-4 sm:grid-cols-2" data-building-details>
-                            <div class="detail-pair">
-                                <dt class="detail-label">Developer</dt>
-                                <dd class="detail-value" data-building-developer>—</dd>
+                        <dl class="grid gap-x-6 gap-y-4 sm:grid-cols-2" data-building-details>
+                            <div class="space-y-1 border-b border-border/50 pb-2">
+                                <dt class="text-xs font-medium text-muted-foreground">Developer</dt>
+                                <dd class="text-sm font-semibold text-foreground" data-building-developer>—</dd>
                             </div>
-                            <div class="detail-pair">
-                                <dt class="detail-label">Project Name</dt>
-                                <dd class="detail-value" data-building-name>—</dd>
+                            <div class="space-y-1 border-b border-border/50 pb-2">
+                                <dt class="text-xs font-medium text-muted-foreground">Project Name</dt>
+                                <dd class="text-sm font-semibold text-foreground" data-building-name>—</dd>
                             </div>
-                            <div class="detail-pair">
-                                <dt class="detail-label">Total Floors</dt>
-                                <dd class="detail-value" data-building-floors>—</dd>
+                            <div class="space-y-1 border-b border-border/50 pb-2">
+                                <dt class="text-xs font-medium text-muted-foreground">Total Floors</dt>
+                                <dd class="text-sm font-semibold text-foreground" data-building-floors>—</dd>
                             </div>
-                            <div class="detail-pair">
-                                <dt class="detail-label">Total Units</dt>
-                                <dd class="detail-value" data-building-units>—</dd>
+                            <div class="space-y-1 border-b border-border/50 pb-2">
+                                <dt class="text-xs font-medium text-muted-foreground">Total Units</dt>
+                                <dd class="text-sm font-semibold text-foreground" data-building-units>—</dd>
                             </div>
-                            <div class="detail-pair">
-                                <dt class="detail-label">Total Area</dt>
-                                <dd class="detail-value" data-building-area>—</dd>
+                            <div class="space-y-1 border-b border-border/50 pb-2">
+                                <dt class="text-xs font-medium text-muted-foreground">Total Area</dt>
+                                <dd class="text-sm font-semibold text-foreground" data-building-area>—</dd>
                             </div>
-                            <div class="detail-pair">
-                                <dt class="detail-label">Type</dt>
-                                <dd class="detail-value" data-building-type>—</dd>
+                            <div class="space-y-1 border-b border-border/50 pb-2">
+                                <dt class="text-xs font-medium text-muted-foreground">Type</dt>
+                                <dd class="text-sm font-semibold text-foreground" data-building-type>—</dd>
                             </div>
-                            <div class="detail-pair">
-                                <dt class="detail-label">Completed</dt>
-                                <dd class="detail-value" data-building-completion>—</dd>
+                            <div class="space-y-1 border-b border-border/50 pb-2">
+                                <dt class="text-xs font-medium text-muted-foreground">Completed</dt>
+                                <dd class="text-sm font-semibold text-foreground" data-building-completion>—</dd>
                             </div>
-                            <div class="detail-pair">
-                                <dt class="detail-label">Address</dt>
-                                <dd class="detail-value" data-building-address>—</dd>
+                            <div class="space-y-1 border-b border-border/50 pb-2">
+                                <dt class="text-xs font-medium text-muted-foreground">Address</dt>
+                                <dd class="text-sm font-semibold text-foreground" data-building-address>—</dd>
                             </div>
                         </dl>
                     </div>
@@ -323,7 +324,7 @@
                     {% endif %}
                     <div class="mt-6 space-y-3 text-sm">
                         <div class="flex items-center gap-3 rounded-xl border border-border bg-secondary/50 px-4 py-3">
-                            <span class="inline-flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                            <span class="inline-flex size-10 items-center justify-center rounded-full bg-accent/10 text-accent">
                                 <i class="bi bi-telephone"></i>
                             </span>
                             <div>
@@ -332,7 +333,7 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-3 rounded-xl border border-border bg-secondary/50 px-4 py-3">
-                            <span class="inline-flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                            <span class="inline-flex size-10 items-center justify-center rounded-full bg-accent/10 text-accent">
                                 <i class="bi bi-envelope"></i>
                             </span>
                             <div>
@@ -365,16 +366,16 @@
     </div>
 </section>
 
-<div class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 px-4 backdrop-blur" data-gallery-modal>
-    <div class="relative w-full max-w-5xl overflow-hidden rounded-3xl border border-border bg-card shadow-2xl">
-        <button type="button" class="absolute right-4 top-4 inline-flex size-10 items-center justify-center rounded-full border border-border bg-secondary/70 text-muted-foreground transition hover:bg-secondary" data-gallery-close>
+<div class="fixed inset-0 z-50 hidden items-center justify-center bg-black/90 px-4 backdrop-blur-sm" data-gallery-modal>
+    <div class="relative w-full max-w-7xl overflow-hidden">
+        <button type="button" class="absolute right-0 -top-12 inline-flex size-10 items-center justify-center rounded-full border border-white/10 bg-black/50 text-white transition hover:bg-white/20" data-gallery-close>
             <i class="bi bi-x-lg"></i>
             <span class="sr-only">Close</span>
         </button>
         <div class="splide" id="property-gallery-modal">
             <div class="splide__track">
                 <ul class="splide__list" data-gallery-modal-list>
-                    <li class="splide__slide h-[520px] animate-pulse bg-muted"></li>
+                    <li class="splide__slide h-[80vh] animate-pulse bg-white/5"></li>
                 </ul>
             </div>
         </div>
@@ -389,7 +390,7 @@
 <script>
     const ASSET_API_URL = '/property/api/details/{{ property.id }}/';
     const GALLERY_API_URL = '/property/api/details/{{ property.id }}/media-files/';
-    const AVAILABLE_API_URL = '/building/api/details/{{ property.building.id }}/available-units/?property_id={{ property.id }}';
+    const AVAILABLE_API_URL = '/building/api/details/{{ property.building.id }}/available-units/';
     const ADD_COMPARE_API_URL = '/property/api/compare/create/';
     const PROPERTY_ID = '{{ property.id }}';
     const RELATED_BUILDING_ID = '{{ property.building.id }}';
@@ -403,7 +404,7 @@
     })(PROPERTY_ID);
 </script>
 <script src="{% static 'js/libraries/noframework.waypoints.min.js' %}"></script>
-<script src="{% static 'js/property/detail-page.js' %}?v=2.00"></script>
+<script src="{% static 'js/property/detail-page.js' %}?v=2.01"></script>
 <script src="{% static 'js/property/compair-favorite.js' %}?v=2.00"></script>
 <script src="{% static 'js/advertise/manage-view-time.js' %}?v=1.05"></script>
 <script src="{% static 'js/ads.js' %}?v=1.04"></script>
