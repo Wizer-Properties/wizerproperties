@@ -99,7 +99,7 @@
                     <label for="email" class="text-sm font-medium text-muted-foreground">
                         Email address
                     </label>
-                    {% render_field signup_form.email id="email" placeholder="name@company.com" autocomplete="email" autofocus="autofocus" required aria-required="true" aria-describedby="email-error" aria-invalid="false" class="w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20" %}
+                    {% render_field signup_form.email id="email" placeholder="name@company.com" autocomplete="email" autofocus="autofocus" required="required" aria-required="true" aria-describedby="email-error" aria-invalid="false" class="w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20" %}
                     <div id="email-error" class="sr-only" role="alert"></div>
                 </div>
 
@@ -108,7 +108,7 @@
                         Password
                     </label>
                     <div class="relative">
-                        {% render_field signup_form.password1 id="password1" placeholder="••••••••" autocomplete="new-password" required aria-required="true" aria-describedby="password1-error password-requirements" aria-invalid="false" class="w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20" %}
+                        {% render_field signup_form.password1 id="password1" placeholder="••••••••" autocomplete="new-password" required="required" aria-required="true" aria-describedby="password1-error password-requirements" aria-invalid="false" class="w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20" %}
                     </div>
                     <div id="password1-error" class="sr-only" role="alert"></div>
                     <p id="password-requirements" class="text-xs text-muted-foreground">Use at least 8 characters with a mix of letters, numbers, and symbols.</p>
@@ -119,7 +119,7 @@
                         Confirm Password
                     </label>
                     <div class="relative">
-                        {% render_field signup_form.password2 id="password2" placeholder="••••••••" autocomplete="new-password" required aria-required="true" aria-describedby="password2-error" aria-invalid="false" class="w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20" %}
+                        {% render_field signup_form.password2 id="password2" placeholder="••••••••" autocomplete="new-password" required="required" aria-required="true" aria-describedby="password2-error" aria-invalid="false" class="w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20" %}
                     </div>
                     <div id="password2-error" class="sr-only" role="alert"></div>
                 </div>
