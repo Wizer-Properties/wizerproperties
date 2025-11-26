@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}404 – Page Not Found{% endblock %}
+{% block extend_head %}
+<title>404 – Page Not Found | Wizer Properties</title>
+<meta name="description" content="The page you're looking for couldn't be found. Return to our homepage or browse properties in Bangkok, Thailand.">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+<meta name="robots" content="noindex, follow">
+{% endblock extend_head %}
 
 {% block content %}
 <section class="relative flex min-h-[70vh] items-center justify-center overflow-hidden bg-muted/30 py-16">

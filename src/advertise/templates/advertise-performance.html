@@ -3,7 +3,9 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Advertise performance</title>
+<title>Advertising Performance | Wizer Properties</title>
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
 <link rel="stylesheet" href="{% static '/css/libraries/dataTables.min.css' %}" />
 {% endblock extend_head %}
 

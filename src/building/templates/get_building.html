@@ -1,9 +1,41 @@
 {% extends "base.html" %}
 {% load static %}
 {% load widget_tweaks %}
+{% load seo_tags %}
 
 {% block extend_head %}
-<title>{{ building.title }} | Building Details</title>
+{% with building_description=building.description|truncatewords:25|default:"Premium property development in Bangkok, Thailand" %}
+<title>{{ building.title }} | {{ building.district|default:"Bangkok" }} Property Development | Wizer Properties</title>
+<meta name="description" content="{{ building_description }}. {{ building.type|default:"Property" }} development in {{ building.district|default:"Bangkok" }}. Price range: {{ building.lowest_price|default:0|floatformat:0 }} - {{ building.highest_price|default:0|floatformat:0 }} THB.">
+<meta name="keywords" content="bangkok property development, {{ building.district|default:"bangkok"|lower }} real estate, {{ building.type|default:"property"|lower }} project bangkok, thailand property development">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ building.title }} | Wizer Properties">
+<meta property="og:description" content="{{ building_description }}">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+{% if images|first %}
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ images.0.file.url }}">
+{% else %}
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'media/logo.png' %}">
+{% endif %}
+<meta property="og:site_name" content="Wizer Properties">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ building.title }} | Wizer Properties">
+<meta name="twitter:description" content="{{ building_description }}">
+{% if images|first %}
+<meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{{ images.0.file.url }}">
+{% else %}
+<meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'media/logo.png' %}">
+{% endif %}
+
+<!-- Structured Data -->
+{% building_schema building %}
+{% breadcrumb_schema breadcrumbs %}
+
 <link rel="stylesheet" href="{% static 'css/libraries/splide.min.css' %}?v=2.0" />
 <script>
     function buildingGeocodeAddress(render_dom, default_lat_lng) {
@@ -22,6 +54,7 @@
         });
     }
 </script>
+{% endwith %}
 {% endblock extend_head %}
 
 {% block content %}

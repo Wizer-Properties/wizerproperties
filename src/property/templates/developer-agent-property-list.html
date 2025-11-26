@@ -1,8 +1,32 @@
 {% extends "base.html" %}
 {% load static %}
+{% load seo_tags %}
 
 {% block extend_head %}
-<title>{{ username }} | Property listings</title>
+<title>{{ company_info.company_name|default:username }} | Property Listings | Wizer Properties</title>
+<meta name="description" content="Browse property listings from {{ company_info.company_name|default:username }}. Verified properties in Bangkok, Thailand with transparent pricing and full details.">
+<meta name="keywords" content="bangkok property listings, {{ company_info.company_name|default:username|lower }} properties, thailand real estate listings">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ company_info.company_name|default:username }} | Property Listings | Wizer Properties">
+<meta property="og:description" content="Browse verified property listings from {{ company_info.company_name|default:username }} in Bangkok, Thailand.">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+{% if company_info.company_logo %}
+<meta property="og:image" content="{{ company_info.company_logo }}">
+{% else %}
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'media/logo.png' %}">
+{% endif %}
+<meta property="og:site_name" content="Wizer Properties">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{ company_info.company_name|default:username }} | Property Listings">
+<meta name="twitter:description" content="Browse verified property listings from {{ company_info.company_name|default:username }} in Bangkok, Thailand.">
+
+{% organization_schema %}
+
 <link rel="stylesheet" href="{% static 'css/libraries/splide.min.css' %}?v=2.0" />
 {% endblock extend_head %}
 

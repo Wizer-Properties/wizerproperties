@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sitemaps",  # For XML sitemap generation
 
     # Django apps
     'django.contrib.sites',
@@ -206,6 +207,12 @@ if DEBUG:
 
 # For Google map 
 GOOGLE_API_KEY = config("GOOGLE_API_KEY", "")
+
+# Analytics Configuration
+GA4_MEASUREMENT_ID = config("GA4_MEASUREMENT_ID", "G-MRZK1TTB7H")  # Default to existing ID
+META_PIXEL_ID = config("META_PIXEL_ID", "")
+POSTHOG_API_KEY = config("POSTHOG_API_KEY", "phc_9rRjJCeqbR89x5Lgc3imxOq8guqKc9rJHGBN5GKhmZM")
+POSTHOG_HOST = config("POSTHOG_HOST", "https://us.i.posthog.com")
 
 COOKIE_EXPIRE_TIME = 7*24*60*60  #7days in seconds
 

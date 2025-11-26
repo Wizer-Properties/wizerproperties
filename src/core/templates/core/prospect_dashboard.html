@@ -2,7 +2,9 @@
 {% load static %}
 
 {% block extend_head %}
-<title>Prospect Dashboard</title>
+<title>Prospect Dashboard | Wizer Properties</title>
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
 <link rel="stylesheet" href="{% static '/css/libraries/dataTables.min.css' %}" />
 <style>
     /* Modern Toggle Switch */

@@ -1,8 +1,28 @@
 {% extends "base.html" %}
 {% load static %}
+{% load seo_tags %}
 
 {% block extend_head %}
-<title>Property reels</title>
+<title>Property Reels | Video Tours & Property Showcases | Wizer Properties</title>
+<meta name="description" content="Browse property reels and video tours of Bangkok condos and villas. Watch immersive property showcases and virtual tours to find your perfect home.">
+<meta name="keywords" content="property reels, property videos, bangkok property tours, property showcases, real estate videos thailand">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Property Reels | Wizer Properties">
+<meta property="og:description" content="Browse property reels and video tours of Bangkok condos and villas. Watch immersive property showcases.">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'media/logo.png' %}">
+<meta property="og:site_name" content="Wizer Properties">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Property Reels | Wizer Properties">
+<meta name="twitter:description" content="Browse property reels and video tours of Bangkok condos and villas.">
+
+{% organization_schema %}
+
 <link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
 <link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
 {% endblock extend_head %}

@@ -3,7 +3,9 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Edit building</title>
+<title>Edit Building | Wizer Properties</title>
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
 {% endblock extend_head %}
 
 {% block content %}

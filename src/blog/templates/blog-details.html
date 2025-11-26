@@ -1,31 +1,52 @@
 {% extends "base.html" %}
 {% load static %}
+{% load seo_tags %}
 
 {% block extend_head %}
-<title>{{ post.title }}</title>
+<title>{{ post.title }} | Wizer Properties Blog</title>
 
 <!-- Primary Meta Tags -->
-<meta name="title" content="{{ post.title }}">
-<meta name="description" content="{{ post.subtitle }}">
-<meta name="keywords" content="{{ post.categories.all|join:', ' }}">
-<meta name="author" content="{{ post.creator.full_name }}">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="{{ post.subtitle|default:post.title|truncatewords:25 }}">
+{% if post.categories.all %}
+<meta name="keywords" content="{% for category in post.categories.all %}{{ category.name }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+{% endif %}
+<meta name="author" content="Wizer Properties">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
 
 <!-- Open Graph / Facebook / LinkedIn -->
 <meta property="og:type" content="article">
 <meta property="og:url" content="{{ request.build_absolute_uri }}">
-<meta property="og:title" content="{{ post.title }}">
-<meta property="og:description" content="{{ post.subtitle }}">
-<meta property="og:image" content="{{ post.banner_image.url }}">
+<meta property="og:title" content="{{ post.title }} | Wizer Properties">
+<meta property="og:description" content="{{ post.subtitle|default:post.title|truncatewords:25 }}">
+{% if post.banner_image %}
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ post.banner_image.url }}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+{% else %}
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'media/logo.png' %}">
+{% endif %}
+<meta property="og:site_name" content="Wizer Properties">
+<meta property="article:published_time" content="{{ post.created_at|date:'c' }}">
+<meta property="article:modified_time" content="{{ post.updated_at|date:'c' }}">
+{% if post.categories.all %}
+{% for category in post.categories.all %}
+<meta property="article:tag" content="{{ category.name }}">
+{% endfor %}
+{% endif %}
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:url" content="{{ request.build_absolute_uri }}">
-<meta name="twitter:title" content="{{ post.title }}">
-<meta name="twitter:description" content="{{ post.subtitle }}">
-<meta name="twitter:image" content="{{ post.banner_image.url }}">
+<meta name="twitter:title" content="{{ post.title }} | Wizer Properties">
+<meta name="twitter:description" content="{{ post.subtitle|default:post.title|truncatewords:25 }}">
+{% if post.banner_image %}
+<meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{{ post.banner_image.url }}">
+{% else %}
+<meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'media/logo.png' %}">
+{% endif %}
+
+<!-- Structured Data -->
+{% article_schema post %}
+{% breadcrumb_schema breadcrumbs %}
 
 <link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
 <link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />

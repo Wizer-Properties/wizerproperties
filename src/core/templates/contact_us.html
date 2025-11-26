@@ -1,9 +1,28 @@
 {% extends "base.html" %}
 {% load static %}
 {% load widget_tweaks %}
+{% load seo_tags %}
 
 {% block extend_head %}
-<title>Contact WiSER Properties</title>
+<title>Contact Us | Wizer Properties</title>
+<meta name="description" content="Get in touch with Wizer Properties. Contact our team for property inquiries, developer partnerships, or general questions about Bangkok real estate.">
+<meta name="keywords" content="contact wizer properties, bangkok property inquiry, real estate thailand contact">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Contact Us | Wizer Properties">
+<meta property="og:description" content="Get in touch with Wizer Properties for property inquiries and developer partnerships.">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'media/logo.png' %}">
+<meta property="og:site_name" content="Wizer Properties">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Contact Us | Wizer Properties">
+<meta name="twitter:description" content="Get in touch with Wizer Properties for property inquiries and developer partnerships.">
+
+{% organization_schema %}
 {% endblock extend_head %}
 
 {% block content %}
@@ -15,7 +34,7 @@
 
     <div class="container relative z-10 max-w-5xl space-y-12">
         <header class="space-y-4 text-center">
-            <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Contact WiSER Properties</span>
+            <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Contact Wizer Properties</span>
             <h1 class="text-3xl font-heading font-semibold text-foreground sm:text-4xl">We’re here to help you move forward</h1>
             <p class="mx-auto max-w-2xl text-sm text-muted-foreground">
                 Tell us how we can support your investment journey. Our advisory team reviews every message and responds within one business day.
@@ -101,7 +120,7 @@
                     </div>
 
                     <div class="space-y-2 text-xs text-muted-foreground">
-                        <p>By submitting this form you agree that WiSER Properties may contact you about your enquiry in line with our privacy policy.</p>
+                        <p>By submitting this form you agree that Wizer Properties may contact you about your enquiry in line with our privacy policy.</p>
                     </div>
 
                     <button type="submit" class="btn w-full justify-center sm:w-auto disabled:cursor-not-allowed disabled:opacity-50" data-contact-submit>

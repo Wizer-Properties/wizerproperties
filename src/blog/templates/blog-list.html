@@ -1,7 +1,28 @@
 {% extends "base.html" %}
 {% load static %}
+{% load seo_tags %}
+
 {% block extend_head %}
-<title>WiSER | Insights & Stories</title>
+<title>Insights & Stories | Wizer Properties Blog</title>
+<meta name="description" content="Read the latest insights, guides, and stories about Bangkok property investment, real estate trends, and buying property in Thailand.">
+<meta name="keywords" content="bangkok property blog, thailand real estate news, property investment guides, bangkok property insights">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Insights & Stories | Wizer Properties Blog">
+<meta property="og:description" content="Read the latest insights, guides, and stories about Bangkok property investment and real estate trends.">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'media/logo.png' %}">
+<meta property="og:site_name" content="Wizer Properties">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Insights & Stories | Wizer Properties Blog">
+<meta name="twitter:description" content="Read the latest insights, guides, and stories about Bangkok property investment and real estate trends.">
+
+{% organization_schema %}
+
 <link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
 <link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
 {% endblock extend_head %}
@@ -16,7 +37,7 @@
                     Stories shaping Thailand’s property market
                 </h1>
                 <p class="max-w-2xl text-sm text-muted-foreground sm:text-base">
-                    Explore developer launches, financing trends, and investor playbooks curated by the WiSER editorial team. Filter articles by the topics you care about and stay ahead of every release.
+                    Explore developer launches, financing trends, and investor playbooks curated by the Wizer editorial team. Filter articles by the topics you care about and stay ahead of every release.
                 </p>
             </div>
             <div class="rounded-3xl border border-border bg-card/95 p-6 shadow-lg backdrop-blur">

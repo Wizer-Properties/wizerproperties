@@ -1,9 +1,29 @@
 {% extends "base.html" %}
 {% load static %}
 {% load widget_tweaks %}
+{% load seo_tags %}
 
 {% block extend_head %}
-<title>Map view property</title>
+<title>Property Map Search | Find Properties by Location in Bangkok | Wizer Properties</title>
+<meta name="description" content="Search properties on an interactive map of Bangkok. Find condos and villas near BTS/MRT stations, in specific districts, or by location. Visual property search with full details.">
+<meta name="keywords" content="bangkok property map, property map search, thailand real estate map, bangkok property locations, interactive property map">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Property Map Search | Wizer Properties">
+<meta property="og:description" content="Search properties on an interactive map of Bangkok. Find condos and villas by location.">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'media/logo.png' %}">
+<meta property="og:site_name" content="Wizer Properties">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Property Map Search | Wizer Properties">
+<meta name="twitter:description" content="Search properties on an interactive map of Bangkok. Find condos and villas by location.">
+
+{% organization_schema %}
+
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet" />
 <link rel="stylesheet" href="{% static 'css/libraries/splide.min.css' %}?v=2.0" />

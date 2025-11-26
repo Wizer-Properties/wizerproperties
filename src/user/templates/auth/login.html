@@ -3,7 +3,10 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Login</title>
+<title>Login | Wizer Properties</title>
+<meta name="description" content="Sign in to your Wizer Properties account to manage property listings, track inquiries, and collaborate with your team.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
 {% endblock extend_head %}
 
 {% block content %}
@@ -62,7 +65,7 @@
     <section class="space-y-8">
         <header class="space-y-3 text-center lg:text-left">
             <h1 class="text-3xl font-heading font-semibold text-foreground">
-                Access your WiSER dashboard
+                Access your Wizer dashboard
             </h1>
             <p class="text-base text-muted-foreground">
                 Review conversations, publish marketing assets, and stay aligned with your team from one place.

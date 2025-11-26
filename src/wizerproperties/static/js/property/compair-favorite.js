@@ -105,6 +105,16 @@
       // Update button state
       restoreButton(button, true);
       
+      // Track analytics
+      if (window.Analytics) {
+        const propertyData = button.dataset;
+        window.Analytics.trackPropertyCompare(propertyId, {
+          name: propertyData.name || propertyData.title || 'Property',
+          title: propertyData.title || 'Property',
+          price: parseFloat(propertyData.price) || 0
+        }, true);
+      }
+      
       // Emit event for count syncing
       window.dispatchEvent(
         new CustomEvent("compare:added", {
@@ -159,6 +169,16 @@
       // Update button state
       restoreButton(button, false);
       
+      // Track analytics
+      if (window.Analytics) {
+        const propertyData = button.dataset;
+        window.Analytics.trackPropertyCompare(propertyId, {
+          name: propertyData.name || propertyData.title || 'Property',
+          title: propertyData.title || 'Property',
+          price: parseFloat(propertyData.price) || 0
+        }, false);
+      }
+      
       // Emit event for count syncing
       window.dispatchEvent(
         new CustomEvent("compare:removed", {
@@ -207,6 +227,16 @@
       
       // Update button state
       restoreButton(button, true);
+      
+      // Track analytics
+      if (window.Analytics) {
+        const propertyData = button.dataset;
+        window.Analytics.trackPropertyFavorite(propertyId, {
+          name: propertyData.name || propertyData.title || 'Property',
+          title: propertyData.title || 'Property',
+          price: parseFloat(propertyData.price) || 0
+        }, true);
+      }
       
       // Emit event for count syncing
       window.dispatchEvent(
@@ -261,6 +291,16 @@
 
       // Update button state
       restoreButton(button, false);
+      
+      // Track analytics
+      if (window.Analytics) {
+        const propertyData = button.dataset;
+        window.Analytics.trackPropertyFavorite(propertyId, {
+          name: propertyData.name || propertyData.title || 'Property',
+          title: propertyData.title || 'Property',
+          price: parseFloat(propertyData.price) || 0
+        }, false);
+      }
       
       // Emit event for count syncing and card removal
       window.dispatchEvent(

@@ -3,7 +3,9 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>{{ page_title }}</title>
+<title>{{ page_title }} | Wizer Properties</title>
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
 {% endblock extend_head %}
 
 {% block content %}

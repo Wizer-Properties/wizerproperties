@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.utils import timezone
+from django.urls import reverse
 from building.models import Building
 from property.models import Property
 from user.models import User, Profile, DeveloperProfile, AgentProfile
@@ -74,8 +75,18 @@ def get_property(request, id):
     """Storing search related cookie"""
     context = prepare_property_context(request, id)
     context["buildings"] = Building.objects.filter(is_active=True)
+    property_obj = context["property"]
+    
+    # Add breadcrumbs for structured data
+    context["breadcrumbs"] = [
+        ('Home', '/'),
+        ('Properties', reverse('property:search')),
+        (property_obj.building.title or 'Building', reverse('building:get', args=[property_obj.building.id])),
+        (property_obj.title or 'Property', property_obj.get_absolute_url()),
+    ]
+    
     response = render(request, "get_property.html", context)
-    property = context["property"]
+    property = property_obj
     
     searched_places = request.COOKIES.get('searched_places')
     if searched_places:

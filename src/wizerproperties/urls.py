@@ -18,8 +18,10 @@ Including another URLconf
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from core.views import dashboard, contact_page, home_page, privacy_page, about_us_page, custom_404
+from django.contrib.sitemaps.views import sitemap
+from core.views import dashboard, contact_page, home_page, privacy_page, about_us_page, custom_404, robots_txt
 from core.admin import custom_admin_site
+from core.sitemaps import StaticViewSitemap, PropertySitemap, BlogPostSitemap, BuildingSitemap
 from allauth.socialaccount.providers.google.views import oauth2_login, oauth2_callback
 from advertise.views import reels
 
@@ -42,6 +44,17 @@ urlpatterns = [
     path('accounts/google/login/', oauth2_login, name='google_login'),  # Login with Google
     path('accounts/google/login/callback/', oauth2_callback, name='google_callback'),  # Callback
     path('404/', custom_404, name='custom_404'),
+    
+    # SEO
+    path('robots.txt', robots_txt, name='robots_txt'),
+    path('sitemap.xml', sitemap, {
+        'sitemaps': {
+            'static': StaticViewSitemap,
+            'properties': PropertySitemap,
+            'blog': BlogPostSitemap,
+            'buildings': BuildingSitemap,
+        }
+    }, name='django.contrib.sitemaps.views.sitemap'),
 ]
 
 if settings.DEBUG:

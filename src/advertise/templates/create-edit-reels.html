@@ -3,7 +3,9 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>{% if action_type == 'edit' %}Update property reel{% else %}Share property reel{% endif %}</title>
+<title>{% if action_type == 'edit' %}Update Property Reel{% else %}Share Property Reel{% endif %} | Wizer Properties</title>
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
 {% endblock extend_head %}
 
 {% block content %}

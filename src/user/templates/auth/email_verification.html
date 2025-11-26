@@ -3,7 +3,10 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Verify email</title>
+<title>Verify Email | Wizer Properties</title>
+<meta name="description" content="Verify your email address to activate your Wizer Properties account. Check your inbox for the verification link.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
 {% endblock extend_head %}
 
 {% block content %}
@@ -17,7 +20,7 @@
                     Email verification
                 </p>
                 <h2 class="mt-4 text-3xl font-heading font-semibold text-foreground">
-                    Activate your WiSER account.
+                    Activate your Wizer account.
                 </h2>
                 <p class="mt-3 text-base text-muted-foreground">
                     Confirm your email address to unlock your workspace and start managing properties with your team.
@@ -65,7 +68,7 @@
                 Confirm your email address
             </h1>
             <p class="text-base text-muted-foreground">
-                Activate your WiSER account by following the link we just sent. This keeps your workspace secure and ready for collaboration.
+                Activate your Wizer account by following the link we just sent. This keeps your workspace secure and ready for collaboration.
             </p>
         </header>
 

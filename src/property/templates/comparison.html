@@ -1,9 +1,23 @@
 {% extends "base.html" %}
 {% load static %}
 {% load widget_tweaks %}
+{% load seo_tags %}
 
 {% block extend_head %}
-<title>Compare properties</title>
+<title>Compare Properties | Side-by-Side Property Comparison | Wizer Properties</title>
+<meta name="description" content="Compare up to three properties side-by-side. Review pricing, specifications, amenities, and media to make informed decisions.">
+<meta name="keywords" content="property comparison, compare properties bangkok, property comparison tool">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+<meta name="robots" content="noindex, follow">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Compare Properties | Wizer Properties">
+<meta property="og:description" content="Compare up to three properties side-by-side. Review pricing, specifications, and amenities.">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'media/logo.png' %}">
+<meta property="og:site_name" content="Wizer Properties">
+
 <link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet" />
 <link rel="stylesheet" href="{% static 'css/libraries/splide.min.css' %}?v=2.0" />
 {% endblock extend_head %}

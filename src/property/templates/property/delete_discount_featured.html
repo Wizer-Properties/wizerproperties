@@ -2,7 +2,9 @@
 {% load static %}
 
 {% block extend_head %}
-<title>Delete {{ property_type|title }} Property</title>
+<title>Delete {{ property_type|title }} Property | Wizer Properties</title>
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
 {% endblock extend_head %}
 
 {% block content %}

@@ -2,7 +2,9 @@
 {% load static %}
 
 {% block extend_head %}
-<title>Developer or Agent Dashboard</title>
+<title>Developer or Agent Dashboard | Wizer Properties</title>
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
 <link rel="stylesheet" href="{% static '/css/libraries/dataTables.min.css' %}" />
 <style>
     /* Modern Toggle Switch */

@@ -22,13 +22,52 @@
     <link rel="stylesheet" href="{% static 'css/header.css' %}?v=1.05" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.09" />
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MRZK1TTB7H"></script>
+    <!-- Google Analytics 4 -->
+    {% if GA4_MEASUREMENT_ID %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ GA4_MEASUREMENT_ID }}"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-MRZK1TTB7H');
+        gtag('config', '{{ GA4_MEASUREMENT_ID }}', {
+            page_path: window.location.pathname,
+            page_title: document.title
+        });
+    </script>
+    {% endif %}
+
+    <!-- Analytics Tracking Module -->
+    <script src="{% static 'js/analytics.js' %}?v=1.00"></script>
+    <script>
+        // Initialize Analytics with configuration from Django
+        (function() {
+            const analyticsConfig = {
+                enabled: true,
+                {% if GA4_MEASUREMENT_ID %}
+                ga4Id: '{{ GA4_MEASUREMENT_ID }}',
+                {% endif %}
+                {% if META_PIXEL_ID %}
+                metaPixelId: '{{ META_PIXEL_ID }}',
+                {% endif %}
+                {% if POSTHOG_API_KEY and POSTHOG_HOST %}
+                posthogKey: '{{ POSTHOG_API_KEY }}',
+                posthogHost: '{{ POSTHOG_HOST }}',
+                {% endif %}
+            };
+            
+            // Initialize when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    if (window.Analytics) {
+                        window.Analytics.init(analyticsConfig);
+                    }
+                });
+            } else {
+                if (window.Analytics) {
+                    window.Analytics.init(analyticsConfig);
+                }
+            }
+        })();
     </script>
 </head>
 
@@ -57,9 +96,9 @@
             <div class="container flex h-20 items-center justify-between gap-6">
                 <div class="flex items-center gap-6">
                     <a href="/" class="flex items-center gap-3 rounded-full p-1 transition hover:opacity-80" data-brand>
-                        <img src="{% static 'media/logo.png' %}" alt="WiSER Properties" class="h-10 w-auto transition-all duration-300" data-brand-large>
-                        <img src="{% static 'media/icons/favicon.ico' %}" alt="WiSER Properties" class="hidden size-9 rounded-full transition-all duration-300" data-brand-compact>
-                        <span class="sr-only">WiSER Properties</span>
+                        <img src="{% static 'media/logo.png' %}" alt="Wizer Properties" class="h-10 w-auto transition-all duration-300" data-brand-large>
+                        <img src="{% static 'media/icons/favicon.ico' %}" alt="Wizer Properties" class="hidden size-9 rounded-full transition-all duration-300" data-brand-compact>
+                        <span class="sr-only">Wizer Properties</span>
                     </a>
                 </div>
 
@@ -147,7 +186,7 @@
                                     </a>
                                     <a href="{{ contact_url }}" class="nav-menu-link {% if request.path == contact_url %}nav-menu-active{% endif %}">
                                         <span class="nav-menu-label">Talk to our team</span></br>
-                                        <span class="nav-menu-description">Schedule a walkthrough of WiSER’s advertising platform.</span>
+                                        <span class="nav-menu-description">Schedule a walkthrough of Wizer’s advertising platform.</span>
                                     </a>
                                 </div>
                             {% endif %}
@@ -357,7 +396,7 @@
                 <div class="space-y-6">
                     <div class="flex items-center gap-3">
                         <img src="{% static 'media/logo.png' %}" alt="Wizer Properties" class="h-10 w-auto">
-                        <h1 class="text-xl font-semibold text-foreground">Log in to <span class="text-primary">WiSER Properties</span></h1>
+                        <h1 class="text-xl font-semibold text-foreground">Log in to <span class="text-primary">Wizer Properties</span></h1>
                     </div>
 
                     <form class="space-y-4" data-auth-login-form novalidate>
@@ -441,7 +480,7 @@
             </div>
 
             <div class="container mt-6 text-xs text-muted-foreground">
-                <p>© {{ now|date:"Y" }} WiSERPROPERTIES — Developed by <a href="https://vaid.tech" target="_blank" rel="noreferrer" class="underline decoration-dotted underline-offset-4 transition hover:text-primary">Vaidtech</a></p>
+                <p>© {{ now|date:"Y" }} Wizer Properties — Developed by <a href="https://vaid.tech" target="_blank" rel="noreferrer" class="underline decoration-dotted underline-offset-4 transition hover:text-primary">Vaidtech</a></p>
             </div>
         </footer>
     </div>

@@ -1,9 +1,29 @@
 {% extends "base.html" %}
 {% load static %}
 {% load widget_tweaks %}
+{% load seo_tags %}
 
 {% block extend_head %}
-<title>Search property</title>
+<title>Search Properties in Bangkok | Find Your Perfect Condo or Villa | Wizer Properties</title>
+<meta name="description" content="Search verified property listings in Bangkok, Thailand. Filter by price, location, BTS/MRT stations, bedrooms, and more. Find your perfect condo or villa with full transparency.">
+<meta name="keywords" content="bangkok property search, thailand real estate search, condo search bangkok, property finder thailand, bangkok property listings">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Search Properties in Bangkok | Wizer Properties">
+<meta property="og:description" content="Search verified property listings in Bangkok, Thailand. Filter by price, location, and amenities.">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'media/logo.png' %}">
+<meta property="og:site_name" content="Wizer Properties">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Search Properties in Bangkok | Wizer Properties">
+<meta name="twitter:description" content="Search verified property listings in Bangkok, Thailand. Filter by price, location, and amenities.">
+
+{% organization_schema %}
+
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet" />
 <link rel="stylesheet" href="{% static 'css/libraries/splide.min.css' %}?v=2.0" />
