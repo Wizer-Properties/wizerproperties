@@ -267,6 +267,8 @@
 {% block extend_script %}
 <script src="{% static 'js/libraries/splide.min.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+<!-- TimeMe.js library for tracking time spent on page -->
+<script src="https://cdn.jsdelivr.net/npm/timeme.js@2.2.5/timeme.min.js"></script>
 <script>
     const ASSET_API_URL = '/building/api/details/{{ building.id }}/';
     const GALLERY_API_URL = '/building/api/details/{{ building.id }}/media-files/';
@@ -276,5 +278,6 @@
     const CSRF_TOKEN = '{{ csrf_token }}';
 </script>
 <script src="{% static 'js/building/detail-page.js' %}?v=2.00"></script>
+<script src="{% static 'js/advertise/manage-view-time.js' %}?v=1.07"></script>
 {% endblock extend_script %}
 

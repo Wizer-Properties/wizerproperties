@@ -387,6 +387,8 @@
 <script src="{% static 'js/libraries/splide.min.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 <script src="{% static 'js/libraries/lodash.min.js' %}"></script>
+<!-- TimeMe.js library for tracking time spent on page -->
+<script src="https://cdn.jsdelivr.net/npm/timeme.js@2.2.5/timeme.min.js"></script>
 <script>
     const ASSET_API_URL = '/property/api/details/{{ property.id }}/';
     const GALLERY_API_URL = '/property/api/details/{{ property.id }}/media-files/';
@@ -406,7 +408,7 @@
 <script src="{% static 'js/libraries/noframework.waypoints.min.js' %}"></script>
 <script src="{% static 'js/property/detail-page.js' %}?v=2.01"></script>
 <script src="{% static 'js/property/compair-favorite.js' %}?v=2.00"></script>
-<script src="{% static 'js/advertise/manage-view-time.js' %}?v=1.05"></script>
+<script src="{% static 'js/advertise/manage-view-time.js' %}?v=1.07"></script>
 <script src="{% static 'js/ads.js' %}?v=1.04"></script>
 {% endblock extend_script %}
 
