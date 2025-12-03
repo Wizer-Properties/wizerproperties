@@ -102,7 +102,7 @@
     if (!items || items.length === 0) {
       const li = document.createElement("li");
       li.className = "splide__slide h-72 rounded-xl bg-muted flex items-center justify-center text-sm text-muted-foreground";
-      li.textContent = "Media not available yet";
+      li.textContent = "Property photos coming soon";
       listEl.appendChild(li);
     } else {
       items.forEach((item) => {
@@ -150,7 +150,7 @@
     if (!items || items.length === 0) {
       const li = document.createElement("li");
       li.className = "splide__slide h-[80vh] flex items-center justify-center bg-white/5 text-white/60";
-      li.textContent = "Media unavailable";
+      li.textContent = "Photos not available";
       els.galleryModalList.appendChild(li);
     } else {
       items.forEach((item) => {
@@ -297,7 +297,7 @@
   function updateDescription(data) {
     if (!els.description) return;
     const paragraph = document.createElement("p");
-    paragraph.textContent = data.description || "Description will be updated soon.";
+    paragraph.textContent = data.description || "Project details are being updated. Check back soon for complete information.";
     els.description.innerHTML = "";
     els.description.appendChild(paragraph);
 
@@ -359,7 +359,7 @@
     if (chips.length === 0) {
       const span = document.createElement("span");
       span.className = "text-xs text-muted-foreground";
-      span.textContent = "Amenities will be published soon.";
+      span.textContent = "Amenities list is being updated. Complete details coming soon.";
       els.amenities.appendChild(span);
       return;
     }
@@ -619,9 +619,9 @@
           <div class="flex items-center gap-2 text-xl text-accent give-rating">
             ${ratingStars(0)}
           </div>
-          <textarea class="give-review input min-h-[140px]" placeholder="Tell us about the project..."></textarea>
+          <textarea class="give-review input min-h-[140px]" placeholder="Share your honest experience—what you loved about this development, amenities that stood out, and who this project is perfect for..."></textarea>
           <div class="review-warrning-text space-y-1 text-xs text-destructive"></div>
-          <button class="btn w-full justify-center review-submit-btn text-sm">Submit Review</button>
+          <button class="btn w-full justify-center review-submit-btn text-sm">Share your review</button>
         </div>
       `;
     }
@@ -679,13 +679,13 @@
     if (state.reviews.loading) return;
     const warning = document.querySelector(".review-warrning-text");
     if (!rating) {
-      if (warning) warning.textContent = "Please select a rating.";
+      if (warning) warning.textContent = "Please rate this development to help other buyers.";
       return;
     }
     const textarea = document.querySelector(".give-review");
     const reviewText = textarea ? textarea.value.trim() : "";
     if (!reviewText) {
-      if (warning) warning.textContent = "Please share a few words about your experience.";
+      if (warning) warning.textContent = "Please share your experience—your review helps other buyers make confident decisions.";
       return;
     }
     state.reviews.loading = true;
@@ -716,7 +716,7 @@
       }
     } catch (error) {
       console.error(error);
-      if (warning) warning.textContent = "Submitting review failed. Please try again.";
+      if (warning) warning.textContent = "Something went wrong. Please try again in a moment.";
     } finally {
       state.reviews.loading = false;
     }

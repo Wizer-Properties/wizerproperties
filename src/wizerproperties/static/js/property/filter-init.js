@@ -202,6 +202,25 @@
       this.restoreSelections();
       this.attachEvents();
       this.updateUI();
+      // Restore open popover state from localStorage
+      this.restorePopoverState();
+    }
+
+    restorePopoverState() {
+      try {
+        const savedPopover = localStorage.getItem("filterActivePopover");
+        if (savedPopover && this.dom.triggerGroup) {
+          const trigger = this.dom.triggerGroup.querySelector(`[data-filter-trigger="${savedPopover}"]`);
+          if (trigger) {
+            // Small delay to ensure DOM is ready
+            setTimeout(() => {
+              this.togglePopover(savedPopover, trigger);
+            }, 100);
+          }
+        }
+      } catch (e) {
+        // Ignore localStorage errors
+      }
     }
 
     initDOM() {
@@ -211,10 +230,12 @@
         popovers: this.container.querySelectorAll("[data-filter-popover]") || [],
         modal: this.container.querySelector("[data-filter-modal]") || null,
         activeChips: this.container.querySelector("[data-active-filter-chips]") || null,
+        activeFiltersSection: this.container.querySelector("[data-active-filters-section]") || null,
         filterLabels: this.container.querySelectorAll("[data-filter-label]") || [],
         locationClear: this.container.querySelector("[data-filter-clear-location]") || null,
         locationInput: this.container.querySelector("#gm-search-input") || document.getElementById("gm-search-input"),
         resetButtons: this.container.querySelectorAll("[data-filter-reset]") || [],
+        quickFilterButtons: this.container.querySelectorAll("[data-quick-filter]") || [],
       };
       this.subTypeContainer = this.container.querySelector("[data-filter-subtype-list]");
     }
@@ -259,6 +280,15 @@
             this.closeActivePopover(true);
             this.notifyChange("apply");
           }
+        });
+      }
+
+      // Quick filter buttons
+      if (this.dom.quickFilterButtons.length) {
+        this.dom.quickFilterButtons.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            this.handleQuickFilter(btn);
+          });
         });
       }
 
@@ -435,12 +465,24 @@
       trigger?.setAttribute("aria-expanded", "true");
       this.activePopover = popover;
       this.activeTrigger = trigger;
+      // Save open popover state to localStorage
+      try {
+        localStorage.setItem("filterActivePopover", name);
+      } catch (e) {
+        // Ignore localStorage errors
+      }
       const focusTarget = popover.querySelector("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])");
       focusTarget?.focus();
     }
 
     closeActivePopover(restoreFocus = false) {
       if (!this.activePopover) return;
+      // Clear saved popover state
+      try {
+        localStorage.removeItem("filterActivePopover");
+      } catch (e) {
+        // Ignore localStorage errors
+      }
       this.activePopover.hidden = true;
       this.activePopover.setAttribute("aria-hidden", "true");
       if (this.activeTrigger) {
@@ -604,6 +646,20 @@
       this.updateLabels();
       this.updateActiveChips();
       this.updateToggleStates();
+      this.updateQuickFilterStates();
+    }
+
+    updateQuickFilterStates() {
+      this.dom.quickFilterButtons.forEach((button) => {
+        const isActive = this.isQuickFilterActive(button);
+        if (isActive) {
+          button.classList.add("border-accent", "bg-accent/10", "text-accent");
+          button.classList.remove("border-border", "bg-secondary/60", "text-muted-foreground");
+        } else {
+          button.classList.remove("border-accent", "bg-accent/10", "text-accent");
+          button.classList.add("border-border", "bg-secondary/60", "text-muted-foreground");
+        }
+      });
     }
 
     updateLabels() {
@@ -652,10 +708,91 @@
       return `฿ ${number.toLocaleString()}`;
     }
 
+    handleQuickFilter(button) {
+      const filterType = button.getAttribute("data-quick-filter");
+      const min = button.getAttribute("data-min");
+      const max = button.getAttribute("data-max");
+
+      if (filterType === "price") {
+        this.data.min_price = min || null;
+        this.data.max_price = max || null;
+        // Toggle button active state
+        const isActive = this.isQuickFilterActive(button);
+        if (isActive) {
+          // Clear if already active
+          this.data.min_price = null;
+          this.data.max_price = null;
+          button.classList.remove("border-accent", "bg-accent/10", "text-accent");
+          button.classList.add("border-border", "bg-secondary/60", "text-muted-foreground");
+        } else {
+          // Set active
+          button.classList.add("border-accent", "bg-accent/10", "text-accent");
+          button.classList.remove("border-border", "bg-secondary/60", "text-muted-foreground");
+          // Clear other price quick filters
+          this.dom.quickFilterButtons.forEach((btn) => {
+            if (btn !== button && btn.getAttribute("data-quick-filter") === "price") {
+              btn.classList.remove("border-accent", "bg-accent/10", "text-accent");
+              btn.classList.add("border-border", "bg-secondary/60", "text-muted-foreground");
+            }
+          });
+        }
+      } else if (filterType === "bedrooms") {
+        this.data.min_number_of_bedroom = min || null;
+        this.data.max_number_of_bedroom = max || null;
+        // Toggle button active state
+        const isActive = this.isQuickFilterActive(button);
+        if (isActive) {
+          // Clear if already active
+          this.data.min_number_of_bedroom = null;
+          this.data.max_number_of_bedroom = null;
+          button.classList.remove("border-accent", "bg-accent/10", "text-accent");
+          button.classList.add("border-border", "bg-secondary/60", "text-muted-foreground");
+        } else {
+          // Set active
+          button.classList.add("border-accent", "bg-accent/10", "text-accent");
+          button.classList.remove("border-border", "bg-secondary/60", "text-muted-foreground");
+          // Clear other bedroom quick filters
+          this.dom.quickFilterButtons.forEach((btn) => {
+            if (btn !== button && btn.getAttribute("data-quick-filter") === "bedrooms") {
+              btn.classList.remove("border-accent", "bg-accent/10", "text-accent");
+              btn.classList.add("border-border", "bg-secondary/60", "text-muted-foreground");
+            }
+          });
+        }
+      }
+
+      this.restoreSelections();
+      this.updateUI();
+      this.notifyChange("quick-filter");
+    }
+
+    isQuickFilterActive(button) {
+      const filterType = button.getAttribute("data-quick-filter");
+      const min = button.getAttribute("data-min");
+      const max = button.getAttribute("data-max");
+
+      if (filterType === "price") {
+        return this.data.min_price === min && this.data.max_price === (max || null);
+      } else if (filterType === "bedrooms") {
+        return this.data.min_number_of_bedroom === min && this.data.max_number_of_bedroom === (max || null);
+      }
+      return false;
+    }
+
     updateActiveChips() {
       if (!this.dom.activeChips) return;
       const fragments = document.createDocumentFragment();
       const filters = this.data.only_has_value();
+      const hasFilters = Object.keys(filters).length > 0;
+
+      // Show/hide the entire active filters section based on whether filters exist
+      if (this.dom.activeFiltersSection) {
+        if (hasFilters) {
+          this.dom.activeFiltersSection.classList.remove("hidden");
+        } else {
+          this.dom.activeFiltersSection.classList.add("hidden");
+        }
+      }
 
       const addChip = (key, label) => {
         const button = document.createElement("button");
@@ -663,6 +800,34 @@
         button.className = "inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-destructive/40 hover:text-destructive";
         button.setAttribute("data-remove-filter", key);
         button.innerHTML = `${label} <i class="bi bi-x-circle"></i>`;
+        button.addEventListener("click", () => {
+          if (key === "min_price" || key === "max_price") {
+            this.data.min_price = null;
+            this.data.max_price = null;
+            // Clear quick filter button states
+            this.dom.quickFilterButtons.forEach((btn) => {
+              if (btn.getAttribute("data-quick-filter") === "price") {
+                btn.classList.remove("border-accent", "bg-accent/10", "text-accent");
+                btn.classList.add("border-border", "bg-secondary/60", "text-muted-foreground");
+              }
+            });
+          } else if (key === "bedrooms") {
+            this.data.min_number_of_bedroom = null;
+            this.data.max_number_of_bedroom = null;
+            // Clear quick filter button states
+            this.dom.quickFilterButtons.forEach((btn) => {
+              if (btn.getAttribute("data-quick-filter") === "bedrooms") {
+                btn.classList.remove("border-accent", "bg-accent/10", "text-accent");
+                btn.classList.add("border-border", "bg-secondary/60", "text-muted-foreground");
+              }
+            });
+          } else {
+            this.data.setValue(key, null);
+          }
+          this.restoreSelections();
+          this.updateUI();
+          this.notifyChange("remove-filter");
+        });
         fragments.appendChild(button);
       };
 

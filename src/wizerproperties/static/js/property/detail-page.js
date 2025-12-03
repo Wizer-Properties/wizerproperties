@@ -50,6 +50,28 @@
     buildingType: document.querySelector("[data-building-type]"),
     buildingCompletion: document.querySelector("[data-building-completion]"),
     buildingAddress: document.querySelector("[data-building-address]"),
+    // New elements
+    propertyTypeBadge: document.querySelector("[data-property-type-badge]"),
+    propertyTypeDisplay: document.querySelector("[data-property-type-display]"),
+    propertyTenure: document.querySelector("[data-property-tenure]"),
+    imageCounter: document.querySelector("[data-image-counter]"),
+    currentImage: document.querySelector("[data-current-image]"),
+    totalImages: document.querySelector("[data-total-images]"),
+    shareButton: document.querySelector(".share-property-btn"),
+    infoTenure: document.querySelector("[data-info-tenure]"),
+    infoParking: document.querySelector("[data-info-parking]"),
+    infoUnitId: document.querySelector("[data-info-unit-id]"),
+    infoFloor: document.querySelector("[data-info-floor]"),
+    infoBalcony: document.querySelector("[data-info-balcony]"),
+    infoPosition: document.querySelector("[data-info-position]"),
+    agentLogo: document.querySelector("[data-agent-logo]"),
+    agentName: document.querySelector("[data-agent-name]"),
+    contactPhoneBtn: document.querySelector("[data-contact-phone-btn]"),
+    contactEmailBtn: document.querySelector("[data-contact-email-btn]"),
+    propertyNotes: document.querySelector("[data-property-notes]"),
+    saveNotesBtn: document.querySelector("[data-save-notes]"),
+    similarProperties: document.querySelector("[data-similar-properties]"),
+    backToSearchLink: document.getElementById("back-to-search-link"),
   };
 
   const state = {
@@ -113,19 +135,30 @@
     if (!items || items.length === 0) {
       const li = document.createElement("li");
       li.className = "splide__slide h-72 rounded-xl bg-muted flex items-center justify-center text-sm text-muted-foreground";
-      li.textContent = "Media not available yet";
+      li.textContent = "Property photos coming soon";
       listEl.appendChild(li);
     } else {
       items.forEach((item) => {
         const li = document.createElement("li");
         li.className = "splide__slide";
         if (type === "video" || type === "aerial_drone_video" || /\.(mp4|webm)$/i.test(item.file || "")) {
+          const videoId = item.id || item.file;
+          const videoTitle = state.property?.title || 'Property Video';
           li.innerHTML = `
-            <video class="h-72 w-full rounded-xl border border-border object-cover" controls preload="metadata">
+            <video class="h-72 w-full rounded-xl border border-border object-cover" controls preload="metadata" data-video-id="${videoId}">
               <source src="${item.file}" type="video/${item.file?.endsWith(".webm") ? "webm" : "mp4"}" />
               Your browser does not support the video tag.
             </video>
           `;
+          // PostHog tracking - track video play
+          setTimeout(() => {
+            const videoEl = li.querySelector('video');
+            if (videoEl && typeof Analytics !== 'undefined') {
+              videoEl.addEventListener('play', function() {
+                Analytics.trackVideoPlay(videoId, videoTitle);
+              }, { once: true });
+            }
+          }, 100);
         } else {
           li.innerHTML = `
             <img src="${item.file}" alt="Property media" class="h-72 w-full rounded-xl border border-border object-cover" loading="lazy" />
@@ -151,6 +184,26 @@
         pagination: true,
       });
       state.heroSplide.mount();
+      
+      // Update image counter on slide change
+      if (state.heroSplide && els.imageCounter && els.currentImage && els.totalImages) {
+        const total = items.length;
+        if (total > 1) {
+          els.imageCounter.classList.remove("hidden");
+          els.totalImages.textContent = total;
+          state.heroSplide.on("moved", (newIndex) => {
+            if (els.currentImage) {
+              els.currentImage.textContent = (newIndex + 1);
+            }
+          });
+          // Initial update
+          if (els.currentImage) {
+            els.currentImage.textContent = "1";
+          }
+        } else {
+          els.imageCounter.classList.add("hidden");
+        }
+      }
     }
   }
 
@@ -161,19 +214,30 @@
     if (!items || items.length === 0) {
       const li = document.createElement("li");
       li.className = "splide__slide h-[80vh] flex items-center justify-center bg-white/5 text-white/60";
-      li.textContent = "Media unavailable";
+      li.textContent = "Photos not available";
       els.galleryModalList.appendChild(li);
     } else {
       items.forEach((item) => {
         const li = document.createElement("li");
         li.className = "splide__slide";
         if (type === "video" || type === "aerial_drone_video" || /\.(mp4|webm)$/i.test(item.file || "")) {
+          const videoId = item.id || item.file;
+          const videoTitle = state.property?.title || 'Property Video';
           li.innerHTML = `
-            <video class="h-[80vh] w-full object-contain bg-black" controls preload="metadata">
+            <video class="h-[80vh] w-full object-contain bg-black" controls preload="metadata" data-video-id="${videoId}">
               <source src="${item.file}" type="video/${item.file?.endsWith(".webm") ? "webm" : "mp4"}" />
               Your browser does not support the video tag.
             </video>
           `;
+          // PostHog tracking - track video play
+          setTimeout(() => {
+            const videoEl = li.querySelector('video');
+            if (videoEl && typeof Analytics !== 'undefined') {
+              videoEl.addEventListener('play', function() {
+                Analytics.trackVideoPlay(videoId, videoTitle);
+              }, { once: true });
+            }
+          }, 100);
         } else {
           li.innerHTML = `
             <img src="${item.file}" alt="Gallery media" class="h-[80vh] w-full object-contain bg-black" loading="lazy" />
@@ -270,23 +334,23 @@
     }
 
     if (els.contactPhone) {
-      const phone = property.contact_phone_number || property.building?.contact_phone_number;
+      const phone = property.developer_phone_number || property.contact_phone_number || property.building?.contact_phone_number;
       if (phone) {
         els.contactPhone.textContent = phone;
         els.contactPhone.setAttribute("href", `tel:${phone}`);
       } else {
-        els.contactPhone.textContent = "Contact for details";
+        els.contactPhone.textContent = "Get contact details";
         els.contactPhone.removeAttribute("href");
       }
     }
 
     if (els.contactEmail) {
-      const email = property.contact_email || property.building?.contact_email;
+      const email = property.developer_email || property.contact_email || property.building?.contact_email;
       if (email) {
         els.contactEmail.textContent = email;
         els.contactEmail.setAttribute("href", `mailto:${email}`);
       } else {
-        els.contactEmail.textContent = "Available on request";
+        els.contactEmail.textContent = "Request contact info";
         els.contactEmail.removeAttribute("href");
       }
     }
@@ -298,6 +362,136 @@
     renderIframes(property);
     initializeMap();
     updateActions(property);
+    updateAgentInfo(property);
+    initShareButton();
+    initNotes();
+    initBackToSearch();
+  }
+  
+  function updateAgentInfo(property) {
+    // Agent/Developer branding
+    if (els.agentName) {
+      const agentName = property.developer_company_name || "Wizer Properties";
+      els.agentName.textContent = agentName;
+    }
+    
+    if (els.agentLogo) {
+      const logoUrl = property.developer_image;
+      if (logoUrl) {
+        els.agentLogo.innerHTML = `<img src="${logoUrl}" alt="Agent logo" class="h-full w-full object-cover" />`;
+      } else {
+        els.agentLogo.innerHTML = '<div class="flex h-full w-full items-center justify-center text-xs text-muted-foreground">Logo</div>';
+      }
+    }
+    
+    // Update contact buttons
+    if (els.contactPhoneBtn) {
+      const phone = property.developer_phone_number;
+      if (phone) {
+        els.contactPhoneBtn.setAttribute("href", `tel:${phone}`);
+        els.contactPhoneBtn.classList.remove("hidden");
+      } else {
+        els.contactPhoneBtn.classList.add("hidden");
+      }
+    }
+    
+    if (els.contactEmailBtn) {
+      const email = property.developer_email;
+      if (email) {
+        els.contactEmailBtn.setAttribute("href", `mailto:${email}`);
+        els.contactEmailBtn.classList.remove("hidden");
+      } else {
+        els.contactEmailBtn.classList.add("hidden");
+      }
+    }
+  }
+  
+  function initShareButton() {
+    if (!els.shareButton) return;
+    els.shareButton.addEventListener("click", () => {
+      const url = els.shareButton.dataset.shareUrl || window.location.href;
+      const title = els.shareButton.dataset.shareTitle || document.title;
+      
+      if (navigator.share) {
+        navigator.share({
+          title: title,
+          url: url
+        }).catch(() => {
+          // Fallback to clipboard
+          copyToClipboard(url);
+        });
+      } else {
+        copyToClipboard(url);
+      }
+    });
+  }
+  
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      if (els.shareButton) {
+        const originalText = els.shareButton.innerHTML;
+        els.shareButton.innerHTML = '<i class="bi bi-check"></i> <span>Copied!</span>';
+        setTimeout(() => {
+          els.shareButton.innerHTML = originalText;
+        }, 2000);
+      }
+    }).catch(() => {
+      // Fallback for older browsers
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      if (els.shareButton) {
+        const originalText = els.shareButton.innerHTML;
+        els.shareButton.innerHTML = '<i class="bi bi-check"></i> <span>Copied!</span>';
+        setTimeout(() => {
+          els.shareButton.innerHTML = originalText;
+        }, 2000);
+      }
+    });
+  }
+  
+  function initNotes() {
+    if (!els.propertyNotes || !els.saveNotesBtn) return;
+    
+    // Load saved notes
+    const propertyId = els.propertyNotes.dataset.propertyId;
+    const savedNotes = localStorage.getItem(`property_notes_${propertyId}`);
+    if (savedNotes) {
+      els.propertyNotes.value = savedNotes;
+    }
+    
+    els.saveNotesBtn.addEventListener("click", () => {
+      const notes = els.propertyNotes.value.trim();
+      localStorage.setItem(`property_notes_${propertyId}`, notes);
+      els.saveNotesBtn.innerHTML = '<i class="bi bi-check"></i> <span>Saved</span>';
+      setTimeout(() => {
+        els.saveNotesBtn.innerHTML = '<i class="bi bi-save"></i> <span>Save note</span>';
+      }, 2000);
+    });
+  }
+  
+  function initBackToSearch() {
+    if (!els.backToSearchLink) return;
+    
+    // Check if there's a referrer from search pages
+    const referrer = document.referrer;
+    if (referrer && (referrer.includes('/property/search') || referrer.includes('/property/search-with-map'))) {
+      els.backToSearchLink.href = referrer;
+      els.backToSearchLink.textContent = "Back to search results";
+    } else {
+      // Check localStorage for saved search
+      const savedSearches = JSON.parse(localStorage.getItem("saved_searches") || "[]");
+      if (savedSearches.length > 0) {
+        const lastSearch = savedSearches[0];
+        if (lastSearch.url) {
+          els.backToSearchLink.href = lastSearch.url;
+          els.backToSearchLink.textContent = "Back to search results";
+        }
+      }
+    }
   }
 
   function updateActions(property) {
@@ -450,18 +644,19 @@
 
     els.features.innerHTML = "";
     if (chips.length === 0) {
-      const span = document.createElement("span");
-      span.className = "text-xs text-muted-foreground";
-      span.textContent = "Features will be published soon.";
-      els.features.appendChild(span);
+      const li = document.createElement("li");
+      li.className = "flex items-start gap-2 text-sm text-muted-foreground";
+      li.innerHTML = '<i class="bi bi-info-circle mt-0.5 flex-shrink-0 text-muted-foreground"></i><span>Property features are being updated. Check back soon for complete details.</span>';
+      els.features.appendChild(li);
       return;
     }
 
+    // Render as list items (Rightmove style)
     chips.forEach((label) => {
-      const chip = document.createElement("span");
-      chip.className = "rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-foreground";
-      chip.textContent = label;
-      els.features.appendChild(chip);
+      const li = document.createElement("li");
+      li.className = "flex items-start gap-2 text-sm leading-relaxed text-foreground";
+      li.innerHTML = `<i class="bi bi-check-circle-fill mt-0.5 flex-shrink-0 text-accent"></i><span>${label}</span>`;
+      els.features.appendChild(li);
     });
   }
 
@@ -521,9 +716,9 @@
           <div class="flex items-center gap-2 text-xl text-accent give-rating">
             ${createRatingStars(0)}
           </div>
-          <textarea class="give-review input min-h-[140px]" placeholder="Tell us about the property..."></textarea>
+          <textarea class="give-review input min-h-[140px]" placeholder="Share your honest experience—what you loved, what could be better, and who this property is perfect for..."></textarea>
           <div class="review-warrning-text space-y-1 text-xs text-destructive"></div>
-          <button class="btn w-full justify-center review-submit-btn text-sm">Submit Review</button>
+          <button class="btn w-full justify-center review-submit-btn text-sm">Share your review</button>
         </div>
       `;
     }
@@ -609,13 +804,13 @@
     if (state.reviews.loading) return;
     const warning = document.querySelector(".review-warrning-text");
     if (!rating) {
-      if (warning) warning.textContent = "Please select a rating.";
+      if (warning) warning.textContent = "Please rate this property to help other buyers.";
       return;
     }
     const textarea = document.querySelector(".give-review");
     const reviewText = textarea ? textarea.value.trim() : "";
     if (!reviewText) {
-      if (warning) warning.textContent = "Please share a few words about your experience.";
+      if (warning) warning.textContent = "Please share your experience—your review helps other buyers make confident decisions.";
       return;
     }
     state.reviews.loading = true;
@@ -646,7 +841,7 @@
       }
     } catch (error) {
       console.error(error);
-      if (warning) warning.textContent = "Submitting review failed. Please try again.";
+      if (warning) warning.textContent = "Something went wrong. Please try again in a moment.";
     } finally {
       state.reviews.loading = false;
     }
@@ -881,7 +1076,7 @@
             '<button class="btn-secondary mt-4 inline-flex items-center justify-center px-4 py-2 text-sm">Load More</button>';
         } else {
           els.reviewsLoadMore.innerHTML =
-            '<p class="mt-4 text-center text-xs text-muted-foreground">Be the first to share your perspective.</p>';
+            '<p class="mt-4 text-center text-xs text-muted-foreground">Be the first to help other buyers—share your honest experience with this property.</p>';
         }
       }
       bindReviewInteractions();
@@ -933,6 +1128,74 @@
     initReviewsObserver();
     initFacilitiesObserver();
     initLoadMoreObserver();
+    fetchSimilarProperties();
+  }
+  
+  async function fetchSimilarProperties() {
+    if (!els.similarProperties || !state.property) return;
+    
+    try {
+      // Fetch similar properties based on building type and price range
+      const priceRange = state.property.price || 0;
+      const minPrice = Math.max(0, priceRange * 0.7);
+      const maxPrice = priceRange * 1.3;
+      
+      const data = await fetchJson("/property/api/list/", {
+        building_type: state.property.building_type,
+        min_price: Math.floor(minPrice),
+        max_price: Math.ceil(maxPrice),
+        page_size: 4,
+        exclude_id: PROPERTY_ID
+      });
+      
+      const results = data?.results || [];
+      if (results.length === 0) {
+        els.similarProperties.innerHTML = '<p class="text-sm text-muted-foreground">No similar properties found.</p>';
+        return;
+      }
+      
+      renderSimilarProperties(results);
+    } catch (error) {
+      console.error("Failed to fetch similar properties", error);
+      els.similarProperties.innerHTML = '<p class="text-sm text-muted-foreground">Unable to load similar properties.</p>';
+    }
+  }
+  
+  function renderSimilarProperties(properties) {
+    if (!els.similarProperties) return;
+    
+    els.similarProperties.innerHTML = "";
+    const fragment = document.createDocumentFragment();
+    
+    properties.forEach((property) => {
+      const card = document.createElement("a");
+      card.href = `/property/details/${property.id}/`;
+      card.className = "group block overflow-hidden rounded-xl border border-border bg-card transition hover:border-accent/40 hover:shadow-md";
+      
+      const imageUrl = property.default_images?.[0]?.file || property.default_image || "/static/media/background/home-page-bg.webp";
+      const price = formatCurrency(property.price);
+      const address = property.address || "Address not available";
+      const beds = property.number_of_bedroom || "—";
+      const baths = property.number_of_bathroom || "—";
+      
+      card.innerHTML = `
+        <div class="aspect-video overflow-hidden bg-muted">
+          <img src="${imageUrl}" alt="${property.title || 'Property'}" class="h-full w-full object-cover transition group-hover:scale-105" loading="lazy" />
+        </div>
+        <div class="p-4">
+          <p class="text-lg font-semibold text-foreground">${price}</p>
+          <p class="mt-1 line-clamp-2 text-sm text-muted-foreground">${address}</p>
+          <div class="mt-2 flex items-center gap-4 text-xs text-muted-foreground">
+            <span><i class="bi bi-bed"></i> ${beds}</span>
+            <span><i class="bi bi-bathtub"></i> ${baths}</span>
+          </div>
+        </div>
+      `;
+      
+      fragment.appendChild(card);
+    });
+    
+    els.similarProperties.appendChild(fragment);
   }
 
   document.addEventListener("DOMContentLoaded", init);

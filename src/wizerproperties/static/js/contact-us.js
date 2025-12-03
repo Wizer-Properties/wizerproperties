@@ -102,6 +102,13 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error(`Request failed with status ${response.status}`);
       }
 
+      // PostHog tracking - track form submission (without PII)
+      if (typeof Analytics !== 'undefined') {
+        Analytics.trackFormSubmit('contact_form', {
+          subject: subject
+        });
+      }
+
       renderAlert("Thanks for reaching out. A member of the team will contact you shortly.");
       form.reset();
     } catch (error) {

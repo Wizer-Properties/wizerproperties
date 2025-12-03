@@ -395,6 +395,21 @@
       if (this.config.posthogKey && typeof posthog !== 'undefined') {
         posthog.reset();
       }
+    },
+
+    /**
+     * Track Zoho CRM sync events
+     */
+    trackCrmSync: function(eventType, entityType, entityId, success = true) {
+      const eventData = {
+        crm_type: 'zoho',
+        event_type: eventType, // 'lead_created', 'contact_created', 'deal_created', etc.
+        entity_type: entityType, // 'lead', 'contact', 'deal', 'schedule'
+        entity_id: entityId,
+        success: success
+      };
+
+      this.track('crm_sync', eventData);
     }
   };
 

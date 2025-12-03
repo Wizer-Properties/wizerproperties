@@ -4,83 +4,168 @@
 {% load socialaccount %}
 
 {% block extend_head %}
-<title>Register | Wizer Properties</title>
-<meta name="description" content="Create your Wizer Properties account. Join agents and developers to streamline property listings and collaborate with teams.">
+<title>Create Free Account | Wizer Properties</title>
+<meta name="description" content="Create a free account to save searches, get instant price alerts, and sync your favorites across all devices. No credit card required.">
 <meta name="robots" content="noindex, follow">
 <link rel="canonical" href="{{ request.build_absolute_uri }}">
 {% endblock extend_head %}
 
 {% block content %}
-
-<div class="grid gap-12 lg:grid-cols-[1.05fr_1fr]">
-    <aside class="relative hidden overflow-hidden rounded-3xl border border-border bg-muted/20 px-10 py-12 shadow-sm lg:block">
-        <div class="absolute inset-0 bg-gradient-to-br from-primary/15 via-transparent to-primary/5"></div>
-        <div class="relative flex h-full flex-col justify-between">
+{% with from_param=request.GET.from %}
+<div class="grid gap-8 lg:grid-cols-[1fr_1fr] lg:gap-12">
+    <!-- Left Sidebar: Context-Aware Messaging -->
+    <aside class="relative hidden overflow-hidden rounded-3xl border border-[#53535fcc]/20 bg-gradient-to-br from-[#f2f3f4] via-[#f2f3f4] to-[#b8e9e0]/30 px-8 py-12 shadow-lg lg:block">
+        <div class="relative z-10 flex h-full flex-col justify-between">
             <div>
-                <p class="text-sm font-semibold uppercase tracking-widest text-accent">
-                    Get started
-                </p>
-                <h2 class="mt-4 text-3xl font-heading font-semibold text-foreground">
-                    Join agents and developers on Wizer.
+                <a href="{% if from_param == 'developer' %}{% url 'developer-home' %}{% else %}/{% endif %}" class="inline-flex items-center gap-2 text-sm font-medium text-[#53535fcc] transition hover:text-[#00deb6] mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Back to homepage
+                </a>
+                
+                <div class="mb-8">
+                    <span class="inline-flex items-center gap-2 rounded-full bg-[#b8e9e0]/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#00deb6]">
+                        {% if from_param == 'developer' %}
+                        For Developers
+                        {% else %}
+                        Get Started Free
+                        {% endif %}
+                    </span>
+                    <h2 class="mt-6 text-3xl font-heading font-semibold leading-tight text-[#262637]">
+                        {% if from_param == 'developer' %}
+                        Sell Your Unsold Inventory at a Fraction of Launch Costs
+                        {% else %}
+                        Find Your Perfect Bangkok Property—Verified, Transparent, Trusted
+                        {% endif %}
                 </h2>
-                <p class="mt-3 text-base text-muted-foreground">
-                    Streamline listings, collaborate with teams, and convert prospects faster with tools built for property professionals.
+                    <p class="mt-4 text-base leading-relaxed text-[#53535fcc]">
+                        {% if from_param == 'developer' %}
+                        Join developers saving 90%+ on marketing costs. List properties, reach qualified buyers, and manage inventory with immersive 3D tours. Free trial until first sale.
+                        {% else %}
+                        Create your account to save searches, get instant price alerts, and compare properties side-by-side. Everything syncs across your devices.
+                        {% endif %}
                 </p>
             </div>
-            <div class="mt-12 space-y-6">
-                <div class="flex items-start gap-4 rounded-2xl border border-border bg-background/60 p-5 shadow-sm backdrop-blur">
-                    <div class="mt-1 h-10 w-10 rounded-full bg-accent/10 text-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto mt-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+
+                <div class="space-y-4">
+                    {% if from_param == 'developer' %}
+                    <div class="flex items-start gap-4 rounded-xl border border-[#53535fcc]/10 bg-white/60 p-4 backdrop-blur-sm">
+                        <div class="flex-shrink-0 rounded-lg bg-[#b8e9e0]/20 p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#00deb6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-semibold text-[#262637]">Free until first sale</h3>
+                            <p class="mt-1 text-xs text-[#53535fcc]">No upfront costs. No risk. We succeed when you succeed.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 rounded-xl border border-[#53535fcc]/10 bg-white/60 p-4 backdrop-blur-sm">
+                        <div class="flex-shrink-0 rounded-lg bg-[#b8e9e0]/20 p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#00deb6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
                     <div>
-                        <h3 class="text-base font-semibold text-foreground">Verified listings</h3>
-                        <p class="mt-1 text-sm text-muted-foreground">
-                            Publish property details, media, and availability updates that buyers trust.
-                        </p>
+                            <h3 class="text-sm font-semibold text-[#262637]">90%+ cost savings</h3>
+                            <p class="mt-1 text-xs text-[#53535fcc]">Replace 150,000+ MYR hotel launches with subscription platform.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 rounded-xl border border-[#53535fcc]/10 bg-white/60 p-4 backdrop-blur-sm">
+                        <div class="flex-shrink-0 rounded-lg bg-[#b8e9e0]/20 p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#00deb6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-semibold text-[#262637]">Direct buyer access</h3>
+                            <p class="mt-1 text-xs text-[#53535fcc]">No agent intermediaries. Build relationships directly.</p>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="flex items-start gap-4 rounded-xl border border-[#53535fcc]/10 bg-white/60 p-4 backdrop-blur-sm">
+                        <div class="flex-shrink-0 rounded-lg bg-[#b8e9e0]/20 p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#00deb6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-semibold text-[#262637]">Verified listings</h3>
+                            <p class="mt-1 text-xs text-[#53535fcc]">All properties verified by developers. Transparent pricing.</p>
                     </div>
                 </div>
-                <div class="flex items-start gap-4 rounded-2xl border border-border bg-background/60 p-5 shadow-sm backdrop-blur">
-                    <div class="mt-1 h-10 w-10 rounded-full bg-accent/10 text-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto mt-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    <div class="flex items-start gap-4 rounded-xl border border-[#53535fcc]/10 bg-white/60 p-4 backdrop-blur-sm">
+                        <div class="flex-shrink-0 rounded-lg bg-[#b8e9e0]/20 p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#00deb6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                         </svg>
                     </div>
                     <div>
-                        <h3 class="text-base font-semibold text-foreground">Team collaboration</h3>
-                        <p class="mt-1 text-sm text-muted-foreground">
-                            Coordinate with agents, track inquiries, and manage marketing assets together.
-                        </p>
+                            <h3 class="text-sm font-semibold text-[#262637]">Compare properties</h3>
+                            <p class="mt-1 text-xs text-[#53535fcc]">Side-by-side comparison tool to find your perfect match.</p>
+                        </div>
                     </div>
+                    <div class="flex items-start gap-4 rounded-xl border border-[#53535fcc]/10 bg-white/60 p-4 backdrop-blur-sm">
+                        <div class="flex-shrink-0 rounded-lg bg-[#b8e9e0]/20 p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#00deb6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-semibold text-[#262637]">3D virtual tours</h3>
+                            <p class="mt-1 text-xs text-[#53535fcc]">Immersive Matterport tours to explore properties remotely.</p>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
-            <div class="mt-12 flex items-center gap-4 text-sm text-muted-foreground">
-                <div class="h-px flex-1 bg-border"></div>
-                Trusted by over <span class="font-semibold text-foreground">1,200+</span> agents
-                <div class="h-px flex-1 bg-border"></div>
+
+            <div class="mt-8 pt-8 border-t border-[#53535fcc]/20">
+                <p class="text-center text-xs text-[#53535fcc]">
+                    {% if from_param == 'developer' %}
+                    Trusted by developers saving 90%+ on marketing costs
+                    {% else %}
+                    Trusted by 1,200+ agents and thousands of property buyers
+                    {% endif %}
+                </p>
             </div>
         </div>
     </aside>
 
-    <section class="space-y-8">
-        <header class="space-y-3 text-center lg:text-left">
-            <h1 class="text-3xl font-heading font-semibold text-foreground">
-                Create your Wizer Properties account
+    <!-- Right Side: Signup Form -->
+    <section class="flex flex-col justify-center space-y-8">
+        <div class="lg:hidden mb-4">
+            <a href="{% if from_param == 'developer' %}{% url 'developer-home' %}{% else %}/{% endif %}" class="inline-flex items-center gap-2 text-sm font-medium text-[#53535fcc] transition hover:text-[#00deb6]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Back
+            </a>
+        </div>
+
+        <header class="space-y-2">
+            <h1 class="text-2xl font-heading font-semibold text-[#262637] lg:text-3xl">
+                Create your account
             </h1>
-            <p class="text-base text-muted-foreground">
-                Join agents and developers streamlining listings, collaborating with teams, and converting prospects faster.
+            <p class="text-sm text-[#53535fcc] lg:text-base">
+                {% if from_param == 'developer' %}
+                Start your free trial. No credit card required.
+                {% else %}
+                Join thousands finding their perfect property.
+                {% endif %}
             </p>
         </header>
 
-        <section class="space-y-6">
+        <div class="space-y-6">
+            <!-- Error Messages -->
             <div class="auth-response-messages space-y-3" role="alert" aria-live="polite" aria-atomic="true">
                 {% if signup_form.errors %}
                     {% for field, errors in signup_form.errors.items %}
                         {% for error in errors %}
-                            <div class="flex items-center gap-3 rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive shadow-sm" role="alert">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-destructive" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-.75-11.5a.75.75 0 011.5 0v4.5a.75.75 0 01-1.5 0v-4.5zM10 14a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/>
+                            <div class="flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 shadow-sm" role="alert">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
                                 </svg>
                                 <span>{{ error }}</span>
                             </div>
@@ -88,85 +173,93 @@
                     {% endfor %}
                 {% endif %}
                 {% if system_error %}
-                    <div class="flex items-center gap-3 rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive shadow-sm" role="alert">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-destructive" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-.75-11.5a.75.75 0 011.5 0v4.5a.75.75 0 01-1.5 0v-4.5zM10 14a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/>
+                    <div class="flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 shadow-sm" role="alert">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
                         </svg>
                         <span>{{ system_error }}</span>
                     </div>
                 {% endif %}
             </div>
-            <form class="space-y-6" id="create-profile-form" method="post" action="{% url 'user:signup' %}" novalidate aria-label="Create account form">
+
+            <!-- Signup Form -->
+            <form id="create-profile-form" method="post" action="{% url 'user:signup' %}{% if from_param == 'developer' %}?from=developer{% endif %}" novalidate aria-label="Create account form" class="space-y-5">
                 {% csrf_token %}
+                
                 <div class="space-y-2">
-                    <label for="email" class="text-sm font-medium text-muted-foreground">
-                        Email address
+                    <label for="email" class="block text-sm font-medium text-[#262637]">
+                        Email address <span class="text-red-500">*</span>
                     </label>
-                    {% render_field signup_form.email id="email" placeholder="name@company.com" autocomplete="email" autofocus="autofocus" required="required" aria-required="true" aria-describedby="email-error" aria-invalid="false" class="w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20" %}
-                    <div id="email-error" class="sr-only" role="alert"></div>
+                    {% render_field signup_form.email id="email" placeholder="name@company.com" autocomplete="email" autofocus="autofocus" required="required" aria-required="true" aria-describedby="email-error" aria-invalid="false" class="w-full rounded-xl border border-[#53535fcc]/20 bg-white px-4 py-3.5 text-base text-[#262637] shadow-sm transition-all duration-200 focus:border-[#00deb6] focus:outline-none focus:ring-2 focus:ring-[#00deb6]/20 hover:border-[#53535fcc]/30" %}
+                    <div id="email-error" class="mt-1 text-xs text-red-600 hidden" role="alert"></div>
                 </div>
 
                 <div class="space-y-2">
-                    <label for="password1" class="text-sm font-medium text-muted-foreground">
-                        Password
+                    <label for="password1" class="block text-sm font-medium text-[#262637]">
+                        Password <span class="text-red-500">*</span>
                     </label>
                     <div class="relative">
-                        {% render_field signup_form.password1 id="password1" placeholder="••••••••" autocomplete="new-password" required="required" aria-required="true" aria-describedby="password1-error password-requirements" aria-invalid="false" class="w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20" %}
+                        {% render_field signup_form.password1 id="password1" placeholder="Create a strong password" autocomplete="new-password" required="required" aria-required="true" aria-describedby="password1-error password-requirements" aria-invalid="false" class="w-full rounded-xl border border-[#53535fcc]/20 bg-white px-4 py-3.5 text-base text-[#262637] shadow-sm transition-all duration-200 focus:border-[#00deb6] focus:outline-none focus:ring-2 focus:ring-[#00deb6]/20 hover:border-[#53535fcc]/30" %}
                     </div>
-                    <div id="password1-error" class="sr-only" role="alert"></div>
-                    <p id="password-requirements" class="text-xs text-muted-foreground">Use at least 8 characters with a mix of letters, numbers, and symbols.</p>
+                    <div id="password1-error" class="mt-1 text-xs text-red-600 hidden" role="alert"></div>
+                    <p id="password-requirements" class="mt-1 text-xs text-[#53535fcc]">Use at least 8 characters with a mix of letters, numbers, and symbols.</p>
                 </div>
 
                 <div class="space-y-2">
-                    <label for="password2" class="text-sm font-medium text-muted-foreground">
-                        Confirm Password
+                    <label for="password2" class="block text-sm font-medium text-[#262637]">
+                        Confirm Password <span class="text-red-500">*</span>
                     </label>
                     <div class="relative">
-                        {% render_field signup_form.password2 id="password2" placeholder="••••••••" autocomplete="new-password" required="required" aria-required="true" aria-describedby="password2-error" aria-invalid="false" class="w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20" %}
+                        {% render_field signup_form.password2 id="password2" placeholder="Confirm your password" autocomplete="new-password" required="required" aria-required="true" aria-describedby="password2-error" aria-invalid="false" class="w-full rounded-xl border border-[#53535fcc]/20 bg-white px-4 py-3.5 text-base text-[#262637] shadow-sm transition-all duration-200 focus:border-[#00deb6] focus:outline-none focus:ring-2 focus:ring-[#00deb6]/20 hover:border-[#53535fcc]/30" %}
                     </div>
-                    <div id="password2-error" class="sr-only" role="alert"></div>
+                    <div id="password2-error" class="mt-1 text-xs text-red-600 hidden" role="alert"></div>
                 </div>
 
                 <button
                     type="submit"
-                    class="inline-flex w-full items-center justify-center gap-3 rounded-xl bg-primary px-5 py-3 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/30 transition hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                    class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#00deb6] px-6 py-3.5 text-base font-semibold text-[#000433] shadow-lg shadow-[#00deb6]/30 transition-all duration-200 hover:bg-[#00deb6]/90 hover:shadow-xl hover:shadow-[#00deb6]/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00deb6] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-lg"
                     button-name="sign-up"
                     aria-label="Create your Wizer Properties account"
                     aria-busy="false"
                 >
-                    Sign up
+                    <span>Create account</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
                 </button>
             </form>
 
-            <div class="relative flex items-center justify-center">
-                <div class="h-px w-full bg-border"></div>
-                <span class="absolute bg-card px-4 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    Or continue with
-                </span>
+            <!-- Divider -->
+            <div class="relative flex items-center py-4">
+                <div class="flex-grow border-t border-[#53535fcc]/20"></div>
+                <span class="mx-4 flex-shrink text-xs font-medium uppercase tracking-wide text-[#53535fcc]">Or continue with</span>
+                <div class="flex-grow border-t border-[#53535fcc]/20"></div>
             </div>
 
-            <form action="{% url 'google_login' %}" method="post" class="space-y-4" aria-label="Sign up with Google">
+            <!-- Google Signup -->
+            <form action="{% url 'google_login' %}" method="post" aria-label="Sign up with Google">
                 {% csrf_token %}
                 <button
                     type="submit"
-                    class="inline-flex w-full items-center justify-center gap-3 rounded-xl border border-border bg-background px-5 py-3 text-base font-semibold text-foreground transition hover:border-accent hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                    class="w-full inline-flex items-center justify-center gap-3 rounded-xl border-2 border-[#53535fcc]/20 bg-white px-6 py-3.5 text-base font-semibold text-[#262637] transition-all duration-200 hover:border-[#00deb6] hover:bg-[#f2f3f4] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00deb6]"
                     aria-label="Continue with Google account"
                 >
                     <img width="20" height="20" src="{% static 'media/icons/google_icon.webp' %}" alt="Google logo" aria-hidden="true">
-                    Continue with Google
+                    <span>Continue with Google</span>
                 </button>
             </form>
 
-            <p class="text-center text-sm text-muted-foreground">
+            <!-- Sign In Link -->
+            <p class="text-center text-sm text-[#53535fcc]">
                 Already have an account?
-                <a href="{% url 'user:login' %}" class="font-semibold text-accent transition hover:text-accent/80">
+                <a href="{% url 'user:login' %}{% if from_param %}?from={{ from_param }}{% endif %}" class="font-semibold text-[#00deb6] transition hover:text-[#00deb6]/80 hover:underline">
                     Sign in
                 </a>
             </p>
-        </section>
+        </div>
     </section>
 </div>
-
+{% endwith %}
 {% endblock %}
 
 {% block extend_script %}

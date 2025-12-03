@@ -50,7 +50,7 @@
             id="company_name"
             name="company_name"
             type="text"
-            placeholder="Company Name"
+            placeholder="e.g. ABC Real Estate"
             value="{{ profile.company_name }}"
             required
             aria-required="true"
@@ -93,7 +93,7 @@
                 id="phone_number"
                 name="phone_number"
                 type="tel"
-                placeholder="Phone Number"
+                placeholder="e.g. 812345678"
                 value="{{ profile.phone_number|cut:'+66' }}"
                 required
                 aria-required="true"
@@ -166,7 +166,7 @@
             name="address"
             type="text"
             class="pac-input w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-            placeholder="Company Address"
+            placeholder="e.g. 123 Sukhumvit Road, Bangkok"
             value="{{ profile.address }}"
             required
             aria-required="true"
@@ -188,7 +188,7 @@
             id="company_details"
             name="company_details"
             rows="5"
-            placeholder="Company Details"
+            placeholder="Tell buyers about your company—years of experience, specialties, languages spoken..."
             required
             aria-required="true"
             aria-describedby="company-details-error"
@@ -205,7 +205,7 @@
         aria-label="Update your profile"
         aria-busy="false"
     >
-        <span id="loginButtonText">Update Profile</span>
+        <span id="loginButtonText">Save changes</span>
     </button>
 </div>
 

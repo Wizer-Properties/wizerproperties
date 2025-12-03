@@ -14,9 +14,9 @@
         <header class="space-y-4">
             <p class="text-xs font-semibold uppercase tracking-[0.4em] text-accent">Buildings</p>
             <div class="space-y-2">
-                <h1 class="text-3xl font-heading font-semibold text-foreground">Edit building</h1>
+                <h1 class="text-3xl font-heading font-semibold text-foreground">Update your development profile</h1>
                 <p class="max-w-2xl text-sm text-muted-foreground">
-                    Review and refine your project data, amenities, and media to keep buyers informed with the latest details.
+                    Keep buyers informed with the latest project details—update pricing, amenities, and photos. Changes go live instantly.
                 </p>
             </div>
         </header>
@@ -154,10 +154,33 @@
                             <input name="sub_district" label="sub-district" type="text" class="input" value="{{ building.sub_district }}" placeholder="Sub district">
                         </label>
                     </div>
-                </div>
 
-                <input type="hidden" name="latitude" label="latitude" label-name="latitude" value="{{ building.latitude }}">
-                <input type="hidden" name="longitude" label="longitude" label-name="longitude" value="{{ building.longitude }}">
+                    <!-- Map Picker and Coordinates Display -->
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="label">Location Coordinates</span>
+                                <p class="text-xs text-muted-foreground mt-1">Coordinates are auto-filled when you select an address above, or click on the map to set manually.</p>
+                            </div>
+                        </div>
+                        <div class="grid gap-4 md:grid-cols-2">
+                            <label class="flex flex-col gap-2">
+                                <span class="label text-sm">Latitude</span>
+                                <input name="latitude" label="latitude" label-name="latitude" type="text" class="input" value="{{ building.latitude|default:'' }}" placeholder="e.g. 13.7563" readonly>
+                            </label>
+                            <label class="flex flex-col gap-2">
+                                <span class="label text-sm">Longitude</span>
+                                <input name="longitude" label="longitude" label-name="longitude" type="text" class="input" value="{{ building.longitude|default:'' }}" placeholder="e.g. 100.5018" readonly>
+                            </label>
+                        </div>
+                        <div class="rounded-lg border border-border overflow-hidden" style="height: 300px;">
+                            <div id="building-location-map" class="w-full h-full"></div>
+                        </div>
+                        <p class="text-xs text-muted-foreground">
+                            <i class="bi bi-info-circle"></i> Click on the map to set coordinates, or select an address from the autocomplete above.
+                        </p>
+                    </div>
+                </div>
             </section>
 
             <section class="card space-y-6">
@@ -397,5 +420,120 @@
     var commercialSubTypes = {{ commercial_sub_types|safe }};
 </script>
 <script src="{% static 'js/building/update_building.js' %}?v=2.00"></script>
+<script>
+    // Initialize map picker for location coordinates
+    (function() {
+        var mapContainer = document.getElementById('building-location-map');
+        if (!mapContainer) return;
+
+        var latitudeInput = document.querySelector('[label-name="latitude"]');
+        var longitudeInput = document.querySelector('[label-name="longitude"]');
+        var addressInput = document.querySelector('input[name="address"].pac-input');
+        
+        var map = null;
+        var marker = null;
+        var defaultCenter = { lat: 13.7563309, lng: 100.5017651 };
+
+        function initMapPicker() {
+            if (typeof google === 'undefined' || typeof google.maps === 'undefined') {
+                // Wait for Google Maps to load
+                setTimeout(initMapPicker, 100);
+                return;
+            }
+
+            // Initialize map
+            map = new google.maps.Map(mapContainer, {
+                center: defaultCenter,
+                zoom: 12,
+                mapTypeControl: false,
+                streetViewControl: false,
+                fullscreenControl: true,
+            });
+
+            // Check if there are existing coordinates
+            var existingLat = latitudeInput?.value;
+            var existingLng = longitudeInput?.value;
+            if (existingLat && existingLng) {
+                var pos = { lat: parseFloat(existingLat), lng: parseFloat(existingLng) };
+                if (!isNaN(pos.lat) && !isNaN(pos.lng)) {
+                    map.setCenter(pos);
+                    map.setZoom(15);
+                    addMarker(pos);
+                }
+            }
+
+            // Add click listener to map
+            map.addListener('click', function(e) {
+                var pos = {
+                    lat: e.latLng.lat(),
+                    lng: e.latLng.lng()
+                };
+                updateCoordinates(pos);
+                addMarker(pos);
+            });
+
+            // Listen for address autocomplete changes
+            if (addressInput && typeof google !== 'undefined' && typeof google.maps !== 'undefined' && typeof google.maps.places !== 'undefined') {
+                // The g_map.js script should handle this, but we'll also listen here
+                var autocomplete = new google.maps.places.Autocomplete(addressInput, {
+                    componentRestrictions: { country: "th" },
+                    fields: ["geometry", "address_components"]
+                });
+
+                autocomplete.addListener('place_changed', function() {
+                    var place = autocomplete.getPlace();
+                    if (place.geometry) {
+                        var pos = {
+                            lat: place.geometry.location.lat(),
+                            lng: place.geometry.location.lng()
+                        };
+                        updateCoordinates(pos);
+                        map.setCenter(pos);
+                        map.setZoom(15);
+                        addMarker(pos);
+                    }
+                });
+            }
+        }
+
+        function addMarker(position) {
+            if (marker) {
+                marker.setPosition(position);
+            } else {
+                marker = new google.maps.Marker({
+                    position: position,
+                    map: map,
+                    draggable: true,
+                    title: 'Building Location'
+                });
+
+                // Update coordinates when marker is dragged
+                marker.addListener('dragend', function() {
+                    var pos = marker.getPosition();
+                    updateCoordinates({
+                        lat: pos.lat(),
+                        lng: pos.lng()
+                    });
+                });
+            }
+        }
+
+        function updateCoordinates(position) {
+            if (latitudeInput) {
+                latitudeInput.value = position.lat.toFixed(6);
+            }
+            if (longitudeInput) {
+                longitudeInput.value = position.lng.toFixed(6);
+            }
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initMapPicker);
+        } else {
+            initMapPicker();
+        }
+    })();
+</script>
 {% endblock extend_script %}
 

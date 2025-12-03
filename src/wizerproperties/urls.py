@@ -19,7 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
-from core.views import dashboard, contact_page, home_page, privacy_page, about_us_page, custom_404, robots_txt
+from core.views import dashboard, contact_page, home_page, developer_home_page, developer_pricing_page, privacy_page, about_us_page, custom_404, robots_txt
 from core.admin import custom_admin_site
 from core.sitemaps import StaticViewSitemap, PropertySitemap, BlogPostSitemap, BuildingSitemap
 from allauth.socialaccount.providers.google.views import oauth2_login, oauth2_callback
@@ -28,6 +28,8 @@ from advertise.views import reels
 urlpatterns = [
     path("admin/", custom_admin_site.urls),
     path('', home_page, name='home'),
+    path('developers/', developer_home_page, name='developer-home'),
+    path('developers/pricing/', developer_pricing_page, name='developer-pricing'),
     path('dashboard/', dashboard, name='dashboard'),
     path('contact/', contact_page, name='contact'),
     path("user/", include(("user.urls", "user"), namespace="user")),

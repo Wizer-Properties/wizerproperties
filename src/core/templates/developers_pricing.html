@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+{% load static %}
+{% load seo_tags %}
+
+{% block extend_head %}
+<title>Developer Pricing | Wizer Properties</title>
+<meta name="description" content="Transparent pricing for developers. Replace expensive launch events with a subscription model. Free trial until first sale. Save 90% on marketing costs.">
+<meta name="keywords" content="developer property pricing, real estate marketing costs, property launch cost, developer subscription">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Developer Pricing | Wizer Properties">
+<meta property="og:description" content="Transparent pricing for developers. Replace expensive launch events with a subscription model. Free trial until first sale. Save 90% on marketing costs.">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'media/logo.png' %}">
+<meta property="og:site_name" content="Wizer Properties">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Developer Pricing | Wizer Properties">
+<meta name="twitter:description" content="Transparent pricing for developers. Replace expensive launch events with a subscription model. Free trial until first sale. Save 90% on marketing costs.">
+<meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'media/logo.png' %}">
+
+<!-- Structured Data -->
+{% organization_schema %}
+{% endblock extend_head %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative overflow-hidden bg-[#000433] py-20 text-white lg:py-28">
+    <div class="absolute inset-0">
+        <img src="{% static '/media/background/pricing-bg.webp' %}" alt="Bangkok skyline" class="h-full w-full object-cover opacity-40" fetchpriority="high" loading="eager" decoding="async">
+        <div class="absolute inset-0 bg-gradient-to-b from-[#000433]/80 to-[#000433]"></div>
+    </div>
+    <div class="container relative z-10 max-w-4xl text-center">
+        <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[#b8e9e0]">
+            Simple Pricing
+        </span>
+        <h1 class="mt-6 text-4xl font-heading font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">
+            Transparent Pricing: No Hidden Fees
+        </h1>
+        <p class="mx-auto mt-6 max-w-2xl text-lg text-white/80">
+            Replace your 1.2 Million+ THB hotel launches with a subscription platform. Pay only for what you use. Free trial until your first sale.
+        </p>
+    </div>
+</section>
+
+<!-- Cost Comparison Section -->
+<section class="bg-white py-16">
+    <div class="container max-w-7xl">
+        <div class="mb-12 text-center">
+            <h2 class="text-3xl font-heading font-semibold text-[#262637]">Why Switch to Subscription?</h2>
+            <p class="mt-4 text-lg text-[#53535fcc]">Compare the cost of a traditional launch vs. Wizer Properties</p>
+        </div>
+        
+        <div class="grid gap-8 lg:grid-cols-2">
+            <!-- Traditional Launch Card -->
+            <div class="rounded-3xl border border-red-200 bg-red-50 p-8">
+                <div class="mb-6 flex items-center gap-4">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-red-600">
+                        <i class="bi bi-building-x text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-[#262637]">Traditional Hotel Launch</h3>
+                </div>
+                <ul class="space-y-4 border-b border-red-200 pb-6">
+                    <li class="flex justify-between text-[#53535fcc]">
+                        <span>Venue Rental (Ballroom)</span>
+                        <span class="font-semibold text-[#262637]">400,000 - 650,000 THB</span>
+                    </li>
+                    <li class="flex justify-between text-[#53535fcc]">
+                        <span>Food &amp; Beverage</span>
+                        <span class="font-semibold text-[#262637]">300,000 - 500,000 THB</span>
+                    </li>
+                    <li class="flex justify-between text-[#53535fcc]">
+                        <span>Marketing &amp; PR Agency</span>
+                        <span class="font-semibold text-[#262637]">250,000 - 400,000 THB</span>
+                    </li>
+                    <li class="flex justify-between text-[#53535fcc]">
+                        <span>Event Staff &amp; Logistics</span>
+                        <span class="font-semibold text-[#262637]">150,000 - 250,000 THB</span>
+                    </li>
+                </ul>
+                <div class="mt-6 flex items-end justify-between">
+                    <span class="font-medium text-[#53535fcc]">Total Cost per Launch</span>
+                    <span class="text-3xl font-bold text-red-600">1.2 Million+ THB</span>
+                </div>
+                <p class="mt-2 text-right text-xs text-red-500 font-medium">One-time event • No guaranteed sales</p>
+            </div>
+
+            <!-- Wizer Properties Card -->
+            <div class="relative overflow-hidden rounded-3xl border border-[#00deb6] bg-white p-8 shadow-xl">
+                <div class="absolute -right-12 top-6 rotate-45 bg-[#00deb6] px-12 py-1 text-sm font-bold text-[#000433]">
+                    RECOMMENDED
+                </div>
+                <div class="mb-6 flex items-center gap-4">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-full bg-[#b8e9e0]/20 text-[#00deb6]">
+                        <i class="bi bi-check-lg text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-[#262637]">Wizer Properties</h3>
+                </div>
+                <ul class="space-y-4 border-b border-[#b8e9e0] pb-6">
+                    <li class="flex justify-between text-[#53535fcc]">
+                        <span>Subscription Fee</span>
+                        <span class="font-semibold text-[#00deb6]">Free until first sale</span>
+                    </li>
+                    <li class="flex justify-between text-[#53535fcc]">
+                        <span>Listing Fee</span>
+                        <span class="font-semibold text-[#00deb6]">0 THB (Unlimited)</span>
+                    </li>
+                    <li class="flex justify-between text-[#53535fcc]">
+                        <span>Initial Promotion Credits</span>
+                        <span class="font-semibold text-[#00deb6]">100 Credits (Included)</span>
+                    </li>
+                    <li class="flex justify-between text-[#53535fcc]">
+                        <span>Marketing Automation</span>
+                        <span class="font-semibold text-[#00deb6]">Included</span>
+                    </li>
+                </ul>
+                <div class="mt-6 flex items-end justify-between">
+                    <span class="font-medium text-[#53535fcc]">Total Monthly Cost</span>
+                    <span class="text-3xl font-bold text-[#00deb6]">Save 90%+</span>
+                </div>
+                <p class="mt-2 text-right text-xs text-[#00deb6] font-medium">Always on 24/7 • Pay for results</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Credit System Explained -->
+<section class="bg-[#f2f3f4] py-16">
+    <div class="container max-w-7xl">
+        <div class="mb-12 text-center">
+            <h2 class="text-3xl font-heading font-semibold text-[#262637]">How Credits Work</h2>
+            <p class="mt-4 text-lg text-[#53535fcc]">Flexible promotion tools. Pay only when you want to boost visibility.</p>
+        </div>
+
+        <div class="grid gap-8 md:grid-cols-3">
+            <!-- Card 1 -->
+            <div class="rounded-2xl bg-white p-6 shadow-sm transition hover:shadow-md">
+                <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[#b8e9e0]/20 text-[#00deb6]">
+                    <i class="bi bi-gift text-2xl"></i>
+                </div>
+                <h3 class="mb-2 text-xl font-semibold text-[#262637]">100 Free Credits</h3>
+                <p class="text-[#53535fcc]">
+                    Get started immediately. Every new developer account comes with 100 credits to test the platform and run your first promotions.
+                </p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="rounded-2xl bg-white p-6 shadow-sm transition hover:shadow-md">
+                <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[#b8e9e0]/20 text-[#00deb6]">
+                    <i class="bi bi-star text-2xl"></i>
+                </div>
+                <h3 class="mb-2 text-xl font-semibold text-[#262637]">Featured Listings (3 Credits)</h3>
+                <p class="text-[#53535fcc]">
+                    Boost visibility for 7 days. Featured properties appear on the homepage and at the top of search results.
+                </p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="rounded-2xl bg-white p-6 shadow-sm transition hover:shadow-md">
+                <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[#b8e9e0]/20 text-[#00deb6]">
+                    <i class="bi bi-lightning text-2xl"></i>
+                </div>
+                <h3 class="mb-2 text-xl font-semibold text-[#262637]">Flash Sales (3 Credits)</h3>
+                <p class="text-[#53535fcc]">
+                    Create urgency with limited-time offers. Perfect for clearing inventory quickly with special pricing.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section class="bg-white py-16">
+    <div class="container max-w-3xl">
+        <div class="mb-12 text-center">
+            <h2 class="text-3xl font-heading font-semibold text-[#262637]">Frequently Asked Questions</h2>
+        </div>
+        <div class="divide-y divide-[#b8e9e0]">
+            <div class="py-6">
+                <h3 class="text-lg font-semibold text-[#262637]">When does the free trial end?</h3>
+                <p class="mt-2 text-[#53535fcc]">Your free trial continues until you successfully sell your first property through the platform. You have full access to all features during this time.</p>
+            </div>
+            <div class="py-6">
+                <h3 class="text-lg font-semibold text-[#262637]">Can I buy more credits?</h3>
+                <p class="mt-2 text-[#53535fcc]">Yes, you can purchase additional credit packs from your dashboard at any time. Credits never expire.</p>
+            </div>
+            <div class="py-6">
+                <h3 class="text-lg font-semibold text-[#262637]">Do you charge commission?</h3>
+                <p class="mt-2 text-[#53535fcc]">No. We are a subscription-based platform. We do not take any commission on your sales.</p>
+            </div>
+            <div class="py-6">
+                <h3 class="text-lg font-semibold text-[#262637]">How much do I save?</h3>
+                <p class="mt-2 text-[#53535fcc]">Compared to a typical 1.2-1.5 Million THB launch event, most developers save over 90% in their first year while maintaining continuous visibility.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="bg-[#000433] py-16 text-center">
+    <div class="container max-w-4xl">
+        <h2 class="text-3xl font-heading font-semibold text-white sm:text-4xl">Start Your Free Trial Today</h2>
+        <p class="mx-auto mt-4 max-w-2xl text-lg text-white/80">
+            Join developers saving millions on marketing costs. No credit card required.
+        </p>
+        <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <a href="{% url 'user:signup' %}" class="btn inline-flex items-center justify-center gap-2 bg-[#00deb6] px-8 py-4 text-[#000433] hover:bg-[#00deb6]/90 shadow-lg shadow-[#00deb6]/30">
+                Get Started Free
+                <i class="bi bi-arrow-right"></i>
+            </a>
+            <a href="{% url 'contact' %}" class="btn-secondary inline-flex items-center justify-center gap-2 border-2 border-white/20 bg-white/10 px-8 py-4 text-white backdrop-blur hover:bg-white/20">
+                Talk to Sales
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

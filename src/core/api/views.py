@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from core.api.serializers import ContactSerializer
 from core.models import Contact
 from utils.admin_settings import get_openai_api_key
+from utils.zoho_crm import sync_contact_to_crm
 
 class ContactViewSet(viewsets.ModelViewSet):
     serializer_class = ContactSerializer
@@ -14,6 +15,40 @@ class ContactViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Contact.objects.all()
+    
+    def create(self, request, *args, **kwargs):
+        """
+        Override create to sync with Zoho CRM after saving
+        """
+        response = super().create(request, *args, **kwargs)
+        
+        # Sync to Zoho CRM if enabled
+        if response.status_code == 201:
+            try:
+                contact_data = request.data
+                email = contact_data.get('email', '')
+                subject = contact_data.get('subject', '')
+                body = contact_data.get('body', '')
+                
+                if email:
+                    # Sync to Zoho CRM
+                    crm_synced = sync_contact_to_crm(
+                        email=email,
+                        subject=subject,
+                        body=body
+                    )
+                    
+                    # Track CRM sync event in PostHog if available
+                    if crm_synced and hasattr(request, 'session'):
+                        # This will be tracked via frontend Analytics if needed
+                        pass
+            except Exception as e:
+                # Don't fail the request if CRM sync fails
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.error(f"Failed to sync contact to Zoho CRM: {e}")
+        
+        return response
     
 
 @api_view(['POST'])
@@ -41,9 +76,9 @@ def chatbot_gpt_api_view(request):
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "assistant", "content": "The Overall data response will be according to Thailand and response length will be within 10-50 words depending on the question."},
-                {"role": "assistant", "content": "You are acting like a property agent"},
+                {"role": "system", "content": "You are a knowledgeable Bangkok property expert helping international buyers understand property ownership, payment plans, and regulations in Thailand. Be clear, accurate, and helpful."},
+                {"role": "assistant", "content": "Provide answers specific to Thailand property regulations. Keep responses concise (10-50 words) and focus on what buyers need to know to make confident decisions."},
+                {"role": "assistant", "content": "You represent Wizer Properties—a trusted platform that verifies all listings and provides transparent information to help buyers avoid scams and hidden fees."},
                 {"role": "user", "content": content}
             ]
         )
@@ -52,7 +87,7 @@ def chatbot_gpt_api_view(request):
         print(response.json())
     except Exception as e:
         print(f"OpenAI API Error: {e}")
-        data["data"] = {"error": 'OpenAI API connection failed. Please check your API key and try again.'}
+        data["data"] = {"error": 'Unable to connect to our property expert right now. Please try again in a moment—we want to give you the right answer.'}
         status = 500
         
     return Response(data, status=status)

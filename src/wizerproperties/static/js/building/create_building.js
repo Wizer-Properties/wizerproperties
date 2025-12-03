@@ -142,7 +142,7 @@ $(document).ready(function () {
         if (instruction_of_modification.trim() === '') {
             // Show error message
             $(".re-generate-error-message").html(
-                "<span class='reGenerateBarErrorMessage'>Please write something</span>"
+                "<span class='reGenerateBarErrorMessage'>Please enter some details about your building project</span>"
             );
         } else {
             // Clear error message if input is not empty
@@ -167,7 +167,7 @@ $(document).ready(function () {
                     error: function (error) {
                         // Handle other error cases (e.g., server error)
                         console.error(error);
-                        alert("An error occurred. Please try again later.");
+                        alert("Something went wrong. Please check your connection and try again.");
                     },
                 });
             }
@@ -200,7 +200,7 @@ $(document).ready(function () {
                 var successMessages = "";
                 if (xhr.status == 201) {
                     successMessages +=
-                        "<span class='authSuccessMessage'>Building created successfully</span>";
+                        "<span class='authSuccessMessage'>Building project created successfully! It's now live and visible to thousands of verified buyers.</span>";
                 }
 
                 // Handle success (e.g., show a success message)
@@ -232,7 +232,7 @@ $(document).ready(function () {
                 } else {
                     // Handle other error cases (e.g., server error)
                     console.error(error);
-                    alert("An error occurred. Please try again later.");
+                    alert("Something went wrong. Please check your connection and try again.");
                 }
             },
         });

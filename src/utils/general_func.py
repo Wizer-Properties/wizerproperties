@@ -116,7 +116,7 @@ def get_chatgpt_response(content, previous_response=None):
         )
         return response.choices[0].message.content
     except Exception as e:
-        return "I'm sorry, I'm having trouble connecting right now. Please try again later."
+        return "I'm having trouble connecting right now. Please try again in a moment—I want to help you get the information you need."
 
 
 def get_user_ip(request):

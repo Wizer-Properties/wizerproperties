@@ -10,12 +10,12 @@
 
 {% block content %}
 <section class="bg-muted/40 py-12">
-    <div class="container max-w-3xl">
+    <div class="container max-w-6xl">
         <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
             <div class="space-y-3">
                 <p class="text-xs font-semibold uppercase tracking-[0.4em] text-accent">{{ property_type|title }} promotion</p>
                 <h1 class="text-3xl font-heading font-semibold text-foreground">{{ page_title }}</h1>
-                <p class="text-sm text-muted-foreground">Highlight a property with a time-limited {{ property_type }} promotion.</p>
+                <p class="text-sm text-muted-foreground">Get your property featured prominently and drive more qualified leads. Choose your property and set the promotion duration—we'll highlight it to thousands of buyers.</p>
             </div>
 
             <div class="mt-6 space-y-4 rounded-2xl border border-border bg-secondary/30 p-4 text-sm text-muted-foreground">
@@ -57,7 +57,8 @@
                         </p>
                     {% else %}
                         <div class="rounded-xl border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
-                            No properties available. Ensure you have active listings that aren't already featured or discounted.
+                            <p class="font-semibold mb-1">No properties available for promotion</p>
+                            <p>Create a new listing first, or wait until your current promotions expire. Only active listings that aren't already featured or discounted can be promoted.</p>
                         </div>
                     {% endif %}
                 </div>

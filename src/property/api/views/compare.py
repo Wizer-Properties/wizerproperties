@@ -1,4 +1,4 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, serializers
 from rest_framework.response import Response
 from property.api.permissions import ComparePropertyPermission
 from property.api.serializers import ComparePropertySerializer
@@ -10,7 +10,7 @@ class ComparePropertyViewSet(viewsets.ModelViewSet):
     permission_classes = [ComparePropertyPermission]
 
     def get_queryset(self):
-        return CompareProperty.objects.select_related("user", "property").filter(user=self.request.user)
+        return CompareProperty.objects.select_related("user", "property", "property__building").filter(user=self.request.user)
 
     def get_serializer_context(self):
         # Get the default context from the parent class
@@ -23,6 +23,12 @@ class ComparePropertyViewSet(viewsets.ModelViewSet):
         return context
 
     def perform_create(self, serializer):
+        # Check if user already has 3 properties in comparison
+        existing_count = CompareProperty.objects.filter(user=self.request.user).count()
+        if existing_count >= 3:
+            raise serializers.ValidationError(
+                "Maximum 3 properties can be compared. Please remove one property before adding another."
+            )
         serializer.save(user=self.request.user)
 
     def perform_destroy(self, serializer):

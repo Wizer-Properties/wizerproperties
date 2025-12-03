@@ -445,6 +445,23 @@
       selectors.heroInput?.focus();
       return;
     }
+    
+    // PostHog tracking - track search from home page
+    if (typeof Analytics !== 'undefined') {
+      const searchTerm = selectors.heroInput?.value.trim() || '';
+      const filters = {};
+      
+      // Extract filters from URL
+      const urlObj = new URL(url, window.location.origin);
+      urlObj.searchParams.forEach((value, key) => {
+        if (key !== 'place' && key !== 'latitude' && key !== 'longitude' && key !== 'place_id' && key !== 'fature_type') {
+          filters[key] = value;
+        }
+      });
+      
+      Analytics.trackSearch(searchTerm, filters, 0);
+    }
+    
     window.location.href = url;
   };
 

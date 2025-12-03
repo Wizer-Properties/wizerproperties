@@ -64,16 +64,33 @@
 {% endblock extend_head %}
 
 {% block content %}
+<!-- Breadcrumb Navigation -->
+<section class="bg-muted/40 py-4">
+    <div class="container">
+        <nav aria-label="Breadcrumb" class="flex items-center gap-2 text-sm">
+            <a href="/" class="text-muted-foreground transition hover:text-foreground">Home</a>
+            <i class="bi bi-chevron-right text-xs text-muted-foreground"></i>
+            <a href="{% url 'property:search' %}" class="text-muted-foreground transition hover:text-foreground" id="back-to-search-link">Properties For Sale</a>
+            <i class="bi bi-chevron-right text-xs text-muted-foreground"></i>
+            <span class="text-foreground font-medium" data-breadcrumb-property>Property Details</span>
+        </nav>
+    </div>
+</section>
+
+<!-- Sponsored Property Ads -->
 <section class="bg-muted/40 py-6">
     <div class="container">
-        <div class="top-banner overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-            <div class="splide ads-banner-slider">
-                <div class="splide__track">
-                    <ul class="splide__list">
-                        <li class="splide__slide h-40 animate-pulse bg-muted"></li>
-                    </ul>
+        <div class="space-y-3">
+            <div class="top-banner overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+                <div class="splide ads-banner-slider" aria-label="Sponsored property highlights">
+                    <div class="splide__track">
+                        <ul class="splide__list">
+                            <li class="splide__slide h-40 animate-pulse bg-muted"></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
+            <p class="text-center text-[11px] font-medium uppercase tracking-[0.35em] text-muted-foreground">Sponsored listings</p>
         </div>
     </div>
 </section>
@@ -85,16 +102,20 @@
                 <article class="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
                     <div class="space-y-6 p-6">
                         <div class="flex flex-wrap items-start justify-between gap-4">
-                            <div class="space-y-3">
-                                <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Property</span>
+                            <div class="space-y-3 flex-1">
+                                <div class="flex items-center gap-3 flex-wrap">
+                                    <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary" data-property-type-badge>Property</span>
+                                    <div class="flex items-center gap-2" data-property-share-actions>
+                                        <button type="button" class="share-property-btn inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-3 py-1.5 text-xs font-semibold text-primary transition hover:bg-accent/20" data-share-url="{{ request.build_absolute_uri }}" data-share-title="{{ property.title|default:'Property' }}">
+                                            <i class="bi bi-share"></i>
+                                            <span>Share</span>
+                                        </button>
+                                    </div>
+                                </div>
                                 <h1 class="text-3xl font-heading font-semibold text-foreground" data-property-title>Loading…</h1>
                                 <div class="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
                                     <i class="bi bi-geo-alt text-base text-accent"></i>
                                     <span data-property-address>Loading…</span>
-                                </div>
-                                <div class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs text-muted-foreground">
-                                    <span class="uppercase tracking-[0.25em] text-accent">Unit</span>
-                                    <span class="font-semibold text-foreground" data-property-unit-id>—</span>
                                 </div>
                             </div>
                             <div class="flex flex-col items-end gap-3 text-right">
@@ -118,46 +139,43 @@
                             </div>
                         </div>
 
-                        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-                            <div class="stat-chip">
-                                <div class="flex items-center gap-2 text-xs uppercase text-muted-foreground">
-                                    <span>Beds</span>
-                                </div>
-                                <p class="text-lg font-semibold text-foreground" data-property-beds>—</p>
+                        <!-- Key Attributes - Rightmove Style -->
+                        <div class="grid gap-3 rounded-xl border border-border bg-secondary/30 p-4 sm:grid-cols-2 lg:grid-cols-5">
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Property Type</span>
+                                <span class="text-base font-semibold text-foreground" data-property-type-display>—</span>
                             </div>
-                            <div class="stat-chip">
-                                <div class="flex items-center gap-2 text-xs uppercase text-muted-foreground">
-                                    <span>Baths</span>
-                                </div>
-                                <p class="text-lg font-semibold text-foreground" data-property-baths>—</p>
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Bedrooms</span>
+                                <span class="text-base font-semibold text-foreground" data-property-beds>—</span>
                             </div>
-                            <div class="stat-chip">
-                                <div class="flex items-center gap-2 text-xs uppercase text-muted-foreground">
-                                    <span>Size</span>
-                                </div>
-                                <p class="text-lg font-semibold text-foreground" data-property-size>—</p>
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Bathrooms</span>
+                                <span class="text-base font-semibold text-foreground" data-property-baths>—</span>
                             </div>
-                            <div class="stat-chip">
-                                <div class="flex items-center gap-2 text-xs uppercase text-muted-foreground">
-                                    <span>Floor</span>
-                                </div>
-                                <p class="text-lg font-semibold text-foreground" data-property-floor>—</p>
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Size</span>
+                                <span class="text-base font-semibold text-foreground" data-property-size>—</span>
                             </div>
-                            <div class="stat-chip">
-                                <div class="flex items-center gap-2 text-xs uppercase text-muted-foreground">
-                                    <span>Completed</span>
-                                </div>
-                                <p class="text-lg font-semibold text-foreground" data-property-year>—</p>
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Tenure</span>
+                                <span class="text-base font-semibold text-foreground" data-property-tenure>—</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="border-t border-border">
-                        <div class="splide" id="property-hero-slider">
-                            <div class="splide__track">
-                                <ul class="splide__list" data-gallery-list>
-                                    <li class="splide__slide h-72 animate-pulse rounded-xl bg-muted"></li>
-                                </ul>
+                        <div class="relative">
+                            <div class="splide" id="property-hero-slider">
+                                <div class="splide__track">
+                                    <ul class="splide__list" data-gallery-list>
+                                        <li class="splide__slide h-72 animate-pulse rounded-xl bg-muted"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- Image Counter -->
+                            <div class="absolute bottom-4 right-4 rounded-full border border-white/20 bg-black/60 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur hidden" data-image-counter>
+                                <span data-current-image>1</span> / <span data-total-images>—</span>
                             </div>
                         </div>
                     </div>
@@ -175,7 +193,7 @@
                         <div class="flex flex-wrap items-center gap-3">
                             {% if not user.is_authenticated or request.user.user_type == "prospect" %}
                             <a href="/schedule/create_schedule?type=property&id={{ property.id }}" class="btn-secondary sm:w-auto">
-                                Schedule a viewing
+                                Book free viewing
                             </a>
                             {% endif %}
                             <button type="button" class="btn-secondary hidden sm:inline-flex" data-gallery-open>
@@ -188,8 +206,8 @@
                 <section class="rounded-2xl border border-border bg-card p-6 shadow-sm">
                     <div class="flex flex-wrap items-start justify-between gap-4">
                         <div class="space-y-2">
-                            <h2 class="text-lg font-semibold text-foreground">Description</h2>
-                            <p class="text-sm text-muted-foreground">Get a closer feel for the unit and the lifestyle it offers.</p>
+                            <h2 class="text-lg font-semibold text-foreground">About this property</h2>
+                            <p class="text-sm text-muted-foreground">See what makes this property special—location benefits, lifestyle perks, and why buyers choose it.</p>
                         </div>
                         <button type="button" class="btn-secondary hidden sm:inline-flex" data-description-toggle>
                             Expand
@@ -203,12 +221,46 @@
                 <section class="rounded-2xl border border-border bg-card p-6 shadow-sm">
                     <div class="flex flex-wrap items-start justify-between gap-4">
                         <div class="space-y-2">
-                            <h2 class="text-lg font-semibold text-foreground">Highlights & Features</h2>
-                            <p class="text-sm text-muted-foreground">Amenities and details that set this property apart.</p>
+                            <h2 class="text-lg font-semibold text-foreground">What makes this property special</h2>
+                            <p class="text-sm text-muted-foreground">See the amenities, features, and benefits that make this property stand out—all verified, all transparent.</p>
                         </div>
                     </div>
-                    <div class="mt-4 flex flex-wrap gap-2" data-property-features>
-                        <span class="inline-flex animate-pulse rounded-full bg-muted px-3 py-1 text-xs text-muted-foreground">Loading…</span>
+                    <ul class="mt-4 space-y-2 text-sm leading-relaxed text-foreground" data-property-features>
+                        <li class="flex items-start gap-2">
+                            <i class="bi bi-check-circle-fill mt-0.5 flex-shrink-0 text-accent"></i>
+                            <span class="animate-pulse text-muted-foreground">Loading property features…</span>
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- Property Information Table -->
+                <section class="rounded-2xl border border-border bg-card p-6 shadow-sm">
+                    <h2 class="mb-4 text-lg font-semibold text-foreground">Property Information</h2>
+                    <div class="grid gap-4 sm:grid-cols-2" data-property-info-table>
+                        <div class="flex items-center justify-between border-b border-border/50 pb-3">
+                            <span class="text-sm font-medium text-muted-foreground">Tenure</span>
+                            <span class="text-sm font-semibold text-foreground" data-info-tenure>—</span>
+                        </div>
+                        <div class="flex items-center justify-between border-b border-border/50 pb-3">
+                            <span class="text-sm font-medium text-muted-foreground">Parking</span>
+                            <span class="text-sm font-semibold text-foreground" data-info-parking>—</span>
+                        </div>
+                        <div class="flex items-center justify-between border-b border-border/50 pb-3">
+                            <span class="text-sm font-medium text-muted-foreground">Unit ID</span>
+                            <span class="text-sm font-semibold text-foreground" data-info-unit-id>—</span>
+                        </div>
+                        <div class="flex items-center justify-between border-b border-border/50 pb-3">
+                            <span class="text-sm font-medium text-muted-foreground">Floor Number</span>
+                            <span class="text-sm font-semibold text-foreground" data-info-floor>—</span>
+                        </div>
+                        <div class="flex items-center justify-between border-b border-border/50 pb-3">
+                            <span class="text-sm font-medium text-muted-foreground">Balconies</span>
+                            <span class="text-sm font-semibold text-foreground" data-info-balcony>—</span>
+                        </div>
+                        <div class="flex items-center justify-between border-b border-border/50 pb-3">
+                            <span class="text-sm font-medium text-muted-foreground">Unit Position</span>
+                            <span class="text-sm font-semibold text-foreground" data-info-position>—</span>
+                        </div>
                     </div>
                 </section>
 
@@ -216,8 +268,8 @@
                     <div class="space-y-4">
                         <div class="flex flex-wrap items-start justify-between gap-4">
                             <div>
-                                <h2 class="text-lg font-semibold text-foreground">Unit Specifications</h2>
-                                <p class="text-sm text-muted-foreground">Detailed breakdown of the unit’s layout and availability.</p>
+                                <h2 class="text-lg font-semibold text-foreground">Unit specifications</h2>
+                                <p class="text-sm text-muted-foreground">See exactly what you're getting—balconies, parking, orientation, and availability status.</p>
                             </div>
                         </div>
                         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-property-specifications>
@@ -252,8 +304,8 @@
                 <section class="space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sm">
                     <div class="flex flex-wrap items-start justify-between gap-4">
                         <div>
-                            <h2 class="text-lg font-semibold text-foreground">Building Snapshot</h2>
-                            <p class="text-sm text-muted-foreground">Fast facts about {{ property.building.title }}.</p>
+                            <h2 class="text-lg font-semibold text-foreground">About this development</h2>
+                            <p class="text-sm text-muted-foreground">See developer details, completion dates, and key facts about {{ property.building.title }}—all verified.</p>
                         </div>
                         <a href="{% url 'building:get' property.building.id %}" class="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-4 py-2 text-sm font-medium text-primary transition hover:bg-accent/20">
                             <span>View building</span>
@@ -310,14 +362,14 @@
                             </div>
                         </div>
                         <div class="space-y-3">
-                            <h3 class="text-sm font-semibold text-foreground">Location View</h3>
+                            <h3 class="text-sm font-semibold text-foreground">Explore the location</h3>
                             <div class="overflow-hidden rounded-xl border border-border bg-muted/60" data-location-view>
                                 <div class="aspect-video flex items-center justify-center text-xs text-muted-foreground">Loading…</div>
                             </div>
                         </div>
                     </div>
                     <div class="space-y-3">
-                        <h3 class="text-sm font-semibold text-foreground">Interactive Map</h3>
+                        <h3 class="text-sm font-semibold text-foreground">See it on the map</h3>
                         <div class="overflow-hidden rounded-xl border border-border">
                             <div id="map" class="aspect-video"></div>
                         </div>
@@ -327,8 +379,8 @@
                 <section class="space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sm">
                     <div class="flex flex-wrap items-center justify-between gap-3">
                         <div>
-                            <h2 class="text-lg font-semibold text-foreground">Available Units</h2>
-                            <p class="text-sm text-muted-foreground">Browse more inventory within this project.</p>
+                            <h2 class="text-lg font-semibold text-foreground">More units available in this project</h2>
+                            <p class="text-sm text-muted-foreground">See other verified units in this development—compare prices, sizes, and floor plans to find your perfect match.</p>
                         </div>
                         <div class="flex flex-wrap gap-2 text-sm font-medium">
                             <button class="filter-chip filter-chip-active" data-available-filter="all">All</button>
@@ -350,55 +402,87 @@
                 </section>
 
                 {% include 'review-box.html' %}
+
+                <!-- Similar Properties Section -->
+                <section class="space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sm">
+                    <div>
+                        <h2 class="text-lg font-semibold text-foreground">Similar properties you might love</h2>
+                        <p class="mt-1 text-sm text-muted-foreground">Compare these verified properties with similar features, prices, and locations—all verified, all transparent.</p>
+                    </div>
+                    <div class="grid gap-4 sm:grid-cols-2" data-similar-properties>
+                        <div class="h-48 animate-pulse rounded-xl bg-muted"></div>
+                        <div class="h-48 animate-pulse rounded-xl bg-muted"></div>
+                    </div>
+                </section>
             </div>
 
             <aside class="space-y-6">
+                <!-- Agent/Developer Contact Box - Enhanced -->
                 <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
-                    <h2 class="text-lg font-semibold text-foreground">Interested in this unit?</h2>
-                    <p class="mt-2 text-sm text-muted-foreground">Our advisors can confirm availability, arrange tours, and guide you through the purchase process.</p>
+                    <div class="mb-4 flex items-center gap-3">
+                        <div class="size-12 flex-shrink-0 overflow-hidden rounded-xl border border-border bg-muted" data-agent-logo>
+                            <div class="flex h-full w-full items-center justify-center text-xs text-muted-foreground">Logo</div>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-xs font-medium uppercase tracking-wider text-muted-foreground">Marketed By</p>
+                            <p class="truncate text-base font-semibold text-foreground" data-agent-name>Loading…</p>
+                        </div>
+                    </div>
+                    <p class="mb-4 text-sm text-muted-foreground">Get instant answers about availability, payment plans, and ownership. Book a free consultation—no commitment required.</p>
                     {% if not request.user.is_authenticated or request.user.user_type == "prospect" %}
                     <a href="/schedule/create_schedule?type=property&id={{ property.id }}" class="btn mt-4 w-full justify-center">
-                        Schedule a viewing
+                        Book free viewing
+                    </a>
+                    <a href="tel:" class="btn-secondary mt-3 w-full justify-center hidden" data-contact-phone-btn>
+                        <i class="bi bi-telephone"></i>
+                        <span>Call agent</span>
+                    </a>
+                    <a href="mailto:" class="btn-secondary mt-2 w-full justify-center hidden" data-contact-email-btn>
+                        <i class="bi bi-envelope"></i>
+                        <span>Get full details</span>
                     </a>
                     {% endif %}
-                    <div class="mt-6 space-y-3 text-sm">
-                        <div class="flex items-center gap-3 rounded-xl border border-border bg-secondary/50 px-4 py-3">
-                            <span class="inline-flex size-10 items-center justify-center rounded-full bg-accent/10 text-accent">
-                                <i class="bi bi-telephone"></i>
-                            </span>
-                            <div>
-                                <p class="text-xs uppercase text-muted-foreground">Call us</p>
-                                <a href="tel:" class="font-semibold text-foreground" data-contact-phone>Updating…</a>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-3 rounded-xl border border-border bg-secondary/50 px-4 py-3">
-                            <span class="inline-flex size-10 items-center justify-center rounded-full bg-accent/10 text-accent">
-                                <i class="bi bi-envelope"></i>
-                            </span>
-                            <div>
-                                <p class="text-xs uppercase text-muted-foreground">Email</p>
-                                <a href="mailto:" class="font-semibold text-foreground" data-contact-email>Available on request</a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
-                    <h2 class="text-lg font-semibold text-foreground">Track new listings</h2>
-                    <p class="mt-2 text-sm text-muted-foreground">Create alerts to be notified about similar properties and price updates.</p>
-                    <a href="/user/signup/" class="btn-secondary mt-4 w-full justify-center">
-                        Create alert
+                    <h2 class="text-lg font-semibold text-foreground">Get instant price alerts</h2>
+                    <p class="mt-2 text-sm text-muted-foreground">Get notified when similar properties are listed or prices change. Never miss a deal.</p>
+                    <a href="{% url 'user:signup' %}" class="btn-secondary mt-4 w-full justify-center">
+                        Set up price alerts
                     </a>
                 </div>
 
-                <div class="overflow-hidden rounded-2xl border border-border bg-card">
-                    <div class="splide side-add-banner-slider">
-                        <div class="splide__track">
-                            <ul class="splide__list">
-                                <li class="splide__slide h-40 animate-pulse bg-muted"></li>
-                            </ul>
+                <!-- Notes Section -->
+                {% if user.is_authenticated %}
+                <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
+                    <h2 class="text-lg font-semibold text-foreground">Your private notes</h2>
+                    <p class="mt-1 mb-4 text-sm text-muted-foreground">Save your thoughts, questions, and reminders about this property—only you can see them.</p>
+                    <textarea 
+                        class="w-full rounded-lg border border-border bg-secondary/30 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent/40 focus:outline-none" 
+                        rows="4" 
+                        placeholder="e.g. Great location, check payment plan, compare with unit A-09B..."
+                        data-property-notes
+                        data-property-id="{{ property.id }}"
+                    ></textarea>
+                    <button type="button" class="btn-secondary mt-3 w-full justify-center" data-save-notes>
+                        <i class="bi bi-save"></i>
+                        <span>Save note</span>
+                    </button>
+                </div>
+                {% endif %}
+
+                <!-- Sponsored Property Ads -->
+                <div class="space-y-3">
+                    <div class="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+                        <div class="splide side-add-banner-slider" aria-label="Sponsored property highlights">
+                            <div class="splide__track">
+                                <ul class="splide__list">
+                                    <li class="splide__slide h-40 animate-pulse bg-muted"></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
+                    <p class="text-center text-[11px] font-medium uppercase tracking-[0.35em] text-muted-foreground">Sponsored</p>
                 </div>
             </aside>
         </div>

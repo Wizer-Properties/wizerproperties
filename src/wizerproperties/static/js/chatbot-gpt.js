@@ -51,10 +51,10 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const data = typeof payload === "string" ? JSON.parse(payload) : payload;
       const choice = data?.choices?.[0]?.message?.content;
-      return choice || "I’m here if you have more questions.";
+      return choice || "I'm here to help. What else would you like to know about buying property in Bangkok?";
     } catch (error) {
       console.warn("Failed to parse Home Helper AI response", error);
-      return "Here’s what I found. Please try again if you need more detail.";
+      return "I found some information, but there was an issue processing it. Try asking your question again or rephrase it—I'm here to help.";
     }
   };
 
@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
       appendMessage("assistant", assistantMessage);
     } catch (error) {
       console.error("Home Helper AI request failed", error);
-      appendMessage("assistant", "Sorry, I couldn’t reach the Home Helper service. Please try again in a moment.");
+      appendMessage("assistant", "I'm having trouble connecting right now. Please try again in a moment—your question is important and I want to give you the right answer.");
     } finally {
       setLoading(false);
       input.focus();

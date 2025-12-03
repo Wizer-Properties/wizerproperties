@@ -39,7 +39,7 @@ def verify_link(request):
 				try:
 					auth.login(request, confirmation_code_obj.user, backend= \
 						'django.contrib.auth.backends.ModelBackend')
-					return HttpResponseRedirect(reverse('user:update_password'))
+					return HttpResponseRedirect(reverse('user:password_reset_confirm'))
 				except Exception as e:
 					print('user can not log in after register')
 			else:

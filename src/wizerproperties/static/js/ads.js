@@ -4,10 +4,19 @@ $(document).ready(function(){
     var ads_banner_mounted = false;
     var ads_side_banner_mounted = false;
     function ads_tmp(data){
-        var img = '<img src="'+(data?.banner_image || '')+'" alt="wip-ads">';
+        // Escape HTML to prevent XSS in attribute values
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>"']/g, function(m) {
+                return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[m];
+            });
+        }
+        var titleText = data?.target_title ? escapeHtml(data.target_title) : '';
+        var altText = titleText ? 'Sponsored: ' + titleText : 'Sponsored property listing';
+        var img = '<img src="'+(data?.banner_image || '')+'" alt="'+altText+'" aria-label="'+altText+'" loading="lazy">';
         if (data?.target_type && data?.object_id) {
             return  '<div class="top-banner-img">'+
-                        '<a href="/'+data.target_type+'/details/'+data.object_id+'/?ad_id='+data?.id+'">'+
+                        '<a href="/'+data.target_type+'/details/'+data.object_id+'/?ad_id='+data?.id+'" aria-label="View '+altText+'">'+
                             img +
                         '</a>'+
                     '</div>';
@@ -17,10 +26,11 @@ $(document).ready(function(){
 
 
     function side_ads_tmp(data){
-        var img = '<img src="'+(data?.banner_image || '')+'" alt="wip-ads">';
+        var altText = data?.target_title ? 'Sponsored: ' + data.target_title : 'Sponsored property listing';
+        var img = '<img src="'+(data?.banner_image || '')+'" alt="'+altText+'" loading="lazy">';
         if (data?.target_type && data?.object_id) {
             return  '<div class="side-add-banner-img">'+
-                        '<a href="/'+data.target_type+'/details/'+data.object_id+'/?ad_id='+data?.id+'">'+
+                        '<a href="/'+data.target_type+'/details/'+data.object_id+'/?ad_id='+data?.id+'" aria-label="View '+altText+'">'+
                             img +
                         '</a>'+
                     '</div>';
@@ -49,7 +59,7 @@ $(document).ready(function(){
             },
             beforeSend: function() {
                 // Add loader directly to DOM instead of using slider API
-                if(['home', 'search', 'details_topbar'].includes(params)){
+                if(['search', 'details_topbar'].includes(params)){
                     $('.ads-banner-slider .splide__list').append(loader_tmp());
                 }
                 if(['details_sidebar'].includes(params)){
@@ -58,10 +68,29 @@ $(document).ready(function(){
             },
             success: function (data) {
                 if(data.length === 0){
-                    ads_banner_slider && ads_banner_slider.destroy && ads_banner_slider.destroy();
-                    ads_side_banner_slider && ads_side_banner_slider.destroy && ads_side_banner_slider.destroy();
-                    $('.top-banner').length > 0 && $('.top-banner').remove()
-                    $('.side-banner').length > 0 && $('.side-banner').remove()
+                    // Remove loaders
+                    $('.top-banner-loader').remove();
+                    $('.side-add-banner-loader').remove();
+                    
+                    // Destroy sliders if they exist
+                    if(ads_banner_slider && ads_banner_slider.destroy) {
+                        ads_banner_slider.destroy();
+                        ads_banner_slider = null;
+                        ads_banner_mounted = false;
+                    }
+                    if(ads_side_banner_slider && ads_side_banner_slider.destroy) {
+                        ads_side_banner_slider.destroy();
+                        ads_side_banner_slider = null;
+                        ads_side_banner_mounted = false;
+                    }
+                    
+                    // Hide ad containers (including parent sections with labels)
+                    if(['search', 'details_topbar'].includes(params)){
+                        $('.ads-banner-slider').closest('section').hide();
+                    }
+                    if(['details_sidebar'].includes(params)){
+                        $('.side-add-banner-slider').closest('.space-y-3').hide();
+                    }
                     return
                 };
 
@@ -71,7 +100,7 @@ $(document).ready(function(){
 
                 // Add slides directly to DOM
                 for (let i = 0; i < data.length; i++) {
-                    if(['home', 'search', 'details_topbar'].includes(params)){
+                    if(['search', 'details_topbar'].includes(params)){
                         $('.ads-banner-slider .splide__list').append('<li class="splide__slide">' + ads_tmp(data[i]) + '</li>');
                     }
 
@@ -81,13 +110,13 @@ $(document).ready(function(){
                 }
 
                 // Initialize and mount sliders after adding slides
-                if(['home', 'search', 'details_topbar'].includes(params) && !ads_banner_mounted){
+                if(['search', 'details_topbar'].includes(params) && !ads_banner_mounted){
                     if($('.ads-banner-slider').length > 0 && $('.ads-banner-slider .splide__slide').length > 0){
                         ads_banner_slider = new Splide( '.ads-banner-slider', {
                             perPage: 1,
                             type: 'loop',
                             arrows: false,
-                            // pagination: false,
+                            pagination: true,
                             autoplay: 'playing',
                             interval: 3000
                         }).mount();

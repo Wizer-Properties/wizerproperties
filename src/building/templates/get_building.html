@@ -142,8 +142,8 @@
                 <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
                     <div class="flex items-start justify-between gap-4">
                         <div>
-                            <h2 class="text-lg font-semibold text-foreground">Description</h2>
-                            <p class="text-sm text-muted-foreground">Crafted for modern living—learn what sets this development apart.</p>
+                            <h2 class="text-lg font-semibold text-foreground">About this development</h2>
+                            <p class="text-sm text-muted-foreground">See what makes this project unique—amenities, location benefits, and why buyers choose it.</p>
                         </div>
                         <button type="button" class="btn-secondary hidden sm:inline-flex" data-description-expand>
                             Expand
@@ -269,10 +269,10 @@
                 </div>
 
                 <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
-                    <h2 class="text-lg font-semibold text-foreground">Stay in the loop</h2>
-                    <p class="mt-2 text-sm text-muted-foreground">Receive tailored updates on new listings and price movements.</p>
-                    <a href="/user/signup/" class="btn-secondary mt-4 w-full justify-center">
-                        Create Alert
+                    <h2 class="text-lg font-semibold text-foreground">Get instant price alerts</h2>
+                    <p class="mt-2 text-sm text-muted-foreground">Get notified when new units are listed or prices change in this development. Never miss a deal.</p>
+                    <a href="{% url 'user:signup' %}" class="btn-secondary mt-4 w-full justify-center">
+                        Set up price alerts
                     </a>
                 </div>
             </aside>

@@ -13,6 +13,10 @@ class PropertyFilter(django_filters.FilterSet):
     min_number_of_bedroom = django_filters.NumberFilter(field_name="number_of_bedroom", lookup_expr="gte")
     max_number_of_bedroom = django_filters.NumberFilter(field_name="number_of_bedroom", lookup_expr="lte")
     nearby = django_filters.NumberFilter(method="filter_nearby", label="Nearby (miles)")
+    bounds_north = django_filters.NumberFilter(method="filter_bounds")
+    bounds_south = django_filters.NumberFilter(method="filter_bounds")
+    bounds_east = django_filters.NumberFilter(method="filter_bounds")
+    bounds_west = django_filters.NumberFilter(method="filter_bounds")
 
     class Meta:
         model = Property
@@ -66,5 +70,58 @@ class PropertyFilter(django_filters.FilterSet):
             ]
 
             return queryset.filter(id__in=properties_within_given_distance)
+
+        return queryset
+
+    def filter_bounds(self, queryset, name, value):
+        """
+        Filter properties by map bounds (north, south, east, west).
+        Only applies filtering if all four bounds parameters are provided.
+        """
+        if not self.request:
+            return queryset
+
+        params = self.request.query_params
+        bounds_north = params.get("bounds_north")
+        bounds_south = params.get("bounds_south")
+        bounds_east = params.get("bounds_east")
+        bounds_west = params.get("bounds_west")
+
+        # Only filter if all bounds are provided
+        if bounds_north and bounds_south and bounds_east and bounds_west:
+            try:
+                north = float(bounds_north)
+                south = float(bounds_south)
+                east = float(bounds_east)
+                west = float(bounds_west)
+
+                # Filter properties within the bounds
+                # Note: Handle longitude wrapping (east < west when crossing 180/-180)
+                if east >= west:
+                    # Normal case: bounds don't cross the date line
+                    queryset = queryset.filter(
+                        building__latitude__gte=south,
+                        building__latitude__lte=north,
+                        building__longitude__gte=west,
+                        building__longitude__lte=east,
+                        building__latitude__isnull=False,
+                        building__longitude__isnull=False,
+                    )
+                else:
+                    # Bounds cross the date line (east < west)
+                    # Split into two queries: west to 180 and -180 to east
+                    from django.db.models import Q
+                    queryset = queryset.filter(
+                        building__latitude__gte=south,
+                        building__latitude__lte=north,
+                        building__latitude__isnull=False,
+                        building__longitude__isnull=False,
+                    ).filter(
+                        Q(building__longitude__gte=west) | Q(building__longitude__lte=east)
+                    )
+
+            except (ValueError, TypeError):
+                # If bounds are invalid, return queryset unchanged
+                pass
 
         return queryset

@@ -119,9 +119,14 @@ def update_property(request, id):
 
 
 def search_property(request):
-    return render(request, "search_property.html")
+    # Unified search view - check view parameter to determine map or list view
+    view_type = request.GET.get('view', 'map')
+    if view_type == 'list':
+        return render(request, "search_property.html")
+    return render(request, "search_property_with_map.html")
 
 def search_property_with_map(request):
+    # Map view endpoint (for explicit map view access)
     return render(request, "search_property_with_map.html")
 
 @login_required

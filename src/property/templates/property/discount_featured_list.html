@@ -18,7 +18,7 @@
                 </span>
                 <h1 class="text-2xl font-heading font-semibold text-foreground">{{ page_title }}</h1>
                 <p class="text-sm text-muted-foreground">
-                    Manage your {% if property_type == 'discount' %}flash sale{% else %}featured{% endif %} properties, review performance, and keep expiry dates up to date.
+                    See which promotions are driving the most views and inquiries. Manage expiry dates and create new promotions to get more qualified leads.
                 </p>
             </div>
             <div class="flex flex-col items-end gap-3 sm:flex-row sm:items-center">
@@ -38,12 +38,12 @@
                 {% if property_type == 'discount' %}
                 <a href="{% url 'property:create_discount' %}" class="btn">
                     <i class="bi bi-plus-circle text-base"></i>
-                    <span>Create Discount</span>
+                    <span>Create flash sale</span>
                 </a>
                 {% else %}
                 <a href="{% url 'property:create_featured' %}" class="btn">
                     <i class="bi bi-plus-circle text-base"></i>
-                    <span>Create Featured</span>
+                    <span>Feature property</span>
                 </a>
                 {% endif %}
             </div>

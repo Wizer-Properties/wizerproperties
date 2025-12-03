@@ -28,10 +28,16 @@
     <div class="container space-y-10">
         <header class="space-y-3">
             <p class="text-xs font-semibold uppercase tracking-[0.4em] text-accent">Compare</p>
-            <h1 class="text-3xl font-heading font-semibold text-foreground">Compare up to three properties</h1>
+            <h1 class="text-3xl font-heading font-semibold text-foreground">See which property is right for you—side by side</h1>
             <p class="max-w-2xl text-sm text-muted-foreground">
-                Review pricing, specs, amenities, and media side-by-side. Add another property from search at any time.
+                Compare pricing, specs, amenities, and photos side-by-side. Make the right decision faster—add up to three properties to compare.
             </p>
+            <div class="flex items-center gap-3 pt-2">
+                <a href="/property/search/" class="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary/10 px-4 py-2 text-sm font-semibold text-primary transition hover:bg-primary/20">
+                    <i class="bi bi-plus-lg"></i>
+                    <span>Add properties to compare</span>
+                </a>
+            </div>
         </header>
 
         <div class="grid gap-6 lg:grid-cols-[260px,1fr]">
@@ -94,8 +100,9 @@
 {% block extend_script %}
 <script src="{% static 'js/libraries/lodash.min.js' %}"></script>
 <script>
-    const COMPARISON_API_URL = '/property/api/compare/list/';
-    const COMPARISON_REMOVE_API_URL = '/property/api/compare/delete/';
+    // Define constants for comparison.js (csrfToken is already defined in base.html)
+    window.COMPARISON_API_URL = '/property/api/compare/list/';
+    window.COMPARISON_REMOVE_API_URL = '/property/api/compare/delete/';
 </script>
 <script src="{% static 'js/libraries/video.min.js' %}"></script>
 <script src="{% static 'js/libraries/splide.min.js' %}?v=2.0"></script>

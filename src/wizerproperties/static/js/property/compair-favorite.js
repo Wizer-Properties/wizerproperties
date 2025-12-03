@@ -81,6 +81,14 @@
       return;
     }
 
+    // Check if already at max (3 properties)
+    if (window.ComparisonManager && window.ComparisonManager.count >= 3) {
+      if (window.ComparisonManager) {
+        window.ComparisonManager.showToast("Maximum 3 properties can be compared. Remove one to add another.", "warning");
+      }
+      return;
+    }
+
     compareRequestInFlight = true;
     showLoader(button);
 
@@ -97,13 +105,31 @@
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.detail || `HTTP ${response.status}`);
+        const errorMessage = errorData.detail || errorData.message || `HTTP ${response.status}`;
+        
+        // Handle limit exceeded error
+        if (response.status === 400 && (errorMessage.includes("Maximum") || errorMessage.includes("3") || errorMessage.includes("limit"))) {
+          if (window.ComparisonManager) {
+            window.ComparisonManager.showToast(errorMessage, "warning");
+          }
+          restoreButton(button, false);
+          compareRequestInFlight = false;
+          return;
+        }
+        
+        throw new Error(errorMessage);
       }
 
       const data = await response.json().catch(() => ({}));
       
       // Update button state
       restoreButton(button, true);
+      
+      // Update card visual state (darker style)
+      const card = button.closest("[data-property-card]");
+      if (card) {
+        card.classList.add("property-compared");
+      }
       
       // Track analytics
       if (window.Analytics) {
@@ -168,6 +194,12 @@
 
       // Update button state
       restoreButton(button, false);
+      
+      // Update card visual state (remove darker style)
+      const card = button.closest("[data-property-card]");
+      if (card) {
+        card.classList.remove("property-compared");
+      }
       
       // Track analytics
       if (window.Analytics) {
@@ -333,7 +365,9 @@
     // Check if user is authenticated
     const addedAttr = button.getAttribute("added");
     if ([undefined, null, "null", "undefined"].includes(addedAttr)) {
-      window.location.href = "/user/login/";
+      // Use global login_url if available, otherwise fallback to default
+      const loginUrl = typeof login_url !== "undefined" ? login_url : "/user/login/";
+      window.location.href = loginUrl;
       return;
     }
 
