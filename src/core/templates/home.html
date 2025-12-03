@@ -4,23 +4,23 @@
 {% load seo_tags %}
 
 {% block extend_head %}
-<title>Discover Verified Property Developments in Thailand | Wizer Properties</title>
-<meta name="description" content="Browse verified new-build developments across Bangkok. Compare prices, payment plans, and rental yields, all vetted for international buyers. Find your perfect condo or villa in Thailand.">
-<meta name="keywords" content="bangkok property, thailand real estate, condo bangkok, property investment thailand, bangkok condos for sale, verified property developments">
+<title>Find Your Perfect Bangkok Property: Verified Listings, Transparent Pricing, Zero Scams | Wizer Properties</title>
+<meta name="description" content="Compare verified Bangkok condos and villas side by side. Every property checked. Every price transparent. No scams, no hidden fees. Find your perfect property faster with 3D tours and expert support.">
+<meta name="keywords" content="bangkok property, thailand real estate, condo bangkok, property investment thailand, bangkok condos for sale, verified property developments, compare properties bangkok">
 <link rel="canonical" href="{{ request.build_absolute_uri }}">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Discover Verified Property Developments in Thailand | Wizer Properties">
-<meta property="og:description" content="Browse verified new-build developments across Bangkok. Compare prices, payment plans, and rental yields, all vetted for international buyers.">
+<meta property="og:title" content="Find Your Perfect Bangkok Property: Verified Listings, Transparent Pricing, Zero Scams | Wizer Properties">
+<meta property="og:description" content="Compare verified Bangkok condos and villas side by side. Every property checked. Every price transparent. No scams, no hidden fees. Find your perfect property faster with 3D tours and expert support.">
 <meta property="og:url" content="{{ request.build_absolute_uri }}">
 <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'media/logo.png' %}">
 <meta property="og:site_name" content="Wizer Properties">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Discover Verified Property Developments in Thailand | Wizer Properties">
-<meta name="twitter:description" content="Browse verified new-build developments across Bangkok. Compare prices, payment plans, and rental yields, all vetted for international buyers.">
+<meta name="twitter:title" content="Find Your Perfect Bangkok Property: Verified Listings, Transparent Pricing, Zero Scams | Wizer Properties">
+<meta name="twitter:description" content="Compare verified Bangkok condos and villas side by side. Every property checked. Every price transparent. No scams, no hidden fees. Find your perfect property faster with 3D tours and expert support.">
 <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'media/logo.png' %}">
 
 <!-- Structured Data -->
@@ -28,47 +28,48 @@
 
 <link rel="stylesheet" href="{% static 'css/libraries/splide.min.css' %}?v=2.0" />
 <link rel="stylesheet" href="{% static 'css/home.css' %}?v=2.0" />
+<link rel="stylesheet" href="{% static 'css/property-card-modern.css' %}?v=2.00" />
 {% endblock extend_head %}
 
 {% block content %}
-<!-- Hero Section: Focused Bangkok New-Build Search -->
-<section class="relative overflow-hidden bg-slate-950 text-white">
+<!-- 1. Hero Section: Buyer-Focused Property Search -->
+<section class="relative overflow-hidden bg-[#000433] text-white">
     <div class="absolute inset-0">
         <img src="{% static '/media/background/home-page-bg.webp' %}" alt="Bangkok skyline" class="h-full w-full object-cover opacity-60" fetchpriority="high" loading="eager" decoding="async">
-        <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 to-slate-900/70"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-[#000433] via-[#000433]/90 to-[#262637]/80"></div>
     </div>
     <div class="container relative z-10 py-20 lg:py-28">
-        <div class="mx-auto max-w-4xl space-y-8 text-center">
-            <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary-100">
-                Verified Bangkok new-builds for foreign buyers
+        <div class="mx-auto max-w-7xl space-y-8 text-center">
+            <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[#b8e9e0]">
+                Trusted by 10,000+ international buyers
             </span>
             <div class="space-y-4">
                 <h1 class="text-4xl font-heading font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">
-                    Find your Bangkok condo or villa with full transparency
+                    Find Your Perfect Bangkok Property Faster
                 </h1>
                 <p class="mx-auto max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg">
-                    Browse verified new-build developments across Bangkok. Compare prices, payment plans, and rental yields, all vetted for international buyers.
+                    Compare verified condos and villas side by side. Every property checked. Every price transparent. No scams, no hidden fees. Use 3D tours to explore properties before visiting. Get expert answers in your language.
                 </p>
             </div>
             
             <!-- Simplified Search Card -->
-            <div class="mx-auto max-w-2xl rounded-3xl border border-white/20 bg-white text-foreground shadow-2xl backdrop-blur-lg">
+            <div class="mx-auto max-w-4xl rounded-3xl border border-white/20 bg-white text-[#262637] shadow-2xl backdrop-blur-lg">
                 <div class="space-y-6 p-6 sm:p-8">
                     <div class="space-y-4">
                         <div class="space-y-2">
                             <label for="gm-search-input" class="sr-only">Search by area, BTS/MRT station, or project name</label>
                             <div class="relative">
-                                <span class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-muted-foreground">
+                                <span class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-[#53535fcc]">
                                     <i class="bi bi-geo-alt text-lg"></i>
                                 </span>
                                 <input 
                                     id="gm-search-input" 
                                     type="text" 
                                     placeholder="e.g. Thong Lo, BTS Asok, Sukhumvit 39, riverside condo" 
-                                    class="input h-14 rounded-2xl border border-border bg-white pl-11 pr-12 text-base" 
+                                    class="input h-14 rounded-2xl border border-[#53535fcc]/20 bg-white pl-11 pr-12 text-base text-[#262637] focus:border-[#00deb6] focus:ring-2 focus:ring-[#00deb6]/20" 
                                     autocomplete="off"
                                 >
-                                <button type="button" class="absolute inset-y-0 right-3 flex items-center text-muted-foreground transition hover:text-foreground" data-search-clear>
+                                <button type="button" class="absolute inset-y-0 right-3 flex items-center text-[#53535fcc] transition hover:text-[#262637]" data-search-clear>
                                     <i class="bi bi-x-circle text-lg"></i>
                                     <span class="sr-only">Clear location</span>
                                 </button>
@@ -77,17 +78,17 @@
                         
                         <!-- Quick Filter Chips -->
                         <div class="space-y-2">
-                            <p class="text-xs font-medium text-muted-foreground">Quick filters</p>
+                            <p class="text-xs font-medium text-[#53535fcc]">Quick filters</p>
                             <div class="flex flex-wrap gap-2">
-                                <button type="button" class="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/60 px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary" data-property-type="" aria-pressed="true" aria-label="Filter: Any property type">
+                                <button type="button" class="inline-flex items-center gap-1.5 rounded-full border border-[#53535fcc]/20 bg-[#f2f3f4] px-3 py-1.5 text-xs font-medium text-[#53535fcc] transition hover:border-[#00deb6]/60 hover:text-[#00deb6]" data-property-type="" aria-pressed="true" aria-label="Filter: Any property type">
                                     <i class="bi bi-building" aria-hidden="true"></i>
                                     <span>Any</span>
                                 </button>
-                                <button type="button" class="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/60 px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary" data-property-type="residence" aria-pressed="false" aria-label="Filter: Residential properties">
+                                <button type="button" class="inline-flex items-center gap-1.5 rounded-full border border-[#53535fcc]/20 bg-[#f2f3f4] px-3 py-1.5 text-xs font-medium text-[#53535fcc] transition hover:border-[#00deb6]/60 hover:text-[#00deb6]" data-property-type="residence" aria-pressed="false" aria-label="Filter: Residential properties">
                                     <i class="bi bi-house-heart" aria-hidden="true"></i>
                                     <span>Residential</span>
                                 </button>
-                                <button type="button" class="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/60 px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary" data-property-type="commercial" aria-pressed="false" aria-label="Filter: Commercial properties">
+                                <button type="button" class="inline-flex items-center gap-1.5 rounded-full border border-[#53535fcc]/20 bg-[#f2f3f4] px-3 py-1.5 text-xs font-medium text-[#53535fcc] transition hover:border-[#00deb6]/60 hover:text-[#00deb6]" data-property-type="commercial" aria-pressed="false" aria-label="Filter: Commercial properties">
                                     <i class="bi bi-briefcase" aria-hidden="true"></i>
                                     <span>Commercial</span>
                                 </button>
@@ -96,15 +97,15 @@
                         
                         <!-- Collapsible Advanced Filters -->
                         <div class="space-y-3">
-                            <button type="button" class="flex w-full items-center justify-between text-sm font-medium text-muted-foreground transition hover:text-foreground focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2" data-filter-toggle aria-expanded="false" aria-controls="advanced-filters-panel">
+                            <button type="button" class="flex w-full items-center justify-between text-sm font-medium text-[#53535fcc] transition hover:text-[#262637] focus-visible:outline-2 focus-visible:outline-[#00deb6] focus-visible:outline-offset-2" data-filter-toggle aria-expanded="false" aria-controls="advanced-filters-panel">
                                 <span>More filters</span>
                                 <i class="bi bi-chevron-down transition-transform" data-filter-icon aria-hidden="true"></i>
                             </button>
-                            <div id="advanced-filters-panel" class="hidden space-y-3 border-t border-border pt-3" data-filter-panel>
+                            <div id="advanced-filters-panel" class="hidden space-y-3 border-t border-[#53535fcc]/20 pt-3" data-filter-panel>
                                 <div class="grid gap-3 sm:grid-cols-2">
-                                    <label class="space-y-1.5 text-sm font-medium text-muted-foreground">
+                                    <label class="space-y-1.5 text-sm font-medium text-[#53535fcc]">
                                         <span>Min budget</span>
-                                        <select name="min_price" class="input rounded-xl border border-border bg-white py-2 text-sm">
+                                        <select name="min_price" class="input rounded-xl border border-[#53535fcc]/20 bg-white py-2 text-sm text-[#262637] focus:border-[#00deb6]">
                                             <option value="">Any</option>
                                             <option value="500000">฿ 500,000</option>
                                             <option value="1000000">฿ 1,000,000</option>
@@ -115,9 +116,9 @@
                                             <option value="50000000">฿ 50,000,000</option>
                                         </select>
                                     </label>
-                                    <label class="space-y-1.5 text-sm font-medium text-muted-foreground">
+                                    <label class="space-y-1.5 text-sm font-medium text-[#53535fcc]">
                                         <span>Max budget</span>
-                                        <select name="max_price" class="input rounded-xl border border-border bg-white py-2 text-sm">
+                                        <select name="max_price" class="input rounded-xl border border-[#53535fcc]/20 bg-white py-2 text-sm text-[#262637] focus:border-[#00deb6]">
                                             <option value="">Any</option>
                                             <option value="2000000">฿ 2,000,000</option>
                                             <option value="5000000">฿ 5,000,000</option>
@@ -127,9 +128,9 @@
                                             <option value="100000000">฿ 100,000,000</option>
                                         </select>
                                     </label>
-                                    <label class="space-y-1.5 text-sm font-medium text-muted-foreground">
+                                    <label class="space-y-1.5 text-sm font-medium text-[#53535fcc]">
                                         <span>Min bedrooms</span>
-                                        <select name="min_number_of_bedroom" class="input rounded-xl border border-border bg-white py-2 text-sm">
+                                        <select name="min_number_of_bedroom" class="input rounded-xl border border-[#53535fcc]/20 bg-white py-2 text-sm text-[#262637] focus:border-[#00deb6]">
                                             <option value="">Any</option>
                                             <option value="1">1 bedroom</option>
                                             <option value="2">2 bedrooms</option>
@@ -138,9 +139,9 @@
                                             <option value="5">5 bedrooms</option>
                                         </select>
                                     </label>
-                                    <label class="space-y-1.5 text-sm font-medium text-muted-foreground">
+                                    <label class="space-y-1.5 text-sm font-medium text-[#53535fcc]">
                                         <span>Max bedrooms</span>
-                                        <select name="max_number_of_bedroom" class="input rounded-xl border border-border bg-white py-2 text-sm">
+                                        <select name="max_number_of_bedroom" class="input rounded-xl border border-[#53535fcc]/20 bg-white py-2 text-sm text-[#262637] focus:border-[#00deb6]">
                                             <option value="">Any</option>
                                             <option value="1">1 bedroom</option>
                                             <option value="2">2 bedrooms</option>
@@ -154,27 +155,28 @@
                         </div>
                         
                         <div>
-                            <button type="button" id="location-search-btn" class="btn w-full justify-center bg-primary text-white hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2" aria-label="Search for Bangkok new-build properties">
+                            <button type="button" id="location-search-btn" class="btn w-full justify-center bg-[#00deb6] text-[#000433] hover:bg-[#00deb6]/90 focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2 shadow-lg shadow-[#00deb6]/30" aria-label="Start your verified property search">
                                 <i class="bi bi-search me-2" aria-hidden="true"></i>
-                                <span>Search Bangkok new-builds</span>
+                                <span>Find My Verified Property</span>
                             </button>
+                            <p class="mt-2 text-xs text-center text-[#53535fcc]">Free to search. No credit card required. Every price is transparent.</p>
                             <p class="mt-2 hidden text-sm text-destructive" data-search-error>Select a location from the autocomplete suggestions to start.</p>
                         </div>
                     </div>
                     
                     <!-- Quick Search Links -->
-                    <div class="border-t border-border pt-4">
-                        <p class="mb-2 text-xs font-medium uppercase tracking-[0.3em] text-muted-foreground">Popular Bangkok searches</p>
+                    <div class="border-t border-[#53535fcc]/20 pt-4">
+                        <p class="mb-2 text-xs font-medium uppercase tracking-[0.3em] text-[#53535fcc]">Popular Bangkok searches</p>
                         <div class="flex flex-wrap justify-center gap-2">
-                            <a href="/property/search/?place=Thong%20Lo,%20Bangkok&latitude=13.7307&longitude=100.5853&fature_type=locality&building__type=residence" class="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary">
+                            <a href="/property/search/?place=Thong%20Lo,%20Bangkok&latitude=13.7307&longitude=100.5853&fature_type=locality&building__type=residence" class="inline-flex items-center gap-1.5 rounded-full border border-[#53535fcc]/20 bg-[#f2f3f4] px-3 py-1 text-xs font-medium text-[#53535fcc] transition hover:border-[#00deb6]/60 hover:text-[#00deb6]">
                                 <i class="bi bi-train-front"></i>
                                 <span>Near BTS Thong Lo</span>
                             </a>
-                            <a href="/property/search/?place=Sathorn,%20Bangkok&latitude=13.7234&longitude=100.5347&fature_type=locality&min_price=5000000" class="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary">
+                            <a href="/property/search/?place=Sathorn,%20Bangkok&latitude=13.7234&longitude=100.5347&fature_type=locality&min_price=5000000" class="inline-flex items-center gap-1.5 rounded-full border border-[#53535fcc]/20 bg-[#f2f3f4] px-3 py-1 text-xs font-medium text-[#53535fcc] transition hover:border-[#00deb6]/60 hover:text-[#00deb6]">
                                 <i class="bi bi-building"></i>
                                 <span>Sathorn condos under ฿5M</span>
                             </a>
-                            <a href="/property/search/?place=Bangkok%20Riverside&latitude=13.7279&longitude=100.5018&fature_type=circle&building__type=residence" class="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-primary/60 hover:text-primary">
+                            <a href="/property/search/?place=Bangkok%20Riverside&latitude=13.7279&longitude=100.5018&fature_type=circle&building__type=residence" class="inline-flex items-center gap-1.5 rounded-full border border-[#53535fcc]/20 bg-[#f2f3f4] px-3 py-1 text-xs font-medium text-[#53535fcc] transition hover:border-[#00deb6]/60 hover:text-[#00deb6]">
                                 <i class="bi bi-water"></i>
                                 <span>Riverside properties</span>
                             </a>
@@ -186,255 +188,94 @@
     </div>
 </section>
 
-<!-- Trust Band: Stats moved here -->
-<section class="-mt-8 bg-background py-10">
-    <div class="container">
-        <div class="rounded-2xl border border-border bg-card/50 p-8 shadow-sm backdrop-blur-sm">
-            <dl class="grid gap-8 text-sm sm:grid-cols-3">
+<!-- 2. Problem Statement: Buyer Pain Points -->
+<section class="bg-[#f2f3f4] py-16">
+    <div class="container max-w-7xl text-center space-y-8">
+        <div class="space-y-4">
+            <h2 class="text-3xl font-heading font-semibold text-[#7F1377] sm:text-4xl">
+                Stop Wasting Time on Fake Listings and Hidden Costs
+            </h2>
+            <p class="mx-auto max-w-2xl text-lg text-[#53535fcc]">
+                You need to find the right property without wasting time on scams or surprise fees. Traditional portals make this job harder. We built a better way.
+            </p>
+        </div>
+        <div class="grid gap-6 sm:grid-cols-3 text-left">
+            <div class="rounded-2xl border border-[#53535fcc]/20 bg-white p-6 shadow-sm">
+                <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-red-600">
+                    <i class="bi bi-x-circle text-2xl"></i>
+                </div>
+                <h3 class="mb-2 text-lg font-semibold text-[#262637]">Scams and Fake Listings</h3>
+                <p class="text-sm text-[#53535fcc]">
+                    You need to trust what you see online. Unverified developers and misleading photos waste your time and money. You need every listing checked before you invest.
+                </p>
+            </div>
+            <div class="rounded-2xl border border-[#53535fcc]/20 bg-white p-6 shadow-sm">
+                <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-orange-100 text-orange-600">
+                    <i class="bi bi-cash-stack text-2xl"></i>
+                </div>
+                <h3 class="mb-2 text-lg font-semibold text-[#262637]">Hidden Fees and Surprises</h3>
+                <p class="text-sm text-[#53535fcc]">
+                    You need to know the real cost upfront. Transfer fees and taxes that appear at closing cost thousands. You need complete price transparency before you commit.
+                </p>
+            </div>
+            <div class="rounded-2xl border border-[#53535fcc]/20 bg-white p-6 shadow-sm">
+                <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+                    <i class="bi bi-translate text-2xl"></i>
+                </div>
+                <h3 class="mb-2 text-lg font-semibold text-[#262637]">Language Barriers</h3>
+                <p class="text-sm text-[#53535fcc]">
+                    You need clear answers in your language. Complex legal documents and unclear payment plans lead to costly mistakes. You need expert support when you have questions.
+                </p>
+            </div>
+        </div>
+        <div class="rounded-2xl border-2 border-[#00deb6]/30 bg-[#b8e9e0]/20 p-8 mt-8">
+            <p class="text-xl font-heading font-semibold text-[#262637] mb-2">That's Why We Built Wizer Properties</p>
+            <p class="text-base text-[#53535fcc] max-w-2xl mx-auto">Every property is verified so you can trust what you see. Every price is transparent so you know the real cost. Every question gets answered in your language. Compare properties side by side with 3D tours before you visit.</p>
+        </div>
+    </div>
+</section>
+
+<!-- 3. Trust Band: Key Benefits -->
+<section class="bg-white py-16">
+    <div class="container max-w-7xl">
+        <div class="rounded-2xl border border-[#53535fcc]/20 bg-[#f2f3f4] p-8 shadow-lg">
+            <dl class="grid gap-8 sm:grid-cols-3">
                 <div class="text-center">
-                    <div class="mb-3 inline-flex size-12 items-center justify-center rounded-full bg-accent/10 text-accent">
-                        <i class="bi bi-shield-check text-xl" aria-hidden="true"></i>
+                    <div class="mb-4 mx-auto inline-flex size-14 items-center justify-center rounded-full bg-[#b8e9e0]/20 text-[#00deb6]">
+                        <i class="bi bi-shield-check text-2xl" aria-hidden="true"></i>
                     </div>
-                    <dt class="text-xl font-heading font-semibold text-foreground">10k+ verified units</dt>
-                    <dd class="mt-2 text-sm leading-relaxed text-muted-foreground">Every listing checked for developer credibility and completion status</dd>
+                    <dt class="text-xl font-heading font-semibold text-[#262637] mb-2">Zero Scams Guaranteed</dt>
+                    <dd class="text-sm leading-relaxed text-[#53535fcc]">You need to trust what you see. 10,000+ properties verified. Every developer checked. Every listing real. Find properties you can buy with confidence.</dd>
                 </div>
                 <div class="text-center">
-                    <div class="mb-3 inline-flex size-12 items-center justify-center rounded-full bg-accent/10 text-accent">
-                        <i class="bi bi-laptop text-xl" aria-hidden="true"></i>
+                    <div class="mb-4 mx-auto inline-flex size-14 items-center justify-center rounded-full bg-[#b8e9e0]/20 text-[#00deb6]">
+                        <i class="bi bi-camera-video text-2xl" aria-hidden="true"></i>
                     </div>
-                    <dt class="text-xl font-heading font-semibold text-foreground">Remote-first experience</dt>
-                    <dd class="mt-2 text-sm leading-relaxed text-muted-foreground">Book video tours, compare units, and sign digitally from anywhere</dd>
+                    <dt class="text-xl font-heading font-semibold text-[#262637] mb-2">Buy from Anywhere in the World</dt>
+                    <dd class="text-sm leading-relaxed text-[#53535fcc]">You need to explore properties without traveling. Use 3D Matterport walkthroughs and aerial drone videos to experience properties remotely. Complete your purchase without flying to Bangkok.</dd>
                 </div>
                 <div class="text-center">
-                    <div class="mb-3 inline-flex size-12 items-center justify-center rounded-full bg-accent/10 text-accent">
-                        <i class="bi bi-headset text-xl" aria-hidden="true"></i>
+                    <div class="mb-4 mx-auto inline-flex size-14 items-center justify-center rounded-full bg-[#b8e9e0]/20 text-[#00deb6]">
+                        <i class="bi bi-headset text-2xl" aria-hidden="true"></i>
                     </div>
-                    <dt class="text-xl font-heading font-semibold text-foreground">24h buyer concierge</dt>
-                    <dd class="mt-2 text-sm leading-relaxed text-muted-foreground">Local specialists answer financing, visa, and ownership questions</dd>
+                    <dt class="text-xl font-heading font-semibold text-[#262637] mb-2">Get Answers in Your Language, 24/7</dt>
+                    <dd class="text-sm leading-relaxed text-[#53535fcc]">You need answers when you have questions. Local experts answer financing, visa, and ownership questions in your language. No confusion. Just clear answers when you need them.</dd>
                 </div>
             </dl>
         </div>
     </div>
 </section>
 
-<!-- Task Tiles: Bangkok Buyer Jobs-to-be-Done -->
-<section class="bg-muted/20 py-16">
-    <div class="container space-y-8">
-        <div class="text-center">
-            <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">
-                Buyer resources
-            </span>
-        </div>
-        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            <a href="/blogs/can-foreigners-buy-property-in-thailand-6b5d8" class="group flex h-full flex-col rounded-3xl border border-border bg-card p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-                <span class="mb-4 inline-flex size-12 items-center justify-center rounded-full bg-accent/10 text-primary">
-                    <i class="bi bi-shield-check text-xl"></i>
-                </span>
-                <h3 class="mb-2 text-lg font-semibold text-foreground">Can foreigners own a condo in Bangkok?</h3>
-                <p class="mb-4 flex-1 text-sm text-muted-foreground">Understand ownership structures, leasehold vs freehold, and legal requirements for international buyers.</p>
-                <span class="inline-flex items-center gap-2 text-sm font-medium text-accent">
-                    <span>Read guide</span>
-                    <i class="bi bi-arrow-right transition-transform group-hover:translate-x-1"></i>
-                </span>
-            </a>
-            
-            <a href="/property/search/?place=Bangkok,%20Thailand&latitude=13.7563309&longitude=100.5017651&place_id=ChIJ82ENKDJgHTERIEjiXbIAAQE&fature_type=locality&ordering=-rental_yield" class="group flex h-full flex-col rounded-3xl border border-border bg-card p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-                <span class="mb-4 inline-flex size-12 items-center justify-center rounded-full bg-accent/10 text-primary">
-                    <i class="bi bi-graph-up-arrow text-xl"></i>
-                </span>
-                <h3 class="mb-2 text-lg font-semibold text-foreground">Best Bangkok areas for rental yield</h3>
-                <p class="mb-4 flex-1 text-sm text-muted-foreground">Compare projected returns across Thong Lo, Sathorn, Asok, and other prime investment zones.</p>
-                <span class="inline-flex items-center gap-2 text-sm font-medium text-accent">
-                    <span>Explore areas</span>
-                    <i class="bi bi-arrow-right transition-transform group-hover:translate-x-1"></i>
-                </span>
-            </a>
-            
-            <a href="/blogs/can-foreigners-buy-property-in-thailand-6b5d8" class="group flex h-full flex-col rounded-3xl border border-border bg-card p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-                <span class="mb-4 inline-flex size-12 items-center justify-center rounded-full bg-accent/10 text-primary">
-                    <i class="bi bi-calculator text-xl"></i>
-                </span>
-                <h3 class="mb-2 text-lg font-semibold text-foreground">Understand Bangkok payment plans & fees</h3>
-                <p class="mb-4 flex-1 text-sm text-muted-foreground">Learn about staged payments, transfer fees, taxes, and hidden costs before you commit.</p>
-                <span class="inline-flex items-center gap-2 text-sm font-medium text-accent">
-                    <span>Learn more</span>
-                    <i class="bi bi-arrow-right transition-transform group-hover:translate-x-1"></i>
-                </span>
-            </a>
-            
-            <a href="/schedule/create_schedule/?type=consultation" class="group flex h-full flex-col rounded-3xl border border-border bg-card p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-                <span class="mb-4 inline-flex size-12 items-center justify-center rounded-full bg-accent/10 text-primary">
-                    <i class="bi bi-person-video3 text-xl"></i>
-                </span>
-                <h3 class="mb-2 text-lg font-semibold text-foreground">Book a video tour with a local specialist</h3>
-                <p class="mb-4 flex-1 text-sm text-muted-foreground">Schedule a live virtual viewing and get answers about financing, visas, and ownership in your language.</p>
-                <span class="inline-flex items-center gap-2 text-sm font-medium text-accent">
-                    <span>Book now</span>
-                    <i class="bi bi-arrow-right transition-transform group-hover:translate-x-1"></i>
-                </span>
-            </a>
-        </div>
-    </div>
-</section>
-
-<!-- Trusted Developers Band -->
-<section class="bg-background py-8">
-    <div class="container">
-        <div class="rounded-2xl border border-border bg-card/80 p-6 shadow-sm">
-            <div class="flex flex-col items-center gap-4 lg:flex-row lg:justify-between">
-                <div class="text-center lg:text-left space-y-2">
-                    <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Trusted developers</span>
-                    <p class="text-sm text-muted-foreground">Verified partners across Bangkok, Phuket, Krabi, Chiang Mai &amp; coastal hotspots</p>
-                </div>
-                <div class="flex flex-wrap items-center justify-center gap-3 text-sm font-semibold text-muted-foreground">
-                    <span class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-3 py-1.5">Sansiri</span>
-                    <span class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-3 py-1.5">Ananda</span>
-                    <span class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-3 py-1.5">Origin</span>
-                    <span class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-3 py-1.5">Habitat Group</span>
-                    <span class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/40 px-3 py-1.5">Minor International</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Spotlight Section: Merged Discount + Popular -->
-<section id="spotlight-properties" class="bg-muted/30 py-16">
-    <div class="container space-y-8">
-        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div class="space-y-2">
-                <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Bangkok spotlight</span>
-                <h2 class="text-3xl font-heading font-semibold text-foreground">Limited-time incentives & newest launches</h2>
-                <p class="text-sm text-muted-foreground">Access flash sales, staged payment plans, and launch-day bonuses curated for international buyers in Bangkok.</p>
-            </div>
-            <a href="/property/search/?tag=spotlight" class="btn-secondary whitespace-nowrap">View all Bangkok deals</a>
-        </div>
-        <div class="space-y-4">
-            <div class="splide property-carousel" data-slider="discount">
-                <div class="splide__track">
-                    <ul class="splide__list" data-slider-list></ul>
-                </div>
-            </div>
-            <p class="hidden text-sm text-muted-foreground" data-slider-empty>
-                No developer incentives are live right now. Check back soon or follow us for launch alerts.
-            </p>
-        </div>
-    </div>
-</section>
-
-<!-- Ads Banner -->
-<section class="bg-background py-12">
-    <div class="container">
-        <div class="top-banner overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-            <div class="splide ads-banner-slider">
-                <div class="splide__track">
-                    <ul class="splide__list">
-                        <!-- populated by ads.js -->
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Personalized Properties: Merged Recommended + Hot -->
-<section id="personalized-properties" class="bg-background py-16">
-    <div class="container space-y-8">
-        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div class="space-y-2">
-                <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Picked for you</span>
-                <h2 class="text-3xl font-heading font-semibold text-foreground">Properties matched to your preferences</h2>
-                <p class="text-sm text-muted-foreground">Based on your browsing history and saved searches in Bangkok.</p>
-            </div>
-            <div class="flex flex-wrap gap-2">
-                <a href="/property/search/" class="btn-secondary whitespace-nowrap">Start exploring</a>
-                <button type="button" class="btn-secondary whitespace-nowrap" data-trigger-geolocation aria-label="Show properties near my location">
-                    <i class="bi bi-geo-alt me-1" aria-hidden="true"></i>
-                    <span>Near me</span>
-                </button>
-            </div>
-        </div>
-        
-        <!-- Recommended Properties (if authenticated) -->
-        <div class="space-y-4" data-personalized-section="recommended">
-            <div class="flex items-center justify-between">
-                <h3 class="text-lg font-semibold text-foreground">Recommended for you</h3>
-            </div>
-            <div class="splide property-carousel" data-slider="recommended">
-                <div class="splide__track">
-                    <ul class="splide__list" data-slider-list></ul>
-                </div>
-            </div>
-            <p class="hidden text-sm text-muted-foreground" data-slider-empty>
-                Sign in or save a search to see personalised recommendations tailored to your preferences.
-            </p>
-        </div>
-        
-        <!-- Nearby Properties (if geolocation enabled) -->
-        <div class="space-y-4 hidden" data-personalized-section="nearby">
-            <div class="flex items-center justify-between">
-                <h3 class="text-lg font-semibold text-foreground">Near your location</h3>
-            </div>
-            <div class="splide property-carousel" data-slider="hot">
-                <div class="splide__track">
-                    <ul class="splide__list" data-slider-list></ul>
-                </div>
-            </div>
-            <p class="hidden text-sm text-muted-foreground" data-slider-empty>
-                We couldn't detect nearby listings yet. Enable location services and refresh to see what's within reach.
-            </p>
-        </div>
-        
-        <!-- Fallback: Popular Properties -->
-        <div class="space-y-4" data-personalized-section="popular">
-            <div class="flex items-center justify-between">
-                <h3 class="text-lg font-semibold text-foreground">Trending in Bangkok</h3>
-                <a href="/property/search/?ordering=-created_at" class="text-sm font-medium text-primary hover:underline">See all</a>
-            </div>
-            <div class="splide property-carousel" data-slider="popular">
-                <div class="splide__track">
-                    <ul class="splide__list" data-slider-list></ul>
-                </div>
-            </div>
-            <p class="hidden text-sm text-muted-foreground" data-slider-empty>
-                No trending projects are available right now. Try adjusting your filters or explore our market guides below.
-            </p>
-        </div>
-    </div>
-</section>
-
-<!-- Account Creation: Lighter, Better Positioned -->
-{% if not request.user.is_authenticated %}
-<section class="bg-muted/20 py-12">
-    <div class="container">
-        <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
-            <div class="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
-                <div class="text-center sm:text-left">
-                    <h3 class="text-lg font-semibold text-foreground">Save searches and get price alerts</h3>
-                    <p class="mt-1 text-sm text-muted-foreground">Create a free account to sync favourites across devices and receive instant notifications.</p>
-                </div>
-                <div class="flex flex-col gap-2 sm:flex-row">
-                    <a href="/user/signup/" class="btn bg-primary text-white hover:bg-primary/90 whitespace-nowrap">Create free account</a>
-                    <a href="/user/login/" class="btn-secondary whitespace-nowrap">Sign in</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endif %}
-
-{% include 'chat.html' %}
-
-<!-- Bangkok Micro-Areas: Primary Focus -->
-<section id="bangkok-areas" class="bg-muted/20 py-16">
-    <div class="container space-y-8">
+<!-- 4. Bangkok Micro-Areas: Primary Focus -->
+<section id="bangkok-areas" class="bg-[#f2f3f4] py-16">
+    <div class="container max-w-7xl space-y-8">
         <div class="space-y-3 text-center">
-            <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Bangkok areas</span>
-            <h2 class="text-3xl font-heading font-semibold text-foreground">Explore prime Bangkok neighbourhoods</h2>
-            <p class="text-sm text-muted-foreground">Discover new-build condos and villas in Bangkok's most sought-after districts.</p>
+            <span class="inline-flex items-center gap-2 rounded-full bg-[#b8e9e0]/20 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[#7F1377]">Bangkok areas</span>
+            <h2 class="text-3xl font-heading font-semibold text-[#7F1377]">Explore Prime Bangkok Neighbourhoods</h2>
+            <p class="text-sm text-[#53535fcc]">Find new-build condos and villas in Bangkok's most sought-after districts.</p>
         </div>
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            <a href="/property/search/?place=Thong%20Lo,%20Bangkok&latitude=13.7307&longitude=100.5853&fature_type=locality&building__type=residence" class="group relative overflow-hidden rounded-3xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg" aria-label="Browse properties in Thong Lo & Ekkamai">
+            <a href="/property/search/?place=Thong%20Lo,%20Bangkok&latitude=13.7307&longitude=100.5853&fature_type=locality&building__type=residence" class="group relative overflow-hidden rounded-3xl border border-[#53535fcc]/20 bg-white transition hover:-translate-y-1 hover:shadow-lg hover:border-[#00deb6]/30" aria-label="Browse properties in Thong Lo & Ekkamai">
                 <img src="{% static '/media/background/bangkok.jpg' %}" alt="Thong Lo & Ekkamai district, Bangkok" loading="lazy" width="400" height="192" class="h-48 w-full object-cover transition duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                 <div class="absolute inset-x-0 bottom-0 space-y-1 p-5 text-white">
@@ -442,7 +283,7 @@
                     <span class="text-xs uppercase tracking-[0.3em] text-white/70">BTS-connected luxury condos</span>
                 </div>
             </a>
-            <a href="/property/search/?place=Sathorn,%20Bangkok&latitude=13.7234&longitude=100.5347&fature_type=locality&building__type=residence" class="group relative overflow-hidden rounded-3xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg" aria-label="Browse properties in Sathorn">
+            <a href="/property/search/?place=Sathorn,%20Bangkok&latitude=13.7234&longitude=100.5347&fature_type=locality&building__type=residence" class="group relative overflow-hidden rounded-3xl border border-[#53535fcc]/20 bg-white transition hover:-translate-y-1 hover:shadow-lg hover:border-[#00deb6]/30" aria-label="Browse properties in Sathorn">
                 <img src="{% static '/media/background/bangkok.jpg' %}" alt="Sathorn district, Bangkok CBD" loading="lazy" width="400" height="192" class="h-48 w-full object-cover transition duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                 <div class="absolute inset-x-0 bottom-0 space-y-1 p-5 text-white">
@@ -450,7 +291,7 @@
                     <span class="text-xs uppercase tracking-[0.3em] text-white/70">CBD high-rises &amp; riverside</span>
                 </div>
             </a>
-            <a href="/property/search/?place=Asok,%20Bangkok&latitude=13.7374&longitude=100.5608&fature_type=locality&building__type=residence" class="group relative overflow-hidden rounded-3xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg" aria-label="Browse properties in Asok & Phrom Phong">
+            <a href="/property/search/?place=Asok,%20Bangkok&latitude=13.7374&longitude=100.5608&fature_type=locality&building__type=residence" class="group relative overflow-hidden rounded-3xl border border-[#53535fcc]/20 bg-white transition hover:-translate-y-1 hover:shadow-lg hover:border-[#00deb6]/30" aria-label="Browse properties in Asok & Phrom Phong">
                 <img src="{% static '/media/background/bangkok.jpg' %}" alt="Asok & Phrom Phong district, Bangkok" loading="lazy" width="400" height="192" class="h-48 w-full object-cover transition duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                 <div class="absolute inset-x-0 bottom-0 space-y-1 p-5 text-white">
@@ -458,7 +299,7 @@
                     <span class="text-xs uppercase tracking-[0.3em] text-white/70">BTS/MRT interchange zone</span>
                 </div>
             </a>
-            <a href="/property/search/?place=Ari,%20Bangkok&latitude=13.7788&longitude=100.5451&fature_type=locality&building__type=residence" class="group relative overflow-hidden rounded-3xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg" aria-label="Browse properties in Ari & Ladprao">
+            <a href="/property/search/?place=Ari,%20Bangkok&latitude=13.7788&longitude=100.5451&fature_type=locality&building__type=residence" class="group relative overflow-hidden rounded-3xl border border-[#53535fcc]/20 bg-white transition hover:-translate-y-1 hover:shadow-lg hover:border-[#00deb6]/30" aria-label="Browse properties in Ari & Ladprao">
                 <img src="{% static '/media/background/bangkok.jpg' %}" alt="Ari & Ladprao district, Bangkok" loading="lazy" width="400" height="192" class="h-48 w-full object-cover transition duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                 <div class="absolute inset-x-0 bottom-0 space-y-1 p-5 text-white">
@@ -468,20 +309,282 @@
             </a>
         </div>
         <div class="text-center">
-            <a href="/property/search/?place=Bangkok,%20Thailand&latitude=13.7563309&longitude=100.5017651&place_id=ChIJ82ENKDJgHTERIEjiXbIAAQE&fature_type=locality" class="btn-secondary">View all Bangkok areas</a>
+            <a href="/property/search/?place=Bangkok,%20Thailand&latitude=13.7563309&longitude=100.5017651&place_id=ChIJ82ENKDJgHTERIEjiXbIAAQE&fature_type=locality" class="btn-secondary border-[#53535fcc]/20 text-[#262637] hover:border-[#00deb6] hover:text-[#00deb6]">View all Bangkok areas</a>
         </div>
     </div>
 </section>
 
-<!-- Other Destinations: Secondary Focus -->
-<section id="other-destinations" class="bg-background py-12">
-    <div class="container space-y-6">
+<!-- 5. Spotlight Properties: Limited-Time Offers -->
+<section id="spotlight-properties" class="bg-white py-16">
+    <div class="container max-w-7xl space-y-8">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div class="space-y-2">
+                <span class="inline-flex items-center gap-2 rounded-full bg-[#b8e9e0]/20 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[#7F1377]">Limited time offers</span>
+                <h2 class="text-3xl font-heading font-semibold text-[#7F1377]">Save Thousands on Verified Bangkok Properties</h2>
+                <p class="text-sm text-[#53535fcc]">You need the best deals. Flash sales, staged payment plans, and launch bonuses. Exclusive deals for international buyers that won't last long.</p>
+            </div>
+            <a href="/property/search/?tag=spotlight" class="btn-secondary whitespace-nowrap border-[#53535fcc]/20 text-[#262637] hover:border-[#00deb6] hover:text-[#00deb6]">See all deals</a>
+        </div>
+        <div class="space-y-4">
+            <div class="splide property-carousel" data-slider="discount">
+                <div class="splide__track">
+                    <ul class="splide__list" data-slider-list></ul>
+                </div>
+            </div>
+            <p class="hidden text-sm text-[#53535fcc]" data-slider-empty>
+                No developer incentives are live right now. Check back soon or follow us for launch alerts.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- 6. Personalized Properties: Recommended & Popular -->
+<section id="personalized-properties" class="bg-[#f2f3f4] py-16">
+    <div class="container max-w-7xl space-y-8">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div class="space-y-2">
+                <span class="inline-flex items-center gap-2 rounded-full bg-[#b8e9e0]/20 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[#7F1377]">Hand-picked for you</span>
+                <h2 class="text-3xl font-heading font-semibold text-[#7F1377]">Properties That Match Exactly What You're Looking For</h2>
+                <p class="text-sm text-[#53535fcc]">You need to find the right property faster. We've curated verified listings based on your preferences. Save hours of searching and find your perfect property.</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+                <a href="/property/search/" class="btn-secondary whitespace-nowrap border-[#53535fcc]/20 text-[#262637] hover:border-[#00deb6] hover:text-[#00deb6]">Browse all properties</a>
+                <button type="button" class="btn-secondary whitespace-nowrap border-[#53535fcc]/20 text-[#262637] hover:border-[#00deb6] hover:text-[#00deb6]" data-trigger-geolocation aria-label="Show properties near my location">
+                    <i class="bi bi-geo-alt me-1" aria-hidden="true"></i>
+                    <span>Show near me</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Recommended Properties (if authenticated) -->
+        <div class="space-y-4" data-personalized-section="recommended">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-[#262637]">Recommended for you</h3>
+            </div>
+            <div class="splide property-carousel" data-slider="recommended">
+                <div class="splide__track">
+                    <ul class="splide__list" data-slider-list></ul>
+                </div>
+            </div>
+            <p class="hidden text-sm text-[#53535fcc]" data-slider-empty>
+                <a href="{% url 'user:signup' %}" class="font-semibold text-[#00deb6] hover:underline">Create a free account</a> to see personalized property recommendations matched to your budget and preferences.
+            </p>
+        </div>
+        
+        <!-- Nearby Properties (if geolocation enabled) -->
+        <div class="space-y-4 hidden" data-personalized-section="nearby">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-[#262637]">Near your location</h3>
+            </div>
+            <div class="splide property-carousel" data-slider="hot">
+                <div class="splide__track">
+                    <ul class="splide__list" data-slider-list></ul>
+                </div>
+            </div>
+            <p class="hidden text-sm text-[#53535fcc]" data-slider-empty>
+                Enable location services to see verified properties near you. We'll show you the best deals within your area.
+            </p>
+        </div>
+        
+        <!-- Fallback: Popular Properties -->
+        <div class="space-y-4" data-personalized-section="popular">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-[#262637]">Most viewed properties in Bangkok</h3>
+                <a href="/property/search/?ordering=-created_at" class="text-sm font-medium text-[#00deb6] hover:underline">See all</a>
+            </div>
+            <div class="splide property-carousel" data-slider="popular">
+                <div class="splide__track">
+                    <ul class="splide__list" data-slider-list></ul>
+                </div>
+            </div>
+            <p class="hidden text-sm text-[#53535fcc]" data-slider-empty>
+                No trending projects are available right now. Try adjusting your filters or explore our market guides below.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- 7. Unique Feature: Comparison Tool -->
+<section class="bg-white py-16">
+    <div class="container max-w-7xl">
+        <div class="grid gap-12 lg:grid-cols-2 items-center">
+            <div class="space-y-6">
+                <span class="inline-flex items-center gap-2 rounded-full bg-[#b8e9e0]/20 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[#7F1377]">
+                    Unique Feature
+                </span>
+                <h2 class="text-3xl font-heading font-semibold text-[#7F1377] sm:text-4xl">
+                    Compare Properties Side by Side: No Other Platform Offers This
+                </h2>
+                <p class="text-lg text-[#53535fcc]">
+                    You need to compare options quickly. Compare up to three properties side by side across 25+ attributes including price, size, amenities, location, and 3D walkthroughs. Make informed decisions faster.
+                </p>
+                <ul class="space-y-3">
+                    <li class="flex items-start gap-3">
+                        <i class="bi bi-check-circle-fill text-[#00deb6] text-xl mt-0.5"></i>
+                        <div>
+                            <span class="font-semibold text-[#262637]">Side by side visual comparison</span>
+                            <p class="text-sm text-[#53535fcc]">You need to see differences quickly. See pricing, specs, and amenities at a glance.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="bi bi-check-circle-fill text-[#00deb6] text-xl mt-0.5"></i>
+                        <div>
+                            <span class="font-semibold text-[#262637]">25+ comparison attributes</span>
+                            <p class="text-sm text-[#53535fcc]">You need complete information. Compare price per sqm, BTS distance, facilities, views, and more.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="bi bi-check-circle-fill text-[#00deb6] text-xl mt-0.5"></i>
+                        <div>
+                            <span class="font-semibold text-[#262637]">Integrated 3D walkthrough viewing</span>
+                            <p class="text-sm text-[#53535fcc]">You need to experience properties before visiting. View 3D walkthroughs from anywhere in the world.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="bi bi-check-circle-fill text-[#00deb6] text-xl mt-0.5"></i>
+                        <div>
+                            <span class="font-semibold text-[#262637]">Faster decision-making</span>
+                            <p class="text-sm text-[#53535fcc]">You need to make decisions faster. Save hours comparing properties manually.</p>
+                        </div>
+                    </li>
+                </ul>
+                <div class="flex flex-col gap-3 sm:flex-row">
+                    <a href="{% url 'property:comparison' %}" class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#00deb6] px-6 py-3 text-base font-semibold text-[#000433] shadow-lg shadow-[#00deb6]/30 transition hover:bg-[#00deb6]/90">
+                        Try the Comparison Tool
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                    <a href="{% url 'property:search' %}" class="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-[#53535fcc]/20 bg-white px-6 py-3 text-base font-semibold text-[#262637] transition hover:border-[#00deb6] hover:text-[#00deb6]">
+                        Browse Properties
+                    </a>
+                </div>
+            </div>
+            <div class="rounded-2xl border border-[#53535fcc]/20 bg-[#f2f3f4] p-8 shadow-lg">
+                <div class="aspect-video rounded-xl bg-gradient-to-br from-[#b8e9e0] to-[#00deb6] flex items-center justify-center">
+                    <div class="text-center text-[#000433]">
+                        <i class="bi bi-layout-three-columns text-6xl mb-4"></i>
+                        <p class="text-lg font-semibold">Interactive Comparison Tool</p>
+                        <p class="text-sm opacity-80">Compare properties side-by-side</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 8. Trusted Developers Band -->
+<section class="bg-[#f2f3f4] py-12">
+    <div class="container max-w-7xl">
+        <div class="rounded-2xl border border-[#53535fcc]/20 bg-white p-6 shadow-sm">
+            <div class="flex flex-col items-center gap-4 lg:flex-row lg:justify-between">
+                <div class="text-center lg:text-left space-y-2">
+                    <span class="inline-flex items-center gap-2 rounded-full bg-[#b8e9e0]/20 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[#7F1377]">Trusted developers</span>
+                    <p class="text-sm text-[#53535fcc]">Verified partners across Bangkok, Phuket, Krabi, Chiang Mai &amp; coastal hotspots</p>
+                </div>
+                <div class="flex flex-wrap items-center justify-center gap-3 text-sm font-semibold text-[#53535fcc]">
+                    <span class="inline-flex items-center gap-2 rounded-full border border-[#53535fcc]/20 bg-white px-3 py-1.5">Sansiri</span>
+                    <span class="inline-flex items-center gap-2 rounded-full border border-[#53535fcc]/20 bg-white px-3 py-1.5">Ananda</span>
+                    <span class="inline-flex items-center gap-2 rounded-full border border-[#53535fcc]/20 bg-white px-3 py-1.5">Origin</span>
+                    <span class="inline-flex items-center gap-2 rounded-full border border-[#53535fcc]/20 bg-white px-3 py-1.5">Habitat Group</span>
+                    <span class="inline-flex items-center gap-2 rounded-full border border-[#53535fcc]/20 bg-white px-3 py-1.5">Minor International</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 9. Account Creation CTA -->
+{% if not request.user.is_authenticated %}
+<section class="bg-white py-12">
+    <div class="container max-w-7xl">
+        <div class="rounded-2xl border border-[#53535fcc]/20 bg-[#f2f3f4] p-8 shadow-lg">
+            <div class="flex flex-col items-center gap-6 sm:flex-row sm:justify-between">
+                <div class="text-center sm:text-left">
+                    <h3 class="text-xl font-heading font-semibold text-[#262637]">Get Instant Price Drops and New Listings, Free</h3>
+                    <p class="mt-2 text-sm text-[#53535fcc]">You need to stay updated on deals. Create a free account to save your favorite properties, get price alerts, compare side by side, and never miss a deal. No credit card required.</p>
+                </div>
+                <div class="flex flex-col gap-3 sm:flex-row">
+                    <a href="{% url 'user:signup' %}" class="btn bg-[#00deb6] text-[#000433] hover:bg-[#00deb6]/90 whitespace-nowrap shadow-lg shadow-[#00deb6]/30">Get free account</a>
+                    <a href="{% url 'user:login' %}" class="btn-secondary whitespace-nowrap border-[#53535fcc]/20 text-[#262637] hover:border-[#00deb6] hover:text-[#00deb6]">Sign in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% include 'chat.html' %}
+
+<!-- 10. Buyer Resources: Guides & Tools -->
+<section class="bg-[#f2f3f4] py-16">
+    <div class="container max-w-7xl space-y-8">
+        <div class="text-center space-y-3">
+            <span class="inline-flex items-center gap-2 rounded-full bg-[#b8e9e0]/20 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[#7F1377]">
+                Get answers to your biggest questions
+            </span>
+            <h2 class="text-3xl font-heading font-semibold text-[#7F1377]">Everything You Need to Buy Confidently</h2>
+            <p class="text-base text-[#53535fcc] max-w-2xl mx-auto">You need clear answers and powerful tools. Get expert guides, cost calculators, and free consultations to help you make the right decision.</p>
+        </div>
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <a href="/blogs/can-foreigners-buy-property-in-thailand-6b5d8" class="group flex h-full flex-col rounded-3xl border border-[#53535fcc]/20 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg hover:border-[#00deb6]/30">
+                <span class="mb-4 inline-flex size-12 items-center justify-center rounded-full bg-[#b8e9e0]/20 text-[#00deb6]">
+                    <i class="bi bi-shield-check text-xl"></i>
+                </span>
+                <h3 class="mb-2 text-lg font-semibold text-[#262637]">Can foreigners legally own property in Bangkok?</h3>
+                <p class="mb-4 flex-1 text-sm text-[#53535fcc]">You need to understand ownership laws. Get clear answers on leasehold vs freehold and what documents you need before wiring funds.</p>
+                <span class="inline-flex items-center gap-2 text-sm font-medium text-[#00deb6]">
+                    <span>Read the guide</span>
+                    <i class="bi bi-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </span>
+            </a>
+            
+            <a href="/property/search/?place=Bangkok,%20Thailand&latitude=13.7563309&longitude=100.5017651&place_id=ChIJ82ENKDJgHTERIEjiXbIAAQE&fature_type=locality&ordering=-rental_yield" class="group flex h-full flex-col rounded-3xl border border-[#53535fcc]/20 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg hover:border-[#00deb6]/30">
+                <span class="mb-4 inline-flex size-12 items-center justify-center rounded-full bg-[#b8e9e0]/20 text-[#00deb6]">
+                    <i class="bi bi-graph-up-arrow text-xl"></i>
+                </span>
+                <h3 class="mb-2 text-lg font-semibold text-[#262637]">Which areas give the best rental returns?</h3>
+                <p class="mb-4 flex-1 text-sm text-[#53535fcc]">You need investment data. Compare real rental yields across Thong Lo, Sathorn, Asok, and other prime investment zones. Get data-driven insights.</p>
+                <span class="inline-flex items-center gap-2 text-sm font-medium text-[#00deb6]">
+                    <span>See the data</span>
+                    <i class="bi bi-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </span>
+            </a>
+            
+            <a href="/blogs/can-foreigners-buy-property-in-thailand-6b5d8" class="group flex h-full flex-col rounded-3xl border border-[#53535fcc]/20 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg hover:border-[#00deb6]/30">
+                <span class="mb-4 inline-flex size-12 items-center justify-center rounded-full bg-[#b8e9e0]/20 text-[#00deb6]">
+                    <i class="bi bi-calculator text-xl"></i>
+                </span>
+                <h3 class="mb-2 text-lg font-semibold text-[#262637]">What will this actually cost me?</h3>
+                <p class="mb-4 flex-1 text-sm text-[#53535fcc]">You need to know the real cost. Understand payment plans, transfer fees, taxes, and all costs before you commit. Complete cost transparency.</p>
+                <span class="inline-flex items-center gap-2 text-sm font-medium text-[#00deb6]">
+                    <span>Calculate costs</span>
+                    <i class="bi bi-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </span>
+            </a>
+            
+            <a href="/schedule/create_schedule/?type=consultation" class="group flex h-full flex-col rounded-3xl border border-[#53535fcc]/20 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg hover:border-[#00deb6]/30">
+                <span class="mb-4 inline-flex size-12 items-center justify-center rounded-full bg-[#b8e9e0]/20 text-[#00deb6]">
+                    <i class="bi bi-person-video3 text-xl"></i>
+                </span>
+                <h3 class="mb-2 text-lg font-semibold text-[#262637]">Talk to a local expert, free</h3>
+                <p class="mb-4 flex-1 text-sm text-[#53535fcc]">You need personalized answers. Book a free video consultation and get expert answers about financing, visas, and ownership in your language.</p>
+                <span class="inline-flex items-center gap-2 text-sm font-medium text-[#00deb6]">
+                    <span>Book free consultation</span>
+                    <i class="bi bi-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- 11. Other Destinations: Secondary Focus -->
+<section id="other-destinations" class="bg-white py-12">
+    <div class="container max-w-7xl space-y-6">
         <div class="space-y-2 text-center">
-            <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Beyond Bangkok</span>
-            <h2 class="text-2xl font-heading font-semibold text-foreground">Explore other destinations in Thailand</h2>
+            <span class="inline-flex items-center gap-2 rounded-full bg-[#b8e9e0]/20 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[#7F1377]">Beyond Bangkok</span>
+            <h2 class="text-2xl font-heading font-semibold text-[#7F1377]">Explore Other Destinations in Thailand</h2>
         </div>
         <div class="grid gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            <a href="/property/search/?place=Phuket,%20Thailand&latitude=7.9843109&longitude=98.3307468&place_id=none&fature_type=circle" class="group relative overflow-hidden rounded-2xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg" aria-label="Browse properties in Phuket">
+            <a href="/property/search/?place=Phuket,%20Thailand&latitude=7.9843109&longitude=98.3307468&place_id=none&fature_type=circle" class="group relative overflow-hidden rounded-2xl border border-[#53535fcc]/20 bg-white transition hover:-translate-y-1 hover:shadow-lg hover:border-[#00deb6]/30" aria-label="Browse properties in Phuket">
                 <img src="{% static '/media/background/Phuket.jpg' %}" alt="Phuket, Thailand" loading="lazy" width="300" height="160" class="h-40 w-full object-cover transition duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
                 <div class="absolute inset-x-0 bottom-0 space-y-0.5 p-4 text-white">
@@ -489,7 +592,7 @@
                     <span class="text-xs uppercase tracking-[0.2em] text-white/70">Resort villas</span>
                 </div>
             </a>
-            <a href="/property/search/?place=Krabi,%20Thailand&latitude=8.1191811&longitude=99.1013498&place_id=none&fature_type=circle" class="group relative overflow-hidden rounded-2xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg" aria-label="Browse properties in Krabi">
+            <a href="/property/search/?place=Krabi,%20Thailand&latitude=8.1191811&longitude=99.1013498&place_id=none&fature_type=circle" class="group relative overflow-hidden rounded-2xl border border-[#53535fcc]/20 bg-white transition hover:-translate-y-1 hover:shadow-lg hover:border-[#00deb6]/30" aria-label="Browse properties in Krabi">
                 <img src="{% static '/media/background/krabi.jpg' %}" alt="Krabi, Thailand" loading="lazy" width="300" height="160" class="h-40 w-full object-cover transition duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
                 <div class="absolute inset-x-0 bottom-0 space-y-0.5 p-4 text-white">
@@ -497,7 +600,7 @@
                     <span class="text-xs uppercase tracking-[0.2em] text-white/70">Coastal escapes</span>
                 </div>
             </a>
-            <a href="/property/search/?place=Chiang%20Mai,%20Thailand&latitude=18.7883439&longitude=98.9853008&place_id=none&fature_type=locality" class="group relative overflow-hidden rounded-2xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg" aria-label="Browse properties in Chiang Mai">
+            <a href="/property/search/?place=Chiang%20Mai,%20Thailand&latitude=18.7883439&longitude=98.9853008&place_id=none&fature_type=locality" class="group relative overflow-hidden rounded-2xl border border-[#53535fcc]/20 bg-white transition hover:-translate-y-1 hover:shadow-lg hover:border-[#00deb6]/30" aria-label="Browse properties in Chiang Mai">
                 <img src="{% static '/media/background/bangkok.jpg' %}" alt="Chiang Mai, Thailand" loading="lazy" width="300" height="160" class="h-40 w-full object-cover transition duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
                 <div class="absolute inset-x-0 bottom-0 space-y-0.5 p-4 text-white">
@@ -505,7 +608,7 @@
                     <span class="text-xs uppercase tracking-[0.2em] text-white/70">Mountain retreats</span>
                 </div>
             </a>
-            <a href="/property/search/?place=Kanchanaburi,%20Thailand&latitude=14.6701192&longitude=99.0128926&place_id=none&fature_type=circle" class="group relative overflow-hidden rounded-2xl border border-border bg-card transition hover:-translate-y-1 hover:shadow-lg" aria-label="Browse properties in Kanchanaburi">
+            <a href="/property/search/?place=Kanchanaburi,%20Thailand&latitude=14.6701192&longitude=99.0128926&place_id=none&fature_type=circle" class="group relative overflow-hidden rounded-2xl border border-[#53535fcc]/20 bg-white transition hover:-translate-y-1 hover:shadow-lg hover:border-[#00deb6]/30" aria-label="Browse properties in Kanchanaburi">
                 <img src="{% static '/media/background/kanchanaburi.jpg' %}" alt="Kanchanaburi, Thailand" loading="lazy" width="300" height="160" class="h-40 w-full object-cover transition duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
                 <div class="absolute inset-x-0 bottom-0 space-y-0.5 p-4 text-white">
@@ -517,79 +620,60 @@
     </div>
 </section>
 
-<!-- Developer Partners: Demoted Section -->
-<section class="bg-muted/20 py-12">
-    <div class="container">
-        <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
-            <div class="flex flex-col items-center gap-6 lg:flex-row lg:justify-between">
-                <div class="text-center lg:text-left">
-                    <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">For developers &amp; agents</span>
-                    <h2 class="mt-2 text-2xl font-heading font-semibold text-foreground">Market to globally qualified buyers</h2>
-                    <p class="mt-2 text-sm text-muted-foreground">Showcase your Bangkok launches to international buyers. Get analytics, lead tracking, and multilingual buyer support.</p>
-                </div>
-                <div class="flex flex-wrap gap-3">
-                    <a href="/advertise/performance/" class="btn bg-primary text-white hover:bg-primary/90 whitespace-nowrap">Partner dashboard</a>
-                    <a href="mailto:partners@wizerproperties.com" class="btn-secondary whitespace-nowrap">Contact us</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Blog & Guides: Fixed Duplicates -->
-<section class="bg-background py-16">
-    <div class="container space-y-8">
+<!-- 12. Blog & Guides: SEO Content -->
+<section class="bg-[#f2f3f4] py-16">
+    <div class="container max-w-7xl space-y-8">
         <div class="space-y-3 text-center">
-            <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Insights &amp; guides</span>
-            <h2 class="text-3xl font-heading font-semibold text-foreground">Essential guides for Bangkok property buyers</h2>
-            <p class="text-sm text-muted-foreground">Learn about ownership structures, financing, taxes, and investment strategies tailored for international buyers.</p>
+            <span class="inline-flex items-center gap-2 rounded-full bg-[#b8e9e0]/20 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[#7F1377]">Latest Insights</span>
+            <h2 class="text-3xl font-heading font-semibold text-[#7F1377]">Essential Guides for Bangkok Property Buyers</h2>
+            <p class="text-sm text-[#53535fcc]">Learn about ownership structures, financing, taxes, and investment strategies tailored for international buyers.</p>
         </div>
         <div class="grid gap-6 md:grid-cols-3">
-            <article class="group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+            <article class="group flex h-full flex-col overflow-hidden rounded-3xl border border-[#53535fcc]/20 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg hover:border-[#00deb6]/30">
                 <a href="/blogs/can-foreigners-buy-property-in-thailand-6b5d8" class="flex flex-1 flex-col">
                     <div class="relative h-52 overflow-hidden">
                         <img loading="lazy" src="https://wizerproperties.com/media/blog/banner_images/Best-Ways-for-Foreigners-To-Own-Property-In-Thailand.jpg" alt="Can Foreigners Buy Property in Thailand? Here's What You Need to Know" width="400" height="208" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent"></div>
-                        <span class="absolute left-4 top-4 inline-flex rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white">Legal</span>
+                        <span class="absolute left-4 top-4 inline-flex rounded-full bg-[#00deb6] px-3 py-1 text-xs font-semibold text-[#000433]">Legal</span>
                     </div>
                     <div class="flex flex-1 flex-col gap-4 p-6">
-                        <h3 class="text-lg font-semibold text-foreground">Can Foreigners Buy Property in Thailand? Here's What You Need to Know</h3>
-                        <p class="text-sm text-muted-foreground">The definitive guide to ownership structures, leasehold vs freehold, and the documents you'll need before wiring funds.</p>
-                        <div class="mt-auto flex items-center justify-between text-xs text-muted-foreground">
+                        <h3 class="text-lg font-semibold text-[#262637]">Can Foreigners Buy Property in Thailand? Here's What You Need to Know</h3>
+                        <p class="text-sm text-[#53535fcc]">The definitive guide to ownership structures, leasehold vs freehold, and the documents you'll need before wiring funds.</p>
+                        <div class="mt-auto flex items-center justify-between text-xs text-[#53535fcc]">
                             <span>10 Oct, 2024</span>
                             <span>2 mins read</span>
                         </div>
                     </div>
                 </a>
             </article>
-            <article class="group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+            <article class="group flex h-full flex-col overflow-hidden rounded-3xl border border-[#53535fcc]/20 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg hover:border-[#00deb6]/30">
                 <a href="/blogs/can-foreigners-buy-property-in-thailand" class="flex flex-1 flex-col">
                     <div class="relative h-52 overflow-hidden">
                         <img loading="lazy" src="https://wizerproperties.com/media/blog/banner_images/villas-in-thailand-qcysqee9im1lxtiyefz5cyxm4ow2kmymlrwlmib4go.jpg" alt="Bangkok Property Investment Guide: Financing & Tax Strategies" width="400" height="208" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent"></div>
-                        <span class="absolute left-4 top-4 inline-flex rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white">Investment</span>
+                        <span class="absolute left-4 top-4 inline-flex rounded-full bg-[#00deb6] px-3 py-1 text-xs font-semibold text-[#000433]">Investment</span>
                     </div>
                     <div class="flex flex-1 flex-col gap-4 p-6">
-                        <h3 class="text-lg font-semibold text-foreground">Bangkok Property Investment Guide: Financing &amp; Tax Strategies</h3>
-                        <p class="text-sm text-muted-foreground">Compare ownership vehicles, tax implications, and financing options for condos, villas, and mixed-use assets in Bangkok.</p>
-                        <div class="mt-auto flex items-center justify-between text-xs text-muted-foreground">
+                        <h3 class="text-lg font-semibold text-[#262637]">Bangkok Property Investment Guide: Financing &amp; Tax Strategies</h3>
+                        <p class="text-sm text-[#53535fcc]">Compare ownership vehicles, tax implications, and financing options for condos, villas, and mixed-use assets in Bangkok.</p>
+                        <div class="mt-auto flex items-center justify-between text-xs text-[#53535fcc]">
                             <span>10 Oct, 2024</span>
                             <span>3 mins read</span>
                         </div>
                     </div>
                 </a>
             </article>
-            <article class="group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+            <article class="group flex h-full flex-col overflow-hidden rounded-3xl border border-[#53535fcc]/20 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg hover:border-[#00deb6]/30">
                 <a href="/blogs/can-foreigners-buy-property-in-thailand-6b5d8" class="flex flex-1 flex-col">
                     <div class="relative h-52 overflow-hidden">
                         <img loading="lazy" src="https://wizerproperties.com/media/blog/banner_images/Best-Ways-for-Foreigners-To-Own-Property-In-Thailand.jpg" alt="Bangkok New-Build Checklist for Remote Buyers" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent"></div>
-                        <span class="absolute left-4 top-4 inline-flex rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white">Strategy</span>
+                        <span class="absolute left-4 top-4 inline-flex rounded-full bg-[#00deb6] px-3 py-1 text-xs font-semibold text-[#000433]">Strategy</span>
                     </div>
                     <div class="flex flex-1 flex-col gap-4 p-6">
-                        <h3 class="text-lg font-semibold text-foreground">Bangkok New-Build Checklist for Remote Buyers</h3>
-                        <p class="text-sm text-muted-foreground">Follow our eight-step playbook covering due diligence, financing, and handover so nothing falls through the cracks.</p>
-                        <div class="mt-auto flex items-center justify-between text-xs text-muted-foreground">
+                        <h3 class="text-lg font-semibold text-[#262637]">Bangkok New-Build Checklist for Remote Buyers</h3>
+                        <p class="text-sm text-[#53535fcc]">Follow our eight-step playbook covering due diligence, financing, and handover so nothing falls through the cracks.</p>
+                        <div class="mt-auto flex items-center justify-between text-xs text-[#53535fcc]">
                             <span>10 Oct, 2024</span>
                             <span>2 mins read</span>
                         </div>
@@ -598,7 +682,26 @@
             </article>
         </div>
         <div class="text-center">
-            <a href="/blogs/" class="btn-secondary">View all guides</a>
+            <a href="/blogs/" class="btn-secondary border-[#53535fcc]/20 text-[#262637] hover:border-[#00deb6] hover:text-[#00deb6]">View all guides</a>
+        </div>
+    </div>
+</section>
+
+<!-- 13. Developer Partners: Secondary CTA -->
+<section class="bg-white py-12">
+    <div class="container max-w-7xl">
+        <div class="rounded-2xl border border-[#53535fcc]/20 bg-[#f2f3f4] p-8 shadow-sm">
+            <div class="flex flex-col items-center gap-6 lg:flex-row lg:justify-between">
+                <div class="text-center lg:text-left">
+                    <span class="inline-flex items-center gap-2 rounded-full bg-[#b8e9e0]/20 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[#7F1377]">For developers &amp; agents</span>
+                    <h2 class="mt-2 text-2xl font-heading font-semibold text-[#7F1377]">Market to Globally Qualified Buyers</h2>
+                    <p class="mt-2 text-sm text-[#53535fcc]">You need to reach international buyers. Showcase your Bangkok launches to qualified prospects. Get analytics, lead tracking, and multilingual buyer support.</p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <a href="{% url 'developer-home' %}" class="btn bg-[#00deb6] text-[#000433] hover:bg-[#00deb6]/90 whitespace-nowrap shadow-lg shadow-[#00deb6]/30">Learn more</a>
+                    <a href="mailto:partners@wizerproperties.com" class="btn-secondary whitespace-nowrap border-[#53535fcc]/20 text-[#262637] hover:border-[#00deb6] hover:text-[#00deb6]">Contact us</a>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -608,18 +711,11 @@
 {% endblock %}
 
 {% block extend_script %}
-<script>
-    var ADS_SUGGEST_URL = '/advertise/api/advertisement/suggested/';
-    var ADS_LOCATION_PARAM = ['home'];
-    var csrfToken = "{{ csrf_token }}";
-</script>
 <script src="{% static 'js/libraries/splide.min.js' %}"></script>
 <script src="{% static 'js/property/card-factory.js' %}?v=1.00"></script>
 <script src="{% static 'js/time-count-down.js' %}?v=1.00"></script>
 <script src="{% static 'js/home.js' %}?v=2.00"></script>
 <script src="{% static 'js/property/compair-favorite.js' %}?v=2.00"></script>
 <script src="{% static 'js/chatbot-gpt.js' %}?v=1.01"></script>
-<script src="{% static 'js/ads.js' %}?v=1.04"></script>
 <script async custom-element="amp-tiktok" src="https://cdn.ampproject.org/v0/amp-tiktok-0.1.js"></script>
 {% endblock extend_script %}
-

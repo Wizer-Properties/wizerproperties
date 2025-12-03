@@ -31,18 +31,27 @@
         ordering: "-created_at",
         place: "",
         filters: {},
-        viewMode: window.location.pathname.includes("search-with-map") ? "map" : "list",
+        mapBounds: null, // Store current map bounds
+        // Default search (/property/search/) shows map view
+        // search-with-map URL shows list view
+        viewMode: window.location.pathname.includes("search-with-map") ? "list" : "map",
+        displayMode: localStorage.getItem("property-display-mode") || "grid", // grid or list
       };
 
       // Cache DOM elements
       this.els = {
     list: document.getElementById("search-result-list"),
+        listList: document.getElementById("search-result-list-list"), // List view container
+        emptyState: document.getElementById("search-empty-state"),
+        loadingSkeleton: document.getElementById("search-loading-skeleton"),
         sentinel: document.getElementById("search-freescroll"),
     availableCount: document.querySelector("[label='available-properties']"),
     heading: document.querySelector(".search-area"),
         locationInput: document.getElementById("gm-search-input"),
         clearLocationBtn: document.querySelector("[data-filter-clear-location]"),
         viewToggle: document.querySelector("[label-name='view-tag']"),
+        viewToggles: document.querySelectorAll("[label-name='view-tag']"), // All view toggle buttons
+        displayModeButtons: document.querySelectorAll(".view-toggle-btn"), // Grid/List toggle buttons
     sortingLabel: document.querySelector("[label='sorting-type']"),
         sortingBox: document.querySelector("[pop-element='sorting-box']"),
         sortingBtn: document.querySelector("[pop-target='sorting-box']"),
@@ -50,12 +59,18 @@
     modal3d: document.getElementById("_3d_view_dialog"),
     modalDrone: document.getElementById("_3d_drone_view"),
     droneVideo: document.getElementById("_3d_model_display_video"),
+    resetMapBtn: document.querySelector(".reset-map"),
   };
 
       this.abortController = null;
       this.CardFactory = window.PropertyCardFactory;
       this.userType = window.user_type || null;
       this.isProspect = !this.userType || this.userType === "prospect";
+      // Show compare/favorite buttons for all authenticated users
+      this.isAuthenticated = this.userType !== false && this.userType !== null;
+      
+      // Map manager reference
+      this.mapManager = null;
     }
 
     init() {
@@ -71,12 +86,34 @@
       this.updateHeading();
       this.updateViewToggleLink();
       this.updateSortingUI();
+      this.updateDisplayMode(); // Set initial grid/list view
+
+      // Initialize map integration if MapManager is available
+      this.initMapIntegration();
 
       // Bind events
       this.bindEvents();
 
       // Initial fetch
       this.fetchProperties({ reset: true });
+    }
+
+    initMapIntegration() {
+      // Check if we're on a map view page and MapManager is available
+      if (this.state.viewMode === "map" && typeof window.MapManager !== 'undefined' && window.mapManager) {
+        this.mapManager = window.mapManager;
+        
+        // Listen for map bounds changes
+        document.addEventListener("mapBounds:changed", (e) => {
+          this.state.mapBounds = e.detail.bounds;
+          this.state.page = 1; // Reset page on bounds change
+          this.updateURL();
+          this.fetchProperties({ reset: true });
+        });
+
+        // Show/hide reset map button based on whether we have location filters
+        this.updateResetMapButton();
+      }
     }
 
     syncStateFromURL() {
@@ -120,18 +157,34 @@
       if (this.els.heading) {
         this.els.heading.textContent = this.state.place || "All properties";
       }
+      // Update breadcrumb
+      const breadcrumbArea = document.querySelector("[data-breadcrumb-area]");
+      if (breadcrumbArea) {
+        breadcrumbArea.textContent = this.state.place 
+          ? `Properties For Sale in ${this.state.place}` 
+          : "Properties For Sale";
+      }
     }
 
     updateViewToggleLink() {
-      if (!this.els.viewToggle) return;
+      // Update all view toggle buttons (there may be multiple on the page)
+      const toggles = this.els.viewToggles || (this.els.viewToggle ? [this.els.viewToggle] : []);
+      if (toggles.length === 0) return;
+      
       const currentParams = window.location.search;
-      if (this.state.viewMode === "map") {
-        this.els.viewToggle.href = `/property/search/${currentParams}`;
-        this.els.viewToggle.innerHTML = `<i class="bi bi-list-task"></i> <span>List view</span>`;
+      const isMapView = this.state.viewMode === "map";
+      
+      toggles.forEach(toggle => {
+        if (isMapView) {
+          // Currently in map view, switch to list view
+          toggle.href = `/property/search-with-map${currentParams}`;
+          toggle.innerHTML = `<i class="bi bi-list-task"></i> <span>List view</span>`;
       } else {
-        this.els.viewToggle.href = `/property/search-with-map/${currentParams}`;
-        this.els.viewToggle.innerHTML = `<i class="bi bi-map"></i> <span>Map view</span>`;
+          // Currently in list view, switch to map view
+          toggle.href = `/property/search${currentParams}`;
+          toggle.innerHTML = `<i class="bi bi-map"></i> <span>Map view</span>`;
       }
+      });
     }
     
     updateSortingUI() {
@@ -139,6 +192,13 @@
         const activeOption = Array.from(this.els.sortingOptions).find(opt => opt.getAttribute("value") === this.state.ordering);
         if(activeOption) {
             this.els.sortingLabel.textContent = activeOption.textContent.trim();
+            // Update checkmarks
+            this.els.sortingOptions.forEach(opt => {
+                const checkIcon = opt.querySelector("i.bi-check2");
+                if (checkIcon) {
+                    checkIcon.classList.toggle("hidden", opt.getAttribute("value") !== this.state.ordering);
+                }
+            });
         }
     }
 
@@ -164,7 +224,18 @@
             const value = option.getAttribute("value");
             if (value) {
                 this.state.ordering = value;
-                this.els.sortingLabel.textContent = option.textContent.trim();
+                // Update label text (remove checkmark icon from text)
+                const labelText = option.textContent.trim().replace(/✓|check/i, "").trim();
+                if (this.els.sortingLabel) {
+                    this.els.sortingLabel.textContent = labelText;
+                }
+                // Update checkmarks
+                this.els.sortingOptions.forEach(opt => {
+                    const checkIcon = opt.querySelector("i.bi-check2");
+                    if (checkIcon) {
+                        checkIcon.classList.toggle("hidden", opt.getAttribute("value") !== value);
+                    }
+                });
                 this.els.sortingBox.classList.add("hidden");
                 this.updateURL();
                 this.fetchProperties({ reset: true });
@@ -210,11 +281,125 @@
         this.state.page = 1; // Reset page on filter change
         this.updateURL();
         this.fetchProperties({ reset: true });
+        this.updateResetMapButton();
       });
+
+      // Reset Map Button
+      if (this.els.resetMapBtn) {
+        this.els.resetMapBtn.addEventListener("click", () => {
+          this.resetMapView();
+        });
+      }
+
+      // Update card comparison state when properties are added/removed
+      window.addEventListener("compare:added", (e) => {
+        this.updateCardComparisonState(e.detail.propertyId, true);
+      });
+      window.addEventListener("compare:removed", (e) => {
+        this.updateCardComparisonState(e.detail.propertyId, false);
+      });
+
+      // Save Search Button
+      const saveSearchBtn = document.querySelector("[data-save-search]");
+      if (saveSearchBtn) {
+        saveSearchBtn.addEventListener("click", () => {
+          this.handleSaveSearch();
+        });
+      }
+
+      // Display Mode Toggle (Grid/List)
+      this.els.displayModeButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const mode = btn.getAttribute("data-view-mode");
+          if (mode && mode !== this.state.displayMode) {
+            this.setDisplayMode(mode);
+          }
+        });
+      });
+
+      // Clear Filters Button
+      const clearFiltersBtn = document.querySelector("[data-clear-filters]");
+      if (clearFiltersBtn) {
+        clearFiltersBtn.addEventListener("click", () => {
+          if (this.els.locationInput) {
+            this.els.locationInput.value = "";
+            this.els.locationInput.dispatchEvent(new Event("input"));
+          }
+          if (window.filter_data) {
+            window.filter_data.clearAll();
+            document.dispatchEvent(new CustomEvent("propertyFilters:changed", {
+              detail: { trigger: "clear-all", filters: {} }
+            }));
+          }
+        });
+      }
 
       // Modal Close Buttons
       document.querySelectorAll(".close_3d_view_dialog, .close_3d_drone_view").forEach(btn => {
         btn.addEventListener("click", this.closeModals.bind(this));
+      });
+    }
+
+    setDisplayMode(mode) {
+      this.state.displayMode = mode;
+      localStorage.setItem("property-display-mode", mode);
+      this.updateDisplayMode();
+      
+      // Re-render current results in new layout
+      const currentCards = Array.from(this.els.list.children).filter(
+        el => el.hasAttribute("data-property-card")
+      );
+      if (currentCards.length > 0) {
+        const fragment = document.createDocumentFragment();
+        currentCards.forEach(card => fragment.appendChild(card.cloneNode(true)));
+        
+        const targetContainer = mode === "grid" ? this.els.list : this.els.listList;
+        const sourceContainer = mode === "grid" ? this.els.listList : this.els.list;
+        
+        sourceContainer.innerHTML = "";
+        targetContainer.appendChild(fragment);
+        
+        // Re-initialize card behaviors
+        Array.from(targetContainer.children).forEach(card => {
+          this.initializeCardBehavior(card);
+        });
+      }
+    }
+
+    updateDisplayMode() {
+      const isGrid = this.state.displayMode === "grid";
+      
+      // Update containers
+      if (this.els.list) {
+        if (isGrid) {
+          this.els.list.classList.remove("hidden");
+          this.els.list.classList.add("grid");
+        } else {
+          this.els.list.classList.add("hidden");
+          this.els.list.classList.remove("grid");
+        }
+      }
+      if (this.els.listList) {
+        if (isGrid) {
+          this.els.listList.classList.add("hidden");
+        } else {
+          this.els.listList.classList.remove("hidden");
+        }
+      }
+      
+      // Update toggle buttons
+      this.els.displayModeButtons.forEach(btn => {
+        const mode = btn.getAttribute("data-view-mode");
+        const isActive = mode === this.state.displayMode;
+        if (isActive) {
+          btn.classList.add("bg-primary", "text-white");
+          btn.classList.remove("bg-transparent", "text-muted-foreground");
+          btn.setAttribute("aria-pressed", "true");
+        } else {
+          btn.classList.remove("bg-primary", "text-white");
+          btn.classList.add("bg-transparent", "text-muted-foreground");
+          btn.setAttribute("aria-pressed", "false");
+        }
       });
     }
 
@@ -235,6 +420,14 @@
           params.set(key, value);
         }
       });
+      
+      // Add map bounds if available
+      if (this.state.mapBounds) {
+        params.set("bounds_north", this.state.mapBounds.north);
+        params.set("bounds_south", this.state.mapBounds.south);
+        params.set("bounds_east", this.state.mapBounds.east);
+        params.set("bounds_west", this.state.mapBounds.west);
+      }
       
       // Add place/sort/page
       if (this.state.place) params.set("place", this.state.place);
@@ -259,7 +452,9 @@
       if (reset) {
         this.state.page = 1;
         this.state.hasMore = true;
-        this.els.list.innerHTML = "";
+        if (this.els.list) this.els.list.innerHTML = "";
+        if (this.els.listList) this.els.listList.innerHTML = "";
+        if (this.els.emptyState) this.els.emptyState.classList.add("hidden");
       }
       
       this.appendSkeletons();
@@ -298,12 +493,33 @@
 
       const results = data.results || [];
       
+      // PostHog tracking - track search
+      if (reset && typeof Analytics !== 'undefined') {
+        const searchTerm = this.state.place || '';
+        const filters = this.state.filters || {};
+        Analytics.trackSearch(searchTerm, filters, data.count || 0);
+      }
+      
+      // Update map markers if map manager is available
+      if (this.mapManager && reset) {
+        this.mapManager.addPropertyMarkers(results);
+      }
+      
       if (results.length === 0) {
         if (reset) {
             this.renderEmptyState();
+            // Clear map markers if no results
+            if (this.mapManager) {
+              this.mapManager.clearMarkers();
+            }
         }
         this.state.hasMore = false;
         return;
+      }
+
+      // Hide empty state if we have results
+      if (this.els.emptyState) {
+        this.els.emptyState.classList.add("hidden");
       }
 
       this.renderProperties(results);
@@ -319,13 +535,16 @@
            } else {
                // Next page not found or not greater than current -> stop
                this.state.hasMore = false;
+               this.renderEndOfResults();
       }
         } catch (e) {
             console.warn("Invalid next URL:", data.next);
             this.state.hasMore = false;
+            this.renderEndOfResults();
     }
       } else {
         this.state.hasMore = false;
+        this.renderEndOfResults();
       }
     }
     
@@ -340,33 +559,197 @@
     }
 
     renderEmptyState() {
-      this.els.list.innerHTML = `
-        <div class="rounded-2xl border border-border bg-card p-12 text-center text-muted-foreground shadow-sm">
-          <i class="bi bi-search text-3xl"></i>
-          <p class="mt-3 text-sm">No properties found. Adjust your filters and try again.</p>
-        </div>`;
+      const filters = this.state.filters || {};
+      const hasFilters = Object.keys(filters).length > 0;
+      const hasLocation = this.state.place && this.state.place.trim() !== "";
+      
+      // Hide grid/list containers
+      if (this.els.list) this.els.list.innerHTML = "";
+      if (this.els.listList) this.els.listList.innerHTML = "";
+      
+      // Show empty state
+      if (this.els.emptyState) {
+        this.els.emptyState.classList.remove("hidden");
+      }
+      
+      // Build suggestions based on active filters
+      const suggestions = [];
+      if (filters.min_price || filters.max_price) {
+        suggestions.push("Try adjusting your price range");
+      }
+      if (filters.min_number_of_bedroom || filters.max_number_of_bedroom) {
+        suggestions.push("Try different bedroom options");
+      }
+      if (filters.building__type) {
+        suggestions.push("Try other property types");
+      }
+      if (hasLocation) {
+        suggestions.push("Try searching in nearby areas");
+      }
+      if (filters.nearby) {
+        suggestions.push("Try expanding your search radius");
+      }
+      
+      // Update empty state content if it exists
+      if (this.els.emptyState) {
+        const emptyStateContent = this.els.emptyState.querySelector("p");
+        if (emptyStateContent && hasFilters || hasLocation) {
+          emptyStateContent.textContent = "Try adjusting your filters or search criteria to see more results.";
+        }
+      }
     }
 
     renderProperties(properties) {
+      // Get the active container based on display mode
+      const activeContainer = this.state.displayMode === "grid" ? this.els.list : this.els.listList;
+      
+      // Remove any existing end-of-results indicator
+      const existingEndIndicator = activeContainer.querySelector("[data-end-of-results]");
+      if (existingEndIndicator) {
+        existingEndIndicator.remove();
+      }
+      
       const fragment = document.createDocumentFragment();
       properties.forEach(property => {
         const card = this.CardFactory.createCard(property, {
-            showActions: this.isProspect,
+            showActions: this.isAuthenticated, // Show compare/favorite for all authenticated users
             favoriteEffect: localStorage.getItem("favorite-effect") || "pulse",
             scheduleUrl: (p) => `/schedule/create_schedule/?type=property&id=${p?.id ?? ""}`,
             contactEmail: (p) => p?.developer_email || null,
-    enableMediaButtons: true,
-  });
+            enableMediaButtons: true,
+            listView: this.state.displayMode === "list", // Pass list view flag
+        });
 
+        // Apply list view styling if needed
+        if (this.state.displayMode === "list" && card) {
+          card.classList.add("list-view-card");
+        }
+
+        // Initialize responsive card behavior
         this.initializeCardBehavior(card);
+        this.adaptCardToContainer(card, activeContainer);
+        
         fragment.appendChild(card);
       });
-      this.els.list.appendChild(fragment);
+      activeContainer.appendChild(fragment);
       
       // Re-init global components if needed
       if (typeof window.Countdown === "function") {
          new window.Countdown({ template: "dd|hh|mm", labels: "Days|Hours|Minutes" });
       }
+    }
+
+    adaptCardToContainer(card, container) {
+      // Use ResizeObserver to detect card size and adapt content
+      if (!card) return;
+      
+      // Initial size check (fallback if ResizeObserver not available)
+      const checkSize = () => {
+        const width = card.offsetWidth;
+        const height = card.offsetHeight;
+        const aspectRatio = width / (height || 1);
+        
+        // Remove all size classes
+        card.classList.remove("property-card-narrow", "property-card-medium", "property-card-wide", "property-card-horizontal");
+        
+        // Apply size-based classes
+        if (width < 400) {
+          card.classList.add("property-card-narrow");
+        } else if (width < 600) {
+          card.classList.add("property-card-medium");
+        } else {
+          card.classList.add("property-card-wide");
+          // For very wide cards, consider horizontal layout if aspect ratio suggests it
+          if (width >= 800 && aspectRatio > 1.3) {
+            card.classList.add("property-card-horizontal");
+          }
+        }
+      };
+      
+      // Initial check
+      checkSize();
+      
+      // Use ResizeObserver if available for dynamic updates
+      if (window.ResizeObserver) {
+        const resizeObserver = new ResizeObserver(entries => {
+          for (const entry of entries) {
+            checkSize();
+          }
+        });
+        
+        resizeObserver.observe(card);
+        
+        // Store observer for cleanup if needed
+        if (!card.dataset.resizeObserver) {
+          card.dataset.resizeObserver = "true";
+          card._resizeObserver = resizeObserver;
+        }
+      }
+    }
+
+    renderEndOfResults() {
+      // Get the active container based on display mode
+      const activeContainer = this.state.displayMode === "grid" ? this.els.list : this.els.listList;
+      
+      // Only show if we have results and no more pages
+      if (activeContainer.children.length === 0) return;
+      
+      // Check if end indicator already exists
+      if (activeContainer.querySelector("[data-end-of-results]")) return;
+      
+      const endIndicator = document.createElement("div");
+      endIndicator.setAttribute("data-end-of-results", "true");
+      endIndicator.className = "mt-6 rounded-2xl border border-border bg-card p-6 text-center";
+      endIndicator.innerHTML = `
+        <div class="flex flex-col items-center gap-3">
+          <div class="flex size-12 items-center justify-center rounded-full bg-muted">
+            <i class="bi bi-check-circle text-2xl text-accent"></i>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-foreground">You've reached the end</p>
+            <p class="mt-1 text-xs text-muted-foreground">All matching properties are displayed above</p>
+          </div>
+          <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-4 py-2 text-xs font-semibold text-foreground transition hover:bg-secondary/80" data-scroll-to-top>
+            <i class="bi bi-arrow-up"></i>
+            <span>Back to top</span>
+          </button>
+        </div>
+      `;
+      
+      activeContainer.appendChild(endIndicator);
+      
+      // Add scroll to top functionality
+      const scrollBtn = endIndicator.querySelector("[data-scroll-to-top]");
+      if (scrollBtn) {
+        scrollBtn.addEventListener("click", () => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      }
+    }
+
+    updateCardComparisonState(propertyId, isCompared) {
+      // Check both containers
+      const containers = [this.els.list, this.els.listList].filter(Boolean);
+      containers.forEach(container => {
+        const card = container.querySelector(`[data-property-id="${propertyId}"]`);
+        if (card) {
+          if (isCompared) {
+            card.classList.add("property-compared");
+            const compareButton = card.querySelector("[data-card-compare]");
+            if (compareButton) {
+              compareButton.setAttribute("added", "true");
+              compareButton.innerHTML = `<i class="bi bi-check2"></i><span class="sr-only">Compare</span>`;
+            }
+          } else {
+            card.classList.remove("property-compared");
+            const compareButton = card.querySelector("[data-card-compare]");
+            if (compareButton) {
+              compareButton.setAttribute("added", "false");
+              compareButton.innerHTML = `<i class="bi bi-arrow-left-right"></i><span class="sr-only">Compare</span>`;
+            }
+          }
+        }
+      });
     }
 
     initializeCardBehavior(card) {
@@ -395,6 +778,20 @@
       pagination: false,
       arrows: true,
     });
+    
+    // Connect thumbnails to splide if they exist
+    const thumbnailsContainer = card.querySelector("[data-card-thumbnails]");
+    if (thumbnailsContainer && !thumbnailsContainer.classList.contains("hidden")) {
+      const thumbnailButtons = thumbnailsContainer.querySelectorAll("div[data-thumbnail-index]");
+      thumbnailButtons.forEach((thumb) => {
+        thumb.addEventListener("click", () => {
+          const index = parseInt(thumb.dataset.thumbnailIndex) || 1;
+          if (splide.go) {
+            splide.go(index);
+          }
+        });
+      });
+    }
 
        // Lazy load next images logic
     splide.on("moved", (newIndex) => {
@@ -443,51 +840,92 @@
     }
 
     appendSkeletons() {
-       const template = `
-        <div class="rounded-2xl border border-border bg-card p-6 shadow-sm animate-pulse">
-          <div class="grid grid-cols-1 gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
-            <div class="h-64 rounded-2xl bg-muted"></div>
-            <div class="flex flex-col justify-between gap-6">
-              <div class="space-y-4">
-                <div class="h-6 w-3/4 rounded bg-muted"></div>
-                <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                  <div class="h-16 rounded-lg bg-muted"></div>
-                  <div class="h-16 rounded-lg bg-muted"></div>
-                  <div class="h-16 rounded-lg bg-muted"></div>
-                  <div class="h-16 rounded-lg bg-muted"></div>
+      const isGrid = this.state.displayMode === "grid";
+      const container = isGrid ? this.els.list : this.els.listList;
+      
+      if (!container) return;
+      
+      // Grid skeleton (simplified)
+      const gridTemplate = `
+        <div class="rounded-2xl border border-border bg-card shadow-sm animate-pulse skeleton-item">
+          <div class="h-56 sm:h-64 rounded-t-2xl bg-muted"></div>
+          <div class="p-4 sm:p-5 space-y-3">
+            <div class="h-5 w-3/4 rounded bg-muted"></div>
+            <div class="h-3 w-1/2 rounded bg-muted"></div>
+            <div class="grid grid-cols-4 gap-1.5">
+              <div class="h-14 rounded-lg bg-muted"></div>
+              <div class="h-14 rounded-lg bg-muted"></div>
+              <div class="h-14 rounded-lg bg-muted"></div>
+              <div class="h-14 rounded-lg bg-muted"></div>
+            </div>
+            <div class="flex items-center gap-2.5 pt-3 border-t border-border/60">
+              <div class="size-8 rounded-md bg-muted"></div>
+              <div class="flex-1 space-y-1.5">
+                <div class="h-3 w-20 rounded bg-muted"></div>
+                <div class="h-2 w-16 rounded bg-muted"></div>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <div class="h-9 w-full rounded-lg bg-muted"></div>
+              <div class="h-9 w-full rounded-lg bg-muted"></div>
+            </div>
+          </div>
+        </div>`;
+      
+      // List skeleton (horizontal layout)
+      const listTemplate = `
+        <div class="rounded-2xl border border-border bg-card shadow-sm animate-pulse skeleton-item">
+          <div class="grid grid-cols-1 gap-4 lg:grid-cols-[280px_minmax(0,1fr)] p-4">
+            <div class="h-56 rounded-xl bg-muted lg:h-full"></div>
+            <div class="flex flex-col justify-between gap-4">
+              <div class="space-y-3">
+                <div class="h-5 w-3/4 rounded bg-muted"></div>
+                <div class="h-3 w-1/2 rounded bg-muted"></div>
+                <div class="grid grid-cols-4 gap-1.5">
+                  <div class="h-12 rounded-lg bg-muted"></div>
+                  <div class="h-12 rounded-lg bg-muted"></div>
+                  <div class="h-12 rounded-lg bg-muted"></div>
+                  <div class="h-12 rounded-lg bg-muted"></div>
                 </div>
               </div>
-              <div class="flex flex-col gap-4 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-between">
-                <div class="flex items-center gap-3">
-                  <div class="size-10 rounded-full bg-muted"></div>
-                  <div class="space-y-1">
-                    <div class="h-4 w-24 rounded bg-muted"></div>
-                    <div class="h-3 w-16 rounded bg-muted"></div>
-                  </div>
+              <div class="flex items-center gap-2.5 border-t border-border/60 pt-3">
+                <div class="size-8 rounded-md bg-muted"></div>
+                <div class="flex-1">
+                  <div class="h-3 w-24 rounded bg-muted mb-1"></div>
+                  <div class="h-2 w-16 rounded bg-muted"></div>
                 </div>
-                <div class="flex flex-wrap gap-2">
-                  <div class="h-10 w-36 rounded-full bg-muted"></div>
-                  <div class="h-10 w-28 rounded-full bg-muted"></div>
-                </div>
+              </div>
+              <div class="flex gap-2">
+                <div class="h-9 flex-1 rounded-lg bg-muted"></div>
+                <div class="h-9 flex-1 rounded-lg bg-muted"></div>
               </div>
             </div>
           </div>
         </div>`;
 
-    const fragment = document.createDocumentFragment();
-       for (let i = 0; i < this.config.skeletonCount; i++) {
-         const wrapper = document.createElement("div");
-         wrapper.innerHTML = template;
-         wrapper.firstElementChild.classList.add("skeleton-item");
-         fragment.appendChild(wrapper.firstElementChild);
-       }
-       this.els.list.appendChild(fragment);
+      const template = isGrid ? gridTemplate : listTemplate;
+      const fragment = document.createDocumentFragment();
+      
+      for (let i = 0; i < this.config.skeletonCount; i++) {
+        const wrapper = document.createElement("div");
+        wrapper.innerHTML = template;
+        fragment.appendChild(wrapper.firstElementChild);
+      }
+      
+      container.appendChild(fragment);
     }
 
     removeSkeletons() {
-       this.els.list.querySelectorAll(".skeleton-item").forEach(el => el.remove());
-       // Fallback for any lingering pulse elements from old logic if mixed
-       this.els.list.querySelectorAll(".animate-pulse").forEach(el => el.closest(".rounded-2xl")?.remove());
+      // Remove from both containers
+      [this.els.list, this.els.listList].filter(Boolean).forEach(container => {
+        container.querySelectorAll(".skeleton-item").forEach(el => el.remove());
+        // Fallback for any lingering pulse elements
+        container.querySelectorAll(".animate-pulse").forEach(el => {
+          if (el.closest(".rounded-2xl")?.classList.contains("skeleton-item")) {
+            el.closest(".rounded-2xl")?.remove();
+          }
+        });
+      });
     }
 
     openModal(type, src) {
@@ -524,6 +962,54 @@
         window.$?.(this.els.modalDrone).modal("hide");
       }
     }
+
+    handleSaveSearch() {
+      // TODO: Implement save search functionality
+      // This would typically save the current search criteria to user's account
+      console.log("Save search clicked", {
+        place: this.state.place,
+        filters: this.state.filters,
+        ordering: this.state.ordering
+      });
+      // Show a toast or modal for save search
+      alert("Save search feature coming soon!");
+    }
+
+    updateResetMapButton() {
+      if (!this.els.resetMapBtn) return;
+      
+      const hasLocation = this.state.place && this.state.place.trim() !== "";
+      const hasBounds = this.state.mapBounds !== null;
+      
+      if (hasLocation || hasBounds) {
+        this.els.resetMapBtn.classList.remove("hidden");
+      } else {
+        this.els.resetMapBtn.classList.add("hidden");
+      }
+    }
+
+    resetMapView() {
+      // Clear map bounds
+      this.state.mapBounds = null;
+      
+      // Reset map to default view
+      if (this.mapManager) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const p_latitude = urlParams.get('latitude');
+        const p_longitude = urlParams.get('longitude');
+        const center = p_latitude && p_longitude 
+          ? { lat: Number(p_latitude), lng: Number(p_longitude) }
+          : { lat: 13.7563309, lng: 100.5017651 };
+        
+        this.mapManager.updateMapView(center, 12);
+        this.mapManager.clearMarkers();
+      }
+      
+      // Update URL and refetch
+      this.updateURL();
+      this.fetchProperties({ reset: true });
+      this.updateResetMapButton();
+    }
   }
 
   // Initialize when DOM is ready
@@ -531,3 +1017,4 @@
     new PropertySearchManager().init();
   });
 })();
+
