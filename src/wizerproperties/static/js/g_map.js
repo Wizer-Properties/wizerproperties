@@ -203,7 +203,7 @@ async function initializeMap() {
                 };
                 
                 if(p_fature_type != 'circle') {
-                    const { Map } = await google.maps.importLibrary("maps");
+                    const { Map: GoogleMap } = await google.maps.importLibrary("maps");
 
                     function MAPFEATURETYPE(){
                         if(
@@ -213,7 +213,7 @@ async function initializeMap() {
                         if(p_fature_type == "postal_code") return google.maps.FeatureType.POSTAL_CODE;
                     }
 
-                    search_page_map = new Map(search_render_dom, {
+                    search_page_map = new GoogleMap(search_render_dom, {
                         zoom: 10.5,
                         center: center_option,
                         mapId: 'b0addd8cbd8a8fc6',

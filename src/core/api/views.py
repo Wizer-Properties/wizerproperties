@@ -1,3 +1,4 @@
+import logging
 import openai
 import os
 from rest_framework import viewsets
@@ -8,6 +9,8 @@ from core.api.serializers import ContactSerializer
 from core.models import Contact
 from utils.admin_settings import get_openai_api_key
 from utils.zoho_crm import sync_contact_to_crm
+
+logger = logging.getLogger(__name__)
 
 class ContactViewSet(viewsets.ModelViewSet):
     serializer_class = ContactSerializer
@@ -25,7 +28,8 @@ class ContactViewSet(viewsets.ModelViewSet):
         # Sync to Zoho CRM if enabled
         if response.status_code == 201:
             try:
-                contact_data = request.data
+                # Use response.data to get actual persisted values
+                contact_data = response.data if hasattr(response, 'data') else request.data
                 email = contact_data.get('email', '')
                 subject = contact_data.get('subject', '')
                 body = contact_data.get('body', '')
@@ -42,11 +46,9 @@ class ContactViewSet(viewsets.ModelViewSet):
                     if crm_synced and hasattr(request, 'session'):
                         # This will be tracked via frontend Analytics if needed
                         pass
-            except Exception as e:
+            except Exception:
                 # Don't fail the request if CRM sync fails
-                import logging
-                logger = logging.getLogger(__name__)
-                logger.error(f"Failed to sync contact to Zoho CRM: {e}")
+                logger.exception("Failed to sync contact to Zoho CRM")
         
         return response
     

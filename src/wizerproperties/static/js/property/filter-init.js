@@ -713,52 +713,55 @@
       const min = button.getAttribute("data-min");
       const max = button.getAttribute("data-max");
 
+      // Check if already active BEFORE setting values
+      const isActive = this.isQuickFilterActive(button);
+
       if (filterType === "price") {
-        this.data.min_price = min || null;
-        this.data.max_price = max || null;
-        // Toggle button active state
-        const isActive = this.isQuickFilterActive(button);
         if (isActive) {
           // Clear if already active
           this.data.min_price = null;
           this.data.max_price = null;
-          button.classList.remove("border-accent", "bg-accent/10", "text-accent");
-          button.classList.add("border-border", "bg-secondary/60", "text-muted-foreground");
         } else {
-          // Set active
-          button.classList.add("border-accent", "bg-accent/10", "text-accent");
-          button.classList.remove("border-border", "bg-secondary/60", "text-muted-foreground");
-          // Clear other price quick filters
-          this.dom.quickFilterButtons.forEach((btn) => {
-            if (btn !== button && btn.getAttribute("data-quick-filter") === "price") {
+          // Apply filter
+          this.data.min_price = min || null;
+          this.data.max_price = max || null;
+        }
+        // Update button states for all price quick filters
+        this.dom.quickFilterButtons.forEach((btn) => {
+          if (btn.getAttribute("data-quick-filter") === "price") {
+            const btnActive = this.isQuickFilterActive(btn);
+            if (btnActive) {
+              btn.classList.add("border-accent", "bg-accent/10", "text-accent");
+              btn.classList.remove("border-border", "bg-secondary/60", "text-muted-foreground");
+            } else {
               btn.classList.remove("border-accent", "bg-accent/10", "text-accent");
               btn.classList.add("border-border", "bg-secondary/60", "text-muted-foreground");
             }
-          });
-        }
+          }
+        });
       } else if (filterType === "bedrooms") {
-        this.data.min_number_of_bedroom = min || null;
-        this.data.max_number_of_bedroom = max || null;
-        // Toggle button active state
-        const isActive = this.isQuickFilterActive(button);
         if (isActive) {
           // Clear if already active
           this.data.min_number_of_bedroom = null;
           this.data.max_number_of_bedroom = null;
-          button.classList.remove("border-accent", "bg-accent/10", "text-accent");
-          button.classList.add("border-border", "bg-secondary/60", "text-muted-foreground");
         } else {
-          // Set active
-          button.classList.add("border-accent", "bg-accent/10", "text-accent");
-          button.classList.remove("border-border", "bg-secondary/60", "text-muted-foreground");
-          // Clear other bedroom quick filters
-          this.dom.quickFilterButtons.forEach((btn) => {
-            if (btn !== button && btn.getAttribute("data-quick-filter") === "bedrooms") {
+          // Apply filter
+          this.data.min_number_of_bedroom = min || null;
+          this.data.max_number_of_bedroom = max || null;
+        }
+        // Update button states for all bedroom quick filters
+        this.dom.quickFilterButtons.forEach((btn) => {
+          if (btn.getAttribute("data-quick-filter") === "bedrooms") {
+            const btnActive = this.isQuickFilterActive(btn);
+            if (btnActive) {
+              btn.classList.add("border-accent", "bg-accent/10", "text-accent");
+              btn.classList.remove("border-border", "bg-secondary/60", "text-muted-foreground");
+            } else {
               btn.classList.remove("border-accent", "bg-accent/10", "text-accent");
               btn.classList.add("border-border", "bg-secondary/60", "text-muted-foreground");
             }
-          });
-        }
+          }
+        });
       }
 
       this.restoreSelections();

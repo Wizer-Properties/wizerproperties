@@ -1,4 +1,4 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap'); */
+/* Legacy Montserrat font removed - now using Effra via Tailwind config */
 
 :root{
     --th-gradient-bg: linear-gradient(315deg, #140733 0%, #7f1377 54%);
@@ -12,7 +12,6 @@
     margin: 0;
     box-sizing: border-box;
     outline: none !important;
-    /* font-family: 'Montserrat', sans-serif !important; */
 }
 
 .material-icons{

@@ -13,9 +13,6 @@ from property.models import Property
 from utils.zoho_crm import sync_schedule_to_crm
 
 logger = logging.getLogger(__name__)
-import logging
-
-logger = logging.getLogger(__name__)
 
 
 class VisitingScheduleViewSet(viewsets.ModelViewSet):
@@ -139,9 +136,9 @@ class VisitingScheduleViewSet(viewsets.ModelViewSet):
                     
                     if crm_synced:
                         logger.info(f"Successfully synced schedule {schedule_instance.id} to Zoho CRM")
-            except Exception as e:
+            except Exception:
                 # Don't fail the request if CRM sync fails
-                logger.exception(f"Failed to sync schedule to Zoho CRM")
+                logger.exception("Failed to sync schedule to Zoho CRM")
             
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:

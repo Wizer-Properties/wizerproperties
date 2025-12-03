@@ -417,9 +417,16 @@
         var map = null;
         var marker = null;
         var defaultCenter = { lat: 13.7563309, lng: 100.5017651 };
+        var retryCount = 0;
+        var maxRetries = 50; // 5 seconds total
 
         function initMapPicker() {
             if (typeof google === 'undefined' || typeof google.maps === 'undefined') {
+                if (retryCount >= maxRetries) {
+                    console.error('Google Maps failed to load after ' + maxRetries + ' attempts');
+                    return;
+                }
+                retryCount++;
                 // Wait for Google Maps to load
                 setTimeout(initMapPicker, 100);
                 return;

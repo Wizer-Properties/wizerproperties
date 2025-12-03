@@ -15,12 +15,18 @@ def is_safe_url(url, allowed_hosts=None):
     if not url:
         return False
     
-    # Only allow relative URLs (starting with /)
-    # This is the safest approach and avoids ALLOWED_HOSTS pattern matching issues
-    if url.startswith('/'):
+    # Parse URL to check for scheme or netloc
+    parsed = urlparse(url)
+    
+    # Reject protocol-relative URLs (//evil.com) and absolute URLs with scheme/netloc
+    if parsed.scheme or parsed.netloc or url.startswith('//'):
+        return False
+    
+    # Only allow relative URLs (starting with / but not //)
+    if url.startswith('/') and not url.startswith('//'):
         return True
     
-    # Reject all absolute URLs for security
+    # Reject all other URLs for security
     return False
 
 

@@ -49,7 +49,7 @@ class ZohoCRM:
             self.access_token = data.get('access_token')
             return self.access_token
         except Exception as e:
-            logger.error(f"Failed to get Zoho CRM access token: {e}")
+            logger.exception(f"Failed to get Zoho CRM access token: {e}")
             return None
     
     def _make_request(self, method: str, endpoint: str, data: Optional[Dict] = None) -> Optional[Dict]:
@@ -83,7 +83,7 @@ class ZohoCRM:
             response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
-            logger.error(f"Zoho CRM API request failed: {e}")
+            logger.exception(f"Zoho CRM API request failed: {e}")
             if hasattr(e.response, 'text'):
                 logger.error(f"Response: {e.response.text}")
             return None
@@ -370,7 +370,7 @@ def sync_contact_to_crm(email: str, subject: str = '', body: str = '',
         
         return result is not None
     except Exception as e:
-        logger.error(f"Failed to sync contact to Zoho CRM: {e}")
+        logger.exception(f"Failed to sync contact to Zoho CRM: {e}")
         return False
 
 
@@ -505,6 +505,6 @@ Property Details:
         
         return result is not None
     except Exception as e:
-        logger.error(f"Failed to sync schedule to Zoho CRM: {e}")
+        logger.exception(f"Failed to sync schedule to Zoho CRM: {e}")
         return False
 

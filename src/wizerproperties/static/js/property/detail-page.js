@@ -127,6 +127,20 @@
     return response.json();
   }
 
+  function attachVideoTracking(containerOrVideoEl, videoId, videoTitle) {
+    if (typeof Analytics === 'undefined') return;
+    setTimeout(() => {
+      const videoEl = containerOrVideoEl.tagName === 'VIDEO' 
+        ? containerOrVideoEl 
+        : containerOrVideoEl.querySelector('video');
+      if (videoEl) {
+        videoEl.addEventListener('play', function() {
+          Analytics.trackVideoPlay(videoId, videoTitle);
+        }, { once: true });
+      }
+    }, 100);
+  }
+
   function renderHeroSlides(items, type) {
     const listEl = els.galleryList;
     if (!listEl) return;
@@ -151,14 +165,7 @@
             </video>
           `;
           // PostHog tracking - track video play
-          setTimeout(() => {
-            const videoEl = li.querySelector('video');
-            if (videoEl && typeof Analytics !== 'undefined') {
-              videoEl.addEventListener('play', function() {
-                Analytics.trackVideoPlay(videoId, videoTitle);
-              }, { once: true });
-            }
-          }, 100);
+          attachVideoTracking(li, videoId, videoTitle);
         } else {
           li.innerHTML = `
             <img src="${item.file}" alt="Property media" class="h-72 w-full rounded-xl border border-border object-cover" loading="lazy" />
@@ -230,14 +237,7 @@
             </video>
           `;
           // PostHog tracking - track video play
-          setTimeout(() => {
-            const videoEl = li.querySelector('video');
-            if (videoEl && typeof Analytics !== 'undefined') {
-              videoEl.addEventListener('play', function() {
-                Analytics.trackVideoPlay(videoId, videoTitle);
-              }, { once: true });
-            }
-          }, 100);
+          attachVideoTracking(li, videoId, videoTitle);
         } else {
           li.innerHTML = `
             <img src="${item.file}" alt="Gallery media" class="h-[80vh] w-full object-contain bg-black" loading="lazy" />
@@ -458,18 +458,30 @@
     
     // Load saved notes
     const propertyId = els.propertyNotes.dataset.propertyId;
-    const savedNotes = localStorage.getItem(`property_notes_${propertyId}`);
-    if (savedNotes) {
-      els.propertyNotes.value = savedNotes;
+    try {
+      const savedNotes = localStorage.getItem(`property_notes_${propertyId}`);
+      if (savedNotes) {
+        els.propertyNotes.value = savedNotes;
+      }
+    } catch (error) {
+      console.error("Failed to load notes:", error);
     }
     
     els.saveNotesBtn.addEventListener("click", () => {
       const notes = els.propertyNotes.value.trim();
-      localStorage.setItem(`property_notes_${propertyId}`, notes);
-      els.saveNotesBtn.innerHTML = '<i class="bi bi-check"></i> <span>Saved</span>';
-      setTimeout(() => {
-        els.saveNotesBtn.innerHTML = '<i class="bi bi-save"></i> <span>Save note</span>';
-      }, 2000);
+      try {
+        localStorage.setItem(`property_notes_${propertyId}`, notes);
+        els.saveNotesBtn.innerHTML = '<i class="bi bi-check"></i> <span>Saved</span>';
+        setTimeout(() => {
+          els.saveNotesBtn.innerHTML = '<i class="bi bi-save"></i> <span>Save note</span>';
+        }, 2000);
+      } catch (error) {
+        console.error("Failed to save notes:", error);
+        els.saveNotesBtn.innerHTML = '<i class="bi bi-exclamation-triangle"></i> <span>Save failed</span>';
+        setTimeout(() => {
+          els.saveNotesBtn.innerHTML = '<i class="bi bi-save"></i> <span>Save note</span>';
+        }, 2000);
+      }
     });
   }
   
@@ -483,12 +495,22 @@
       els.backToSearchLink.textContent = "Back to search results";
     } else {
       // Check localStorage for saved search
-      const savedSearches = JSON.parse(localStorage.getItem("saved_searches") || "[]");
-      if (savedSearches.length > 0) {
-        const lastSearch = savedSearches[0];
-        if (lastSearch.url) {
-          els.backToSearchLink.href = lastSearch.url;
-          els.backToSearchLink.textContent = "Back to search results";
+      try {
+        const savedSearches = JSON.parse(localStorage.getItem("saved_searches") || "[]");
+        if (savedSearches.length > 0) {
+          const lastSearch = savedSearches[0];
+          if (lastSearch.url) {
+            els.backToSearchLink.href = lastSearch.url;
+            els.backToSearchLink.textContent = "Back to search results";
+          }
+        }
+      } catch (error) {
+        console.error("Failed to parse saved searches:", error);
+        // Clear corrupted data
+        try {
+          localStorage.removeItem("saved_searches");
+        } catch (e) {
+          // Ignore if localStorage is unavailable
         }
       }
     }
@@ -1136,7 +1158,14 @@
     
     try {
       // Fetch similar properties based on building type and price range
-      const priceRange = state.property.price || 0;
+      const priceRange = Number(state.property.price) || 0;
+      
+      // Skip if no valid price
+      if (!Number.isFinite(priceRange) || priceRange <= 0) {
+        els.similarProperties.innerHTML = '<p class="text-sm text-muted-foreground">No similar properties found.</p>';
+        return;
+      }
+      
       const minPrice = Math.max(0, priceRange * 0.7);
       const maxPrice = priceRange * 1.3;
       
