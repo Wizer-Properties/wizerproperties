@@ -46,6 +46,54 @@ $(document).ready(function(){
                 '</li>'
     }
 
+    // Inline ad card template (matches property card style)
+    function inline_ad_card_tmp(data){
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>"']/g, function(m) {
+                return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[m];
+            });
+        }
+        var titleText = data?.target_title ? escapeHtml(data.target_title) : '';
+        var altText = titleText ? 'Sponsored: ' + titleText : 'Sponsored property listing';
+        var img = '<img src="'+(data?.banner_image || '')+'" alt="'+altText+'" aria-label="'+altText+'" loading="lazy">';
+        var link = '#';
+        if (data?.target_type && data?.object_id) {
+            link = '/'+data.target_type+'/details/'+data.object_id+'/?ad_id='+data?.id;
+        }
+        
+        return '<article class="inline-ad-card group relative" data-ad-card="'+data?.id+'">' +
+            '<div class="ad-badge">Sponsored</div>' +
+            '<a href="'+link+'" aria-label="View '+altText+'">' +
+            img +
+            '</a>' +
+            '</article>';
+    }
+
+    // Square ad below map template
+    function map_below_ad_tmp(data){
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>"']/g, function(m) {
+                return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[m];
+            });
+        }
+        var titleText = data?.target_title ? escapeHtml(data.target_title) : '';
+        var altText = titleText ? 'Sponsored: ' + titleText : 'Sponsored property listing';
+        var img = '<img src="'+(data?.banner_image || '')+'" alt="'+altText+'" aria-label="'+altText+'" loading="lazy">';
+        var link = '#';
+        if (data?.target_type && data?.object_id) {
+            link = '/'+data.target_type+'/details/'+data.object_id+'/?ad_id='+data?.id;
+        }
+        
+        return '<div class="map-below-ad group relative" data-ad-card="'+data?.id+'">' +
+            '<div class="ad-badge">Sponsored</div>' +
+            '<a href="'+link+'" aria-label="View '+altText+'">' +
+            img +
+            '</a>' +
+            '</div>';
+    }
+
 
     function get_ads_list(params){
         $.ajax({
@@ -64,6 +112,9 @@ $(document).ready(function(){
                 }
                 if(['details_sidebar'].includes(params)){
                     $('.side-add-banner-slider .splide__list').append(loader_tmp());
+                }
+                if(params === 'map_below'){
+                    $('#map-below-ad-container').html('<div class="skeleton-box" style="width: 100%; aspect-ratio: 1/1; max-width: 400px; margin: 0 auto; border-radius: 1rem;"></div>');
                 }
             },
             success: function (data) {
@@ -91,8 +142,26 @@ $(document).ready(function(){
                     if(['details_sidebar'].includes(params)){
                         $('.side-add-banner-slider').closest('.space-y-3').hide();
                     }
+                    if(params === 'map_below'){
+                        $('#map-below-ad-container').hide();
+                    }
+                    if(params === 'search_inline'){
+                        window.inlineAds = []; // Store empty array for search.js
+                    }
                     return
                 };
+
+                // Handle inline ads - store for search.js to use
+                if(params === 'search_inline'){
+                    window.inlineAds = data; // Store ads globally for search.js
+                    return;
+                }
+                
+                // Handle map below ads
+                if(params === 'map_below'){
+                    $('#map-below-ad-container').html(map_below_ad_tmp(data[0])); // Show first ad
+                    return;
+                }
 
                 // Remove loaders
                 $('.top-banner-loader').remove();

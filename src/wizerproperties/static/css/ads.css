@@ -107,6 +107,110 @@
     }
 }
 
+/* Inline Ad Cards (Search Listings) - Matches Property Card Style */
+.inline-ad-card {
+    width: 100%;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border-radius: 1rem;
+    position: relative;
+    border: 1px solid hsl(var(--border) / 0.5);
+    background: hsl(var(--card));
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.inline-ad-card:hover {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    border-color: hsl(var(--accent) / 0.4);
+}
+
+.inline-ad-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.inline-ad-card a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.inline-ad-card .ad-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: hsl(var(--muted-foreground));
+    border: 1px solid hsl(var(--border));
+}
+
+/* Square Ad Below Map */
+.map-below-ad {
+    width: 100%;
+    aspect-ratio: 1/1;
+    max-width: 400px;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 1rem;
+    position: relative;
+    border: 1px solid hsl(var(--border) / 0.5);
+    background: hsl(var(--card));
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.map-below-ad:hover {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    border-color: hsl(var(--accent) / 0.4);
+}
+
+.map-below-ad img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.map-below-ad a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.map-below-ad .ad-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: hsl(var(--muted-foreground));
+    border: 1px solid hsl(var(--border));
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .top-banner-img {
@@ -119,5 +223,13 @@
     
     .top-banner .splide__pagination {
         bottom: -15px !important;
+    }
+    
+    .inline-ad-card {
+        aspect-ratio: 4/3;
+    }
+    
+    .map-below-ad {
+        max-width: 100%;
     }
 }

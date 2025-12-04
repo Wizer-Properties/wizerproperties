@@ -58,7 +58,7 @@ class AdminSettings(TimestampedModel):
         max_length=500,
         blank=True,
         null=True,
-        help_text="OpenAI API key for ChatGPT integration."
+        help_text="OpenRouter API key for AI chatbot integration. Get your key from https://openrouter.ai/"
     )
 
     class Meta:

@@ -610,7 +610,10 @@
       }
       
       const fragment = document.createDocumentFragment();
-      properties.forEach(property => {
+      const INLINE_AD_INTERVAL = 6; // Insert ad after every 6 properties
+      let adIndex = 0;
+      
+      properties.forEach((property, index) => {
         const card = this.CardFactory.createCard(property, {
             showActions: this.isAuthenticated, // Show compare/favorite for all authenticated users
             favoriteEffect: localStorage.getItem("favorite-effect") || "pulse",
@@ -630,6 +633,18 @@
         this.adaptCardToContainer(card, activeContainer);
         
         fragment.appendChild(card);
+        
+        // Insert inline ad after every N properties (but not after the last one)
+        if (window.inlineAds && window.inlineAds.length > 0 && 
+            (index + 1) % INLINE_AD_INTERVAL === 0 && 
+            index < properties.length - 1) {
+          const adData = window.inlineAds[adIndex % window.inlineAds.length];
+          const adCard = this.createInlineAdCard(adData);
+          if (adCard) {
+            fragment.appendChild(adCard);
+            adIndex++;
+          }
+        }
       });
       activeContainer.appendChild(fragment);
       
@@ -637,6 +652,37 @@
       if (typeof window.Countdown === "function") {
          new window.Countdown({ template: "dd|hh|mm", labels: "Days|Hours|Minutes" });
       }
+    }
+
+    createInlineAdCard(adData) {
+      if (!adData || !adData.banner_image) return null;
+      
+      const escapeHtml = (str) => {
+        if (!str) return '';
+        return str.replace(/[&<>"']/g, function(m) {
+          return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[m];
+        });
+      };
+      
+      const titleText = adData?.target_title ? escapeHtml(adData.target_title) : '';
+      const altText = titleText ? 'Sponsored: ' + titleText : 'Sponsored property listing';
+      const img = `<img src="${adData.banner_image || ''}" alt="${altText}" aria-label="${altText}" loading="lazy">`;
+      let link = '#';
+      if (adData?.target_type && adData?.object_id) {
+        link = `/${adData.target_type}/details/${adData.object_id}/?ad_id=${adData.id}`;
+      }
+      
+      const adCard = document.createElement('article');
+      adCard.className = 'inline-ad-card group relative';
+      adCard.setAttribute('data-ad-card', adData.id || '');
+      adCard.innerHTML = `
+        <div class="ad-badge">Sponsored</div>
+        <a href="${link}" aria-label="View ${altText}">
+          ${img}
+        </a>
+      `;
+      
+      return adCard;
     }
 
     adaptCardToContainer(card, container) {

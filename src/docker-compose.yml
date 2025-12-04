@@ -3,7 +3,7 @@ services:
     restart: always
     build:
       context: .
-    command: bash -c "gunicorn wizerproperties.wsgi:application --bind 0.0.0.0:8000 --reload --timeout 120 --workers 3"
+    command: gunicorn wizerproperties.wsgi:application --bind 0.0.0.0:8000 --reload --timeout 120 --workers 3
     ports:
       - "8000:8000"
     volumes:

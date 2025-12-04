@@ -92,26 +92,31 @@ def validate_date_format(value):
 
 def get_chatgpt_response(content, previous_response=None):
     """
-    Return generated message response using ChatGPT based on the provided 'content'.
+    Return generated message response using OpenRouter AI based on the provided 'content'.
     """
     try:
-        # Get OpenAI API key from admin settings
+        # Get OpenRouter API key from admin settings
         api_key = get_openai_api_key()
         
         if not api_key:
-            return "OpenAI API key is not configured in admin settings."
+            return "OpenRouter API key is not configured in admin settings."
         
-        # Set the API key in environment for this request
-        os.environ["OPENAI_API_KEY"] = api_key
+        # Initialize OpenAI client configured for OpenRouter
+        client = OpenAI(
+            base_url="https://openrouter.ai/api/v1",
+            api_key=api_key,
+        )
         
-        client = OpenAI()
         messages = []
         if previous_response:
             messages.append({"role": "system", "content": previous_response})
         messages.append({"role": "user", "content": content})
 
+        # Using OpenAI GPT-4o-mini via OpenRouter for cost-effective responses
+        # Note: openrouter/auto doesn't support all features, so using specific model
+        # Alternative: Can use openai/gpt-3.5-turbo for even lower cost
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="openai/gpt-4o-mini",  # Cost-effective model via OpenRouter
             messages=messages,
         )
         return response.choices[0].message.content

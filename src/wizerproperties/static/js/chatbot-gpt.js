@@ -110,15 +110,26 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`);
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage = errorData.error || errorData.data?.error || `Request failed with status ${response.status}`;
+        throw new Error(errorMessage);
       }
 
       const result = await response.json();
+      
+      // Check for error in response
+      if (result.error || (result.data && result.data.error)) {
+        const errorMessage = result.error || result.data.error;
+        appendMessage("assistant", `I'm having trouble right now: ${errorMessage}. Please check your OpenRouter API key configuration in Admin Settings.`);
+        return;
+      }
+      
       const assistantMessage = parseAssistantMessage(result?.data);
       appendMessage("assistant", assistantMessage);
     } catch (error) {
       console.error("Home Helper AI request failed", error);
-      appendMessage("assistant", "I'm having trouble connecting right now. Please try again in a moment—your question is important and I want to give you the right answer.");
+      const errorMessage = error.message || "I'm having trouble connecting right now. Please try again in a moment—your question is important and I want to give you the right answer.";
+      appendMessage("assistant", errorMessage);
     } finally {
       setLoading(false);
       input.focus();

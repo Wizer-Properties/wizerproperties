@@ -1,9 +1,8 @@
 "use strict";
 
 (function () {
-  // Detect if we're on map view page and use appropriate template
-  const isMapView = window.location.pathname.includes("search-with-map") || window.page_view === "map-list";
-  const templateId = isMapView ? "property-card-map-view-template" : "property-card-template";
+  // Always use the standard property card template for consistent design across all pages
+  const templateId = "property-card-template";
   const template = document.getElementById(templateId);
   if (!template || !template.content || !template.content.firstElementChild) {
     window.PropertyCardFactory = null;
@@ -439,26 +438,26 @@
       }
     }
 
-    // Stats section (map-view) - handle all stats elements
-    const beds = card.querySelector("[data-card-beds]");
-    if (beds) beds.textContent = property.number_of_bedroom || "—";
+    // Stats section - handle all stats elements (supports multiple instances)
+    const updateAll = (selector, value) => {
+        card.querySelectorAll(selector).forEach(el => {
+            el.textContent = value;
+        });
+    };
 
-    const baths = card.querySelector("[data-card-baths]");
-    if (baths) baths.textContent = property.number_of_bathroom || "—";
+    const bedsValue = property.number_of_bedroom || "—";
+    updateAll("[data-card-beds]", bedsValue);
+
+    const bathsValue = property.number_of_bathroom || "—";
+    updateAll("[data-card-baths]", bathsValue);
 
     // Size for overlay (if exists) - just number
-    const size = card.querySelector("[data-card-size]");
-    if (size) {
-      const area = property.unit_area ? property.unit_area.toString() : "—";
-      size.textContent = area;
-    }
+    const sizeValue = property.unit_area ? property.unit_area.toString() : "—";
+    updateAll("[data-card-size]", sizeValue);
 
     // Size display for stats section
-    const sizeDisplay = card.querySelector("[data-card-size-display]");
-    if (sizeDisplay) {
-      const area = property.unit_area ? `${property.unit_area}` : "—";
-      sizeDisplay.textContent = area;
-    }
+    const sizeDisplayValue = property.unit_area ? `${property.unit_area}` : "—";
+    updateAll("[data-card-size-display]", sizeDisplayValue);
     
     // Floor number (for map-view stats section)
     const floorWrapper = card.querySelector("[data-card-floor-wrapper]");
