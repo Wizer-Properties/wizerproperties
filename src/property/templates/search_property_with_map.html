@@ -57,7 +57,7 @@
 <!-- Results Summary Bar (with integrated breadcrumb) -->
 <section class="bg-muted/40 py-6">
     <div class="container">
-        <div class="flex flex-col gap-4 rounded-2xl border border-border bg-card p-4 shadow-sm md:flex-row md:items-center md:justify-between">
+        <div class="flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm md:flex-row md:items-center md:justify-between">
             <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
                 <div class="flex flex-col gap-1">
                     <!-- Breadcrumb (compact) -->
@@ -73,10 +73,10 @@
                     </p>
                 </div>
             </div>
-            <div class="flex flex-wrap items-center gap-3">
+            <div class="flex flex-wrap items-center gap-2">
                 <!-- Sorting -->
                 <div class="relative">
-                    <button class="sorting-btn inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-3 py-1.5 text-xs font-semibold text-primary transition hover:bg-accent/20" pop-target="sorting-box">
+                    <button class="sorting-btn inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:bg-accent/10 hover:text-accent" pop-target="sorting-box">
                         <i class="bi bi-arrow-down-up"></i>
                         <span>Sort: <span label="sorting-type">Newest first</span></span>
                     </button>
@@ -102,12 +102,12 @@
                     </div>
                 </div>
                 <!-- View Toggle -->
-                <a href="" label-name="view-tag" class="search-list-redirect inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-3 py-1.5 text-xs font-semibold text-primary transition hover:bg-accent/20">
+                <a href="" label-name="view-tag" class="search-list-redirect inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:bg-accent/10 hover:text-accent">
                     <i class="bi bi-list-task"></i>
                     <span>List View</span>
                 </a>
                 <!-- Save Search -->
-                <button type="button" class="save-search-btn inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-3 py-1.5 text-xs font-semibold text-primary transition hover:bg-accent/20" data-save-search>
+                <button type="button" class="save-search-btn inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:bg-accent/10 hover:text-accent" data-save-search>
                     <i class="bi bi-bookmark"></i>
                     <span class="hidden sm:inline">Save search</span>
                 </button>
@@ -144,7 +144,7 @@
                         <h3 class="text-lg font-semibold text-foreground">No properties in this area</h3>
                         <p class="text-sm text-muted-foreground">Try panning the map or adjusting your filters to see more properties.</p>
                     </div>
-                    <button type="button" class="btn-secondary inline-flex items-center gap-2" data-clear-filters>
+                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:bg-accent/10 hover:text-accent" data-clear-filters>
                         <i class="bi bi-x-circle"></i>
                         <span>Clear all filters</span>
                     </button>
@@ -153,14 +153,14 @@
             
             <div id="search-freescroll"></div>
 
-            {% include "components/property/card.html" %}
+            {% include "components/property/card-map-view.html" %}
 
         </div>
 
         <!-- Map Column -->
         <div class="search-map-wrapper sticky top-24 h-[75vh] rounded-2xl border border-border bg-card shadow-sm overflow-hidden">
             <div class="absolute right-4 top-4 z-10 flex flex-col gap-2">
-                <a href="" label-name="view-tag" class="search-list-redirect inline-flex items-center gap-2 rounded-full border border-border bg-white/90 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm transition hover:bg-white hover:border-accent/20">
+                <a href="" label-name="view-tag" class="search-list-redirect inline-flex items-center gap-2 rounded-full border border-border bg-white/90 backdrop-blur-sm px-4 py-2 text-sm font-medium text-muted-foreground shadow-sm transition hover:bg-white hover:border-accent/60">
                 <i class="bi bi-list-task"></i>
                     <span class="hidden sm:inline">List View</span>
             </a>

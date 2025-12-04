@@ -335,4 +335,3 @@ code_generation:
           - Test permission checks
           - Test form validation
           - Test redirects and responses
-

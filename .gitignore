@@ -33,6 +33,9 @@ src/demo.env
 venv/
 .venv/
 node_modules/
+.venv
+.venv/
+*.venv
 
 # Ignore macOS system files
 .DS_Store
@@ -66,4 +69,3 @@ certbot/
 # Documentation and scripts
 docs/
 scripts/
-

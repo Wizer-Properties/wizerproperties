@@ -709,7 +709,7 @@
             <p class="text-sm font-semibold text-foreground">You've reached the end</p>
             <p class="mt-1 text-xs text-muted-foreground">All matching properties are displayed above</p>
           </div>
-          <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-4 py-2 text-xs font-semibold text-foreground transition hover:bg-secondary/80" data-scroll-to-top>
+          <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:bg-accent/10 hover:text-accent" data-scroll-to-top>
             <i class="bi bi-arrow-up"></i>
             <span>Back to top</span>
           </button>

@@ -33,6 +33,11 @@ class PropertyListSerializer(PropertySerializer):
     tag = serializers.SerializerMethodField()
     discount_period = serializers.SerializerMethodField()
     images = serializers.SerializerMethodField()
+    has_unit_plans = serializers.SerializerMethodField()
+    has_master_plan = serializers.SerializerMethodField()
+    has_video = serializers.SerializerMethodField()
+    facility_view = serializers.URLField(source="building.facility_view", read_only=True, allow_null=True)
+    location_view = serializers.URLField(source="building.location_view", read_only=True, allow_null=True)
 
     class Meta(PropertySerializer.Meta):
         fields = PropertySerializer.Meta.fields + [
@@ -66,6 +71,11 @@ class PropertyListSerializer(PropertySerializer):
             "discount_period",
             "default_images",
             "images",
+            "has_unit_plans",
+            "has_master_plan",
+            "has_video",
+            "facility_view",
+            "location_view",
         ]
 
     def get_default_images(self, obj):
@@ -139,3 +149,12 @@ class PropertyListSerializer(PropertySerializer):
             first_discount = obj.discounts.first()
             return first_discount.period
         return None
+
+    def get_has_unit_plans(self, obj):
+        return obj.building.media_files.filter(type="unit_floor_plan").exists()
+
+    def get_has_master_plan(self, obj):
+        return obj.building.media_files.filter(type="master_plan").exists()
+
+    def get_has_video(self, obj):
+        return obj.building.media_files.filter(type="video").exists()
