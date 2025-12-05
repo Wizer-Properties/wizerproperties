@@ -42,6 +42,14 @@ node_modules/
 **/.DS_Store
 .AppleDouble
 .LSOverride
+.DS_Store
+**/.DS_Store
+.AppleDouble
+.LSOverride
+.DS_Store
+**/.DS_Store
+.AppleDouble
+.LSOverride
 
 # Ignore temporary files and directories
 tmp/
