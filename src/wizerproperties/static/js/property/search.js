@@ -40,27 +40,27 @@
 
       // Cache DOM elements
       this.els = {
-    list: document.getElementById("search-result-list"),
+        list: document.getElementById("search-result-list"),
         listList: document.getElementById("search-result-list-list"), // List view container
         emptyState: document.getElementById("search-empty-state"),
         loadingSkeleton: document.getElementById("search-loading-skeleton"),
         sentinel: document.getElementById("search-freescroll"),
-    availableCount: document.querySelector("[label='available-properties']"),
-    heading: document.querySelector(".search-area"),
+        availableCount: document.querySelector("[label='available-properties']"),
+        heading: document.querySelector(".search-area"),
         locationInput: document.getElementById("gm-search-input"),
         clearLocationBtn: document.querySelector("[data-filter-clear-location]"),
         viewToggle: document.querySelector("[label-name='view-tag']"),
         viewToggles: document.querySelectorAll("[label-name='view-tag']"), // All view toggle buttons
         displayModeButtons: document.querySelectorAll(".view-toggle-btn"), // Grid/List toggle buttons
-    sortingLabel: document.querySelector("[label='sorting-type']"),
+        sortingLabel: document.querySelector("[label='sorting-type']"),
         sortingBox: document.querySelector("[pop-element='sorting-box']"),
         sortingBtn: document.querySelector("[pop-target='sorting-box']"),
         sortingOptions: document.querySelectorAll("[pop-element='sorting-box'] li"),
-    modal3d: document.getElementById("_3d_view_dialog"),
-    modalDrone: document.getElementById("_3d_drone_view"),
-    droneVideo: document.getElementById("_3d_model_display_video"),
-    resetMapBtn: document.querySelector(".reset-map"),
-  };
+        modal3d: document.getElementById("_3d_view_dialog"),
+        modalDrone: document.getElementById("_3d_drone_view"),
+        droneVideo: document.getElementById("_3d_model_display_video"),
+        resetMapBtn: document.querySelector(".reset-map"),
+      };
 
       this.abortController = null;
       this.CardFactory = window.PropertyCardFactory;
@@ -68,7 +68,7 @@
       this.isProspect = !this.userType || this.userType === "prospect";
       // Show compare/favorite buttons for all authenticated users
       this.isAuthenticated = this.userType !== false && this.userType !== null;
-      
+
       // Map manager reference
       this.mapManager = null;
     }
@@ -81,7 +81,7 @@
 
       // Initialize state from URL
       this.syncStateFromURL();
-      
+
       // Set up initial UI state
       this.updateHeading();
       this.updateViewToggleLink();
@@ -102,7 +102,7 @@
       // Check if we're on a map view page and MapManager is available
       if (this.state.viewMode === "map" && typeof window.MapManager !== 'undefined' && window.mapManager) {
         this.mapManager = window.mapManager;
-        
+
         // Listen for map bounds changes
         document.addEventListener("mapBounds:changed", (e) => {
           this.state.mapBounds = e.detail.bounds;
@@ -121,7 +121,7 @@
       this.state.page = Number(params.get("page")) || 1;
       this.state.ordering = params.get("ordering") || "-created_at";
       this.state.place = params.get("place") || "";
-      
+
       if (this.els.locationInput) {
         this.els.locationInput.value = this.state.place;
       }
@@ -134,7 +134,7 @@
 
     updateURL() {
       const params = new URLSearchParams();
-      
+
       // Add filters
       Object.entries(this.state.filters).forEach(([key, value]) => {
         if (value !== undefined && value !== null && value !== "") {
@@ -149,7 +149,7 @@
 
       const newUrl = `${window.location.pathname}?${params.toString()}`;
       window.history.replaceState({}, "", newUrl);
-      
+
       this.updateViewToggleLink();
     }
 
@@ -160,8 +160,8 @@
       // Update breadcrumb
       const breadcrumbArea = document.querySelector("[data-breadcrumb-area]");
       if (breadcrumbArea) {
-        breadcrumbArea.textContent = this.state.place 
-          ? `Properties For Sale in ${this.state.place}` 
+        breadcrumbArea.textContent = this.state.place
+          ? `Properties For Sale in ${this.state.place}`
           : "Properties For Sale";
       }
     }
@@ -170,36 +170,36 @@
       // Update all view toggle buttons (there may be multiple on the page)
       const toggles = this.els.viewToggles || (this.els.viewToggle ? [this.els.viewToggle] : []);
       if (toggles.length === 0) return;
-      
+
       const currentParams = window.location.search;
       const isMapView = this.state.viewMode === "map";
-      
+
       toggles.forEach(toggle => {
         if (isMapView) {
           // Currently in map view, switch to list view
           toggle.href = `/property/search-with-map${currentParams}`;
           toggle.innerHTML = `<i class="bi bi-list-task"></i> <span>List view</span>`;
-      } else {
+        } else {
           // Currently in list view, switch to map view
           toggle.href = `/property/search${currentParams}`;
           toggle.innerHTML = `<i class="bi bi-map"></i> <span>Map view</span>`;
-      }
+        }
       });
     }
-    
+
     updateSortingUI() {
-        if(!this.els.sortingLabel) return;
-        const activeOption = Array.from(this.els.sortingOptions).find(opt => opt.getAttribute("value") === this.state.ordering);
-        if(activeOption) {
-            this.els.sortingLabel.textContent = activeOption.textContent.trim();
-            // Update checkmarks
-            this.els.sortingOptions.forEach(opt => {
-                const checkIcon = opt.querySelector("i.bi-check2");
-                if (checkIcon) {
-                    checkIcon.classList.toggle("hidden", opt.getAttribute("value") !== this.state.ordering);
-                }
-            });
-        }
+      if (!this.els.sortingLabel) return;
+      const activeOption = Array.from(this.els.sortingOptions).find(opt => opt.getAttribute("value") === this.state.ordering);
+      if (activeOption) {
+        this.els.sortingLabel.textContent = activeOption.textContent.trim();
+        // Update checkmarks
+        this.els.sortingOptions.forEach(opt => {
+          const checkIcon = opt.querySelector("i.bi-check2");
+          if (checkIcon) {
+            checkIcon.classList.toggle("hidden", opt.getAttribute("value") !== this.state.ordering);
+          }
+        });
+      }
     }
 
     bindEvents() {
@@ -212,7 +212,7 @@
           e.stopPropagation();
           this.els.sortingBox.classList.toggle("hidden");
         });
-        
+
         document.addEventListener("click", (e) => {
           if (!this.els.sortingBox.contains(e.target) && !this.els.sortingBtn.contains(e.target)) {
             this.els.sortingBox.classList.add("hidden");
@@ -223,22 +223,22 @@
           option.addEventListener("click", () => {
             const value = option.getAttribute("value");
             if (value) {
-                this.state.ordering = value;
-                // Update label text (remove checkmark icon from text)
-                const labelText = option.textContent.trim().replace(/✓|check/i, "").trim();
-                if (this.els.sortingLabel) {
-                    this.els.sortingLabel.textContent = labelText;
+              this.state.ordering = value;
+              // Update label text (remove checkmark icon from text)
+              const labelText = option.textContent.trim().replace(/✓|check/i, "").trim();
+              if (this.els.sortingLabel) {
+                this.els.sortingLabel.textContent = labelText;
+              }
+              // Update checkmarks
+              this.els.sortingOptions.forEach(opt => {
+                const checkIcon = opt.querySelector("i.bi-check2");
+                if (checkIcon) {
+                  checkIcon.classList.toggle("hidden", opt.getAttribute("value") !== value);
                 }
-                // Update checkmarks
-                this.els.sortingOptions.forEach(opt => {
-                    const checkIcon = opt.querySelector("i.bi-check2");
-                    if (checkIcon) {
-                        checkIcon.classList.toggle("hidden", opt.getAttribute("value") !== value);
-                    }
-                });
-                this.els.sortingBox.classList.add("hidden");
-                this.updateURL();
-                this.fetchProperties({ reset: true });
+              });
+              this.els.sortingBox.classList.add("hidden");
+              this.updateURL();
+              this.fetchProperties({ reset: true });
             }
           });
         });
@@ -259,19 +259,19 @@
 
         this.els.locationInput.addEventListener("input", handleLocationChange);
         this.els.locationInput.addEventListener("keypress", (e) => {
-            if(e.key === "Enter") {
-                e.preventDefault();
-                this.els.locationInput.blur(); // Trigger change/input
-            }
+          if (e.key === "Enter") {
+            e.preventDefault();
+            this.els.locationInput.blur(); // Trigger change/input
+          }
         });
       }
 
       if (this.els.clearLocationBtn) {
         this.els.clearLocationBtn.addEventListener("click", () => {
-            if(this.els.locationInput) {
-                this.els.locationInput.value = "";
-                this.els.locationInput.dispatchEvent(new Event("input"));
-            }
+          if (this.els.locationInput) {
+            this.els.locationInput.value = "";
+            this.els.locationInput.dispatchEvent(new Event("input"));
+          }
         });
       }
 
@@ -344,7 +344,7 @@
       this.state.displayMode = mode;
       localStorage.setItem("property-display-mode", mode);
       this.updateDisplayMode();
-      
+
       // Re-render current results in new layout
       const currentCards = Array.from(this.els.list.children).filter(
         el => el.hasAttribute("data-property-card")
@@ -352,13 +352,13 @@
       if (currentCards.length > 0) {
         const fragment = document.createDocumentFragment();
         currentCards.forEach(card => fragment.appendChild(card.cloneNode(true)));
-        
+
         const targetContainer = mode === "grid" ? this.els.list : this.els.listList;
         const sourceContainer = mode === "grid" ? this.els.listList : this.els.list;
-        
+
         sourceContainer.innerHTML = "";
         targetContainer.appendChild(fragment);
-        
+
         // Re-initialize card behaviors
         Array.from(targetContainer.children).forEach(card => {
           this.initializeCardBehavior(card);
@@ -368,7 +368,7 @@
 
     updateDisplayMode() {
       const isGrid = this.state.displayMode === "grid";
-      
+
       // Update containers
       if (this.els.list) {
         if (isGrid) {
@@ -386,7 +386,7 @@
           this.els.listList.classList.remove("hidden");
         }
       }
-      
+
       // Update toggle buttons
       this.els.displayModeButtons.forEach(btn => {
         const mode = btn.getAttribute("data-view-mode");
@@ -413,14 +413,14 @@
 
     buildQueryString() {
       const params = new URLSearchParams();
-      
+
       // Add filters
       Object.entries(this.state.filters).forEach(([key, value]) => {
         if (value !== undefined && value !== null && value !== "") {
           params.set(key, value);
         }
       });
-      
+
       // Add map bounds if available
       if (this.state.mapBounds) {
         params.set("bounds_north", this.state.mapBounds.north);
@@ -428,12 +428,12 @@
         params.set("bounds_east", this.state.mapBounds.east);
         params.set("bounds_west", this.state.mapBounds.west);
       }
-      
+
       // Add place/sort/page
       if (this.state.place) params.set("place", this.state.place);
       params.set("ordering", this.state.ordering);
       params.set("page", this.state.page);
-      
+
       return params.toString();
     }
 
@@ -445,7 +445,7 @@
       if (reset && this.abortController) {
         this.abortController.abort();
       }
-      
+
       this.state.loading = true;
       this.abortController = new AbortController();
 
@@ -456,13 +456,13 @@
         if (this.els.listList) this.els.listList.innerHTML = "";
         if (this.els.emptyState) this.els.emptyState.classList.add("hidden");
       }
-      
+
       this.appendSkeletons();
 
       try {
         const queryString = this.buildQueryString();
         const response = await fetch(`${this.config.apiUrl}?${queryString}`, {
-          headers: { 
+          headers: {
             "X-CSRFToken": window.csrfToken || "",
             "Content-Type": "application/json"
           },
@@ -470,12 +470,12 @@
         });
 
         if (!response.ok) throw new Error(`API Error: ${response.status}`);
-        
+
         const data = await response.json();
-        
+
         this.removeSkeletons();
         this.handleDataSuccess(data, reset);
-        
+
       } catch (error) {
         if (error.name === 'AbortError') return;
         console.error("Fetch error:", error);
@@ -492,26 +492,26 @@
       }
 
       const results = data.results || [];
-      
+
       // PostHog tracking - track search
       if (reset && typeof Analytics !== 'undefined') {
         const searchTerm = this.state.place || '';
         const filters = this.state.filters || {};
         Analytics.trackSearch(searchTerm, filters, data.count || 0);
       }
-      
+
       // Update map markers if map manager is available
       if (this.mapManager && reset) {
         this.mapManager.addPropertyMarkers(results);
       }
-      
+
       if (results.length === 0) {
         if (reset) {
-            this.renderEmptyState();
-            // Clear map markers if no results
-            if (this.mapManager) {
-              this.mapManager.clearMarkers();
-            }
+          this.renderEmptyState();
+          // Clear map markers if no results
+          if (this.mapManager) {
+            this.mapManager.clearMarkers();
+          }
         }
         this.state.hasMore = false;
         return;
@@ -523,55 +523,55 @@
       }
 
       this.renderProperties(results);
-      
+
       // Determine next page
       if (data.next) {
         try {
-           const nextUrl = new URL(data.next, window.location.origin);
-           const nextPage = nextUrl.searchParams.get("page");
-           if (nextPage && Number(nextPage) > this.state.page) {
-               this.state.page = Number(nextPage);
-               this.state.hasMore = true;
-           } else {
-               // Next page not found or not greater than current -> stop
-               this.state.hasMore = false;
-               this.renderEndOfResults();
-      }
-        } catch (e) {
-            console.warn("Invalid next URL:", data.next);
+          const nextUrl = new URL(data.next, window.location.origin);
+          const nextPage = nextUrl.searchParams.get("page");
+          if (nextPage && Number(nextPage) > this.state.page) {
+            this.state.page = Number(nextPage);
+            this.state.hasMore = true;
+          } else {
+            // Next page not found or not greater than current -> stop
             this.state.hasMore = false;
             this.renderEndOfResults();
-    }
+          }
+        } catch (e) {
+          console.warn("Invalid next URL:", data.next);
+          this.state.hasMore = false;
+          this.renderEndOfResults();
+        }
       } else {
         this.state.hasMore = false;
         this.renderEndOfResults();
       }
     }
-    
+
     handleDataError(reset) {
-        if (reset || !this.els.list.children.length) {
-            this.els.list.innerHTML = `
+      if (reset || !this.els.list.children.length) {
+        this.els.list.innerHTML = `
               <div class="rounded-2xl border border-destructive/30 bg-destructive/10 p-12 text-center text-destructive shadow-sm">
                 <i class="bi bi-exclamation-triangle text-3xl"></i>
                 <p class="mt-3 text-sm">Failed to load properties. Please try again later.</p>
               </div>`;
-        }
+      }
     }
 
     renderEmptyState() {
       const filters = this.state.filters || {};
       const hasFilters = Object.keys(filters).length > 0;
       const hasLocation = this.state.place && this.state.place.trim() !== "";
-      
+
       // Hide grid/list containers
       if (this.els.list) this.els.list.innerHTML = "";
       if (this.els.listList) this.els.listList.innerHTML = "";
-      
+
       // Show empty state
       if (this.els.emptyState) {
         this.els.emptyState.classList.remove("hidden");
       }
-      
+
       // Build suggestions based on active filters
       const suggestions = [];
       if (filters.min_price || filters.max_price) {
@@ -589,7 +589,7 @@
       if (filters.nearby) {
         suggestions.push("Try expanding your search radius");
       }
-      
+
       // Update empty state content if it exists
       if (this.els.emptyState) {
         const emptyStateContent = this.els.emptyState.querySelector("p");
@@ -602,25 +602,26 @@
     renderProperties(properties) {
       // Get the active container based on display mode
       const activeContainer = this.state.displayMode === "grid" ? this.els.list : this.els.listList;
-      
+
       // Remove any existing end-of-results indicator
       const existingEndIndicator = activeContainer.querySelector("[data-end-of-results]");
       if (existingEndIndicator) {
         existingEndIndicator.remove();
       }
-      
+
       const fragment = document.createDocumentFragment();
       const INLINE_AD_INTERVAL = 6; // Insert ad after every 6 properties
       let adIndex = 0;
-      
+
       properties.forEach((property, index) => {
         const card = this.CardFactory.createCard(property, {
-            showActions: this.isAuthenticated, // Show compare/favorite for all authenticated users
-            favoriteEffect: localStorage.getItem("favorite-effect") || "pulse",
-            scheduleUrl: (p) => `/schedule/create_schedule/?type=property&id=${p?.id ?? ""}`,
-            contactEmail: (p) => p?.developer_email || null,
-            enableMediaButtons: true,
-            listView: this.state.displayMode === "list", // Pass list view flag
+          showActions: this.isAuthenticated, // Show compare/favorite for all authenticated users
+          favoriteEffect: localStorage.getItem("favorite-effect") || "pulse",
+          scheduleUrl: (p) => `/schedule/create_schedule/?type=property&id=${p?.id ?? ""}`,
+          showSchedule: this.isProspect, // Only show schedule button for prospects
+          contactEmail: (p) => p?.developer_email || null,
+          enableMediaButtons: true,
+          listView: this.state.displayMode === "list", // Pass list view flag
         });
 
         // Apply list view styling if needed
@@ -631,13 +632,13 @@
         // Initialize responsive card behavior
         this.initializeCardBehavior(card);
         this.adaptCardToContainer(card, activeContainer);
-        
+
         fragment.appendChild(card);
-        
+
         // Insert inline ad after every N properties (but not after the last one)
-        if (window.inlineAds && window.inlineAds.length > 0 && 
-            (index + 1) % INLINE_AD_INTERVAL === 0 && 
-            index < properties.length - 1) {
+        if (window.inlineAds && window.inlineAds.length > 0 &&
+          (index + 1) % INLINE_AD_INTERVAL === 0 &&
+          index < properties.length - 1) {
           const adData = window.inlineAds[adIndex % window.inlineAds.length];
           const adCard = this.createInlineAdCard(adData);
           if (adCard) {
@@ -647,23 +648,23 @@
         }
       });
       activeContainer.appendChild(fragment);
-      
+
       // Re-init global components if needed
       if (typeof window.Countdown === "function") {
-         new window.Countdown({ template: "dd|hh|mm", labels: "Days|Hours|Minutes" });
+        new window.Countdown({ template: "dd|hh|mm", labels: "Days|Hours|Minutes" });
       }
     }
 
     createInlineAdCard(adData) {
       if (!adData || !adData.banner_image) return null;
-      
+
       const escapeHtml = (str) => {
         if (!str) return '';
-        return str.replace(/[&<>"']/g, function(m) {
-          return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[m];
+        return str.replace(/[&<>"']/g, function (m) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
         });
       };
-      
+
       const titleText = adData?.target_title ? escapeHtml(adData.target_title) : '';
       const altText = titleText ? 'Sponsored: ' + titleText : 'Sponsored property listing';
       const img = `<img src="${adData.banner_image || ''}" alt="${altText}" aria-label="${altText}" loading="lazy">`;
@@ -671,7 +672,7 @@
       if (adData?.target_type && adData?.object_id) {
         link = `/${adData.target_type}/details/${adData.object_id}/?ad_id=${adData.id}`;
       }
-      
+
       const adCard = document.createElement('article');
       adCard.className = 'inline-ad-card group relative';
       adCard.setAttribute('data-ad-card', adData.id || '');
@@ -681,23 +682,23 @@
           ${img}
         </a>
       `;
-      
+
       return adCard;
     }
 
     adaptCardToContainer(card, container) {
       // Use ResizeObserver to detect card size and adapt content
       if (!card) return;
-      
+
       // Initial size check (fallback if ResizeObserver not available)
       const checkSize = () => {
         const width = card.offsetWidth;
         const height = card.offsetHeight;
         const aspectRatio = width / (height || 1);
-        
+
         // Remove all size classes
         card.classList.remove("property-card-narrow", "property-card-medium", "property-card-wide", "property-card-horizontal");
-        
+
         // Apply size-based classes
         if (width < 400) {
           card.classList.add("property-card-narrow");
@@ -711,10 +712,10 @@
           }
         }
       };
-      
+
       // Initial check
       checkSize();
-      
+
       // Use ResizeObserver if available for dynamic updates
       if (window.ResizeObserver) {
         const resizeObserver = new ResizeObserver(entries => {
@@ -722,9 +723,9 @@
             checkSize();
           }
         });
-        
+
         resizeObserver.observe(card);
-        
+
         // Store observer for cleanup if needed
         if (!card.dataset.resizeObserver) {
           card.dataset.resizeObserver = "true";
@@ -736,13 +737,13 @@
     renderEndOfResults() {
       // Get the active container based on display mode
       const activeContainer = this.state.displayMode === "grid" ? this.els.list : this.els.listList;
-      
+
       // Only show if we have results and no more pages
       if (activeContainer.children.length === 0) return;
-      
+
       // Check if end indicator already exists
       if (activeContainer.querySelector("[data-end-of-results]")) return;
-      
+
       const endIndicator = document.createElement("div");
       endIndicator.setAttribute("data-end-of-results", "true");
       endIndicator.className = "mt-6 rounded-2xl border border-border bg-card p-6 text-center";
@@ -761,9 +762,9 @@
           </button>
         </div>
       `;
-      
+
       activeContainer.appendChild(endIndicator);
-      
+
       // Add scroll to top functionality
       const scrollBtn = endIndicator.querySelector("[data-scroll-to-top]");
       if (scrollBtn) {
@@ -815,82 +816,82 @@
     }
 
     setupSplide(card, splideEl) {
-       const listElement = splideEl.querySelector(".splide__list");
-    const propertyId = card.dataset.propertyId;
+      const listElement = splideEl.querySelector(".splide__list");
+      const propertyId = card.dataset.propertyId;
 
-       const splide = new Splide(splideEl, {
-      perPage: 1,
-      gap: "0.75rem",
-      pagination: false,
-      arrows: true,
-    });
-    
-    // Connect thumbnails to splide if they exist
-    const thumbnailsContainer = card.querySelector("[data-card-thumbnails]");
-    if (thumbnailsContainer && !thumbnailsContainer.classList.contains("hidden")) {
-      const thumbnailButtons = thumbnailsContainer.querySelectorAll("div[data-thumbnail-index]");
-      thumbnailButtons.forEach((thumb) => {
-        thumb.addEventListener("click", () => {
-          const index = parseInt(thumb.dataset.thumbnailIndex) || 1;
-          if (splide.go) {
-            splide.go(index);
-          }
-        });
+      const splide = new Splide(splideEl, {
+        perPage: 1,
+        gap: "0.75rem",
+        pagination: false,
+        arrows: true,
       });
-    }
 
-       // Lazy load next images logic
-    splide.on("moved", (newIndex) => {
-      const slides = listElement.children;
-      const currentSlide = slides[newIndex];
-      if (!currentSlide?.classList.contains("search-result-box-img-loader")) return;
-         
-         const nextPage = listElement.dataset.imagesNextPage;
-      if (!nextPage || listElement.dataset.loading === "true") return;
-
-      listElement.dataset.loading = "true";
-         
-      fetch(`/property/api/details/${propertyId}/media-files/?page_size=1&media_type=image&page=${nextPage}`, {
-             headers: { "X-CSRFToken": window.csrfToken || "" }
-      })
-         .then(res => res.ok ? res.json() : Promise.reject())
-         .then(json => {
-             const next = json.next ? new URL(json.next, window.location.origin).searchParams.get("page") : "";
-          listElement.dataset.imagesNextPage = next || "";
-          splide.remove(newIndex);
-             
-             if(json.results?.length) {
-            splide.add(
-                  `<li class="splide__slide"><img src="${json.results[0].file}" alt="Property" class="h-full w-full object-cover" loading="lazy" /></li>`,
-              newIndex
-            );
-          }
-             
-             if(next) {
-            splide.add(
-              `<li class="splide__slide search-result-box-img-loader"><div class="flex h-full items-center justify-center bg-muted"><div class="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent"></div></div></li>`
-            );
-          }
-        })
-         .catch(err => {
-             console.error("Image load error", err);
-          splide.remove(newIndex);
-        })
-        .finally(() => {
-          listElement.dataset.loading = "false";
+      // Connect thumbnails to splide if they exist
+      const thumbnailsContainer = card.querySelector("[data-card-thumbnails]");
+      if (thumbnailsContainer && !thumbnailsContainer.classList.contains("hidden")) {
+        const thumbnailButtons = thumbnailsContainer.querySelectorAll("div[data-thumbnail-index]");
+        thumbnailButtons.forEach((thumb) => {
+          thumb.addEventListener("click", () => {
+            const index = parseInt(thumb.dataset.thumbnailIndex) || 1;
+            if (splide.go) {
+              splide.go(index);
+            }
+          });
         });
-    });
+      }
 
-    splide.mount();
-       splideEl.dataset.splideMounted = "true";
+      // Lazy load next images logic
+      splide.on("moved", (newIndex) => {
+        const slides = listElement.children;
+        const currentSlide = slides[newIndex];
+        if (!currentSlide?.classList.contains("search-result-box-img-loader")) return;
+
+        const nextPage = listElement.dataset.imagesNextPage;
+        if (!nextPage || listElement.dataset.loading === "true") return;
+
+        listElement.dataset.loading = "true";
+
+        fetch(`/property/api/details/${propertyId}/media-files/?page_size=1&media_type=image&page=${nextPage}`, {
+          headers: { "X-CSRFToken": window.csrfToken || "" }
+        })
+          .then(res => res.ok ? res.json() : Promise.reject())
+          .then(json => {
+            const next = json.next ? new URL(json.next, window.location.origin).searchParams.get("page") : "";
+            listElement.dataset.imagesNextPage = next || "";
+            splide.remove(newIndex);
+
+            if (json.results?.length) {
+              splide.add(
+                `<li class="splide__slide"><img src="${json.results[0].file}" alt="Property" class="h-full w-full object-cover" loading="lazy" /></li>`,
+                newIndex
+              );
+            }
+
+            if (next) {
+              splide.add(
+                `<li class="splide__slide search-result-box-img-loader"><div class="flex h-full items-center justify-center bg-muted"><div class="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent"></div></div></li>`
+              );
+            }
+          })
+          .catch(err => {
+            console.error("Image load error", err);
+            splide.remove(newIndex);
+          })
+          .finally(() => {
+            listElement.dataset.loading = "false";
+          });
+      });
+
+      splide.mount();
+      splideEl.dataset.splideMounted = "true";
     }
 
     appendSkeletons() {
       const isGrid = this.state.displayMode === "grid";
       const container = isGrid ? this.els.list : this.els.listList;
-      
+
       if (!container) return;
-      
+
       // Grid skeleton (simplified)
       const gridTemplate = `
         <div class="rounded-2xl border border-border bg-card shadow-sm animate-pulse skeleton-item">
@@ -917,7 +918,7 @@
             </div>
           </div>
         </div>`;
-      
+
       // List skeleton (horizontal layout)
       const listTemplate = `
         <div class="rounded-2xl border border-border bg-card shadow-sm animate-pulse skeleton-item">
@@ -951,13 +952,13 @@
 
       const template = isGrid ? gridTemplate : listTemplate;
       const fragment = document.createDocumentFragment();
-      
+
       for (let i = 0; i < this.config.skeletonCount; i++) {
         const wrapper = document.createElement("div");
         wrapper.innerHTML = template;
         fragment.appendChild(wrapper.firstElementChild);
       }
-      
+
       container.appendChild(fragment);
     }
 
@@ -979,14 +980,14 @@
         const display = this.els.modal3d.querySelector("._3d_model_display");
         if (display) {
           display.innerHTML = `<iframe src="${src}" class="h-full w-full" allowfullscreen loading="lazy"></iframe>`;
-      }
+        }
         window.$?.(this.els.modal3d).modal("show");
       } else if (type === "drone" && this.els.modalDrone) {
         const source = this.els.droneVideo?.querySelector("source");
         if (source) {
           source.src = src;
-          if(window.videojs && this.els.droneVideo) {
-              window.videojs(this.els.droneVideo).load();
+          if (window.videojs && this.els.droneVideo) {
+            window.videojs(this.els.droneVideo).load();
           }
         }
         window.$?.(this.els.modalDrone).modal("show");
@@ -1002,8 +1003,8 @@
       if (this.els.modalDrone) {
         const source = this.els.droneVideo?.querySelector("source");
         if (source) source.src = "";
-        if(window.videojs && this.els.droneVideo) {
-            window.videojs(this.els.droneVideo).pause();
+        if (window.videojs && this.els.droneVideo) {
+          window.videojs(this.els.droneVideo).pause();
         }
         window.$?.(this.els.modalDrone).modal("hide");
       }
@@ -1023,10 +1024,10 @@
 
     updateResetMapButton() {
       if (!this.els.resetMapBtn) return;
-      
+
       const hasLocation = this.state.place && this.state.place.trim() !== "";
       const hasBounds = this.state.mapBounds !== null;
-      
+
       if (hasLocation || hasBounds) {
         this.els.resetMapBtn.classList.remove("hidden");
       } else {
@@ -1037,20 +1038,20 @@
     resetMapView() {
       // Clear map bounds
       this.state.mapBounds = null;
-      
+
       // Reset map to default view
       if (this.mapManager) {
         const urlParams = new URLSearchParams(window.location.search);
         const p_latitude = urlParams.get('latitude');
         const p_longitude = urlParams.get('longitude');
-        const center = p_latitude && p_longitude 
+        const center = p_latitude && p_longitude
           ? { lat: Number(p_latitude), lng: Number(p_longitude) }
           : { lat: 13.7563309, lng: 100.5017651 };
-        
+
         this.mapManager.updateMapView(center, 12);
         this.mapManager.clearMarkers();
       }
-      
+
       // Update URL and refetch
       this.updateURL();
       this.fetchProperties({ reset: true });

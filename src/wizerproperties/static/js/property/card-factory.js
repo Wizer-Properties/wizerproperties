@@ -43,13 +43,13 @@
     if (!value) return "N/A";
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return "N/A";
-    
+
     const now = new Date();
     const diffMs = now - date;
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
     const diffWeeks = Math.floor(diffDays / 7);
     const diffMonths = Math.floor(diffDays / 30);
-    
+
     if (diffDays === 0) {
       return "today";
     } else if (diffDays === 1) {
@@ -136,17 +136,17 @@
     container.innerHTML = "";
     if (!property) return;
     const features = [];
-    if (property.have_freehold) features.push({text: "Freehold", icon: "bi-shield-check"});
-    if (property.have_leasehold) features.push({text: "Leasehold", icon: "bi-calendar"});
-    if (property.construction_year) features.push({text: `Built ${property.construction_year}`, icon: "bi-calendar3"});
-    if (property.quota) features.push({text: `${property.quota} Quota`, icon: "bi-ticket-perforated"});
-    if (property.distance_from_location_to_BTS_or_MRT) features.push({text: `BTS/MRT ${property.distance_from_location_to_BTS_or_MRT}km`, icon: "bi-train-front"});
-    if (property.distance_from_location_to_ARL) features.push({text: `ARL ${property.distance_from_location_to_ARL}km`, icon: "bi-train-front"});
-    if (property.have_pets_allowed) features.push({text: "Pet Friendly", icon: "bi-heart"});
-    if (property.view) features.push({text: property.view, icon: "bi-eye"});
-    if (property.have_infinity_pool) features.push({text: "Infinity Pool", icon: "bi-water"});
-    if (property.have_fitness_area) features.push({text: "Gym", icon: "bi-dumbbell"});
-    if (property.have_sky_lounge) features.push({text: "Sky Lounge", icon: "bi-building"});
+    if (property.have_freehold) features.push({ text: "Freehold", icon: "bi-shield-check" });
+    if (property.have_leasehold) features.push({ text: "Leasehold", icon: "bi-calendar" });
+    if (property.construction_year) features.push({ text: `Built ${property.construction_year}`, icon: "bi-calendar3" });
+    if (property.quota) features.push({ text: `${property.quota} Quota`, icon: "bi-ticket-perforated" });
+    if (property.distance_from_location_to_BTS_or_MRT) features.push({ text: `BTS/MRT ${property.distance_from_location_to_BTS_or_MRT}km`, icon: "bi-train-front" });
+    if (property.distance_from_location_to_ARL) features.push({ text: `ARL ${property.distance_from_location_to_ARL}km`, icon: "bi-train-front" });
+    if (property.have_pets_allowed) features.push({ text: "Pet Friendly", icon: "bi-heart" });
+    if (property.view) features.push({ text: property.view, icon: "bi-eye" });
+    if (property.have_infinity_pool) features.push({ text: "Infinity Pool", icon: "bi-water" });
+    if (property.have_fitness_area) features.push({ text: "Gym", icon: "bi-dumbbell" });
+    if (property.have_sky_lounge) features.push({ text: "Sky Lounge", icon: "bi-building" });
 
     if (!features.length) return;
     const fragment = document.createDocumentFragment();
@@ -218,15 +218,15 @@
     container.innerHTML = "";
     // Use images field for featured/discounted properties, otherwise use default_images
     const allImages = resolveImages(property);
-    const images = property.images && property.images.length > 0 
+    const images = property.images && property.images.length > 0
       ? property.images.slice(0, 3)
       : allImages.slice(1, 4); // Skip first image (main image)
-    
+
     if (images.length === 0) {
       container.classList.add("hidden");
       return;
     }
-    
+
     container.classList.remove("hidden");
     const fragment = document.createDocumentFragment();
     images.forEach((image, index) => {
@@ -255,7 +255,7 @@
     } else {
       listElement.dataset.imagesNextPage = "";
     }
-    
+
     // Update image count indicator
     const card = listElement.closest("[data-property-card]");
     if (card) {
@@ -345,15 +345,15 @@
     const originalPriceElement = card.querySelector("[data-card-original-price]");
     const discountAmountElement = card.querySelector("[data-card-discount-amount]");
     const priceContainer = card.querySelector("[data-card-price-container]");
-    
+
     if (priceElement) priceElement.textContent = formatCurrency(property.price);
     if (priceSqmElement) priceSqmElement.textContent = property.price_per_sqm ? `${formatCurrency(property.price_per_sqm)} / sqm` : "—";
-    
+
     // Show original price and discount if discounted
     if (property.original_price && property.original_price > property.price) {
       const discount = property.original_price - property.price;
       const discountPercent = Math.round((discount / property.original_price) * 100);
-      
+
       if (originalPriceElement) {
         originalPriceElement.textContent = formatCurrency(property.original_price);
         originalPriceElement.classList.remove("hidden");
@@ -369,7 +369,7 @@
       if (originalPriceElement) originalPriceElement.classList.add("hidden");
       if (discountAmountElement) discountAmountElement.classList.add("hidden");
     }
-    
+
     // Map-view specific: Tag display in section 3
     const tagDisplay = card.querySelector("[data-card-tag-display]");
     if (tagDisplay) {
@@ -384,7 +384,7 @@
         tagDisplay.classList.remove("hidden");
       }
     }
-    
+
     // Map-view specific: Completion date wrapper
     const completionWrapper = card.querySelector("[data-card-completion-wrapper]");
     if (completionWrapper && property.construction_year) {
@@ -395,13 +395,13 @@
     let detailUrl = `/property/details/${property.id ?? ""}/`;
     if (property.tag === "spotlight") detailUrl += "?discounted=True";
     else if (property.tag === "feature") detailUrl += "?featured=True";
-    
+
     // Set link href for title/location link
     const link = card.querySelector("[data-card-link]");
     if (link) {
       link.href = detailUrl;
     }
-    
+
     // Make card clickable - click anywhere on card goes to detail page
     card.addEventListener("click", (e) => {
       // Don't navigate if clicking on buttons, links, or interactive elements
@@ -410,7 +410,7 @@
         window.location.href = detailUrl;
       }
     });
-    
+
     // Prevent card click when clicking on buttons
     const allButtons = card.querySelectorAll("button, a[data-card-schedule], a[data-card-media-buttons]");
     allButtons.forEach((btn) => {
@@ -440,9 +440,9 @@
 
     // Stats section - handle all stats elements (supports multiple instances)
     const updateAll = (selector, value) => {
-        card.querySelectorAll(selector).forEach(el => {
-            el.textContent = value;
-        });
+      card.querySelectorAll(selector).forEach(el => {
+        el.textContent = value;
+      });
     };
 
     const bedsValue = property.number_of_bedroom || "—";
@@ -458,7 +458,7 @@
     // Size display for stats section
     const sizeDisplayValue = property.unit_area ? `${property.unit_area}` : "—";
     updateAll("[data-card-size-display]", sizeDisplayValue);
-    
+
     // Floor number (for map-view stats section)
     const floorWrapper = card.querySelector("[data-card-floor-wrapper]");
     const floorNumber = card.querySelector("[data-card-floor-number]");
@@ -470,7 +470,7 @@
         floorWrapper.classList.add("hidden");
       }
     }
-    
+
     // Parking (for map-view stats section)
     const parkingWrapper = card.querySelector("[data-card-parking-wrapper]");
     const parking = card.querySelector("[data-card-parking]");
@@ -482,7 +482,7 @@
         parkingWrapper.classList.add("hidden");
       }
     }
-    
+
     // Property type (for map-view stats section)
     const propertyTypeWrapper = card.querySelector("[data-card-property-type-wrapper]");
     const propertyTypeStats = card.querySelector("[data-card-property-type-stats]");
@@ -529,7 +529,7 @@
 
     // View Buttons Container (3D Tour, Aerial View, etc.) - Next to each other
     const viewButtonsContainer = card.querySelector("[data-card-view-buttons]");
-    
+
     // 3D Tour Badge - Prominent placement (key differentiator)
     const threeDBadge = card.querySelector("[data-card-3d-badge]");
     const threeDButton = card.querySelector("[data-card-3d]");
@@ -555,11 +555,11 @@
         droneBadge.classList.add("hidden");
       }
     }
-    
+
     // Hide view buttons container if no views are available
     if (viewButtonsContainer) {
-      const hasAnyView = (threeDBadge && !threeDBadge.classList.contains("hidden")) || 
-                         (droneBadge && !droneBadge.classList.contains("hidden"));
+      const hasAnyView = (threeDBadge && !threeDBadge.classList.contains("hidden")) ||
+        (droneBadge && !droneBadge.classList.contains("hidden"));
       if (!hasAnyView) {
         viewButtonsContainer.classList.add("hidden");
       } else {
@@ -622,12 +622,12 @@
     const dateValue = card.querySelector("[data-card-date-value]");
     const dateLabel = card.querySelector("[data-card-date-label]");
     const created = card.querySelector("[data-card-created]");
-    
+
     if (dateRelativeContainer && dateValue && dateLabel) {
       // Map-view: Use relative date format
       let dateToUse = property.created_at;
       let labelText = "Added";
-      
+
       // Check if property was recently updated (within last 7 days) to show "Reduced"
       if (property.updated_at && property.updated_at !== property.created_at) {
         const updatedDate = new Date(property.updated_at);
@@ -638,7 +638,7 @@
           dateToUse = property.updated_at;
         }
       }
-      
+
       dateLabel.textContent = labelText;
       dateValue.textContent = formatRelativeDate(dateToUse);
     } else if (created && dateLabel) {
@@ -757,12 +757,21 @@
 
     const scheduleButton = card.querySelector("[data-card-schedule]");
     if (scheduleButton) {
-      const scheduleHref = typeof config.scheduleUrl === "function" ? config.scheduleUrl(property) : config.scheduleUrl;
-      if (config.showSchedule && scheduleHref) {
-        scheduleButton.href = scheduleHref;
-        scheduleButton.classList.remove("hidden");
+      if (config.showSchedule) {
+        const scheduleHref = typeof config.scheduleUrl === "function" ? config.scheduleUrl(property) : config.scheduleUrl;
+        if (scheduleHref) {
+          scheduleButton.href = scheduleHref;
+          scheduleButton.innerHTML = '<i class="bi bi-calendar-check"></i><span>Book</span>';
+          scheduleButton.classList.remove("hidden");
+        } else {
+          scheduleButton.classList.add("hidden");
+        }
       } else {
-        scheduleButton.classList.add("hidden");
+        // For non-prospects (Agents/Developers), show "View Details" instead
+        const detailUrl = `/property/details/${property.id ?? ""}/`;
+        scheduleButton.href = detailUrl;
+        scheduleButton.innerHTML = '<i class="bi bi-eye"></i><span>View Details</span>';
+        scheduleButton.classList.remove("hidden");
       }
     }
 
