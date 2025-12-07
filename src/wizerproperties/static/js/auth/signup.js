@@ -78,6 +78,11 @@ $(document).ready(function () {
         $signupButton.attr('aria-busy', 'true').prop('disabled', true);
         sent_request = true;
         
+        // PostHog tracking - track signup attempt
+        if (typeof Analytics !== 'undefined') {
+            Analytics.trackSignup('prospect', 'email');
+        }
+        
         // Form will submit normally, page will reload on success/error
     });
 

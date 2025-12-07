@@ -16,9 +16,11 @@
   };
 
   const csrf = typeof csrfToken !== "undefined" ? csrfToken : "";
+  const COMPARISON_API_URL = window.COMPARISON_API_URL || '/property/api/compare/list/';
+  const COMPARISON_REMOVE_API_URL = window.COMPARISON_REMOVE_API_URL || '/property/api/compare/delete/';
 
   const FIELD_CONFIG = [
-    { key: "project_name", label: "Project Name" },
+    { key: "building_title", label: "Project Name" },
     { key: "price", label: "Price" },
     { key: "price_per_sqm", label: "Price per sqm" },
     { key: "unit_area", label: "Land / Unit Area" },
@@ -82,7 +84,8 @@
   `;
 
   const createComparisonSlide = (item) => {
-    const property = item?.property_info || {};
+    // Handle both CompareProperty response (with property_info) and direct Property object
+    const property = item?.property_info || item || {};
     const buildingLink = property.building_id
       ? `/building/details/${property.building_id}/`
       : "#";
@@ -120,12 +123,21 @@
                 </video>
               </div>
             `;
-            // Initialize after slide is mounted
+            // Initialize after slide is mounted and videojs is loaded
             requestAnimationFrame(() => {
               try {
+                if (typeof window.videojs !== "undefined") {
+                  window.videojs(videoId);
+                } else {
+                  // Retry after a short delay if videojs isn't loaded yet
+                  setTimeout(() => {
+                    if (typeof window.videojs !== "undefined") {
                 window.videojs(videoId);
+                    }
+                  }, 100);
+                }
               } catch (error) {
-                console.error(error);
+                console.error("Failed to initialize video player:", error);
               }
             });
           } else {
@@ -136,8 +148,8 @@
           break;
         }
         default: {
-          if (field.key === "project_name") {
-            content = `<a href="${buildingLink}" class="text-sm font-semibold text-foreground hover:text-primary">${property.title || "-"}</a>`;
+          if (field.key === "building_title") {
+            content = `<a href="${buildingLink}" class="text-sm font-semibold text-foreground hover:text-primary">${property.building_title || property.title || "-"}</a>`;
           } else if (field.key === "price") {
             content = property.price ? `฿ ${formatCurrency(property.price)}` : "—";
           } else if (field.key === "price_per_sqm") {
@@ -220,13 +232,29 @@
         },
         credentials: "same-origin",
       });
-      if (!response.ok) throw new Error(`Request failed with status ${response.status}`);
+      
+      if (!response.ok) {
+        let errorMessage = `Request failed with status ${response.status}`;
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.detail || errorData.message || errorMessage;
+        } catch (e) {
+          // If response is not JSON, use status text
+          errorMessage = response.statusText || errorMessage;
+        }
+        throw new Error(errorMessage);
+      }
 
       const data = await response.json();
       state.next = data?.next || null;
 
       const fragment = document.createDocumentFragment();
       (data?.results || []).forEach((result) => {
+        // Pass the full result object - createComparisonSlide will extract property_info
+        if (!result || (!result.property_info && !result.id)) {
+          console.warn("Invalid property data in comparison result:", result);
+          return;
+        }
         const slideWrapper = document.createElement("div");
         slideWrapper.innerHTML = createComparisonSlide(result);
         fragment.appendChild(slideWrapper.firstElementChild);
@@ -240,8 +268,20 @@
       if (!data?.results?.length) {
         listElement.innerHTML = `
           <li class="splide__slide">
-            <div class="flex h-full items-center justify-center rounded-2xl border border-dashed border-border bg-secondary/30 p-8 text-center text-sm text-muted-foreground">
-              No properties in your comparison list yet. Add properties from search to begin.
+            <div class="flex h-full flex-col items-center justify-center gap-6 rounded-2xl border border-dashed border-border bg-secondary/30 p-8 text-center">
+              <div class="flex size-20 items-center justify-center rounded-full bg-primary/10">
+                <i class="bi bi-arrow-left-right text-4xl text-primary"></i>
+              </div>
+              <div class="space-y-2">
+                <h3 class="text-lg font-semibold text-foreground">No properties to compare yet</h3>
+                <p class="max-w-md text-sm text-muted-foreground">
+                  Add up to 3 properties from search to compare them side-by-side. See pricing, specs, amenities, and more.
+                </p>
+              </div>
+              <a href="/property/search/" class="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary px-6 py-3 text-sm font-semibold text-white transition hover:bg-primary/90">
+                <i class="bi bi-plus-lg"></i>
+                <span>Browse properties to compare</span>
+              </a>
             </div>
           </li>
         `;
@@ -250,13 +290,27 @@
     } catch (error) {
       console.error("Failed to fetch comparison list", error);
       removeLoaderSlides();
-      listElement.innerHTML = `
-        <li class="splide__slide">
-          <div class="flex h-full items-center justify-center rounded-2xl border border-dashed border-border bg-secondary/30 p-8 text-center text-sm text-destructive">
-            Something went wrong while loading the comparison. Please try again.
-          </div>
-        </li>
-      `;
+      const rawMessage = error.message || "Something went wrong while loading the comparison. Please try again.";
+      // Create error slide safely using DOM APIs to prevent XSS
+      const slide = document.createElement('li');
+      slide.className = 'splide__slide';
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'flex h-full flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-border bg-secondary/30 p-8 text-center text-sm text-destructive';
+      const title = document.createElement('p');
+      title.className = 'font-semibold';
+      title.textContent = 'Error loading comparison';
+      const message = document.createElement('p');
+      message.className = 'text-xs text-muted-foreground';
+      message.textContent = rawMessage;
+      const reloadButton = document.createElement('button');
+      reloadButton.onclick = () => window.location.reload();
+      reloadButton.className = 'mt-4 inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-xs font-medium text-foreground transition hover:bg-muted';
+      reloadButton.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Reload page';
+      errorDiv.appendChild(title);
+      errorDiv.appendChild(message);
+      errorDiv.appendChild(reloadButton);
+      slide.appendChild(errorDiv);
+      listElement.appendChild(slide);
       state.splide?.refresh();
     } finally {
       state.loading = false;
@@ -277,6 +331,13 @@
         body,
       });
       if (!response.ok) throw new Error("Removal failed");
+
+      // Emit event for comparison manager
+      window.dispatchEvent(
+        new CustomEvent("compare:removed", {
+          detail: { propertyId },
+        })
+      );
 
       listElement.innerHTML = "";
       state.next = 1;

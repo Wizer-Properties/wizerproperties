@@ -1,0 +1,708 @@
+# SEO & Analytics Implementation Guide
+
+**Version 1.0** — January 2025
+
+This comprehensive guide covers all SEO and analytics implementation for the Wizer Properties platform, including meta tags, structured data, sitemaps, robots.txt, and analytics tracking.
+
+## Table of Contents
+
+1. [SEO Overview](#seo-overview)
+2. [Meta Tags Implementation](#meta-tags-implementation)
+3. [Structured Data (JSON-LD)](#structured-data-json-ld)
+4. [Sitemap & Robots.txt](#sitemap--robots-txt)
+5. [Breadcrumbs](#breadcrumbs)
+6. [Analytics Overview](#analytics-overview)
+7. [Analytics Configuration](#analytics-configuration)
+8. [Event Tracking](#event-tracking)
+9. [Testing & Validation](#testing--validation)
+10. [Implementation Checklist](#implementation-checklist)
+
+---
+
+## SEO Overview
+
+### ✅ Implemented SEO Features
+
+1. **Meta Tags** - Comprehensive meta tags on 37+ pages
+2. **Structured Data (JSON-LD)** - 5 schema types (Organization, Product, Place/Building, Article, Breadcrumb)
+3. **Sitemap Generation** - Dynamic XML sitemap with 4 sections
+4. **Robots.txt** - Dynamic generation with proper crawl directives
+5. **Breadcrumbs** - Visual navigation + structured data for SEO
+
+### Pages with SEO Implementation
+
+**Public Pages (Indexed - 12 pages)**:
+- Home page
+- Property detail pages
+- Building detail pages
+- Property search pages (list & map views)
+- Developer/Agent property listings
+- Blog list & detail pages
+- Contact, About, Privacy pages
+- Reels page
+
+**User-Specific Pages (Noindex - 12 pages)**:
+- All authentication pages
+- Comparison page
+- Favorite list page
+- Schedule creation page
+- 404 page
+
+**Admin/Management Pages (Noindex - 13 pages)**:
+- All create/update pages
+- All dashboard pages
+- All advertising pages
+- All promotion management pages
+
+---
+
+## Meta Tags Implementation
+
+### Required Meta Tags
+
+All pages include:
+- **Title Tag**: 50-60 characters, unique per page
+- **Meta Description**: 150-160 characters, compelling and keyword-rich
+- **Canonical URL**: Prevents duplicate content issues
+- **Open Graph Tags**: For social media sharing (og:title, og:description, og:image, og:url, og:type)
+- **Twitter Card Tags**: For Twitter sharing
+- **Robots Meta**: `index, follow` for public pages, `noindex, follow` for user/admin pages
+
+### Implementation
+
+Meta tags are generated using the `generate_meta_tags()` function from `src/utils/seo.py`:
+
+```python
+from utils.seo import generate_meta_tags
+
+# In template
+{% block extend_head %}
+{{ generate_meta_tags(
+    title="Property Title | Wizer Properties",
+    description="Beautiful 2-bedroom condo in Bangkok...",
+    keywords="bangkok condo, property thailand",
+    image=property.featured_image.url,
+    url=request.build_absolute_uri()
+) }}
+{% endblock %}
+```
+
+### Template Examples
+
+#### Home Page
+```html
+{% block extend_head %}
+<title>Discover Verified Property Developments in Thailand | Wizer Properties</title>
+<meta name="description" content="Browse verified new-build developments across Bangkok...">
+<meta name="keywords" content="bangkok property, thailand real estate">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+<!-- Open Graph & Twitter Card tags -->
+{% endblock %}
+```
+
+#### Property Detail Page
+```html
+{% block extend_head %}
+<title>{{ property.title }} | Property Details | Wizer Properties</title>
+<meta name="description" content="{{ property.description|truncatewords:25 }}">
+<meta property="og:title" content="{{ property.title }}">
+<meta property="og:image" content="{{ property.featured_image.url }}">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+{% endblock %}
+```
+
+---
+
+## Structured Data (JSON-LD)
+
+### Schema Types Implemented
+
+#### 1. Organization Schema
+**Included on**: All public pages  
+**Template Tag**: `{% organization_schema %}`
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Wizer Properties",
+  "url": "https://wizerproperties.com",
+  "logo": "https://wizerproperties.com/static/media/logo.png",
+  "description": "Verified property developments in Thailand",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "Customer Service"
+  }
+}
+```
+
+#### 2. Product Schema (Properties)
+**Included on**: Property detail pages  
+**Template Tag**: `{% property_schema property %}`
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Property Title",
+  "description": "Property description",
+  "image": ["image1.jpg", "image2.jpg"],
+  "offers": {
+    "@type": "Offer",
+    "price": "5000000",
+    "priceCurrency": "THB",
+    "availability": "https://schema.org/InStock"
+  },
+  "brand": {
+    "@type": "Organization",
+    "name": "Developer Name"
+  }
+}
+```
+
+#### 3. Place Schema (Buildings)
+**Included on**: Building detail pages  
+**Template Tag**: `{% building_schema building %}`
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Place",
+  "name": "Building Name",
+  "description": "Building description",
+  "image": ["building1.jpg"],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "123 Main Street",
+    "addressLocality": "Bangkok",
+    "addressRegion": "Bangkok",
+    "addressCountry": "TH"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 13.7563,
+    "longitude": 100.5018
+  }
+}
+```
+
+#### 4. Article Schema (Blog Posts)
+**Included on**: Blog detail pages  
+**Template Tag**: `{% article_schema post %}`
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Article Title",
+  "description": "Article description",
+  "image": "article-image.jpg",
+  "datePublished": "2025-01-01T00:00:00Z",
+  "dateModified": "2025-01-02T00:00:00Z",
+  "author": {
+    "@type": "Organization",
+    "name": "Wizer Properties"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Wizer Properties"
+  }
+}
+```
+
+#### 5. Breadcrumb Schema
+**Included on**: Property, building, and blog detail pages  
+**Template Tag**: `{% breadcrumb_schema breadcrumbs %}`
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://wizerproperties.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Properties",
+      "item": "https://wizerproperties.com/property/search/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Property Title",
+      "item": "https://wizerproperties.com/property/details/123/"
+    }
+  ]
+}
+```
+
+### Template Tags Usage
+
+```html
+{% load seo_tags %}
+
+{% block extend_head %}
+<!-- Organization schema (for all pages) -->
+{% organization_schema %}
+
+<!-- Property schema (for property detail pages) -->
+{% property_schema property %}
+
+<!-- Building schema (for building detail pages) -->
+{% building_schema building %}
+
+<!-- Article schema (for blog posts) -->
+{% article_schema post %}
+
+<!-- Breadcrumb schema (for navigation) -->
+{% breadcrumb_schema breadcrumbs %}
+{% endblock %}
+```
+
+**Available Template Tags**:
+- `{% organization_schema %}` - Organization JSON-LD
+- `{% property_schema property %}` - Property Product JSON-LD
+- `{% building_schema building %}` - Building Place JSON-LD
+- `{% article_schema post %}` - Blog Article JSON-LD
+- `{% breadcrumb_schema breadcrumbs %}` - Breadcrumb JSON-LD
+
+---
+
+## Sitemap & Robots.txt
+
+### Sitemap Generation (`/sitemap.xml`)
+
+**Location**: `src/core/sitemaps.py`
+
+**Features**:
+- ✅ Static pages (home, contact, about, privacy, search, blog list, reels) - Priority 1.0, Monthly
+- ✅ All active property listings - Priority 0.8, Weekly
+- ✅ All published blog posts - Priority 0.7, Monthly
+- ✅ All active building/project pages - Priority 0.6, Monthly
+- ✅ Includes last modified dates
+- ✅ Automatically updates when content changes
+
+**Access**: `https://yourdomain.com/sitemap.xml`
+
+### Robots.txt (`/robots.txt`)
+
+**Location**: `src/core/views/seo.py`
+
+**Configuration**:
+- ✅ Allows all search engines for public content
+- ✅ Blocks admin, API, user, and management pages
+- ✅ Includes sitemap reference
+- ✅ Sets crawl delay
+
+**Blocked Paths**:
+- `/admin/` - Django admin
+- `/api/` - API endpoints
+- `/user/` - User accounts
+- `/dashboard/` - Dashboards
+- `/property/create/`, `/property/update/` - Property management
+- `/building/create/`, `/building/update/` - Building management
+- `/advertise/` - Advertising dashboard
+- `/schedule/` - Scheduling
+- `/accounts/` - Authentication
+
+**Access**: `https://yourdomain.com/robots.txt`
+
+---
+
+## Breadcrumbs
+
+### Implementation
+
+Breadcrumbs serve **two purposes**:
+
+1. **Visual Navigation** - Displayed in HTML for users to navigate back
+2. **Structured Data** - JSON-LD Breadcrumb schema for search engines
+
+### Current Implementation
+
+**Pages with Breadcrumbs**:
+- ✅ Property detail pages (`get_property.html`)
+- ✅ Building detail pages (`get_building.html`)
+- ✅ Blog detail pages (`blog-details.html`)
+
+**Visual Breadcrumb Example**:
+```html
+<nav aria-label="Breadcrumb">
+  <a href="/">Home</a> >
+  <a href="/property/search/">Properties For Sale</a> >
+  <span>Property Details</span>
+</nav>
+```
+
+**Structured Data**:
+Breadcrumbs are automatically converted to JSON-LD schema via the `{% breadcrumb_schema breadcrumbs %}` template tag, which generates:
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://wizerproperties.com/"},
+    {"@type": "ListItem", "position": 2, "name": "Properties", "item": "https://wizerproperties.com/property/search/"},
+    {"@type": "ListItem", "position": 3, "name": "Property Title", "item": "https://wizerproperties.com/property/details/123/"}
+  ]
+}
+```
+
+### Adding Breadcrumbs to New Pages
+
+**In View** (`views.py`):
+```python
+context["breadcrumbs"] = [
+    ('Home', '/'),
+    ('Properties', reverse('property:search')),
+    ('Current Page', current_page_url),
+]
+```
+
+**In Template**:
+```html
+<!-- Visual breadcrumb -->
+<nav aria-label="Breadcrumb">
+  {% for name, url in breadcrumbs %}
+    {% if not forloop.last %}
+      <a href="{{ url }}">{{ name }}</a> >
+    {% else %}
+      <span>{{ name }}</span>
+    {% endif %}
+  {% endfor %}
+</nav>
+
+<!-- Structured data -->
+{% breadcrumb_schema breadcrumbs %}
+```
+
+### Pages That Could Benefit from Breadcrumbs
+
+**Recommended additions**:
+- ✅ Search results pages (with applied filters)
+- ✅ Developer/Agent property listings
+- ✅ Comparison page (`Home > Properties > Compare`)
+- ✅ Favorite list page (`Home > Properties > Saved Properties`)
+- ✅ Category pages (if implemented)
+
+---
+
+## Analytics Overview
+
+The platform uses a centralized analytics tracking system supporting three platforms:
+
+- **Google Analytics 4 (GA4)**: Primary web analytics
+- **Meta Pixel (Facebook Pixel)**: Social media advertising tracking
+- **PostHog**: Product analytics and user behavior tracking
+
+### Architecture
+
+All analytics tracking is handled through a centralized `Analytics` JavaScript module (`src/wizerproperties/static/js/analytics.js`) that:
+
+- Provides a unified API for tracking events across all platforms
+- Automatically maps events to platform-specific formats
+- Handles initialization and configuration
+- Supports ecommerce tracking for property listings
+
+---
+
+## Analytics Configuration
+
+### Environment Variables
+
+Add to your `.env` file:
+
+```bash
+# Google Analytics 4
+GA4_MEASUREMENT_ID=G-MRZK1TTB7H
+
+# Meta Pixel (Facebook Pixel)
+META_PIXEL_ID=your_meta_pixel_id
+
+# PostHog
+POSTHOG_API_KEY=phc_9rRjJCeqbR89x5Lgc3imxOq8guqKc9rJHGBN5GKhmZM
+POSTHOG_HOST=https://us.i.posthog.com
+```
+
+### Settings Configuration
+
+**Location**: `src/wizerproperties/settings/base.py`
+
+```python
+# Analytics Configuration
+GA4_MEASUREMENT_ID = config("GA4_MEASUREMENT_ID", "G-MRZK1TTB7H")
+META_PIXEL_ID = config("META_PIXEL_ID", "")
+POSTHOG_API_KEY = config("POSTHOG_API_KEY", "phc_9rRjJCeqbR89x5Lgc3imxOq8guqKc9rJHGBN5GKhmZM")
+POSTHOG_HOST = config("POSTHOG_HOST", "https://us.i.posthog.com")
+```
+
+**Current Configuration**:
+- ✅ **Google Analytics 4**: `G-MRZK1TTB7H` (configured)
+- ✅ **PostHog API Key**: `phc_9rRjJCeqbR89x5Lgc3imxOq8guqKc9rJHGBN5GKhmZM` (configured)
+- ✅ **PostHog Host**: `https://us.i.posthog.com` (configured)
+- ⚠️ **Meta Pixel**: Requires configuration via environment variable
+
+### PostHog Initialization
+
+PostHog uses the official initialization snippet:
+
+```javascript
+!function(t,e){var o,n,p,r;e.__SV||(window.posthog && window.posthog.__loaded)||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init Rr Mr fi Cr Ar ci Tr Fr capture Mi calculateEventProperties Lr register register_once register_for_session unregister unregister_for_session Hr getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey displaySurvey canRenderSurvey canRenderSurveyAsync identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetGroupPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty Ur jr createPersonProfile zr kr Br opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing get_explicit_consent_status is_capturing clear_opt_in_out_capturing Dr debug M Nr getPageViewId captureTraceFeedback captureTraceMetric $r".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+
+posthog.init('phc_9rRjJCeqbR89x5Lgc3imxOq8guqKc9rJHGBN5GKhmZM', {
+    api_host: 'https://us.i.posthog.com',
+    defaults: '2025-05-24',
+    person_profiles: 'identified_only',
+});
+```
+
+**Configuration Details**:
+- `person_profiles: 'identified_only'`: Only creates person profiles for identified users (logged-in users)
+- `defaults: '2025-05-24'`: PostHog feature defaults version
+- Initialization handled automatically by the `Analytics` module
+
+---
+
+## Event Tracking
+
+### Available Tracking Methods
+
+#### 1. Property View Tracking
+```javascript
+Analytics.trackPropertyView(propertyId, {
+    name: 'Property Title',
+    title: 'Property Title',
+    price: 5000000,
+    category: 'Condo',
+    building_name: 'Building Name',
+    location: 'Bangkok, Thailand',
+    beds: 2,
+    baths: 2,
+    size: 50,
+    is_featured: true,
+    is_discounted: false
+});
+```
+**Automatically tracked on**: Property detail pages
+
+#### 2. Property Favorite Tracking
+```javascript
+Analytics.trackPropertyFavorite(propertyId, propertyData, isFavorite);
+```
+**Automatically tracked on**: All favorite button interactions
+
+#### 3. Property Comparison Tracking
+```javascript
+Analytics.trackPropertyCompare(propertyId, propertyData, isAdded);
+```
+**Automatically tracked on**: All compare button interactions
+
+#### 4. Search Tracking
+```javascript
+Analytics.trackSearch(searchTerm, filters, resultCount);
+```
+
+#### 5. User Authentication Tracking
+```javascript
+Analytics.trackSignup(userType, 'email'); // or 'google'
+Analytics.trackLogin(userType, 'email');
+```
+
+#### 6. Custom Event Tracking
+```javascript
+Analytics.track('event_name', {
+    property1: 'value1',
+    property2: 'value2'
+});
+```
+
+### Event Mapping
+
+| Custom Event | GA4 Event | Meta Pixel Event |
+|-------------|-----------|------------------|
+| `property_view` | `view_item` | `ViewContent` |
+| `property_favorite` | Custom | `AddToWishlist` |
+| `property_compare` | Custom | `AddToCart` |
+| `property_contact` | `generate_lead` | `Lead` |
+| `property_schedule` | `generate_lead` | `Schedule` |
+| `user_signup` | `sign_up` | `CompleteRegistration` |
+| `user_login` | `login` | `Login` |
+| `property_search` | `search` | `Search` |
+
+### Key Events Tracked
+
+**Property-Related Events**:
+- `property_view` - Property detail page load
+- `property_favorite` / `property_unfavorite` - Add/remove from favorites
+- `property_compare` / `property_uncompare` - Add/remove from comparison
+- `property_contact` - Contact form submission
+- `property_schedule` - Schedule viewing
+- `property_search` - Search performed
+
+**User Events**:
+- `user_signup` - User registration
+- `user_login` - User login
+- `form_submit` - Any form submission
+
+---
+
+## Testing & Validation
+
+### SEO Validation
+
+1. **Google Rich Results Test**: https://search.google.com/test/rich-results
+   - Test property pages for Product schema
+   - Test building pages for Place schema
+   - Test blog posts for Article schema
+   - Test breadcrumbs on all detail pages
+
+2. **Schema.org Validator**: https://validator.schema.org/
+   - Validate JSON-LD structure
+   - Check for errors
+
+3. **Google Search Console**:
+   - Submit sitemap (`/sitemap.xml`)
+   - Monitor indexing status
+   - Check for crawl errors
+
+4. **Meta Tags Testing**:
+   - Use browser dev tools to inspect `<head>` section
+   - Check title, description, canonical tags
+   - Verify Open Graph tags
+   - Test Twitter Card preview
+
+### Analytics Testing
+
+1. **Google Analytics**:
+   - Use Google Tag Assistant Chrome extension
+   - Check Real-Time reports in GA4 dashboard
+   - Verify events in Events section
+
+2. **Meta Pixel**:
+   - Use Meta Pixel Helper Chrome extension
+   - Check Events Manager in Meta Business Suite
+   - Verify events fire correctly
+
+3. **PostHog**:
+   - Check Live Events in PostHog dashboard
+   - Verify event properties are captured
+   - Test user identification
+
+---
+
+## Implementation Checklist
+
+### ✅ Completed
+
+- [x] Centralized analytics module (`analytics.js`)
+- [x] Google Analytics 4 integration
+- [x] Meta Pixel integration (ready, requires configuration)
+- [x] PostHog integration
+- [x] Property view tracking
+- [x] Favorite/Compare tracking
+- [x] SEO utilities (`utils/seo.py`)
+- [x] Structured data generation (5 schema types)
+- [x] Context processor for analytics IDs
+- [x] Base template analytics initialization
+- [x] Sitemap generation (`/sitemap.xml`) - Static, Properties, Blog, Buildings
+- [x] Robots.txt (`/robots.txt`) - Properly configured
+- [x] Meta tags - All public pages (12) + all auth/admin pages (25) with `noindex`
+- [x] Structured data - Organization, Product, Place (Building), Article, Breadcrumb schemas
+- [x] Template tags - Easy-to-use SEO template tags (`core/templatetags/seo_tags.py`)
+- [x] Model methods - `get_absolute_url()` added to Property, Building, Post models
+- [x] Breadcrumbs - Visual navigation + structured data on property, building, and blog detail pages
+
+### 📋 Recommended Enhancements
+
+**Breadcrumbs**:
+- [ ] Add breadcrumbs to search results pages (with applied filters)
+- [ ] Add breadcrumbs to developer/agent property listings
+- [ ] Add breadcrumbs to comparison page
+- [ ] Add breadcrumbs to favorite list page
+
+**SEO**:
+- [ ] Add `hreflang` tags for multi-language support
+- [ ] Add `LocalBusiness` schema for contact page
+- [ ] Add `FAQPage` schema if FAQ section exists
+- [ ] Add `VideoObject` schema for property videos
+- [ ] Add `Review` schema for property reviews
+
+**Analytics**:
+- [ ] Implement search tracking
+- [ ] Add form submission tracking
+- [ ] Add video play tracking
+- [ ] Add user authentication tracking
+- [ ] Add schedule viewing tracking
+- [ ] Add blog article tracking
+
+---
+
+## Files Created/Modified
+
+### New Files
+1. `src/core/sitemaps.py` - Sitemap generation
+2. `src/core/views/seo.py` - Robots.txt view
+3. `src/utils/seo.py` - SEO utility functions (meta tags, schemas)
+4. `src/core/templatetags/seo_tags.py` - SEO template tags
+5. `src/wizerproperties/static/js/analytics.js` - Centralized analytics module
+
+### Modified Files
+1. `src/wizerproperties/urls.py` - Added sitemap and robots.txt routes
+2. `src/wizerproperties/settings/base.py` - Added analytics config and `django.contrib.sitemaps`
+3. `src/utils/custom/context_processors.py` - Passes analytics IDs to templates
+4. `src/property/models/default.py` - Added `get_absolute_url()`
+5. `src/building/models/default.py` - Added `get_absolute_url()`
+6. `src/blog/models.py` - Added `get_absolute_url()`
+7. `src/property/views/property.py` - Added breadcrumbs to context
+8. `src/building/views.py` - Added breadcrumbs to context
+9. `src/blog/views.py` - Added breadcrumbs to context
+10. `src/wizerproperties/templates/base.html` - Analytics initialization
+
+### Templates Updated
+
+**37+ templates** with SEO meta tags and structured data (see full list in implementation files)
+
+---
+
+## Quick Reference
+
+**Sitemap URL**: `/sitemap.xml`  
+**Robots.txt URL**: `/robots.txt`  
+**SEO Utilities**: `src/utils/seo.py`  
+**Template Tags**: `{% load seo_tags %}`
+
+**Key Template Tags**:
+- `{% organization_schema %}` - Organization JSON-LD
+- `{% property_schema property %}` - Property Product JSON-LD
+- `{% building_schema building %}` - Building Place JSON-LD
+- `{% article_schema post %}` - Blog Article JSON-LD
+- `{% breadcrumb_schema breadcrumbs %}` - Breadcrumb JSON-LD
+
+**Analytics IDs**:
+- Google Analytics: `G-MRZK1TTB7H`
+- PostHog API Key: `phc_9rRjJCeqbR89x5Lgc3imxOq8guqKc9rJHGBN5GKhmZM`
+- PostHog Host: `https://us.i.posthog.com`
+
+---
+
+## Resources
+
+- [Google Analytics 4 Documentation](https://developers.google.com/analytics/devguides/collection/ga4)
+- [Meta Pixel Documentation](https://developers.facebook.com/docs/meta-pixel)
+- [PostHog Documentation](https://posthog.com/docs)
+- [Schema.org Documentation](https://schema.org/)
+- [Google Search Central](https://developers.google.com/search)
+- [Breadcrumb Schema Documentation](https://schema.org/BreadcrumbList)
+
+---
+
+## Support
+
+For questions or issues with analytics/SEO implementation, contact the development team or refer to the main project documentation.
+

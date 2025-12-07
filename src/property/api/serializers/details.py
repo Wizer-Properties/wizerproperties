@@ -15,6 +15,12 @@ class PropertyDetailsSerializer(PropertySerializer):
     construction_year = serializers.CharField(source="building.construction_year", read_only=True)
     facility_view = serializers.URLField(source="building.facility_view", read_only=True)
     location_view = serializers.URLField(source="building.location_view", read_only=True)
+    have_freehold = serializers.BooleanField(source="building.have_freehold", read_only=True)
+    have_leasehold = serializers.BooleanField(source="building.have_leasehold", read_only=True)
+    developer_email = serializers.CharField(source="created_by.email", read_only=True)
+    developer_image = serializers.SerializerMethodField()
+    developer_phone_number = serializers.SerializerMethodField()
+    developer_company_name = serializers.SerializerMethodField()
     is_compared = serializers.BooleanField(read_only=True)
     is_favorited = serializers.BooleanField(read_only=True)
     default_images = serializers.SerializerMethodField()
@@ -42,11 +48,49 @@ class PropertyDetailsSerializer(PropertySerializer):
             "construction_year",
             "facility_view",
             "location_view",
+            "have_freehold",
+            "have_leasehold",
+            "developer_email",
+            "developer_image",
+            "developer_phone_number",
+            "developer_company_name",
             "is_compared",
             "is_favorited",
             "default_images",
             "reviews",
         ]
+
+    def get_developer_image(self, obj):
+        user = obj.created_by
+        if not user:
+            return ""
+        if hasattr(user, "developerprofile"):
+            logo = user.developerprofile.company_logo
+            return logo.url if logo else ""
+        elif hasattr(user, "agentprofile"):
+            logo = user.agentprofile.company_logo
+            return logo.url if logo else ""
+        return ""
+
+    def get_developer_phone_number(self, obj):
+        user = obj.created_by
+        if not user:
+            return ""
+        if hasattr(user, "developerprofile"):
+            return str(user.developerprofile.phone_number) if user.developerprofile.phone_number else ""
+        elif hasattr(user, "agentprofile"):
+            return str(user.agentprofile.phone_number) if user.agentprofile.phone_number else ""
+        return ""
+
+    def get_developer_company_name(self, obj):
+        user = obj.created_by
+        if not user:
+            return ""
+        if hasattr(user, "developerprofile"):
+            return str(user.developerprofile.company_name) if user.developerprofile.company_name else ""
+        elif hasattr(user, "agentprofile"):
+            return str(user.agentprofile.company_name) if user.agentprofile.company_name else ""
+        return ""
 
     def get_default_images(self, obj):
         request = self.context.get("request")

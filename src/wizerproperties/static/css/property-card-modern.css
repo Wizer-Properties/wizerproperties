@@ -1,0 +1,218 @@
+/* Modern Property Card Styles - Redesigned for Luxury Market */
+
+/* Card Base */
+[data-property-card] {
+  /* Ensure smooth transitions */
+  will-change: transform, box-shadow;
+  backface-visibility: hidden;
+}
+
+/* Image Section Enhancements */
+[data-card-image-section] {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Price Display - More Prominent */
+[data-card-price-container] {
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+[data-card-price] {
+  letter-spacing: -0.03em;
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+}
+
+/* Quick Stats Badge - Refined */
+[data-card-image-section] .bg-black\/40 {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* 3D Tour Badge - Hero Feature */
+[data-card-3d-badge] button {
+  animation: subtle-pulse 3s ease-in-out infinite;
+}
+
+@keyframes subtle-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.2);
+  }
+}
+
+[data-card-3d-badge] button:hover {
+  animation: none;
+}
+
+/* Action Buttons - Refined */
+[data-card-actions] button {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+[data-card-actions] button[added="true"] {
+  background: hsl(var(--primary));
+  color: white;
+  border-color: transparent;
+}
+
+[data-card-actions] button[added="true"]:hover {
+  background: hsl(var(--primary) / 0.9);
+  transform: scale(1.1);
+}
+
+/* Title & Link */
+[data-card-title] {
+  letter-spacing: -0.01em;
+}
+
+[data-card-link]:hover [data-card-title] {
+  text-decoration: none;
+}
+
+/* Developer Info - Subtle */
+[data-card-developer-image] {
+  transition: transform 0.3s ease;
+}
+
+[data-property-card]:hover [data-card-developer-image] {
+  transform: scale(1.1);
+}
+
+/* Primary CTA - Enhanced */
+[data-card-schedule] {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+[data-card-schedule]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+[data-card-schedule]:hover::before {
+  opacity: 1;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 640px) {
+  [data-card-price] {
+    font-size: 1.5rem;
+  }
+  
+  [data-card-image-section] .bg-black\/40 {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+}
+
+/* Narrow Cards - Hide Secondary Elements */
+.property-card-narrow [data-card-description],
+.property-card-narrow [data-card-features],
+.property-card-narrow [data-card-secondary-actions],
+.property-card-narrow [data-card-features-summary] {
+  display: none !important;
+}
+
+.property-card-narrow [data-card-image-section] {
+  aspect-ratio: 1;
+}
+
+/* Medium Cards */
+.property-card-medium [data-card-description],
+.property-card-medium [data-card-features],
+.property-card-medium [data-card-secondary-actions],
+.property-card-medium [data-card-features-summary] {
+  display: none !important;
+}
+
+/* Wide Cards - Show All */
+.property-card-wide [data-card-description],
+.property-card-wide [data-card-features],
+.property-card-wide [data-card-secondary-actions],
+.property-card-wide [data-card-features-summary] {
+  display: flex !important;
+}
+
+.property-card-wide [data-card-description] {
+  display: block !important;
+}
+
+/* List View Cards - Always Show Details */
+.list-view-card [data-card-description],
+.list-view-card [data-card-features],
+.list-view-card [data-card-secondary-actions],
+.list-view-card [data-card-features-summary] {
+  display: flex !important;
+}
+
+.list-view-card [data-card-description] {
+  display: block !important;
+}
+
+/* Horizontal Layout for Very Wide Cards */
+.property-card-horizontal {
+  flex-direction: row;
+}
+
+.property-card-horizontal [data-card-image-section] {
+  width: 40%;
+  min-width: 300px;
+  max-width: 450px;
+  aspect-ratio: auto;
+  height: auto;
+}
+
+.property-card-horizontal > div:last-child {
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Loading States */
+[data-property-card].loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Comparison State */
+[data-property-card].property-compared {
+  border-color: hsl(var(--accent));
+  box-shadow: 0 0 0 2px hsl(var(--accent) / 0.3);
+}
+
+/* Spotlight/Featured Properties */
+[data-property-card].property-spotlight {
+  border-color: hsl(var(--primary));
+  box-shadow: 0 8px 30px hsl(var(--primary) / 0.15);
+}
+
+[data-property-card].property-featured {
+  border-color: hsl(var(--accent));
+  box-shadow: 0 8px 30px hsl(var(--accent) / 0.15);
+}
+
+/* Accessibility */
+[data-card-link]:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 4px;
+  border-radius: 0.5rem;
+}
+
+[data-card-actions] button:focus-visible,
+[data-card-3d-badge] button:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}

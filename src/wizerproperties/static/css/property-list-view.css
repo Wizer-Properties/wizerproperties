@@ -1,0 +1,204 @@
+/* Property List View Styles */
+
+/* Responsive Card System - Adapts to container size using JavaScript classes */
+
+/* Narrow Cards (< 400px wide) - Compact view */
+.property-card-narrow {
+  /* Compact vertical layout */
+}
+
+.property-card-narrow [data-card-description],
+.property-card-narrow [data-card-features],
+.property-card-narrow [data-card-action-buttons] {
+  display: none !important;
+}
+
+.property-card-narrow [data-card-developer-name] {
+  font-size: 0.75rem;
+}
+
+.property-card-narrow [data-card-ctas] {
+  flex-direction: column;
+}
+
+.property-card-narrow [data-card-ctas] a {
+  font-size: 0.75rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.property-card-narrow [data-card-image-section] {
+  height: 12rem;
+}
+
+/* Medium Cards (400px - 600px) - Standard grid view */
+.property-card-medium {
+  /* Standard grid card */
+}
+
+.property-card-medium [data-card-description],
+.property-card-medium [data-card-features],
+.property-card-medium [data-card-action-buttons] {
+  display: none !important;
+}
+
+/* Wide Cards (≥ 600px) - Show more details */
+.property-card-wide {
+  /* Wide card - can show more info */
+}
+
+.property-card-wide [data-card-description],
+.property-card-wide [data-card-features],
+.property-card-wide [data-card-action-buttons] {
+  display: flex !important;
+}
+
+.property-card-wide [data-card-description] {
+  display: block !important;
+}
+
+.property-card-wide [data-card-title] {
+  font-size: 1.125rem;
+}
+
+.property-card-wide [data-card-address] {
+  font-size: 0.875rem;
+}
+
+.property-card-wide [data-card-image-section] {
+  height: 16rem;
+}
+
+/* Very Wide Cards (≥ 800px) - Horizontal layout option */
+.property-card-horizontal {
+  flex-direction: row;
+}
+
+.property-card-horizontal > div:first-child {
+  width: 40%;
+  min-width: 300px;
+  flex-shrink: 0;
+  height: auto;
+}
+
+.property-card-horizontal > div:last-child {
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* List view card layout */
+.list-view-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .list-view-card {
+    grid-template-columns: 280px minmax(0, 1fr);
+  }
+  
+  .list-view-card > div:first-child {
+    /* Image container in list view */
+    height: auto;
+    min-height: 200px;
+  }
+  
+  /* List view cards are wide - show all details */
+  .list-view-card [data-card-description],
+  .list-view-card [data-card-features],
+  .list-view-card [data-card-action-buttons] {
+    display: flex !important;
+  }
+  
+  .list-view-card [data-card-description] {
+    display: block !important;
+  }
+}
+
+/* Improved card spacing for mobile */
+@media (max-width: 640px) {
+  #search-result-list.grid {
+    gap: 1rem;
+  }
+  
+  [data-property-card] {
+    /* Ensure cards don't stretch too much on mobile */
+    min-height: 0;
+  }
+}
+
+/* Better touch targets for mobile */
+@media (max-width: 768px) {
+  .view-toggle-btn {
+    min-height: 36px;
+    min-width: 36px;
+  }
+  
+  [data-card-ctas] a {
+    min-height: 44px; /* Better touch target */
+  }
+  
+  [data-card-favorite],
+  [data-card-compare] {
+    min-width: 36px;
+    min-height: 36px;
+  }
+}
+
+/* List view specific adjustments */
+#search-result-list-list [data-property-card] {
+  /* Horizontal layout for list view */
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 1024px) {
+  #search-result-list-list [data-property-card] {
+    grid-template-columns: 280px minmax(0, 1fr);
+  }
+  
+  #search-result-list-list [data-property-card] > div:first-child {
+    /* Image section */
+    height: 100%;
+    min-height: 200px;
+  }
+  
+  #search-result-list-list [data-property-card] > div:last-child {
+    /* Content section */
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}
+
+/* Improved empty state on mobile */
+@media (max-width: 640px) {
+  #search-empty-state {
+    padding: 2rem 1rem;
+  }
+  
+  #search-empty-state .size-16 {
+    width: 3rem;
+    height: 3rem;
+  }
+}
+
+/* Loading skeleton improvements */
+.skeleton-item {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+

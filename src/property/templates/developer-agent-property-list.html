@@ -1,8 +1,32 @@
 {% extends "base.html" %}
 {% load static %}
+{% load seo_tags %}
 
 {% block extend_head %}
-<title>{{ username }} | Property listings</title>
+<title>{{ company_info.company_name|default:username }} | Property Listings | Wizer Properties</title>
+<meta name="description" content="Browse property listings from {{ company_info.company_name|default:username }}. Verified properties in Bangkok, Thailand with transparent pricing and full details.">
+<meta name="keywords" content="bangkok property listings, {{ company_info.company_name|default:username|lower }} properties, thailand real estate listings">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ company_info.company_name|default:username }} | Property Listings | Wizer Properties">
+<meta property="og:description" content="Browse verified property listings from {{ company_info.company_name|default:username }} in Bangkok, Thailand.">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+{% if company_info.company_logo %}
+<meta property="og:image" content="{{ company_info.company_logo }}">
+{% else %}
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'media/logo.png' %}">
+{% endif %}
+<meta property="og:site_name" content="Wizer Properties">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{ company_info.company_name|default:username }} | Property Listings">
+<meta name="twitter:description" content="Browse verified property listings from {{ company_info.company_name|default:username }} in Bangkok, Thailand.">
+
+{% organization_schema %}
+
 <link rel="stylesheet" href="{% static 'css/libraries/splide.min.css' %}?v=2.0" />
 {% endblock extend_head %}
 
@@ -21,12 +45,12 @@
                         {% endif %}
                     </div>
                     <div class="space-y-2">
-                        <span class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">
+                        <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">
                             {% if user.user_type == "developer" %}Developer{% elif user.user_type == "agent" %}Agent{% else %}Partner{% endif %}
                         </span>
-                        <h1 class="text-3xl font-heading font-semibold text-foreground">{{ username }}</h1>
+                        <h1 class="text-3xl font-heading font-semibold text-foreground">Verified properties from {{ username }}</h1>
                         <div class="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-                            <i class="bi bi-geo-alt text-primary"></i>
+                            <i class="bi bi-geo-alt text-accent"></i>
                             <span>{{ company_info.address|default:"Address coming soon" }}</span>
                         </div>
                     </div>
@@ -73,22 +97,22 @@
 
             <aside class="flex h-full flex-col gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm">
                 <div class="space-y-2">
-                    <span class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Portfolio</span>
+                    <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Portfolio</span>
                     <div class="flex items-end gap-2">
                         <p class="text-4xl font-heading font-semibold text-foreground" label-name="total">—</p>
                         <span class="text-sm text-muted-foreground">Total listings</span>
                     </div>
                 </div>
                 <div class="mt-auto space-y-3 text-sm text-muted-foreground">
-                    <p>Keep your listings up to date to maximize exposure and connect with prospects faster.</p>
-                    <a href="/property/create/" class="btn w-full justify-center">Add new listing</a>
+                    <p>Get your properties in front of 10,000+ verified buyers. Add a new listing and start getting qualified leads today.</p>
+                    <a href="/property/create/" class="btn w-full justify-center">List a property</a>
                 </div>
             </aside>
         </div>
 
         <section id="property-list" class="py-12">
             <div class="container">
-                <h1 class="text-2xl font-heading font-semibold text-foreground mb-6">Your Property Listings</h1>
+                <h1 class="text-2xl font-heading font-semibold text-foreground mb-6">Your verified property listings</h1>
                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" id="user-property-list">
                     <!-- Property cards loaded by JS -->
                 </div>
@@ -98,7 +122,9 @@
         {% include "components/property/card.html" %}
 
         <div class="hidden w-full rounded-2xl border border-dashed border-border bg-card/60 p-8 text-center text-sm text-muted-foreground" data-empty-state>
-            No listings found at the moment.
+            <p class="mb-2 font-semibold text-foreground">No listings yet</p>
+            <p class="mb-4">Get started by adding your first property and reaching thousands of verified buyers.</p>
+            <a href="/property/create/" class="btn inline-flex">List your first property</a>
         </div>
     </div>
 </section>

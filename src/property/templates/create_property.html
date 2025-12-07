@@ -3,18 +3,20 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Add new property</title>
+<title>Add New Property | Wizer Properties</title>
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
 {% endblock extend_head %}
 
 {% block content %}
 <section class="bg-muted/30 py-12">
     <div class="container max-w-6xl space-y-10">
         <header class="space-y-4">
-            <p class="text-xs font-semibold uppercase tracking-[0.4em] text-primary">Properties</p>
+            <p class="text-xs font-semibold uppercase tracking-[0.4em] text-accent">Properties</p>
             <div class="space-y-2">
-                <h1 class="text-3xl font-heading font-semibold text-foreground">Add new property</h1>
+                <h1 class="text-3xl font-heading font-semibold text-foreground">List your property and start getting qualified leads</h1>
                 <p class="max-w-2xl text-sm text-muted-foreground">
-                    Provide detailed information about the unit, pricing, media, and availability to publish a compelling listing.
+                    Get your property in front of 10,000+ verified buyers. Complete the form below—we'll verify everything and publish your listing within 24 hours.
                     Fields marked with <span class="text-destructive">*</span> are required.
                 </p>
             </div>
@@ -32,14 +34,14 @@
                 <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <h2 class="text-lg font-semibold text-foreground">Listing Overview</h2>
-                        <p class="text-sm text-muted-foreground">Headline and price information shown to prospects.</p>
+                        <p class="text-sm text-muted-foreground">Create a compelling first impression—this is what buyers see in search results.</p>
                     </div>
                 </div>
 
                 <div class="grid gap-6 md:grid-cols-2">
                     <label class="flex flex-col gap-2">
                         <span class="label">Title <span class="text-destructive">*</span></span>
-                        <input name="title" type="text" class="input" placeholder="Ex: Corner 2BR with River View" required>
+                        <input name="title" type="text" class="input" placeholder="e.g. Corner 2BR with River View in Thong Lo" required>
                     </label>
                     <div class="flex flex-col gap-2" formatted-price="input">
                         <div class="flex items-center justify-between">
@@ -58,7 +60,7 @@
                     <label class="flex flex-col gap-2">
                         <span class="label">Building <span class="text-destructive">*</span></span>
                         <select name="building" class="input" required>
-                            <option value="">Select building</option>
+                            <option value="">Choose building project</option>
                             {% for building in buildings %}
                                 <option value="{{ building.id }}">{{ building.title }}</option>
                             {% endfor %}
@@ -71,7 +73,7 @@
                 <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <h2 class="text-lg font-semibold text-foreground">Unit Specifications</h2>
-                        <p class="text-sm text-muted-foreground">Dimensions, identifiers, and bedroom/bathroom counts.</p>
+                        <p class="text-sm text-muted-foreground">Essential details buyers need to evaluate if this unit fits their needs.</p>
                     </div>
                 </div>
 
@@ -111,7 +113,7 @@
                 <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <h2 class="text-lg font-semibold text-foreground">Orientation & Views</h2>
-                        <p class="text-sm text-muted-foreground">Capture what residents see and how light flows through.</p>
+                        <p class="text-sm text-muted-foreground">Help buyers visualize the views, natural light, and orientation benefits.</p>
                     </div>
                 </div>
 
@@ -132,7 +134,7 @@
                     <label class="flex flex-col gap-2">
                         <span class="label">Unit Position <span class="text-destructive">*</span></span>
                         <select name="unit_position" class="input" required>
-                            <option value="">Select position</option>
+                            <option value="">Choose unit position</option>
                             <option value="left_corner">Left Corner</option>
                             <option value="right_corner">Right Corner</option>
                             <option value="center">Center</option>
@@ -145,33 +147,33 @@
                 <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <h2 class="text-lg font-semibold text-foreground">Availability & Features</h2>
-                        <p class="text-sm text-muted-foreground">Select the conditions that apply to this unit.</p>
+                        <p class="text-sm text-muted-foreground">Tell buyers about the unit's current status and special features.</p>
                     </div>
                 </div>
 
                 <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
-                        <input name="have_vacant" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="vacant">
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-accent/60">
+                        <input name="have_vacant" class="mt-1 size-4 rounded border-border text-accent focus:ring-accent" type="checkbox" id="vacant">
                         <span class="text-sm font-medium text-foreground">Vacant</span>
                     </label>
-                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
-                        <input name="have_owner_occupied" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="owner_occupied">
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-accent/60">
+                        <input name="have_owner_occupied" class="mt-1 size-4 rounded border-border text-accent focus:ring-accent" type="checkbox" id="owner_occupied">
                         <span class="text-sm font-medium text-foreground">Owner Occupied</span>
                     </label>
-                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
-                        <input name="have_tenant_occupied" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="tenant_occupied">
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-accent/60">
+                        <input name="have_tenant_occupied" class="mt-1 size-4 rounded border-border text-accent focus:ring-accent" type="checkbox" id="tenant_occupied">
                         <span class="text-sm font-medium text-foreground">Tenant Occupied</span>
                     </label>
-                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
-                        <input name="have_bathtub" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="bathtub">
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-accent/60">
+                        <input name="have_bathtub" class="mt-1 size-4 rounded border-border text-accent focus:ring-accent" type="checkbox" id="bathtub">
                         <span class="text-sm font-medium text-foreground">Bathtub</span>
                     </label>
-                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
-                        <input name="have_duplex" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="duplex">
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-accent/60">
+                        <input name="have_duplex" class="mt-1 size-4 rounded border-border text-accent focus:ring-accent" type="checkbox" id="duplex">
                         <span class="text-sm font-medium text-foreground">Duplex Layout</span>
                     </label>
-                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
-                        <input name="have_pets_allowed" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="pets_allowed">
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-accent/60">
+                        <input name="have_pets_allowed" class="mt-1 size-4 rounded border-border text-accent focus:ring-accent" type="checkbox" id="pets_allowed">
                         <span class="text-sm font-medium text-foreground">Pet Friendly</span>
                     </label>
                 </div>
@@ -180,7 +182,7 @@
                     <label class="flex flex-col gap-2">
                         <span class="label">Tenant Occupied Until</span>
                         <input name="tenant_occupied_validity" type="date" class="input" min="{{ now|date:'Y-m-d' }}">
-                        <span class="text-xs text-muted-foreground">Select the date when the unit becomes available.</span>
+                        <span class="text-xs text-muted-foreground">When will this unit be available for viewing or move-in?</span>
                     </label>
                 </div>
             </section>
@@ -189,7 +191,7 @@
                 <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <h2 class="text-lg font-semibold text-foreground">Narrative & AI Assist</h2>
-                        <p class="text-sm text-muted-foreground">Craft an engaging description or let AI draft one for you.</p>
+                        <p class="text-sm text-muted-foreground">Write a compelling listing description that sells—or let AI create one for you in seconds.</p>
                     </div>
                 </div>
 
@@ -201,11 +203,11 @@
                                 <span class="sr-only">Loading...</span>
                             </div>
                         </button>
-                        <p class="text-xs text-muted-foreground">We use your inputs to generate a professional listing summary. You can tweak it before saving.</p>
+                        <p class="text-xs text-muted-foreground">AI generates a professional description based on your property details. Review and edit it before publishing.</p>
                     </div>
                     <label class="flex flex-col gap-2 lg:col-span-2">
                         <span class="label">Description <span class="text-destructive">*</span></span>
-                        <textarea name="description" class="textarea min-h-[220px]" placeholder="Highlight the unit’s strengths, views, finishes, and nearby amenities." required></textarea>
+                        <textarea name="description" class="textarea min-h-[220px]" placeholder="Describe what makes this unit special—views, finishes, layout benefits, nearby amenities, and why buyers will love it..." required></textarea>
                     </label>
                 </div>
             </section>
@@ -214,7 +216,7 @@
                 <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <h2 class="text-lg font-semibold text-foreground">Media Uploads</h2>
-                        <p class="text-sm text-muted-foreground">High-quality media builds trust and accelerates interest.</p>
+                        <p class="text-sm text-muted-foreground">High-quality photos and videos help buyers visualize living here—listings with media get 3x more inquiries.</p>
                     </div>
                     <p class="text-xs text-muted-foreground">Images: JPG/PNG • Video: MP4/MOV</p>
                 </div>
@@ -225,7 +227,7 @@
                             <span class="label">Property Images <span class="text-destructive">*</span></span>
                             <input name="images" type="file" accept="image/*" class="input cursor-pointer" required multiple>
                         </label>
-                        <div class="fileName text-xs text-muted-foreground">Upload crisp photos that showcase the unit.</div>
+                        <div class="fileName text-xs text-muted-foreground">Upload high-quality photos of the unit interior, views, and key features.</div>
                         <div class="uploaded-file-view-area grid grid-cols-2 gap-3"></div>
                     </div>
 
@@ -234,7 +236,7 @@
                             <span class="label">Property Video <span class="text-destructive">*</span></span>
                             <input name="videos" type="file" accept="video/*" class="input cursor-pointer" required>
                         </label>
-                        <div class="fileName text-xs text-muted-foreground">Upload a walkthrough or highlight reel.</div>
+                        <div class="fileName text-xs text-muted-foreground">Upload a video walkthrough or highlight reel showing the unit's best features.</div>
                         <div class="uploaded-file-view-area"></div>
                     </div>
                 </div>
@@ -257,7 +259,7 @@
 <div class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 px-4 backdrop-blur-sm" data-property-description-modal>
     <div class="w-full max-w-3xl overflow-hidden rounded-2xl border border-border bg-card shadow-2xl">
         <div class="flex items-center justify-between border-b border-border px-6 py-4">
-            <h2 class="text-lg font-semibold text-foreground">Generated Description</h2>
+            <h2 class="text-lg font-semibold text-foreground">AI-generated description</h2>
             <button type="button" class="inline-flex size-9 items-center justify-center rounded-full border border-border bg-secondary/60 text-muted-foreground transition hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" data-property-description-close>
                 <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M18 6L6 18" />
@@ -270,11 +272,11 @@
             <textarea class="created-description-textarea textarea min-h-[220px]" placeholder="Generated description ..."></textarea>
 
             <section class="space-y-3 rounded-xl border border-dashed border-border bg-muted/40 p-4">
-                <p class="text-sm font-semibold text-foreground">Need a tweak?</p>
-                <p class="text-xs text-muted-foreground">Give the AI extra guidance and regenerate the copy instantly.</p>
+                <p class="text-sm font-semibold text-foreground">Want to refine it?</p>
+                <p class="text-xs text-muted-foreground">Tell the AI what to emphasize and it will regenerate the description instantly.</p>
                 <div class="re-generate-error-message text-sm text-destructive"></div>
                 <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
-                    <input type="text" class="class-chatbot-input input" name="instruction_of_modification" placeholder="Ex: Emphasize proximity to BTS and river view">
+                    <input type="text" class="class-chatbot-input input" name="instruction_of_modification" placeholder="e.g. Emphasize proximity to BTS and river view, highlight modern finishes">
                     <button type="button" class="regenerate-chatbot-send-btn btn sm:w-auto">
                         <i class="bi bi-send text-base"></i>
                         <span class="sr-only">Regenerate description</span>
@@ -285,7 +287,7 @@
 
         <div class="flex items-center justify-end gap-3 border-t border-border bg-muted/50 px-6 py-4">
             <button type="button" class="btn-secondary min-w-[120px] justify-center" data-property-description-close>Cancel</button>
-            <button type="button" class="btn min-w-[120px] justify-center add-to-description-field">Use Description</button>
+            <button type="button" class="btn min-w-[120px] justify-center add-to-description-field">Use this description</button>
         </div>
     </div>
 </div>

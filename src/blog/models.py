@@ -39,6 +39,10 @@ class Post(TimestampedModel):
 
     def __str__(self):
         return self.title
+    
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('blogs:blog_details', args=[self.slug])
 
     def clean(self):
         # import here to avoid changing top-of-file imports

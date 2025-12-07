@@ -1,22 +1,43 @@
 {% extends "base.html" %}
 {% load static %}
+{% load seo_tags %}
+
 {% block extend_head %}
-<title>WiSER | Insights & Stories</title>
+<title>Insights & Stories | Wizer Properties Blog</title>
+<meta name="description" content="Read the latest insights, guides, and stories about Bangkok property investment, real estate trends, and buying property in Thailand.">
+<meta name="keywords" content="bangkok property blog, thailand real estate news, property investment guides, bangkok property insights">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Insights & Stories | Wizer Properties Blog">
+<meta property="og:description" content="Read the latest insights, guides, and stories about Bangkok property investment and real estate trends.">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'media/logo.png' %}">
+<meta property="og:site_name" content="Wizer Properties">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Insights & Stories | Wizer Properties Blog">
+<meta name="twitter:description" content="Read the latest insights, guides, and stories about Bangkok property investment and real estate trends.">
+
+{% organization_schema %}
+
 <link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
 <link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
 {% endblock extend_head %}
 
 {% block content %}
 <section class="bg-muted/30 py-14 sm:py-20">
-    <div class="container max-w-6xl space-y-14">
+    <div class="container max-w-7xl space-y-14">
         <div class="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div class="space-y-5">
-                <p class="text-xs font-semibold uppercase tracking-[0.35em] text-primary">Insights & News</p>
+                <p class="text-xs font-semibold uppercase tracking-[0.35em] text-primary">Essential guides</p>
                 <h1 class="text-3xl font-heading font-semibold text-foreground sm:text-4xl">
-                    Stories shaping Thailand’s property market
+                    Get answers to your biggest Bangkok property questions
                 </h1>
                 <p class="max-w-2xl text-sm text-muted-foreground sm:text-base">
-                    Explore developer launches, financing trends, and investor playbooks curated by the WiSER editorial team. Filter articles by the topics you care about and stay ahead of every release.
+                    Learn about ownership laws, payment plans, hidden fees, and investment strategies—everything you need to buy property in Bangkok with confidence.
                 </p>
             </div>
             <div class="rounded-3xl border border-border bg-card/95 p-6 shadow-lg backdrop-blur">
@@ -60,7 +81,7 @@
             <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3" data-blog-grid></div>
             <div class="flex flex-col items-center gap-4">
                 <div class="hidden items-center gap-2 text-xs text-muted-foreground" data-blog-loader>
-                    <span class="inline-flex size-3 animate-spin rounded-full border-2 border-primary/20 border-t-primary"></span>
+                    <span class="inline-flex size-3 animate-spin rounded-full border-2 border-accent/20 border-t-accent"></span>
                     Loading stories…
                 </div>
                 <p class="hidden text-sm text-muted-foreground" data-blog-empty>No stories match your filters yet. Try selecting a different category.</p>

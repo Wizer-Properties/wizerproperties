@@ -2,7 +2,9 @@
 {% load static %}
 
 {% block extend_head %}
-<title>Prospect Dashboard</title>
+<title>Prospect Dashboard | Wizer Properties</title>
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
 <link rel="stylesheet" href="{% static '/css/libraries/dataTables.min.css' %}" />
 <style>
     /* Modern Toggle Switch */
@@ -45,7 +47,7 @@
     }
     
     .toggle-switch input:checked + .toggle-slider {
-        background-color: #10b981;
+        background-color: hsl(var(--accent));
     }
     
     .toggle-switch input:checked + .toggle-slider:before {
@@ -53,13 +55,13 @@
     }
     
     .toggle-switch input:focus + .toggle-slider {
-        outline: 2px solid #10b981;
+        outline: 2px solid hsl(var(--accent));
         outline-offset: 2px;
     }
     
     /* DataTables customization */
     .dataTables_wrapper .dataTables_filter input {
-        border: 1px solid #e2e8f0;
+        border: 1px solid hsl(var(--border));
         border-radius: 6px;
         padding: 8px 12px;
         font-size: 14px;
@@ -67,8 +69,8 @@
     
     .dataTables_wrapper .dataTables_filter input:focus {
         outline: none;
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        border-color: hsl(var(--primary));
+        box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1);
     }
     
     /* Quick Action Cards */
@@ -88,14 +90,14 @@
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Page Header -->
         <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900">My Dashboard</h1>
-            <p class="mt-2 text-sm text-gray-600">Track your property comparisons, reviews, and scheduled tours</p>
+            <h1 class="text-3xl font-bold text-gray-900">Your property search dashboard</h1>
+            <p class="mt-2 text-sm text-gray-600">See your saved properties, compare listings side-by-side, and track your scheduled viewings—all in one place</p>
         </div>
 
         <!-- Statistics Cards Grid -->
         <div class="mb-8 grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             <!-- Comparisons Card -->
-            <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 p-6 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+            <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-primary to-primary/80 p-6 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
                 <div class="relative z-10">
                     <div class="mb-2 flex items-center justify-between">
                         <p class="text-sm font-medium text-white/90">Comparisons</p>
@@ -109,7 +111,7 @@
             </div>
 
             <!-- Reviews Card -->
-            <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 p-6 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+            <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-accent to-accent/80 p-6 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
                 <div class="relative z-10">
                     <div class="mb-2 flex items-center justify-between">
                         <p class="text-sm font-medium text-white/90">Reviews</p>
@@ -123,7 +125,7 @@
             </div>
 
             <!-- Schedules Card -->
-            <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-teal-500 to-cyan-600 p-6 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+            <div class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-6 shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
                 <div class="relative z-10">
                     <div class="mb-2 flex items-center justify-between">
                         <p class="text-sm font-medium text-white/90">Schedules</p>
@@ -185,42 +187,42 @@
                 <!-- Comparison List Card -->
                 <a href="{% url 'property:comparison' %}" class="quick-action-card block overflow-hidden rounded-xl bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg">
                     <div class="flex flex-col items-center text-center">
-                        <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-pink-100">
-                            <svg class="h-8 w-8 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+                            <svg class="h-8 w-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
                             </svg>
                         </div>
-                        <h3 class="mb-2 text-lg font-semibold text-gray-900">Comparison List</h3>
+                        <h3 class="mb-2 text-lg font-semibold text-gray-900">Compare properties</h3>
                         <p class="mb-4 text-sm text-gray-600">Compare properties side by side</p>
-                        <span class="text-sm font-medium text-blue-600 hover:text-blue-700">See more →</span>
+                        <span class="text-sm font-medium text-accent hover:text-accent/80">See more →</span>
                     </div>
                 </a>
 
                 <!-- Saved Properties Card -->
                 <a href="{% url 'property:favorite_list' %}" class="quick-action-card block overflow-hidden rounded-xl bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg">
                     <div class="flex flex-col items-center text-center">
-                        <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
-                            <svg class="h-8 w-8 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+                        <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-accent/10">
+                            <svg class="h-8 w-8 text-accent" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                             </svg>
                         </div>
-                        <h3 class="mb-2 text-lg font-semibold text-gray-900">Saved Properties</h3>
+                        <h3 class="mb-2 text-lg font-semibold text-gray-900">Your saved properties</h3>
                         <p class="mb-4 text-sm text-gray-600">View your favorite listings</p>
-                        <span class="text-sm font-medium text-blue-600 hover:text-blue-700">See more →</span>
+                        <span class="text-sm font-medium text-accent hover:text-accent/80">See more →</span>
                     </div>
                 </a>
 
                 <!-- My Reviews Card -->
                 <a href="#" class="quick-action-card block overflow-hidden rounded-xl bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg">
                     <div class="flex flex-col items-center text-center">
-                        <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-yellow-100">
-                            <svg class="h-8 w-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-accent/10">
+                            <svg class="h-8 w-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                             </svg>
                         </div>
                         <h3 class="mb-2 text-lg font-semibold text-gray-900">My Reviews</h3>
                         <p class="mb-4 text-sm text-gray-600">Manage your property reviews</p>
-                        <span class="text-sm font-medium text-blue-600 hover:text-blue-700">See more →</span>
+                        <span class="text-sm font-medium text-accent hover:text-accent/80">See more →</span>
                     </div>
                 </a>
             </div>

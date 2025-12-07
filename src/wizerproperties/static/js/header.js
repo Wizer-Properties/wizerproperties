@@ -95,8 +95,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const desktopNavGroups = document.querySelectorAll("[data-nav-group]");
-  if (desktopNavGroups.length > 1) {
+  if (desktopNavGroups.length > 0) {
     desktopNavGroups.forEach((group) => {
+      let closeTimeout;
+
       group.addEventListener("toggle", () => {
         if (!group.open) return;
         desktopNavGroups.forEach((other) => {
@@ -104,6 +106,19 @@ document.addEventListener("DOMContentLoaded", () => {
             other.removeAttribute("open");
           }
         });
+      });
+
+      group.addEventListener("mouseenter", () => {
+        clearTimeout(closeTimeout);
+        if (!group.hasAttribute("open")) {
+          group.setAttribute("open", "");
+        }
+      });
+
+      group.addEventListener("mouseleave", () => {
+        closeTimeout = setTimeout(() => {
+          group.removeAttribute("open");
+        }, 150);
       });
     });
   }

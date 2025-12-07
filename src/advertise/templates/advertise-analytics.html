@@ -3,19 +3,21 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Advertise analytics</title>
+<title>Advertising Analytics | Wizer Properties</title>
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
 <link rel="stylesheet" href="{% static '/css/libraries/dataTables.min.css' %}" />
 {% endblock extend_head %}
 
 {% block content %}
 <section class="bg-muted/30 py-12">
-    <div class="container max-w-6xl space-y-10">
+    <div class="container max-w-7xl space-y-10">
         <header class="space-y-4">
             <p class="text-xs font-semibold uppercase tracking-[0.4em] text-primary">Advertise</p>
             <div class="space-y-2">
-                <h1 class="text-3xl font-heading font-semibold text-foreground">Engagement analytics</h1>
+                <h1 class="text-3xl font-heading font-semibold text-foreground">See exactly who's viewing your properties—and why they convert</h1>
                 <p class="max-w-3xl text-sm text-muted-foreground">
-                    Track how prospects interact with your campaigns, understand viewing habits, and dig into the best performing listings without leaving the dashboard experience.
+                    Track views, clicks, and conversions in real-time. Understand which properties get the most interest and optimize your campaigns to get more qualified leads.
                 </p>
             </div>
         </header>

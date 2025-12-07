@@ -87,6 +87,20 @@ $(document).ready(function () {
                 $emailInput.attr('aria-invalid', 'false');
                 $passwordInput.attr('aria-invalid', 'false');
 
+                // PostHog tracking - track login
+                if (typeof Analytics !== 'undefined') {
+                    Analytics.trackLogin('prospect', 'email');
+                    // Identify user if user data is available from response
+                    if (response.user_id || response.user) {
+                        const userId = response.user_id || (response.user && response.user.id);
+                        const userType = response.user_type || (response.user && response.user.user_type) || 'prospect';
+                        Analytics.setUserProperties(userId, {
+                            email: email,
+                            user_type: userType
+                        });
+                    }
+                }
+
                 setTimeout(function () {
                     window.location.href = nextUrl || "/";
                 }, 1000);

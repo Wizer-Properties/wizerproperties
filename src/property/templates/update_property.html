@@ -3,18 +3,20 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Edit property listing</title>
+<title>Edit Property Listing | Wizer Properties</title>
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
 {% endblock extend_head %}
 
 {% block content %}
 <section class="bg-muted/30 py-12">
     <div class="container max-w-6xl space-y-10">
         <header class="space-y-4">
-            <p class="text-xs font-semibold uppercase tracking-[0.4em] text-primary">Properties</p>
+            <p class="text-xs font-semibold uppercase tracking-[0.4em] text-accent">Properties</p>
             <div class="space-y-2">
-                <h1 class="text-3xl font-heading font-semibold text-foreground">Edit property listing</h1>
+                <h1 class="text-3xl font-heading font-semibold text-foreground">Update your property listing</h1>
                 <p class="max-w-2xl text-sm text-muted-foreground">
-                    Update the core details, availability, and media assets for this unit. Changes go live immediately after saving.
+                    Keep your listing accurate and compelling—update pricing, availability, and photos. Changes go live instantly so buyers always see the latest information.
                 </p>
             </div>
         </header>
@@ -151,28 +153,28 @@
                 </div>
 
                 <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
-                        <input name="have_vacant" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="vacant" {% if property.have_vacant %}checked{% endif %}>
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-accent/60">
+                        <input name="have_vacant" class="mt-1 size-4 rounded border-border text-accent focus:ring-accent" type="checkbox" id="vacant" {% if property.have_vacant %}checked{% endif %}>
                         <span class="text-sm font-medium text-foreground">Vacant</span>
                     </label>
-                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
-                        <input name="have_owner_occupied" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="owner_occupied" {% if property.have_owner_occupied %}checked{% endif %}>
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-accent/60">
+                        <input name="have_owner_occupied" class="mt-1 size-4 rounded border-border text-accent focus:ring-accent" type="checkbox" id="owner_occupied" {% if property.have_owner_occupied %}checked{% endif %}>
                         <span class="text-sm font-medium text-foreground">Owner Occupied</span>
                     </label>
-                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
-                        <input name="have_tenant_occupied" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="tenant_occupied" {% if property.have_tenant_occupied %}checked{% endif %}>
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-accent/60">
+                        <input name="have_tenant_occupied" class="mt-1 size-4 rounded border-border text-accent focus:ring-accent" type="checkbox" id="tenant_occupied" {% if property.have_tenant_occupied %}checked{% endif %}>
                         <span class="text-sm font-medium text-foreground">Tenant Occupied</span>
                     </label>
-                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
-                        <input name="have_bathtub" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="bathtub" {% if property.have_bathtub %}checked{% endif %}>
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-accent/60">
+                        <input name="have_bathtub" class="mt-1 size-4 rounded border-border text-accent focus:ring-accent" type="checkbox" id="bathtub" {% if property.have_bathtub %}checked{% endif %}>
                         <span class="text-sm font-medium text-foreground">Bathtub</span>
                     </label>
-                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
-                        <input name="have_duplex" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="duplex" {% if property.have_duplex %}checked{% endif %}>
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-accent/60">
+                        <input name="have_duplex" class="mt-1 size-4 rounded border-border text-accent focus:ring-accent" type="checkbox" id="duplex" {% if property.have_duplex %}checked{% endif %}>
                         <span class="text-sm font-medium text-foreground">Duplex Layout</span>
                     </label>
-                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-primary/60">
-                        <input name="have_pets_allowed" class="mt-1 size-4 rounded border-border text-primary focus:ring-primary" type="checkbox" id="pets_allowed" {% if property.have_pets_allowed %}checked{% endif %}>
+                    <label class="flex items-start gap-3 rounded-lg border border-border bg-card/60 p-3 shadow-sm transition hover:border-accent/60">
+                        <input name="have_pets_allowed" class="mt-1 size-4 rounded border-border text-accent focus:ring-accent" type="checkbox" id="pets_allowed" {% if property.have_pets_allowed %}checked{% endif %}>
                         <span class="text-sm font-medium text-foreground">Pet Friendly</span>
                     </label>
                 </div>

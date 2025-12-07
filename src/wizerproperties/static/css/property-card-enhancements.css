@@ -1,0 +1,97 @@
+/* Property Card Enhancements - Rightmove-inspired improvements */
+
+/* Thumbnail Previews */
+[data-card-thumbnails] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+[data-card-thumbnails] img {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+[data-card-thumbnails] img:hover {
+  transform: scale(1.05);
+}
+
+/* Property Type Badge */
+[data-card-property-type] {
+  white-space: nowrap;
+}
+
+/* Enhanced Developer Branding */
+[data-card-developer-image] {
+  border-radius: 0.75rem;
+}
+
+[data-card-developer-phone] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+[data-card-developer-phone]:hover {
+  text-decoration: underline;
+}
+
+/* Property Description */
+[data-card-description] {
+  line-height: 1.6;
+}
+
+/* Enhanced Badges */
+[data-card-badges] span {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  letter-spacing: 0.05em;
+}
+
+/* Breadcrumb Styling */
+nav[aria-label="Breadcrumb"] a {
+  transition: color 0.2s ease;
+}
+
+nav[aria-label="Breadcrumb"] a:hover {
+  color: hsl(var(--primary));
+}
+
+/* Save Search Button States */
+.save-search-btn {
+  transition: all 0.2s ease;
+}
+
+.save-search-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.save-search-btn.bg-accent\/20 {
+  background-color: hsl(var(--accent) / 0.2);
+}
+
+/* Results Summary Bar Enhancements */
+.sorting-map-wrapper {
+  transition: box-shadow 0.2s ease;
+}
+
+.sorting-map-wrapper:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  [data-card-thumbnails] {
+    gap: 0.375rem;
+  }
+  
+  [data-card-thumbnails] .h-12 {
+    height: 2.5rem;
+    width: 2.5rem;
+  }
+  
+  .sorting-map-wrapper {
+    padding: 0.875rem;
+  }
+}
+

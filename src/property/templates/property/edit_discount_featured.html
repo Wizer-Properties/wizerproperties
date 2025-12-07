@@ -3,17 +3,19 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>{{ page_title }}</title>
+<title>{{ page_title }} | Wizer Properties</title>
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
 {% endblock extend_head %}
 
 {% block content %}
 <section class="bg-muted/40 py-12">
-    <div class="container max-w-3xl">
+    <div class="container max-w-6xl">
         <div class="rounded-2xl border border-border bg-card p-8 shadow-sm">
             <div class="space-y-3">
-                <p class="text-xs font-semibold uppercase tracking-[0.4em] text-primary">{{ property_type|title }} promotion</p>
-                <h1 class="text-3xl font-heading font-semibold text-foreground">{{ page_title }}</h1>
-                <p class="text-sm text-muted-foreground">Update the active period of your {{ property_type }} promotion.</p>
+                <p class="text-xs font-semibold uppercase tracking-[0.4em] text-accent">{{ property_type|title }} promotion</p>
+                <h1 class="text-3xl font-heading font-semibold text-foreground">Extend your {{ property_type }} promotion</h1>
+                <p class="text-sm text-muted-foreground">Keep your property featured longer to reach more buyers. Update the expiry date to extend visibility.</p>
             </div>
 
             {% if property_type == 'discount' and discount_property %}
@@ -49,10 +51,10 @@
                 <div class="space-y-2">
                     <label class="form-label text-sm font-semibold text-foreground" for="expiry_date">New Expiry Date <span class="text-destructive">*</span></label>
                     <input type="date" name="expiry_date" id="expiry_date" class="input" required value="{% if property_type == 'discount' and discount_property.period %}{{ discount_property.period|date:'Y-m-d' }}{% elif property_type == 'featured' and featured_property.expiry_date %}{{ featured_property.expiry_date|date:'Y-m-d' }}{% endif %}">
-                    <p class="text-xs text-muted-foreground">Select when the {{ property_type }} promotion should end.</p>
+                    <p class="text-xs text-muted-foreground">Choose when this promotion expires. Longer promotions reach more buyers and drive more inquiries.</p>
                 </div>
 
-                <button type="submit" class="btn w-full justify-center">Update Expiry</button>
+                <button type="submit" class="btn w-full justify-center">Extend promotion</button>
 
                 {% if property_type == 'discount' %}
                     <a href="{% url 'property:discount_list' %}" class="btn-secondary w-full justify-center">Cancel</a>

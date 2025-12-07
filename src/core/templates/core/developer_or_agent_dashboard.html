@@ -2,7 +2,9 @@
 {% load static %}
 
 {% block extend_head %}
-<title>Developer or Agent Dashboard</title>
+<title>Developer or Agent Dashboard | Wizer Properties</title>
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
 <link rel="stylesheet" href="{% static '/css/libraries/dataTables.min.css' %}" />
 <style>
     /* Modern Toggle Switch */
@@ -78,8 +80,8 @@
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Page Header -->
         <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
-            <p class="mt-2 text-sm text-gray-600">Manage your buildings, properties, and promotional campaigns</p>
+            <h1 class="text-3xl font-bold text-gray-900">Your property performance dashboard</h1>
+            <p class="mt-2 text-sm text-gray-600">See how many buyers are viewing your properties, track inquiries, and optimize your campaigns to get more qualified leads</p>
         </div>
 
         <!-- Statistics Cards Grid -->

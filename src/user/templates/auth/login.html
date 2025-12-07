@@ -3,78 +3,142 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Login</title>
+<title>Sign In | Access Your Account | Wizer Properties</title>
+<meta name="description" content="Sign in to access your saved searches, favorite properties, and price alerts instantly. Everything syncs across your devices.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
 {% endblock extend_head %}
 
 {% block content %}
-
-<div class="grid gap-12 lg:grid-cols-[1.05fr_1fr]">
-    <aside class="relative hidden overflow-hidden rounded-3xl border border-border bg-muted/20 px-10 py-12 shadow-sm lg:block">
-        <div class="absolute inset-0 bg-gradient-to-br from-primary/15 via-transparent to-primary/5"></div>
-        <div class="relative flex h-full flex-col justify-between">
+{% with from_param=request.GET.from %}
+<div class="grid gap-8 lg:grid-cols-[1fr_1fr] lg:gap-12">
+    <!-- Left Sidebar: Context-Aware Messaging -->
+    <aside class="relative hidden overflow-hidden rounded-3xl border border-[#53535fcc]/20 bg-gradient-to-br from-[#f2f3f4] via-[#f2f3f4] to-[#b8e9e0]/30 px-8 py-12 shadow-lg lg:block">
+        <div class="relative z-10 flex h-full flex-col justify-between">
             <div>
-                <p class="text-sm font-semibold uppercase tracking-widest text-primary/80">
-                    Welcome back
-                </p>
-                <h2 class="mt-4 text-3xl font-heading font-semibold text-foreground">
-                    Keep every property workflow on track.
+                <a href="{% if from_param == 'developer' %}{% url 'developer-home' %}{% else %}/{% endif %}" class="inline-flex items-center gap-2 text-sm font-medium text-[#53535fcc] transition hover:text-[#00deb6] mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Back to homepage
+                </a>
+                
+                <div class="mb-8">
+                    <span class="inline-flex items-center gap-2 rounded-full bg-[#b8e9e0]/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#00deb6]">
+                        Welcome Back
+                    </span>
+                    <h2 class="mt-6 text-3xl font-heading font-semibold leading-tight text-[#262637]">
+                        {% if from_param == 'developer' %}
+                    Get back to managing your properties faster
+                        {% else %}
+                        Access your saved properties and price alerts
+                        {% endif %}
                 </h2>
-                <p class="mt-3 text-base text-muted-foreground">
-                    Monitor inquiries, update listings, and coordinate your team without juggling spreadsheets or endless email threads.
+                    <p class="mt-4 text-base leading-relaxed text-[#53535fcc]">
+                        {% if from_param == 'developer' %}
+                        Access your dashboard, manage listings, track leads, and collaborate with your team. Everything syncs across your devices.
+                        {% else %}
+                        Sign in to continue where you left off. Your saved searches, favorites, and alerts are waiting for you.
+                        {% endif %}
                 </p>
             </div>
-            <div class="mt-12 space-y-6">
-                <div class="flex items-start gap-4 rounded-2xl border border-border bg-background/60 p-5 shadow-sm backdrop-blur">
-                    <div class="mt-1 h-10 w-10 rounded-full bg-primary/10 text-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto mt-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+
+                <div class="space-y-4">
+                    {% if from_param == 'developer' %}
+                    <div class="flex items-start gap-4 rounded-xl border border-[#53535fcc]/10 bg-white/60 p-4 backdrop-blur-sm">
+                        <div class="flex-shrink-0 rounded-lg bg-[#b8e9e0]/20 p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#00deb6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                         </svg>
                     </div>
                     <div>
-                        <h3 class="text-base font-semibold text-foreground">Stay on schedule</h3>
-                        <p class="mt-1 text-sm text-muted-foreground">
-                            Sync property availability and keep marketing timelines aligned without switching tabs.
-                        </p>
+                            <h3 class="text-sm font-semibold text-[#262637]">Dashboard analytics</h3>
+                            <p class="mt-1 text-xs text-[#53535fcc]">Track views, inquiries, and conversion rates in real-time.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 rounded-xl border border-[#53535fcc]/10 bg-white/60 p-4 backdrop-blur-sm">
+                        <div class="flex-shrink-0 rounded-lg bg-[#b8e9e0]/20 p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#00deb6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-semibold text-[#262637]">24/7 platform access</h3>
+                            <p class="mt-1 text-xs text-[#53535fcc]">Manage properties and respond to inquiries anytime, anywhere.</p>
                     </div>
                 </div>
-                <div class="flex items-start gap-4 rounded-2xl border border-border bg-background/60 p-5 shadow-sm backdrop-blur">
-                    <div class="mt-1 h-10 w-10 rounded-full bg-primary/10 text-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto mt-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.5 19.5l4.5-4.5m0 0l4.5 4.5m-4.5-4.5v-6.75A2.25 2.25 0 0114.25 6h3" />
+                    {% else %}
+                    <div class="flex items-start gap-4 rounded-xl border border-[#53535fcc]/10 bg-white/60 p-4 backdrop-blur-sm">
+                        <div class="flex-shrink-0 rounded-lg bg-[#b8e9e0]/20 p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#00deb6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                         </svg>
                     </div>
                     <div>
-                        <h3 class="text-base font-semibold text-foreground">Accelerate approvals</h3>
-                        <p class="mt-1 text-sm text-muted-foreground">
-                            Quickly review submissions, coordinate revisions, and publish updates in real time.
-                        </p>
+                            <h3 class="text-sm font-semibold text-[#262637]">Saved favorites</h3>
+                            <p class="mt-1 text-xs text-[#53535fcc]">Access all your saved properties and compare them side-by-side.</p>
+                        </div>
                     </div>
+                    <div class="flex items-start gap-4 rounded-xl border border-[#53535fcc]/10 bg-white/60 p-4 backdrop-blur-sm">
+                        <div class="flex-shrink-0 rounded-lg bg-[#b8e9e0]/20 p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#00deb6]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-semibold text-[#262637]">Price alerts</h3>
+                            <p class="mt-1 text-xs text-[#53535fcc]">Get notified when properties match your criteria or prices change.</p>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
-            <div class="mt-12 flex items-center gap-4 text-sm text-muted-foreground">
-                <div class="h-px flex-1 bg-border"></div>
-                Trusted by over <span class="font-semibold text-foreground">1,200+</span> agents
-                <div class="h-px flex-1 bg-border"></div>
+
+            <div class="mt-8 pt-8 border-t border-[#53535fcc]/20">
+                <p class="text-center text-xs text-[#53535fcc]">
+                    {% if from_param == 'developer' %}
+                    Trusted by developers saving 90%+ on marketing costs
+                    {% else %}
+                    Trusted by 1,200+ agents and thousands of property buyers
+                    {% endif %}
+                </p>
             </div>
         </div>
     </aside>
 
-    <section class="space-y-8">
-        <header class="space-y-3 text-center lg:text-left">
-            <h1 class="text-3xl font-heading font-semibold text-foreground">
-                Access your WiSER dashboard
+    <!-- Right Side: Login Form -->
+    <section class="flex flex-col justify-center space-y-8">
+        <div class="lg:hidden mb-4">
+            <a href="{% if from_param == 'developer' %}{% url 'developer-home' %}{% else %}/{% endif %}" class="inline-flex items-center gap-2 text-sm font-medium text-[#53535fcc] transition hover:text-[#00deb6]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Back
+            </a>
+        </div>
+
+        <header class="space-y-2">
+            <h1 class="text-2xl font-heading font-semibold text-[#262637] lg:text-3xl">
+                Sign in to your account
             </h1>
-            <p class="text-base text-muted-foreground">
-                Review conversations, publish marketing assets, and stay aligned with your team from one place.
+            <p class="text-sm text-[#53535fcc] lg:text-base">
+                {% if from_param == 'developer' %}
+                Access your dashboard and manage your properties.
+                {% else %}
+                Welcome back! Sign in to continue.
+                {% endif %}
             </p>
         </header>
 
-        <section class="space-y-6">
+        <div class="space-y-6">
+            <!-- Error Messages -->
             <div class="auth-response-messages space-y-3" role="alert" aria-live="polite" aria-atomic="true"></div>
-            <form class="space-y-6" onsubmit="return false;" novalidate aria-label="Sign in form">
+
+            <!-- Login Form -->
+            <form onsubmit="return false;" novalidate aria-label="Sign in form" class="space-y-5">
                 <div class="space-y-2">
-                    <label for="email" class="text-sm font-medium text-muted-foreground">
-                        Email address
+                    <label for="email" class="block text-sm font-medium text-[#262637]">
+                        Email address <span class="text-red-500">*</span>
                     </label>
                     <input
                         id="email"
@@ -87,17 +151,17 @@
                         aria-required="true"
                         aria-describedby="email-error"
                         aria-invalid="false"
-                        class="w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        class="w-full rounded-xl border border-[#53535fcc]/20 bg-white px-4 py-3.5 text-base text-[#262637] shadow-sm transition-all duration-200 focus:border-[#00deb6] focus:outline-none focus:ring-2 focus:ring-[#00deb6]/20 hover:border-[#53535fcc]/30"
                     >
-                    <div id="email-error" class="sr-only" role="alert"></div>
+                    <div id="email-error" class="mt-1 text-xs text-red-600 hidden" role="alert"></div>
                 </div>
 
                 <div class="space-y-2">
                     <div class="flex items-center justify-between">
-                        <label for="password" class="text-sm font-medium text-muted-foreground">
-                            Password
+                        <label for="password" class="block text-sm font-medium text-[#262637]">
+                            Password <span class="text-red-500">*</span>
                         </label>
-                        <a href="{% url 'user:forgot_password' %}" class="text-sm font-medium text-primary transition hover:text-primary/80" aria-label="Forgot your password?">
+                        <a href="{% url 'user:forgot_password' %}{% if from_param %}?from={{ from_param }}{% endif %}" class="text-sm font-medium text-[#00deb6] transition hover:text-[#00deb6]/80 hover:underline" aria-label="Forgot your password?">
                             Forgot password?
                         </a>
                     </div>
@@ -105,57 +169,62 @@
                         id="password"
                         type="password"
                         name="password"
-                        placeholder="••••••••"
+                        placeholder="Enter your password"
                         autocomplete="current-password"
                         required
                         aria-required="true"
                         aria-describedby="password-error"
                         aria-invalid="false"
-                        class="w-full rounded-xl border border-border bg-background px-4 py-3 text-base text-foreground shadow-sm transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        class="w-full rounded-xl border border-[#53535fcc]/20 bg-white px-4 py-3.5 text-base text-[#262637] shadow-sm transition-all duration-200 focus:border-[#00deb6] focus:outline-none focus:ring-2 focus:ring-[#00deb6]/20 hover:border-[#53535fcc]/30"
                     >
-                    <div id="password-error" class="sr-only" role="alert"></div>
+                    <div id="password-error" class="mt-1 text-xs text-red-600 hidden" role="alert"></div>
                 </div>
 
                 <button
                     type="submit"
-                    class="inline-flex w-full items-center justify-center gap-3 rounded-xl bg-primary px-5 py-3 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/30 transition hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                    class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#00deb6] px-6 py-3.5 text-base font-semibold text-[#000433] shadow-lg shadow-[#00deb6]/30 transition-all duration-200 hover:bg-[#00deb6]/90 hover:shadow-xl hover:shadow-[#00deb6]/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00deb6] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-lg"
                     button-name="log-in"
                     aria-label="Sign in to your account"
                     aria-busy="false"
                 >
-                    Sign in
+                    <span>Sign in</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
                 </button>
             </form>
 
-            <div class="relative flex items-center justify-center">
-                <div class="h-px w-full bg-border"></div>
-                <span class="absolute bg-card px-4 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    Or continue with
-                </span>
+            <!-- Divider -->
+            <div class="relative flex items-center py-4">
+                <div class="flex-grow border-t border-[#53535fcc]/20"></div>
+                <span class="mx-4 flex-shrink text-xs font-medium uppercase tracking-wide text-[#53535fcc]">Or continue with</span>
+                <div class="flex-grow border-t border-[#53535fcc]/20"></div>
             </div>
 
-            <form action="{% url 'google_login' %}" method="post" class="space-y-4" aria-label="Sign in with Google">
+            <!-- Google Login -->
+            <form action="{% url 'google_login' %}" method="post" aria-label="Sign in with Google">
                 {% csrf_token %}
                 <button
                     type="submit"
-                    class="inline-flex w-full items-center justify-center gap-3 rounded-xl border border-border bg-background px-5 py-3 text-base font-semibold text-foreground transition hover:border-primary hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                    class="w-full inline-flex items-center justify-center gap-3 rounded-xl border-2 border-[#53535fcc]/20 bg-white px-6 py-3.5 text-base font-semibold text-[#262637] transition-all duration-200 hover:border-[#00deb6] hover:bg-[#f2f3f4] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00deb6]"
                     aria-label="Continue with Google account"
                 >
                     <img width="20" height="20" src="{% static 'media/icons/google_icon.webp' %}" alt="Google logo" aria-hidden="true">
-                    Continue with Google
+                    <span>Continue with Google</span>
                 </button>
             </form>
 
-            <p class="text-center text-sm text-muted-foreground">
+            <!-- Sign Up Link -->
+            <p class="text-center text-sm text-[#53535fcc]">
                 New here?
-                <a href="{% url 'user:signup' %}" class="font-semibold text-primary transition hover:text-primary/80">
+                <a href="{% url 'user:signup' %}{% if from_param %}?from={{ from_param }}{% endif %}" class="font-semibold text-[#00deb6] transition hover:text-[#00deb6]/80 hover:underline">
                     Create an account
                 </a>
             </p>
-        </section>
+        </div>
     </section>
 </div>
-
+{% endwith %}
 {% endblock %}
 
 {% block extend_script %}

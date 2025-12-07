@@ -70,6 +70,10 @@ class Building(TimestampedModel):
 
     def __str__(self):
         return str(self.title) if self.title else str(self.id)
+    
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('building:get', args=[self.id])
 
     def clean(self):
         error_messages = {}

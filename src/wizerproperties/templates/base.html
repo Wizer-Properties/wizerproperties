@@ -11,8 +11,9 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/tailwind.css' %}?v=1.00" />
+    <link rel="stylesheet" href="{% static 'css/ads.css' %}?v=1.00" />
+    <link rel="stylesheet" href="{% static 'css/property-card-enhancements.css' %}?v=1.00" />
 
     {% block extend_head %}{% endblock extend_head %}
 
@@ -22,13 +23,64 @@
     <link rel="stylesheet" href="{% static 'css/header.css' %}?v=1.05" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.09" />
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MRZK1TTB7H"></script>
+    <!-- Google Analytics 4 -->
+    {% if GA4_MEASUREMENT_ID %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ GA4_MEASUREMENT_ID }}"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-MRZK1TTB7H');
+        gtag('config', '{{ GA4_MEASUREMENT_ID }}', {
+            page_path: window.location.pathname,
+            page_title: document.title
+        });
+    </script>
+    {% endif %}
+
+    <!-- Analytics Tracking Module -->
+    <script src="{% static 'js/analytics.js' %}?v=1.00"></script>
+    <script>
+        // Initialize Analytics with configuration from Django
+        (function() {
+            const analyticsConfig = {
+                enabled: true,
+                {% if GA4_MEASUREMENT_ID %}
+                ga4Id: '{{ GA4_MEASUREMENT_ID }}',
+                {% endif %}
+                {% if META_PIXEL_ID %}
+                metaPixelId: '{{ META_PIXEL_ID }}',
+                {% endif %}
+                {% if POSTHOG_API_KEY and POSTHOG_HOST %}
+                posthogKey: '{{ POSTHOG_API_KEY }}',
+                posthogHost: '{{ POSTHOG_HOST }}',
+                {% endif %}
+            };
+            
+            // Initialize when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    if (window.Analytics) {
+                        window.Analytics.init(analyticsConfig);
+                        // Identify authenticated user (without PII)
+                        {% if request.user.is_authenticated %}
+                        Analytics.setUserProperties({{ request.user.id }}, {
+                            user_type: '{{ request.user.user_type|default:"prospect" }}'
+                        });
+                        {% endif %}
+                    }
+                });
+            } else {
+                if (window.Analytics) {
+                    window.Analytics.init(analyticsConfig);
+                    // Identify authenticated user (without PII)
+                    {% if request.user.is_authenticated %}
+                    Analytics.setUserProperties({{ request.user.id }}, {
+                        user_type: '{{ request.user.user_type|default:"prospect" }}'
+                    });
+                    {% endif %}
+                }
+            }
+        })();
     </script>
 </head>
 
@@ -50,153 +102,220 @@
 {% url 'advertise:analytics' as ads_analytics_url %}
 {% url 'advertise:performance' as ads_performance_url %}
 {% url 'reels' as reels_url %}
+{% url 'developer-home' as developer_home_url %}
+{% url 'developer-pricing' as developer_pricing_url %}
 
 <body class="min-h-screen bg-background text-foreground font-sans antialiased">
     <div class="flex min-h-screen flex-col">
         <header class="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur" data-site-header>
             <div class="container flex h-20 items-center justify-between gap-6">
                 <div class="flex items-center gap-6">
-                    <a href="/" class="flex items-center gap-3 rounded-full p-1 transition hover:opacity-80" data-brand>
-                        <img src="{% static 'media/logo.png' %}" alt="WiSER Properties" class="h-10 w-auto transition-all duration-300" data-brand-large>
-                        <img src="{% static 'media/icons/favicon.ico' %}" alt="WiSER Properties" class="hidden size-9 rounded-full transition-all duration-300" data-brand-compact>
-                        <span class="sr-only">WiSER Properties</span>
+                    <a href="{% if request.user.is_authenticated and request.user.user_type in 'developer,agent' %}{% url 'developer-home' %}{% else %}/{% endif %}" class="flex items-center gap-3 rounded-full p-1 transition hover:opacity-80" data-brand>
+                        <img src="{% static 'media/logo.png' %}" alt="Wizer Properties" class="h-10 w-auto transition-all duration-300" data-brand-large>
+                        <img src="{% static 'media/icons/favicon.ico' %}" alt="Wizer Properties" class="hidden size-9 rounded-full transition-all duration-300" data-brand-compact>
+                        <span class="sr-only">Wizer Properties</span>
                     </a>
                 </div>
 
                 <nav class="hidden items-center gap-4 text-sm font-medium text-muted-foreground lg:flex">
-                    <details class="nav-group" data-nav-group>
-                        <summary class="nav-trigger">
-                            <span>Marketplace</span>
-                            <svg class="size-3 transition group-open:-rotate-180" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="m4 6 4 4 4-4" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </summary>
-                        <div class="nav-popover">
-                            <p class="nav-section-title">For buyers</p>
-                            <div class="nav-popover-stack">
-                                <a href="{{ property_search_url }}" class="nav-menu-link {% if request.path == property_search_url %}nav-menu-active{% endif %}">
-                                    <span class="nav-menu-label">Search homes</span></br>
-                                    <span class="nav-menu-description">Browse listings by city, budget, and amenities.</span>
-                                </a>
-                                <a href="{{ comparison_property_url }}" class="nav-menu-link {% if request.path == comparison_property_url %}nav-menu-active{% endif %}">
-                                    <span class="nav-menu-label">Compare properties</span></br>
-                                    <span class="nav-menu-description">Evaluate floor plans, pricing, and incentives side-by-side.</span>
-                                </a>
-                                {% if request.user.is_authenticated and request.user.user_type == "prospect" %}
-                                    <a href="{{ favorite_list_property_url }}" class="nav-menu-link {% if request.path == favorite_list_property_url %}nav-menu-active{% endif %}">
-                                        <span class="nav-menu-label">Saved listings</span></br>
-                                        <span class="nav-menu-description">Quickly revisit the homes you’ve shortlisted.</span>
-                                    </a>
-                                {% endif %}
-                            </div>
-                            <p class="nav-section-title">Featured picks</p>
-                            <div class="nav-popover-stack">
-                                <a href="{{ featured_property_url }}" class="nav-menu-link {% if request.path == featured_property_url %}nav-menu-active{% endif %}">
-                                    <span class="nav-menu-label">Featured homes</span></br>
-                                    <span class="nav-menu-description">Explore curated projects with exclusive visibility.</span>
-                                </a>
-                                <a href="{{ reels_url }}" class="nav-menu-link {% if request.path == reels_url %}nav-menu-active{% endif %}">
-                                    <span class="nav-menu-label">Property reels</span></br>
-                                    <span class="nav-menu-description">Watch short-form video tours from verified partners.</span>
-                                </a>
-                            </div>
-                        </div>
-                    </details>
-
-                    <details class="nav-group" data-nav-group>
-                        <summary class="nav-trigger">
-                            <span>Sell & Advertise</span>
-                            <svg class="size-3 transition group-open:-rotate-180" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="m4 6 4 4 4-4" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </summary>
-                        <div class="nav-popover">
-                            {% if request.user.is_authenticated and request.user.user_type in "developer,agent" %}
-                                <p class="nav-section-title">Partner tools</p>
+                    {% if request.user.is_authenticated and request.user.user_type in "developer,agent" %}
+                        {# DEVELOPER NAVIGATION #}
+                        <details class="nav-group" data-nav-group>
+                            <summary class="nav-trigger">
+                                <span>Product</span>
+                                <svg class="size-3 transition group-open:-rotate-180" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="m4 6 4 4 4-4" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </summary>
+                            <div class="nav-popover">
+                                <p class="nav-section-title">Platform features</p>
                                 <div class="nav-popover-stack">
+                                    <a href="{{ developer_home_url }}" class="nav-menu-link {% if request.path == developer_home_url %}nav-menu-active{% endif %}">
+                                        <span class="nav-menu-label">How it works</span></br>
+                                        <span class="nav-menu-description">See how to sell your unsold inventory at a fraction of launch costs.</span>
+                                    </a>
+                                    <a href="{{ developer_pricing_url }}" class="nav-menu-link {% if request.path == developer_pricing_url %}nav-menu-active{% endif %}">
+                                        <span class="nav-menu-label">Pricing & plans</span></br>
+                                        <span class="nav-menu-description">Simple, transparent pricing—no commission fees, cancel anytime.</span>
+                                    </a>
                                     <a href="{{ create_property_url }}" class="nav-menu-link {% if request.path == create_property_url %}nav-menu-active{% endif %}">
                                         <span class="nav-menu-label">List a property</span></br>
-                                        <span class="nav-menu-description">Publish new residential listings in minutes.</span>
+                                        <span class="nav-menu-description">Upload properties with 3D tours and start reaching qualified buyers.</span>
                                     </a>
                                     <a href="{{ create_building_url }}" class="nav-menu-link {% if request.path == create_building_url %}nav-menu-active{% endif %}">
                                         <span class="nav-menu-label">Add a project</span></br>
-                                        <span class="nav-menu-description">Launch a new development with branding-ready assets.</span>
-                                    </a>
-                                    <a href="{{ create_reels_url }}" class="nav-menu-link {% if request.path == create_reels_url %}nav-menu-active{% endif %}">
-                                        <span class="nav-menu-label">Create reels</span></br>
-                                        <span class="nav-menu-description">Produce vertical video ads that plug into campaign funnels.</span>
+                                        <span class="nav-menu-description">Launch your development with verified data and immersive media.</span>
                                     </a>
                                 </div>
-                                <p class="nav-section-title">Campaign performance</p>
+                                <p class="nav-section-title">Campaign management</p>
                                 <div class="nav-popover-stack">
                                     <a href="{{ ads_analytics_url }}" class="nav-menu-link {% if request.path == ads_analytics_url %}nav-menu-active{% endif %}">
                                         <span class="nav-menu-label">Analytics</span></br>
-                                        <span class="nav-menu-description">Track ad spend, engagement, and qualified inquiry volume.</span>
+                                        <span class="nav-menu-description">Track views, leads, and conversions—optimize your campaigns.</span>
                                     </a>
                                     <a href="{{ ads_performance_url }}" class="nav-menu-link {% if request.path == ads_performance_url %}nav-menu-active{% endif %}">
-                                        <span class="nav-menu-label">Ads performance</span></br>
-                                        <span class="nav-menu-description">Review campaign benchmarks and optimize placements.</span>
+                                        <span class="nav-menu-label">Performance</span></br>
+                                        <span class="nav-menu-description">See which ads bring the most qualified buyers—maximize ROI.</span>
+                                    </a>
+                                    <a href="{{ create_reels_url }}" class="nav-menu-link {% if request.path == create_reels_url %}nav-menu-active{% endif %}">
+                                        <span class="nav-menu-label">Create video tours</span></br>
+                                        <span class="nav-menu-description">Showcase properties with video—drive more views and inquiries.</span>
                                     </a>
                                 </div>
-                            {% else %}
-                                <p class="nav-section-title">Become a partner</p>
+                            </div>
+                        </details>
+
+                        <details class="nav-group" data-nav-group>
+                            <summary class="nav-trigger">
+                                <span>Resources</span>
+                                <svg class="size-3 transition group-open:-rotate-180" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="m4 6 4 4 4-4" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </summary>
+                            <div class="nav-popover">
+                                <p class="nav-section-title">Learning & support</p>
                                 <div class="nav-popover-stack">
-                                    <a href="{% url 'user:login' %}" class="nav-menu-link">
-                                        <span class="nav-menu-label">Sign in to publish</span></br>
-                                        <span class="nav-menu-description">Access listing management, analytics, and creative tools.</span>
+                                    <a href="{{ blog_list_url }}" class="nav-menu-link {% if request.path == blog_list_url %}nav-menu-active{% endif %}">
+                                        <span class="nav-menu-label">Blog & insights</span></br>
+                                        <span class="nav-menu-description">Property marketing tips, market trends, and platform updates.</span>
+                                    </a>
+                                    <a href="#" class="nav-menu-link">
+                                        <span class="nav-menu-label">Case studies</span></br>
+                                        <span class="nav-menu-description">See how developers are selling inventory faster with Wizer.</span>
+                                    </a>
+                                    <a href="#" class="nav-menu-link">
+                                        <span class="nav-menu-label">Guides & tutorials</span></br>
+                                        <span class="nav-menu-description">Step-by-step guides for listing properties and using credits.</span>
                                     </a>
                                     <a href="{{ contact_url }}" class="nav-menu-link {% if request.path == contact_url %}nav-menu-active{% endif %}">
-                                        <span class="nav-menu-label">Talk to our team</span></br>
-                                        <span class="nav-menu-description">Schedule a walkthrough of WiSER’s advertising platform.</span>
+                                        <span class="nav-menu-label">Get help</span></br>
+                                        <span class="nav-menu-description">Contact our support team—we respond within 24 hours.</span>
                                     </a>
                                 </div>
-                            {% endif %}
-                        </div>
-                    </details>
-
-                    <details class="nav-group" data-nav-group>
-                        <summary class="nav-trigger">
-                            <span>Insights & Tools</span>
-                            <svg class="size-3 transition group-open:-rotate-180" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="m4 6 4 4 4-4" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </summary>
-                        <div class="nav-popover">
-                            <p class="nav-section-title">Market guidance</p>
-                            <div class="nav-popover-stack">
-                                <a href="#" class="nav-menu-link">
-                                    <span class="nav-menu-label">Mortgage navigator</span></br>
-                                    <span class="nav-menu-description">Compare financing partners and lock pre-approvals.</span>
-                                </a>
-                                <a href="#" class="nav-menu-link">
-                                    <span class="nav-menu-label">Prices & trends</span></br>
-                                    <span class="nav-menu-description">See neighborhood appreciation and inventory shifts.</span>
-                                </a>
-                                <a href="{{ blog_list_url }}" class="nav-menu-link {% if request.path == blog_list_url %}nav-menu-active{% endif %}">
-                                    <span class="nav-menu-label">Insights library</span></br>
-                                    <span class="nav-menu-description">Guides, playbooks, and expert commentary.</span>
-                                </a>
                             </div>
-                            <p class="nav-section-title">Growth programs</p>
-                            <div class="nav-popover-stack">
-                                <a href="#" class="nav-menu-link">
-                                    <span class="nav-menu-label">Find a developer</span></br>
-                                    <span class="nav-menu-description">Match with vetted partners for co-marketing and JV deals.</span>
-                                </a>
-                                <a href="#" class="nav-menu-link">
-                                    <span class="nav-menu-label">Commercial listings</span></br>
-                                    <span class="nav-menu-description">Surface offices, retail, and investment-ready assets.</span>
-                                </a>
-                                <a href="#" class="nav-menu-link">
-                                    <span class="nav-menu-label">International desk</span></br>
-                                    <span class="nav-menu-description">Access cross-border projects and residency programs.</span>
-                                </a>
-                            </div>
-                        </div>
-                    </details>
+                        </details>
 
-                    {% if user.is_authenticated and user.is_complete_profile %}
-                        <a href="{{ dashboard_url }}" class="nav-pill {% if request.path == dashboard_url %}nav-pill-active{% endif %}">Dashboard</a>
+                        <a href="{{ about_url }}" class="nav-trigger {% if request.path == about_url %}nav-trigger-active{% endif %}">About</a>
+                        <a href="{{ contact_url }}" class="nav-trigger {% if request.path == contact_url %}nav-trigger-active{% endif %}">Contact</a>
+
+                        {% if user.is_authenticated and user.is_complete_profile %}
+                            <a href="{{ dashboard_url }}" class="nav-pill {% if request.path == dashboard_url %}nav-pill-active{% endif %}">Dashboard</a>
+                        {% endif %}
+                    {% else %}
+                        {# BUYER NAVIGATION #}
+                        <details class="nav-group" data-nav-group>
+                            <summary class="nav-trigger">
+                                <span>Marketplace</span>
+                                <svg class="size-3 transition group-open:-rotate-180" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="m4 6 4 4 4-4" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </summary>
+                            <div class="nav-popover">
+                                <p class="nav-section-title">For buyers</p>
+                                <div class="nav-popover-stack">
+                                    <a href="{{ property_search_url }}" class="nav-menu-link {% if request.path == property_search_url %}nav-menu-active{% endif %}">
+                                        <span class="nav-menu-label">Search verified properties</span></br>
+                                        <span class="nav-menu-description">Find your perfect Bangkok condo or villa—every listing verified, every price transparent.</span>
+                                    </a>
+                                    <a href="{{ comparison_property_url }}" class="nav-menu-link {% if request.path == comparison_property_url %}nav-menu-active{% endif %}">
+                                        <span class="nav-menu-label">Compare side-by-side <span class="comparison-badge ml-2 inline-flex size-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-white" style="display: none;">0</span></span></br>
+                                        <span class="nav-menu-description">See which property is right for you—compare pricing, specs, and amenities instantly.</span>
+                                    </a>
+                                    {% if request.user.is_authenticated and request.user.user_type == "prospect" %}
+                                        <a href="{{ favorite_list_property_url }}" class="nav-menu-link {% if request.path == favorite_list_property_url %}nav-menu-active{% endif %}">
+                                            <span class="nav-menu-label">Your saved properties</span></br>
+                                            <span class="nav-menu-description">All your favorites in one place—ready to compare or get price alerts.</span>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                                <p class="nav-section-title">Featured picks</p>
+                                <div class="nav-popover-stack">
+                                    <a href="{{ featured_property_url }}" class="nav-menu-link {% if request.path == featured_property_url %}nav-menu-active{% endif %}">
+                                        <span class="nav-menu-label">Limited-time deals</span></br>
+                                        <span class="nav-menu-description">Save thousands on verified properties—flash sales and launch bonuses.</span>
+                                    </a>
+                                    <a href="{{ reels_url }}" class="nav-menu-link {% if request.path == reels_url %}nav-menu-active{% endif %}">
+                                        <span class="nav-menu-label">Video tours</span></br>
+                                        <span class="nav-menu-description">See properties before you visit—short video tours from verified developers.</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </details>
+
+                        <details class="nav-group" data-nav-group>
+                            <summary class="nav-trigger">
+                                <span>Insights & Tools</span>
+                                <svg class="size-3 transition group-open:-rotate-180" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="m4 6 4 4 4-4" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </summary>
+                            <div class="nav-popover">
+                                <p class="nav-section-title">Market guidance</p>
+                                <div class="nav-popover-stack">
+                                    <a href="#" class="nav-menu-link">
+                                        <span class="nav-menu-label">Mortgage navigator</span></br>
+                                        <span class="nav-menu-description">Compare financing partners and lock pre-approvals.</span>
+                                    </a>
+                                    <a href="#" class="nav-menu-link">
+                                        <span class="nav-menu-label">Prices & trends</span></br>
+                                        <span class="nav-menu-description">See neighborhood appreciation and inventory shifts.</span>
+                                    </a>
+                                    <a href="{{ blog_list_url }}" class="nav-menu-link {% if request.path == blog_list_url %}nav-menu-active{% endif %}">
+                                        <span class="nav-menu-label">Get answers</span></br>
+                                        <span class="nav-menu-description">Essential guides on ownership laws, payment plans, and buying in Bangkok.</span>
+                                    </a>
+                                </div>
+                                <p class="nav-section-title">Growth programs</p>
+                                <div class="nav-popover-stack">
+                                    <a href="#" class="nav-menu-link">
+                                        <span class="nav-menu-label">Find a developer</span></br>
+                                        <span class="nav-menu-description">Match with vetted partners for co-marketing and JV deals.</span>
+                                    </a>
+                                    <a href="#" class="nav-menu-link">
+                                        <span class="nav-menu-label">Commercial listings</span></br>
+                                        <span class="nav-menu-description">Surface offices, retail, and investment-ready assets.</span>
+                                    </a>
+                                    <a href="#" class="nav-menu-link">
+                                        <span class="nav-menu-label">International desk</span></br>
+                                        <span class="nav-menu-description">Access cross-border projects and residency programs.</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </details>
+
+                        <details class="nav-group" data-nav-group>
+                            <summary class="nav-trigger">
+                                <span>Sell & Advertise</span>
+                                <svg class="size-3 transition group-open:-rotate-180" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="m4 6 4 4 4-4" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </summary>
+                            <div class="nav-popover">
+                                <p class="nav-section-title">Become a partner</p>
+                                <div class="nav-popover-stack">
+                                    <a href="{{ developer_home_url }}" class="nav-menu-link {% if request.path == developer_home_url %}nav-menu-active{% endif %}">
+                                        <span class="nav-menu-label">For developers</span></br>
+                                        <span class="nav-menu-description">Sell your unsold inventory at a fraction of launch costs—90%+ savings vs traditional marketing.</span>
+                                    </a>
+                                    <a href="{{ developer_pricing_url }}" class="nav-menu-link {% if request.path == developer_pricing_url %}nav-menu-active{% endif %}">
+                                        <span class="nav-menu-label">View pricing</span></br>
+                                        <span class="nav-menu-description">Flexible plans from pay-per-listing to unlimited—see what works for your portfolio.</span>
+                                    </a>
+                                    <a href="{% url 'user:login' %}" class="nav-menu-link">
+                                        <span class="nav-menu-label">Sign in to publish</span></br>
+                                        <span class="nav-menu-description">Get your properties in front of 10,000+ verified buyers—start getting leads today.</span>
+                                    </a>
+                                    <a href="{{ contact_url }}" class="nav-menu-link {% if request.path == contact_url %}nav-menu-active{% endif %}">
+                                        <span class="nav-menu-label">Get a free consultation</span></br>
+                                        <span class="nav-menu-description">See how Wizer can help you reach more buyers—we respond within 24 hours.</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </details>
+
+                        {% if user.is_authenticated and user.is_complete_profile %}
+                            <a href="{{ dashboard_url }}" class="nav-pill {% if request.path == dashboard_url %}nav-pill-active{% endif %}">Dashboard</a>
+                        {% endif %}
                     {% endif %}
                 </nav>
 
@@ -204,19 +323,24 @@
                     {% include 'googletranslate/translate.html' %}
 
                     {% if request.user.is_authenticated and request.user.user_type in "developer,agent" %}
-                        <a href="{{ create_property_url }}" class="hidden rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/80 sm:inline-flex">List a property</a>
+                        {# DEVELOPER CTAs #}
+                        <a href="{{ create_property_url }}" class="hidden rounded-full bg-[#00deb6] px-4 py-2 text-sm font-semibold text-[#000433] shadow-lg shadow-[#00deb6]/30 transition hover:bg-[#00deb6]/90 hover:shadow-xl hover:shadow-[#00deb6]/40 sm:inline-flex">List a property</a>
                     {% else %}
-                        <a href="{{ contact_url }}" class="hidden rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground transition hover:bg-card/60 sm:inline-flex">Talk to an advisor</a>
+                        {# BUYER CTAs #}
+                        {% if not request.user.is_authenticated %}
+                            <a href="{{ developer_home_url }}" class="hidden rounded-full border border-[#53535fcc]/20 bg-white px-4 py-2 text-sm font-medium text-[#262637] transition hover:bg-[#f2f3f4] hover:border-[#00deb6] sm:inline-flex">For developers</a>
+                        {% endif %}
+                        <a href="{{ contact_url }}" class="hidden rounded-full border border-[#53535fcc]/20 bg-white px-4 py-2 text-sm font-medium text-[#262637] transition hover:bg-[#f2f3f4] hover:border-[#00deb6] sm:inline-flex">Get free consultation</a>
                     {% endif %}
 
                     {% if not request.user.is_authenticated %}
-                        <a href="{% url 'user:login' %}" class="hidden rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground transition hover:bg-card/60 sm:inline-flex">Sign in / Register</a>
+                        <a href="{% url 'user:login' %}" class="hidden rounded-full border border-[#53535fcc]/20 bg-white px-4 py-2 text-sm font-medium text-[#262637] transition hover:bg-[#f2f3f4] hover:border-[#00deb6] sm:inline-flex">Sign in</a>
                     {% endif %}
 
                     {% if request.user.is_authenticated %}
                         <details class="relative hidden lg:block">
-                            <summary class="flex cursor-pointer list-none items-center gap-2 rounded-full border border-border bg-card/70 px-2 py-1 text-sm font-medium text-foreground shadow-sm transition hover:bg-card/90">
-                                <span class="inline-flex size-9 items-center justify-center overflow-hidden rounded-full bg-secondary">
+                            <summary class="flex cursor-pointer list-none items-center gap-2 rounded-full border border-[#53535fcc]/20 bg-white/70 px-2 py-1 text-sm font-medium text-[#262637] shadow-sm transition hover:bg-white/90 hover:border-[#00deb6]">
+                                <span class="inline-flex size-9 items-center justify-center overflow-hidden rounded-full bg-[#b8e9e0]/20">
                                     {% if request.user.user_type == "developer" %}
                                         <img src="{{ request.user.developerprofile.company_logo.url }}" alt="Company Logo" class="size-full object-cover">
                                     {% elif request.user.user_type == "agent" %}
@@ -225,29 +349,29 @@
                                         <img src="{% static 'media/default-avatar.jpg' %}" alt="User avatar" class="size-full object-cover">
                                     {% endif %}
                                 </span>
-                                <span class="hidden text-sm font-semibold text-foreground xl:inline">
+                                <span class="hidden text-sm font-semibold text-[#262637] xl:inline">
                                     {{ request.user.get_full_name|default:request.user.email }}
                                 </span>
                             </summary>
-                            <div class="absolute right-0 mt-2 w-64 overflow-hidden rounded-xl border border-border bg-card/95 shadow-xl backdrop-blur">
+                            <div class="absolute right-0 mt-2 w-64 overflow-hidden rounded-xl border border-[#53535fcc]/20 bg-white/95 shadow-xl backdrop-blur">
                                 <div class="space-y-1 p-2">
-                                    <p class="px-2 text-xs uppercase tracking-wide text-muted-foreground">Quick links</p>
+                                    <p class="px-2 text-xs uppercase tracking-wide text-[#53535fcc]">Quick links</p>
                                     <a href="{{ profile_settings_url }}" class="nav-sheet-link {% if request.path == profile_settings_url %}nav-sheet-active{% endif %}">Profile Settings</a>
                                     {% if request.user.user_type == "developer" or request.user.user_type == "agent" %}
                                         <a href="{{ ads_analytics_url }}" class="nav-sheet-link {% if request.path == ads_analytics_url %}nav-sheet-active{% endif %}">Analytics</a>
                                         <a href="{{ ads_performance_url }}" class="nav-sheet-link {% if request.path == ads_performance_url %}nav-sheet-active{% endif %}">Ads Performance</a>
                                     {% endif %}
                                     {% if request.user.user_type == "prospect" %}
-                                        <a href="{{ comparison_property_url }}" class="nav-sheet-link {% if request.path == comparison_property_url %}nav-sheet-active{% endif %}">Comparison</a>
+                                        <a href="{{ comparison_property_url }}" class="nav-sheet-link {% if request.path == comparison_property_url %}nav-sheet-active{% endif %}">Comparison <span class="comparison-badge ml-2 inline-flex size-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-white" style="display: none;">0</span></a>
                                         <a href="{{ favorite_list_property_url }}" class="nav-sheet-link {% if request.path == favorite_list_property_url %}nav-sheet-active{% endif %}">Favorites</a>
                                     {% endif %}
-                                    <a href="{% url 'user:logout' %}" class="nav-sheet-link text-destructive hover:text-destructive">Log out</a>
+                                    <a href="{% url 'user:logout' %}" class="nav-sheet-link text-destructive hover:text-destructive" onclick="if (typeof Analytics !== 'undefined') { Analytics.resetUser(); }">Log out</a>
                                 </div>
                             </div>
                         </details>
                     {% endif %}
 
-                    <button type="button" class="inline-flex size-10 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm transition hover:bg-card/80 lg:hidden" data-mobile-nav-trigger aria-label="Toggle navigation">
+                    <button type="button" class="inline-flex size-10 items-center justify-center rounded-full border border-[#53535fcc]/20 bg-white text-[#262637] shadow-sm transition hover:bg-[#f2f3f4] hover:border-[#00deb6] lg:hidden" data-mobile-nav-trigger aria-label="Toggle navigation">
                         <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M4 7h16M4 12h16M4 17h16" />
                         </svg>
@@ -255,60 +379,99 @@
                 </div>
             </div>
 
-            <div class="border-t border-border bg-background/95 shadow-sm lg:hidden" data-mobile-nav-panel hidden>
+            <div class="border-t border-[#53535fcc]/20 bg-[#f2f3f4]/95 shadow-sm lg:hidden" data-mobile-nav-panel hidden>
                 <div class="container space-y-6 py-6">
                     <div class="grid gap-3">
                         {% if request.user.is_authenticated and request.user.user_type in "developer,agent" %}
+                            {# DEVELOPER MOBILE CTAs #}
                             <a href="{{ create_property_url }}" class="btn w-full justify-center">List a property</a>
                         {% else %}
-                            <a href="{{ contact_url }}" class="btn w-full justify-center">Talk to an advisor</a>
+                            {# BUYER MOBILE CTAs #}
+                            {% if not request.user.is_authenticated %}
+                                <a href="{{ developer_home_url }}" class="btn-secondary w-full justify-center">For developers</a>
+                            {% endif %}
+                            <a href="{{ contact_url }}" class="btn w-full justify-center">Get free consultation</a>
                         {% endif %}
                     </div>
 
-                    <nav class="space-y-3 text-sm font-medium text-muted-foreground">
-                        <details class="nav-mobile-group">
-                            <summary class="nav-mobile-trigger">Marketplace</summary>
-                            <div class="nav-mobile-stack">
-                                <a href="{{ property_search_url }}" class="nav-mobile-link {% if request.path == property_search_url %}nav-mobile-active{% endif %}">Search homes</a>
-                                <a href="{{ comparison_property_url }}" class="nav-mobile-link {% if request.path == comparison_property_url %}nav-mobile-active{% endif %}">Compare properties</a>
-                                {% if request.user.is_authenticated and request.user.user_type == "prospect" %}
-                                    <a href="{{ favorite_list_property_url }}" class="nav-mobile-link {% if request.path == favorite_list_property_url %}nav-mobile-active{% endif %}">Saved listings</a>
-                                {% endif %}
-                                <a href="{{ featured_property_url }}" class="nav-mobile-link {% if request.path == featured_property_url %}nav-mobile-active{% endif %}">Featured homes</a>
-                                <a href="{{ reels_url }}" class="nav-mobile-link {% if request.path == reels_url %}nav-mobile-active{% endif %}">Property reels</a>
-                            </div>
-                        </details>
-
-                        <details class="nav-mobile-group">
-                            <summary class="nav-mobile-trigger">Sell & Advertise</summary>
-                            <div class="nav-mobile-stack">
-                                {% if request.user.is_authenticated and request.user.user_type in "developer,agent" %}
+                    <nav class="space-y-3 text-sm font-medium text-[#53535fcc]">
+                        {% if request.user.is_authenticated and request.user.user_type in "developer,agent" %}
+                            {# DEVELOPER MOBILE NAVIGATION #}
+                            <details class="nav-mobile-group">
+                                <summary class="nav-mobile-trigger">Product</summary>
+                                <div class="nav-mobile-stack">
+                                    <a href="{{ developer_home_url }}" class="nav-mobile-link {% if request.path == developer_home_url %}nav-mobile-active{% endif %}">How it works</a>
+                                    <a href="{{ developer_pricing_url }}" class="nav-mobile-link {% if request.path == developer_pricing_url %}nav-mobile-active{% endif %}">Pricing & plans</a>
                                     <a href="{{ create_property_url }}" class="nav-mobile-link {% if request.path == create_property_url %}nav-mobile-active{% endif %}">List a property</a>
                                     <a href="{{ create_building_url }}" class="nav-mobile-link {% if request.path == create_building_url %}nav-mobile-active{% endif %}">Add a project</a>
-                                    <a href="{{ create_reels_url }}" class="nav-mobile-link {% if request.path == create_reels_url %}nav-mobile-active{% endif %}">Create reels</a>
+                                    <a href="{{ create_reels_url }}" class="nav-mobile-link {% if request.path == create_reels_url %}nav-mobile-active{% endif %}">Create video tours</a>
+                                </div>
+                            </details>
+
+                            <details class="nav-mobile-group">
+                                <summary class="nav-mobile-trigger">Campaigns</summary>
+                                <div class="nav-mobile-stack">
                                     <a href="{{ ads_analytics_url }}" class="nav-mobile-link {% if request.path == ads_analytics_url %}nav-mobile-active{% endif %}">Analytics</a>
-                                    <a href="{{ ads_performance_url }}" class="nav-mobile-link {% if request.path == ads_performance_url %}nav-mobile-active{% endif %}">Ads performance</a>
-                                {% else %}
+                                    <a href="{{ ads_performance_url }}" class="nav-mobile-link {% if request.path == ads_performance_url %}nav-mobile-active{% endif %}">Performance</a>
+                                </div>
+                            </details>
+
+                            <details class="nav-mobile-group">
+                                <summary class="nav-mobile-trigger">Resources</summary>
+                                <div class="nav-mobile-stack">
+                                    <a href="{{ blog_list_url }}" class="nav-mobile-link {% if request.path == blog_list_url %}nav-mobile-active{% endif %}">Blog & insights</a>
+                                    <a href="#" class="nav-mobile-link">Case studies</a>
+                                    <a href="#" class="nav-mobile-link">Guides & tutorials</a>
+                                    <a href="{{ contact_url }}" class="nav-mobile-link {% if request.path == contact_url %}nav-mobile-active{% endif %}">Get help</a>
+                                </div>
+                            </details>
+
+                            <a href="{{ about_url }}" class="nav-mobile-link {% if request.path == about_url %}nav-mobile-active{% endif %}">About</a>
+                            <a href="{{ contact_url }}" class="nav-mobile-link {% if request.path == contact_url %}nav-mobile-active{% endif %}">Contact</a>
+
+                            {% if user.is_authenticated and user.is_complete_profile %}
+                                <a href="{{ dashboard_url }}" class="nav-mobile-link {% if request.path == dashboard_url %}nav-mobile-active{% endif %}">Dashboard</a>
+                            {% endif %}
+                        {% else %}
+                            {# BUYER MOBILE NAVIGATION #}
+                            <details class="nav-mobile-group">
+                                <summary class="nav-mobile-trigger">Marketplace</summary>
+                                <div class="nav-mobile-stack">
+                                    <a href="{{ property_search_url }}" class="nav-mobile-link {% if request.path == property_search_url %}nav-mobile-active{% endif %}">Search homes</a>
+                                    <a href="{{ comparison_property_url }}" class="nav-mobile-link {% if request.path == comparison_property_url %}nav-mobile-active{% endif %}">Compare properties <span class="comparison-badge ml-2 inline-flex size-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-white" style="display: none;">0</span></a>
+                                    {% if request.user.is_authenticated and request.user.user_type == "prospect" %}
+                                        <a href="{{ favorite_list_property_url }}" class="nav-mobile-link {% if request.path == favorite_list_property_url %}nav-mobile-active{% endif %}">Saved listings</a>
+                                    {% endif %}
+                                    <a href="{{ featured_property_url }}" class="nav-mobile-link {% if request.path == featured_property_url %}nav-mobile-active{% endif %}">Featured homes</a>
+                                    <a href="{{ reels_url }}" class="nav-mobile-link {% if request.path == reels_url %}nav-mobile-active{% endif %}">Property reels</a>
+                                </div>
+                            </details>
+
+                            <details class="nav-mobile-group">
+                                <summary class="nav-mobile-trigger">Insights & Tools</summary>
+                                <div class="nav-mobile-stack">
+                                    <a href="#" class="nav-mobile-link">Mortgage navigator</a>
+                                    <a href="#" class="nav-mobile-link">Prices & trends</a>
+                                    <a href="{{ blog_list_url }}" class="nav-mobile-link {% if request.path == blog_list_url %}nav-mobile-active{% endif %}">Insights library</a>
+                                    <a href="#" class="nav-mobile-link">Find a developer</a>
+                                    <a href="#" class="nav-mobile-link">Commercial listings</a>
+                                    <a href="#" class="nav-mobile-link">International desk</a>
+                                </div>
+                            </details>
+
+                            <details class="nav-mobile-group">
+                                <summary class="nav-mobile-trigger">Sell & Advertise</summary>
+                                <div class="nav-mobile-stack">
+                                    <a href="{{ developer_home_url }}" class="nav-mobile-link {% if request.path == developer_home_url %}nav-mobile-active{% endif %}">For developers</a>
+                                    <a href="{{ developer_pricing_url }}" class="nav-mobile-link {% if request.path == developer_pricing_url %}nav-mobile-active{% endif %}">View pricing</a>
                                     <a href="{% url 'user:login' %}" class="nav-mobile-link">Sign in to publish</a>
-                                    <a href="{{ contact_url }}" class="nav-mobile-link {% if request.path == contact_url %}nav-mobile-active{% endif %}">Talk to our team</a>
-                                {% endif %}
-                            </div>
-                        </details>
+                                    <a href="{{ contact_url }}" class="nav-mobile-link {% if request.path == contact_url %}nav-mobile-active{% endif %}">Get free consultation</a>
+                                </div>
+                            </details>
 
-                        <details class="nav-mobile-group">
-                            <summary class="nav-mobile-trigger">Insights & Tools</summary>
-                            <div class="nav-mobile-stack">
-                                <a href="#" class="nav-mobile-link">Mortgage navigator</a>
-                                <a href="#" class="nav-mobile-link">Prices & trends</a>
-                                <a href="{{ blog_list_url }}" class="nav-mobile-link {% if request.path == blog_list_url %}nav-mobile-active{% endif %}">Insights library</a>
-                                <a href="#" class="nav-mobile-link">Find a developer</a>
-                                <a href="#" class="nav-mobile-link">Commercial listings</a>
-                                <a href="#" class="nav-mobile-link">International desk</a>
-                            </div>
-                        </details>
-
-                        {% if user.is_authenticated and user.is_complete_profile %}
-                            <a href="{{ dashboard_url }}" class="nav-mobile-link {% if request.path == dashboard_url %}nav-mobile-active{% endif %}">Dashboard</a>
+                            {% if user.is_authenticated and user.is_complete_profile %}
+                                <a href="{{ dashboard_url }}" class="nav-mobile-link {% if request.path == dashboard_url %}nav-mobile-active{% endif %}">Dashboard</a>
+                            {% endif %}
                         {% endif %}
                     </nav>
 
@@ -326,14 +489,14 @@
                                     <a href="{{ ads_analytics_url }}" class="nav-mobile-link {% if request.path == ads_analytics_url %}nav-mobile-active{% endif %}">Analytics</a>
                                     <a href="{{ ads_performance_url }}" class="nav-mobile-link {% if request.path == ads_performance_url %}nav-mobile-active{% endif %}">Ads Performance</a>
                                 {% endif %}
-                                {% if request.user.user_type == "prospect" %}
-                                    <a href="{{ comparison_property_url }}" class="nav-mobile-link {% if request.path == comparison_property_url %}nav-mobile-active{% endif %}">Comparison</a>
-                                    <a href="{{ favorite_list_property_url }}" class="nav-mobile-link {% if request.path == favorite_list_property_url %}nav-mobile-active{% endif %}">Saved properties</a>
-                                {% endif %}
-                                <a href="{% url 'user:logout' %}" class="nav-mobile-link text-destructive hover:text-destructive">Log out</a>
+                        {% if request.user.user_type == "prospect" %}
+                            <a href="{{ comparison_property_url }}" class="nav-mobile-link {% if request.path == comparison_property_url %}nav-mobile-active{% endif %}">Compare properties</a>
+                            <a href="{{ favorite_list_property_url }}" class="nav-mobile-link {% if request.path == favorite_list_property_url %}nav-mobile-active{% endif %}">Saved properties</a>
+                        {% endif %}
+                                <a href="{% url 'user:logout' %}" class="nav-mobile-link text-destructive hover:text-destructive" onclick="if (typeof Analytics !== 'undefined') { Analytics.resetUser(); }">Log out</a>
                             </div>
                         {% else %}
-                            <a href="{% url 'user:login' %}" class="btn w-full justify-center text-center">Sign in / Register</a>
+                            <a href="{% url 'user:login' %}" class="btn w-full justify-center text-center">Sign in</a>
                         {% endif %}
                     </div>
                 </div>
@@ -357,7 +520,7 @@
                 <div class="space-y-6">
                     <div class="flex items-center gap-3">
                         <img src="{% static 'media/logo.png' %}" alt="Wizer Properties" class="h-10 w-auto">
-                        <h1 class="text-xl font-semibold text-foreground">Log in to <span class="text-primary">WiSER Properties</span></h1>
+                        <h1 class="text-xl font-semibold text-foreground">Sign in to access your saved properties</h1>
                     </div>
 
                     <form class="space-y-4" data-auth-login-form novalidate>
@@ -377,7 +540,7 @@
 
                         <div class="space-y-3">
                             <div class="auth-response-messages"></div>
-                            <button type="submit" class="btn w-full justify-center" button-name="log-in">Log In</button>
+                            <button type="submit" class="btn w-full justify-center" button-name="log-in">Sign in</button>
                         </div>
                     </form>
 
@@ -419,30 +582,121 @@
         </div>
 
         <footer class="border-t border-border bg-background py-12">
-            <div class="container flex flex-col gap-8 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
-                <div class="flex flex-wrap gap-x-6 gap-y-3">
-                    <a href="/contact/" class="transition hover:text-foreground">Contact Us</a>
-                    <a href="/privacy/" class="transition hover:text-foreground">Privacy</a>
-                    <a href="/about-us/" class="transition hover:text-foreground">About Us</a>
-                    <a href="/blogs/" class="transition hover:text-foreground">Blogs</a>
+            {% if request.user.is_authenticated and request.user.user_type in "developer,agent" %}
+                {# DEVELOPER FOOTER #}
+                <div class="container">
+                    <div class="grid grid-cols-2 gap-8 text-sm text-muted-foreground md:grid-cols-4">
+                        <div class="space-y-4">
+                            <p class="font-semibold text-foreground">Product</p>
+                            <ul class="space-y-2">
+                                <li><a href="{{ developer_home_url }}" class="transition hover:text-foreground">How it works</a></li>
+                                <li><a href="{{ developer_pricing_url }}" class="transition hover:text-foreground">Pricing & plans</a></li>
+                                <li><a href="{{ create_property_url }}" class="transition hover:text-foreground">List a property</a></li>
+                                <li><a href="{{ create_building_url }}" class="transition hover:text-foreground">Add a project</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="space-y-4">
+                            <p class="font-semibold text-foreground">Resources</p>
+                            <ul class="space-y-2">
+                                <li><a href="{{ blog_list_url }}" class="transition hover:text-foreground">Blog & insights</a></li>
+                                <li><a href="#" class="transition hover:text-foreground">Case studies</a></li>
+                                <li><a href="#" class="transition hover:text-foreground">Guides & tutorials</a></li>
+                                <li><a href="{{ contact_url }}" class="transition hover:text-foreground">Get help</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="space-y-4">
+                            <p class="font-semibold text-foreground">Company</p>
+                            <ul class="space-y-2">
+                                <li><a href="{{ about_url }}" class="transition hover:text-foreground">About Us</a></li>
+                                <li><a href="{{ contact_url }}" class="transition hover:text-foreground">Contact</a></li>
+                                <li><a href="#" class="transition hover:text-foreground">Partners</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="space-y-4">
+                            <p class="font-semibold text-foreground">Legal</p>
+                            <ul class="space-y-2">
+                                <li><a href="/privacy/" class="transition hover:text-foreground">Privacy</a></li>
+                                <li><a href="#" class="transition hover:text-foreground">Terms</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 md:flex-row">
+                        <p class="text-xs text-muted-foreground">© {{ now|date:"Y" }} Wizer Properties — Developed by <a href="https://vaid.tech" target="_blank" rel="noreferrer" class="underline decoration-dotted underline-offset-4 transition hover:text-primary">Vaidtech</a></p>
+                        <div class="flex items-center gap-4 text-lg text-muted-foreground">
+                            <a target="_blank" rel="noreferrer" href="#" class="transition hover:text-primary">
+                                <i class="bi bi-facebook"></i>
+                            </a>
+                            <a target="_blank" rel="noreferrer" href="#" class="transition hover:text-primary">
+                                <i class="bi bi-youtube"></i>
+                            </a>
+                            <a target="_blank" rel="noreferrer" href="#" class="transition hover:text-primary">
+                                <i class="bi bi-twitter-x"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                {# BUYER FOOTER #}
+                <div class="container flex flex-col gap-8 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
+                    <div class="space-y-4">
+                        <p class="font-semibold text-foreground">Buy Bangkok property with confidence</p>
+                        <p class="text-xs text-muted-foreground">Every property verified. Every price transparent. Every question answered—in your language.</p>
+                        <div class="grid grid-cols-2 gap-x-6 gap-y-3 md:flex md:flex-wrap">
+                            <div class="space-y-2">
+                                <p class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Marketplace</p>
+                                <ul class="space-y-1">
+                                    <li><a href="{{ property_search_url }}" class="transition hover:text-foreground">Search properties</a></li>
+                                    <li><a href="{{ comparison_property_url }}" class="transition hover:text-foreground">Compare properties</a></li>
+                                    <li><a href="{{ featured_property_url }}" class="transition hover:text-foreground">Featured homes</a></li>
+                                </ul>
+                            </div>
+                            <div class="space-y-2">
+                                <p class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Resources</p>
+                                <ul class="space-y-1">
+                                    <li><a href="{{ blog_list_url }}" class="transition hover:text-foreground">Blog & guides</a></li>
+                                    <li><a href="#" class="transition hover:text-foreground">Mortgage navigator</a></li>
+                                    <li><a href="#" class="transition hover:text-foreground">Prices & trends</a></li>
+                                </ul>
+                            </div>
+                            <div class="space-y-2">
+                                <p class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Company</p>
+                                <ul class="space-y-1">
+                                    <li><a href="{{ about_url }}" class="transition hover:text-foreground">About Us</a></li>
+                                    <li><a href="{{ contact_url }}" class="transition hover:text-foreground">Contact</a></li>
+                                    <li><a href="{{ developer_home_url }}" class="transition hover:text-foreground">For developers</a></li>
+                                </ul>
+                            </div>
+                            <div class="space-y-2">
+                                <p class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Legal</p>
+                                <ul class="space-y-1">
+                                    <li><a href="/privacy/" class="transition hover:text-foreground">Privacy</a></li>
+                                    <li><a href="#" class="transition hover:text-foreground">Terms</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4 text-lg text-muted-foreground">
+                        <a target="_blank" rel="noreferrer" href="#" class="transition hover:text-primary">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a target="_blank" rel="noreferrer" href="#" class="transition hover:text-primary">
+                            <i class="bi bi-youtube"></i>
+                        </a>
+                        <a target="_blank" rel="noreferrer" href="#" class="transition hover:text-primary">
+                            <i class="bi bi-twitter-x"></i>
+                        </a>
+                    </div>
                 </div>
 
-                <div class="flex items-center gap-4 text-lg text-muted-foreground">
-                    <a target="_blank" rel="noreferrer" href="#" class="transition hover:text-primary">
-                        <i class="bi bi-facebook"></i>
-                    </a>
-                    <a target="_blank" rel="noreferrer" href="#" class="transition hover:text-primary">
-                        <i class="bi bi-youtube"></i>
-                    </a>
-                    <a target="_blank" rel="noreferrer" href="#" class="transition hover:text-primary">
-                        <i class="bi bi-twitter-x"></i>
-                    </a>
+                <div class="container mt-6 text-xs text-muted-foreground">
+                    <p>© {{ now|date:"Y" }} Wizer Properties — Developed by <a href="https://vaid.tech" target="_blank" rel="noreferrer" class="underline decoration-dotted underline-offset-4 transition hover:text-primary">Vaidtech</a></p>
                 </div>
-            </div>
-
-            <div class="container mt-6 text-xs text-muted-foreground">
-                <p>© {{ now|date:"Y" }} WiSERPROPERTIES — Developed by <a href="https://vaid.tech" target="_blank" rel="noreferrer" class="underline decoration-dotted underline-offset-4 transition hover:text-primary">Vaidtech</a></p>
-            </div>
+            {% endif %}
         </footer>
     </div>
 
@@ -565,6 +819,37 @@
     <script src="{% static 'js/google-translate.js' %}?v=2.00"></script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     {% block extend_script %}{% endblock extend_script %}
+    
+    <!-- Zoho SalesIQ Widget -->
+    <style>
+        /* Position Zoho chat widget at bottom-left to avoid blocking notifications */
+        #siqiframe, #siqiframe ~ div {
+            bottom: 20px !important;
+            left: 20px !important;
+            right: auto !important;
+            z-index: 40 !important; /* Lower than toast notifications (z-50) */
+        }
+        /* Ensure toast notifications appear above chat widget */
+        #comparison-toast, [id*="toast"] {
+            z-index: 50 !important;
+        }
+    </style>
+    <script type="text/javascript">
+        var $zoho=$zoho || {};
+        $zoho.salesiq = $zoho.salesiq || {
+            widgetcode:"siq2fd15ec878c972695203786423fd2bfe16724f6a241f02927b924a0534d7edf1",
+            values:{},
+            ready:function(){}
+        };
+        var d=document;
+        var s=d.createElement("script");
+        s.type="text/javascript";
+        s.id="zsiqscript";
+        s.defer=true;
+        s.src="https://salesiq.zoho.com/widget";
+        var t=d.getElementsByTagName("script")[0];
+        t.parentNode.insertBefore(s,t);
+    </script>
 </body>
 
 </html>
