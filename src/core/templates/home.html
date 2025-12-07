@@ -29,6 +29,7 @@
 <link rel="stylesheet" href="{% static 'css/libraries/splide.min.css' %}?v=2.0" />
 <link rel="stylesheet" href="{% static 'css/home.css' %}?v=2.0" />
 <link rel="stylesheet" href="{% static 'css/property-card-modern.css' %}?v=2.00" />
+<link rel="stylesheet" href="{% static 'css/libraries/splide-default.min.css' %}" />
 {% endblock extend_head %}
 
 {% block content %}
@@ -184,6 +185,24 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sponsored Property Ads -->
+<section class="bg-muted/40 py-6">
+    <div class="container">
+        <div class="space-y-3">
+            <div class="top-banner overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+                <div class="splide ads-banner-slider" aria-label="Sponsored property highlights">
+                    <div class="splide__track">
+                        <ul class="splide__list">
+                            <li class="splide__slide h-40 animate-pulse bg-muted"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center text-[11px] font-medium uppercase tracking-[0.35em] text-muted-foreground">Sponsored listings</p>
         </div>
     </div>
 </section>
@@ -714,8 +733,14 @@
 <script src="{% static 'js/libraries/splide.min.js' %}"></script>
 <script src="{% static 'js/property/card-factory.js' %}?v=1.00"></script>
 <script src="{% static 'js/time-count-down.js' %}?v=1.00"></script>
+<script>
+    const ADS_SUGGEST_URL = '/advertise/api/advertisement/suggested/';
+    const ADS_LOCATION_PARAM = ['home'];
+    // csrfToken is already defined in base.html
+</script>
 <script src="{% static 'js/home.js' %}?v=2.00"></script>
 <script src="{% static 'js/property/compair-favorite.js' %}?v=2.00"></script>
 <script src="{% static 'js/chatbot-gpt.js' %}?v=1.01"></script>
+<script src="{% static 'js/ads.js' %}?v=1.04"></script>
 <script async custom-element="amp-tiktok" src="https://cdn.ampproject.org/v0/amp-tiktok-0.1.js"></script>
 {% endblock extend_script %}

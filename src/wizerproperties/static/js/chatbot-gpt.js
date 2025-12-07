@@ -6,21 +6,60 @@ document.addEventListener("DOMContentLoaded", () => {
   const historyContainer = document.querySelector("[data-chat-history]");
   const messagesList = document.querySelector("[data-chat-messages]");
   const emptyState = messagesList ? messagesList.querySelector("[data-chat-empty]") : null;
+  const promptsContainer = document.querySelector("[data-chat-prompts-container]");
   const promptButtons = document.querySelectorAll("[data-chat-prompt]");
 
   if (!form || !input || !sendButton || !messagesList || !historyContainer) return;
+
+  let typingIndicator = null;
 
   const scrollToBottom = () => {
     historyContainer.scrollTo({ top: historyContainer.scrollHeight, behavior: "smooth" });
   };
 
+  const showTypingIndicator = () => {
+    if (typingIndicator) return; // Already showing
+    
+    if (emptyState && !emptyState.hasAttribute("hidden")) {
+      emptyState.setAttribute("hidden", "hidden");
+    }
+    if (promptsContainer && !promptsContainer.hasAttribute("hidden")) {
+      promptsContainer.setAttribute("hidden", "hidden");
+    }
+
+    const li = document.createElement("li");
+    li.className = "flex";
+    li.setAttribute("data-typing-indicator", "");
+
+    const bubble = document.createElement("div");
+    bubble.className = "mr-auto max-w-[80%] rounded-2xl rounded-bl-md border border-border bg-muted/60 px-4 py-3 text-sm text-foreground shadow-sm";
+    bubble.innerHTML = `
+      <div class="flex items-center gap-2">
+        <span class="inline-flex size-2 animate-ping rounded-full bg-primary"></span>
+        <span>Getting your answer…</span>
+      </div>
+    `;
+
+    li.appendChild(bubble);
+    messagesList.appendChild(li);
+    typingIndicator = li;
+    scrollToBottom();
+  };
+
+  const hideTypingIndicator = () => {
+    if (typingIndicator) {
+      typingIndicator.remove();
+      typingIndicator = null;
+    }
+  };
+
   const setLoading = (isLoading) => {
     if (isLoading) {
       sendButton.setAttribute("disabled", "disabled");
-      statusText?.removeAttribute("hidden");
+      showTypingIndicator();
     } else {
       sendButton.removeAttribute("disabled");
-      statusText?.setAttribute("hidden", "hidden");
+      hideTypingIndicator();
     }
   };
 
@@ -40,8 +79,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const appendMessage = (role, content) => {
     if (!content) return;
+    hideTypingIndicator();
     if (emptyState && !emptyState.hasAttribute("hidden")) {
       emptyState.setAttribute("hidden", "hidden");
+    }
+    if (promptsContainer && !promptsContainer.hasAttribute("hidden")) {
+      promptsContainer.setAttribute("hidden", "hidden");
     }
     messagesList.appendChild(createMessageNode(role, content));
     scrollToBottom();

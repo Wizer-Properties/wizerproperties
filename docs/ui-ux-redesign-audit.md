@@ -180,9 +180,19 @@ The v1.0 release represents a comprehensive UI/UX overhaul of the Wizer Properti
 ### `src/building/templates/get_building.html`
 - ✅ **UI**: New hero gallery, stat grid, amenity chips, card/aside layout.
 - ✅ **UX**: CTA hierarchy, lazy-loaded units, map/media panels, accessible review module.
+- ✅ **Detail Page Redesign (2025-12-XX)**: Complete redesign to match property card design system:
+  - **Hero Image First**: Moved hero image/video section to top of page (before header) for better visual impact
+  - **Header Section**: Updated header with badge, title, address, and "Schedule" CTA button matching property page design
+  - **Building Stats Section**: Converted key metrics to icon+text format with `bg-muted/30` background, matching card stats section
+  - **Typography Standardization**: Standardized all fonts—headings (`text-lg font-semibold`), body text (`text-sm font-normal`), values (`text-sm font-medium`), labels (`text-xs font-medium`)
+  - **Image Rendering Fix**: Fixed hero images to use `h-full w-full` instead of fixed `h-72` to properly fill container
 
 ### `src/wizerproperties/static/js/building/detail-page.js`
 - ✅ **UI/UX**: Rebuilt media gallery orchestration, Splide integrations, amenities chips, lazy-loaded units, and review workflow using modern JS modules.
+- ✅ **Detail Page Redesign (2025-12-XX)**: Updated to support new detail page structure:
+  - **Stats Section Population**: Populates building stats (type, units, area, floors, completion, BTS/MRT, ARL, quota) with conditional display wrappers
+  - **Price Overlay**: Shows/hides price overlay in hero section based on price data availability
+  - **Image Rendering**: Fixed hero slider images to use `h-full w-full` instead of fixed `h-72` to properly fill container
 
 ---
 
@@ -213,6 +223,15 @@ The v1.0 release represents a comprehensive UI/UX overhaul of the Wizer Properti
   - **Reviews**: Star ratings in JS need to align with the new accent color or a standard rating color.
 - 🌟 **Refactor 2025-11-25**: Refactored "Unit Specifications" to use Tailwind grid cards and "Building Snapshot" to use a cleaner definition list style with Teal accent actions. Fixed `AVAILABLE_API_URL` query parameter collision to prevent 500 errors.
 - ✅ **SEO** (2025-01-XX): Comprehensive property-specific meta tags (dynamic title, description, keywords, canonical, Open Graph with property images, Twitter Cards, article meta), Product schema JSON-LD, and Breadcrumb schema. Property view analytics tracking on page load.
+- ✅ **Detail Page Redesign (2025-12-XX)**: Complete redesign to match property card design system:
+  - **Hero Image First**: Moved hero image/video section to top of page (before header) for better visual impact
+  - **Developer/Agent Header**: Added compact header with developer avatar, name, relative date ("Added X days ago"), and "Book" CTA button matching card design
+  - **Property Stats Section**: Converted key attributes to icon+text format with `bg-muted/30` background, matching card stats section
+  - **Property Type Badge**: Moved property type to compact badge in header next to developer name (shows sub-type only, e.g., "Condo" instead of "Residential - Apartment/Condo/Service Residence")
+  - **Consolidated Information**: Merged duplicate "Property Information" and "Unit specifications" sections into single unified section with card-based grid layout
+  - **Typography Standardization**: Standardized all fonts—headings (`text-lg font-semibold`), body text (`text-sm font-normal`), values (`text-sm font-medium`), labels (`text-xs font-medium`)
+  - **Image Rendering Fix**: Fixed hero images to use `h-full w-full` instead of fixed `h-72` to properly fill container
+  - **Similar Properties & Available Units**: Updated both sections to use `PropertyCardFactory.createCard()` for consistent card styling matching homepage/search pages
 
 ### `src/property/templates/developer-agent-property-list.html`
 - ✅ **UI**: Tailwind card grid with responsive breakpoints, skeleton loaders, and badge styling for credit cues.
@@ -284,6 +303,17 @@ The v1.0 release represents a comprehensive UI/UX overhaul of the Wizer Properti
   - Added property price validation in `fetchSimilarProperties()`—validates price is finite, positive number before calculating similar properties range to prevent invalid API queries.
   - Added error handling for `JSON.parse()` in `initBackToSearch()` to handle corrupted localStorage data gracefully.
   - Added comprehensive error handling for localStorage operations in `initNotes()` to handle quota exceeded and security errors (private browsing mode).
+- ✅ **Detail Page Redesign (2025-12-XX)**: Updated to support new detail page structure:
+  - **Developer Header Population**: Populates developer image, name, and relative date ("Added X days ago") in new header section
+  - **Property Type Badge**: Shows property sub-type as compact badge in header (e.g., "Condo" instead of full "Residential - Apartment/Condo/Service Residence")
+  - **Featured Accent Bar**: Shows/hides teal gradient accent bar at top for featured properties
+  - **Price Overlay**: Populates price, original price, and discount amount in hero image overlay
+  - **Badges & Actions**: Builds badges dynamically, initializes compare/favorite buttons with proper states
+  - **View Buttons**: Shows/hides 3D Tour and Aerial View buttons based on property data
+  - **Stats Section**: Populates property stats (beds, baths, sqft, floor, parking, tenure) with conditional display wrappers
+  - **Property Information**: Populates consolidated property information section (Unit ID, Floor Number, Tenure, Balconies, Car Parks, Availability, Orientation, Door Direction, Unit Position)
+  - **Similar Properties**: Updated `renderSimilarProperties()` to use `PropertyCardFactory.createCard()` for consistent card styling
+  - **Available Units**: Updated `createAvailableCard()` to use `PropertyCardFactory.createCard()` for consistent card styling, properly initializes Splide for card image sliders
 
 ### `src/wizerproperties/static/js/property/card-factory.js`
 - ✅ **UI/UX**: Adds resilient image fallbacks for developer avatars/gallery slides; keeps Splide cards functional when media misses. Currency formatting aligned to whole baht (no decimals) for price and per‑sqm. Badge styling updated to use `bg-accent/10 text-primary` for consistent color balance.
@@ -407,6 +437,22 @@ The v1.0 release represents a comprehensive UI/UX overhaul of the Wizer Properti
 - ✅ **UX**: Enhanced filtering interactions, added empty states, and clarified platform/manager attribution to support user decisions.
 - 🌟 **Audit 2025-11-23**: Updated "Media hub" badge and filter buttons to Teal accent.
 
+### Ad Engine Implementation (2025-01-XX)
+- ✅ **Backend API** (`src/advertise/api/views/advertisement.py`): Fixed queryset filtering to include `status='running'` in addition to `expired_at >= now()` to ensure only active ads are returned. API endpoint `/advertise/api/advertisement/suggested/` supports 7 ad locations: `home`, `search`, `search_inline`, `details_topbar`, `details_sidebar`, `map_below`, `blog`.
+- ✅ **Frontend JavaScript** (`src/wizerproperties/static/js/ads.js`): Ad loading and rendering handler with support for multiple ad types (top banner slider, sidebar slider, inline cards, map below ads). Handles Splide slider initialization, empty state hiding, and ad click tracking.
+- ✅ **Property Detail Page** (`src/property/templates/get_property.html`): Ad containers implemented for `details_topbar` (top banner) and `details_sidebar` (sidebar) locations with proper script configuration.
+- ✅ **Building Detail Page** (`src/building/templates/get_building.html`): **New (2025-01-XX)**: Added ad support matching property detail page structure—top banner ad section after breadcrumb, sidebar ad section in aside, script configuration with `ADS_LOCATION_PARAM = ['details_sidebar', 'details_topbar']`, and `ads.js` script inclusion. Fixed breadcrumb URL (changed from non-existent `building:search` to `/property/search/`).
+- ✅ **Home Pages** (`src/core/templates/home.html`, `src/core/templates/home_developer.html`): **New (2025-01-XX)**: Added ad support to both buyer and developer home pages—ad banner section after hero section, Splide CSS inclusion, script configuration with `ADS_LOCATION_PARAM = ['home']`, and `ads.js` script inclusion. Developer home page includes new `extend_script` block.
+- ✅ **Search Pages** (`src/property/templates/search_property.html`, `search_property_with_map.html`): Ad containers already implemented for `search` (top banner), `search_inline` (inline ads every 6 properties), and `map_below` (below map) locations.
+- ✅ **Blog Pages** (`src/blog/templates/blog-details.html`, `blog-list.html`): Ad containers implemented with separate `blog-ads.js` script for `blog` location.
+- ✅ **Ad Placement Summary**: Ad engine now fully functional across all major pages:
+  - Property Detail: Topbar + Sidebar ✅
+  - Building Detail: Topbar + Sidebar ✅ (newly added)
+  - Home Page: Home ads ✅ (newly added)
+  - Developer Home: Home ads ✅ (newly added)
+  - Property Search: Search + Inline + Map Below ✅
+  - Blog Pages: Blog ads ✅
+
 ---
 
 ## 6. User Module Templates
@@ -481,12 +527,14 @@ The v1.0 release represents a comprehensive UI/UX overhaul of the Wizer Properti
 - ✅ **UI**: New developer-focused homepage (2025-01-XX) with modern design matching buyer homepage structure. Uses new color scheme and fonts. Hero section emphasizes cost savings ("Sell Your Unsold Inventory at a Fraction of Launch Costs"), problem statement, solution overview, how it works, comparison tool, pricing preview, FAQ, and final CTA sections.
 - ✅ **UX**: Developer-focused messaging throughout—emphasizes 90%+ cost savings, free trial until first sale, direct buyer access, no commission fees. Clear CTAs: "Get Started Free" and "Book a Demo". Pricing section links to dedicated pricing page. FAQ addresses developer concerns.
 - ✅ **Copy Optimization** (2025-01-XX): Complete copy aligned with developer personas and positioning memo. Headlines emphasize cost savings and business outcomes. Problem statement addresses unsold inventory and high launch costs. Solution highlights subscription model and credit system. CTAs action-oriented.
+- ✅ **Button Consistency Fix (2025-12-XX)**: Fixed button sizing inconsistency—"Get Started Free" button now uses same explicit padding (`px-8 py-4`) and font styling (`text-base font-semibold`) as "Book a Demo" button for consistent appearance across both CTA buttons.
 
 ### `src/core/templates/developers_pricing.html`
 - ✅ **UI**: New developer pricing page (2025-01-XX) with comprehensive pricing comparison (Traditional Launch vs Wizer Properties), detailed credit system explanation, subscription model breakdown, FAQ section, and final CTA. Uses new color scheme and fonts. Modern card-based layout with clear visual hierarchy.
 - ✅ **UX**: Transparent pricing presentation with side-by-side comparison showing 90%+ savings. Credit system clearly explained (100 free credits, 3 credits per featured/discount listing). Free trial messaging prominent. FAQ addresses common pricing questions. Clear CTAs throughout.
 - ✅ **Copy Optimization** (2025-01-XX): Benefit-focused copy emphasizing cost savings, transparency, and value. Comparison table shows traditional launch costs (150,000+ MYR) vs Wizer subscription model. Credit costs clearly explained. FAQ answers developer concerns about pricing, credits, and cancellation.
 - ✅ **SEO** (2025-01-XX): Comprehensive meta tags (title, description, keywords, canonical, Open Graph, Twitter Cards) and Organization schema JSON-LD implemented.
+- ✅ **Button Consistency Fix (2025-12-XX)**: Fixed button sizing inconsistency—"Get Started Free" button now uses same explicit padding (`px-8 py-4`) and font styling (`text-base font-semibold`) as "Talk to Sales" button for consistent appearance.
 
 ### `src/core/templates/contact_us.html`
 - ✅ **UI**: Tailwind contact hero with backdrop overlay, dual card layout for contact details and form, removed legacy `contact.css`, and aligned spacing/typography with design tokens.
@@ -521,6 +569,7 @@ The v1.0 release represents a comprehensive UI/UX overhaul of the Wizer Properti
 - ✅ **Accessibility**: SR-only labels, focus outlines, live status indicator, and polite copy keep the assistant compliant with WCAG expectations.
 - ✅ **Data Resilience**: Property cards now ship with gallery/developer image fallbacks to shield carousels from missing media; nearby slider defers API calls until geolocation is granted, avoiding console noise and empty responses.
 - ✅ **Copy Optimization** (2025-01-XX): Complete copy restructuring for clarity and benefit-focus. Empty state updated to be more inviting. Quick prompts reframed as direct questions ("What developer incentives can I get?"). Placeholder text provides examples. Status message simplified ("Getting your answer…"). Error messages more helpful and reassuring. Backend system prompts aligned with brand voice emphasizing trust and expertise. Disclaimer updated to be more user-friendly.
+- ✅ **Layout Fixes (2025-12-XX)**: Fixed chat layout issues—moved prompt buttons ("Find Properties" and "Property Questions") inside scrollable chat history container for better UX. Replaced static "Getting your answer…" status message below input with dynamic typing indicator bubble within chat history. Typing indicator shows animated ping dot with "Getting your answer…" text, automatically removed when response arrives.
 - ✅ **OpenRouter Integration & Property Search** (2025-01-XX): Integrated OpenRouter API for AI chatbot functionality. **Model Selection**: Uses `openai/gpt-4o-mini` (cost-effective model that supports function calling) instead of `openrouter/auto` which doesn't support function calling. Removed manual model selection from AdminSettings; API key configuration streamlined. Backend tracks which model was selected for each response. **Property Search Function**: Implemented OpenAI function calling with `search_properties` tool—allows AI to search properties when users ask about finding listings. Function automatically extracts search criteria (price, bedrooms, location, property type) from natural language queries. **Smart Intent Detection**: Keyword detection automatically forces function calling when property search intent is detected ("show me", "find", "condo", "villa", "million", "baht", etc.). **Internal API Calls**: Uses Django's `RequestFactory` for internal property API calls instead of external HTTP requests—avoids network issues, handles authentication properly, faster and more reliable. **Enhanced Prompts**: Improved system prompts with explicit instructions on when to use search function and how to format results cleanly. **Response Formatting**: Clean, concise property listings with bullet points (•) separating info, no verbose labels, formatted as "**Title** • ฿Price • XBR • Location [View Property](url)". **2025-01-XX**: Enhanced error handling—frontend displays actual API error messages, improved content validation, better user feedback. Fixed AdminSettings singleton pattern—smart record selection prefers records with API key when multiple exist, allows cleanup of duplicates via admin interface. Comprehensive logging added for debugging function calls and API responses.
 
 ### Admin Customizations (`src/core/admin.py`, `src/core/models.py`)
@@ -804,4 +853,5 @@ The v1.0 release represents a comprehensive UI/UX overhaul of the Wizer Properti
 - **Docker & deployment**: Automatic migration execution via entrypoint script, database readiness checks, streamlined container startup workflow
 - **Static files & media**: Fixed STATICFILES_DIRS configuration, improved static file serving in DEBUG mode, proper MIME type handling
 - **Analytics improvements**: Fixed PostHog initialization (changed from inline snippet to script tag to avoid array property conflicts), improved error handling
+- **Ad Engine Implementation (2025-01-XX)**: Fixed API queryset filtering to include `status='running'`, added ad support to building detail page (topbar + sidebar), added ad support to home pages (buyer and developer), ad engine now fully functional across all major pages (property detail, building detail, home pages, search pages, blog pages)
 

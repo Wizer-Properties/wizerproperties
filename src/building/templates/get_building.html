@@ -58,37 +58,133 @@
 {% endblock extend_head %}
 
 {% block content %}
+<!-- Breadcrumb Navigation -->
+<section class="bg-muted/40 py-4">
+    <div class="container">
+        <nav aria-label="Breadcrumb" class="flex items-center gap-2 text-sm">
+            <a href="/" class="text-muted-foreground transition hover:text-foreground">Home</a>
+            <i class="bi bi-chevron-right text-xs text-muted-foreground"></i>
+            <a href="/property/search/" class="text-muted-foreground transition hover:text-foreground">Buildings</a>
+            <i class="bi bi-chevron-right text-xs text-muted-foreground"></i>
+            <span class="text-foreground font-medium" data-breadcrumb-building>Building Details</span>
+        </nav>
+    </div>
+</section>
+
+<!-- Sponsored Property Ads -->
+<section class="bg-muted/40 py-6">
+    <div class="container">
+        <div class="space-y-3">
+            <div class="top-banner overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+                <div class="splide ads-banner-slider" aria-label="Sponsored property highlights">
+                    <div class="splide__track">
+                        <ul class="splide__list">
+                            <li class="splide__slide h-40 animate-pulse bg-muted"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center text-[11px] font-medium uppercase tracking-[0.35em] text-muted-foreground">Sponsored listings</p>
+        </div>
+    </div>
+</section>
+
 <section class="bg-muted/40 py-12">
     <div class="container space-y-12">
         <div class="grid gap-8 lg:grid-cols-[2fr,1fr]">
             <div class="space-y-6">
-                <div class="rounded-2xl border border-border bg-card shadow-sm">
-                    <div class="p-6">
-                        <div class="flex flex-wrap items-start justify-between gap-4">
-                            <div class="space-y-3">
-                                <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Building</span>
-                                <h1 class="text-3xl font-heading font-semibold text-foreground" data-building-title>Loading…</h1>
-                                <div class="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-                                    <i class="bi bi-geo-alt text-base text-accent"></i>
-                                    <span data-building-address>Loading…</span>
-                                </div>
-                            </div>
-                            <div class="rounded-xl border border-border bg-accent/10 px-4 py-3 text-sm font-semibold text-primary">
-                                <span data-building-price>Loading…</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border-t border-border">
-                        <div class="splide" id="building-hero-slider">
-                            <div class="splide__track">
-                                <ul class="splide__list" data-gallery-list>
-                                    <li class="splide__slide h-72 animate-pulse bg-muted"></li>
+                <div class="group relative overflow-hidden rounded-2xl border border-border/50 bg-card shadow-sm">
+                    <!-- Hero Image Section -->
+                    <div class="relative aspect-[4/3] w-full overflow-hidden bg-muted">
+                        <div class="splide h-full w-full group-hover:scale-105 transition-transform duration-700 ease-out" id="building-hero-slider">
+                            <div class="splide__track h-full">
+                                <ul class="splide__list h-full" data-gallery-list>
+                                    <li class="splide__slide h-full animate-pulse bg-muted"></li>
                                 </ul>
                             </div>
                         </div>
+
+                        <!-- Gradient Overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-90 pointer-events-none"></div>
+
+                        <!-- Price Overlay (if applicable) -->
+                        <div class="absolute inset-x-0 bottom-0 z-20 p-3 sm:p-4 hidden" data-building-price-overlay>
+                            <div class="flex items-end justify-between gap-2">
+                                <div class="flex flex-col gap-1">
+                                    <p class="text-2xl font-bold leading-none text-white drop-shadow-lg sm:text-3xl" data-building-price>Loading…</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex items-center justify-between border-t border-border px-6 py-4">
-                        <div class="flex flex-wrap gap-2 text-sm font-medium">
+
+                    <!-- Header Section -->
+                    <div class="flex items-center justify-between gap-3 border-b border-border/50 bg-card/50 backdrop-blur-sm px-4 py-2.5">
+                        <div class="flex items-center gap-3 min-w-0 flex-1">
+                            <div class="min-w-0 flex-1">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Building</span>
+                                </div>
+                                <h1 class="text-base font-semibold leading-snug text-foreground sm:text-lg truncate" data-building-title>Loading…</h1>
+                                <div class="flex items-center gap-1.5 text-sm text-muted-foreground mt-1">
+                                    <i class="bi bi-geo-alt-fill text-accent"></i>
+                                    <span class="line-clamp-1" data-building-address>Loading…</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% if not request.user.is_authenticated or request.user.user_type == "prospect" %}
+                        <a href="/schedule/create_schedule?type=building&id={{ building.id }}"
+                            class="group/cta inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-primary/90 hover:shadow-md hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary/50 touch-manipulation">
+                            <i class="bi bi-calendar-check"></i>
+                            <span>Schedule</span>
+                        </a>
+                        {% endif %}
+                    </div>
+
+                    <!-- Building Stats Section -->
+                    <div class="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-border/50 bg-muted/30 px-4 py-3">
+                        <div class="flex items-center gap-1.5 text-sm text-muted-foreground flex-shrink-0">
+                            <i class="bi bi-building text-accent"></i>
+                            <span class="font-medium text-foreground" data-building-type>—</span>
+                        </div>
+                        <div class="flex items-center gap-1.5 text-sm text-muted-foreground flex-shrink-0">
+                            <i class="bi bi-door-open text-accent"></i>
+                            <span class="font-medium text-foreground" data-building-units>—</span>
+                            <span>units</span>
+                        </div>
+                        <div class="flex items-center gap-1.5 text-sm text-muted-foreground flex-shrink-0">
+                            <i class="bi bi-rulers text-accent"></i>
+                            <span class="font-medium text-foreground" data-building-area>—</span>
+                            <span>sqm</span>
+                        </div>
+                        <div class="flex items-center gap-1.5 text-sm text-muted-foreground flex-shrink-0">
+                            <i class="bi bi-layers text-accent"></i>
+                            <span class="font-medium text-foreground" data-building-floors>—</span>
+                            <span>floors</span>
+                        </div>
+                        <div class="flex items-center gap-1.5 text-sm text-muted-foreground flex-shrink-0 hidden" data-building-completion-wrapper>
+                            <i class="bi bi-calendar-check text-accent"></i>
+                            <span class="font-medium text-foreground" data-building-completion>—</span>
+                        </div>
+                        <div class="flex items-center gap-1.5 text-sm text-muted-foreground flex-shrink-0 hidden" data-building-bts-wrapper>
+                            <i class="bi bi-train-front text-accent"></i>
+                            <span class="font-medium text-foreground" data-building-bts>—</span>
+                            <span>km BTS/MRT</span>
+                        </div>
+                        <div class="flex items-center gap-1.5 text-sm text-muted-foreground flex-shrink-0 hidden" data-building-arl-wrapper>
+                            <i class="bi bi-train-front text-accent"></i>
+                            <span class="font-medium text-foreground" data-building-arl>—</span>
+                            <span>km ARL</span>
+                        </div>
+                        <div class="flex items-center gap-1.5 text-sm text-muted-foreground flex-shrink-0 hidden" data-building-quota-wrapper>
+                            <i class="bi bi-ticket-perforated text-accent"></i>
+                            <span class="font-medium text-foreground" data-building-quota>—</span>
+                            <span>quota</span>
+                        </div>
+                    </div>
+
+                    <!-- Gallery Tabs & Actions -->
+                    <div class="flex flex-col gap-4 border-t border-border px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+                        <div class="flex flex-wrap gap-2 text-sm font-normal">
                             <button type="button" class="gallery-tab-button nav-pill nav-pill-active" data-gallery-filter="image">Images</button>
                             <button type="button" class="gallery-tab-button nav-pill" data-gallery-filter="unit_floor_plan">Floor Plans</button>
                             <button type="button" class="gallery-tab-button nav-pill" data-gallery-filter="master_plan">Master Plans</button>
@@ -102,44 +198,6 @@
                 </div>
 
                 <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
-                    <h2 class="text-lg font-semibold text-foreground">Key Metrics</h2>
-                    <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                        <div class="stat-chip">
-                            <span class="stat-label">Type</span>
-                            <span class="stat-value" data-building-type>—</span>
-                        </div>
-                        <div class="stat-chip">
-                            <span class="stat-label">Units</span>
-                            <span class="stat-value" data-building-units>—</span>
-                        </div>
-                        <div class="stat-chip">
-                            <span class="stat-label">Total Area</span>
-                            <span class="stat-value" data-building-area>—</span>
-                        </div>
-                        <div class="stat-chip">
-                            <span class="stat-label">Floors</span>
-                            <span class="stat-value" data-building-floors>—</span>
-                        </div>
-                        <div class="stat-chip">
-                            <span class="stat-label">Completion</span>
-                            <span class="stat-value" data-building-completion>—</span>
-                        </div>
-                        <div class="stat-chip">
-                            <span class="stat-label">BTS / MRT</span>
-                            <span class="stat-value" data-building-bts>—</span>
-                        </div>
-                        <div class="stat-chip">
-                            <span class="stat-label">ARL</span>
-                            <span class="stat-value" data-building-arl>—</span>
-                        </div>
-                        <div class="stat-chip">
-                            <span class="stat-label">Quota</span>
-                            <span class="stat-value" data-building-quota>—</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
                     <div class="flex items-start justify-between gap-4">
                         <div>
                             <h2 class="text-lg font-semibold text-foreground">About this development</h2>
@@ -149,14 +207,14 @@
                             Expand
                         </button>
                     </div>
-                    <div class="mt-4 space-y-4 text-sm text-muted-foreground" data-building-description>
+                    <div class="mt-4 space-y-4 text-sm font-normal text-muted-foreground" data-building-description>
                         <div class="h-24 animate-pulse rounded-md bg-muted/60"></div>
                     </div>
                 </div>
 
                 <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
                     <h2 class="text-lg font-semibold text-foreground">Amenities</h2>
-                    <p class="text-sm text-muted-foreground">Lifestyle perks available to residents.</p>
+                    <p class="text-sm font-normal text-muted-foreground">Lifestyle perks available to residents.</p>
                     <div class="mt-4 flex flex-wrap gap-2" data-building-amenities>
                         <span class="inline-flex animate-pulse rounded-full bg-muted px-3 py-1 text-xs text-muted-foreground">Loading…</span>
                     </div>
@@ -191,7 +249,7 @@
                             <h2 class="text-lg font-semibold text-foreground">Available Units</h2>
                             <p class="text-sm text-muted-foreground">Browse available inventory by bedroom count.</p>
                         </div>
-                        <div class="flex flex-wrap gap-2 text-sm font-medium">
+                        <div class="flex flex-wrap gap-2 text-sm font-normal">
                             <button class="filter-chip filter-chip-active" data-available-filter="all">All</button>
                             <button class="filter-chip" data-available-filter="1">1 Bed</button>
                             <button class="filter-chip" data-available-filter="2">2 Beds</button>
@@ -216,7 +274,7 @@
             <aside class="space-y-6">
                 <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
                     <h2 class="text-lg font-semibold text-foreground">Connect with our advisors</h2>
-                    <p class="mt-2 text-sm text-muted-foreground">Let us help you discover availability, schedule tours, and answer questions.</p>
+                    <p class="mt-2 text-sm font-normal text-muted-foreground">Let us help you discover availability, schedule tours, and answer questions.</p>
                     {% if not request.user.is_authenticated or request.user.user_type == "prospect" %}
                     <a href="/schedule/create_schedule?type=building&id={{ building.id }}" class="btn mt-4 w-full justify-center">
                         Schedule a Viewing
@@ -228,8 +286,8 @@
                                 <i class="bi bi-telephone"></i>
                             </span>
                             <div>
-                                <p class="text-xs uppercase text-muted-foreground">Call us</p>
-                                <a href="tel:{{ building.contact_phone_number }}" class="font-semibold text-foreground" data-contact-phone>
+                                <p class="text-xs font-medium uppercase text-muted-foreground">Call us</p>
+                                <a href="tel:{{ building.contact_phone_number }}" class="text-sm font-medium text-foreground" data-contact-phone>
                                     {{ building.contact_phone_number|default:"+" }}
                                 </a>
                             </div>
@@ -240,8 +298,8 @@
                                 <i class="bi bi-envelope"></i>
                             </span>
                             <div>
-                                <p class="text-xs uppercase text-muted-foreground">Email</p>
-                                <a href="mailto:{{ building.contact_email }}" class="font-semibold text-foreground">
+                                <p class="text-xs font-medium uppercase text-muted-foreground">Email</p>
+                                <a href="mailto:{{ building.contact_email }}" class="text-sm font-medium text-foreground">
                                     {{ building.contact_email }}
                                 </a>
                             </div>
@@ -252,28 +310,42 @@
 
                 <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
                     <h2 class="text-lg font-semibold text-foreground">Project Snapshot</h2>
-                    <dl class="mt-4 space-y-3 text-sm">
+                    <dl class="mt-4 space-y-3 text-sm font-normal">
                         <div class="flex items-center justify-between">
                             <dt class="text-muted-foreground">Status</dt>
-                            <dd class="font-semibold text-foreground capitalize" data-building-status>—</dd>
+                            <dd class="font-medium text-foreground capitalize" data-building-status>—</dd>
                         </div>
                         <div class="flex items-center justify-between">
                             <dt class="text-muted-foreground">Furnishing</dt>
-                            <dd class="font-semibold text-foreground capitalize" data-building-furnishing>—</dd>
+                            <dd class="font-medium text-foreground capitalize" data-building-furnishing>—</dd>
                         </div>
                         <div class="flex items-center justify-between">
                             <dt class="text-muted-foreground">Primary View</dt>
-                            <dd class="font-semibold text-foreground capitalize" data-building-view>—</dd>
+                            <dd class="font-medium text-foreground capitalize" data-building-view>—</dd>
                         </div>
                     </dl>
                 </div>
 
                 <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
                     <h2 class="text-lg font-semibold text-foreground">Get instant price alerts</h2>
-                    <p class="mt-2 text-sm text-muted-foreground">Get notified when new units are listed or prices change in this development. Never miss a deal.</p>
+                    <p class="mt-2 text-sm font-normal text-muted-foreground">Get notified when new units are listed or prices change in this development. Never miss a deal.</p>
                     <a href="{% url 'user:signup' %}" class="btn-secondary mt-4 w-full justify-center">
                         Set up price alerts
                     </a>
+                </div>
+
+                <!-- Sponsored Property Ads -->
+                <div class="space-y-3">
+                    <div class="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+                        <div class="splide side-add-banner-slider" aria-label="Sponsored property highlights">
+                            <div class="splide__track">
+                                <ul class="splide__list">
+                                    <li class="splide__slide h-40 animate-pulse bg-muted"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">Sponsored</p>
                 </div>
             </aside>
         </div>
@@ -307,7 +379,10 @@
     const BUILDING_ID = '{{ building.id }}';
     const USER_ID = '{{ user.id|default:0 }}';
     const CSRF_TOKEN = '{{ csrf_token }}';
+    const ADS_SUGGEST_URL = '/advertise/api/advertisement/suggested/';
+    const ADS_LOCATION_PARAM = ['details_sidebar', 'details_topbar'];
 </script>
 <script src="{% static 'js/building/detail-page.js' %}?v=2.00"></script>
+<script src="{% static 'js/ads.js' %}?v=1.04"></script>
 {% endblock extend_script %}
 

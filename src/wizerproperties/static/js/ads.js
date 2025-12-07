@@ -96,6 +96,12 @@ $(document).ready(function(){
 
 
     function get_ads_list(params){
+        // Skip if ADS_SUGGEST_URL is not defined
+        if (typeof ADS_SUGGEST_URL === 'undefined') {
+            console.warn('ADS_SUGGEST_URL is not defined. Skipping ad request.');
+            return;
+        }
+        
         $.ajax({
             url: ADS_SUGGEST_URL,
             type: 'GET',
@@ -103,11 +109,11 @@ $(document).ready(function(){
                 'ad-location' : params
             },
             headers: {
-                'X-CSRFToken': csrfToken,
+                'X-CSRFToken': typeof csrfToken !== 'undefined' ? csrfToken : '',
             },
             beforeSend: function() {
                 // Add loader directly to DOM instead of using slider API
-                if(['search', 'details_topbar'].includes(params)){
+                if(['search', 'details_topbar', 'home'].includes(params)){
                     $('.ads-banner-slider .splide__list').append(loader_tmp());
                 }
                 if(['details_sidebar'].includes(params)){
@@ -136,7 +142,7 @@ $(document).ready(function(){
                     }
                     
                     // Hide ad containers (including parent sections with labels)
-                    if(['search', 'details_topbar'].includes(params)){
+                    if(['search', 'details_topbar', 'home'].includes(params)){
                         $('.ads-banner-slider').closest('section').hide();
                     }
                     if(['details_sidebar'].includes(params)){
@@ -169,7 +175,7 @@ $(document).ready(function(){
 
                 // Add slides directly to DOM
                 for (let i = 0; i < data.length; i++) {
-                    if(['search', 'details_topbar'].includes(params)){
+                    if(['search', 'details_topbar', 'home'].includes(params)){
                         $('.ads-banner-slider .splide__list').append('<li class="splide__slide">' + ads_tmp(data[i]) + '</li>');
                     }
 
@@ -179,7 +185,7 @@ $(document).ready(function(){
                 }
 
                 // Initialize and mount sliders after adding slides
-                if(['search', 'details_topbar'].includes(params) && !ads_banner_mounted){
+                if(['search', 'details_topbar', 'home'].includes(params) && !ads_banner_mounted){
                     if($('.ads-banner-slider').length > 0 && $('.ads-banner-slider .splide__slide').length > 0){
                         ads_banner_slider = new Splide( '.ads-banner-slider', {
                             perPage: 1,
@@ -213,8 +219,11 @@ $(document).ready(function(){
         });
     };
 
-    for (let i = 0; i < ADS_LOCATION_PARAM.length; i++) {
-        get_ads_list(ADS_LOCATION_PARAM[i])
-    };
+    // Only run if ADS_LOCATION_PARAM is defined (page-specific configuration)
+    if (typeof ADS_LOCATION_PARAM !== 'undefined' && Array.isArray(ADS_LOCATION_PARAM)) {
+        for (let i = 0; i < ADS_LOCATION_PARAM.length; i++) {
+            get_ads_list(ADS_LOCATION_PARAM[i])
+        }
+    }
 
 });
