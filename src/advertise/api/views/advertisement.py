@@ -26,18 +26,28 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
         expired_at__gte=timezone.now(),
         status='running'
     )
-    ordering = ["-created_at"]  # Default ordering
+    ordering = ["position", "-created_at"]  # Default ordering
     
     @action(detail=True, methods=["patch"], url_path="manage-view-time")
     def manage_advertisement_view_time(self, request, pk=None):
-        # Updates Ad total view time
+        """Updates Ad total view time"""
         ad_obj = self.get_object()
         time_spent = request.data.get("time_spent", None)
-        if time_spent:
-            ad_obj.view_time += timedelta(seconds=time_spent)
-            ad_obj.save()
-        serializer = self.serializer_class(ad_obj)
         
+        if time_spent:
+            try:
+                # Convert to float and validate
+                time_spent_seconds = float(time_spent)
+                if time_spent_seconds > 0:
+                    ad_obj.view_time += timedelta(seconds=time_spent_seconds)
+                    ad_obj.save()
+            except (ValueError, TypeError) as e:
+                return Response(
+                    {"error": f"Invalid time_spent value: {e}"}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        
+        serializer = self.serializer_class(ad_obj)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -206,6 +216,6 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
             
         # Anything unmatched (including content_type is null) will go to the end
         ordering_expression = Case(*ordering_cases, default=Value(10**9), output_field=IntegerField()) if ordering_cases else "position"
-        advertisement_qs = ads_qs.order_by(ordering_expression, "position", "-created_at")
+        advertisement_qs = ads_qs.order_by("position", ordering_expression, "-created_at")
         serializer = AdvertisementSuggestionSerializer(advertisement_qs, many=True)
         return Response(serializer.data)

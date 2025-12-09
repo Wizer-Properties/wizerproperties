@@ -112,7 +112,6 @@
                 <div class="flex items-center gap-6">
                     <a href="{% if request.user.is_authenticated and request.user.user_type in 'developer,agent' %}{% url 'developer-home' %}{% else %}/{% endif %}" class="flex items-center gap-3 rounded-full p-1 transition hover:opacity-80" data-brand>
                         <img src="{% static 'media/logo.png' %}" alt="Wizer Properties" class="h-10 w-auto transition-all duration-300" data-brand-large>
-                        <img src="{% static 'media/icons/favicon.ico' %}" alt="Wizer Properties" class="hidden size-9 rounded-full transition-all duration-300" data-brand-compact>
                         <span class="sr-only">Wizer Properties</span>
                     </a>
                 </div>
@@ -573,7 +572,7 @@
                         </svg>
                     </button>
                 </div>
-                <div class="px-6 py-5 text-sm text-muted-foreground" id="confirmationModalBody"></div>
+                <div class="px-6 py-5 text-base text-muted-foreground" id="confirmationModalBody"></div>
                 <div class="flex items-center justify-end gap-3 border-t border-border bg-muted/40 px-6 py-4">
                     <button type="button" class="btn-secondary min-w-[110px] justify-center" data-confirmation-dismiss>Close</button>
                     <button type="button" class="btn min-w-[110px] justify-center" id="confirmButton"></button>
@@ -585,7 +584,7 @@
             {% if request.user.is_authenticated and request.user.user_type in "developer,agent" %}
                 {# DEVELOPER FOOTER #}
                 <div class="container">
-                    <div class="grid grid-cols-2 gap-8 text-sm text-muted-foreground md:grid-cols-4">
+                    <div class="grid grid-cols-2 gap-8 text-base text-muted-foreground md:grid-cols-4">
                         <div class="space-y-4">
                             <p class="font-semibold text-foreground">Product</p>
                             <ul class="space-y-2">
@@ -641,7 +640,7 @@
                 </div>
             {% else %}
                 {# BUYER FOOTER #}
-                <div class="container flex flex-col gap-8 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
+                <div class="container flex flex-col gap-8 text-base text-muted-foreground md:flex-row md:items-center md:justify-between">
                     <div class="space-y-4">
                         <p class="font-semibold text-foreground">Buy Bangkok property with confidence</p>
                         <p class="text-xs text-muted-foreground">Every property verified. Every price transparent. Every question answered—in your language.</p>

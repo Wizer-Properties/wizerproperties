@@ -201,7 +201,7 @@
                     <div class="flex items-start justify-between gap-4">
                         <div>
                             <h2 class="text-lg font-semibold text-foreground">About this development</h2>
-                            <p class="text-sm text-muted-foreground">See what makes this project unique—amenities, location benefits, and why buyers choose it.</p>
+                            <p class="text-base text-muted-foreground">See what makes this project unique—amenities, location benefits, and why buyers choose it.</p>
                         </div>
                         <button type="button" class="btn-secondary hidden sm:inline-flex" data-description-expand>
                             Expand
@@ -247,7 +247,7 @@
                     <div class="flex flex-wrap items-center justify-between gap-3">
                         <div>
                             <h2 class="text-lg font-semibold text-foreground">Available Units</h2>
-                            <p class="text-sm text-muted-foreground">Browse available inventory by bedroom count.</p>
+                            <p class="text-base text-muted-foreground">Browse available inventory by bedroom count.</p>
                         </div>
                         <div class="flex flex-wrap gap-2 text-sm font-normal">
                             <button class="filter-chip filter-chip-active" data-available-filter="all">All</button>
@@ -372,6 +372,8 @@
 {% block extend_script %}
 <script src="{% static 'js/libraries/splide.min.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+<!-- TimeMe.js library for tracking time spent on page -->
+<script src="https://cdn.jsdelivr.net/npm/timeme.js@2.2.5/timeme.min.js"></script>
 <script>
     const ASSET_API_URL = '/building/api/details/{{ building.id }}/';
     const GALLERY_API_URL = '/building/api/details/{{ building.id }}/media-files/';
@@ -383,6 +385,7 @@
     const ADS_LOCATION_PARAM = ['details_sidebar', 'details_topbar'];
 </script>
 <script src="{% static 'js/building/detail-page.js' %}?v=2.00"></script>
+<script src="{% static 'js/advertise/manage-view-time.js' %}?v=1.07"></script>
 <script src="{% static 'js/ads.js' %}?v=1.04"></script>
 {% endblock extend_script %}
 
