@@ -40,7 +40,7 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
                 time_spent_seconds = float(time_spent)
                 if time_spent_seconds > 0:
                     ad_obj.view_time += timedelta(seconds=time_spent_seconds)
-                    ad_obj.save()
+            ad_obj.save()
             except (ValueError, TypeError) as e:
                 return Response(
                     {"error": f"Invalid time_spent value: {e}"}, 
