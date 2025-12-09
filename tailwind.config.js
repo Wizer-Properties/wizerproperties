@@ -12,9 +12,18 @@ module.exports = {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: {
+        DEFAULT: "1rem",
+        sm: "1.5rem",
+        lg: "2rem",
+        xl: "2rem",
+      },
       screens: {
-        "2xl": "1440px",
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
+        "2xl": "1280px", // Uniform max-width for all content
       },
     },
     extend: {
@@ -63,8 +72,8 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["'Inter'", "'Manrope'", "system-ui", "sans-serif"],
-        heading: ["'Manrope'", "'Inter'", "system-ui", "sans-serif"],
+        sans: ["'Effra'", "sans-serif"],
+        heading: ["'Effra'", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {

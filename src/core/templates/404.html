@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}404 – Page Not Found{% endblock %}
+{% block extend_head %}
+<title>404 – Page Not Found | Wizer Properties</title>
+<meta name="description" content="The page you're looking for couldn't be found. Return to our homepage or browse properties in Bangkok, Thailand.">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+<meta name="robots" content="noindex, follow">
+{% endblock extend_head %}
 
 {% block content %}
 <section class="relative flex min-h-[70vh] items-center justify-center overflow-hidden bg-muted/30 py-16">
@@ -10,12 +15,12 @@
         <div class="absolute inset-0 bg-background/85 backdrop-blur-sm"></div>
     </div>
 
-    <div class="container max-w-3xl">
+    <div class="container max-w-2xl">
         <div class="rounded-3xl border border-border bg-card/95 p-10 text-center shadow-xl backdrop-blur">
-            <p class="text-xs font-semibold uppercase tracking-[0.4em] text-accent">Error 404</p>
-            <h1 class="mt-4 text-4xl font-heading font-semibold text-foreground sm:text-5xl">We couldn’t find that page</h1>
-            <p class="mt-4 text-sm text-muted-foreground sm:text-base">
-                The link may be outdated or the page might have moved. Let’s help you find the information you were looking for.
+            <p class="text-xs font-semibold uppercase tracking-[0.4em] text-accent">Page not found</p>
+            <h1 class="mt-4 text-4xl font-heading font-semibold text-foreground sm:text-5xl">Oops! That page doesn't exist</h1>
+            <p class="mt-4 text-base text-muted-foreground sm:text-lg">
+                The page you're looking for might have moved or been removed. Let's get you back on track—browse properties or return to the homepage.
             </p>
 
             <div class="mt-10 grid gap-3 sm:grid-cols-2">

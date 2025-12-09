@@ -3,9 +3,10 @@
 <section class="bg-muted/40 py-6" id="search-filter-box">
     <div class="container">
         <div class="space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sm">
-            <div class="flex flex-col gap-4 lg:flex-row lg:items-center">
+            <!-- Location Search - Prominent -->
+            <div class="flex flex-col gap-4">
                 <div class="flex-1">
-                    <label for="gm-search-input" class="sr-only">Search by location</label>
+                    <label for="gm-search-input" class="mb-2 block text-sm font-semibold text-foreground">Search by location</label>
                     <div class="relative">
                         <span class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-muted-foreground">
                             <i class="bi bi-geo-alt text-lg"></i>
@@ -13,7 +14,7 @@
                         <input
                             id="gm-search-input"
                             type="text"
-                            placeholder="Search by location"
+                            placeholder="e.g. Thong Lo, BTS Asok, Sukhumvit 39, riverside condo"
                             class="input pl-11 pr-12"
                             autocomplete="off"
                         />
@@ -23,18 +24,64 @@
                         </button>
                     </div>
                 </div>
-                <div class="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-                    <span>Active filters:</span>
-                    <div class="flex flex-wrap gap-2" data-active-filter-chips>
-                        <!-- Active filter chips inserted via JS -->
+            </div>
+
+            <!-- Quick Filter Presets - Most Common Searches -->
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-sm font-semibold text-foreground">Quick filters</h3>
+                    <button type="button" class="text-xs text-muted-foreground transition hover:text-foreground" data-filter-reset>
+                        <i class="bi bi-arrow-counterclockwise mr-1"></i>
+                        Clear all
+                    </button>
                     </div>
-                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1 text-xs font-medium text-foreground transition hover:border-accent/60 hover:text-accent" data-filter-reset>
-                        <i class="bi bi-arrow-counterclockwise"></i>
-                        <span>Reset all</span>
+                <div class="flex flex-wrap gap-2">
+                    <!-- Price Range Presets -->
+                    <button type="button" data-quick-filter="price" data-min="0" data-max="5000000" class="quick-filter-btn inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:bg-accent/10 hover:text-accent">
+                        <i class="bi bi-tag"></i>
+                        <span>Under ฿5M</span>
+                    </button>
+                    <button type="button" data-quick-filter="price" data-min="5000000" data-max="10000000" class="quick-filter-btn inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:bg-accent/10 hover:text-accent">
+                        <i class="bi bi-tag"></i>
+                        <span>฿5M - ฿10M</span>
+                    </button>
+                    <button type="button" data-quick-filter="price" data-min="10000000" data-max="20000000" class="quick-filter-btn inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:bg-accent/10 hover:text-accent">
+                        <i class="bi bi-tag"></i>
+                        <span>฿10M - ฿20M</span>
+                    </button>
+                    <button type="button" data-quick-filter="price" data-min="20000000" data-max="" class="quick-filter-btn inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:bg-accent/10 hover:text-accent">
+                        <i class="bi bi-tag"></i>
+                        <span>Over ฿20M</span>
+                    </button>
+                    <!-- Bedroom Presets -->
+                    <button type="button" data-quick-filter="bedrooms" data-min="1" data-max="1" class="quick-filter-btn inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:bg-accent/10 hover:text-accent">
+                        <i class="bi bi-bed"></i>
+                        <span>1 Bedroom</span>
+                    </button>
+                    <button type="button" data-quick-filter="bedrooms" data-min="2" data-max="2" class="quick-filter-btn inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:bg-accent/10 hover:text-accent">
+                        <i class="bi bi-bed"></i>
+                        <span>2 Bedrooms</span>
+                    </button>
+                    <button type="button" data-quick-filter="bedrooms" data-min="3" data-max="" class="quick-filter-btn inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:bg-accent/10 hover:text-accent">
+                        <i class="bi bi-bed"></i>
+                        <span>3+ Bedrooms</span>
                     </button>
                 </div>
             </div>
 
+            <!-- Active Filters Display (hidden by default) -->
+            <div class="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-secondary/20 px-4 py-3 text-sm hidden" data-active-filters-section>
+                <span class="font-medium text-muted-foreground">Active:</span>
+                <div class="flex flex-wrap gap-2" data-active-filter-chips>
+                    <!-- Active filter chips inserted via JS -->
+                </div>
+            </div>
+
+            <!-- Advanced Filters -->
+            <div class="border-t border-border pt-4">
+                <div class="mb-4 flex items-center justify-between">
+                    <h3 class="text-sm font-semibold text-foreground">Advanced filters</h3>
+                </div>
             <div class="flex flex-wrap gap-3" data-filter-trigger-group>
                 <button type="button" data-filter-trigger="radius" aria-haspopup="true" aria-expanded="false" aria-controls="filter-popover-radius" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:text-accent">
                     <i class="bi bi-radar"></i>
@@ -145,7 +192,7 @@
                         </div>
                         <div class="flex items-center justify-end gap-2">
                             <button type="button" class="btn-secondary px-3 py-1 text-xs" data-filter-clear="price">Clear</button>
-                            <button type="button" class="btn px-3 py-1 text-xs" data-filter-apply>Apply</button>
+                            <button type="button" class="btn px-3 py-1 text-xs" data-filter-apply>Show results</button>
                         </div>
                     </div>
                 </div>
@@ -195,7 +242,7 @@
                         </div>
                         <div class="flex items-center justify-end gap-2">
                             <button type="button" class="btn-secondary px-3 py-1 text-xs" data-filter-clear="bedrooms">Clear</button>
-                            <button type="button" class="btn px-3 py-1 text-xs" data-filter-apply>Apply</button>
+                            <button type="button" class="btn px-3 py-1 text-xs" data-filter-apply>Show results</button>
                         </div>
                     </div>
                 </div>
@@ -224,7 +271,7 @@
                         </div>
                         <div class="flex items-center justify-end gap-2">
                             <button type="button" class="btn-secondary px-3 py-1 text-xs" data-filter-clear="property-type">Clear</button>
-                            <button type="button" class="btn px-3 py-1 text-xs" data-filter-apply>Apply</button>
+                            <button type="button" class="btn px-3 py-1 text-xs" data-filter-apply>Show results</button>
                         </div>
                     </div>
                 </div>

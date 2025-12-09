@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+/* Legacy Montserrat font removed - now using Effra via Tailwind config */
 
 :root{
     --th-gradient-bg: linear-gradient(315deg, #140733 0%, #7f1377 54%);
@@ -12,7 +12,6 @@
     margin: 0;
     box-sizing: border-box;
     outline: none !important;
-    font-family: 'Montserrat', sans-serif !important;
 }
 
 .material-icons{
@@ -29,6 +28,88 @@
 
 .z-index-3{
     z-index: 3;
+}
+
+/* Property card teal background when in comparison */
+.property-compared {
+    position: relative;
+    background: linear-gradient(135deg, rgba(0, 222, 182, 0.1) 0%, rgba(0, 222, 182, 0.05) 100%) !important;
+    border-color: rgba(0, 222, 182, 0.3) !important;
+    border-width: 2px !important;
+    box-shadow: 0 4px 12px rgba(0, 222, 182, 0.15) !important;
+}
+
+.property-compared:hover {
+    background: linear-gradient(135deg, rgba(0, 222, 182, 0.15) 0%, rgba(0, 222, 182, 0.08) 100%) !important;
+    border-color: rgba(0, 222, 182, 0.4) !important;
+    box-shadow: 0 6px 16px rgba(0, 222, 182, 0.2) !important;
+}
+
+/* Add a subtle indicator badge */
+.property-compared::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, rgba(0, 222, 182, 0.8), rgba(0, 222, 182, 0.4));
+    z-index: 1;
+    border-radius: 0.75rem 0.75rem 0 0;
+}
+
+/* Ensure non-compared cards have white background */
+[data-property-card]:not(.property-compared) {
+    background-color: white !important;
+}
+
+/* Featured listing - border only, normal background */
+.property-featured {
+    border: 2px solid rgba(0, 222, 182, 0.25) !important;
+    position: relative;
+}
+
+.property-featured::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, rgba(0, 222, 182, 1), rgba(0, 222, 182, 0.6));
+    z-index: 1;
+    border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.property-featured:hover {
+    border-color: rgba(0, 222, 182, 0.35) !important;
+}
+
+/* Spotlight/Flash Sale listing styling */
+.property-spotlight {
+    background: linear-gradient(135deg, rgba(127, 19, 119, 0.08) 0%, rgba(127, 19, 119, 0.03) 100%) !important;
+    border: 2px solid rgba(127, 19, 119, 0.25) !important;
+    box-shadow: 0 4px 16px rgba(127, 19, 119, 0.15) !important;
+    position: relative;
+}
+
+.property-spotlight::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, rgba(127, 19, 119, 1), rgba(127, 19, 119, 0.6));
+    z-index: 1;
+    border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.property-spotlight:hover {
+    background: linear-gradient(135deg, rgba(127, 19, 119, 0.12) 0%, rgba(127, 19, 119, 0.05) 100%) !important;
+    border-color: rgba(127, 19, 119, 0.35) !important;
+    box-shadow: 0 6px 20px rgba(127, 19, 119, 0.2) !important;
+    transform: translateY(-2px);
 }
 
 .datepicker-dropdown{
@@ -72,7 +153,7 @@ body{
 }
 
 h1, h2, h3, h4, h5, h6, p, span, th, td, a {
-    font-family: -webkit-body;
+    /* font-family: -webkit-body; */
     text-decoration: none;
 }
 

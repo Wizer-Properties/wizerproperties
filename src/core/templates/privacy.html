@@ -1,19 +1,31 @@
 {% extends "base.html" %}
 {% load static %}
-
+{% load seo_tags %}
 
 {% block extend_head %}
-<title>Privacy Policy</title>
+<title>Privacy Policy | Wizer Properties</title>
+<meta name="description" content="Wizer Properties privacy policy. Learn how we protect your personal information and data when using our property platform.">
+<meta name="keywords" content="wizer properties privacy policy, data protection, privacy thailand">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+<meta name="robots" content="noindex, follow">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Privacy Policy | Wizer Properties">
+<meta property="og:description" content="Learn how Wizer Properties protects your personal information and data.">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'media/logo.png' %}">
+<meta property="og:site_name" content="Wizer Properties">
 {% endblock extend_head %}
 
 {% block content %}
 <section class="bg-muted/30 py-16 sm:py-20">
-    <div class="container max-w-4xl space-y-10">
+    <div class="container max-w-7xl space-y-10">
         <header class="space-y-4 text-center">
             <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Privacy & Security</span>
-            <h1 class="text-3xl font-heading font-semibold text-foreground sm:text-4xl">How WiSER protects your data</h1>
-            <p class="text-sm text-muted-foreground sm:text-base">
-                We take your trust seriously. This policy explains what we collect, why we collect it, and the controls you have over your information when using WiSER Properties.
+            <h1 class="text-3xl font-heading font-semibold text-foreground sm:text-4xl">Your data is safe with us—here's how</h1>
+            <p class="text-base text-muted-foreground sm:text-lg">
+                We never sell your information. We never share it without permission. This policy explains exactly what we collect and how we protect it—in plain English.
             </p>
         </header>
 
@@ -40,7 +52,7 @@
                         <li>Send product updates, market insights, and compliance notices you opt into.</li>
                         <li>Maintain platform reliability, prevent fraud, and meet regulatory requirements in the markets we operate.</li>
                     </ul>
-                    <p>We never sell your personal information. Any vendor partners we engage must meet WiSER’s security standards and sign data processing agreements.</p>
+                    <p>We never sell your personal information. Any vendor partners we engage must meet Wizer’s security standards and sign data processing agreements.</p>
                 </div>
             </section>
 
@@ -82,7 +94,7 @@
             </section>
         </article>
 
-        <footer class="rounded-3xl border border-border bg-card/95 p-6 text-sm text-muted-foreground shadow-md backdrop-blur">
+        <footer class="rounded-3xl border border-border bg-card/95 p-6 text-base text-muted-foreground shadow-md backdrop-blur">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <p>If you have questions about this policy or need assistance exercising your rights, our privacy team is here to help.</p>
                 <a href="{% url 'contact' %}" class="btn sm:w-auto">Contact privacy support</a>

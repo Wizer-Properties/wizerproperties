@@ -3,7 +3,9 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Create building</title>
+<title>Create Building | Wizer Properties</title>
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
 {% endblock extend_head %}
 
 {% block content %}
@@ -12,9 +14,9 @@
         <header class="space-y-4">
             <p class="text-xs font-semibold uppercase tracking-[0.4em] text-accent">Buildings</p>
             <div class="space-y-2">
-                <h1 class="text-3xl font-heading font-semibold text-foreground">Create a New Building</h1>
-                <p class="max-w-2xl text-sm text-muted-foreground">
-                    Capture essential project information, media, and amenities to showcase your development with a premium-quality profile.
+                <h1 class="text-3xl font-heading font-semibold text-foreground">Launch your development to international buyers</h1>
+                <p class="max-w-2xl text-base text-muted-foreground">
+                    Get your project in front of 10,000+ verified buyers. Complete the form below—we'll verify everything and publish your development profile within 24 hours.
                     Fields marked with <span class="text-destructive">*</span> are required.
                 </p>
             </div>
@@ -32,7 +34,7 @@
                 <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <h2 class="text-lg font-semibold text-foreground">Project Snapshot</h2>
-                        <p class="text-sm text-muted-foreground">Key identifiers and commercial attributes for the project.</p>
+                        <p class="text-base text-muted-foreground">Key details that help buyers discover and evaluate your development.</p>
                     </div>
                 </div>
 
@@ -61,7 +63,7 @@
                     <label class="flex flex-col gap-2">
                         <span class="label">Building Type <span class="text-destructive">*</span></span>
                         <select name="type" id="type_select" class="input" required>
-                            <option value="">Select type</option>
+                            <option value="">Choose building type</option>
                             <option value="residence">Residence</option>
                             <option value="commercial">Commercial</option>
                         </select>
@@ -70,14 +72,14 @@
                     <div class="flex flex-col gap-2" id="sub_type_container">
                         <span class="label">Sub Type</span>
                         <select name="sub_type" id="sub_type_select" class="input">
-                            <option value="">Select sub type</option>
+                            <option value="">Choose sub type</option>
                         </select>
                     </div>
 
                     <label class="flex flex-col gap-2">
                         <span class="label">Quota <span class="text-destructive">*</span></span>
                         <select name="quota" class="input" required>
-                            <option value="">Select quota</option>
+                            <option value="">Choose ownership quota</option>
                             <option value="thai">Thai</option>
                             <option value="foreign">Foreign</option>
                         </select>
@@ -86,7 +88,7 @@
                     <label class="flex flex-col gap-2">
                         <span class="label">Furnishing <span class="text-destructive">*</span></span>
                         <select name="furnishing" class="input" required>
-                            <option value="">Select furnishing level</option>
+                            <option value="">Choose furnishing level</option>
                             <option value="partly">Partly</option>
                             <option value="fully">Fully</option>
                         </select>
@@ -95,7 +97,7 @@
                     <label class="flex flex-col gap-2">
                         <span class="label">Project Status <span class="text-destructive">*</span></span>
                         <select id="status" name="status" class="input" required>
-                            <option value="">Select status</option>
+                            <option value="">Choose project status</option>
                             <option value="to_be_commenced">To Be Commenced</option>
                             <option value="under_construction">Under Construction</option>
                             <option value="completed">Completed</option>
@@ -114,7 +116,7 @@
                 <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <h2 class="text-lg font-semibold text-foreground">Location</h2>
-                        <p class="text-sm text-muted-foreground">Map-ready address details to power search and discovery.</p>
+                        <p class="text-base text-muted-foreground">Accurate location details help buyers find your project and see nearby amenities.</p>
                     </div>
                 </div>
 
@@ -138,17 +140,40 @@
                             <input name="sub_district" label="sub-district" type="text" class="input" placeholder="Sub district">
                         </label>
                     </div>
-                </div>
 
-                <input type="hidden" name="latitude" label="latitude" label-name="latitude">
-                <input type="hidden" name="longitude" label="longitude" label-name="longitude">
+                    <!-- Map Picker and Coordinates Display -->
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="label">Location Coordinates</span>
+                                <p class="text-xs text-muted-foreground mt-1">Coordinates are auto-filled when you select an address above, or click on the map to set manually.</p>
+                            </div>
+                        </div>
+                        <div class="grid gap-4 md:grid-cols-2">
+                            <label class="flex flex-col gap-2">
+                                <span class="label text-sm">Latitude</span>
+                                <input name="latitude" label="latitude" label-name="latitude" type="text" class="input" placeholder="e.g. 13.7563" readonly>
+                            </label>
+                            <label class="flex flex-col gap-2">
+                                <span class="label text-sm">Longitude</span>
+                                <input name="longitude" label="longitude" label-name="longitude" type="text" class="input" placeholder="e.g. 100.5018" readonly>
+                            </label>
+                        </div>
+                        <div class="rounded-lg border border-border overflow-hidden" style="height: 300px;">
+                            <div id="building-location-map" class="w-full h-full"></div>
+                        </div>
+                        <p class="text-xs text-muted-foreground">
+                            <i class="bi bi-info-circle"></i> Click on the map to set coordinates, or select an address from the autocomplete above.
+                        </p>
+                    </div>
+                </div>
             </section>
 
             <section class="card space-y-6">
                 <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <h2 class="text-lg font-semibold text-foreground">Project Metrics</h2>
-                        <p class="text-sm text-muted-foreground">Dimensions and figures that inform prospects.</p>
+                        <p class="text-base text-muted-foreground">Help buyers understand the scale and accessibility of your development.</p>
                     </div>
                 </div>
 
@@ -197,7 +222,7 @@
                 <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <h2 class="text-lg font-semibold text-foreground">Ownership & Amenities</h2>
-                        <p class="text-sm text-muted-foreground">Showcase lifestyle benefits and access rights.</p>
+                        <p class="text-base text-muted-foreground">Highlight amenities and ownership types that make your project attractive to buyers.</p>
                     </div>
                 </div>
 
@@ -241,7 +266,7 @@
                 <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <h2 class="text-lg font-semibold text-foreground">Narrative & AI Assist</h2>
-                        <p class="text-sm text-muted-foreground">Craft premium copy with optional AI support.</p>
+                        <p class="text-base text-muted-foreground">Write compelling project descriptions that sell—or let AI draft one for you in seconds.</p>
                     </div>
                 </div>
 
@@ -253,11 +278,11 @@
                                 <span class="sr-only">Loading...</span>
                             </div>
                         </button>
-                        <p class="text-xs text-muted-foreground">Uses your building inputs to draft a professional overview. You can refine it in the modal.</p>
+                        <p class="text-xs text-muted-foreground">AI generates a professional description based on your project details. Review and edit it before publishing.</p>
                     </div>
                     <label class="flex flex-col gap-2 lg:col-span-2">
                         <span class="label">Description <span class="text-destructive">*</span></span>
-                        <textarea name="description" class="textarea min-h-[220px]" placeholder="Tell an engaging story about the development..." required></textarea>
+                        <textarea name="description" class="textarea min-h-[220px]" placeholder="Describe what makes this development special—location benefits, unique amenities, lifestyle perks, and why buyers choose it..." required></textarea>
                     </label>
                 </div>
             </section>
@@ -266,7 +291,7 @@
                 <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <h2 class="text-lg font-semibold text-foreground">Media Uploads</h2>
-                        <p class="text-sm text-muted-foreground">High-resolution media helps buyers experience your project.</p>
+                        <p class="text-base text-muted-foreground">High-quality photos and videos help buyers visualize living in your development—listings with media get 3x more inquiries.</p>
                     </div>
                     <p class="text-xs text-muted-foreground">Accepted formats: JPG/PNG (images), MP4/MOV (video).</p>
                 </div>
@@ -277,7 +302,7 @@
                             <span class="label">Building Images <span class="text-destructive">*</span></span>
                             <input name="images" type="file" accept="image/*" class="input cursor-pointer" required multiple>
                         </label>
-                        <div class="fileName text-xs text-muted-foreground">Upload Building Images</div>
+                        <div class="fileName text-xs text-muted-foreground">Upload high-quality photos of the building exterior, lobby, and common areas.</div>
                         <div class="uploaded-file-view-area grid grid-cols-2 gap-3"></div>
                     </div>
 
@@ -286,7 +311,7 @@
                             <span class="label">Unit Floor Plans <span class="text-destructive">*</span></span>
                             <input name="unit_floor_plans" type="file" accept="image/*" class="input cursor-pointer" required multiple>
                         </label>
-                        <div class="fileName text-xs text-muted-foreground">Upload Unit Floor Plan Images</div>
+                        <div class="fileName text-xs text-muted-foreground">Upload clear floor plan images showing unit layouts and dimensions.</div>
                         <div class="uploaded-file-view-area grid grid-cols-2 gap-3"></div>
                     </div>
 
@@ -295,7 +320,7 @@
                             <span class="label">Master Plans <span class="text-destructive">*</span></span>
                             <input name="master_plans" type="file" accept="image/*" class="input cursor-pointer" required multiple>
                         </label>
-                        <div class="fileName text-xs text-muted-foreground">Upload Master Plan Images</div>
+                        <div class="fileName text-xs text-muted-foreground">Upload master plan images showing the overall project layout and site plan.</div>
                         <div class="uploaded-file-view-area grid grid-cols-2 gap-3"></div>
                     </div>
 
@@ -304,7 +329,7 @@
                             <span class="label">Showcase Video <span class="text-destructive">*</span></span>
                             <input name="videos" type="file" accept="video/*" class="input cursor-pointer" required>
                         </label>
-                        <div class="fileName text-xs text-muted-foreground">Upload Project Video</div>
+                        <div class="fileName text-xs text-muted-foreground">Upload a professional project showcase video highlighting key features and amenities.</div>
                         <div class="uploaded-file-view-area"></div>
                     </div>
 
@@ -313,7 +338,7 @@
                             <span class="label">Aerial Drone Video <span class="text-destructive">*</span></span>
                             <input name="aerial_drone_videos" type="file" accept="video/*" class="input cursor-pointer" required>
                         </label>
-                        <div class="fileName text-xs text-muted-foreground">Upload Aerial Drone Coverage</div>
+                        <div class="fileName text-xs text-muted-foreground">Upload aerial drone footage showing the building and surrounding neighborhood.</div>
                         <div class="uploaded-file-view-area"></div>
                     </div>
                 </div>
@@ -322,7 +347,7 @@
             <div class="flex items-center justify-end gap-4">
                 <a href="/dashboard" class="btn-secondary min-w-[140px] justify-center">Cancel</a>
                 <button type="submit" class="btn min-w-[160px] justify-center">
-                    <span id="createBuildingButtonText">Create building</span>
+                    <span id="createBuildingButtonText">Publish project</span>
                     <div id="loadingSpinner" class="spinner-border" role="status" style="display: none;">
                         <span class="sr-only">Loading...</span>
                     </div>
@@ -336,7 +361,7 @@
 <div class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 px-4 backdrop-blur-sm" data-description-modal>
     <div class="w-full max-w-3xl overflow-hidden rounded-2xl border border-border bg-card shadow-2xl">
         <div class="flex items-center justify-between border-b border-border px-6 py-4">
-            <h2 class="text-lg font-semibold text-foreground">Generated Description</h2>
+            <h2 class="text-lg font-semibold text-foreground">AI-generated description</h2>
             <button type="button" class="inline-flex size-9 items-center justify-center rounded-full border border-border bg-secondary/60 text-muted-foreground transition hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" data-description-close>
                 <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M18 6L6 18" />
@@ -349,11 +374,11 @@
             <textarea class="created-description-textarea textarea min-h-[220px]" placeholder="Generated description ..."></textarea>
 
             <section class="space-y-3 rounded-xl border border-dashed border-border bg-muted/40 p-4">
-                <p class="text-sm font-semibold text-foreground">Need a tweak?</p>
-                <p class="text-xs text-muted-foreground">Provide guidance and let AI regenerate the copy.</p>
+                <p class="text-sm font-semibold text-foreground">Want to refine it?</p>
+                <p class="text-xs text-muted-foreground">Tell the AI what to emphasize and it will regenerate the description instantly.</p>
                 <div class="re-generate-error-message text-sm text-destructive"></div>
                 <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
-                    <input type="text" class="class-chatbot-input input" name="instruction_of_modification" placeholder="Ex: Highlight river views and nearby schools">
+                    <input type="text" class="class-chatbot-input input" name="instruction_of_modification" placeholder="e.g. Emphasize proximity to BTS, highlight luxury amenities, focus on lifestyle benefits">
                     <button type="button" class="regenerate-chatbot-send-btn btn sm:w-auto">
                         <i class="bi bi-send text-base"></i>
                         <span class="sr-only">Regenerate description</span>
@@ -364,7 +389,7 @@
 
         <div class="flex items-center justify-end gap-3 border-t border-border bg-muted/50 px-6 py-4">
             <button type="button" class="btn-secondary min-w-[120px] justify-center" data-description-close>Cancel</button>
-            <button type="button" class="btn min-w-[120px] justify-center add-to-description-field">Use Description</button>
+            <button type="button" class="btn min-w-[120px] justify-center add-to-description-field">Use this description</button>
         </div>
     </div>
 </div>
@@ -379,5 +404,126 @@
     var commercialSubTypes = {{ commercial_sub_types|safe }};
 </script>
 <script src="{% static 'js/building/create_building.js' %}?v=2.00"></script>
+<script>
+    // Initialize map picker for location coordinates
+    (function() {
+        var mapContainer = document.getElementById('building-location-map');
+        if (!mapContainer) return;
+
+        var latitudeInput = document.querySelector('[label-name="latitude"]');
+        var longitudeInput = document.querySelector('[label-name="longitude"]');
+        var addressInput = document.querySelector('input[name="address"].pac-input');
+        
+        var map = null;
+        var marker = null;
+        var defaultCenter = { lat: 13.7563309, lng: 100.5017651 };
+        var retryCount = 0;
+        var maxRetries = 50; // 5 seconds total
+
+        function initMapPicker() {
+            if (typeof google === 'undefined' || typeof google.maps === 'undefined') {
+                if (retryCount >= maxRetries) {
+                    console.error('Google Maps failed to load after ' + maxRetries + ' attempts');
+                    return;
+                }
+                retryCount++;
+                // Wait for Google Maps to load
+                setTimeout(initMapPicker, 100);
+                return;
+            }
+
+            // Initialize map
+            map = new google.maps.Map(mapContainer, {
+                center: defaultCenter,
+                zoom: 12,
+                mapTypeControl: false,
+                streetViewControl: false,
+                fullscreenControl: true,
+            });
+
+            // Check if there are existing coordinates
+            var existingLat = latitudeInput?.value;
+            var existingLng = longitudeInput?.value;
+            if (existingLat && existingLng) {
+                var pos = { lat: parseFloat(existingLat), lng: parseFloat(existingLng) };
+                if (!isNaN(pos.lat) && !isNaN(pos.lng)) {
+                    map.setCenter(pos);
+                    addMarker(pos);
+                }
+            }
+
+            // Add click listener to map
+            map.addListener('click', function(e) {
+                var pos = {
+                    lat: e.latLng.lat(),
+                    lng: e.latLng.lng()
+                };
+                updateCoordinates(pos);
+                addMarker(pos);
+            });
+
+            // Listen for address autocomplete changes
+            if (addressInput && typeof google !== 'undefined' && typeof google.maps !== 'undefined' && typeof google.maps.places !== 'undefined') {
+                // The g_map.js script should handle this, but we'll also listen here
+                var autocomplete = new google.maps.places.Autocomplete(addressInput, {
+                    componentRestrictions: { country: "th" },
+                    fields: ["geometry", "address_components"]
+                });
+
+                autocomplete.addListener('place_changed', function() {
+                    var place = autocomplete.getPlace();
+                    if (place.geometry) {
+                        var pos = {
+                            lat: place.geometry.location.lat(),
+                            lng: place.geometry.location.lng()
+                        };
+                        updateCoordinates(pos);
+                        map.setCenter(pos);
+                        map.setZoom(15);
+                        addMarker(pos);
+                    }
+                });
+            }
+        }
+
+        function addMarker(position) {
+            if (marker) {
+                marker.setPosition(position);
+            } else {
+                marker = new google.maps.Marker({
+                    position: position,
+                    map: map,
+                    draggable: true,
+                    title: 'Building Location'
+                });
+
+                // Update coordinates when marker is dragged
+                marker.addListener('dragend', function() {
+                    var pos = marker.getPosition();
+                    updateCoordinates({
+                        lat: pos.lat(),
+                        lng: pos.lng()
+                    });
+                });
+            }
+        }
+
+        function updateCoordinates(position) {
+            if (latitudeInput) {
+                latitudeInput.value = position.lat.toFixed(6);
+            }
+            if (longitudeInput) {
+                longitudeInput.value = position.lng.toFixed(6);
+            }
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initMapPicker);
+        } else {
+            initMapPicker();
+        }
+    })();
+</script>
 {% endblock extend_script %}
 

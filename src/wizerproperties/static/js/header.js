@@ -70,33 +70,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  const header = document.querySelector("[data-site-header]");
-  const brandLarge = header?.querySelector("[data-brand-large]");
-  const brandCompact = header?.querySelector("[data-brand-compact]");
-
-  if (header && brandLarge && brandCompact) {
-    const updateBrandState = () => {
-      const isScrolled = window.scrollY > 40;
-      if (isScrolled) {
-        if (!brandLarge.classList.contains("hidden")) {
-          brandLarge.classList.add("hidden");
-        }
-        brandCompact.classList.remove("hidden");
-      } else {
-        brandLarge.classList.remove("hidden");
-        if (!brandCompact.classList.contains("hidden")) {
-          brandCompact.classList.add("hidden");
-        }
-      }
-    };
-
-    updateBrandState();
-    window.addEventListener("scroll", updateBrandState, { passive: true });
-  }
+  // Compact logo removed - keeping brand logo always visible
 
   const desktopNavGroups = document.querySelectorAll("[data-nav-group]");
-  if (desktopNavGroups.length > 1) {
+  if (desktopNavGroups.length > 0) {
     desktopNavGroups.forEach((group) => {
+      let closeTimeout;
+
       group.addEventListener("toggle", () => {
         if (!group.open) return;
         desktopNavGroups.forEach((other) => {
@@ -104,6 +84,19 @@ document.addEventListener("DOMContentLoaded", () => {
             other.removeAttribute("open");
           }
         });
+      });
+
+      group.addEventListener("mouseenter", () => {
+        clearTimeout(closeTimeout);
+        if (!group.hasAttribute("open")) {
+          group.setAttribute("open", "");
+        }
+      });
+
+      group.addEventListener("mouseleave", () => {
+        closeTimeout = setTimeout(() => {
+          group.removeAttribute("open");
+        }, 150);
       });
     });
   }

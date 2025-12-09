@@ -56,7 +56,7 @@ $(document).ready(function(){
     if (typeof TimeMe !== 'undefined') {
         console.log('Using TimeMe library for time tracking');
         timeTracker = TimeMe;
-        TimeMe.initialize({
+    TimeMe.initialize({
             idleTimeoutInSeconds: 120
         });
     } else {
@@ -104,31 +104,31 @@ $(document).ready(function(){
         window.addEventListener('beforeunload', function(event) {
             try {
                 let timeSpentOnPage = timeTracker.getTimeOnCurrentPageInSeconds();
-
+            
                 console.log("Time spent on page:", timeSpentOnPage, "seconds");
-                
+            
                 // Only send if time spent is greater than 0
                 if (timeSpentOnPage > 0) {
-                    // Send requests for all tracked URLs
-                    trackingUrls.forEach(function(tracking) {
-                        const payload = {
-                            time_spent: timeSpentOnPage,
-                            csrfmiddlewaretoken: CSRF_TOKEN
-                        };
+            // Send requests for all tracked URLs
+            trackingUrls.forEach(function(tracking) {
+                const payload = {
+                    time_spent: timeSpentOnPage,
+                    csrfmiddlewaretoken: CSRF_TOKEN
+                };
 
-                        // Use fetch with keepalive option
-                        fetch(tracking.url, {
-                            method: tracking.method,
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRFToken': CSRF_TOKEN
-                            },
-                            body: JSON.stringify(payload),
-                            keepalive: true // Ensure the request can complete during page unload
-                        }).catch((error) => {
-                            console.error('Error sending time spent to ' + tracking.type + ':', error);
-                        });
-                    });
+                // Use fetch with keepalive option
+                fetch(tracking.url, {
+                    method: tracking.method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': CSRF_TOKEN
+                    },
+                    body: JSON.stringify(payload),
+                    keepalive: true // Ensure the request can complete during page unload
+                }).catch((error) => {
+                    console.error('Error sending time spent to ' + tracking.type + ':', error);
+                });
+            });
                 }
             } catch (error) {
                 console.error('Error in beforeunload handler:', error);

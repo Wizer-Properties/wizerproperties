@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.urls import reverse
 from .models import Category, Post
 
 
@@ -25,10 +26,18 @@ def blog_details(request, slug):
         is_liked = post.interactions.filter(interaction_type='like', ip_address=request.META.get('REMOTE_ADDR')).exists()
         is_disliked = post.interactions.filter(interaction_type='dislike', ip_address=request.META.get('REMOTE_ADDR')).exists()
     
+    # Add breadcrumbs for structured data
+    breadcrumbs = [
+        ('Home', '/'),
+        ('Blog', reverse('blogs:blog_list')),
+        (post.title, post.get_absolute_url()),
+    ]
+    
     context = {
         "post": post,
         "is_liked": "true" if is_liked else "false",
         "is_disliked": "true" if is_disliked else "false",
+        "breadcrumbs": breadcrumbs,
     }
     
     return render(request, "blog-details.html", context)

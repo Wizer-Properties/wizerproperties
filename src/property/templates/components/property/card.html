@@ -1,105 +1,186 @@
 {% load static %}
 <template id="property-card-template">
-  <article class="group relative flex w-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:shadow-lg" data-property-card>
-    <div class="absolute left-4 top-4 z-10 flex flex-col gap-2" data-card-badges></div>
-    <div class="absolute right-4 top-4 z-10 flex gap-2" data-card-actions>
-      <button class="add-to-favorite inline-flex size-9 items-center justify-center rounded-full border border-border bg-black/60 text-white backdrop-blur transition hover:bg-black/80" added="false" index="" effect="pulse" data-card-favorite>
-        <i class="bi bi-heart"></i>
-        <span class="sr-only">Favorite</span>
-      </button>
-      <button class="add-to-compare inline-flex size-9 items-center justify-center rounded-full border border-border bg-black/60 text-white backdrop-blur transition hover:bg-black/80" added="false" index="" effect="pulse" data-card-compare>
-        <i class="bi bi-arrow-left-right"></i>
-        <span class="sr-only">Compare</span>
-      </button>
-    </div>
-    
-    <!-- Image Section -->
-    <div class="relative h-64 w-full overflow-hidden bg-muted sm:h-72">
-      <div class="splide h-full w-full" data-card-splide>
-        <div class="splide__track">
-          <ul class="splide__list" data-card-gallery></ul>
+  <article
+    class="group relative flex w-full flex-col overflow-hidden rounded-2xl border border-border/50 bg-card shadow-sm transition-all duration-500 hover:shadow-2xl hover:border-accent/40 hover:-translate-y-1.5 property-card-responsive cursor-pointer"
+    data-property-card>
+
+    <!-- Featured Property Brand Color Accent Bar -->
+    <div class="hidden h-1 bg-gradient-to-r from-brand-teal to-accent" data-card-featured-accent></div>
+
+    <!-- Developer/Agent Header -->
+    <div
+      class="flex items-center justify-between gap-3 border-b border-border/50 bg-card/50 backdrop-blur-sm px-4 py-2.5">
+      <div class="flex items-center gap-3 min-w-0 flex-1">
+        <div
+          class="relative size-9 flex-shrink-0 overflow-hidden rounded-full border border-border bg-muted shadow-sm group-hover:scale-105 transition-transform duration-300">
+          <img src="{% static 'media/default-avatar.jpg' %}" alt="Developer" class="h-full w-full object-cover"
+            data-card-developer-image />
+          <div class="absolute inset-0 flex items-center justify-center bg-muted/80 hidden"
+            data-card-developer-icon-fallback>
+            <i class="bi bi-building text-xs text-muted-foreground"></i>
+          </div>
+        </div>
+        <div class="min-w-0 flex-1">
+          <p class="truncate text-sm text-foreground" data-card-developer-name>Developer</p>
+          <p class="truncate text-xs text-muted-foreground" data-card-date-relative>
+            <span data-card-date-label>Added</span> <span data-card-date-value>—</span>
+          </p>
         </div>
       </div>
-      <div class="absolute bottom-4 left-4 flex flex-col gap-1 rounded-xl border border-border bg-black/60 px-4 py-2.5 text-white backdrop-blur">
-        <p class="text-lg font-semibold" data-card-price>฿ 0</p>
-        <p class="text-xs text-white/80" data-card-price-sqm>฿ 0 / sqm</p>
+      
+      <!-- Primary CTA - Book Viewing -->
+      <a href="javascript:void(0)"
+        class="group/cta inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-primary/90 hover:shadow-md hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary/50 touch-manipulation"
+        data-card-schedule>
+        <i class="bi bi-calendar-check"></i>
+        <span>Book</span>
+      </a>
+    </div>
+
+    <!-- Image Hero Section -->
+    <div class="relative aspect-[4/3] w-full overflow-hidden bg-muted" data-card-image-section>
+      <!-- Image Gallery -->
+      <div class="splide h-full w-full group-hover:scale-105 transition-transform duration-700 ease-out"
+        data-card-splide>
+        <div class="splide__track h-full">
+          <ul class="splide__list h-full" data-card-gallery></ul>
+        </div>
+      </div>
+
+      <!-- Gradient Overlay -->
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-90 pointer-events-none">
+      </div>
+
+      <!-- Top Bar: Badges + Actions -->
+      <div class="absolute inset-x-0 top-0 z-20 flex items-start justify-between p-3 sm:p-4">
+        <!-- Badges (Left) -->
+        <div class="flex flex-wrap gap-2" data-card-badges></div>
+
+        <!-- Actions (Right) -->
+        <div class="flex gap-2" data-card-actions>
+          <button
+            class="add-to-compare inline-flex size-9 items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-lg transition-all hover:bg-white hover:text-primary hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/50 touch-manipulation"
+            added="false" index="" effect="pulse" data-card-compare aria-label="Add to compare"
+            title="Compare properties">
+            <i class="bi bi-arrow-left-right text-sm"></i>
+          </button>
+          <button
+            class="add-to-favorite inline-flex size-9 items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-lg transition-all hover:bg-white hover:text-red-500 hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/50 touch-manipulation"
+            added="false" index="" effect="pulse" data-card-favorite aria-label="Add to favorites"
+            title="Save to favorites">
+            <i class="bi bi-heart text-sm"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Bottom Overlay: Price -->
+      <div class="absolute inset-x-0 bottom-0 z-20 p-3 sm:p-4">
+        <div class="flex items-end justify-between gap-2">
+          <div class="flex flex-col gap-1" data-card-price-container>
+            <div class="flex items-baseline gap-2">
+              <p class="text-2xl font-bold leading-none text-white drop-shadow-lg sm:text-3xl"
+                data-card-price>฿ 0</p>
+              <p class="text-sm text-white/60 line-through hidden" data-card-original-price></p>
+            </div>
+            <p class="text-xs text-white/80 drop-shadow" data-card-price-sqm>฿ 0 / sqm</p>
+            <p class="text-xs font-medium text-accent drop-shadow hidden mt-1 bg-black/40 px-2 py-1 rounded backdrop-blur-sm self-start"
+              data-card-discount-amount></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- View Buttons (3D Tour, Aerial View) -->
+      <div class="absolute left-3 bottom-20 z-20 flex flex-row gap-2 sm:left-4 sm:bottom-24" data-card-view-buttons>
+        <!-- 3D Tour Badge -->
+        <div class="hidden" data-card-3d-badge>
+          <button type="button"
+            class="group/3d inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/40 backdrop-blur-md px-3 py-1.5 text-xs font-medium text-white shadow-lg transition-all hover:bg-accent hover:border-accent hover:text-white focus:outline-none focus:ring-2 focus:ring-white/50 touch-manipulation"
+            data-card-3d>
+            <i class="bi bi-box-arrow-up-right text-accent group-hover/3d:text-white"></i>
+            <span>3D Tour</span>
+          </button>
+        </div>
+
+        <!-- Aerial View Badge -->
+        <div class="hidden" data-card-drone-badge>
+          <button type="button"
+            class="group/drone inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/40 backdrop-blur-md px-3 py-1.5 text-xs font-medium text-white shadow-lg transition-all hover:bg-accent hover:border-accent hover:text-white focus:outline-none focus:ring-2 focus:ring-white/50 touch-manipulation"
+            data-card-drone>
+            <i class="bi bi-camera-video text-accent group-hover/drone:text-white"></i>
+            <span>Aerial</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Image Count -->
+      <div
+        class="absolute right-3 bottom-20 z-20 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/50 px-2.5 py-1 text-xs font-medium text-white backdrop-blur-md shadow-lg sm:right-4 sm:bottom-24"
+        data-card-image-count hidden>
+        <i class="bi bi-images"></i>
+        <span data-image-count-text>0</span>
       </div>
     </div>
-    
+
+    <!-- Property Stats Section -->
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-border/50 bg-muted/30 px-4 py-3">
+      <div class="flex items-center gap-1.5 text-sm text-muted-foreground flex-shrink-0">
+        <i class="bi bi-bed text-accent"></i>
+        <span class="font-medium text-foreground" data-card-beds>—</span>
+        <span>bed</span>
+      </div>
+      <div class="flex items-center gap-1.5 text-sm text-muted-foreground flex-shrink-0">
+        <i class="bi bi-bathtub text-accent"></i>
+        <span class="font-medium text-foreground" data-card-baths>—</span>
+        <span>bath</span>
+      </div>
+      <div class="flex items-center gap-1.5 text-sm text-muted-foreground flex-shrink-0">
+        <i class="bi bi-rulers text-accent"></i>
+        <span class="font-medium text-foreground" data-card-size-display>—</span>
+        <span>sqft</span>
+      </div>
+      <div class="flex items-center gap-1.5 text-sm text-muted-foreground hidden flex-shrink-0" data-card-floor-wrapper>
+        <i class="bi bi-layers text-accent"></i>
+        <span class="font-medium text-foreground" data-card-floor-number>—</span>
+        <span>floor</span>
+      </div>
+      <div class="flex items-center gap-1.5 text-sm text-muted-foreground hidden flex-shrink-0" data-card-parking-wrapper>
+        <i class="bi bi-car-front text-accent"></i>
+        <span class="font-medium text-foreground" data-card-parking>—</span>
+        <span>parking</span>
+      </div>
+      <div class="flex items-center gap-1.5 text-sm text-muted-foreground hidden min-w-0 flex-1" data-card-property-type-wrapper>
+        <i class="bi bi-building text-accent flex-shrink-0"></i>
+        <span class="font-medium text-foreground truncate" data-card-property-type-stats>—</span>
+      </div>
+    </div>
+
     <!-- Content Section -->
-    <div class="flex flex-1 flex-col gap-4 p-5 sm:p-6">
-      <!-- Title and Address -->
-      <div class="space-y-2">
-        <a href="#" class="block space-y-1.5" data-card-link>
-          <h3 class="line-clamp-2 text-lg font-semibold leading-tight text-foreground transition group-hover:text-primary sm:text-xl" data-card-title>Property title</h3>
-          <div class="flex items-start gap-2 text-sm text-muted-foreground">
-            <i class="bi bi-geo-alt mt-0.5 flex-shrink-0 text-accent"></i>
-            <span class="line-clamp-2 flex-1" data-card-address>Address</span>
+    <div class="flex flex-1 flex-col gap-3 p-4 sm:p-5 bg-card">
+      <!-- Title & Location -->
+      <div class="space-y-1.5">
+        <a href="#" class="group/link block" data-card-link>
+          <h3
+            class="line-clamp-2 text-base font-medium leading-snug text-foreground transition-colors group-hover/link:text-primary sm:text-lg"
+            data-card-title>Property title</h3>
+          <div class="flex items-center gap-1.5 text-base text-muted-foreground mt-1">
+            <i class="bi bi-geo-alt-fill text-accent"></i>
+            <span class="line-clamp-1" data-card-address>Address</span>
           </div>
         </a>
       </div>
-      
-      <!-- Property Stats Grid -->
-      <div class="grid grid-cols-2 gap-2.5 text-sm sm:grid-cols-4 sm:gap-3">
-        <div class="flex flex-col items-center gap-1 rounded-lg border border-border bg-secondary/40 px-2.5 py-2 sm:px-3">
-          <i class="bi bi-bed text-accent"></i>
-          <span class="font-semibold text-foreground" data-card-beds>—</span>
-          <span class="text-xs text-muted-foreground">Beds</span>
-        </div>
-        <div class="flex flex-col items-center gap-1 rounded-lg border border-border bg-secondary/40 px-2.5 py-2 sm:px-3">
-          <i class="bi bi-bathtub text-accent"></i>
-          <span class="font-semibold text-foreground" data-card-baths>—</span>
-          <span class="text-xs text-muted-foreground">Baths</span>
-        </div>
-        <div class="flex flex-col items-center gap-1 rounded-lg border border-border bg-secondary/40 px-2.5 py-2 sm:px-3">
-          <i class="bi bi-rulers text-accent"></i>
-          <span class="font-semibold text-foreground" data-card-size>— sqm</span>
-          <span class="text-xs text-muted-foreground">Size</span>
-        </div>
-        <div class="flex flex-col items-center gap-1 rounded-lg border border-border bg-secondary/40 px-2.5 py-2 sm:px-3">
-          <i class="bi bi-building text-accent"></i>
-          <span class="font-semibold text-foreground" data-card-floor>—</span>
-          <span class="text-xs text-muted-foreground">Floor</span>
-        </div>
+
+      <!-- Media & Action Buttons -->
+      <div class="flex flex-wrap gap-2" data-card-media-buttons>
+        <!-- Populated via JavaScript -->
       </div>
-      
-      <!-- Features Chips -->
-      <div class="flex flex-wrap gap-2" data-card-features></div>
-      
-      <!-- Action Buttons (3D/Drone) -->
-      <div class="flex flex-wrap gap-2" data-card-action-buttons>
-        <button type="button" class="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-3 py-1.5 text-xs font-medium text-primary transition hover:bg-accent/20 hidden" data-card-3d>
-          <i class="bi bi-box-arrow-up-right"></i>
-          <span>Interior 3D View</span>
-        </button>
-        <button type="button" class="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-3 py-1.5 text-xs font-medium text-primary transition hover:bg-accent/20 hidden" data-card-drone>
-          <i class="bi bi-box-arrow-up-right"></i>
-          <span>Aerial View</span>
-        </button>
-      </div>
-      
-      <!-- Footer: Developer Info and CTAs -->
-      <div class="mt-auto flex flex-col gap-4 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-between">
-        <div class="flex items-center gap-3">
-          <div class="size-10 flex-shrink-0 overflow-hidden rounded-full border border-border bg-muted">
-            <img src="{% static 'media/default-avatar.jpg' %}" alt="Developer" class="h-full w-full object-cover" data-card-developer-image />
-          </div>
-          <div class="min-w-0 text-sm">
-            <p class="truncate font-semibold text-foreground" data-card-developer-name>Developer</p>
-            <p class="text-xs text-muted-foreground">Added: <span data-card-created>—</span></p>
-          </div>
-        </div>
-        <div class="flex flex-wrap gap-2" data-card-ctas>
-          <a href="#" class="inline-flex items-center gap-2 rounded-full border border-border bg-primary px-4 py-2 text-sm font-medium text-white transition hover:bg-primary/90" data-card-schedule>
-            <i class="bi bi-calendar-check"></i>
-            <span>Schedule viewing</span>
-          </a>
-          <a href="#" class="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-4 py-2 text-sm font-medium text-primary transition hover:bg-accent/20" data-card-contact>
-            <i class="bi bi-envelope"></i>
-            <span>Contact</span>
-          </a>
-        </div>
-      </div>
+
+      <!-- Description (Wide cards only) -->
+      <p class="hidden text-sm leading-relaxed text-muted-foreground property-card-wide:block line-clamp-2"
+        data-card-description></p>
+
+      <!-- Features Chips (Wide cards only) -->
+      <div class="hidden flex-wrap gap-1.5 property-card-wide:flex" data-card-features></div>
     </div>
   </article>
 </template>

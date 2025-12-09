@@ -3,20 +3,22 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>{% if action_type == 'edit' %}Update property reel{% else %}Share property reel{% endif %}</title>
+<title>{% if action_type == 'edit' %}Update Property Reel{% else %}Share Property Reel{% endif %} | Wizer Properties</title>
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
 {% endblock extend_head %}
 
 {% block content %}
 <section class="bg-muted/30 py-12">
-    <div class="container max-w-4xl space-y-10">
+    <div class="container max-w-6xl space-y-10">
         <header class="space-y-4">
             <p class="text-xs font-semibold uppercase tracking-[0.4em] text-accent">Advertise</p>
             <div class="space-y-2">
                 <h1 class="text-3xl font-heading font-semibold text-foreground">
-                    {% if action_type == 'edit' %}Update property reel{% else %}Share property reel{% endif %}
+                    {% if action_type == 'edit' %}Update your video tour{% else %}Share a video tour and get more views{% endif %}
                 </h1>
-                <p class="text-sm text-muted-foreground">
-                    Publish short-form video content to spotlight your listings. Provide the destination link, platform, and associated property so prospects can dive straight in.
+                <p class="text-base text-muted-foreground">
+                    Video tours drive 3x more inquiries. Share your YouTube, TikTok, or Instagram reel and we'll showcase it to thousands of qualified buyers.
                 </p>
             </div>
         </header>
@@ -32,8 +34,8 @@
             <section class="card space-y-6">
                 <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h2 class="text-lg font-semibold text-foreground">Reel details</h2>
-                        <p class="text-sm text-muted-foreground">Link to the published content and define how it should be categorised.</p>
+                        <h2 class="text-lg font-semibold text-foreground">Video details</h2>
+                        <p class="text-base text-muted-foreground">Share your video link and we'll feature it prominently to drive more views and inquiries.</p>
                     </div>
                 </div>
 

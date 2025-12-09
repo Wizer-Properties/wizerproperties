@@ -1,9 +1,28 @@
 {% extends "base.html" %}
 {% load static %}
 {% load widget_tweaks %}
+{% load seo_tags %}
 
 {% block extend_head %}
-<title>Contact WiSER Properties</title>
+<title>Contact Us | Get Answers Within 24 Hours | Wizer Properties</title>
+<meta name="description" content="Have questions about buying property in Bangkok? Need help finding the right condo? Our team responds to every message within one business day. Free consultation, no commitment.">
+<meta name="keywords" content="contact wizer properties, bangkok property inquiry, real estate thailand contact">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Contact Us | Wizer Properties">
+<meta property="og:description" content="Get in touch with Wizer Properties for property inquiries and developer partnerships.">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'media/logo.png' %}">
+<meta property="og:site_name" content="Wizer Properties">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Contact Us | Wizer Properties">
+<meta name="twitter:description" content="Get in touch with Wizer Properties for property inquiries and developer partnerships.">
+
+{% organization_schema %}
 {% endblock extend_head %}
 
 {% block content %}
@@ -13,21 +32,21 @@
         <div class="absolute inset-0 bg-background/85 backdrop-blur-sm"></div>
     </div>
 
-    <div class="container relative z-10 max-w-5xl space-y-12">
+    <div class="container relative z-10 max-w-7xl space-y-12">
         <header class="space-y-4 text-center">
-            <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Contact WiSER Properties</span>
-            <h1 class="text-3xl font-heading font-semibold text-foreground sm:text-4xl">We’re here to help you move forward</h1>
-            <p class="mx-auto max-w-2xl text-sm text-muted-foreground">
-                Tell us how we can support your investment journey. Our advisory team reviews every message and responds within one business day.
+            <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Get answers fast</span>
+            <h1 class="text-3xl font-heading font-semibold text-foreground sm:text-4xl">Ask us anything—we respond within 24 hours</h1>
+            <p class="mx-auto max-w-2xl text-base text-muted-foreground">
+                Have questions about buying property in Bangkok? Need help finding the right condo? Want to understand payment plans or ownership laws? Our team responds to every message within one business day.
             </p>
         </header>
 
         <div class="grid gap-8 lg:grid-cols-[1fr_1.4fr]">
             <aside class="space-y-6 rounded-3xl border border-border bg-card/95 p-8 shadow-xl backdrop-blur">
                 <div class="space-y-2">
-                    <h2 class="text-xl font-semibold text-foreground">Reach us directly</h2>
-                    <p class="text-sm text-muted-foreground">
-                        Prefer a quick conversation? Contact the team and we’ll make sure you’re routed to the right specialist.
+                    <h2 class="text-xl font-semibold text-foreground">Talk to a real person</h2>
+                    <p class="text-base text-muted-foreground">
+                        Prefer to speak directly? Call or email us and we'll connect you with the right specialist who can answer your questions in your language.
                     </p>
                 </div>
 
@@ -40,8 +59,8 @@
                             </svg>
                         </div>
                         <div class="space-y-1">
-                            <dt class="text-sm font-semibold text-foreground">Visit us</dt>
-                            <dd class="text-sm text-muted-foreground">Ayutthaya, Phra Nakhon Si Ayutthaya District, Thailand</dd>
+                            <dt class="text-base font-semibold text-foreground">Visit us</dt>
+                            <dd class="text-base text-muted-foreground">Ayutthaya, Phra Nakhon Si Ayutthaya District, Thailand</dd>
                         </div>
                     </div>
 
@@ -54,8 +73,8 @@
                             </svg>
                         </div>
                         <div class="space-y-1">
-                            <dt class="text-sm font-semibold text-foreground">Email</dt>
-                            <dd class="text-sm text-muted-foreground">hello@wizerproperties.com</dd>
+                            <dt class="text-base font-semibold text-foreground">Email</dt>
+                            <dd class="text-base text-muted-foreground">hello@wizerproperties.com</dd>
                         </div>
                     </div>
 
@@ -66,13 +85,13 @@
                             </svg>
                         </div>
                         <div class="space-y-1">
-                            <dt class="text-sm font-semibold text-foreground">Phone</dt>
-                            <dd class="text-sm text-muted-foreground">+66 (0) 2 345 6789</dd>
+                            <dt class="text-base font-semibold text-foreground">Phone</dt>
+                            <dd class="text-base text-muted-foreground">+66 (0) 2 345 6789</dd>
                         </div>
                     </div>
                 </dl>
 
-                <div class="space-y-2 rounded-2xl border border-primary/30 bg-primary/5 p-4 text-sm text-muted-foreground">
+                <div class="space-y-2 rounded-2xl border border-primary/30 bg-primary/5 p-4 text-base text-muted-foreground">
                     <p class="font-semibold text-foreground">Operating hours</p>
                     <p>Monday to Friday, 9am – 6pm ICT (GMT+7)</p>
                     <p>We do our best to respond within one business day.</p>
@@ -83,7 +102,7 @@
                 <form class="space-y-6" data-contact-form novalidate>
                     {% csrf_token %}
                     <div class="space-y-3" data-contact-alerts aria-live="polite"></div>
-                    <div class="space-y-3 text-sm text-destructive" data-contact-errors aria-live="assertive"></div>
+                    <div class="space-y-3 text-base text-destructive" data-contact-errors aria-live="assertive"></div>
 
                     <div class="grid gap-4">
                         <label class="flex flex-col gap-2">
@@ -101,11 +120,11 @@
                     </div>
 
                     <div class="space-y-2 text-xs text-muted-foreground">
-                        <p>By submitting this form you agree that WiSER Properties may contact you about your enquiry in line with our privacy policy.</p>
+                        <p>By submitting this form you agree that Wizer Properties may contact you about your enquiry in line with our privacy policy.</p>
                     </div>
 
                     <button type="submit" class="btn w-full justify-center sm:w-auto disabled:cursor-not-allowed disabled:opacity-50" data-contact-submit>
-                        <span data-contact-submit-text>Send message</span>
+                        <span data-contact-submit-text>Get my answer</span>
                         <span class="ml-2 hidden items-center gap-2 text-xs" data-contact-submit-spinner>
                             <span class="inline-flex size-3 animate-spin rounded-full border-2 border-primary/20 border-t-primary"></span>
                             Sending…

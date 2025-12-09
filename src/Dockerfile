@@ -22,5 +22,12 @@ ENV GDAL_LIBRARY_PATH /usr/lib/libgdal.so
 COPY poetry.lock pyproject.toml /app/
 RUN pip install poetry && poetry config virtualenvs.create false && poetry install --no-root
 
+# Copy entrypoint script and set permissions
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
 # Copy the project files into the container
 COPY . /app/
+
+# Set entrypoint
+ENTRYPOINT ["/docker-entrypoint.sh"]

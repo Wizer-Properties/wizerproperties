@@ -134,98 +134,122 @@ async function initializeMap() {
     let search_render_dom = document.getElementById('search-map');
 
     if( search_render_dom ){
-        
-        async function init_map_circle (){
+        // Check if MapManager is available (for property search with markers)
+        if (typeof window.MapManager !== 'undefined') {
+            // Use MapManager for enhanced map functionality with markers
             var get_url = new URL(window.location.href);
             var get_params = new URLSearchParams(get_url.search);
             var p_latitude = get_params.get('latitude');
             var p_longitude = get_params.get('longitude');
-            var p_place_id = get_params.get('place_id');
-            var p_fature_type = get_params.get('fature_type');
-            var center_option = {lat: 13.7563309, lng: 100.5017651 }
+            var center_option = {lat: 13.7563309, lng: 100.5017651 };
 
             if(p_latitude && p_longitude){
                 center_option.lat = Number(p_latitude);
                 center_option.lng = Number(p_longitude);
-            };
+            }
 
-            function circle_shape_void () {
-                search_page_map = new google.maps.Map(search_render_dom, {
-                    zoom: 12,
-                    center: center_option,
-                    mapTypeId: "terrain",
-                    zoomControl: false,
-                    mapTypeControl: false, 
-                    fullscreenControl: false,
-                });
-                
-                search_page_map_circle = new google.maps.Circle({
-                    strokeColor: "#FF0000",
-                    strokeOpacity: 0.8,
-                    strokeWeight: 2,
-                    fillColor: "#FF0000",
-                    fillOpacity: 0.35,
-                    map : search_page_map ,
-                    center: center_option,
-                    radius: 15 * 1609.34,
-                });
-            };
-            
-            if(p_fature_type != 'circle') {
-                const { Map } = await google.maps.importLibrary("maps");
+            // Initialize MapManager
+            window.mapManager = new window.MapManager();
+            await window.mapManager.init(search_render_dom, {
+                center: center_option,
+                zoom: 12,
+                mapType: "terrain"
+            });
 
-                function MAPFEATURETYPE(){
-                    if(
-                        ["ADMINISTRATIVE_AREA_LEVEL_1", "administrative_area_level_1"].includes(p_fature_type)
-                    ) return google.maps.FeatureType.ADMINISTRATIVE_AREA_LEVEL_1;
-                    if(p_fature_type == "locality") return google.maps.FeatureType.LOCALITY;
-                    if(p_fature_type == "postal_code") return google.maps.FeatureType.POSTAL_CODE;
-                }
+            // Store reference for backward compatibility
+            search_page_map = window.mapManager.map;
 
-                // function MAPID(){
-                //     if(
-                //         ["ADMINISTRATIVE_AREA_LEVEL_1", "administrative_area_level_1"].includes(p_fature_type)
-                //     ) return "7ba16be0c9375fa7";
-                //     if(p_fature_type == "locality") return "a3efe1c035bad51b";
-                //     if(p_fature_type == "postal_code") return "a3efe1c035bad51b";
-                // }
+            // Handle reset map button
+            $(document).on('click', '.reset-map', async function(){
+                window.mapManager.updateMapView(center_option, 12);
+                window.mapManager.clearMarkers();
+            });
+        } else {
+            // Fallback to original implementation
+            async function init_map_circle (){
+                var get_url = new URL(window.location.href);
+                var get_params = new URLSearchParams(get_url.search);
+                var p_latitude = get_params.get('latitude');
+                var p_longitude = get_params.get('longitude');
+                var p_place_id = get_params.get('place_id');
+                var p_fature_type = get_params.get('fature_type');
+                var center_option = {lat: 13.7563309, lng: 100.5017651 }
 
-                search_page_map = new Map(search_render_dom, {
-                    zoom: 10.5,
-                    center: center_option,
-                    mapId: 'b0addd8cbd8a8fc6',
-                    zoomControl: false,
-                    mapTypeControl: false, 
-                    fullscreenControl: false,
-                });
-        
-                featureLayer = search_page_map.getFeatureLayer(MAPFEATURETYPE());
-
-                
-                const featureStyleOptions = {
-                    strokeColor: "#810FCB",
-                    strokeOpacity: 1.0,
-                    strokeWeight: 3.0,
-                    fillColor: "#810FCB",
-                    fillOpacity: 0.5,
+                if(p_latitude && p_longitude){
+                    center_option.lat = Number(p_latitude);
+                    center_option.lng = Number(p_longitude);
                 };
-              
-                featureLayer.style = (options) => {
-                    if (options.feature.placeId == p_place_id) {
-                        return featureStyleOptions;
+
+                function circle_shape_void () {
+                    search_page_map = new google.maps.Map(search_render_dom, {
+                        zoom: 12,
+                        center: center_option,
+                        mapTypeId: "terrain",
+                        zoomControl: false,
+                        mapTypeControl: false, 
+                        fullscreenControl: false,
+                    });
+                    
+                    search_page_map_circle = new google.maps.Circle({
+                        strokeColor: "#FF0000",
+                        strokeOpacity: 0.8,
+                        strokeWeight: 2,
+                        fillColor: "#FF0000",
+                        fillOpacity: 0.35,
+                        map : search_page_map ,
+                        center: center_option,
+                        radius: 15 * 1609.34,
+                    });
+                };
+                
+                if(p_fature_type != 'circle') {
+                    const { Map: GoogleMap } = await google.maps.importLibrary("maps");
+
+                    function MAPFEATURETYPE(){
+                        if(
+                            ["ADMINISTRATIVE_AREA_LEVEL_1", "administrative_area_level_1"].includes(p_fature_type)
+                        ) return google.maps.FeatureType.ADMINISTRATIVE_AREA_LEVEL_1;
+                        if(p_fature_type == "locality") return google.maps.FeatureType.LOCALITY;
+                        if(p_fature_type == "postal_code") return google.maps.FeatureType.POSTAL_CODE;
                     }
+
+                    search_page_map = new GoogleMap(search_render_dom, {
+                        zoom: 10.5,
+                        center: center_option,
+                        mapId: 'b0addd8cbd8a8fc6',
+                        zoomControl: false,
+                        mapTypeControl: false, 
+                        fullscreenControl: false,
+                    });
+            
+                    featureLayer = search_page_map.getFeatureLayer(MAPFEATURETYPE());
+
+                    
+                    const featureStyleOptions = {
+                        strokeColor: "#810FCB",
+                        strokeOpacity: 1.0,
+                        strokeWeight: 3.0,
+                        fillColor: "#810FCB",
+                        fillOpacity: 0.5,
+                    };
+                  
+                    featureLayer.style = (options) => {
+                        if (options.feature.placeId == p_place_id) {
+                            return featureStyleOptions;
+                        }
+                    };
+                } else {
+                    circle_shape_void()
                 };
-            } else {
-                circle_shape_void()
             };
-        };
 
-        init_map_circle();
-
-        $(document).on('click', '.reset-btn', async function(){
             init_map_circle();
-            search_page_map_circle = null;
-        });
+
+            $(document).on('click', '.reset-btn', async function(){
+                init_map_circle();
+                search_page_map_circle = null;
+            });
+        }
 
         $(document).on('click', '.search-box-clear-button', function(){
             $('#gm-search-input').val('');

@@ -1,55 +1,175 @@
 {% extends "base.html" %}
 {% load static %}
 {% load widget_tweaks %}
+{% load seo_tags %}
 
 {% block extend_head %}
-<title>Map view property</title>
+<title>Property Map Search | Find Properties by Location in Bangkok | Wizer Properties</title>
+<meta name="description" content="Search properties on an interactive map of Bangkok. Find condos and villas near BTS/MRT stations, in specific districts, or by location. Visual property search with full details.">
+<meta name="keywords" content="bangkok property map, property map search, thailand real estate map, bangkok property locations, interactive property map">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Property Map Search | Wizer Properties">
+<meta property="og:description" content="Search properties on an interactive map of Bangkok. Find condos and villas by location.">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'media/logo.png' %}">
+<meta property="og:site_name" content="Wizer Properties">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Property Map Search | Wizer Properties">
+<meta name="twitter:description" content="Search properties on an interactive map of Bangkok. Find condos and villas by location.">
+
+{% organization_schema %}
+
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet" />
 <link rel="stylesheet" href="{% static 'css/libraries/splide.min.css' %}?v=2.0" />
+<link rel="stylesheet" href="{% static 'css/property-card-modern.css' %}?v=2.00" />
 {% endblock extend_head %}
 
 {% block content %}
-<section class="bg-muted/40 py-6">
+<!-- Sponsored Property Ads (dismissible) -->
+<section class="bg-muted/40 py-6" data-sponsored-ads-section>
     <div class="container">
-        <div class="top-banner overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-            <div class="splide ads-banner-slider">
-                <div class="splide__track">
-                    <div class="splide__list">
-                        <!-- populated via ads.js -->
+        <div class="relative space-y-3">
+            <button type="button" class="absolute right-4 top-4 z-10 inline-flex size-8 items-center justify-center rounded-full border border-border bg-white/90 backdrop-blur-sm text-muted-foreground transition hover:bg-white hover:text-foreground" data-dismiss-ads aria-label="Dismiss sponsored listings">
+                <i class="bi bi-x-lg text-sm"></i>
+            </button>
+            <div class="top-banner overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+                <div class="splide ads-banner-slider" aria-label="Sponsored property highlights">
+                    <div class="splide__track">
+                        <div class="splide__list">
+                            <!-- populated via ads.js -->
+                        </div>
                     </div>
                 </div>
             </div>
+            <p class="text-center text-[11px] font-medium uppercase tracking-[0.35em] text-muted-foreground">Sponsored listings</p>
         </div>
     </div>
 </section>
 
 {% include "components/property/filter-panel.html" %}
 
+<!-- Results Summary Bar (with integrated breadcrumb) -->
+<section class="bg-muted/40 py-6">
+    <div class="container">
+        <div class="flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm md:flex-row md:items-center md:justify-between">
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
+                <div class="flex flex-col gap-1">
+                    <!-- Breadcrumb (compact) -->
+                    <nav aria-label="Breadcrumb" class="flex items-center gap-2 text-xs text-muted-foreground">
+                        <a href="/" class="transition hover:text-foreground">Home</a>
+                        <i class="bi bi-chevron-right text-[10px]"></i>
+                        <span class="text-foreground font-medium" data-breadcrumb-area>Properties For Sale</span>
+                    </nav>
+                <h1 class="section-title search-area text-xl font-semibold text-foreground"></h1>
+                    <p class="section-scripts m-0 flex items-center gap-2 text-sm text-muted-foreground">
+                        <b class="text-foreground"><span label="available-properties">- -</span></b>
+                        <span>verified properties found</span>
+                    </p>
+                </div>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+                <!-- Sorting -->
+                <div class="relative">
+                    <button class="sorting-btn inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:bg-accent/10 hover:text-accent" pop-target="sorting-box">
+                        <i class="bi bi-arrow-down-up"></i>
+                        <span>Sort: <span label="sorting-type">Newest first</span></span>
+                    </button>
+                    <div class="sorting-list-box absolute right-0 z-20 mt-2 hidden min-w-[200px] rounded-2xl border border-border bg-card text-sm shadow-lg" pop-element="sorting-box">
+                        <ul class="py-2">
+                            <li active="true" value="-created_at" class="flex items-center justify-between px-4 py-2.5 hover:bg-secondary/40 cursor-pointer">
+                                <span>Newest first</span>
+                                <i class="bi bi-check2 text-accent hidden"></i>
+                            </li>
+                            <li active="false" value="-price" class="flex items-center justify-between px-4 py-2.5 hover:bg-secondary/40 cursor-pointer">
+                                <span>Highest price</span>
+                                <i class="bi bi-check2 text-accent hidden"></i>
+                            </li>
+                            <li active="false" value="price" class="flex items-center justify-between px-4 py-2.5 hover:bg-secondary/40 cursor-pointer">
+                                <span>Lowest price</span>
+                                <i class="bi bi-check2 text-accent hidden"></i>
+                            </li>
+                            <li active="false" value="-visit_count" class="flex items-center justify-between px-4 py-2.5 hover:bg-secondary/40 cursor-pointer">
+                                <span>Most popular</span>
+                                <i class="bi bi-check2 text-accent hidden"></i>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- View Toggle -->
+                <a href="" label-name="view-tag" class="search-list-redirect inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:bg-accent/10 hover:text-accent">
+                    <i class="bi bi-list-task"></i>
+                    <span>List View</span>
+                </a>
+                <!-- Save Search -->
+                <button type="button" class="save-search-btn inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:bg-accent/10 hover:text-accent" data-save-search>
+                    <i class="bi bi-bookmark"></i>
+                    <span class="hidden sm:inline">Save search</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
 <section id="search-result-map-view" class="relative bg-muted/30 py-10">
-    <div class="container grid gap-6 lg:grid-cols-[minmax(0,1fr)_420px]">
+    <div class="container grid gap-6 lg:grid-cols-[minmax(0,1fr)_480px]">
+        <!-- Results Column -->
         <div class="space-y-6">
-            <div class="map-button-info flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card px-4 py-3 text-sm text-muted-foreground">
-                <p class="section-scripts m-0 flex items-center gap-2 text-sm">
-                    <b class="text-foreground"><span label="available-properties">- -</span></b>
-                    Properties available
-                </p>
-                <button class="nav-link active-nav reset-map hidden rounded-full border border-border bg-secondary px-3 py-1 text-xs font-semibold text-foreground transition hover:border-accent/20 hover:bg-accent/10 hover:text-accent">Reset map</button>
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-2 text-sm text-muted-foreground">
+                    <i class="bi bi-info-circle text-accent"></i>
+                    <span>Click markers on the map to see property details</span>
+                </div>
+                <button class="nav-link active-nav reset-map hidden inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1.5 text-xs font-semibold text-foreground transition hover:border-accent/20 hover:bg-accent/10 hover:text-accent">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                    <span>Reset map view</span>
+                </button>
             </div>
-            <div class="grid grid-cols-1 gap-6" id="search-result-list">
-                <!-- Property cards loaded by JS -->
+            
+            <!-- Property List (Single column for map view) -->
+            <div id="search-result-list" class="space-y-6"></div>
+            
+            <!-- Empty State -->
+            <div id="search-empty-state" class="hidden rounded-2xl border border-dashed border-border bg-card/60 p-12 text-center">
+                <div class="mx-auto max-w-md space-y-4">
+                    <div class="mx-auto size-16 flex items-center justify-center rounded-full bg-muted/60">
+                        <i class="bi bi-map text-3xl text-muted-foreground"></i>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-semibold text-foreground">No properties in this area</h3>
+                        <p class="text-base text-muted-foreground">Try panning the map or adjusting your filters to see more properties.</p>
+                    </div>
+                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:bg-accent/10 hover:text-accent" data-clear-filters>
+                        <i class="bi bi-x-circle"></i>
+                        <span>Clear all filters</span>
+                    </button>
+                </div>
             </div>
+            
+            <div id="search-freescroll"></div>
 
             {% include "components/property/card.html" %}
 
         </div>
 
-        <div class="search-map-wrapper sticky top-24 h-[75vh] rounded-2xl border border-border bg-card shadow-sm">
-            <a href="" label-name="view-tag" class="search-list-redirect absolute right-4 top-4 inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1 text-xs font-semibold text-foreground transition hover:border-accent/20 hover:bg-accent/10 hover:text-accent">
+        <!-- Map Column -->
+        <div class="search-map-wrapper sticky top-24 space-y-4">
+            <div class="relative h-[75vh] rounded-2xl border border-border bg-card shadow-sm overflow-hidden">
+            <div class="absolute right-4 top-4 z-10 flex flex-col gap-2">
+                <a href="" label-name="view-tag" class="search-list-redirect inline-flex items-center gap-2 rounded-full border border-border bg-white/90 backdrop-blur-sm px-4 py-2 text-sm font-medium text-muted-foreground shadow-sm transition hover:bg-white hover:border-accent/60">
                 <i class="bi bi-list-task"></i>
-                List View
+                    <span class="hidden sm:inline">List View</span>
             </a>
+            </div>
             <div id="search-map" class="h-full w-full rounded-2xl bg-muted"></div>
+            </div>
+            <!-- Square Ad Below Map -->
+            <div id="map-below-ad-container" class="w-full"></div>
         </div>
     </div>
 </section>
@@ -98,7 +218,7 @@
 <script>
     var page_view = "map-list";
     var ADS_SUGGEST_URL = '/advertise/api/advertisement/suggested/'
-    var ADS_LOCATION_PARAM = ['search']
+    var ADS_LOCATION_PARAM = ['search', 'search_inline', 'map_below']
 </script>
 <script src="{% static 'js/libraries/jquery-ui.js' %}"></script>
 <script src="{% static 'js/libraries/chart.js' %}"></script>
@@ -108,8 +228,10 @@
 <script src="{% static 'js/libraries/noframework.waypoints.min.js' %}"></script>
 <script src="{% static 'js/property/card-factory.js' %}?v=1.00"></script>
 <script src="{% static '/js/property/filter-init.js' %}?v=2.00"></script>
+<script src="{% static '/js/property/map-manager.js' %}?v=1.00"></script>
 <script src="{% static '/js/time-count-down.js' %}?v=1.00"></script>
 <script src="{% static '/js/property/search.js' %}?v=2.00"></script>
 <script src="{% static '/js/property/compair-favorite.js' %}?v=2.00"></script>
+<script src="{% static '/js/property/compare-manager.js' %}?v=1.00"></script>
 <script src="{% static '/js/ads.js' %}?v=1.04"></script>
 {% endblock extend_script %}

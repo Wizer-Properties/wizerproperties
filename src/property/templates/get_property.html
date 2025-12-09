@@ -1,9 +1,47 @@
 {% extends "base.html" %}
 {% load static %}
 {% load widget_tweaks %}
+{% load seo_tags %}
 
 {% block extend_head %}
-<title>{{ property.title }} | Property Details</title>
+{% with property_description=property.description|truncatewords:25|default:"Beautiful property in Bangkok, Thailand" %}
+<title>{{ property.title }} | {{ property.building.title|default:"Property" }} | Wizer Properties</title>
+<meta name="description" content="{{ property_description }}. {{ property.bedrooms|default:0 }} bedroom, {{ property.bathrooms|default:0 }} bathroom property in {{ property.building.district|default:"Bangkok" }}. Price: {{ property.format_price }} THB.">
+<meta name="keywords" content="bangkok property, {{ property.building.district|default:"bangkok" }} condo, thailand real estate, property for sale bangkok, {{ property.building.type|default:"property"|lower }}">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+<!-- Open Graph -->
+<meta property="og:type" content="product">
+<meta property="og:title" content="{{ property.title }} | Wizer Properties">
+<meta property="og:description" content="{{ property_description }}">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+{% if images|first %}
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ images.0.file.url }}">
+{% else %}
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'media/logo.png' %}">
+{% endif %}
+<meta property="og:site_name" content="Wizer Properties">
+<meta property="product:price:amount" content="{{ property.price }}">
+<meta property="product:price:currency" content="THB">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ property.title }} | Wizer Properties">
+<meta name="twitter:description" content="{{ property_description }}">
+{% if images|first %}
+<meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{{ images.0.file.url }}">
+{% else %}
+<meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'media/logo.png' %}">
+{% endif %}
+
+<!-- Article meta (if applicable) -->
+<meta property="article:published_time" content="{{ property.created_at|date:'c' }}">
+<meta property="article:modified_time" content="{{ property.updated_at|date:'c' }}">
+
+<!-- Structured Data -->
+{% property_schema property %}
+{% breadcrumb_schema breadcrumbs %}
+
 <link rel="stylesheet" href="{% static 'css/libraries/splide.min.css' %}?v=2.0" />
 <script>
     function buildingGeocodeAddress(renderDom, defaultLatLng) {
@@ -22,19 +60,37 @@
         });
     }
 </script>
+{% endwith %}
 {% endblock extend_head %}
 
 {% block content %}
+<!-- Breadcrumb Navigation -->
+<section class="bg-muted/40 py-4">
+    <div class="container">
+        <nav aria-label="Breadcrumb" class="flex items-center gap-2 text-sm">
+            <a href="/" class="text-muted-foreground transition hover:text-foreground">Home</a>
+            <i class="bi bi-chevron-right text-xs text-muted-foreground"></i>
+            <a href="{% url 'property:search' %}" class="text-muted-foreground transition hover:text-foreground" id="back-to-search-link">Properties For Sale</a>
+            <i class="bi bi-chevron-right text-xs text-muted-foreground"></i>
+            <span class="text-foreground font-medium" data-breadcrumb-property>Property Details</span>
+        </nav>
+    </div>
+</section>
+
+<!-- Sponsored Property Ads -->
 <section class="bg-muted/40 py-6">
     <div class="container">
-        <div class="top-banner overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-            <div class="splide ads-banner-slider">
-                <div class="splide__track">
-                    <ul class="splide__list">
-                        <li class="splide__slide h-40 animate-pulse bg-muted"></li>
-                    </ul>
+        <div class="space-y-3">
+            <div class="top-banner overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+                <div class="splide ads-banner-slider" aria-label="Sponsored property highlights">
+                    <div class="splide__track">
+                        <ul class="splide__list">
+                            <li class="splide__slide h-40 animate-pulse bg-muted"></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
+            <p class="text-center text-[11px] font-medium uppercase tracking-[0.35em] text-muted-foreground">Sponsored listings</p>
         </div>
     </div>
 </section>
@@ -43,88 +99,164 @@
     <div class="container space-y-12">
         <div class="grid gap-8 lg:grid-cols-[2fr,1fr]">
             <div class="space-y-6">
-                <article class="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-                    <div class="space-y-6 p-6">
-                        <div class="flex flex-wrap items-start justify-between gap-4">
-                            <div class="space-y-3">
-                                <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary">Property</span>
-                                <h1 class="text-3xl font-heading font-semibold text-foreground" data-property-title>Loading…</h1>
-                                <div class="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-                                    <i class="bi bi-geo-alt text-base text-accent"></i>
-                                    <span data-property-address>Loading…</span>
-                                </div>
-                                <div class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs text-muted-foreground">
-                                    <span class="uppercase tracking-[0.25em] text-accent">Unit</span>
-                                    <span class="font-semibold text-foreground" data-property-unit-id>—</span>
-                                </div>
-                            </div>
-                            <div class="flex flex-col items-end gap-3 text-right">
-                                <div class="rounded-xl border border-border bg-accent/10 px-4 py-3 text-right">
-                                    <p class="text-sm font-medium text-muted-foreground">Asking Price</p>
-                                    <p class="text-xl font-semibold text-primary" data-property-price>฿ –</p>
-                                    <p class="text-xs text-muted-foreground" data-property-price-sqm>฿ – / sqm</p>
-                                </div>
-                                {% if not user.is_authenticated or request.user.user_type == "prospect" %}
-                                <div class="flex flex-wrap justify-end gap-2" data-property-actions>
-                                    <button type="button" class="add-to-compare btn-secondary hidden min-w-[140px] items-center justify-center gap-2" added="false" index="">
-                                        <i class="bi bi-arrow-left-right text-base"></i>
-                                        <span>Add to compare</span>
-                                    </button>
-                                    <button type="button" class="add-to-favorite btn-secondary hidden min-w-[140px] items-center justify-center gap-2" added="false" index="">
-                                        <i class="bi bi-heart text-base"></i>
-                                        <span>Save listing</span>
-                                    </button>
-                                </div>
-                                {% endif %}
-                            </div>
-                        </div>
+                <article class="group relative overflow-hidden rounded-2xl border border-border/50 bg-card shadow-sm">
+                    <!-- Featured Property Brand Color Accent Bar -->
+                    <div class="hidden h-1 bg-gradient-to-r from-brand-teal to-accent" data-property-featured-accent></div>
 
-                        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-                            <div class="stat-chip">
-                                <div class="flex items-center gap-2 text-xs uppercase text-muted-foreground">
-                                    <span>Beds</span>
-                                </div>
-                                <p class="text-lg font-semibold text-foreground" data-property-beds>—</p>
-                            </div>
-                            <div class="stat-chip">
-                                <div class="flex items-center gap-2 text-xs uppercase text-muted-foreground">
-                                    <span>Baths</span>
-                                </div>
-                                <p class="text-lg font-semibold text-foreground" data-property-baths>—</p>
-                            </div>
-                            <div class="stat-chip">
-                                <div class="flex items-center gap-2 text-xs uppercase text-muted-foreground">
-                                    <span>Size</span>
-                                </div>
-                                <p class="text-lg font-semibold text-foreground" data-property-size>—</p>
-                            </div>
-                            <div class="stat-chip">
-                                <div class="flex items-center gap-2 text-xs uppercase text-muted-foreground">
-                                    <span>Floor</span>
-                                </div>
-                                <p class="text-lg font-semibold text-foreground" data-property-floor>—</p>
-                            </div>
-                            <div class="stat-chip">
-                                <div class="flex items-center gap-2 text-xs uppercase text-muted-foreground">
-                                    <span>Completed</span>
-                                </div>
-                                <p class="text-lg font-semibold text-foreground" data-property-year>—</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="border-t border-border">
-                        <div class="splide" id="property-hero-slider">
-                            <div class="splide__track">
-                                <ul class="splide__list" data-gallery-list>
-                                    <li class="splide__slide h-72 animate-pulse rounded-xl bg-muted"></li>
+                    <!-- Hero Image Section -->
+                    <div class="relative aspect-[4/3] w-full overflow-hidden bg-muted">
+                        <div class="splide h-full w-full group-hover:scale-105 transition-transform duration-700 ease-out" id="property-hero-slider">
+                            <div class="splide__track h-full">
+                                <ul class="splide__list h-full" data-gallery-list>
+                                    <li class="splide__slide h-full animate-pulse bg-muted"></li>
                                 </ul>
                             </div>
                         </div>
+
+                        <!-- Gradient Overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-90 pointer-events-none"></div>
+
+                        <!-- Top Bar: Badges + Actions -->
+                        <div class="absolute inset-x-0 top-0 z-20 flex items-start justify-between p-3 sm:p-4">
+                            <!-- Badges (Left) -->
+                            <div class="flex flex-wrap gap-2" data-property-badges>
+                                <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-primary" data-property-type-badge>Property</span>
+                            </div>
+
+                            <!-- Actions (Right) -->
+                            {% if not user.is_authenticated or request.user.user_type == "prospect" %}
+                            <div class="flex gap-2" data-property-actions>
+                                <button type="button" class="add-to-compare inline-flex size-9 items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-lg transition-all hover:bg-white hover:text-primary hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/50 touch-manipulation" added="false" index="" effect="pulse" aria-label="Add to compare" title="Compare properties">
+                                    <i class="bi bi-arrow-left-right text-sm"></i>
+                                </button>
+                                <button type="button" class="add-to-favorite inline-flex size-9 items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-lg transition-all hover:bg-white hover:text-red-500 hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/50 touch-manipulation" added="false" index="" effect="pulse" aria-label="Add to favorites" title="Save to favorites">
+                                    <i class="bi bi-heart text-sm"></i>
+                                </button>
+                                <button type="button" class="share-property-btn inline-flex size-9 items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-lg transition-all hover:bg-white hover:text-primary hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/50 touch-manipulation" data-share-url="{{ request.build_absolute_uri }}" data-share-title="{{ property.title|default:'Property' }}" aria-label="Share property" title="Share">
+                                    <i class="bi bi-share text-sm"></i>
+                                </button>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Bottom Overlay: Price -->
+                        <div class="absolute inset-x-0 bottom-0 z-20 p-3 sm:p-4">
+                            <div class="flex items-end justify-between gap-2">
+                                <div class="flex flex-col gap-1" data-property-price-container>
+                                    <div class="flex items-baseline gap-2">
+                                        <p class="text-2xl font-bold leading-none text-white drop-shadow-lg sm:text-3xl" data-property-price>฿ –</p>
+                                        <p class="text-sm text-white/60 line-through hidden" data-property-original-price></p>
+                                    </div>
+                                    <p class="text-xs text-white/80 drop-shadow" data-property-price-sqm>฿ – / sqm</p>
+                                    <p class="text-xs font-medium text-accent drop-shadow hidden mt-1 bg-black/40 px-2 py-1 rounded backdrop-blur-sm self-start" data-property-discount-amount></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- View Buttons (3D Tour, Aerial View) -->
+                        <div class="absolute left-3 bottom-20 z-20 flex flex-row gap-2 sm:left-4 sm:bottom-24" data-property-view-buttons>
+                            <!-- 3D Tour Badge -->
+                            <div class="hidden" data-property-3d-badge>
+                                <button type="button" class="group/3d inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/40 backdrop-blur-md px-3 py-1.5 text-xs font-medium text-white shadow-lg transition-all hover:bg-accent hover:border-accent hover:text-white focus:outline-none focus:ring-2 focus:ring-white/50 touch-manipulation" data-property-3d>
+                                    <i class="bi bi-box-arrow-up-right text-accent group-hover/3d:text-white"></i>
+                                    <span>3D Tour</span>
+                                </button>
+                            </div>
+
+                            <!-- Aerial View Badge -->
+                            <div class="hidden" data-property-drone-badge>
+                                <button type="button" class="group/drone inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/40 backdrop-blur-md px-3 py-1.5 text-xs font-medium text-white shadow-lg transition-all hover:bg-accent hover:border-accent hover:text-white focus:outline-none focus:ring-2 focus:ring-white/50 touch-manipulation" data-property-drone>
+                                    <i class="bi bi-camera-video text-accent group-hover/drone:text-white"></i>
+                                    <span>Aerial</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Image Counter -->
+                        <div class="absolute right-3 bottom-20 z-20 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/50 px-2.5 py-1 text-xs font-medium text-white backdrop-blur-md shadow-lg sm:right-4 sm:bottom-24 hidden" data-image-counter>
+                            <i class="bi bi-images"></i>
+                            <span data-current-image>1</span> / <span data-total-images>—</span>
+                        </div>
                     </div>
 
-                    <div class="flex flex-col gap-4 border-t border-border px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
-                        <div class="flex flex-wrap gap-2 text-sm font-medium">
+                    <!-- Developer/Agent Header -->
+                    <div class="flex items-center justify-between gap-3 border-b border-border/50 bg-card/50 backdrop-blur-sm px-4 py-2.5">
+                        <div class="flex items-center gap-3 min-w-0 flex-1">
+                            <div class="relative size-9 flex-shrink-0 overflow-hidden rounded-full border border-border bg-muted shadow-sm group-hover:scale-105 transition-transform duration-300">
+                                <img src="{% static 'media/default-avatar.jpg' %}" alt="Developer" class="h-full w-full object-cover" data-property-developer-image />
+                                <div class="absolute inset-0 flex items-center justify-center bg-muted/80 hidden" data-property-developer-icon-fallback>
+                                    <i class="bi bi-building text-xs text-muted-foreground"></i>
+                                </div>
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <div class="flex items-center gap-2">
+                                    <p class="truncate text-sm font-normal text-foreground" data-property-developer-name>Loading…</p>
+                                    <!-- Property Type Badge -->
+                                    <span class="hidden flex-shrink-0 rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent" data-property-type-badge>—</span>
+                                </div>
+                                <p class="truncate text-xs text-muted-foreground" data-property-date-relative>
+                                    <span data-property-date-label>Added</span> <span data-property-date-value>—</span>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Primary CTA - Book Viewing -->
+                        {% if not user.is_authenticated or request.user.user_type == "prospect" %}
+                        <a href="/schedule/create_schedule?type=property&id={{ property.id }}"
+                            class="group/cta inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-primary/90 hover:shadow-md hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary/50 touch-manipulation">
+                            <i class="bi bi-calendar-check"></i>
+                            <span>Book</span>
+                        </a>
+                        {% endif %}
+                    </div>
+
+                    <!-- Property Stats Section -->
+                    <div class="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-border/50 bg-muted/30 px-4 py-3">
+                        <div class="flex items-center gap-1.5 text-sm text-muted-foreground flex-shrink-0">
+                            <i class="bi bi-bed text-accent"></i>
+                            <span class="font-medium text-foreground" data-property-beds>—</span>
+                            <span>bed</span>
+                        </div>
+                        <div class="flex items-center gap-1.5 text-sm text-muted-foreground flex-shrink-0">
+                            <i class="bi bi-bathtub text-accent"></i>
+                            <span class="font-medium text-foreground" data-property-baths>—</span>
+                            <span>bath</span>
+                        </div>
+                        <div class="flex items-center gap-1.5 text-sm text-muted-foreground flex-shrink-0">
+                            <i class="bi bi-rulers text-accent"></i>
+                            <span class="font-medium text-foreground" data-property-size>—</span>
+                            <span>sqft</span>
+                        </div>
+                        <div class="flex items-center gap-1.5 text-sm text-muted-foreground flex-shrink-0 hidden" data-property-floor-wrapper>
+                            <i class="bi bi-layers text-accent"></i>
+                            <span class="font-medium text-foreground" data-property-floor-number>—</span>
+                            <span>floor</span>
+                        </div>
+                        <div class="flex items-center gap-1.5 text-sm text-muted-foreground flex-shrink-0 hidden" data-property-parking-wrapper>
+                            <i class="bi bi-car-front text-accent"></i>
+                            <span class="font-medium text-foreground" data-property-parking>—</span>
+                            <span>parking</span>
+                        </div>
+                        <div class="flex items-center gap-1.5 text-sm text-muted-foreground flex-shrink-0 hidden" data-property-tenure-wrapper>
+                            <i class="bi bi-shield-check text-accent"></i>
+                            <span class="font-medium text-foreground" data-property-tenure>—</span>
+                        </div>
+                    </div>
+
+                    <!-- Title & Location Section -->
+                    <div class="flex flex-col gap-3 p-4 sm:p-5 bg-card">
+                        <div class="space-y-1.5">
+                            <h1 class="text-base font-semibold leading-snug text-foreground sm:text-lg" data-property-title>Loading…</h1>
+                            <div class="flex items-center gap-1.5 text-sm text-muted-foreground">
+                                <i class="bi bi-geo-alt-fill text-accent"></i>
+                                <span class="line-clamp-1" data-property-address>Loading…</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gallery Tabs & Actions -->
+                    <div class="flex flex-col gap-4 border-t border-border px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+                        <div class="flex flex-wrap gap-2 text-sm font-normal">
                             <button type="button" class="gallery-tab-button nav-pill nav-pill-active" data-gallery-filter="image">Images</button>
                             <button type="button" class="gallery-tab-button nav-pill" data-gallery-filter="unit_floor_plan">Unit Plans</button>
                             <button type="button" class="gallery-tab-button nav-pill" data-gallery-filter="master_plan">Master Plan</button>
@@ -133,30 +265,23 @@
                             <button type="button" class="gallery-tab-button nav-pill" data-gallery-filter="facility_view">Facilities</button>
                             <button type="button" class="gallery-tab-button nav-pill" data-gallery-filter="aerial_drone_video">Aerial</button>
                         </div>
-                        <div class="flex flex-wrap items-center gap-3">
-                            {% if not user.is_authenticated or request.user.user_type == "prospect" %}
-                            <a href="/schedule/create_schedule?type=property&id={{ property.id }}" class="btn-secondary sm:w-auto">
-                                Schedule a viewing
-                            </a>
-                            {% endif %}
-                            <button type="button" class="btn-secondary hidden sm:inline-flex" data-gallery-open>
-                                View gallery
-                            </button>
-                        </div>
+                        <button type="button" class="btn-secondary hidden sm:inline-flex" data-gallery-open>
+                            View gallery
+                        </button>
                     </div>
                 </article>
 
                 <section class="rounded-2xl border border-border bg-card p-6 shadow-sm">
                     <div class="flex flex-wrap items-start justify-between gap-4">
                         <div class="space-y-2">
-                            <h2 class="text-lg font-semibold text-foreground">Description</h2>
-                            <p class="text-sm text-muted-foreground">Get a closer feel for the unit and the lifestyle it offers.</p>
+                            <h2 class="text-lg font-semibold text-foreground">About this property</h2>
+                            <p class="text-base text-muted-foreground">See what makes this property special—location benefits, lifestyle perks, and why buyers choose it.</p>
                         </div>
                         <button type="button" class="btn-secondary hidden sm:inline-flex" data-description-toggle>
                             Expand
                         </button>
                     </div>
-                    <div class="mt-4 space-y-4 text-sm leading-relaxed text-muted-foreground" data-property-description>
+                    <div class="mt-4 space-y-4 text-sm font-normal leading-relaxed text-muted-foreground" data-property-description>
                         <div class="h-24 animate-pulse rounded-md bg-muted/60"></div>
                     </div>
                 </section>
@@ -164,47 +289,65 @@
                 <section class="rounded-2xl border border-border bg-card p-6 shadow-sm">
                     <div class="flex flex-wrap items-start justify-between gap-4">
                         <div class="space-y-2">
-                            <h2 class="text-lg font-semibold text-foreground">Highlights & Features</h2>
-                            <p class="text-sm text-muted-foreground">Amenities and details that set this property apart.</p>
+                            <h2 class="text-lg font-semibold text-foreground">What makes this property special</h2>
+                            <p class="text-sm text-muted-foreground">See the amenities, features, and benefits that make this property stand out—all verified, all transparent.</p>
                         </div>
                     </div>
-                    <div class="mt-4 flex flex-wrap gap-2" data-property-features>
-                        <span class="inline-flex animate-pulse rounded-full bg-muted px-3 py-1 text-xs text-muted-foreground">Loading…</span>
-                    </div>
+                    <ul class="mt-4 space-y-2 text-sm font-normal leading-relaxed text-foreground" data-property-features>
+                        <li class="flex items-start gap-2">
+                            <i class="bi bi-check-circle-fill mt-0.5 flex-shrink-0 text-accent"></i>
+                            <span class="animate-pulse text-muted-foreground">Loading property features…</span>
+                        </li>
+                    </ul>
                 </section>
 
+                <!-- Property Information & Specifications -->
                 <section class="rounded-2xl border border-border bg-card p-6 shadow-sm">
                     <div class="space-y-4">
                         <div class="flex flex-wrap items-start justify-between gap-4">
                             <div>
-                                <h2 class="text-lg font-semibold text-foreground">Unit Specifications</h2>
-                                <p class="text-sm text-muted-foreground">Detailed breakdown of the unit’s layout and availability.</p>
+                                <h2 class="text-lg font-semibold text-foreground">Property Information</h2>
+                                <p class="text-sm text-muted-foreground">Complete property details—specifications, availability, and key identifiers.</p>
                             </div>
                         </div>
                         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-property-specifications>
+                            <!-- Basic Information -->
+                            <div class="rounded-xl border border-border bg-secondary/20 p-4 transition hover:border-accent/40">
+                                <span class="block text-xs font-medium uppercase tracking-wider text-muted-foreground">Unit ID</span>
+                                <span class="mt-1 block text-sm font-medium text-foreground" data-info-unit-id>—</span>
+                            </div>
+                            <div class="rounded-xl border border-border bg-secondary/20 p-4 transition hover:border-accent/40">
+                                <span class="block text-xs font-medium uppercase tracking-wider text-muted-foreground">Floor Number</span>
+                                <span class="mt-1 block text-sm font-medium text-foreground" data-info-floor>—</span>
+                            </div>
+                            <div class="rounded-xl border border-border bg-secondary/20 p-4 transition hover:border-accent/40">
+                                <span class="block text-xs font-medium uppercase tracking-wider text-muted-foreground">Tenure</span>
+                                <span class="mt-1 block text-sm font-medium text-foreground" data-info-tenure>—</span>
+                            </div>
+                            <!-- Specifications -->
                             <div class="rounded-xl border border-border bg-secondary/20 p-4 transition hover:border-accent/40">
                                 <span class="block text-xs font-medium uppercase tracking-wider text-muted-foreground">Balconies</span>
-                                <span class="mt-1 block text-base font-semibold text-foreground" data-property-balcony>—</span>
+                                <span class="mt-1 block text-sm font-medium text-foreground" data-property-balcony>—</span>
                             </div>
                             <div class="rounded-xl border border-border bg-secondary/20 p-4 transition hover:border-accent/40">
                                 <span class="block text-xs font-medium uppercase tracking-wider text-muted-foreground">Car Parks</span>
-                                <span class="mt-1 block text-base font-semibold text-foreground" data-property-carparks>—</span>
+                                <span class="mt-1 block text-sm font-medium text-foreground" data-property-carparks>—</span>
                             </div>
                             <div class="rounded-xl border border-border bg-secondary/20 p-4 transition hover:border-accent/40">
                                 <span class="block text-xs font-medium uppercase tracking-wider text-muted-foreground">Availability</span>
-                                <span class="mt-1 block text-base font-semibold text-foreground" data-property-availability>—</span>
+                                <span class="mt-1 block text-sm font-medium text-foreground" data-property-availability>—</span>
                             </div>
                             <div class="rounded-xl border border-border bg-secondary/20 p-4 transition hover:border-accent/40">
                                 <span class="block text-xs font-medium uppercase tracking-wider text-muted-foreground">Orientation</span>
-                                <span class="mt-1 block text-base font-semibold text-foreground" data-property-orientation>—</span>
+                                <span class="mt-1 block text-sm font-medium text-foreground" data-property-orientation>—</span>
                             </div>
                             <div class="rounded-xl border border-border bg-secondary/20 p-4 transition hover:border-accent/40">
                                 <span class="block text-xs font-medium uppercase tracking-wider text-muted-foreground">Door Direction</span>
-                                <span class="mt-1 block text-base font-semibold text-foreground" data-property-door-direction>—</span>
+                                <span class="mt-1 block text-sm font-medium text-foreground" data-property-door-direction>—</span>
                             </div>
                             <div class="rounded-xl border border-border bg-secondary/20 p-4 transition hover:border-accent/40">
                                 <span class="block text-xs font-medium uppercase tracking-wider text-muted-foreground">Unit Position</span>
-                                <span class="mt-1 block text-base font-semibold text-foreground" data-property-position>—</span>
+                                <span class="mt-1 block text-sm font-medium text-foreground" data-property-position>—</span>
                             </div>
                         </div>
                     </div>
@@ -213,8 +356,8 @@
                 <section class="space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sm">
                     <div class="flex flex-wrap items-start justify-between gap-4">
                         <div>
-                            <h2 class="text-lg font-semibold text-foreground">Building Snapshot</h2>
-                            <p class="text-sm text-muted-foreground">Fast facts about {{ property.building.title }}.</p>
+                            <h2 class="text-lg font-semibold text-foreground">About this development</h2>
+                            <p class="text-sm text-muted-foreground">See developer details, completion dates, and key facts about {{ property.building.title }}—all verified.</p>
                         </div>
                         <a href="{% url 'building:get' property.building.id %}" class="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-4 py-2 text-sm font-medium text-primary transition hover:bg-accent/20">
                             <span>View building</span>
@@ -228,35 +371,35 @@
                         <dl class="grid gap-x-6 gap-y-4 sm:grid-cols-2" data-building-details>
                             <div class="space-y-1 border-b border-border/50 pb-2">
                                 <dt class="text-xs font-medium text-muted-foreground">Developer</dt>
-                                <dd class="text-sm font-semibold text-foreground" data-building-developer>—</dd>
+                                <dd class="text-sm font-medium text-foreground" data-building-developer>—</dd>
                             </div>
                             <div class="space-y-1 border-b border-border/50 pb-2">
                                 <dt class="text-xs font-medium text-muted-foreground">Project Name</dt>
-                                <dd class="text-sm font-semibold text-foreground" data-building-name>—</dd>
+                                <dd class="text-sm font-medium text-foreground" data-building-name>—</dd>
                             </div>
                             <div class="space-y-1 border-b border-border/50 pb-2">
                                 <dt class="text-xs font-medium text-muted-foreground">Total Floors</dt>
-                                <dd class="text-sm font-semibold text-foreground" data-building-floors>—</dd>
+                                <dd class="text-sm font-medium text-foreground" data-building-floors>—</dd>
                             </div>
                             <div class="space-y-1 border-b border-border/50 pb-2">
                                 <dt class="text-xs font-medium text-muted-foreground">Total Units</dt>
-                                <dd class="text-sm font-semibold text-foreground" data-building-units>—</dd>
+                                <dd class="text-sm font-medium text-foreground" data-building-units>—</dd>
                             </div>
                             <div class="space-y-1 border-b border-border/50 pb-2">
                                 <dt class="text-xs font-medium text-muted-foreground">Total Area</dt>
-                                <dd class="text-sm font-semibold text-foreground" data-building-area>—</dd>
+                                <dd class="text-sm font-medium text-foreground" data-building-area>—</dd>
                             </div>
                             <div class="space-y-1 border-b border-border/50 pb-2">
                                 <dt class="text-xs font-medium text-muted-foreground">Type</dt>
-                                <dd class="text-sm font-semibold text-foreground" data-building-type>—</dd>
+                                <dd class="text-sm font-medium text-foreground" data-building-type>—</dd>
                             </div>
                             <div class="space-y-1 border-b border-border/50 pb-2">
                                 <dt class="text-xs font-medium text-muted-foreground">Completed</dt>
-                                <dd class="text-sm font-semibold text-foreground" data-building-completion>—</dd>
+                                <dd class="text-sm font-medium text-foreground" data-building-completion>—</dd>
                             </div>
                             <div class="space-y-1 border-b border-border/50 pb-2">
                                 <dt class="text-xs font-medium text-muted-foreground">Address</dt>
-                                <dd class="text-sm font-semibold text-foreground" data-building-address>—</dd>
+                                <dd class="text-sm font-medium text-foreground" data-building-address>—</dd>
                             </div>
                         </dl>
                     </div>
@@ -271,14 +414,14 @@
                             </div>
                         </div>
                         <div class="space-y-3">
-                            <h3 class="text-sm font-semibold text-foreground">Location View</h3>
+                            <h3 class="text-sm font-semibold text-foreground">Explore the location</h3>
                             <div class="overflow-hidden rounded-xl border border-border bg-muted/60" data-location-view>
                                 <div class="aspect-video flex items-center justify-center text-xs text-muted-foreground">Loading…</div>
                             </div>
                         </div>
                     </div>
                     <div class="space-y-3">
-                        <h3 class="text-sm font-semibold text-foreground">Interactive Map</h3>
+                        <h3 class="text-sm font-semibold text-foreground">See it on the map</h3>
                         <div class="overflow-hidden rounded-xl border border-border">
                             <div id="map" class="aspect-video"></div>
                         </div>
@@ -288,8 +431,8 @@
                 <section class="space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sm">
                     <div class="flex flex-wrap items-center justify-between gap-3">
                         <div>
-                            <h2 class="text-lg font-semibold text-foreground">Available Units</h2>
-                            <p class="text-sm text-muted-foreground">Browse more inventory within this project.</p>
+                            <h2 class="text-lg font-semibold text-foreground">More units available in this project</h2>
+                            <p class="text-sm text-muted-foreground">See other verified units in this development—compare prices, sizes, and floor plans to find your perfect match.</p>
                         </div>
                         <div class="flex flex-wrap gap-2 text-sm font-medium">
                             <button class="filter-chip filter-chip-active" data-available-filter="all">All</button>
@@ -311,55 +454,88 @@
                 </section>
 
                 {% include 'review-box.html' %}
+
+                <!-- Similar Properties Section -->
+                <section class="space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sm">
+                    <div>
+                        <h2 class="text-lg font-semibold text-foreground">Similar properties you might love</h2>
+                        <p class="mt-1 text-sm text-muted-foreground">Compare these verified properties with similar features, prices, and locations—all verified, all transparent.</p>
+                    </div>
+                    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-similar-properties>
+                        <div class="h-48 animate-pulse rounded-xl bg-muted"></div>
+                        <div class="h-48 animate-pulse rounded-xl bg-muted"></div>
+                        <div class="h-48 animate-pulse rounded-xl bg-muted hidden lg:block"></div>
+                    </div>
+                </section>
             </div>
 
             <aside class="space-y-6">
+                <!-- Agent/Developer Contact Box - Enhanced -->
                 <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
-                    <h2 class="text-lg font-semibold text-foreground">Interested in this unit?</h2>
-                    <p class="mt-2 text-sm text-muted-foreground">Our advisors can confirm availability, arrange tours, and guide you through the purchase process.</p>
+                    <div class="mb-4 flex items-center gap-3">
+                        <div class="size-12 flex-shrink-0 overflow-hidden rounded-xl border border-border bg-muted" data-agent-logo>
+                            <div class="flex h-full w-full items-center justify-center text-xs text-muted-foreground">Logo</div>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-xs font-medium uppercase tracking-wider text-muted-foreground">Marketed By</p>
+                            <p class="truncate text-sm font-medium text-foreground" data-agent-name>Loading…</p>
+                        </div>
+                    </div>
+                    <p class="mb-4 text-sm font-normal text-muted-foreground">Get instant answers about availability, payment plans, and ownership. Book a free consultation—no commitment required.</p>
                     {% if not request.user.is_authenticated or request.user.user_type == "prospect" %}
                     <a href="/schedule/create_schedule?type=property&id={{ property.id }}" class="btn mt-4 w-full justify-center">
-                        Schedule a viewing
+                        Book free viewing
+                    </a>
+                    <a href="tel:" class="btn-secondary mt-3 w-full justify-center hidden" data-contact-phone-btn>
+                        <i class="bi bi-telephone"></i>
+                        <span>Call agent</span>
+                    </a>
+                    <a href="mailto:" class="btn-secondary mt-2 w-full justify-center hidden" data-contact-email-btn>
+                        <i class="bi bi-envelope"></i>
+                        <span>Get full details</span>
                     </a>
                     {% endif %}
-                    <div class="mt-6 space-y-3 text-sm">
-                        <div class="flex items-center gap-3 rounded-xl border border-border bg-secondary/50 px-4 py-3">
-                            <span class="inline-flex size-10 items-center justify-center rounded-full bg-accent/10 text-accent">
-                                <i class="bi bi-telephone"></i>
-                            </span>
-                            <div>
-                                <p class="text-xs uppercase text-muted-foreground">Call us</p>
-                                <a href="tel:" class="font-semibold text-foreground" data-contact-phone>Updating…</a>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-3 rounded-xl border border-border bg-secondary/50 px-4 py-3">
-                            <span class="inline-flex size-10 items-center justify-center rounded-full bg-accent/10 text-accent">
-                                <i class="bi bi-envelope"></i>
-                            </span>
-                            <div>
-                                <p class="text-xs uppercase text-muted-foreground">Email</p>
-                                <a href="mailto:" class="font-semibold text-foreground" data-contact-email>Available on request</a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
-                    <h2 class="text-lg font-semibold text-foreground">Track new listings</h2>
-                    <p class="mt-2 text-sm text-muted-foreground">Create alerts to be notified about similar properties and price updates.</p>
-                    <a href="/user/signup/" class="btn-secondary mt-4 w-full justify-center">
-                        Create alert
+                    <h2 class="text-lg font-semibold text-foreground">Get instant price alerts</h2>
+                    <p class="mt-2 text-sm font-normal text-muted-foreground">Get notified when similar properties are listed or prices change. Never miss a deal.</p>
+                    <a href="{% url 'user:signup' %}" class="btn-secondary mt-4 w-full justify-center">
+                        Set up price alerts
                     </a>
                 </div>
 
-                <div class="overflow-hidden rounded-2xl border border-border bg-card">
-                    <div class="splide side-add-banner-slider">
-                        <div class="splide__track">
-                            <ul class="splide__list">
-                                <li class="splide__slide h-40 animate-pulse bg-muted"></li>
-                            </ul>
+                <!-- Notes Section -->
+                {% if user.is_authenticated %}
+                <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
+                    <h2 class="text-lg font-semibold text-foreground">Your private notes</h2>
+                    <p class="mt-1 mb-4 text-sm font-normal text-muted-foreground">Save your thoughts, questions, and reminders about this property—only you can see them.</p>
+                    <textarea 
+                        class="w-full rounded-lg border border-border bg-secondary/30 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent/40 focus:outline-none" 
+                        rows="4" 
+                        placeholder="e.g. Great location, check payment plan, compare with unit A-09B..."
+                        data-property-notes
+                        data-property-id="{{ property.id }}"
+                    ></textarea>
+                    <button type="button" class="btn-secondary mt-3 w-full justify-center" data-save-notes>
+                        <i class="bi bi-save"></i>
+                        <span>Save note</span>
+                    </button>
+                </div>
+                {% endif %}
+
+                <!-- Sponsored Property Ads -->
+                <div class="space-y-3">
+                    <div class="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+                        <div class="splide side-add-banner-slider" aria-label="Sponsored property highlights">
+                            <div class="splide__track">
+                                <ul class="splide__list">
+                                    <li class="splide__slide h-40 animate-pulse bg-muted"></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
+                    <p class="text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">Sponsored</p>
                 </div>
             </aside>
         </div>
@@ -404,6 +580,23 @@
         const template = '{% url "property:api:manage_property_view_time" "0" %}';
         return template.replace('0', property_id);
     })(PROPERTY_ID);
+
+    // Track property view on page load
+    if (window.Analytics) {
+        window.Analytics.trackPropertyView('{{ property.id }}', {
+            name: '{{ property.title|escapejs }}',
+            title: '{{ property.title|escapejs }}',
+            price: {{ property.price }},
+            category: '{{ property.building.building_type|default:"Property"|escapejs }}',
+            building_name: '{{ property.building.name|escapejs }}',
+            location: '{{ property.building.address|escapejs }}',
+            beds: {{ property.bedrooms|default:0 }},
+            baths: {{ property.bathrooms|default:0 }},
+            size: {{ property.size|default:0 }},
+            is_featured: {{ property.features.exists|yesno:"true,false" }},
+            is_discounted: {{ property.discounts.exists|yesno:"true,false" }}
+        });
+    }
 </script>
 <script src="{% static 'js/libraries/noframework.waypoints.min.js' %}"></script>
 <script src="{% static 'js/property/detail-page.js' %}?v=2.01"></script>

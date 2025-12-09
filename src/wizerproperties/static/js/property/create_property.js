@@ -176,7 +176,7 @@ $(document).ready(function () {
 
         var successMessages = "";
         if (xhr.status === 201) {
-          successMessages += "<span class='authSuccessMessage'>Property created successfully</span>";
+          successMessages += "<span class='authSuccessMessage'>Property listed successfully! It's now live and visible to thousands of verified buyers.</span>";
         }
 
         $(".success-message").html(successMessages);
@@ -202,7 +202,7 @@ $(document).ready(function () {
           $(".error-message").html(errorMessages);
         } else {
           console.error(error);
-          alert("An error occurred. Please try again later.");
+          alert("Something went wrong. Please check your connection and try again.");
         }
       },
     });

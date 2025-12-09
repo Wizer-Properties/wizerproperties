@@ -54,6 +54,10 @@ class Property(TimestampedModel):
 
     def __str__(self):
         return str(self.title) if self.title else str(self.id)
+    
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('property:get', args=[self.id])
 
     def clean(self):
         if self.tenant_occupied_validity and self.tenant_occupied_validity < timezone.now().date():

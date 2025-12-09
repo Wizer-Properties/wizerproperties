@@ -6,21 +6,60 @@ document.addEventListener("DOMContentLoaded", () => {
   const historyContainer = document.querySelector("[data-chat-history]");
   const messagesList = document.querySelector("[data-chat-messages]");
   const emptyState = messagesList ? messagesList.querySelector("[data-chat-empty]") : null;
+  const promptsContainer = document.querySelector("[data-chat-prompts-container]");
   const promptButtons = document.querySelectorAll("[data-chat-prompt]");
 
   if (!form || !input || !sendButton || !messagesList || !historyContainer) return;
+
+  let typingIndicator = null;
 
   const scrollToBottom = () => {
     historyContainer.scrollTo({ top: historyContainer.scrollHeight, behavior: "smooth" });
   };
 
+  const showTypingIndicator = () => {
+    if (typingIndicator) return; // Already showing
+    
+    if (emptyState && !emptyState.hasAttribute("hidden")) {
+      emptyState.setAttribute("hidden", "hidden");
+    }
+    if (promptsContainer && !promptsContainer.hasAttribute("hidden")) {
+      promptsContainer.setAttribute("hidden", "hidden");
+    }
+
+    const li = document.createElement("li");
+    li.className = "flex";
+    li.setAttribute("data-typing-indicator", "");
+
+    const bubble = document.createElement("div");
+    bubble.className = "mr-auto max-w-[80%] rounded-2xl rounded-bl-md border border-border bg-muted/60 px-4 py-3 text-sm text-foreground shadow-sm";
+    bubble.innerHTML = `
+      <div class="flex items-center gap-2">
+        <span class="inline-flex size-2 animate-ping rounded-full bg-primary"></span>
+        <span>Getting your answer…</span>
+      </div>
+    `;
+
+    li.appendChild(bubble);
+    messagesList.appendChild(li);
+    typingIndicator = li;
+    scrollToBottom();
+  };
+
+  const hideTypingIndicator = () => {
+    if (typingIndicator) {
+      typingIndicator.remove();
+      typingIndicator = null;
+    }
+  };
+
   const setLoading = (isLoading) => {
     if (isLoading) {
       sendButton.setAttribute("disabled", "disabled");
-      statusText?.removeAttribute("hidden");
+      showTypingIndicator();
     } else {
       sendButton.removeAttribute("disabled");
-      statusText?.setAttribute("hidden", "hidden");
+      hideTypingIndicator();
     }
   };
 
@@ -40,8 +79,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const appendMessage = (role, content) => {
     if (!content) return;
+    hideTypingIndicator();
     if (emptyState && !emptyState.hasAttribute("hidden")) {
       emptyState.setAttribute("hidden", "hidden");
+    }
+    if (promptsContainer && !promptsContainer.hasAttribute("hidden")) {
+      promptsContainer.setAttribute("hidden", "hidden");
     }
     messagesList.appendChild(createMessageNode(role, content));
     scrollToBottom();
@@ -51,10 +94,10 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const data = typeof payload === "string" ? JSON.parse(payload) : payload;
       const choice = data?.choices?.[0]?.message?.content;
-      return choice || "I’m here if you have more questions.";
+      return choice || "I'm here to help. What else would you like to know about buying property in Bangkok?";
     } catch (error) {
       console.warn("Failed to parse Home Helper AI response", error);
-      return "Here’s what I found. Please try again if you need more detail.";
+      return "I found some information, but there was an issue processing it. Try asking your question again or rephrase it—I'm here to help.";
     }
   };
 
@@ -110,15 +153,26 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`);
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage = errorData.error || errorData.data?.error || `Request failed with status ${response.status}`;
+        throw new Error(errorMessage);
       }
 
       const result = await response.json();
+      
+      // Check for error in response
+      if (result.error || (result.data && result.data.error)) {
+        const errorMessage = result.error || result.data.error;
+        appendMessage("assistant", `I'm having trouble right now: ${errorMessage}. Please check your OpenRouter API key configuration in Admin Settings.`);
+        return;
+      }
+      
       const assistantMessage = parseAssistantMessage(result?.data);
       appendMessage("assistant", assistantMessage);
     } catch (error) {
       console.error("Home Helper AI request failed", error);
-      appendMessage("assistant", "Sorry, I couldn’t reach the Home Helper service. Please try again in a moment.");
+      const errorMessage = error.message || "I'm having trouble connecting right now. Please try again in a moment—your question is important and I want to give you the right answer.";
+      appendMessage("assistant", errorMessage);
     } finally {
       setLoading(false);
       input.focus();

@@ -17,8 +17,10 @@ class Advertisement(TimestampedModel):
     TYPE_CHOICES = (
         ('home', 'Home'),
         ('search', 'Search'),
+        ('search_inline', 'Search Inline'),
         ('details_topbar', 'Details Topbar'),
         ('details_sidebar', 'Details Sidebar'),
+        ('map_below', 'Map Below'),
         ('blog', 'Blog'),
     )
     STATUS = (

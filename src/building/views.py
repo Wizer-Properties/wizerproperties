@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 from building.models import Building
 from advertise.models import Advertisement
 from utils.general_data import COMMERCIAL_SUB_TYPES, RESIDENCE_SUB_TYPES
@@ -56,6 +57,14 @@ def get_building(request, id):
             ad_obj.manage_ad_analytics(user, location)  # Updating ad analytics value
 
     context = prepare_building_context(building)
+    
+    # Add breadcrumbs for structured data
+    context["breadcrumbs"] = [
+        ('Home', '/'),
+        ('Properties', reverse('property:search')),
+        (building.title or 'Building', building.get_absolute_url()),
+    ]
+    
     return render(request, "get_building.html", context)
 
 

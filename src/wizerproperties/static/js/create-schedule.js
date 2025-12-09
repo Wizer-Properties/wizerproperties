@@ -329,8 +329,24 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       body,
     })
-      .then((response) => {
+      .then(async (response) => {
         if (!response.ok) throw new Error("Failed to create schedule");
+        
+        // PostHog tracking - track schedule creation/update
+        if (typeof Analytics !== 'undefined') {
+          const propertyData = {
+            id: assetId,
+            type: assetType
+          };
+          Analytics.trackPropertyContact(assetId, propertyData, isEdit ? 'schedule_update' : 'schedule_create');
+          Analytics.trackFormSubmit('schedule_form', {
+            asset_type: assetType,
+            asset_id: assetId,
+            visiting_time: visitingTime,
+            is_edit: isEdit
+          });
+        }
+        
         showMessage(ALERT_SUCCESS(`Successfully ${isEdit ? "updated" : "created"} your schedule.`));
         setTimeout(() => {
           window.location.href = "/dashboard/";

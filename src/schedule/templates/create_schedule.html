@@ -3,7 +3,19 @@
 {% load widget_tweaks %}
 
 {% block extend_head %}
-<title>Schedule viewing</title>
+<title>Schedule Property Viewing | Book Your Visit | Wizer Properties</title>
+<meta name="description" content="Schedule a property viewing appointment. Choose a convenient time slot to visit properties in Bangkok, Thailand.">
+<link rel="canonical" href="{{ request.build_absolute_uri }}">
+<meta name="robots" content="noindex, follow">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Schedule Property Viewing | Wizer Properties">
+<meta property="og:description" content="Schedule a property viewing appointment. Choose a convenient time slot to visit properties.">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'media/logo.png' %}">
+<meta property="og:site_name" content="Wizer Properties">
+
 <link rel="stylesheet" href="{% static '/css/libraries/splide.min.css' %}?v=1.00" />
 <link rel="stylesheet" href="{% static '/css/libraries/splide-default.min.css' %}" />
 {% endblock extend_head %}
@@ -13,10 +25,10 @@
 <section class="bg-muted/30 py-16 sm:py-20">
     <div class="container max-w-6xl space-y-10">
         <header class="space-y-4 text-center">
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-accent">Schedule visit</p>
+            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-accent">Book your viewing</p>
             <h1 class="create-schedule-title text-3xl font-heading font-semibold text-foreground sm:text-4xl"></h1>
-            <p class="mx-auto max-w-2xl text-sm text-muted-foreground sm:text-base">
-                Choose a slot that works for you. We’ll confirm availability instantly and send you a calendar-ready summary.
+            <p class="mx-auto max-w-2xl text-base text-muted-foreground sm:text-lg">
+                Pick a time that works for you—we'll confirm instantly and send you everything you need. Free consultation, no commitment required.
             </p>
         </header>
 

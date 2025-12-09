@@ -8,7 +8,6 @@ db.sqlite3
 # Ignore development server files
 *.log
 *.pot
-*.pyc
 
 # Ignore media files (if you're using a different media storage)
 /media/
@@ -28,10 +27,13 @@ src/demo.env
 .idea/
 *.suo
 *.ntvs*
+*.sublime-project
+*.sublime-workspace
 
-# Ignore dependency management files (customize as needed)
+# Ignore dependency management files
 venv/
 .venv/
+*.venv
 node_modules/
 
 # Ignore macOS system files
@@ -48,14 +50,6 @@ tmp/
 *.swo
 *~
 
-# Ignore editor directories
-.vscode/
-.idea/
-*.suo
-*.ntvs*
-*.sublime-project
-*.sublime-workspace
-
 src/wizerproperties/media/
 static_root/
 
@@ -66,4 +60,3 @@ certbot/
 # Documentation and scripts
 docs/
 scripts/
-

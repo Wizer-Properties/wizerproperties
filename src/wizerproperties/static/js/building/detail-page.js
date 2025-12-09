@@ -7,14 +7,19 @@
     title: document.querySelector("[data-building-title]"),
     address: document.querySelector("[data-building-address]"),
     price: document.querySelector("[data-building-price]"),
+    priceOverlay: document.querySelector("[data-building-price-overlay]"),
     type: document.querySelector("[data-building-type]"),
     units: document.querySelector("[data-building-units]"),
     area: document.querySelector("[data-building-area]"),
     floors: document.querySelector("[data-building-floors]"),
     completion: document.querySelector("[data-building-completion]"),
+    completionWrapper: document.querySelector("[data-building-completion-wrapper]"),
     bts: document.querySelector("[data-building-bts]"),
+    btsWrapper: document.querySelector("[data-building-bts-wrapper]"),
     arl: document.querySelector("[data-building-arl]"),
+    arlWrapper: document.querySelector("[data-building-arl-wrapper]"),
     quota: document.querySelector("[data-building-quota]"),
+    quotaWrapper: document.querySelector("[data-building-quota-wrapper]"),
     status: document.querySelector("[data-building-status]"),
     furnishing: document.querySelector("[data-building-furnishing]"),
     view: document.querySelector("[data-building-view]"),
@@ -101,8 +106,8 @@
     listEl.innerHTML = "";
     if (!items || items.length === 0) {
       const li = document.createElement("li");
-      li.className = "splide__slide h-72 rounded-xl bg-muted flex items-center justify-center text-sm text-muted-foreground";
-      li.textContent = "Media not available yet";
+      li.className = "splide__slide h-full flex items-center justify-center bg-muted text-sm text-muted-foreground";
+      li.textContent = "Property photos coming soon";
       listEl.appendChild(li);
     } else {
       items.forEach((item) => {
@@ -110,14 +115,14 @@
         li.className = "splide__slide";
         if (type === "video" || type === "aerial_drone_video" || /\.(mp4|webm)$/i.test(item.file || "")) {
           li.innerHTML = `
-            <video class="h-72 w-full rounded-xl border border-border object-cover" controls preload="metadata">
+            <video class="h-full w-full object-cover" controls preload="metadata">
               <source src="${item.file}" type="video/${item.file.endsWith(".webm") ? "webm" : "mp4"}" />
               Your browser does not support the video tag.
             </video>
           `;
         } else {
           li.innerHTML = `
-            <img src="${item.file}" alt="Building media" class="h-72 w-full rounded-xl border border-border object-cover" loading="lazy" />
+            <img src="${item.file}" alt="Building media" class="h-full w-full object-cover" loading="lazy" />
           `;
         }
         listEl.appendChild(li);
@@ -150,7 +155,7 @@
     if (!items || items.length === 0) {
       const li = document.createElement("li");
       li.className = "splide__slide h-[80vh] flex items-center justify-center bg-white/5 text-white/60";
-      li.textContent = "Media unavailable";
+      li.textContent = "Photos not available";
       els.galleryModalList.appendChild(li);
     } else {
       items.forEach((item) => {
@@ -242,32 +247,66 @@
     applyText(els.address, data.address);
     applyText(els.type, (data.type || "").replace(/_/g, " "));
     applyText(els.units, data.total_units_for_sale);
-    applyText(els.area, data.project_total_area ? `${data.project_total_area} sqm` : null);
+    applyText(els.area, data.project_total_area ? `${data.project_total_area}` : null);
     applyText(els.floors, data.total_floors);
-    applyText(els.completion, data.construction_year || "TBC");
-    applyText(els.quota, (data.quota || "").replace(/_/g, " "));
+    
+    // Completion - show wrapper if data exists
+    if (els.completion && els.completionWrapper) {
+      const completionText = data.construction_year || "TBC";
+      els.completion.textContent = completionText;
+      if (completionText && completionText !== "—") {
+        els.completionWrapper.classList.remove("hidden");
+      }
+    }
+    
+    // Quota - show wrapper if data exists
+    if (els.quota && els.quotaWrapper) {
+      const quotaText = (data.quota || "").replace(/_/g, " ");
+      els.quota.textContent = quotaText;
+      if (quotaText && quotaText !== "—") {
+        els.quotaWrapper.classList.remove("hidden");
+      }
+    }
+    
     applyText(els.status, (data.status || "").replace(/_/g, " "));
     applyText(els.furnishing, (data.furnishing || "").replace(/_/g, " "));
     applyText(els.view, data.view || "—");
 
+    // BTS/MRT - show wrapper if data exists
     const btsDistance =
       data.distance_from_location_to_BTS_or_MRT !== null &&
       data.distance_from_location_to_BTS_or_MRT !== undefined &&
       data.distance_from_location_to_BTS_or_MRT !== ""
-        ? `${data.distance_from_location_to_BTS_or_MRT} km`
+        ? `${data.distance_from_location_to_BTS_or_MRT}`
         : null;
-    applyText(els.bts, btsDistance);
+    if (els.bts && els.btsWrapper) {
+      if (btsDistance) {
+        els.bts.textContent = btsDistance;
+        els.btsWrapper.classList.remove("hidden");
+      }
+    }
 
+    // ARL - show wrapper if data exists
     const arlDistance =
       data.distance_from_location_to_ARL !== null &&
       data.distance_from_location_to_ARL !== undefined &&
       data.distance_from_location_to_ARL !== ""
-        ? `${data.distance_from_location_to_ARL} km`
+        ? `${data.distance_from_location_to_ARL}`
         : null;
-    applyText(els.arl, arlDistance);
+    if (els.arl && els.arlWrapper) {
+      if (arlDistance) {
+        els.arl.textContent = arlDistance;
+        els.arlWrapper.classList.remove("hidden");
+      }
+    }
 
+    // Price - show overlay if price exists
     if (els.price) {
-      els.price.textContent = formatCurrency(data.lowest_price, data.highest_price);
+      const priceText = formatCurrency(data.lowest_price, data.highest_price);
+      els.price.textContent = priceText;
+      if (els.priceOverlay && (data.lowest_price || data.highest_price)) {
+        els.priceOverlay.classList.remove("hidden");
+      }
     }
 
     if (els.contactPhone && data.contact_phone_number) {
@@ -297,7 +336,7 @@
   function updateDescription(data) {
     if (!els.description) return;
     const paragraph = document.createElement("p");
-    paragraph.textContent = data.description || "Description will be updated soon.";
+    paragraph.textContent = data.description || "Project details are being updated. Check back soon for complete information.";
     els.description.innerHTML = "";
     els.description.appendChild(paragraph);
 
@@ -359,7 +398,7 @@
     if (chips.length === 0) {
       const span = document.createElement("span");
       span.className = "text-xs text-muted-foreground";
-      span.textContent = "Amenities will be published soon.";
+      span.textContent = "Amenities list is being updated. Complete details coming soon.";
       els.amenities.appendChild(span);
       return;
     }
@@ -619,9 +658,9 @@
           <div class="flex items-center gap-2 text-xl text-accent give-rating">
             ${ratingStars(0)}
           </div>
-          <textarea class="give-review input min-h-[140px]" placeholder="Tell us about the project..."></textarea>
+          <textarea class="give-review input min-h-[140px]" placeholder="Share your honest experience—what you loved about this development, amenities that stood out, and who this project is perfect for..."></textarea>
           <div class="review-warrning-text space-y-1 text-xs text-destructive"></div>
-          <button class="btn w-full justify-center review-submit-btn text-sm">Submit Review</button>
+          <button class="btn w-full justify-center review-submit-btn text-sm">Share your review</button>
         </div>
       `;
     }
@@ -679,13 +718,13 @@
     if (state.reviews.loading) return;
     const warning = document.querySelector(".review-warrning-text");
     if (!rating) {
-      if (warning) warning.textContent = "Please select a rating.";
+      if (warning) warning.textContent = "Please rate this development to help other buyers.";
       return;
     }
     const textarea = document.querySelector(".give-review");
     const reviewText = textarea ? textarea.value.trim() : "";
     if (!reviewText) {
-      if (warning) warning.textContent = "Please share a few words about your experience.";
+      if (warning) warning.textContent = "Please share your experience—your review helps other buyers make confident decisions.";
       return;
     }
     state.reviews.loading = true;
@@ -716,7 +755,7 @@
       }
     } catch (error) {
       console.error(error);
-      if (warning) warning.textContent = "Submitting review failed. Please try again.";
+      if (warning) warning.textContent = "Something went wrong. Please try again in a moment.";
     } finally {
       state.reviews.loading = false;
     }

@@ -19,7 +19,11 @@ def login(request):
 
         if user is not None:
             auth.login(request, user)
-            return JsonResponse({"message": "Login successful"}, status=200)
+            return JsonResponse({
+                "message": "Login successful",
+                "user_id": user.id,
+                "user_type": user.user_type if hasattr(user, 'user_type') else 'prospect'
+            }, status=200)
         else:
             return JsonResponse({"message": "Invalid email or password "}, status=401)
 

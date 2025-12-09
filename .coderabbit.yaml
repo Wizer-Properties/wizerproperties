@@ -1,0 +1,386 @@
+---
+# CodeRabbit Configuration for Wizer Properties by Hari
+# Documentation: https://docs.coderabbit.ai/reference/configuration
+
+language: "en-US"
+early_access: false
+enable_free_tier: true
+
+reviews:
+  # Review profile: "chill" for relaxed reviews,
+  # "assertive" for stricter reviews
+  profile: "assertive"
+
+  # Automatically approve PRs once CodeRabbit's comments
+  # are resolved
+  request_changes_workflow: false
+
+  # Generate high-level summary in PR description
+  high_level_summary: true
+  high_level_summary_placeholder: "@coderabbitai summary"
+  high_level_summary_in_walkthrough: false
+
+  # Review status and commit status updates
+  review_status: true
+  commit_status: true
+  fail_commit_status: false
+
+  # Walkthrough settings
+  collapse_walkthrough: false
+  changed_files_summary: true
+  sequence_diagrams: true
+  estimate_code_review_effort: true
+
+  # Issue and PR tracking
+  assess_linked_issues: true
+  related_issues: true
+  related_prs: true
+
+  # Labels and reviewers
+  suggested_labels: true
+  suggested_reviewers: true
+  auto_assign_reviewers: false
+  auto_apply_labels: false
+
+  # Fun features
+  poem: true
+  in_progress_fortune: true
+
+  # Path filters - exclude files that don't need review
+  path_filters:
+    - "!**/node_modules/**"
+    - "!**/migrations/**"
+    - "!**/__pycache__/**"
+    - "!**/*.pyc"
+    - "!**/.git/**"
+    - "!**/static_root/**"
+    - "!**/media/**"
+    - "!**/poetry.lock"
+    - "!**/package-lock.json"
+    - "!**/.DS_Store"
+    - "!**/certbot/conf/**"
+
+  # Path-specific instructions for different parts of
+  # the codebase
+  path_instructions:
+    # Django-specific guidelines
+    - path: "**/*.py"
+      instructions: |
+        Review Python code following Django and PEP 8
+        best practices:
+        - Use Django's built-in features (models, views,
+          forms) appropriately
+        - Follow Django security best practices (CSRF
+          protection, SQL injection prevention, XSS
+          prevention)
+        - Use Django ORM instead of raw SQL when possible
+        - Ensure proper error handling and logging
+        - Add type hints where appropriate
+        - Use Django's authentication and authorization
+          decorators
+        - Validate user input using Django forms or
+          serializers
+        - Never commit secrets or credentials (use
+          environment variables)
+        - Use Django's translation framework for
+          user-facing strings
+        - Follow DRY principles and use Django's reusable
+          app patterns
+
+    # Django REST Framework API guidelines
+    - path: "**/api/**/*.py"
+      instructions: |
+        Review DRF API code following these guidelines:
+        - Use appropriate serializer fields (FloatField
+          for numeric coordinates, not CharField)
+        - Raise ValidationError instead of returning
+          Response in perform_create/perform_update
+        - Implement proper permission classes
+        - Use appropriate HTTP status codes
+        - Add null safety checks for optional fields
+        - Sanitize error messages before returning to
+          clients
+        - Use select_related/prefetch_related for query
+          optimization
+        - Implement proper pagination for list views
+
+    # Django models
+    - path: "**/models/**/*.py"
+      instructions: |
+        Review Django models following these guidelines:
+        - Use appropriate field types (EmailField for
+          emails, not CharField)
+        - Add proper indexes for frequently queried fields
+        - Use db_index=True for foreign keys
+        - Implement proper __str__ methods
+        - Use related_name for reverse relations
+        - Add Meta class with appropriate ordering
+        - Use choices for limited options instead of free
+          text
+        - Consider using UUIDField for public-facing IDs
+
+    # Django views
+    - path: "**/views/**/*.py"
+      instructions: |
+        Review Django views following these guidelines:
+        - Use class-based views when appropriate
+        - Implement proper authentication and
+          authorization
+        - Use Django's redirect shortcuts safely (only
+          relative URLs)
+        - Validate user input before processing
+        - Use get_object_or_404 for object retrieval
+        - Implement proper error handling
+        - Use Django's messages framework for user
+          feedback
+        - Avoid N+1 queries with
+          select_related/prefetch_related
+
+    # Django templates
+    - path: "**/templates/**/*.html"
+      instructions: |
+        Review Django templates following these
+        guidelines:
+        - Always include {% csrf_token %} in forms
+        - Use Django template filters for escaping user
+          input
+        - Avoid direct JavaScript variable interpolation
+          from user data
+        - Use {% url %} tag instead of hardcoded URLs
+        - Sanitize URL parameters before using in
+          templates
+        - Use {% load static %} for static files
+        - Implement proper accessibility attributes
+          (aria-label, role, etc.)
+        - Avoid inline styles when possible
+
+    # JavaScript files
+    - path: "**/*.js"
+      instructions: |
+        Review JavaScript code following these guidelines:
+        - Avoid XSS vulnerabilities: use textContent
+          instead of innerHTML for user data
+        - Escape HTML entities when inserting user data
+          into attributes
+        - Use DOM APIs (createElement, setAttribute)
+          instead of string concatenation
+        - Handle division by zero errors
+        - Implement proper error handling with try-catch
+        - Remove PII (email addresses) from analytics
+          tracking
+        - Use const/let instead of var
+        - Follow modern ES6+ practices
+        - Validate user input on client side but always
+          validate on server side too
+
+    # CSS files
+    - path: "**/*.css"
+      instructions: |
+        Review CSS following these guidelines:
+        - Avoid duplicate class definitions
+        - Use consistent naming conventions
+        - Ensure proper positioning context (position:
+          relative for absolute children)
+        - Add disabled state styling for interactive
+          elements
+        - Use CSS variables for theme colors
+        - Follow Tailwind CSS best practices when using
+          utility classes
+        - Avoid !important unless necessary
+
+    # Configuration files
+    - path: "**/.env"
+      instructions: |
+        Never commit real credentials or secrets. Use
+        placeholders like:
+        - GOOGLE_AUTH_CLIENT_SECRET=
+          your_google_client_secret_here
+        - ZOHO_CRM_CLIENT_SECRET=
+          your_zoho_client_secret_here
+
+    # Docker files
+    - path: "**/Dockerfile"
+      instructions: |
+        Review Dockerfiles following these guidelines:
+        - Use specific version tags, not 'latest'
+        - Minimize layers and use multi-stage builds when
+          appropriate
+        - Don't include secrets in Dockerfiles
+        - Use .dockerignore to exclude unnecessary files
+        - Run containers as non-root user when possible
+
+    # Security-sensitive files
+    - path: "**/utils/**/*.py"
+      instructions: |
+        Pay special attention to security:
+        - Validate and sanitize all user inputs
+        - Use parameterized queries (Django ORM handles
+          this)
+        - Implement proper authentication and
+          authorization
+        - Log security events appropriately
+        - Never expose sensitive information in error
+          messages
+        - Use Django's security middleware features
+
+  # Auto-review configuration
+  auto_review:
+    enabled: true
+    drafts: false
+    auto_incremental_review: true
+    ignore_title_keywords:
+      - "wip"
+      - "work in progress"
+      - "draft"
+    base_branches: []
+    ignore_usernames: []
+
+  # Finishing touches - code generation
+  finishing_touches:
+    docstrings:
+      enabled: true
+    unit_tests:
+      enabled: true
+
+  # Pre-merge checks
+  pre_merge_checks:
+    docstrings:
+      mode: "warning"
+      threshold: 60
+    title:
+      mode: "warning"
+      requirements: >
+        Title should be concise and descriptive, ideally
+        under 72 characters. Include the type of change
+        (feat, fix, refactor, etc.)
+    description:
+      mode: "warning"
+    issue_assessment:
+      mode: "warning"
+    custom_checks:
+      - name: "Security Check"
+        mode: "error"
+        instructions: |
+          Check for common security issues:
+          - CSRF tokens in forms
+          - XSS vulnerabilities (innerHTML with user data,
+            unescaped template variables)
+          - SQL injection risks (raw SQL queries)
+          - Exposed credentials or secrets
+          - Missing authentication/authorization checks
+          - Unsafe redirects (absolute URLs from user
+            input)
+          - PII in analytics tracking
+      - name: "Django Best Practices"
+        mode: "warning"
+        instructions: |
+          Verify Django best practices:
+          - Use Django ORM instead of raw SQL
+          - Proper use of select_related/prefetch_related
+          - Correct serializer field types
+          - Proper error handling with ValidationError
+          - Null safety checks for optional fields
+
+  # Tools configuration
+  tools:
+    # Python linting
+    ruff:
+      enabled: true
+    flake8:
+      enabled: true
+    pylint:
+      enabled: true
+
+    # JavaScript linting
+    eslint:
+      enabled: true
+    oxc:
+      enabled: true
+
+    # Security scanning
+    gitleaks:
+      enabled: true
+    semgrep:
+      enabled: true
+
+    # Infrastructure as code
+    checkov:
+      enabled: true
+
+    # Docker
+    hadolint:
+      enabled: true
+
+    # Markdown
+    markdownlint:
+      enabled: true
+
+    # YAML
+    yamllint:
+      enabled: true
+
+    # HTML
+    htmlhint:
+      enabled: true
+
+    # GitHub Actions
+    actionlint:
+      enabled: true
+
+    # Environment files
+    dotenvLint:
+      enabled: true
+
+chat:
+  auto_reply: true
+  art: true
+
+knowledge_base:
+  opt_out: false
+  web_search:
+    enabled: true
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - "**/.cursorrules"
+      - "**/CLAUDE.md"
+      - "**/GEMINI.md"
+      - "docs/**/*.md"
+  learnings:
+    scope: "auto"
+  issues:
+    scope: "auto"
+  pull_requests:
+    scope: "auto"
+
+code_generation:
+  docstrings:
+    language: "en-US"
+    path_instructions:
+      - path: "**/*.py"
+        instructions: |
+          Generate docstrings following Google style:
+          - Include Args, Returns, Raises sections
+          - Use type hints in docstrings
+          - Document complex business logic
+          - Include examples for public APIs
+  unit_tests:
+    path_instructions:
+      - path: "**/api/**/*.py"
+        instructions: |
+          Generate unit tests using Django's TestCase:
+          - Test all API endpoints
+          - Test authentication and authorization
+          - Test validation errors
+          - Test edge cases and error handling
+          - Use Django's test client
+          - Mock external API calls
+      - path: "**/views/**/*.py"
+        instructions: |
+          Generate unit tests for Django views:
+          - Test GET and POST requests
+          - Test authentication requirements
+          - Test permission checks
+          - Test form validation
+          - Test redirects and responses
+

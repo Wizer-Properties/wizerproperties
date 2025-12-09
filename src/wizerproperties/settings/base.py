@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sitemaps",  # For XML sitemap generation
 
     # Django apps
     'django.contrib.sites',
@@ -206,6 +207,19 @@ if DEBUG:
 
 # For Google map 
 GOOGLE_API_KEY = config("GOOGLE_API_KEY", "")
+
+# Analytics Configuration
+GA4_MEASUREMENT_ID = config("GA4_MEASUREMENT_ID", "G-MRZK1TTB7H")  # Default to existing ID
+META_PIXEL_ID = config("META_PIXEL_ID", "")
+POSTHOG_API_KEY = config("POSTHOG_API_KEY", "phc_9rRjJCeqbR89x5Lgc3imxOq8guqKc9rJHGBN5GKhmZM")
+POSTHOG_HOST = config("POSTHOG_HOST", "https://us.i.posthog.com")
+
+# Zoho CRM Configuration
+ZOHO_CRM_ENABLED = config("ZOHO_CRM_ENABLED", default=False, cast=bool)
+ZOHO_CRM_CLIENT_ID = config("ZOHO_CRM_CLIENT_ID", default="")
+ZOHO_CRM_CLIENT_SECRET = config("ZOHO_CRM_CLIENT_SECRET", default="")
+ZOHO_CRM_REFRESH_TOKEN = config("ZOHO_CRM_REFRESH_TOKEN", default="")
+ZOHO_CRM_API_DOMAIN = config("ZOHO_CRM_API_DOMAIN", default="https://www.zohoapis.com")
 
 COOKIE_EXPIRE_TIME = 7*24*60*60  #7days in seconds
 
