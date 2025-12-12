@@ -1060,7 +1060,7 @@
           <div class="flex items-center gap-2 text-xl text-accent give-rating">
             ${ratingStars(0)}
           </div>
-          <textarea class="give-review input min-h-[140px]" placeholder="Share your honest experience—what you loved about this development, amenities that stood out, and who this project is perfect for..."></textarea>
+          <textarea class="give-review input min-h-[140px]" placeholder="Share your honest experience. What you loved about this development, amenities that stood out, and who this project is perfect for..."></textarea>
           <div class="review-warrning-text space-y-1 text-xs text-destructive"></div>
           <button class="btn w-full justify-center review-submit-btn text-sm">Share your review</button>
         </div>
@@ -1126,7 +1126,7 @@
     const textarea = document.querySelector(".give-review");
     const reviewText = textarea ? textarea.value.trim() : "";
     if (!reviewText) {
-      if (warning) warning.textContent = "Please share your experience—your review helps other buyers make confident decisions.";
+      if (warning) warning.textContent = "Please share your experience. Your review helps other buyers make confident decisions.";
       return;
     }
     state.reviews.loading = true;

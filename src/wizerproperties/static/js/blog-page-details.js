@@ -92,7 +92,7 @@ $(function () {
       })
       .join("");
 
-    list.html(cards || `<p class="text-sm text-muted-foreground">No related posts yet—check back soon.</p>`);
+    list.html(cards || `<p class="text-sm text-muted-foreground">No related posts yet. Check back soon.</p>`);
   }
 
   function fetchRelatedPosts() {

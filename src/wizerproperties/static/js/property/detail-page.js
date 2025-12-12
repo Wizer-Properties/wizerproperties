@@ -1163,7 +1163,7 @@
           <div class="flex items-center gap-2 text-xl text-accent give-rating">
             ${createRatingStars(0)}
           </div>
-          <textarea class="give-review input min-h-[140px]" placeholder="Share your honest experience—what you loved, what could be better, and who this property is perfect for..."></textarea>
+          <textarea class="give-review input min-h-[140px]" placeholder="Share your honest experience. What you loved, what could be better, and who this property is perfect for..."></textarea>
           <div class="review-warrning-text space-y-1 text-xs text-destructive"></div>
           <button class="btn w-full justify-center review-submit-btn text-sm">Share your review</button>
         </div>
@@ -1257,7 +1257,7 @@
     const textarea = document.querySelector(".give-review");
     const reviewText = textarea ? textarea.value.trim() : "";
     if (!reviewText) {
-      if (warning) warning.textContent = "Please share your experience—your review helps other buyers make confident decisions.";
+      if (warning) warning.textContent = "Please share your experience. Your review helps other buyers make confident decisions.";
       return;
     }
     state.reviews.loading = true;
@@ -1703,7 +1703,7 @@
             '<button class="btn-secondary mt-4 inline-flex items-center justify-center px-4 py-2 text-sm">Load More</button>';
         } else {
           els.reviewsLoadMore.innerHTML =
-            '<p class="mt-4 text-center text-xs text-muted-foreground">Be the first to help other buyers—share your honest experience with this property.</p>';
+            '<p class="mt-4 text-center text-xs text-muted-foreground">Be the first to help other buyers. Share your honest experience with this property.</p>';
         }
       }
       bindReviewInteractions();

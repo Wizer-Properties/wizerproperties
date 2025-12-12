@@ -321,7 +321,7 @@
                                 <i class="bi bi-file-text text-accent" aria-hidden="true"></i>
                                 <h2 class="text-lg font-semibold text-foreground">About this property</h2>
                             </div>
-                            <p class="text-base text-muted-foreground">See what makes this property special—location benefits, lifestyle perks, and why buyers choose it.</p>
+                            <p class="text-base text-muted-foreground">See what makes this property special. Location benefits, lifestyle perks, and why buyers choose it.</p>
                         </div>
                         <button type="button" class="btn-secondary hidden sm:inline-flex focus:outline-none focus:ring-2 focus:ring-accent/50" data-description-toggle aria-label="Expand or collapse description" aria-expanded="false">
                             <i class="bi bi-chevron-down mr-1.5" aria-hidden="true"></i>
@@ -344,7 +344,7 @@
                                 <i class="bi bi-star-fill text-accent" aria-hidden="true"></i>
                                 <h2 class="text-lg font-semibold text-foreground">What makes this property special</h2>
                             </div>
-                            <p class="text-sm text-muted-foreground">See the amenities, features, and benefits that make this property stand out—all verified, all transparent.</p>
+                            <p class="text-sm text-muted-foreground">See the amenities, features, and benefits that make this property stand out. All verified, all transparent.</p>
                         </div>
                     </div>
                     <ul class="mt-4 space-y-2 text-sm font-normal leading-relaxed text-foreground" data-property-features role="list">
@@ -362,9 +362,9 @@
                             <div>
                                 <div class="flex items-center gap-2">
                                     <i class="bi bi-info-circle text-accent" aria-hidden="true"></i>
-                                    <h2 class="text-lg font-semibold text-foreground">Property Information</h2>
+                                    <h2 class="text-lg font-semibold text-foreground">Property information</h2>
                                 </div>
-                                <p class="text-sm text-muted-foreground">Complete property details—specifications, availability, and key identifiers.</p>
+                                <p class="text-sm text-muted-foreground">Complete property details. Specifications, availability, and key identifiers.</p>
                             </div>
                         </div>
                         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-property-specifications>
@@ -417,7 +417,7 @@
                                 <i class="bi bi-building text-accent" aria-hidden="true"></i>
                                 <h2 class="text-lg font-semibold text-foreground">About this development</h2>
                             </div>
-                            <p class="text-sm text-muted-foreground">See developer details, completion dates, and key facts about {{ property.building.title }}—all verified.</p>
+                            <p class="text-sm text-muted-foreground">See developer details, completion dates, and key facts about {{ property.building.title }}. All verified.</p>
                         </div>
                         <a href="{% url 'building:get' property.building.id %}" class="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-4 py-2 text-sm font-medium text-primary transition hover:bg-accent/20 focus:outline-none focus:ring-2 focus:ring-accent/50" aria-label="View building details for {{ property.building.title }}">
                             <span>View building</span>
@@ -468,7 +468,7 @@
                 <section class="space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sm">
                     <div class="grid gap-6 lg:grid-cols-2">
                         <div class="space-y-3">
-                            <h3 class="text-sm font-semibold text-foreground">Facilities View</h3>
+                            <h3 class="text-sm font-semibold text-foreground">Facilities view</h3>
                             <div class="overflow-hidden rounded-xl border border-border bg-muted/60" data-facility-view>
                                 <div class="aspect-video flex items-center justify-center text-xs text-muted-foreground">Loading…</div>
                             </div>
@@ -486,7 +486,7 @@
                 <section class="space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sm opacity-0 transition-opacity duration-500" data-section="available-units">
                     <div class="flex flex-wrap items-center justify-between gap-3">
                         <div>
-                            <h2 class="text-lg font-semibold text-foreground">Available Units</h2>
+                            <h2 class="text-lg font-semibold text-foreground">Available units</h2>
                             <p class="text-base text-muted-foreground">Browse available inventory by bedroom count.</p>
                         </div>
                         <div class="flex flex-wrap gap-2 text-sm font-normal">
@@ -514,7 +514,7 @@
                 <section class="space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sm opacity-0 transition-opacity duration-500" data-section="similar">
                     <div class="flex flex-wrap items-center justify-between gap-3">
                         <div>
-                            <h2 class="text-lg font-semibold text-foreground">Similar Properties</h2>
+                            <h2 class="text-lg font-semibold text-foreground">Similar properties</h2>
                             <p class="text-base text-muted-foreground">Browse properties with similar features and pricing.</p>
                         </div>
                     </div>
@@ -542,7 +542,7 @@
                             <p class="truncate text-sm font-medium text-foreground" data-agent-name>Loading…</p>
                         </div>
                     </div>
-                    <p class="mb-4 text-sm font-normal text-muted-foreground">Get instant answers about availability, payment plans, and ownership. Book a free consultation—no commitment required.</p>
+                    <p class="mb-4 text-sm font-normal text-muted-foreground">Get instant answers about availability, payment plans, and ownership. Book a free consultation. No commitment required.</p>
                     {% if not request.user.is_authenticated or request.user.user_type == "prospect" %}
                     <a href="/schedule/create_schedule?type=property&id={{ property.id }}" class="btn mt-4 w-full justify-center">
                         Book free viewing
@@ -582,7 +582,7 @@
                 {% if user.is_authenticated %}
                 <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
                     <h2 class="text-lg font-semibold text-foreground">Your private notes</h2>
-                    <p class="mt-1 mb-4 text-sm font-normal text-muted-foreground">Save your thoughts, questions, and reminders about this property—only you can see them.</p>
+                    <p class="mt-1 mb-4 text-sm font-normal text-muted-foreground">Save your thoughts, questions, and reminders about this property. Only you can see them.</p>
                     <textarea 
                         class="w-full rounded-lg border border-border bg-secondary/30 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent/40 focus:outline-none" 
                         rows="4" 

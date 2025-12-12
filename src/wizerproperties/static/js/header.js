@@ -10,15 +10,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const toggleMobileNav = (forceState) => {
     if (!mobilePanel || !mobileTrigger) return;
+    const menuIcon = mobileTrigger.querySelector("[data-menu-icon]");
+    const closeIcon = mobileTrigger.querySelector("[data-close-icon]");
     const isOpen = forceState !== undefined ? forceState : mobilePanel.hasAttribute("hidden");
     if (isOpen) {
       mobilePanel.removeAttribute("hidden");
       mobileTrigger.setAttribute("aria-expanded", "true");
       document.body.classList.add("overflow-hidden", "lg:overflow-visible");
+      // Toggle icons
+      if (menuIcon) menuIcon.classList.add("hidden");
+      if (closeIcon) closeIcon.classList.remove("hidden");
     } else {
       mobilePanel.setAttribute("hidden", "");
       mobileTrigger.setAttribute("aria-expanded", "false");
       document.body.classList.remove("overflow-hidden");
+      // Toggle icons
+      if (menuIcon) menuIcon.classList.remove("hidden");
+      if (closeIcon) closeIcon.classList.add("hidden");
     }
   };
 
