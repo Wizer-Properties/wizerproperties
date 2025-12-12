@@ -359,7 +359,11 @@
    * Handle button clicks with event delegation
    */
   const handleButtonClick = (event) => {
-    const button = event.target.closest(".add-to-favorite, .add-to-compare");
+    // Find the button - check if target is the button itself or find parent button
+    let button = event.target;
+    if (!button.classList.contains("add-to-favorite") && !button.classList.contains("add-to-compare")) {
+      button = event.target.closest(".add-to-favorite, .add-to-compare");
+    }
     if (!button) return;
 
     // Check if user is authenticated
@@ -394,12 +398,15 @@
   };
 
   // Initialize event listeners when DOM is ready
+  // Use capture phase to ensure we handle the event before other handlers
+  const attachHandler = () => {
+    document.addEventListener("click", handleButtonClick, true); // true = capture phase
+  };
+  
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => {
-      document.addEventListener("click", handleButtonClick);
-    });
+    document.addEventListener("DOMContentLoaded", attachHandler);
   } else {
-    document.addEventListener("click", handleButtonClick);
+    attachHandler();
   }
 
   // Export functions for potential external use

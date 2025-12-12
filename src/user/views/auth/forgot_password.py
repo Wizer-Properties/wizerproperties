@@ -49,7 +49,7 @@ def update_password(request):
 				try:
 					for error in e:    #as we are getting a list of all error given by set_password method used above
 						forgot_password_errors.append(error)
-				except:
+				except (TypeError, AttributeError):
 						#as we are getting a list of all error given by set_password method used above
 						forgot_password_errors.append(e)
 				return JsonResponse({'status': 'Error', 'message': forgot_password_errors}, status=400)

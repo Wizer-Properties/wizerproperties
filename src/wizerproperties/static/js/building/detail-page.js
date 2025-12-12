@@ -7,8 +7,11 @@
     title: document.querySelector("[data-building-title]"),
     address: document.querySelector("[data-building-address]"),
     price: document.querySelector("[data-building-price]"),
+    priceContainer: document.querySelector("[data-building-price-container]"),
+    priceRange: document.querySelector("[data-building-price-range]"),
     priceOverlay: document.querySelector("[data-building-price-overlay]"),
     type: document.querySelector("[data-building-type]"),
+    typeBadge: document.querySelector("[data-building-type-badge]"),
     units: document.querySelector("[data-building-units]"),
     area: document.querySelector("[data-building-area]"),
     floors: document.querySelector("[data-building-floors]"),
@@ -25,11 +28,14 @@
     view: document.querySelector("[data-building-view]"),
     amenities: document.querySelector("[data-building-amenities]"),
     description: document.querySelector("[data-building-description]"),
-    descriptionToggle: document.querySelector("[data-description-expand]"),
+    descriptionToggle: document.querySelector("[data-description-toggle]"),
+    descriptionExpand: document.querySelector("[data-description-expand]"),
     facilityView: document.querySelector("[data-facility-view]"),
     locationView: document.querySelector("[data-location-view]"),
     contactPhone: document.querySelector("[data-contact-phone]"),
     galleryList: document.querySelector("[data-gallery-list]"),
+    galleryTabsContainer: document.querySelector("[data-gallery-tabs-container]"),
+    galleryPlansDropdown: document.querySelector("[data-gallery-plans-dropdown]"),
     galleryModal: document.querySelector("[data-gallery-modal]"),
     galleryModalList: document.querySelector("[data-gallery-modal-list]"),
     galleryOpen: document.querySelector("[data-gallery-open]"),
@@ -40,6 +46,18 @@
     reviewsWrapper: document.querySelector(".review-writing-area"),
     reviewsList: document.querySelector(".view-the-reviews"),
     reviewsLoadMore: document.querySelector(".load-more-reviews"),
+    developerImage: document.querySelector("[data-building-developer-image]"),
+    developerIconFallback: document.querySelector("[data-building-developer-icon-fallback]"),
+    developerName: document.querySelector("[data-building-developer-name]"),
+    dateRelative: document.querySelector("[data-building-date-relative]"),
+    dateLabel: document.querySelector("[data-building-date-label]"),
+    dateValue: document.querySelector("[data-building-date-value]"),
+    featuredAccent: document.querySelector("[data-building-featured-accent]"),
+    badgesContainer: document.querySelector("[data-building-badges]"),
+    imageCounter: document.querySelector("[data-image-counter]"),
+    currentImage: document.querySelector("[data-current-image]"),
+    totalImages: document.querySelector("[data-total-images]"),
+    shareButton: document.querySelector(".share-building-btn"),
   };
 
   const state = {
@@ -144,7 +162,14 @@
         arrows: true,
         pagination: true,
       });
+      state.heroSplide.on("moved", (splide, index) => {
+        updateImageCounter(index + 1, items.length);
+      });
       state.heroSplide.mount();
+      // Update counter with initial values
+      if (items && items.length > 0) {
+        updateImageCounter(1, items.length);
+      }
     }
   }
 
@@ -218,11 +243,14 @@
   }
 
   function setActiveGalleryButton(type) {
-    els.galleryButtons.forEach((btn) => {
-      if (btn.dataset.galleryFilter === type) {
-        btn.classList.add("nav-pill-active");
+    els.galleryButtons.forEach((button) => {
+      const buttonType = button.dataset.galleryFilter;
+      if (buttonType === type) {
+        button.classList.add("nav-pill-active");
+        button.setAttribute("aria-pressed", "true");
       } else {
-        btn.classList.remove("nav-pill-active");
+        button.classList.remove("nav-pill-active");
+        button.setAttribute("aria-pressed", "false");
       }
     });
   }
@@ -237,6 +265,7 @@
       setActiveGalleryButton(type);
       renderHeroSlides(items, type);
       renderModalSlides(items, type);
+      updateImageCounter(1, items?.length || 0);
     } catch (error) {
       console.error("Gallery fetch failed", error);
     }
@@ -314,9 +343,65 @@
       els.contactPhone.setAttribute("href", `tel:${data.contact_phone_number}`);
     }
 
+    renderIframes(data);
+    
+    // Developer info
+    if (els.developerName && data.developer_company_name) {
+      els.developerName.textContent = data.developer_company_name;
+    }
+    
+    if (els.developerImage) {
+      const defaultAvatar = "/static/media/default-avatar.jpg";
+      els.developerImage.src = data.developer_image || defaultAvatar;
+      els.developerImage.addEventListener("error", () => {
+        if (els.developerIconFallback) {
+          els.developerIconFallback.classList.remove("hidden");
+          els.developerImage.classList.add("hidden");
+        }
+      });
+      els.developerImage.addEventListener("load", () => {
+        if (els.developerIconFallback) {
+          els.developerIconFallback.classList.add("hidden");
+          els.developerImage.classList.remove("hidden");
+        }
+      });
+    }
+    
+    // Date relative
+    if (els.dateValue && data.date_listed) {
+      const date = new Date(data.date_listed);
+      if (!isNaN(date.getTime())) {
+        const now = new Date();
+        const diffMs = now - date;
+        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+        const diffWeeks = Math.floor(diffDays / 7);
+        const diffMonths = Math.floor(diffDays / 30);
+        
+        let relativeDate = "today";
+        if (diffDays === 1) {
+          relativeDate = "1 day ago";
+        } else if (diffDays < 7) {
+          relativeDate = `${diffDays} days ago`;
+        } else if (diffWeeks === 1) {
+          relativeDate = "1 week ago";
+        } else if (diffWeeks < 4) {
+          relativeDate = `${diffWeeks} weeks ago`;
+        } else if (diffMonths === 1) {
+          relativeDate = "1 month ago";
+        } else if (diffMonths < 12) {
+          relativeDate = `${diffMonths} months ago`;
+        } else {
+          relativeDate = date.toLocaleDateString();
+        }
+        els.dateValue.textContent = relativeDate;
+      }
+    }
+  }
+
+  function renderIframes(building) {
     if (els.facilityView) {
-      if (data.facility_view) {
-        els.facilityView.innerHTML = `<iframe src="${data.facility_view}" class="aspect-video w-full" allowfullscreen loading="lazy"></iframe>`;
+      if (building.facility_view && isValidUrl(building.facility_view)) {
+        els.facilityView.innerHTML = `<iframe src="${building.facility_view}" class="aspect-video w-full" allowfullscreen loading="lazy"></iframe>`;
       } else {
         els.facilityView.innerHTML =
           '<div class="aspect-video flex items-center justify-center text-xs text-muted-foreground">Facility tour coming soon</div>';
@@ -324,8 +409,8 @@
     }
 
     if (els.locationView) {
-      if (data.location_view) {
-        els.locationView.innerHTML = `<iframe src="${data.location_view}" class="aspect-video w-full" allowfullscreen loading="lazy"></iframe>`;
+      if (building.location_view && isValidUrl(building.location_view)) {
+        els.locationView.innerHTML = `<iframe src="${building.location_view}" class="aspect-video w-full" allowfullscreen loading="lazy"></iframe>`;
       } else {
         els.locationView.innerHTML =
           '<div class="aspect-video flex items-center justify-center text-xs text-muted-foreground">Location tour coming soon</div>';
@@ -335,33 +420,72 @@
 
   function updateDescription(data) {
     if (!els.description) return;
+    const descriptionText = data.description || "Project details are being updated. Check back soon for complete information.";
+    
+    // Create paragraph with proper formatting
     const paragraph = document.createElement("p");
-    paragraph.textContent = data.description || "Project details are being updated. Check back soon for complete information.";
+    paragraph.className = "leading-relaxed";
+    paragraph.textContent = descriptionText;
     els.description.innerHTML = "";
     els.description.appendChild(paragraph);
 
-    if (paragraph.textContent.length > 800 && els.descriptionToggle) {
+    // Check if description needs truncation
+    const needsTruncation = descriptionText.length > 800;
+    const toggleButton = els.descriptionToggle || els.descriptionExpand;
+    
+    if (needsTruncation && toggleButton) {
       state.descriptionExpanded = false;
       els.description.style.maxHeight = "12rem";
       els.description.style.overflow = "hidden";
-      els.descriptionToggle.classList.remove("hidden");
-      els.descriptionToggle.textContent = "Expand";
-    } else if (els.descriptionToggle) {
-      els.descriptionToggle.classList.add("hidden");
+      toggleButton.classList.remove("hidden");
+      const icon = toggleButton.querySelector("i");
+      if (icon) {
+        icon.className = "bi bi-chevron-down mr-1.5";
+      }
+      toggleButton.setAttribute("aria-expanded", "false");
+      const span = toggleButton.querySelector("span");
+      if (span) {
+        span.textContent = "Expand";
+      } else {
+        toggleButton.textContent = "Expand";
+      }
+    } else if (toggleButton) {
+      toggleButton.classList.add("hidden");
     }
   }
 
   function toggleDescription() {
-    if (!els.description || !els.descriptionToggle) return;
+    const toggleButton = els.descriptionToggle || els.descriptionExpand;
+    if (!els.description || !toggleButton) return;
+    
     state.descriptionExpanded = !state.descriptionExpanded;
+    const icon = toggleButton.querySelector("i");
+    const span = toggleButton.querySelector("span");
+    
     if (state.descriptionExpanded) {
       els.description.style.maxHeight = "100%";
       els.description.style.overflow = "visible";
-      els.descriptionToggle.textContent = "Collapse";
+      if (icon) {
+        icon.className = "bi bi-chevron-up mr-1.5";
+      }
+      toggleButton.setAttribute("aria-expanded", "true");
+      if (span) {
+        span.textContent = "Collapse";
+      } else {
+        toggleButton.textContent = "Collapse";
+      }
     } else {
       els.description.style.maxHeight = "12rem";
       els.description.style.overflow = "hidden";
-      els.descriptionToggle.textContent = "Expand";
+      if (icon) {
+        icon.className = "bi bi-chevron-down mr-1.5";
+      }
+      toggleButton.setAttribute("aria-expanded", "false");
+      if (span) {
+        span.textContent = "Expand";
+      } else {
+        toggleButton.textContent = "Expand";
+      }
     }
   }
 
@@ -422,18 +546,215 @@
       renderHeroSlides(data.default_images || [], "image");
       renderModalSlides(data.default_images || [], "image");
       updateGallery("image");
+      updateGalleryTabVisibility(data);
       renderReviewsHeader(data.reviews);
       initializeMap();
+      
+      // Update image counter
+      const totalImages = data.default_images?.length || 0;
+      updateImageCounter(1, totalImages);
     } catch (error) {
       console.error("Failed to fetch building details", error);
     }
   }
 
   function initializeMap() {
-    const mapNode = document.getElementById("map");
-    if (!mapNode) return;
-    const defaultLatLng = { lat: 13.764898, lng: 100.538283 };
-    buildingGeocodeAddress(mapNode, defaultLatLng);
+    const sidebarMapNode = document.getElementById("sidebar-map");
+    const defaultLatLng = { lat: 13.7563, lng: 100.5018 };
+    
+    if (!sidebarMapNode) {
+      return; // No map element to initialize
+    }
+    
+    // Wait for Google Maps to be available
+    let retryCount = 0;
+    const maxRetries = 50; // 10 seconds max wait time
+    
+    const initMaps = () => {
+      retryCount++;
+      
+      if (typeof google === 'undefined' || !google.maps || !google.maps.Geocoder) {
+        if (retryCount < maxRetries) {
+          // Retry after a short delay
+          setTimeout(initMaps, 200);
+        } else {
+          console.warn("Google Maps API failed to load after multiple retries");
+        }
+        return;
+      }
+      
+      // Initialize sidebar map - always use direct initialization for reliability
+      if (sidebarMapNode) {
+        // Check if map was already initialized (has a child element from Google Maps)
+        const isAlreadyInitialized = sidebarMapNode.querySelector('div[style*="overflow"]') || 
+                                     sidebarMapNode.querySelector('iframe') ||
+                                     sidebarMapNode.children.length > 0;
+        
+        if (!isAlreadyInitialized) {
+          // Always use direct initialization for sidebar map to ensure it works
+          initializeMapDirectly(sidebarMapNode, defaultLatLng, 14);
+        }
+      }
+    };
+    
+    // Start initialization
+    initMaps();
+  }
+
+  function initializeMapDirectly(renderDom, defaultLatLng, zoom = 13) {
+    if (!renderDom) {
+      console.warn("Map container element not found");
+      return;
+    }
+    
+    if (typeof google === 'undefined' || !google.maps || !google.maps.Map) {
+      // Retry after a short delay if Google Maps isn't loaded yet
+      setTimeout(() => {
+        if (typeof google !== 'undefined' && google.maps && google.maps.Map) {
+          initializeMapDirectly(renderDom, defaultLatLng, zoom);
+        }
+      }, 500);
+      return;
+    }
+    
+    try {
+      const geocoder = new google.maps.Geocoder();
+      // Try to get address from multiple sources
+      const address = state.building?.address || 
+                      els.address?.textContent?.trim() ||
+                      '';
+      
+      if (address) {
+        geocoder.geocode({ address: address }, function (results, status) {
+          if (!renderDom) return; // Check if element still exists
+          
+          try {
+            const map = new google.maps.Map(renderDom, {
+              center: status === 'OK' ? results[0].geometry.location : defaultLatLng,
+              zoom: zoom,
+              disableDefaultUI: true,
+            });
+            new google.maps.Marker({
+              position: status === 'OK' ? results[0].geometry.location : defaultLatLng,
+              map: map,
+              title: address,
+            });
+          } catch (error) {
+            console.error("Error creating map:", error);
+          }
+        });
+      } else {
+        // If no address, just show default location
+        try {
+          const map = new google.maps.Map(renderDom, {
+            center: defaultLatLng,
+            zoom: zoom,
+            disableDefaultUI: true,
+          });
+          new google.maps.Marker({
+            position: defaultLatLng,
+            map: map,
+          });
+        } catch (error) {
+          console.error("Error creating map with default location:", error);
+        }
+      }
+    } catch (error) {
+      console.error("Error in initializeMapDirectly:", error);
+    }
+  }
+
+  function isValidUrl(url) {
+    if (!url || typeof url !== 'string' || url.trim() === '') {
+      return false;
+    }
+    
+    try {
+      const urlObj = new URL(url);
+      // Check if it's a valid HTTP/HTTPS URL
+      return urlObj.protocol === 'http:' || urlObj.protocol === 'https:';
+    } catch (e) {
+      // If URL constructor throws, it's not a valid absolute URL
+      return false;
+    }
+  }
+
+  function initPlansDropdown() {
+    const dropdownTrigger = document.getElementById("plans-dropdown-trigger");
+    const dropdownMenu = document.getElementById("plans-dropdown-menu");
+    if (!dropdownTrigger || !dropdownMenu) return;
+
+    dropdownTrigger.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isExpanded = dropdownTrigger.getAttribute("aria-expanded") === "true";
+      dropdownTrigger.setAttribute("aria-expanded", !isExpanded);
+      dropdownMenu.classList.toggle("hidden");
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!dropdownTrigger.contains(e.target) && !dropdownMenu.contains(e.target)) {
+        dropdownTrigger.setAttribute("aria-expanded", "false");
+        dropdownMenu.classList.add("hidden");
+      }
+    });
+
+    // Handle menu item clicks
+    const menuItems = dropdownMenu.querySelectorAll('[role="menuitem"]');
+    menuItems.forEach((item) => {
+      item.addEventListener("click", () => {
+        const type = item.dataset.galleryFilter;
+        if (type) {
+          updateGallery(type);
+          dropdownTrigger.setAttribute("aria-expanded", "false");
+          dropdownMenu.classList.add("hidden");
+        }
+      });
+    });
+
+    // Keyboard navigation
+    dropdownTrigger.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        dropdownTrigger.click();
+      } else if (e.key === "Escape") {
+        dropdownTrigger.setAttribute("aria-expanded", "false");
+        dropdownMenu.classList.add("hidden");
+      }
+    });
+  }
+
+  function updateGalleryTabVisibility(building) {
+    if (!els.galleryTabsContainer) return;
+    
+    const hasUnitPlans = building?.has_unit_plans || state.galleryCache.has("unit_floor_plan");
+    const hasMasterPlan = building?.has_master_plan || state.galleryCache.has("master_plan");
+    const hasVideo = building?.has_video || state.galleryCache.has("video");
+    const hasAerial = building?.has_aerial || state.galleryCache.has("aerial_drone_video");
+    
+    // Show/hide Plans dropdown
+    if (els.galleryPlansDropdown) {
+      if (hasUnitPlans || hasMasterPlan) {
+        els.galleryPlansDropdown.classList.remove("hidden");
+      } else {
+        els.galleryPlansDropdown.classList.add("hidden");
+      }
+    }
+    
+    // Show/hide individual gallery buttons
+    els.galleryButtons.forEach((button) => {
+      const type = button.dataset.galleryFilter;
+      if (!type) return;
+      
+      if (type === "video") {
+        button.classList.toggle("hidden", !hasVideo);
+      } else if (type === "aerial_drone_video") {
+        button.classList.toggle("hidden", !hasAerial);
+      } else if (type === "unit_floor_plan" || type === "master_plan") {
+        // These are handled by the dropdown
+        button.classList.add("hidden");
+      }
+    });
   }
 
   function initGalleryControls() {
@@ -441,9 +762,18 @@
       button.addEventListener("click", async () => {
         const type = button.dataset.galleryFilter;
         if (!type || type === state.activeGalleryType) return;
+        button.setAttribute("aria-pressed", "true");
+        els.galleryButtons.forEach((btn) => {
+          if (btn !== button) {
+            btn.setAttribute("aria-pressed", "false");
+            btn.classList.remove("nav-pill-active");
+          }
+        });
         await updateGallery(type);
       });
     });
+
+    initPlansDropdown();
 
     if (els.galleryOpen) {
       els.galleryOpen.addEventListener("click", async () => {
@@ -466,6 +796,78 @@
         }
       });
     }
+  }
+
+  function updateImageCounter(current, total) {
+    if (els.currentImage) {
+      els.currentImage.textContent = current || 1;
+    }
+    if (els.totalImages) {
+      els.totalImages.textContent = total || "—";
+    }
+    if (els.imageCounter && total && total > 1) {
+      els.imageCounter.classList.remove("hidden");
+    } else if (els.imageCounter) {
+      els.imageCounter.classList.add("hidden");
+    }
+  }
+
+  function initShareButton() {
+    if (!els.shareButton) return;
+    
+    els.shareButton.addEventListener("click", () => {
+      const url = els.shareButton.dataset.shareUrl || window.location.href;
+      const title = els.shareButton.dataset.shareTitle || document.title;
+      
+      if (navigator.share) {
+        navigator.share({
+          title: title,
+          url: url,
+        }).catch((err) => {
+          console.log("Error sharing:", err);
+          copyToClipboard(url);
+        });
+      } else {
+        copyToClipboard(url);
+      }
+    });
+  }
+
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      // Show feedback
+      const originalText = els.shareButton?.querySelector("i")?.nextSibling?.textContent || "";
+      if (els.shareButton) {
+        const icon = els.shareButton.querySelector("i");
+        if (icon) {
+          icon.className = "bi bi-check text-sm";
+          setTimeout(() => {
+            icon.className = "bi bi-share text-sm";
+          }, 2000);
+        }
+      }
+    }).catch((err) => {
+      console.error("Failed to copy:", err);
+    });
+  }
+
+  function initSectionAnimations() {
+    const sections = document.querySelectorAll("[data-section]");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.remove("opacity-0");
+            entry.target.classList.add("opacity-100");
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
+    );
+    
+    sections.forEach((section) => {
+      observer.observe(section);
+    });
   }
 
   function calculatePerPage() {
@@ -658,7 +1060,7 @@
           <div class="flex items-center gap-2 text-xl text-accent give-rating">
             ${ratingStars(0)}
           </div>
-          <textarea class="give-review input min-h-[140px]" placeholder="Share your honest experience—what you loved about this development, amenities that stood out, and who this project is perfect for..."></textarea>
+          <textarea class="give-review input min-h-[140px]" placeholder="Share your honest experience. What you loved about this development, amenities that stood out, and who this project is perfect for..."></textarea>
           <div class="review-warrning-text space-y-1 text-xs text-destructive"></div>
           <button class="btn w-full justify-center review-submit-btn text-sm">Share your review</button>
         </div>
@@ -724,7 +1126,7 @@
     const textarea = document.querySelector(".give-review");
     const reviewText = textarea ? textarea.value.trim() : "";
     if (!reviewText) {
-      if (warning) warning.textContent = "Please share your experience—your review helps other buyers make confident decisions.";
+      if (warning) warning.textContent = "Please share your experience. Your review helps other buyers make confident decisions.";
       return;
     }
     state.reviews.loading = true;
@@ -864,6 +1266,13 @@
     observer.observe(amenitiesElement);
   }
 
+  function initDescriptionToggle() {
+    const toggleButton = els.descriptionToggle || els.descriptionExpand;
+    if (toggleButton) {
+      toggleButton.addEventListener("click", toggleDescription);
+    }
+  }
+
   function init() {
     fetchBuildingDetails();
     initGalleryControls();
@@ -871,6 +1280,8 @@
     initReviewsObserver();
     initDescriptionToggle();
     initFacilitiesObserver();
+    initShareButton();
+    initSectionAnimations();
   }
 
   document.addEventListener("DOMContentLoaded", init);

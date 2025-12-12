@@ -67,7 +67,9 @@ class SignupView(View):
                 # Default redirect to email verification
                 return redirect("user:email_verify")
             except Exception as e:
-                print("e=======", e)
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.exception(f"Error during user signup: {e}")
                 system_error = "Something went wrong"
 
         return render(request, self.template_name, {"signup_form": form, "system_error": system_error})

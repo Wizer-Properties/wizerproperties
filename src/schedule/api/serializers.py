@@ -52,7 +52,7 @@ class VisitingScheduleSerializer(serializers.ModelSerializer):
         if content_type and object_id:
             try:
                 content_type.model_class().objects.get(id=object_id)
-            except:
+            except (ValueError, TypeError, AttributeError) as e:
                 error_messages.update({"object_id": "Invalid object_id"})
 
         """We are assigning requested user as prospect"""

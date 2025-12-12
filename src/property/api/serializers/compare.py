@@ -1,6 +1,7 @@
 import logging
 from django.db.models import OuterRef, Subquery, Value, F, CharField, When, Case, BooleanField
 from django.db.models.functions import Concat
+from django.core.exceptions import ValidationError as DjangoValidationError
 from rest_framework import serializers
 from property.models import Property, PropertyMedia, CompareProperty
 from building.models import BuildingMedia
@@ -20,12 +21,33 @@ class ComparePropertySerializer(serializers.ModelSerializer):
         }
 
     def validate(self, attrs):
-        instance = CompareProperty(**attrs)
+        """
+        Validate that the property can be added to comparison.
+        Delegates duplicate detection to model.clean() via full_clean().
+        Authentication is enforced by ComparePropertyPermission at the view level.
+        """
         user = self.context["request"].user
-
-        instance.user = user
-        instance.full_clean()  # Perform full validation before saving
-
+        property_id = attrs.get("property")
+        
+        if not property_id:
+            raise serializers.ValidationError({"property": "Property is required."})
+        
+        # Create instance and validate using model's clean method
+        # This will check for duplicates and other model-level validations
+        instance = CompareProperty(user=user, property=property_id)
+        try:
+            instance.full_clean()
+        except DjangoValidationError as e:
+            # Convert Django ValidationError to DRF ValidationError
+            error_dict = {}
+            if hasattr(e, 'message_dict'):
+                error_dict = e.message_dict
+            elif hasattr(e, 'messages'):
+                error_dict = {'__all__': e.messages}
+            else:
+                error_dict = {'__all__': [str(e)]}
+            raise serializers.ValidationError(error_dict) from e
+        
         return attrs
 
     def get_property_info(self, obj):

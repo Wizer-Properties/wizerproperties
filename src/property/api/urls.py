@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import PropertyViewSet, ComparePropertyViewSet, \
-    ProspectFavoritePropertyViewSet, user_properties, PropertiesAnalyticsView, \
+    ProspectFavoritePropertyViewSet, SavedSearchViewSet, user_properties, PropertiesAnalyticsView, \
     PropertyVisitAnalytics
 
 
@@ -60,7 +60,7 @@ urlpatterns = [
     path("compare/create/", ComparePropertyViewSet.as_view({"post": "create"}), name="compare_create"),
     path(
         "compare/delete/",
-        ComparePropertyViewSet.as_view({"delete": "perform_destroy"}),
+        ComparePropertyViewSet.as_view({"delete": "destroy"}),
         name="compare_delete",
     ),
     # Prospect Favorite Property Apis
@@ -78,6 +78,27 @@ urlpatterns = [
         "prospect-favorite/remove/",
         ProspectFavoritePropertyViewSet.as_view({"delete": "perform_destroy"}),
         name="remove_prospect_favorite_property",
+    ),
+    # Saved Search APIs
+    path(
+        "saved-search/list/",
+        SavedSearchViewSet.as_view({"get": "list"}),
+        name="saved_search_list",
+    ),
+    path(
+        "saved-search/create/",
+        SavedSearchViewSet.as_view({"post": "create"}),
+        name="saved_search_create",
+    ),
+    path(
+        "saved-search/<int:pk>/",
+        SavedSearchViewSet.as_view({"get": "retrieve", "put": "update", "patch": "partial_update", "delete": "destroy"}),
+        name="saved_search_detail",
+    ),
+    path(
+        "saved-search/<int:pk>/apply/",
+        SavedSearchViewSet.as_view({"post": "apply"}),
+        name="saved_search_apply",
     ),
     path("user-properties/<int:user_id>/", user_properties, name="user_properties"),
     

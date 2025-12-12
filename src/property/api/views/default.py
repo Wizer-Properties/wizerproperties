@@ -1,4 +1,5 @@
 import ast
+import logging
 import requests
 from geopy.distance import geodesic
 from django.utils import timezone
@@ -241,16 +242,43 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
     def _store_searched_places_in_cookies(self, response):
         query_params = self._get_query_params()
-        address = query_params.get("search", [""])[0]
-        latitude = query_params.get("lat", [""])[0]
-        longitude = query_params.get("long", [""])[0]
+        address = query_params.get("search", [""])[0] or ""
+        latitude = query_params.get("lat", [""])[0] or ""
+        longitude = query_params.get("long", [""])[0] or ""
 
-        geolocation_api_url = f"https://maps.googleapis.com/maps/api/geocode/json?address={address}&latlng={latitude},{longitude}&key=AIzaSyAFApEXkq_FxTWGAVwEOEYxCtIxJ3iR9kU"
+        # Only make API call if we have valid location data
+        if not address and not (latitude and longitude):
+            return  # Skip if no valid location data provided
+
+        # Build API URL with proper parameters
+        api_params = []
+        if address:
+            api_params.append(f"address={address}")
+        if latitude and longitude:
+            api_params.append(f"latlng={latitude},{longitude}")
+        
+        if not api_params:
+            return  # No valid parameters to send
+
+        # Validate Google Maps API key from settings
+        google_api_key = getattr(settings, 'GOOGLE_API_KEY', '')
+        if not google_api_key or not google_api_key.strip():
+            logger = logging.getLogger(__name__)
+            logger.error("GOOGLE_API_KEY is not configured in settings. Please set GOOGLE_API_KEY environment variable.")
+            return  # Skip geocoding if API key is not configured
+
+        geolocation_api_url = f"https://maps.googleapis.com/maps/api/geocode/json?{'&'.join(api_params)}&key={google_api_key}"
 
         try:
             geolocation_response = requests.get(geolocation_api_url)
             geolocation_response.raise_for_status()
-            address_data = geolocation_response.json()["results"][0]["address_components"]
+            geolocation_data = geolocation_response.json()
+            
+            # Check if we have valid results
+            if not geolocation_data.get("results"):
+                return
+            
+            address_data = geolocation_data["results"][0]["address_components"]
             building__sub_district, building__district, building__province = "", "", ""
             for obj in address_data:
                 if "locality" in obj["types"]:
@@ -268,17 +296,20 @@ class PropertyViewSet(viewsets.ModelViewSet):
             if building__sub_district:
                 place.update({"building__sub_district": building__sub_district})
 
-            searched_places = ast.literal_eval(self.request.COOKIES.get("searched_places", "[]"))
-            if place in searched_places:
-                searched_places.remove(place)
-            searched_places.insert(0, place)
-            # Limit the list to only five elements
-            searched_places = searched_places[:5]
-            response.set_cookie("searched_places", searched_places, settings.COOKIE_EXPIRE_TIME)
+            # Only update cookie if we have valid place data
+            if place:
+                searched_places = ast.literal_eval(self.request.COOKIES.get("searched_places", "[]"))
+                if place in searched_places:
+                    searched_places.remove(place)
+                searched_places.insert(0, place)
+                # Limit the list to only five elements
+                searched_places = searched_places[:5]
+                response.set_cookie("searched_places", searched_places, settings.COOKIE_EXPIRE_TIME)
 
         except Exception as e:
-            # Handle errors gracefully, perhaps log them
-            pass
+            # Handle errors gracefully
+            logger = logging.getLogger(__name__)
+            logger.warning(f"Error handling searched places cookie: {e}")
 
     @action(detail=True, methods=["get"])
     def media_files(self, request, pk=None):
@@ -543,9 +574,10 @@ class PropertyViewSet(viewsets.ModelViewSet):
                 location = data.get("loc").split(",")
                 location = (float(location[0]), float(location[1]))
             except Exception as e:
-                pass
-                # Log the exception (optional)
-                # print(f"Error determining location: {e}")
+                # Log the exception
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.warning(f"Error determining location from IP: {e}")
 
         # Calculate the distance of each property from the prospect's location
         properties = self.get_queryset().filter(building__latitude__isnull=False, building__longitude__isnull=False)

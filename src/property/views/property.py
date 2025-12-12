@@ -119,18 +119,18 @@ def update_property(request, id):
 
 
 def search_property(request):
-    # Unified search view - check view parameter to determine map or list view
-    view_type = request.GET.get('view', 'map')
-    if view_type == 'list':
-        return render(request, "search_property.html")
-    return render(request, "search_property_with_map.html")
+    # List view - always return list view template
+    return render(request, "search_property.html")
 
 def search_property_with_map(request):
     # Map view endpoint (for explicit map view access)
     return render(request, "search_property_with_map.html")
 
-@login_required
 def comparison_property(request):
+    """
+    Comparison page - accessible to all users.
+    Authentication is handled at the API level when adding/removing properties.
+    """
     return render(request, "comparison.html")
 
 

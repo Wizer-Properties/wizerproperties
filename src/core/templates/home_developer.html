@@ -38,12 +38,12 @@
     </div>
     <div class="container relative z-10 py-20 lg:py-28">
         <div class="mx-auto max-w-7xl space-y-8 text-center">
-            <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[#b8e9e0]">
+            <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-accent">
                 Built exclusively for developers & agents
             </span>
             <div class="space-y-4">
-                <h1 class="text-4xl font-heading font-semibold leading-tight text-white sm:text-5xl lg:text-5xl">
-                    Sell Your Unsold Inventory at a Fraction of Launch Costs
+                <h1 class="text-3xl font-heading font-semibold leading-tight text-white sm:text-4xl lg:text-4xl">
+                    Sell your unsold inventory at a fraction of launch costs
                 </h1>
                 <p class="mx-auto max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg">
                     Replace your 1.2 Million+ THB hotel launches with a subscription platform. Reach qualified international buyers with immersive 3D tours and intelligent comparison tools. Save 90% on marketing costs.
@@ -51,7 +51,7 @@
             </div>
             
             <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <a href="{% url 'user:signup' %}" class="btn inline-flex items-center justify-center gap-2 bg-[#00deb6] px-8 py-4 text-base font-semibold text-[#000433] hover:bg-[#00deb6]/90 focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2 shadow-lg shadow-[#00deb6]/30" aria-label="Get started with Wizer Properties">
+                <a href="{% url 'user:signup' %}" class="btn inline-flex items-center justify-center gap-2 bg-accent px-8 py-4 text-base font-semibold text-foreground hover:bg-accent/90 focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2 shadow-lg shadow-accent/30" aria-label="Get started with Wizer Properties">
                     <i class="bi bi-arrow-right" aria-hidden="true"></i>
                     <span>Get Started Free</span>
                 </a>
@@ -83,401 +83,337 @@
     </div>
 </section>
 
-<!-- Problem Statement: Developer Pain Points -->
-<section class="bg-[#f2f3f4] py-16">
-    <div class="container max-w-7xl text-center space-y-8">
-        <div class="space-y-4">
-            <h2 class="text-3xl font-heading font-semibold text-[#262637] sm:text-4xl">
-                Selling Unsold Inventory is Expensive and Inefficient
-            </h2>
-            <p class="mx-auto max-w-2xl text-lg text-[#53535fcc]">
-                Traditional property marketing methods drain your budget without guaranteed results. Hotel launches cost 1.2 Million+ THB with no sales guarantee.
-            </p>
-        </div>
-        <div class="grid gap-6 sm:grid-cols-3 text-left">
-            <div class="rounded-2xl border border-[#53535fcc]/20 bg-white p-6 shadow-sm">
-                <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-red-600">
-                    <i class="bi bi-cash-coin text-2xl"></i>
-                </div>
-                <h3 class="mb-2 text-lg font-semibold text-[#262637]">High Launch Costs</h3>
-                <p class="text-base text-[#53535fcc]">
-                    Hotel launches cost 1.2 Million+ THB with no guaranteed sales. Ballroom rentals, advertising, and agency fees eat into your margins before you even start selling.
-                </p>
-            </div>
-            <div class="rounded-2xl border border-[#53535fcc]/20 bg-white p-6 shadow-sm">
-                <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-orange-100 text-orange-600">
-                    <i class="bi bi-people text-2xl"></i>
-                </div>
-                <h3 class="mb-2 text-lg font-semibold text-[#262637]">Poor Lead Quality</h3>
-                <p class="text-base text-[#53535fcc]">
-                    Traditional portals bring unqualified leads and agent intermediaries. Hard to reach the right buyers directly. Commission models reduce your margins on every sale.
-                </p>
-            </div>
-            <div class="rounded-2xl border border-[#53535fcc]/20 bg-white p-6 shadow-sm">
-                <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600">
-                    <i class="bi bi-globe text-2xl"></i>
-                </div>
-                <h3 class="mb-2 text-lg font-semibold text-[#262637]">Limited Reach</h3>
-                <p class="text-base text-[#53535fcc]">
-                    Hard to reach international buyers and showcase property quality online. Missing out on qualified prospects who can't visit in person. No immersive technology to differentiate your properties.
-                </p>
-            </div>
-        </div>
-        <div class="rounded-2xl border-2 border-[#00deb6]/30 bg-[#b8e9e0]/20 p-8 mt-8">
-            <p class="text-xl font-heading font-semibold text-[#262637] mb-2">That's Why We Built Wizer Properties</p>
-            <p class="text-base text-[#53535fcc] max-w-2xl mx-auto">The only platform built exclusively for developers. Replace expensive launches with a subscription model. Reach qualified buyers directly. Showcase properties with immersive 3D tours. Pay only for promotions when you need them.</p>
-        </div>
-    </div>
-</section>
-
-<!-- Solution Overview: Key Benefits -->
-<section class="bg-white py-16">
-    <div class="container max-w-7xl">
-        <div class="text-center space-y-6 mb-12">
-            <span class="inline-flex items-center gap-2 rounded-full bg-[#b8e9e0]/20 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[#00deb6]">
-                The Solution
-            </span>
-            <h2 class="text-3xl font-heading font-semibold text-[#262637] sm:text-4xl">
-                The Only Platform Built Exclusively for Developers
-            </h2>
-            <p class="text-lg text-[#53535fcc] max-w-2xl mx-auto">
-                Everything you need to sell inventory faster, reach qualified buyers, and reduce marketing costs. All in one platform.
-            </p>
-        </div>
-        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-            <div class="rounded-2xl border border-[#53535fcc]/20 bg-[#f2f3f4] p-6 shadow-sm">
-                <div class="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-[#b8e9e0]/20 text-[#00deb6]">
-                    <i class="bi bi-currency-dollar text-2xl"></i>
-                </div>
-                <h3 class="mb-2 text-xl font-semibold text-[#262637]">Cost Efficiency</h3>
-                <p class="text-base text-[#53535fcc]">
-                    Subscription model replaces expensive hotel launches. Save 90% on marketing costs compared to traditional 1.2M+ THB launch events. Predictable monthly costs instead of massive upfront investments.
-                </p>
-            </div>
-            <div class="rounded-2xl border border-[#53535fcc]/20 bg-[#f2f3f4] p-6 shadow-sm">
-                <div class="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-[#b8e9e0]/20 text-[#00deb6]">
-                    <i class="bi bi-camera-video text-2xl"></i>
-                </div>
-                <h3 class="mb-2 text-xl font-semibold text-[#262637]">Immersive Technology</h3>
-                <p class="text-base text-[#53535fcc]">
-                    3D Matterport walkthroughs showcase properties like never before. Aerial drone videos show neighborhood context. Comparison tools help buyers make faster decisions. No other platform offers this.
-                </p>
-            </div>
-            <div class="rounded-2xl border border-[#53535fcc]/20 bg-[#f2f3f4] p-6 shadow-sm">
-                <div class="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-[#b8e9e0]/20 text-[#00deb6]">
-                    <i class="bi bi-people-fill text-2xl"></i>
-                </div>
-                <h3 class="mb-2 text-xl font-semibold text-[#262637]">Qualified Prospects</h3>
-                <p class="text-base text-[#53535fcc]">
-                    Access our database of pre-qualified international buyers. Direct developer-to-buyer relationship without agent intermediaries. Reach buyers who can't visit in person through immersive 3D tours.
-                </p>
-            </div>
-            <div class="rounded-2xl border border-[#53535fcc]/20 bg-[#f2f3f4] p-6 shadow-sm">
-                <div class="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-[#b8e9e0]/20 text-[#00deb6]">
-                    <i class="bi bi-credit-card text-2xl"></i>
-                </div>
-                <h3 class="mb-2 text-xl font-semibold text-[#262637]">Credit-Based Promotions</h3>
-                <p class="text-base text-[#53535fcc]">
-                    Pay only for featured or discount listings when needed. No per-listing fees or commission charges. Use credits strategically to promote inventory. Transparent, predictable costs.
-                </p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- How It Works: Simple Process -->
-<section class="bg-[#f2f3f4] py-16">
-    <div class="container max-w-7xl">
-        <div class="text-center space-y-6 mb-12">
-            <span class="inline-flex items-center gap-2 rounded-full bg-[#b8e9e0]/20 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[#00deb6]">
-                Simple Process
-            </span>
-            <h2 class="text-3xl font-heading font-semibold text-[#262637] sm:text-4xl">
-                How It Works
-            </h2>
-            <p class="text-lg text-[#53535fcc] max-w-2xl mx-auto">
-                Get started in minutes, not weeks. No complex setup or expensive integrations required.
-            </p>
-        </div>
-        <div class="grid gap-8 md:grid-cols-4">
-            <div class="relative text-center">
-                <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#00deb6] text-[#000433] text-2xl font-bold shadow-lg shadow-[#00deb6]/30">
-                    1
-                </div>
-                <h3 class="mb-2 text-lg font-semibold text-[#262637]">Sign Up & Upload</h3>
-                <p class="text-base text-[#53535fcc]">
-                    Create your developer account and upload properties with photos, details, pricing, and specifications. Simple dashboard interface. No technical skills needed.
-                </p>
-            </div>
-            <div class="relative text-center">
-                <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#00deb6] text-[#000433] text-2xl font-bold shadow-lg shadow-[#00deb6]/30">
-                    2
-                </div>
-                <h3 class="mb-2 text-lg font-semibold text-[#262637]">Add 3D Tours</h3>
-                <p class="text-base text-[#53535fcc]">
-                    Integrate existing Matterport walkthroughs or use our phone-based solution to create immersive 3D tours from your smartphone. No expensive cameras required.
-                </p>
-            </div>
-            <div class="relative text-center">
-                <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#00deb6] text-[#000433] text-2xl font-bold shadow-lg shadow-[#00deb6]/30">
-                    3
-                </div>
-                <h3 class="mb-2 text-lg font-semibold text-[#262637]">Promote with Credits</h3>
-                <p class="text-base text-[#53535fcc]">
-                    Use credits to feature properties on the homepage or create flash sales. Start with 100 free credits. Pay only when you need promotion. No upfront costs.
-                </p>
-            </div>
-            <div class="relative text-center">
-                <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#00deb6] text-[#000433] text-2xl font-bold shadow-lg shadow-[#00deb6]/30">
-                    4
-                </div>
-                <h3 class="mb-2 text-lg font-semibold text-[#262637]">Track & Convert</h3>
-                <p class="text-base text-[#53535fcc]">
-                    Monitor leads, track property views, and analyze buyer interest through our developer dashboard. Close deals faster with direct buyer communication.
-                </p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Comparison Tool: Unique Differentiator -->
-<section class="bg-white py-16">
-    <div class="container max-w-7xl">
-        <div class="grid gap-12 lg:grid-cols-2 items-center">
-            <div class="space-y-6">
-                <span class="inline-flex items-center gap-2 rounded-full bg-[#b8e9e0]/20 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[#00deb6]">
-                    Unique Feature
-                </span>
-                <h2 class="text-3xl font-heading font-semibold text-[#262637] sm:text-4xl">
-                    Comparison Tool: Unique in the Market
+<!-- Section 2: Problem + Solution -->
+<section class="bg-muted py-16">
+    <div class="container max-w-7xl space-y-16">
+        <!-- Problem Statement -->
+        <div class="text-center space-y-8">
+            <div class="space-y-4">
+                <h2 class="text-3xl font-heading font-semibold text-foreground sm:text-4xl">
+                    Selling unsold inventory is expensive and inefficient
                 </h2>
-                <p class="text-lg text-[#53535fcc]">
-                    Help buyers compare your properties side-by-side across 25+ attributes including price, size, amenities, location, and immersive 3D walkthroughs. No other platform offers this level of comparison. Help buyers make faster decisions.
+                <p class="mx-auto max-w-2xl text-lg text-muted-foreground">
+                    Traditional property marketing methods drain your budget without guaranteed results. Hotel launches cost 1.2 Million+ THB with no sales guarantee.
                 </p>
-                <ul class="space-y-3">
-                    <li class="flex items-start gap-3">
-                        <i class="bi bi-check-circle-fill text-[#00deb6] text-xl mt-0.5"></i>
-                        <div>
-                            <span class="font-semibold text-[#262637]">Side-by-side visual comparison</span>
-                            <p class="text-base text-[#53535fcc]">Buyers see pricing, specs, and amenities at a glance</p>
-                        </div>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <i class="bi bi-check-circle-fill text-[#00deb6] text-xl mt-0.5"></i>
-                        <div>
-                            <span class="font-semibold text-[#262637]">25+ comparison attributes</span>
-                            <p class="text-base text-[#53535fcc]">Price per sqm, BTS distance, facilities, views, and more</p>
-                        </div>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <i class="bi bi-check-circle-fill text-[#00deb6] text-xl mt-0.5"></i>
-                        <div>
-                            <span class="font-semibold text-[#262637]">Integrated 3D walkthrough viewing</span>
-                            <p class="text-base text-[#53535fcc]">Buyers experience properties before visiting—from anywhere</p>
-                        </div>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <i class="bi bi-check-circle-fill text-[#00deb6] text-xl mt-0.5"></i>
-                        <div>
-                            <span class="font-semibold text-[#262637]">Faster buyer decision-making</span>
-                            <p class="text-base text-[#53535fcc]">Buyers save hours comparing manually. Close deals faster.</p>
-                        </div>
-                    </li>
-                </ul>
-                <div class="flex flex-col gap-3 sm:flex-row">
-                    <a href="{% url 'property:comparison' %}" class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#00deb6] px-6 py-3 text-base font-semibold text-[#000433] shadow-lg shadow-[#00deb6]/30 transition hover:bg-[#00deb6]/90">
-                        Try the Comparison Tool
-                        <i class="bi bi-arrow-right"></i>
-                    </a>
-                    <a href="{% url 'property:search' %}" class="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-[#53535fcc]/20 bg-white px-6 py-3 text-base font-semibold text-[#262637] transition hover:border-[#00deb6] hover:text-[#00deb6]">
-                        See Buyer Experience
-                    </a>
+            </div>
+            <div class="grid gap-6 sm:grid-cols-3 text-left">
+                <div class="rounded-2xl border border-border bg-white p-6 shadow-sm">
+                    <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-red-600">
+                        <i class="bi bi-cash-coin text-2xl"></i>
+                    </div>
+                    <h3 class="mb-2 text-lg font-semibold text-foreground">High launch costs</h3>
+                    <p class="text-base text-muted-foreground">
+                        Hotel launches cost 1.2 Million+ THB with no guaranteed sales. Ballroom rentals, advertising, and agency fees eat into your margins before you even start selling.
+                    </p>
+                </div>
+                <div class="rounded-2xl border border-border bg-white p-6 shadow-sm">
+                    <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-orange-100 text-orange-600">
+                        <i class="bi bi-people text-2xl"></i>
+                    </div>
+                    <h3 class="mb-2 text-lg font-semibold text-foreground">Poor lead quality</h3>
+                    <p class="text-base text-muted-foreground">
+                        Traditional portals bring unqualified leads and agent intermediaries. Hard to reach the right buyers directly. Commission models reduce your margins on every sale.
+                    </p>
+                </div>
+                <div class="rounded-2xl border border-border bg-white p-6 shadow-sm">
+                    <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+                        <i class="bi bi-globe text-2xl"></i>
+                    </div>
+                    <h3 class="mb-2 text-lg font-semibold text-foreground">Limited reach</h3>
+                    <p class="text-base text-muted-foreground">
+                        Hard to reach international buyers and showcase property quality online. Missing out on qualified prospects who can't visit in person. No immersive technology to differentiate your properties.
+                    </p>
                 </div>
             </div>
-            <div class="rounded-2xl border border-[#53535fcc]/20 bg-[#f2f3f4] p-8 shadow-lg">
-                <div class="aspect-video rounded-xl bg-gradient-to-br from-[#b8e9e0] to-[#00deb6] flex items-center justify-center">
-                    <div class="text-center text-[#000433]">
-                        <i class="bi bi-layout-three-columns text-6xl mb-4"></i>
-                        <p class="text-lg font-semibold">Interactive Comparison Tool</p>
-                        <p class="text-sm opacity-80">Help buyers compare properties side-by-side</p>
+            <div class="rounded-2xl border-2 border-accent/30 bg-accent/10 p-8">
+                <p class="text-xl font-heading font-semibold text-foreground mb-2">That's why we built Wizer Properties</p>
+                <p class="text-base text-muted-foreground max-w-2xl mx-auto">The only platform built exclusively for developers. Replace expensive launches with a subscription model. Reach qualified buyers directly. Showcase properties with immersive 3D tours. Pay only for promotions when you need them.</p>
+            </div>
+        </div>
+
+        <!-- Solution Overview -->
+        <div class="bg-white rounded-3xl p-12">
+            <div class="text-center space-y-6 mb-12">
+                <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-brand-purple">
+                    The Solution
+                </span>
+                <h2 class="text-3xl font-heading font-semibold text-foreground sm:text-4xl">
+                    The only platform built exclusively for developers
+                </h2>
+                <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+                    Everything you need to sell inventory faster, reach qualified buyers, and reduce marketing costs. All in one platform.
+                </p>
+            </div>
+            <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+                <div class="rounded-2xl border border-border bg-muted p-6 shadow-sm">
+                    <div class="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                        <i class="bi bi-currency-dollar text-2xl"></i>
                     </div>
+                    <h3 class="mb-2 text-xl font-semibold text-foreground">Cost efficiency</h3>
+                    <p class="text-base text-muted-foreground">
+                        Subscription model replaces expensive hotel launches. Save 90% on marketing costs compared to traditional 1.2M+ THB launch events. Predictable monthly costs instead of massive upfront investments.
+                    </p>
+                </div>
+                <div class="rounded-2xl border border-border bg-muted p-6 shadow-sm">
+                    <div class="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                        <i class="bi bi-camera-video text-2xl"></i>
+                    </div>
+                    <h3 class="mb-2 text-xl font-semibold text-foreground">Immersive technology</h3>
+                    <p class="text-base text-muted-foreground">
+                        3D Matterport walkthroughs showcase properties like never before. Aerial drone videos show neighborhood context. Comparison tools help buyers make faster decisions. No other platform offers this.
+                    </p>
+                </div>
+                <div class="rounded-2xl border border-border bg-muted p-6 shadow-sm">
+                    <div class="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                        <i class="bi bi-people-fill text-2xl"></i>
+                    </div>
+                    <h3 class="mb-2 text-xl font-semibold text-foreground">Qualified prospects</h3>
+                    <p class="text-base text-muted-foreground">
+                        Access our database of pre-qualified international buyers. Direct developer-to-buyer relationship without agent intermediaries. Reach buyers who can't visit in person through immersive 3D tours.
+                    </p>
+                </div>
+                <div class="rounded-2xl border border-border bg-muted p-6 shadow-sm">
+                    <div class="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                        <i class="bi bi-credit-card text-2xl"></i>
+                    </div>
+                    <h3 class="mb-2 text-xl font-semibold text-foreground">Credit-based promotions</h3>
+                    <p class="text-base text-muted-foreground">
+                        Pay only for featured or discount listings when needed. No per-listing fees or commission charges. Use credits strategically to promote inventory. Transparent, predictable costs.
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Pricing Section: Transparent Costs -->
-<section class="bg-[#f2f3f4] py-16">
-    <div class="container max-w-4xl">
-        <div class="text-center space-y-6 mb-12">
-            <span class="inline-flex items-center gap-2 rounded-full bg-[#b8e9e0]/20 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[#00deb6]">
-                Simple Pricing
-            </span>
-            <h2 class="text-3xl font-heading font-semibold text-[#262637] sm:text-4xl">
-                Transparent, Predictable Costs
-            </h2>
-            <p class="text-lg text-[#53535fcc] max-w-2xl mx-auto">
-                No hidden fees. No commission. No per-listing charges. Pay only for promotions when you need them.
-            </p>
-        </div>
-        <div class="rounded-3xl border-2 border-[#00deb6] bg-white p-8 shadow-xl">
-            <div class="space-y-6">
-                <div class="text-center">
-                    <h3 class="text-2xl font-heading font-semibold text-[#262637] mb-2">Subscription + Credit Model</h3>
-                    <p class="text-[#53535fcc]">Start with free credits, then top up as needed</p>
-                </div>
-                <div class="grid gap-6 md:grid-cols-3">
-                    <div class="rounded-xl border border-[#53535fcc]/20 bg-[#f2f3f4] p-6">
-                        <h4 class="font-semibold text-[#262637] mb-2">Initial Credits</h4>
-                        <p class="text-2xl font-bold text-[#00deb6] mb-1">100 Credits</p>
-                        <p class="text-base text-[#53535fcc]">Free when you sign up</p>
-                    </div>
-                    <div class="rounded-xl border border-[#53535fcc]/20 bg-[#f2f3f4] p-6">
-                        <h4 class="font-semibold text-[#262637] mb-2">Featured Listing</h4>
-                        <p class="text-2xl font-bold text-[#00deb6] mb-1">3 Credits</p>
-                        <p class="text-base text-[#53535fcc]">Per week on homepage</p>
-                    </div>
-                    <div class="rounded-xl border border-[#53535fcc]/20 bg-[#f2f3f4] p-6">
-                        <h4 class="font-semibold text-[#262637] mb-2">Discount Listing</h4>
-                        <p class="text-2xl font-bold text-[#00deb6] mb-1">3 Credits</p>
-                        <p class="text-base text-[#53535fcc]">Per flash sale</p>
-                    </div>
-                </div>
-                <div class="rounded-xl bg-[#b8e9e0]/20 border border-[#00deb6]/30 p-6">
-                    <div class="flex items-start gap-3">
-                        <i class="bi bi-check-circle-fill text-[#00deb6] text-xl mt-0.5"></i>
-                        <div>
-                            <p class="font-semibold text-[#262637] mb-1">Free Trial Until First Sale</p>
-                            <p class="text-base text-[#53535fcc]">Your subscription is free until you make your first sale. We succeed when you succeed. No risk, all reward.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="rounded-xl bg-white border border-[#53535fcc]/20 p-6">
-                    <div class="grid gap-4 sm:grid-cols-2 text-base">
-                        <div class="flex items-start gap-2">
-                            <i class="bi bi-check-circle-fill text-[#00deb6] mt-0.5"></i>
-                            <span class="text-[#53535fcc]">No commission fees</span>
-                        </div>
-                        <div class="flex items-start gap-2">
-                            <i class="bi bi-check-circle-fill text-[#00deb6] mt-0.5"></i>
-                            <span class="text-[#53535fcc]">No per-listing charges</span>
-                        </div>
-                        <div class="flex items-start gap-2">
-                            <i class="bi bi-check-circle-fill text-[#00deb6] mt-0.5"></i>
-                            <span class="text-[#53535fcc]">Cancel anytime</span>
-                        </div>
-                        <div class="flex items-start gap-2">
-                            <i class="bi bi-check-circle-fill text-[#00deb6] mt-0.5"></i>
-                            <span class="text-[#53535fcc]">Direct developer access</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-center">
-                    <a href="{% url 'user:signup' %}" class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#00deb6] px-8 py-4 text-base font-semibold text-[#000433] shadow-lg shadow-[#00deb6]/30 transition hover:bg-[#00deb6]/90">
-                        Start Free Trial
-                        <i class="bi bi-arrow-right"></i>
-                    </a>
-                    <p class="mt-3 text-base text-[#53535fcc]">No credit card required • Free until first sale • Cancel anytime</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- FAQ Section: Address Objections -->
+<!-- Section 3: Process + Pricing -->
 <section class="bg-white py-16">
-    <div class="container max-w-4xl">
-        <div class="text-center space-y-6 mb-12">
-            <span class="inline-flex items-center gap-2 rounded-full bg-[#b8e9e0]/20 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-[#00deb6]">
-                Common Questions
-            </span>
-            <h2 class="text-3xl font-heading font-semibold text-[#262637] sm:text-4xl">
-                Frequently Asked Questions
-            </h2>
-            <p class="text-lg text-[#53535fcc] max-w-2xl mx-auto">
-                Everything you need to know about Wizer Properties for developers
-            </p>
+    <div class="container max-w-7xl space-y-16">
+        <!-- How It Works -->
+        <div>
+            <div class="text-center space-y-6 mb-12">
+                <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-brand-purple">
+                    Simple Process
+                </span>
+                <h2 class="text-3xl font-heading font-semibold text-foreground sm:text-4xl">
+                    How it works
+                </h2>
+                <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+                    Get started in minutes, not weeks. No complex setup or expensive integrations required.
+                </p>
+            </div>
+            <div class="grid gap-8 md:grid-cols-4">
+                <div class="relative text-center">
+                    <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-accent text-foreground text-2xl font-bold shadow-lg shadow-accent/30">
+                        1
+                    </div>
+                    <h3 class="mb-2 text-lg font-semibold text-foreground">Sign up & upload</h3>
+                    <p class="text-base text-muted-foreground">
+                        Create your developer account and upload properties with photos, details, pricing, and specifications. Simple dashboard interface. No technical skills needed.
+                    </p>
+                </div>
+                <div class="relative text-center">
+                    <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-accent text-foreground text-2xl font-bold shadow-lg shadow-accent/30">
+                        2
+                    </div>
+                    <h3 class="mb-2 text-lg font-semibold text-foreground">Add 3D tours</h3>
+                    <p class="text-base text-muted-foreground">
+                        Integrate existing Matterport walkthroughs or use our phone-based solution to create immersive 3D tours from your smartphone. No expensive cameras required.
+                    </p>
+                </div>
+                <div class="relative text-center">
+                    <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-accent text-foreground text-2xl font-bold shadow-lg shadow-accent/30">
+                        3
+                    </div>
+                    <h3 class="mb-2 text-lg font-semibold text-foreground">Promote with credits</h3>
+                    <p class="text-base text-muted-foreground">
+                        Use credits to feature properties on the homepage or create flash sales. Start with 100 free credits. Pay only when you need promotion. No upfront costs.
+                    </p>
+                </div>
+                <div class="relative text-center">
+                    <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-accent text-foreground text-2xl font-bold shadow-lg shadow-accent/30">
+                        4
+                    </div>
+                    <h3 class="mb-2 text-lg font-semibold text-foreground">Track & convert</h3>
+                    <p class="text-base text-muted-foreground">
+                        Monitor leads, track property views, and analyze buyer interest through our developer dashboard. Close deals faster with direct buyer communication.
+                    </p>
+                </div>
+            </div>
         </div>
-        <div class="space-y-4">
-            <details class="group rounded-xl border border-[#53535fcc]/20 bg-white p-6 shadow-sm">
-                <summary class="flex cursor-pointer items-center justify-between font-semibold text-[#262637]">
-                    <span>How is this different from PropertyGuru or iProperty?</span>
-                    <i class="bi bi-chevron-down transition-transform group-open:rotate-180"></i>
-                </summary>
-                <p class="mt-4 text-base text-[#53535fcc]">
-                    Wizer Properties is built exclusively for developers selling primary market inventory. Unlike traditional portals that focus on agents and secondary market, we provide direct developer-to-buyer relationships, immersive 3D comparison tools, and a subscription model instead of per-listing fees or commissions. We're the only platform that helps buyers compare properties side-by-side with 25+ attributes.
+
+        <!-- Pricing Section -->
+        <div class="bg-muted rounded-3xl p-12">
+            <div class="text-center space-y-6 mb-12">
+                <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-brand-purple">
+                    Simple Pricing
+                </span>
+                <h2 class="text-3xl font-heading font-semibold text-foreground sm:text-4xl">
+                    Transparent, predictable costs
+                </h2>
+                <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+                    No hidden fees. No commission. No per-listing charges. Pay only for promotions when you need them.
                 </p>
-            </details>
-            <details class="group rounded-xl border border-[#53535fcc]/20 bg-white p-6 shadow-sm">
-                <summary class="flex cursor-pointer items-center justify-between font-semibold text-[#262637]">
-                    <span>Do I need Matterport cameras?</span>
-                    <i class="bi bi-chevron-down transition-transform group-open:rotate-180"></i>
-                </summary>
-                <p class="mt-4 text-base text-[#53535fcc]">
-                    No, you don't need expensive Matterport cameras. You can use existing Matterport tours if you have them, or use our phone-based 3D walkthrough solution that creates immersive tours from your smartphone photos at a fraction of the cost. This makes 3D tours accessible for all developers, not just those with large marketing budgets.
-                </p>
-            </details>
-            <details class="group rounded-xl border border-[#53535fcc]/20 bg-white p-6 shadow-sm">
-                <summary class="flex cursor-pointer items-center justify-between font-semibold text-[#262637]">
-                    <span>How do I get qualified leads?</span>
-                    <i class="bi bi-chevron-down transition-transform group-open:rotate-180"></i>
-                </summary>
-                <p class="mt-4 text-base text-[#53535fcc]">
-                    Our platform attracts qualified buyers through SEO, content marketing, and our unique comparison tools. When buyers use our platform to compare properties, you get direct inquiries. We also provide analytics to track which properties get the most views and inquiries. The comparison tool helps buyers make faster decisions, which means faster sales for you.
-                </p>
-            </details>
-            <details class="group rounded-xl border border-[#53535fcc]/20 bg-white p-6 shadow-sm">
-                <summary class="flex cursor-pointer items-center justify-between font-semibold text-[#262637]">
-                    <span>What's the credit system?</span>
-                    <i class="bi bi-chevron-down transition-transform group-open:rotate-180"></i>
-                </summary>
-                <p class="mt-4 text-base text-[#53535fcc]">
-                    Credits are used to promote your properties. You get 100 free credits when you sign up. Use 3 credits to feature a property on the homepage for a week, or 3 credits to create a flash sale. Top up credits as needed—no monthly subscription fees until you make your first sale. This gives you complete control over your marketing spend.
-                </p>
-            </details>
-            <details class="group rounded-xl border border-[#53535fcc]/20 bg-white p-6 shadow-sm">
-                <summary class="flex cursor-pointer items-center justify-between font-semibold text-[#262637]">
-                    <span>Can I cancel anytime?</span>
-                    <i class="bi bi-chevron-down transition-transform group-open:rotate-180"></i>
-                </summary>
-                <p class="mt-4 text-base text-[#53535fcc]">
-                    Yes, absolutely. There's no long-term contract. You can cancel your subscription at any time. Your properties will remain listed, but you won't be able to use credits for promotions without an active subscription. We believe in earning your business every month, not locking you into contracts.
-                </p>
-            </details>
-            <details class="group rounded-xl border border-[#53535fcc]/20 bg-white p-6 shadow-sm">
-                <summary class="flex cursor-pointer items-center justify-between font-semibold text-[#262637]">
-                    <span>How much can I save compared to traditional launches?</span>
-                    <i class="bi bi-chevron-down transition-transform group-open:rotate-180"></i>
-                </summary>
-                <p class="mt-4 text-base text-[#53535fcc]">
-                    Traditional hotel launches cost 1.2 Million THB per event with no guaranteed sales. With Wizer Properties, you pay a monthly subscription (free until first sale) plus credits for promotions (3 credits per featured listing or flash sale). Even with heavy promotion, you'll save 90% compared to traditional launch costs. Plus, your properties stay listed 24/7, not just during launch events.
-                </p>
-            </details>
+            </div>
+            <div class="rounded-3xl border-2 border-accent bg-white p-8 shadow-xl max-w-4xl mx-auto">
+                <div class="space-y-6">
+                    <div class="text-center">
+                        <h3 class="text-2xl font-heading font-semibold text-foreground mb-2">Subscription + credit model</h3>
+                        <p class="text-muted-foreground">Start with free credits, then top up as needed</p>
+                    </div>
+                    <div class="grid gap-6 md:grid-cols-3">
+                        <div class="rounded-xl border border-border bg-muted p-6">
+                            <h4 class="font-semibold text-foreground mb-2">Initial credits</h4>
+                            <p class="text-2xl font-bold text-accent mb-1">100 Credits</p>
+                            <p class="text-base text-muted-foreground">Free when you sign up</p>
+                        </div>
+                        <div class="rounded-xl border border-border bg-muted p-6">
+                            <h4 class="font-semibold text-foreground mb-2">Featured listing</h4>
+                            <p class="text-2xl font-bold text-accent mb-1">3 Credits</p>
+                            <p class="text-base text-muted-foreground">Per week on homepage</p>
+                        </div>
+                        <div class="rounded-xl border border-border bg-muted p-6">
+                            <h4 class="font-semibold text-foreground mb-2">Discount listing</h4>
+                            <p class="text-2xl font-bold text-accent mb-1">3 Credits</p>
+                            <p class="text-base text-muted-foreground">Per flash sale</p>
+                        </div>
+                    </div>
+                    <div class="rounded-xl bg-accent/10 border border-accent/30 p-6">
+                        <div class="flex items-start gap-3">
+                            <i class="bi bi-check-circle-fill text-accent text-xl mt-0.5"></i>
+                            <div>
+                                <p class="font-semibold text-foreground mb-1">Free trial until first sale</p>
+                                <p class="text-base text-muted-foreground">Your subscription is free until you make your first sale. We succeed when you succeed. No risk, all reward.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rounded-xl bg-white border border-border p-6">
+                        <div class="grid gap-4 sm:grid-cols-2 text-base">
+                            <div class="flex items-start gap-2">
+                                <i class="bi bi-check-circle-fill text-accent mt-0.5"></i>
+                                <span class="text-muted-foreground">No commission fees</span>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <i class="bi bi-check-circle-fill text-accent mt-0.5"></i>
+                                <span class="text-muted-foreground">No per-listing charges</span>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <i class="bi bi-check-circle-fill text-accent mt-0.5"></i>
+                                <span class="text-muted-foreground">Cancel anytime</span>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <i class="bi bi-check-circle-fill text-accent mt-0.5"></i>
+                                <span class="text-muted-foreground">Direct developer access</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <a href="{% url 'user:signup' %}" class="inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-8 py-4 text-base font-semibold text-foreground shadow-lg shadow-accent/30 transition hover:bg-accent/90">
+                            Start Free Trial
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                        <p class="mt-3 text-base text-muted-foreground">No credit card required • Free until first sale • Cancel anytime</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- Final CTA Section -->
-<section class="bg-[#000433] py-16">
-    <div class="container max-w-4xl text-center">
-        <h2 class="mb-4 text-3xl font-heading font-semibold text-white sm:text-4xl">
-            Ready to Sell Your Inventory Faster?
-        </h2>
-        <p class="mb-8 text-lg text-white/80">
-            Join developers using Wizer Properties to reach qualified buyers at a fraction of traditional costs. Replace your 1.2 Million+ THB hotel launches with a subscription platform that works 24/7.
-        </p>
-        <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a href="{% url 'user:signup' %}" class="btn inline-flex items-center justify-center gap-2 bg-[#00deb6] px-8 py-4 text-base font-semibold text-[#000433] hover:bg-[#00deb6]/90 shadow-lg shadow-[#00deb6]/30" aria-label="Get started with Wizer Properties">
-                <i class="bi bi-arrow-right" aria-hidden="true"></i>
-                <span>Get Started Free</span>
-            </a>
-            <a href="{% url 'contact' %}" class="btn-secondary inline-flex items-center justify-center gap-2 border-2 border-white/20 bg-white/10 px-8 py-4 text-base font-semibold text-white backdrop-blur transition hover:bg-white/20">
-                <i class="bi bi-calendar-event" aria-hidden="true"></i>
-                <span>Book a Demo</span>
-            </a>
+<!-- Section 4: Final CTA + FAQ -->
+<section class="bg-muted py-16">
+    <div class="container max-w-4xl space-y-16">
+        <!-- FAQ Section -->
+        <div>
+            <div class="text-center space-y-6 mb-12">
+                <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-brand-purple">
+                    Common Questions
+                </span>
+                <h2 class="text-3xl font-heading font-semibold text-foreground sm:text-4xl">
+                    Frequently asked questions
+                </h2>
+                <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+                    Everything you need to know about Wizer Properties for developers
+                </p>
+            </div>
+            <div class="space-y-4">
+                <details class="group rounded-xl border border-border bg-white p-6 shadow-sm">
+                    <summary class="flex cursor-pointer items-center justify-between font-semibold text-foreground">
+                        <span>How is this different from PropertyGuru or iProperty?</span>
+                        <i class="bi bi-chevron-down transition-transform group-open:rotate-180"></i>
+                    </summary>
+                    <p class="mt-4 text-base text-muted-foreground">
+                        Wizer Properties is built exclusively for developers selling primary market inventory. Unlike traditional portals that focus on agents and secondary market, we provide direct developer-to-buyer relationships, immersive 3D comparison tools, and a subscription model instead of per-listing fees or commissions. We're the only platform that helps buyers compare properties side-by-side with 25+ attributes.
+                    </p>
+                </details>
+                <details class="group rounded-xl border border-border bg-white p-6 shadow-sm">
+                    <summary class="flex cursor-pointer items-center justify-between font-semibold text-foreground">
+                        <span>Do I need Matterport cameras?</span>
+                        <i class="bi bi-chevron-down transition-transform group-open:rotate-180"></i>
+                    </summary>
+                    <p class="mt-4 text-base text-muted-foreground">
+                        No, you don't need expensive Matterport cameras. You can use existing Matterport tours if you have them, or use our phone-based 3D walkthrough solution that creates immersive tours from your smartphone photos at a fraction of the cost. This makes 3D tours accessible for all developers, not just those with large marketing budgets.
+                    </p>
+                </details>
+                <details class="group rounded-xl border border-border bg-white p-6 shadow-sm">
+                    <summary class="flex cursor-pointer items-center justify-between font-semibold text-foreground">
+                        <span>How do I get qualified leads?</span>
+                        <i class="bi bi-chevron-down transition-transform group-open:rotate-180"></i>
+                    </summary>
+                    <p class="mt-4 text-base text-muted-foreground">
+                        Our platform attracts qualified buyers through SEO, content marketing, and our unique comparison tools. When buyers use our platform to compare properties, you get direct inquiries. We also provide analytics to track which properties get the most views and inquiries. The comparison tool helps buyers make faster decisions, which means faster sales for you.
+                    </p>
+                </details>
+                <details class="group rounded-xl border border-border bg-white p-6 shadow-sm">
+                    <summary class="flex cursor-pointer items-center justify-between font-semibold text-foreground">
+                        <span>What's the credit system?</span>
+                        <i class="bi bi-chevron-down transition-transform group-open:rotate-180"></i>
+                    </summary>
+                    <p class="mt-4 text-base text-muted-foreground">
+                        Credits are used to promote your properties. You get 100 free credits when you sign up. Use 3 credits to feature a property on the homepage for a week, or 3 credits to create a flash sale. Top up credits as needed. No monthly subscription fees until you make your first sale. This gives you complete control over your marketing spend.
+                    </p>
+                </details>
+                <details class="group rounded-xl border border-border bg-white p-6 shadow-sm">
+                    <summary class="flex cursor-pointer items-center justify-between font-semibold text-foreground">
+                        <span>Can I cancel anytime?</span>
+                        <i class="bi bi-chevron-down transition-transform group-open:rotate-180"></i>
+                    </summary>
+                    <p class="mt-4 text-base text-muted-foreground">
+                        Yes, absolutely. There's no long-term contract. You can cancel your subscription at any time. Your properties will remain listed, but you won't be able to use credits for promotions without an active subscription. We believe in earning your business every month, not locking you into contracts.
+                    </p>
+                </details>
+                <details class="group rounded-xl border border-border bg-white p-6 shadow-sm">
+                    <summary class="flex cursor-pointer items-center justify-between font-semibold text-foreground">
+                        <span>How much can I save compared to traditional launches?</span>
+                        <i class="bi bi-chevron-down transition-transform group-open:rotate-180"></i>
+                    </summary>
+                    <p class="mt-4 text-base text-muted-foreground">
+                        Traditional hotel launches cost 1.2 Million THB per event with no guaranteed sales. With Wizer Properties, you pay a monthly subscription (free until first sale) plus credits for promotions (3 credits per featured listing or flash sale). Even with heavy promotion, you'll save 90% compared to traditional launch costs. Plus, your properties stay listed 24/7, not just during launch events.
+                    </p>
+                </details>
+            </div>
         </div>
-        <p class="mt-4 text-sm text-white/70">No credit card required • Free until first sale • Cancel anytime</p>
+
+        <!-- Final CTA -->
+        <div class="bg-[#000433] rounded-3xl p-12 text-center">
+            <h2 class="mb-4 text-3xl font-heading font-semibold text-white sm:text-4xl">
+                Ready to sell your inventory faster?
+            </h2>
+            <p class="mb-8 text-lg text-white/80">
+                Join developers using Wizer Properties to reach qualified buyers at a fraction of traditional costs. Replace your 1.2 Million+ THB hotel launches with a subscription platform that works 24/7.
+            </p>
+            <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
+                <a href="{% url 'user:signup' %}" class="btn inline-flex items-center justify-center gap-2 bg-accent px-8 py-4 text-base font-semibold text-foreground hover:bg-accent/90 shadow-lg shadow-accent/30" aria-label="Get started with Wizer Properties">
+                    <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                    <span>Get Started Free</span>
+                </a>
+                <a href="{% url 'contact' %}" class="btn-secondary inline-flex items-center justify-center gap-2 border-2 border-white/20 bg-white/10 px-8 py-4 text-base font-semibold text-white backdrop-blur transition hover:bg-white/20">
+                    <i class="bi bi-calendar-event" aria-hidden="true"></i>
+                    <span>Book a Demo</span>
+                </a>
+            </div>
+            <p class="mt-4 text-sm text-white/70">No credit card required • Free until first sale • Cancel anytime</p>
+        </div>
     </div>
 </section>
 

@@ -52,66 +52,73 @@
     </div>
 </section>
 
-{% include "components/property/filter-panel.html" %}
-
-<!-- Results Summary Bar (with integrated breadcrumb) -->
-<section class="bg-muted/40 py-6">
+<!-- Unified Filter & Results Header -->
+<section class="bg-muted/40 backdrop-blur-sm transition-all duration-300" id="search-filter-box" data-filter-panel>
     <div class="container">
-        <div class="flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm md:flex-row md:items-center md:justify-between">
-            <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
-                <div class="flex flex-col gap-1">
-                    <!-- Breadcrumb (compact) -->
-                    <nav aria-label="Breadcrumb" class="flex items-center gap-2 text-xs text-muted-foreground">
-                        <a href="/" class="transition hover:text-foreground">Home</a>
-                        <i class="bi bi-chevron-right text-[10px]"></i>
-                        <span class="text-foreground font-medium" data-breadcrumb-area>Properties For Sale</span>
+        <div class="space-y-4 rounded-2xl border border-border/50 bg-card/95 px-6 py-5 shadow-sm backdrop-blur-sm transition-all duration-300" data-filter-content>
+            <!-- Header Row: Results Summary + View Controls -->
+            <div class="flex flex-col gap-3 border-b border-border/50 pb-4 md:flex-row md:items-center md:justify-between">
+                <!-- Left: Location & Count -->
+                <div class="flex flex-col gap-1.5">
+                    <!-- Subtle Breadcrumb -->
+                    <nav aria-label="Breadcrumb" class="flex items-center gap-1.5 text-[10px] text-muted-foreground/60">
+                        <a href="/" class="transition hover:text-muted-foreground">Home</a>
+                        <i class="bi bi-chevron-right text-[8px]"></i>
+                        <span class="text-muted-foreground/80" data-breadcrumb-area>Properties</span>
                     </nav>
-                <h1 class="section-title search-area text-xl font-semibold text-foreground"></h1>
-                    <p class="section-scripts m-0 flex items-center gap-2 text-sm text-muted-foreground">
-                        <b class="text-foreground"><span label="available-properties">- -</span></b>
-                        <span>verified properties found</span>
+                    <!-- Location Title - Brand Purple -->
+                    <h1 class="section-title search-area text-lg font-semibold text-brand-purple"></h1>
+                    <!-- Property Count - Brand Teal -->
+                    <p class="section-scripts m-0 flex items-center gap-1.5 text-xs text-muted-foreground">
+                        <b class="text-brand-teal font-semibold"><span label="available-properties">- -</span></b>
+                        <span>verified properties</span>
                     </p>
                 </div>
-            </div>
+                
+                <!-- Right: View Controls -->
             <div class="flex flex-wrap items-center gap-2">
                 <!-- Sorting -->
                 <div class="relative">
-                    <button class="sorting-btn inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:bg-accent/10 hover:text-accent" pop-target="sorting-box">
-                        <i class="bi bi-arrow-down-up"></i>
-                        <span>Sort: <span label="sorting-type">Newest first</span></span>
+                        <button class="sorting-btn inline-flex items-center gap-1.5 rounded-lg border border-border/60 bg-white px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-brand-purple/40 hover:bg-brand-purple/5 hover:text-brand-purple" pop-target="sorting-box">
+                            <i class="bi bi-arrow-down-up text-[11px]"></i>
+                            <span>Sort: <span label="sorting-type">Newest</span></span>
                     </button>
-                    <div class="sorting-list-box absolute right-0 z-20 mt-2 hidden min-w-[200px] rounded-2xl border border-border bg-card text-sm shadow-lg" pop-element="sorting-box">
-                        <ul class="py-2">
-                            <li active="true" value="-created_at" class="flex items-center justify-between px-4 py-2.5 hover:bg-secondary/40 cursor-pointer">
+                        <div class="sorting-list-box absolute right-0 z-20 mt-2 hidden min-w-[180px] rounded-xl border border-border bg-card text-xs shadow-lg" pop-element="sorting-box">
+                            <ul class="py-1.5">
+                                <li active="true" value="-created_at" class="flex items-center justify-between px-3 py-2 hover:bg-muted/40 cursor-pointer">
                                 <span>Newest first</span>
-                                <i class="bi bi-check2 text-accent hidden"></i>
+                                    <i class="bi bi-check2 text-brand-purple hidden"></i>
                             </li>
-                            <li active="false" value="-price" class="flex items-center justify-between px-4 py-2.5 hover:bg-secondary/40 cursor-pointer">
+                                <li active="false" value="-price" class="flex items-center justify-between px-3 py-2 hover:bg-muted/40 cursor-pointer">
                                 <span>Highest price</span>
-                                <i class="bi bi-check2 text-accent hidden"></i>
+                                    <i class="bi bi-check2 text-brand-purple hidden"></i>
                             </li>
-                            <li active="false" value="price" class="flex items-center justify-between px-4 py-2.5 hover:bg-secondary/40 cursor-pointer">
+                                <li active="false" value="price" class="flex items-center justify-between px-3 py-2 hover:bg-muted/40 cursor-pointer">
                                 <span>Lowest price</span>
-                                <i class="bi bi-check2 text-accent hidden"></i>
+                                    <i class="bi bi-check2 text-brand-purple hidden"></i>
                             </li>
-                            <li active="false" value="-visit_count" class="flex items-center justify-between px-4 py-2.5 hover:bg-secondary/40 cursor-pointer">
+                                <li active="false" value="-visit_count" class="flex items-center justify-between px-3 py-2 hover:bg-muted/40 cursor-pointer">
                                 <span>Most popular</span>
-                                <i class="bi bi-check2 text-accent hidden"></i>
+                                    <i class="bi bi-check2 text-brand-purple hidden"></i>
                             </li>
                         </ul>
                     </div>
                 </div>
-                <!-- View Toggle -->
-                <a href="" label-name="view-tag" class="search-list-redirect inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:bg-accent/10 hover:text-accent">
-                    <i class="bi bi-list-task"></i>
-                    <span>List View</span>
+                    <!-- List View Toggle -->
+                    <a href="/property/search/" label-name="view-tag" class="search-list-redirect inline-flex items-center gap-1.5 rounded-lg border border-border/60 bg-white px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-brand-purple/40 hover:bg-brand-purple/5 hover:text-brand-purple">
+                        <i class="bi bi-list-task text-[11px]"></i>
+                        <span class="hidden sm:inline">List view</span>
                 </a>
                 <!-- Save Search -->
-                <button type="button" class="save-search-btn inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:bg-accent/10 hover:text-accent" data-save-search>
-                    <i class="bi bi-bookmark"></i>
-                    <span class="hidden sm:inline">Save search</span>
+                    <button type="button" class="save-search-btn inline-flex items-center gap-1.5 rounded-lg border border-border/60 bg-white px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-brand-purple/40 hover:bg-brand-purple/5 hover:text-brand-purple" data-save-search>
+                        <i class="bi bi-bookmark text-[11px]"></i>
+                        <span class="hidden sm:inline">Save</span>
                 </button>
+                </div>
             </div>
+
+            <!-- Filter Panel Content -->
+            {% include "components/property/filter-panel-content.html" %}
         </div>
     </div>
 </section>
@@ -120,17 +127,6 @@
     <div class="container grid gap-6 lg:grid-cols-[minmax(0,1fr)_480px]">
         <!-- Results Column -->
         <div class="space-y-6">
-            <div class="flex flex-wrap items-center justify-between gap-3">
-                <div class="flex items-center gap-2 text-sm text-muted-foreground">
-                    <i class="bi bi-info-circle text-accent"></i>
-                    <span>Click markers on the map to see property details</span>
-                </div>
-                <button class="nav-link active-nav reset-map hidden inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1.5 text-xs font-semibold text-foreground transition hover:border-accent/20 hover:bg-accent/10 hover:text-accent">
-                    <i class="bi bi-arrow-counterclockwise"></i>
-                    <span>Reset map view</span>
-                </button>
-            </div>
-            
             <!-- Property List (Single column for map view) -->
             <div id="search-result-list" class="space-y-6"></div>
             
@@ -142,10 +138,10 @@
                     </div>
                     <div class="space-y-2">
                         <h3 class="text-lg font-semibold text-foreground">No properties in this area</h3>
-                        <p class="text-base text-muted-foreground">Try panning the map or adjusting your filters to see more properties.</p>
+                        <p class="text-sm text-muted-foreground">Try panning the map or adjusting your filters to see more properties.</p>
                     </div>
-                    <button type="button" class="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-accent/60 hover:bg-accent/10 hover:text-accent" data-clear-filters>
-                        <i class="bi bi-x-circle"></i>
+                    <button type="button" class="inline-flex items-center gap-1.5 rounded-lg border border-border/60 bg-white px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-brand-purple/40 hover:bg-brand-purple/5 hover:text-brand-purple" data-clear-filters>
+                        <i class="bi bi-x-circle text-[11px]"></i>
                         <span>Clear all filters</span>
                     </button>
                 </div>
@@ -154,19 +150,20 @@
             <div id="search-freescroll"></div>
 
             {% include "components/property/card.html" %}
-
         </div>
 
-        <!-- Map Column -->
-        <div class="search-map-wrapper sticky top-24 space-y-4">
-            <div class="relative h-[75vh] rounded-2xl border border-border bg-card shadow-sm overflow-hidden">
-            <div class="absolute right-4 top-4 z-10 flex flex-col gap-2">
-                <a href="" label-name="view-tag" class="search-list-redirect inline-flex items-center gap-2 rounded-full border border-border bg-white/90 backdrop-blur-sm px-4 py-2 text-sm font-medium text-muted-foreground shadow-sm transition hover:bg-white hover:border-accent/60">
-                <i class="bi bi-list-task"></i>
-                    <span class="hidden sm:inline">List View</span>
-            </a>
+        <!-- Map Column (Sidebar) -->
+        <div class="search-map-wrapper sticky top-24 space-y-3">
+            <!-- Map Info -->
+            <div class="flex items-center gap-2 rounded-xl border border-border/50 bg-card px-4 py-2.5 shadow-sm">
+                <div class="flex items-center gap-2 text-xs text-muted-foreground">
+                    <i class="bi bi-info-circle text-brand-teal"></i>
+                    <span>Click markers to see details</span>
+                </div>
             </div>
-            <div id="search-map" class="h-full w-full rounded-2xl bg-muted"></div>
+            
+            <div class="relative h-[75vh] rounded-2xl border border-border bg-card shadow-sm overflow-hidden">
+                <div id="search-map" class="h-full w-full rounded-2xl bg-muted"></div>
             </div>
             <!-- Square Ad Below Map -->
             <div id="map-below-ad-container" class="w-full"></div>

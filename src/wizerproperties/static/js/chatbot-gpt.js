@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return choice || "I'm here to help. What else would you like to know about buying property in Bangkok?";
     } catch (error) {
       console.warn("Failed to parse Home Helper AI response", error);
-      return "I found some information, but there was an issue processing it. Try asking your question again or rephrase it—I'm here to help.";
+      return "I found some information, but there was an issue processing it. Try asking your question again or rephrase it. I'm here to help.";
     }
   };
 
@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
       appendMessage("assistant", assistantMessage);
     } catch (error) {
       console.error("Home Helper AI request failed", error);
-      const errorMessage = error.message || "I'm having trouble connecting right now. Please try again in a moment—your question is important and I want to give you the right answer.";
+      const errorMessage = error.message || "I'm having trouble connecting right now. Please try again in a moment. Your question is important and I want to give you the right answer.";
       appendMessage("assistant", errorMessage);
     } finally {
       setLoading(false);

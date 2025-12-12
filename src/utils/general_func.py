@@ -11,7 +11,23 @@ from ipdata.models import IPData
 from utils.admin_settings import get_openai_api_key
 
 
-def send_email(subject, to_email, html_content, text_content="", context={}):
+def send_email(subject: str, to_email: str, html_content: str, text_content: str = "", context: dict = None) -> None:
+    """
+    Send an HTML email with optional text fallback.
+    
+    Args:
+        subject: Email subject line.
+        to_email: Recipient email address.
+        html_content: Path to HTML template for email body.
+        text_content: Plain text version of email (optional).
+        context: Dictionary of template variables for rendering HTML content.
+    
+    Note:
+        Uses Django's EmailMultiAlternatives to send both HTML and text versions.
+        The FROM_EMAIL is taken from Django settings.
+    """
+    if context is None:
+        context = {}
     from_email = settings.FROM_EMAIL
     msg = EmailMultiAlternatives(
         subject,
@@ -28,8 +44,21 @@ def send_email(subject, to_email, html_content, text_content="", context={}):
     msg.send()
 
 
-def blur_email(email):
-    # Avoid to show full email. Return the email like "ex*******@gmail.com"
+def blur_email(email: str) -> str:
+    """
+    Blur email address for privacy by masking most characters.
+    
+    Args:
+        email: The email address to blur.
+    
+    Returns:
+        str: Blurred email address (e.g., "ex*******@gmail.com").
+            Returns original email if format is invalid.
+    
+    Example:
+        >>> blur_email("example@gmail.com")
+        'ex*******@gmail.com'
+    """
     parts = email.split("@")
 
     if len(parts) == 2:
@@ -41,7 +70,13 @@ def blur_email(email):
         return email
 
 
-def show_custom_error_message(fields):
+def show_custom_error_message(fields: dict) -> None:
+    """
+    Override default serializer error messages with custom formatted messages.
+    
+    Args:
+        fields: Dictionary of serializer fields to update error messages for.
+    """
     # Override default serializers error
     for field in fields:
         # iterate over the serializer fields
@@ -56,7 +91,17 @@ def show_custom_error_message(fields):
         )
 
 
-def validate_media_file_extension(value, allowed_extensions):
+def validate_media_file_extension(value, allowed_extensions: list) -> None:
+    """
+    Validate that a media file has an allowed extension.
+    
+    Args:
+        value: The file field value to validate.
+        allowed_extensions: List of allowed file extensions (e.g., ['jpg', 'png', 'pdf']).
+    
+    Raises:
+        ValidationError: If the file extension is not in the allowed list.
+    """
     if value:
         ext = value.name.split(".")[-1].lower()
         if ext not in allowed_extensions:
@@ -82,7 +127,16 @@ def rename_dict_key(data_dict: dict, key_list: list) -> dict:
     return data_dict
 
 
-def validate_date_format(value):
+def validate_date_format(value: str) -> None:
+    """
+    Validate that a date string is in the format mm/dd/yyyy.
+    
+    Args:
+        value: Date string to validate.
+    
+    Raises:
+        ValidationError: If the date format is invalid.
+    """
     try:
         # Try to parse the value as a date in the expected format
         timezone.datetime.strptime(value, "%m/%d/%Y")
@@ -90,9 +144,16 @@ def validate_date_format(value):
         raise ValidationError("Invalid date format. Use mm/dd/yyyy.")
 
 
-def get_chatgpt_response(content, previous_response=None):
+def get_chatgpt_response(content: str, previous_response: str = None) -> str:
     """
     Return generated message response using OpenRouter AI based on the provided 'content'.
+    
+    Args:
+        content: User's message content to send to AI.
+        previous_response: Optional previous response for conversation context.
+    
+    Returns:
+        str: AI-generated response message, or error message if API call fails.
     """
     try:
         # Get OpenRouter API key from admin settings
@@ -121,10 +182,19 @@ def get_chatgpt_response(content, previous_response=None):
         )
         return response.choices[0].message.content
     except Exception as e:
-        return "I'm having trouble connecting right now. Please try again in a moment—I want to help you get the information you need."
+        return "I'm having trouble connecting right now. Please try again in a moment. I want to help you get the information you need."
 
 
-def get_user_ip(request):
+def get_user_ip(request) -> str:
+    """
+    Extract the user's IP address from the request.
+    
+    Args:
+        request: Django HttpRequest object.
+    
+    Returns:
+        str: User's IP address, checking X-Forwarded-For header first, then REMOTE_ADDR.
+    """
     x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
 
     if x_forwarded_for:
@@ -135,7 +205,17 @@ def get_user_ip(request):
     return ip
 
 
-def get_user_location(request):
+def get_user_location(request) -> dict:
+    """
+    Get user's location based on IP address using proxycheck.io API.
+    
+    Args:
+        request: Django HttpRequest object.
+    
+    Returns:
+        dict: Dictionary containing location information (country, region, city, address),
+            or None if location cannot be determined.
+    """
     ip = get_user_ip(request)
 
     if not ip:
@@ -187,7 +267,16 @@ def get_user_location(request):
     return ip_data_obj.address
 
 
-def get_duration_without_milliseconds(duration):
+def get_duration_without_milliseconds(duration) -> str:
+    """
+    Format duration to remove microseconds and keep the format `days hours:minutes:seconds`.
+    
+    Args:
+        duration: timedelta object or other duration value.
+    
+    Returns:
+        str: Formatted duration string (e.g., "1 02:30:45" or "02:30:45").
+    """
     # Format duration to remove microseconds and keep the format `days hours:minutes:seconds`
 
     if isinstance(duration, timedelta):
@@ -204,9 +293,20 @@ def get_duration_without_milliseconds(duration):
 
 
 
-def formatted_number(value):
+def formatted_number(value) -> str:
     """
-    Formatted number returning a string, eg 234234234 convert to 234,234,234
+    Format number with comma separators for thousands.
+    
+    Args:
+        value: Numeric value to format (int, float, or string representation).
+    
+    Returns:
+        str: Formatted number string (e.g., "234,234,234" or "234,234,234.50").
+            Returns empty string if value is None.
+    
+    Example:
+        >>> formatted_number(234234234)
+        '234,234,234'
     """
     if value is None:
         return ""

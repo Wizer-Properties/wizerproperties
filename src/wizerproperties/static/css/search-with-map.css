@@ -9,7 +9,8 @@
     padding-left: 10px;
 }
 
-#search-result-list{
+/* Only apply sidebar styles when inside map view */
+#search-result-map-view #search-result-list{
     width: var( --result-width);
     min-width: var( --result-width);
     display: block !important;
@@ -195,7 +196,7 @@
         position: relative !important;
     }
 
-    #search-result-list{
+    #search-result-map-view #search-result-list{
         display: grid !important;
         grid-template-columns: 1fr 1fr !important;
         width: 100%;
@@ -211,7 +212,7 @@
 }
 
 @media screen and (max-width: 620px){
-    #search-result-list{
+    #search-result-map-view #search-result-list{
         grid-template-columns: 1fr !important;
         min-width: auto !important;
     }

@@ -158,10 +158,16 @@
      * @param {Array} properties - Array of property objects with latitude/longitude
      */
     addPropertyMarkers(properties) {
-      if (!this.map) return;
+      if (!this.map) {
+        console.warn("MapManager: Cannot add markers - map not initialized");
+        return;
+      }
 
       // Clear existing markers
       this.clearMarkers();
+
+      // Debug: Log all properties received
+      console.log(`MapManager: Received ${properties.length} properties`);
 
       // Filter properties with valid coordinates
       const validProperties = properties.filter(p => 
@@ -170,19 +176,32 @@
         !isNaN(parseFloat(p.longitude))
       );
 
-      if (validProperties.length === 0) return;
+      // Debug: Log filtering results
+      console.log(`MapManager: ${validProperties.length} properties have valid coordinates`);
+      if (validProperties.length === 0) {
+        console.warn("MapManager: No properties with valid coordinates. Sample property:", properties[0] || "No properties");
+        return;
+      }
 
       // Create markers for each property
+      let markersCreated = 0;
       validProperties.forEach(property => {
         const marker = this.createPropertyMarker(property);
         if (marker) {
           this.markers.push(marker);
+          markersCreated++;
+        } else {
+          console.warn("MapManager: Failed to create marker for property:", property.id, property.building_title);
         }
       });
+
+      console.log(`MapManager: Created ${markersCreated} markers`);
 
       // Fit map bounds to show all markers
       if (this.markers.length > 0) {
         this.fitBoundsToMarkers();
+      } else {
+        console.warn("MapManager: No markers were created");
       }
     }
 
@@ -195,16 +214,20 @@
       const lat = parseFloat(property.latitude);
       const lng = parseFloat(property.longitude);
 
-      if (isNaN(lat) || isNaN(lng)) return null;
+      if (isNaN(lat) || isNaN(lng)) {
+        console.warn(`MapManager: Invalid coordinates for property ${property.id}: lat=${property.latitude}, lng=${property.longitude}`);
+        return null;
+      }
 
       const position = { lat, lng };
 
       // Custom marker icon based on property tag
+      // Brand purple: #7f1377
       let icon = null;
       if (property.tag === "spotlight") {
         icon = {
           path: google.maps.SymbolPath.CIRCLE,
-          scale: 10,
+          scale: 14,
           fillColor: "#FF0000",
           fillOpacity: 1,
           strokeColor: "#FFFFFF",
@@ -213,8 +236,8 @@
       } else if (property.tag === "feature") {
         icon = {
           path: google.maps.SymbolPath.CIRCLE,
-          scale: 10,
-          fillColor: "#810FCB",
+          scale: 14,
+          fillColor: "#7f1377", // Brand purple
           fillOpacity: 1,
           strokeColor: "#FFFFFF",
           strokeWeight: 2,
@@ -222,8 +245,8 @@
       } else {
         icon = {
           path: google.maps.SymbolPath.CIRCLE,
-          scale: 8,
-          fillColor: "#4285F4",
+          scale: 12, // Increased from 8 to 12 for better visibility
+          fillColor: "#7f1377", // Brand purple instead of blue
           fillOpacity: 1,
           strokeColor: "#FFFFFF",
           strokeWeight: 2,
@@ -256,32 +279,108 @@
         ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'THB', minimumFractionDigits: 0 }).format(property.price)
         : "Price on request";
       
+      const pricePerSqm = property.price_per_sqm 
+        ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'THB', minimumFractionDigits: 0 }).format(property.price_per_sqm)
+        : null;
+      
       const beds = property.number_of_bedroom || "—";
       const baths = property.number_of_bathroom || "—";
       const area = property.unit_area ? `${property.unit_area} sqm` : "—";
       
+      // Get first image if available
+      const firstImage = property.default_images && property.default_images.length > 0 
+        ? property.default_images[0].file 
+        : null;
+      
+      // Brand colors
+      const brandPurple = "#7f1377";
+      const brandTeal = "#15c1b9";
+      const textDark = "#262637";
+      const textMuted = "#53535fcc";
+      const bgMuted = "#f2f3f4";
+      
       const content = `
-        <div style="min-width: 200px; max-width: 300px;">
-          <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: 600; color: #1a1a1a;">
-            ${this.escapeHtml(property.building_title || property.title || "Property")}
-          </h3>
-          <p style="margin: 0 0 8px 0; font-size: 14px; color: #666;">
-            ${this.escapeHtml(property.address || "")}
-          </p>
-          <div style="margin: 8px 0; padding: 8px 0; border-top: 1px solid #eee; border-bottom: 1px solid #eee;">
-            <div style="display: flex; gap: 16px; font-size: 12px; color: #666;">
-              <span>🛏️ ${beds}</span>
-              <span>🚿 ${baths}</span>
-              <span>📐 ${area}</span>
+        <div style="min-width: 280px; max-width: 320px; font-family: 'Effra', sans-serif; border-radius: 1rem; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+          ${firstImage ? `
+          <!-- Image Section -->
+          <div style="position: relative; width: 100%; height: 160px; overflow: hidden; background: ${bgMuted};">
+            <img src="${firstImage}" alt="${this.escapeHtml(property.building_title || property.title || "Property")}" 
+                 style="width: 100%; height: 100%; object-fit: cover;" 
+                 onerror="this.style.display='none'; this.parentElement.style.background='${bgMuted}';">
+            <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);"></div>
+            
+            <!-- Price Overlay -->
+            <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 12px;">
+              <div style="display: flex; flex-direction: column; gap: 2px;">
+                <div style="display: flex; align-items: baseline; gap: 8px;">
+                  <p style="margin: 0; font-size: 24px; font-weight: 700; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.5); line-height: 1;">
+                    ${price}
+                  </p>
+                </div>
+                ${pricePerSqm ? `
+                <p style="margin: 0; font-size: 11px; color: rgba(255,255,255,0.9); text-shadow: 0 1px 2px rgba(0,0,0,0.5);">
+                  ${pricePerSqm} / sqm
+                </p>
+                ` : ''}
+              </div>
             </div>
           </div>
-          <p style="margin: 8px 0 0 0; font-size: 18px; font-weight: 600; color: #4285F4;">
+          ` : `
+          <!-- No Image - Show Price Section -->
+          <div style="padding: 16px; background: ${bgMuted}; border-bottom: 1px solid rgba(83,83,95,0.2);">
+            <p style="margin: 0; font-size: 24px; font-weight: 700; color: ${brandPurple}; line-height: 1;">
             ${price}
           </p>
+            ${pricePerSqm ? `
+            <p style="margin: 4px 0 0 0; font-size: 12px; color: ${textMuted};">
+              ${pricePerSqm} / sqm
+            </p>
+            ` : ''}
+          </div>
+          `}
+          
+          <!-- Content Section -->
+          <div style="padding: 16px; background: white;">
+            <!-- Title & Location -->
+            <div style="margin-bottom: 12px;">
+              <h3 style="margin: 0 0 6px 0; font-size: 16px; font-weight: 600; color: ${textDark}; line-height: 1.4;">
+                ${this.escapeHtml(property.building_title || property.title || "Property")}
+              </h3>
+              <div style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: ${textMuted};">
+                <span style="color: ${brandTeal}; font-size: 14px;">📍</span>
+                <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                  ${this.escapeHtml(property.address || "Address not available")}
+                </span>
+              </div>
+            </div>
+            
+            <!-- Stats Section -->
+            <div style="display: flex; flex-wrap: wrap; gap: 16px; padding: 12px 0; border-top: 1px solid rgba(83,83,95,0.1); border-bottom: 1px solid rgba(83,83,95,0.1); margin-bottom: 12px;">
+              <div style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: ${textMuted};">
+                <span style="color: ${brandTeal}; font-size: 14px;">🛏️</span>
+                <span style="font-weight: 600; color: ${textDark};">${beds}</span>
+                <span>bed</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: ${textMuted};">
+                <span style="color: ${brandTeal}; font-size: 14px;">🚿</span>
+                <span style="font-weight: 600; color: ${textDark};">${baths}</span>
+                <span>bath</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: ${textMuted};">
+                <span style="color: ${brandTeal}; font-size: 14px;">📐</span>
+                <span style="font-weight: 600; color: ${textDark};">${area}</span>
+              </div>
+            </div>
+            
+            <!-- CTA Button -->
           <a href="/property/details/${property.id}/" 
-             style="display: inline-block; margin-top: 8px; padding: 6px 12px; background: #4285F4; color: white; text-decoration: none; border-radius: 4px; font-size: 12px;">
+               style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 10px 16px; background: ${brandPurple}; color: white; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 600; transition: all 0.2s; box-shadow: 0 2px 4px rgba(127,19,119,0.2);"
+               onmouseover="this.style.background='#6d0f66'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 6px rgba(127,19,119,0.3)';"
+               onmouseout="this.style.background='${brandPurple}'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(127,19,119,0.2)';">
             View Details
+              <span style="font-size: 12px;">→</span>
           </a>
+          </div>
         </div>
       `;
 

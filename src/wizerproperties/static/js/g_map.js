@@ -211,8 +211,14 @@ async function initializeMap() {
                         ) return google.maps.FeatureType.ADMINISTRATIVE_AREA_LEVEL_1;
                         if(p_fature_type == "locality") return google.maps.FeatureType.LOCALITY;
                         if(p_fature_type == "postal_code") return google.maps.FeatureType.POSTAL_CODE;
+                        // Return null if no match - will use circle fallback
+                        return null;
                     }
 
+                    const featureType = MAPFEATURETYPE();
+                    
+                    // Only use feature layer if we have a valid feature type
+                    if (featureType) {
                     search_page_map = new GoogleMap(search_render_dom, {
                         zoom: 10.5,
                         center: center_option,
@@ -222,8 +228,8 @@ async function initializeMap() {
                         fullscreenControl: false,
                     });
             
-                    featureLayer = search_page_map.getFeatureLayer(MAPFEATURETYPE());
-
+                        try {
+                            featureLayer = search_page_map.getFeatureLayer(featureType);
                     
                     const featureStyleOptions = {
                         strokeColor: "#810FCB",
@@ -238,6 +244,22 @@ async function initializeMap() {
                             return featureStyleOptions;
                         }
                     };
+                        } catch (error) {
+                            console.warn("Failed to get feature layer, using standard map:", error);
+                            // Fallback to standard map without feature layer
+                            search_page_map = new GoogleMap(search_render_dom, {
+                                zoom: 10.5,
+                                center: center_option,
+                                mapTypeId: "terrain",
+                                zoomControl: false,
+                                mapTypeControl: false, 
+                                fullscreenControl: false,
+                            });
+                        }
+                    } else {
+                        // No valid feature type, use circle fallback
+                        circle_shape_void();
+                    }
                 } else {
                     circle_shape_void()
                 };

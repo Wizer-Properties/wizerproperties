@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from property.models import Property
 import logging
+from urllib.parse import urlparse
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +27,7 @@ class PropertyComparisonsListSerializer(serializers.ModelSerializer):
     have_grocery = serializers.SerializerMethodField()
     have_fitness_area = serializers.SerializerMethodField()
     default_image = serializers.URLField(source="default_image_url", read_only=True, allow_null=True)
-    interior_view = serializers.URLField(source="interior_view", read_only=True, allow_null=True)
+    interior_view = serializers.URLField(read_only=True, allow_null=True)
     ariel_view = serializers.URLField(source="ariel_video_url", read_only=True, allow_null=True)
     facility_view = serializers.SerializerMethodField()
     location_view = serializers.SerializerMethodField()
@@ -115,11 +116,47 @@ class PropertyComparisonsListSerializer(serializers.ModelSerializer):
     def get_have_fitness_area(self, obj):
         return self._get_building_field(obj, 'have_fitness_area', False)
     
+    def _validate_url(self, url):
+        """
+        Validate and format URL. Returns None if invalid or empty.
+        Ensures URL has a valid protocol (http:// or https://).
+        """
+        if not url or not isinstance(url, str) or url.strip() == "":
+            return None
+        
+        url = url.strip()
+        
+        # Parse URL to check if it has a scheme
+        parsed = urlparse(url)
+        
+        # If no scheme, try to add https://
+        if not parsed.scheme:
+            # If it starts with //, add https:
+            if url.startswith("//"):
+                url = "https:" + url
+            # If it looks like a domain (contains dots and doesn't start with /), add https://
+            elif "." in url and not url.startswith("/"):
+                url = "https://" + url
+            else:
+                # Relative URLs or paths are not valid for iframes
+                return None
+        
+        # Re-parse after potential modification
+        parsed = urlparse(url)
+        
+        # Validate: must have http/https scheme and a netloc (domain)
+        if parsed.scheme in ("http", "https") and parsed.netloc:
+            return url
+        
+        return None
+    
     def get_facility_view(self, obj):
-        return self._get_building_field(obj, 'facility_view')
+        url = self._get_building_field(obj, 'facility_view')
+        return self._validate_url(url)
     
     def get_location_view(self, obj):
-        return self._get_building_field(obj, 'location_view')
+        url = self._get_building_field(obj, 'location_view')
+        return self._validate_url(url)
     
     def get_view(self, obj):
         return self._get_building_field(obj, 'view')
