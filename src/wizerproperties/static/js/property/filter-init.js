@@ -653,11 +653,11 @@
       this.dom.quickFilterButtons.forEach((button) => {
         const isActive = this.isQuickFilterActive(button);
         if (isActive) {
-          button.classList.add("border-accent", "bg-accent/10", "text-accent");
-          button.classList.remove("border-border", "bg-secondary/60", "text-muted-foreground");
+          button.classList.add("border-brand-purple", "bg-brand-purple/15", "text-brand-purple", "font-semibold", "shadow-sm");
+          button.classList.remove("border-border", "bg-secondary/60", "text-muted-foreground", "font-medium");
         } else {
-          button.classList.remove("border-accent", "bg-accent/10", "text-accent");
-          button.classList.add("border-border", "bg-secondary/60", "text-muted-foreground");
+          button.classList.remove("border-brand-purple", "bg-brand-purple/15", "text-brand-purple", "font-semibold", "shadow-sm");
+          button.classList.add("border-border", "bg-secondary/60", "text-muted-foreground", "font-medium");
         }
       });
     }
@@ -731,11 +731,11 @@
           if (btn.getAttribute("data-quick-filter") === "price") {
             const btnActive = this.isQuickFilterActive(btn);
             if (btnActive) {
-              btn.classList.add("border-accent", "bg-accent/10", "text-accent");
-              btn.classList.remove("border-border", "bg-secondary/60", "text-muted-foreground");
+              btn.classList.add("border-brand-purple", "bg-brand-purple/15", "text-brand-purple", "font-semibold", "shadow-sm");
+              btn.classList.remove("border-border", "bg-secondary/60", "text-muted-foreground", "font-medium");
             } else {
-              btn.classList.remove("border-accent", "bg-accent/10", "text-accent");
-              btn.classList.add("border-border", "bg-secondary/60", "text-muted-foreground");
+              btn.classList.remove("border-brand-purple", "bg-brand-purple/15", "text-brand-purple", "font-semibold", "shadow-sm");
+              btn.classList.add("border-border", "bg-secondary/60", "text-muted-foreground", "font-medium");
             }
           }
         });
@@ -754,11 +754,11 @@
           if (btn.getAttribute("data-quick-filter") === "bedrooms") {
             const btnActive = this.isQuickFilterActive(btn);
             if (btnActive) {
-              btn.classList.add("border-accent", "bg-accent/10", "text-accent");
-              btn.classList.remove("border-border", "bg-secondary/60", "text-muted-foreground");
+              btn.classList.add("border-brand-purple", "bg-brand-purple/15", "text-brand-purple", "font-semibold", "shadow-sm");
+              btn.classList.remove("border-border", "bg-secondary/60", "text-muted-foreground", "font-medium");
             } else {
-              btn.classList.remove("border-accent", "bg-accent/10", "text-accent");
-              btn.classList.add("border-border", "bg-secondary/60", "text-muted-foreground");
+              btn.classList.remove("border-brand-purple", "bg-brand-purple/15", "text-brand-purple", "font-semibold", "shadow-sm");
+              btn.classList.add("border-border", "bg-secondary/60", "text-muted-foreground", "font-medium");
             }
           }
         });
@@ -788,6 +788,18 @@
       const filters = this.data.only_has_value();
       const hasFilters = Object.keys(filters).length > 0;
 
+      // Update active filter count badge in header
+      const countBadge = document.getElementById("active-filter-count-badge");
+      const countValue = countBadge?.querySelector("[data-filter-count]");
+      if (countBadge && countValue) {
+        if (hasFilters) {
+          countBadge.classList.remove("hidden");
+          countValue.textContent = Object.keys(filters).length;
+        } else {
+          countBadge.classList.add("hidden");
+        }
+      }
+
       // Show/hide the entire active filters section based on whether filters exist
       if (this.dom.activeFiltersSection) {
         if (hasFilters) {
@@ -800,7 +812,7 @@
       const addChip = (key, label) => {
         const button = document.createElement("button");
         button.type = "button";
-        button.className = "inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1 text-xs font-medium text-muted-foreground transition hover:border-destructive/40 hover:text-destructive";
+        button.className = "inline-flex items-center gap-2 rounded-full border border-brand-purple/30 bg-brand-purple/10 px-3 py-1 text-xs font-medium text-brand-purple transition hover:border-brand-purple/60 hover:bg-brand-purple/20";
         button.setAttribute("data-remove-filter", key);
         button.innerHTML = `${label} <i class="bi bi-x-circle"></i>`;
         button.addEventListener("click", () => {
@@ -810,8 +822,8 @@
             // Clear quick filter button states
             this.dom.quickFilterButtons.forEach((btn) => {
               if (btn.getAttribute("data-quick-filter") === "price") {
-                btn.classList.remove("border-accent", "bg-accent/10", "text-accent");
-                btn.classList.add("border-border", "bg-secondary/60", "text-muted-foreground");
+                btn.classList.remove("border-brand-purple", "bg-brand-purple/15", "text-brand-purple", "font-semibold", "shadow-sm");
+                btn.classList.add("border-border", "bg-secondary/60", "text-muted-foreground", "font-medium");
               }
             });
           } else if (key === "bedrooms") {
@@ -820,8 +832,8 @@
             // Clear quick filter button states
             this.dom.quickFilterButtons.forEach((btn) => {
               if (btn.getAttribute("data-quick-filter") === "bedrooms") {
-                btn.classList.remove("border-accent", "bg-accent/10", "text-accent");
-                btn.classList.add("border-border", "bg-secondary/60", "text-muted-foreground");
+                btn.classList.remove("border-brand-purple", "bg-brand-purple/15", "text-brand-purple", "font-semibold", "shadow-sm");
+                btn.classList.add("border-border", "bg-secondary/60", "text-muted-foreground", "font-medium");
               }
             });
           } else {

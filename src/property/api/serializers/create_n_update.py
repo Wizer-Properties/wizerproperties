@@ -78,6 +78,15 @@ class PropertyCreateAndUpdateSerializer(PropertySerializer):
         return data
 
     def get_media_files(self, request):
+        """
+        Extract media files from request.
+        
+        Args:
+            request: Django request object (unused, kept for API consistency)
+        
+        Returns:
+            dict: Dictionary with 'image' and 'video' file lists
+        """
         return {
             "image": self.request.FILES.getlist("images"),
             "video": self.request.FILES.getlist("videos"),

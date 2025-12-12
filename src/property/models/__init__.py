@@ -6,3 +6,4 @@ from .newly_created import NewlyCreatedProperty
 from .discount import DiscountProperty
 from .feature import FeatureProperty
 from .demography import PropertyVisitorLocation, PropertyPriceRange
+from .saved_search import SavedSearch

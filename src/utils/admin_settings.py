@@ -1,9 +1,21 @@
+from typing import Optional
 from django.core.exceptions import ObjectDoesNotExist
 from core.models import AdminSettings
 
 
-def get_admin_settings():
-    """Get the admin settings instance, create one if it doesn't exist"""
+def get_admin_settings() -> AdminSettings:
+    """
+    Get the admin settings instance, create one if it doesn't exist.
+    
+    Returns:
+        AdminSettings: The admin settings instance. If multiple records exist,
+            prefers one with an API key, otherwise returns the most recently updated.
+    
+    Note:
+        This function implements a singleton pattern to ensure only one AdminSettings
+        record is used. If multiple records exist, it will log a warning and attempt
+        to select the most appropriate one.
+    """
     try:
         count = AdminSettings.objects.count()
         
@@ -35,7 +47,7 @@ def get_admin_settings():
             # If no record has API key, use the most recently updated one
             settings = AdminSettings.objects.order_by('-updated_at').first()
             logger.warning(f"No AdminSettings record with API key found. Using most recently updated record (ID: {settings.id}). Please configure API key and delete duplicates.")
-        return settings
+            return settings
             
     except Exception as e:
         import logging
@@ -44,20 +56,36 @@ def get_admin_settings():
         return AdminSettings.objects.create()
 
 
-def get_discount_property_cost():
-    """Get the cost for creating a discount property"""
+def get_discount_property_cost() -> float:
+    """
+    Get the cost for creating a discount property.
+    
+    Returns:
+        float: The credit cost required to create a discount property listing.
+    """
     settings = get_admin_settings()
-    return settings.discount_property_cost
+    return float(settings.discount_property_cost)
 
 
-def get_featured_property_cost():
-    """Get the cost for creating a featured property"""
+def get_featured_property_cost() -> float:
+    """
+    Get the cost for creating a featured property.
+    
+    Returns:
+        float: The credit cost required to create a featured property listing.
+    """
     settings = get_admin_settings()
-    return settings.featured_property_cost
+    return float(settings.featured_property_cost)
 
 
-def get_openai_api_key():
-    """Get the OpenRouter API key from admin settings"""
+def get_openai_api_key() -> str:
+    """
+    Get the OpenRouter API key from admin settings.
+    
+    Returns:
+        str: The OpenRouter API key, or empty string if not configured.
+            Whitespace is automatically stripped from the key.
+    """
     try:
         settings = get_admin_settings()
         api_key = settings.openai_api_key

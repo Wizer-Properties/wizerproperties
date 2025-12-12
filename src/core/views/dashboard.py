@@ -10,12 +10,19 @@ from schedule.models import VisitingSchedule
 
 @login_required
 def dashboard(request):
+    """Route users to their respective dashboards based on user type."""
     if request.user.user_type == "developer" or request.user.user_type == "agent":
         to_return = developer_or_agent_dashboard(request)
     elif request.user.user_type == "prospect":
         to_return = prospect_dashboard(request)
     elif request.user.is_superuser or request.user.is_staff:
         to_return = redirect(reverse("admin:index"))
+    else:
+        # Default fallback: redirect to home or show error
+        # This handles edge cases where user_type is None or unexpected value
+        from django.contrib import messages
+        messages.warning(request, "Unable to determine dashboard. Please complete your profile.")
+        to_return = redirect("/")
 
     return to_return
 

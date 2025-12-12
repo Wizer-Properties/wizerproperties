@@ -5,18 +5,19 @@ from django.urls import reverse
 
 @login_required
 def complete_profile(request):
+    """
+    Handle profile completion flow for authenticated users.
+    
+    Args:
+        request: Django HttpRequest object with authenticated user.
+    
+    Returns:
+        HttpResponse: Redirect to admin for staff/superuser, or render profile completion page.
+    """
     to_return = redirect("/")
 
     # Check if the user has a complete profile.
     if not request.user.is_complete_profile:
-        
-        # # Depending on the user's user_type, redirect to their specific profile page.
-        # if request.user.user_type == "developer":
-        #     to_return = complete_developer_profile(request)
-        # elif request.user.user_type == "agent":
-        #     to_return = complete_agent_profile(request)
-        # elif request.user.user_type == "prospect":
-        #     to_return = complete_prospect_profile(request)
         # If the user is a superuser or staff, redirect them to the admin index page.
         if request.user.is_superuser or request.user.is_staff:
             to_return = redirect(reverse("admin:index"))

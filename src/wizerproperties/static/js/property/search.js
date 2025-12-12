@@ -35,13 +35,12 @@
         // Default search (/property/search/) shows map view
         // search-with-map URL shows list view
         viewMode: window.location.pathname.includes("search-with-map") ? "list" : "map",
-        displayMode: localStorage.getItem("property-display-mode") || "grid", // grid or list
+        displayMode: "grid", // Always grid view
       };
 
       // Cache DOM elements
       this.els = {
         list: document.getElementById("search-result-list"),
-        listList: document.getElementById("search-result-list-list"), // List view container
         emptyState: document.getElementById("search-empty-state"),
         loadingSkeleton: document.getElementById("search-loading-skeleton"),
         sentinel: document.getElementById("search-freescroll"),
@@ -51,7 +50,6 @@
         clearLocationBtn: document.querySelector("[data-filter-clear-location]"),
         viewToggle: document.querySelector("[label-name='view-tag']"),
         viewToggles: document.querySelectorAll("[label-name='view-tag']"), // All view toggle buttons
-        displayModeButtons: document.querySelectorAll(".view-toggle-btn"), // Grid/List toggle buttons
         sortingLabel: document.querySelector("[label='sorting-type']"),
         sortingBox: document.querySelector("[pop-element='sorting-box']"),
         sortingBtn: document.querySelector("[pop-target='sorting-box']"),
@@ -86,7 +84,7 @@
       this.updateHeading();
       this.updateViewToggleLink();
       this.updateSortingUI();
-      this.updateDisplayMode(); // Set initial grid/list view
+      // Always use grid view
 
       // Initialize map integration if MapManager is available
       this.initMapIntegration();
@@ -100,8 +98,12 @@
 
     initMapIntegration() {
       // Check if we're on a map view page and MapManager is available
-      if (this.state.viewMode === "map" && typeof window.MapManager !== 'undefined' && window.mapManager) {
+      if (this.state.viewMode === "map" && typeof window.MapManager !== 'undefined') {
+        // Wait for mapManager to be initialized (it's created asynchronously in g_map.js)
+        const checkMapManager = () => {
+          if (window.mapManager) {
         this.mapManager = window.mapManager;
+            console.log("PropertySearchManager: MapManager connected");
 
         // Listen for map bounds changes
         document.addEventListener("mapBounds:changed", (e) => {
@@ -113,6 +115,22 @@
 
         // Show/hide reset map button based on whether we have location filters
         this.updateResetMapButton();
+            
+            // If we already have properties rendered but mapManager wasn't ready, refresh to add markers
+            const existingCards = this.els.list.querySelectorAll('[data-property-card]');
+            if (existingCards.length > 0) {
+              console.log(`PropertySearchManager: Found ${existingCards.length} existing property cards, refreshing to add markers...`);
+              // Trigger a refresh to get properties and add markers
+              this.fetchProperties({ reset: true });
+            }
+          } else {
+            // Retry after a short delay if mapManager isn't ready yet
+            setTimeout(checkMapManager, 100);
+          }
+        };
+        
+        // Start checking immediately
+        checkMapManager();
       }
     }
 
@@ -202,9 +220,89 @@
       }
     }
 
+    initFilterPanelMinimize() {
+      const filterPanel = document.getElementById("search-filter-box");
+      const filterContent = document.querySelector("[data-filter-content]");
+      const locationSection = document.querySelector("[data-filter-location-section]");
+      const locationLabel = document.querySelector("[data-filter-location-label]");
+      const quickSection = document.querySelector("[data-filter-quick-section]");
+      const advancedSection = document.querySelector("[data-filter-advanced-section]");
+      
+      if (!filterPanel || !filterContent) return;
+      
+      let isMinimized = false;
+      const scrollThreshold = 100; // Start minimizing after 100px scroll
+      
+      const handleFilterMinimize = () => {
+        const currentScrollY = window.scrollY;
+        const shouldMinimize = currentScrollY > scrollThreshold;
+        
+        if (shouldMinimize !== isMinimized) {
+          isMinimized = shouldMinimize;
+          
+          if (isMinimized) {
+            // Minimize: Show compact single-row layout
+            filterContent.classList.add("py-2");
+            filterContent.classList.remove("py-4", "space-y-4");
+            filterContent.classList.add("space-y-2");
+            
+            // Hide labels and advanced sections
+            if (locationLabel) locationLabel.classList.add("hidden");
+            if (quickSection) {
+              const quickHeader = quickSection.querySelector(".flex.items-center.justify-between");
+              if (quickHeader) quickHeader.classList.add("hidden");
+            }
+            if (advancedSection) advancedSection.classList.add("hidden");
+            
+            // Make location input more compact
+            if (locationSection) {
+              locationSection.classList.remove("gap-4");
+              locationSection.classList.add("gap-0");
+            }
+          } else {
+            // Expand: Show full layout
+            filterContent.classList.remove("py-2", "space-y-2");
+            filterContent.classList.add("py-4", "space-y-4");
+            
+            // Show labels and advanced sections
+            if (locationLabel) locationLabel.classList.remove("hidden");
+            if (quickSection) {
+              const quickHeader = quickSection.querySelector(".flex.items-center.justify-between");
+              if (quickHeader) quickHeader.classList.remove("hidden");
+            }
+            if (advancedSection) advancedSection.classList.remove("hidden");
+            
+            // Restore location input spacing
+            if (locationSection) {
+              locationSection.classList.remove("gap-0");
+              locationSection.classList.add("gap-4");
+            }
+          }
+        }
+      };
+      
+      // Throttle scroll events for performance
+      let ticking = false;
+      window.addEventListener("scroll", () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            handleFilterMinimize();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+      
+      // Initial check
+      handleFilterMinimize();
+    }
+
     bindEvents() {
       // Infinite Scroll
       window.addEventListener("scroll", this.handleScroll.bind(this), { passive: true });
+      
+      // Filter Panel Minimize on Scroll
+      this.initFilterPanelMinimize();
 
       // Sorting
       if (this.els.sortingBtn && this.els.sortingBox) {
@@ -307,15 +405,7 @@
         });
       }
 
-      // Display Mode Toggle (Grid/List)
-      this.els.displayModeButtons.forEach(btn => {
-        btn.addEventListener("click", () => {
-          const mode = btn.getAttribute("data-view-mode");
-          if (mode && mode !== this.state.displayMode) {
-            this.setDisplayMode(mode);
-          }
-        });
-      });
+      // Display mode is always grid - no toggle needed
 
       // Clear Filters Button
       const clearFiltersBtn = document.querySelector("[data-clear-filters]");
@@ -340,68 +430,7 @@
       });
     }
 
-    setDisplayMode(mode) {
-      this.state.displayMode = mode;
-      localStorage.setItem("property-display-mode", mode);
-      this.updateDisplayMode();
-
-      // Re-render current results in new layout
-      const currentCards = Array.from(this.els.list.children).filter(
-        el => el.hasAttribute("data-property-card")
-      );
-      if (currentCards.length > 0) {
-        const fragment = document.createDocumentFragment();
-        currentCards.forEach(card => fragment.appendChild(card.cloneNode(true)));
-
-        const targetContainer = mode === "grid" ? this.els.list : this.els.listList;
-        const sourceContainer = mode === "grid" ? this.els.listList : this.els.list;
-
-        sourceContainer.innerHTML = "";
-        targetContainer.appendChild(fragment);
-
-        // Re-initialize card behaviors
-        Array.from(targetContainer.children).forEach(card => {
-          this.initializeCardBehavior(card);
-        });
-      }
-    }
-
-    updateDisplayMode() {
-      const isGrid = this.state.displayMode === "grid";
-
-      // Update containers
-      if (this.els.list) {
-        if (isGrid) {
-          this.els.list.classList.remove("hidden");
-          this.els.list.classList.add("grid");
-        } else {
-          this.els.list.classList.add("hidden");
-          this.els.list.classList.remove("grid");
-        }
-      }
-      if (this.els.listList) {
-        if (isGrid) {
-          this.els.listList.classList.add("hidden");
-        } else {
-          this.els.listList.classList.remove("hidden");
-        }
-      }
-
-      // Update toggle buttons
-      this.els.displayModeButtons.forEach(btn => {
-        const mode = btn.getAttribute("data-view-mode");
-        const isActive = mode === this.state.displayMode;
-        if (isActive) {
-          btn.classList.add("bg-primary", "text-white");
-          btn.classList.remove("bg-transparent", "text-muted-foreground");
-          btn.setAttribute("aria-pressed", "true");
-        } else {
-          btn.classList.remove("bg-primary", "text-white");
-          btn.classList.add("bg-transparent", "text-muted-foreground");
-          btn.setAttribute("aria-pressed", "false");
-        }
-      });
-    }
+    // Display mode is always grid - no toggle functionality needed
 
     handleScroll() {
       if (this.state.loading || !this.state.hasMore || !this.els.sentinel) return;
@@ -601,7 +630,7 @@
 
     renderProperties(properties) {
       // Get the active container based on display mode
-      const activeContainer = this.state.displayMode === "grid" ? this.els.list : this.els.listList;
+      const activeContainer = this.els.list;
 
       // Remove any existing end-of-results indicator
       const existingEndIndicator = activeContainer.querySelector("[data-end-of-results]");
@@ -621,17 +650,21 @@
           showSchedule: this.isProspect, // Only show schedule button for prospects
           contactEmail: (p) => p?.developer_email || null,
           enableMediaButtons: true,
-          listView: this.state.displayMode === "list", // Pass list view flag
+          listView: false, // Always grid view
         });
 
         // Apply list view styling if needed
-        if (this.state.displayMode === "list" && card) {
-          card.classList.add("list-view-card");
+        if (false && card) { // List view removed
+          // List view removed - always use grid
         }
 
         // Initialize responsive card behavior
         this.initializeCardBehavior(card);
         this.adaptCardToContainer(card, activeContainer);
+
+        // Add fade-in animation with staggered delay
+        card.classList.add("opacity-0", "animate-fade-in-up");
+        card.style.animationDelay = `${index * 50}ms`; // Stagger animations by 50ms per card
 
         fragment.appendChild(card);
 
@@ -648,6 +681,18 @@
         }
       });
       activeContainer.appendChild(fragment);
+
+      // Trigger animations after cards are in DOM
+      requestAnimationFrame(() => {
+        Array.from(activeContainer.children).forEach((card, idx) => {
+          if (card.hasAttribute("data-property-card") || card.hasAttribute("data-inline-ad")) {
+            card.classList.remove("opacity-0");
+            // Ensure animation plays
+            card.style.animation = "fadeInUp 0.4s ease-out forwards";
+            card.style.animationDelay = `${idx * 50}ms`;
+          }
+        });
+      });
 
       // Re-init global components if needed
       if (typeof window.Countdown === "function") {
@@ -736,7 +781,7 @@
 
     renderEndOfResults() {
       // Get the active container based on display mode
-      const activeContainer = this.state.displayMode === "grid" ? this.els.list : this.els.listList;
+      const activeContainer = this.els.list;
 
       // Only show if we have results and no more pages
       if (activeContainer.children.length === 0) return;
@@ -887,7 +932,7 @@
     }
 
     appendSkeletons() {
-      const isGrid = this.state.displayMode === "grid";
+      const isGrid = true; // Always grid view
       const container = isGrid ? this.els.list : this.els.listList;
 
       if (!container) return;
@@ -919,38 +964,9 @@
           </div>
         </div>`;
 
-      // List skeleton (horizontal layout)
-      const listTemplate = `
-        <div class="rounded-2xl border border-border bg-card shadow-sm animate-pulse skeleton-item">
-          <div class="grid grid-cols-1 gap-4 lg:grid-cols-[280px_minmax(0,1fr)] p-4">
-            <div class="h-56 rounded-xl bg-muted lg:h-full"></div>
-            <div class="flex flex-col justify-between gap-4">
-              <div class="space-y-3">
-                <div class="h-5 w-3/4 rounded bg-muted"></div>
-                <div class="h-3 w-1/2 rounded bg-muted"></div>
-                <div class="grid grid-cols-4 gap-1.5">
-                  <div class="h-12 rounded-lg bg-muted"></div>
-                  <div class="h-12 rounded-lg bg-muted"></div>
-                  <div class="h-12 rounded-lg bg-muted"></div>
-                  <div class="h-12 rounded-lg bg-muted"></div>
-                </div>
-              </div>
-              <div class="flex items-center gap-2.5 border-t border-border/60 pt-3">
-                <div class="size-8 rounded-md bg-muted"></div>
-                <div class="flex-1">
-                  <div class="h-3 w-24 rounded bg-muted mb-1"></div>
-                  <div class="h-2 w-16 rounded bg-muted"></div>
-                </div>
-              </div>
-              <div class="flex gap-2">
-                <div class="h-9 flex-1 rounded-lg bg-muted"></div>
-                <div class="h-9 flex-1 rounded-lg bg-muted"></div>
-              </div>
-            </div>
-          </div>
-        </div>`;
+      // List view removed - only grid template needed
 
-      const template = isGrid ? gridTemplate : listTemplate;
+      const template = gridTemplate; // Always use grid template
       const fragment = document.createDocumentFragment();
 
       for (let i = 0; i < this.config.skeletonCount; i++) {
@@ -1010,16 +1026,104 @@
       }
     }
 
-    handleSaveSearch() {
-      // TODO: Implement save search functionality
-      // This would typically save the current search criteria to user's account
-      console.log("Save search clicked", {
-        place: this.state.place,
-        filters: this.state.filters,
-        ordering: this.state.ordering
-      });
-      // Show a toast or modal for save search
-      alert("Save search feature coming soon!");
+    async handleSaveSearch() {
+      // Check if user is authenticated and is a prospect
+      if (!this.isAuthenticated || !this.isProspect) {
+        this.showToast("Please sign in as a prospect to save searches.", "warning");
+        return;
+      }
+
+      // Prompt user for search name
+      const searchName = prompt("Enter a name for this search (e.g., '2BR Condos in Sukhumvit'):");
+      if (!searchName || !searchName.trim()) {
+        return; // User cancelled or entered empty name
+      }
+
+      // Collect current search parameters
+      const searchParams = {
+        place: this.state.place || "",
+        filters: { ...this.state.filters },
+        ordering: this.state.ordering || "-created_at",
+        viewMode: this.state.viewMode,
+        mapBounds: this.state.mapBounds,
+      };
+
+      try {
+        // Show loading state
+        const saveBtn = document.querySelector("[data-save-search]");
+        if (saveBtn) {
+          saveBtn.disabled = true;
+          saveBtn.textContent = "Saving...";
+        }
+
+        // Send to API
+        const response = await fetch("/property/api/saved-search/create/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": this.getCsrfToken(),
+          },
+          body: JSON.stringify({
+            name: searchName.trim(),
+            search_params: searchParams,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          this.showToast(`Search "${searchName}" saved successfully!`, "success");
+        } else {
+          const errorMsg = data.detail || data.name?.[0] || "Failed to save search. Please try again.";
+          this.showToast(errorMsg, "error");
+        }
+      } catch (error) {
+        console.error("Error saving search:", error);
+        this.showToast("An error occurred while saving your search. Please try again.", "error");
+      } finally {
+        // Restore button state
+        const saveBtn = document.querySelector("[data-save-search]");
+        if (saveBtn) {
+          saveBtn.disabled = false;
+          saveBtn.innerHTML = '<i class="bi bi-bookmark"></i> <span>Save Search</span>';
+        }
+      }
+    }
+
+    getCsrfToken() {
+      // Get CSRF token from cookies
+      const name = "csrftoken";
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === name + "=") {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    showToast(message, type = "info") {
+      // Simple toast notification
+      // You can enhance this to use your existing toast system
+      const toast = document.createElement("div");
+      toast.className = `fixed top-4 right-4 z-50 px-4 py-3 rounded-lg shadow-lg text-white ${
+        type === "success" ? "bg-green-500" :
+        type === "error" ? "bg-red-500" :
+        type === "warning" ? "bg-yellow-500" :
+        "bg-blue-500"
+      }`;
+      toast.textContent = message;
+      document.body.appendChild(toast);
+
+      // Remove after 3 seconds
+      setTimeout(() => {
+        toast.remove();
+      }, 3000);
     }
 
     updateResetMapButton() {

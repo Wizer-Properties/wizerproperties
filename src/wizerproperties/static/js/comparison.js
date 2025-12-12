@@ -1,46 +1,72 @@
 "use strict";
 
+/**
+ * Modern Property Comparison Page
+ * Rebuilt from scratch following search page design patterns
+ * Features:
+ * - Responsive comparison table (desktop) and slider (mobile)
+ * - Sticky header with breadcrumbs
+ * - Loading states and empty states
+ * - Clean, intuitive UX
+ */
+
 (function () {
-  const sliderElement = document.querySelector("#comparison-slider");
-  const listElement = document.querySelector("[data-comparison-list]");
-  const fieldsElement = document.querySelector("[data-comparison-fields]");
+  // Configuration
+  const CONFIG = {
+    apiUrl: window.COMPARISON_API_URL || '/property/api/compare/list/',
+    removeUrl: window.COMPARISON_REMOVE_API_URL || '/property/api/compare/delete/',
+    maxProperties: 3,
+  };
 
-  if (!sliderElement || !listElement || !fieldsElement) return;
-
+  // State
   const state = {
-    splide: null,
-    next: 1,
+    properties: [],
     loading: false,
-    maxForwardIndex: 0,
+    splide: null,
     videoCounter: 0,
   };
 
-  const csrf = typeof csrfToken !== "undefined" ? csrfToken : "";
-  const COMPARISON_API_URL = window.COMPARISON_API_URL || '/property/api/compare/list/';
-  const COMPARISON_REMOVE_API_URL = window.COMPARISON_REMOVE_API_URL || '/property/api/compare/delete/';
+  // DOM Elements
+  const elements = {
+    main: document.getElementById('comparison-main'),
+    loading: document.getElementById('comparison-loading'),
+    container: document.getElementById('comparison-container'),
+    empty: document.getElementById('comparison-empty'),
+    tableDesktop: document.getElementById('comparison-table-desktop'),
+    tableBody: document.getElementById('comparison-table-body'),
+    fieldsList: document.getElementById('comparison-fields-list'),
+    listMobile: document.getElementById('comparison-list-mobile'),
+    sliderMobile: document.getElementById('comparison-slider-mobile'),
+    countHeader: document.getElementById('comparison-count-header'),
+    clearAllBtn: document.getElementById('clear-all-comparison'),
+  };
 
+  // CSRF Token
+  const csrf = typeof csrfToken !== "undefined" ? csrfToken : "";
+
+  // Field Configuration
   const FIELD_CONFIG = [
-    { key: "building_title", label: "Project Name" },
-    { key: "price", label: "Price" },
-    { key: "price_per_sqm", label: "Price per sqm" },
-    { key: "unit_area", label: "Land / Unit Area" },
-    { key: "number_of_bedroom", label: "Bedrooms" },
-    { key: "number_of_bathroom", label: "Bathrooms" },
-    { key: "number_of_car_parking", label: "Parking" },
+    { key: "building_title", label: "Project Name", type: "text" },
+    { key: "price", label: "Price", type: "currency" },
+    { key: "price_per_sqm", label: "Price per sqm", type: "currency" },
+    { key: "unit_area", label: "Unit Area", type: "area" },
+    { key: "number_of_bedroom", label: "Bedrooms", type: "number" },
+    { key: "number_of_bathroom", label: "Bathrooms", type: "number" },
+    { key: "number_of_car_parking", label: "Parking", type: "number" },
     { key: "have_freehold", label: "Freehold", type: "boolean" },
     { key: "have_leasehold", label: "Leasehold", type: "boolean" },
-    { key: "construction_year", label: "Completion Date" },
-    { key: "quota", label: "Quota" },
-    { key: "distance_from_location_to_BTS_or_MRT", label: "Access to BTS/MRT" },
-    { key: "distance_from_location_to_ARL", label: "Access to ARL" },
-    { key: "furnishing", label: "Furnishing" },
+    { key: "construction_year", label: "Completion Date", type: "text" },
+    { key: "quota", label: "Quota", type: "text" },
+    { key: "distance_from_location_to_BTS_or_MRT", label: "BTS/MRT Access", type: "distance" },
+    { key: "distance_from_location_to_ARL", label: "ARL Access", type: "distance" },
+    { key: "furnishing", label: "Furnishing", type: "text" },
     { key: "have_tenant_occupied", label: "Tenant Occupied", type: "boolean" },
     { key: "have_owner_occupied", label: "Owner Occupied", type: "boolean" },
     { key: "have_duplex", label: "Duplex", type: "boolean" },
     { key: "have_pets_allowed", label: "Pet Friendly", type: "boolean" },
-    { key: "number_of_balcony", label: "Balcony" },
+    { key: "number_of_balcony", label: "Balcony", type: "number" },
     { key: "have_bathtub", label: "Bathtubs", type: "boolean" },
-    { key: "view", label: "Primary View" },
+    { key: "view", label: "Primary View", type: "text" },
     { key: "have_infinity_pool", label: "Infinity Pool", type: "boolean" },
     { key: "have_fitness_area", label: "Gym", type: "boolean" },
     { key: "have_sky_lounge", label: "Sky Lounge", type: "boolean" },
@@ -51,277 +77,363 @@
     { key: "ariel_view", label: "Aerial View", type: "video" },
   ];
 
+  // Utility Functions
   const formatCurrency = (value) => {
+    if (!value && value !== 0) return "—";
     if (typeof window.formatBalance === "function") {
-      return window.formatBalance(Math.floor(value) || 0);
+      return `฿ ${window.formatBalance(Math.floor(value))}`;
     }
-    return new Intl.NumberFormat().format(Math.floor(value) || 0);
+    return `฿ ${Math.floor(value).toLocaleString()}`;
   };
 
   const formatBoolean = (value) => {
     if (value) {
-      return `<span class="inline-flex items-center gap-2 text-sm font-medium text-emerald-600"><i class="bi bi-check-circle-fill"></i>Yes</span>`;
+      return `<span class="inline-flex items-center gap-1.5 text-sm font-medium text-emerald-600">
+        <i class="bi bi-check-circle-fill"></i>Yes
+      </span>`;
     }
-    return `<span class="inline-flex items-center gap-2 text-sm font-medium text-destructive"><i class="bi bi-x-circle-fill"></i>No</span>`;
+    return `<span class="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
+      <i class="bi bi-x-circle text-muted-foreground/60"></i>No
+    </span>`;
   };
 
-  const renderMediaFrame = (url, fallback) => {
-    if (!url) {
-      return `<div class="flex h-full items-center justify-center rounded-xl border border-dashed border-border bg-secondary/30 text-xs text-muted-foreground">${fallback}</div>`;
-    }
-    return `<iframe src="${url}" class="h-full w-full rounded-xl border border-border" allowfullscreen loading="lazy"></iframe>`;
-  };
-
-  const createLoaderSlide = () => `
-    <div class="flex h-full flex-col gap-4 rounded-2xl border border-border bg-card p-4 shadow-sm">
-      <div class="aspect-video w-full animate-pulse rounded-xl bg-muted"></div>
-      <div class="space-y-3">
-        ${Array.from({ length: FIELD_CONFIG.length })
-          .map(() => '<div class="h-3 w-full animate-pulse rounded bg-muted"></div>')
-          .join("")}
-      </div>
-    </div>
-  `;
-
-  const createComparisonSlide = (item) => {
-    // Handle both CompareProperty response (with property_info) and direct Property object
-    const property = item?.property_info || item || {};
-    const buildingLink = property.building_id
-      ? `/building/details/${property.building_id}/`
-      : "#";
-
-    const metrics = FIELD_CONFIG.map((field) => {
-      let content = "—";
+  const formatValue = (property, field) => {
+    const value = property[field.key];
+    
       switch (field.type) {
+      case "currency":
+        return formatCurrency(value);
         case "boolean":
-          content = formatBoolean(property[field.key]);
-          break;
+        return formatBoolean(value);
+      case "area":
+        return value ? `${value} sqm` : "—";
+      case "distance":
+        return value ? `${value} km` : "—";
+      case "number":
+        return value !== null && value !== undefined ? value : "—";
         case "link":
-          content = `<a href="/property/details/${property.id}/" class="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary/80">
+        return `<a href="/property/details/${property.id}/" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-purple hover:text-brand-purple/80 transition">
                        View details
                        <i class="bi bi-box-arrow-up-right text-xs"></i>
                      </a>`;
-          break;
         case "iframe":
-          content = `<div class="aspect-video">${renderMediaFrame(property[field.key], "Not available")}</div>`;
-          break;
-        case "video": {
-          if (property[field.key]) {
-            state.videoCounter += 1;
-            const videoId = `comparison-video-${state.videoCounter}`;
-            content = `
-              <div class="aspect-video overflow-hidden rounded-xl border border-border bg-black/80">
-                <video
-                  id="${videoId}"
-                  class="video-js h-full w-full"
-                  controls
-                  preload="auto"
-                  data-setup="{}"
-                >
-                  <source src="${property[field.key]}" type="video/mp4" />
-                  <p class="vjs-no-js">To view this video please enable JavaScript.</p>
-                </video>
-              </div>
-            `;
-            // Initialize after slide is mounted and videojs is loaded
-            requestAnimationFrame(() => {
-              try {
-                if (typeof window.videojs !== "undefined") {
-                  window.videojs(videoId);
-                } else {
-                  // Retry after a short delay if videojs isn't loaded yet
-                  setTimeout(() => {
-                    if (typeof window.videojs !== "undefined") {
-                window.videojs(videoId);
-                    }
-                  }, 100);
-                }
-              } catch (error) {
-                console.error("Failed to initialize video player:", error);
-              }
-            });
-          } else {
-            content = `<div class="flex h-full items-center justify-center rounded-xl border border-dashed border-border bg-secondary/30 text-xs text-muted-foreground">
-                         Not available
-                       </div>`;
-          }
-          break;
+        if (!value) {
+          return `<span class="text-xs text-muted-foreground">—</span>`;
         }
-        default: {
-          if (field.key === "building_title") {
-            content = `<a href="${buildingLink}" class="text-sm font-semibold text-foreground hover:text-primary">${property.building_title || property.title || "-"}</a>`;
-          } else if (field.key === "price") {
-            content = property.price ? `฿ ${formatCurrency(property.price)}` : "—";
-          } else if (field.key === "price_per_sqm") {
-            content = property.price_per_sqm ? `฿ ${formatCurrency(property.price_per_sqm)} / sqm` : "—";
-          } else if (field.key === "unit_area") {
-            content = property.unit_area ? `${property.unit_area} sqm` : "—";
-          } else {
-            const value = property[field.key];
-            content = value !== null && value !== undefined && value !== "" ? value : "—";
-          }
+        try {
+          new URL(value); // Validate URL
+          // For comparison table, show link instead of iframe to save space
+          return `<a href="${value}" target="_blank" rel="noopener noreferrer" class="text-xs text-brand-purple hover:underline">View ${field.label}</a>`;
+        } catch {
+          return `<span class="text-xs text-muted-foreground">—</span>`;
         }
-      }
-      return `
-        <li class="flex items-start justify-between gap-3 rounded-xl border border-border/60 bg-secondary/30 px-3 py-2">
-          <span class="text-xs font-medium uppercase tracking-wide text-muted-foreground">${field.label}</span>
-          <span class="text-sm text-foreground text-right leading-relaxed">${content}</span>
-        </li>
-      `;
-    }).join("");
+      case "video":
+        if (!value) {
+          return `<span class="text-xs text-muted-foreground">—</span>`;
+        }
+        // For comparison table, show link instead of video player to save space
+        return `<a href="${value}" target="_blank" rel="noopener noreferrer" class="text-xs text-brand-purple hover:underline">View Video</a>`;
+      default:
+        return value !== null && value !== undefined && value !== "" ? String(value) : "—";
+    }
+  };
+
+  // Render Functions - Using table structure for proper alignment
+  const renderDesktopTable = () => {
+    if (!elements.tableDesktop || !elements.tableBody) return;
+    
+    // Clear existing content
+    const thead = elements.tableDesktop.querySelector('thead tr');
+    const existingHeaders = thead.querySelectorAll('th:not(:first-child)');
+    existingHeaders.forEach(th => th.remove());
+    elements.tableBody.innerHTML = '';
+    
+    // Add property headers
+    state.properties.forEach((property) => {
+      const propertyData = property?.property_info || property || {};
+      const th = document.createElement('th');
+      th.className = 'bg-card border-r border-border last:border-r-0 p-3 text-left align-top';
+      th.innerHTML = renderPropertyHeader(propertyData);
+      thead.appendChild(th);
+    });
+    
+    // Add field rows
+    FIELD_CONFIG.forEach(field => {
+      const tr = document.createElement('tr');
+      tr.className = 'border-b border-border/50 last:border-0';
+      
+      // Field label cell
+      const labelCell = document.createElement('td');
+      labelCell.className = 'sticky left-0 z-10 bg-card border-r border-border p-2 align-middle';
+      labelCell.style.width = '200px';
+      labelCell.innerHTML = `<span class="text-xs font-medium text-muted-foreground">${field.label}</span>`;
+      tr.appendChild(labelCell);
+      
+      // Property value cells
+      state.properties.forEach((property) => {
+        const propertyData = property?.property_info || property || {};
+        const value = formatValue(propertyData, field);
+        const valueCell = document.createElement('td');
+        valueCell.className = 'border-r border-border/50 last:border-r-0 p-2 align-middle';
+        valueCell.innerHTML = `<div class="text-xs text-foreground leading-snug">${value}</div>`;
+        tr.appendChild(valueCell);
+      });
+      
+      elements.tableBody.appendChild(tr);
+    });
+    
+    // Initialize videos
+    initializeVideos();
+  };
+
+  const renderPropertyHeader = (propertyData) => {
+    const buildingLink = propertyData.building_id
+      ? `/building/details/${propertyData.building_id}/`
+      : "#";
 
     return `
-      <li class="splide__slide comparison-slider-box">
-        <article class="flex h-full flex-col gap-4 rounded-2xl border border-border bg-card p-4 shadow-sm">
-          <div class="relative overflow-hidden rounded-xl border border-border bg-muted">
-            <img src="${property.default_image || "/static/media/placeholder.png"}" alt="${property.title}" class="h-48 w-full object-cover" loading="lazy" />
-            <button class="remove-from-comparison absolute right-3 top-3 inline-flex size-9 items-center justify-center rounded-full border border-border bg-black/60 text-white backdrop-blur transition hover:bg-black/80" data-property="${property.id}">
+      <div class="space-y-2">
+        <div class="relative">
+          <div class="relative h-20 w-full overflow-hidden rounded-lg border border-border bg-muted">
+            <img 
+              src="${propertyData.default_image || '/static/media/placeholder.png'}" 
+              alt="${propertyData.title || 'Property'}" 
+              class="h-full w-full object-cover"
+              loading="lazy"
+              onerror="this.src='/static/media/placeholder.png'"
+            />
+            <button 
+              class="remove-property absolute right-1 top-1 inline-flex size-6 items-center justify-center rounded-full border border-border bg-white/90 backdrop-blur-sm text-foreground transition hover:bg-white hover:text-destructive"
+              data-property-id="${propertyData.id}"
+              aria-label="Remove from comparison"
+            >
               <i class="bi bi-x-lg text-xs"></i>
-              <span class="sr-only">Remove from comparison</span>
             </button>
           </div>
-          <ul class="space-y-3 text-sm text-muted-foreground">
-            ${metrics}
-          </ul>
-        </article>
-      </li>
+        </div>
+        <h3 class="text-xs font-semibold text-foreground line-clamp-2 leading-tight">
+          <a href="${buildingLink}" class="hover:text-brand-purple transition">
+            ${propertyData.building_title || propertyData.title || 'Untitled Property'}
+          </a>
+        </h3>
+        <p class="text-base font-bold text-brand-purple">
+          ${formatCurrency(propertyData.price)}
+        </p>
+        <a 
+          href="/property/details/${propertyData.id}/" 
+          class="inline-flex items-center gap-1 text-xs font-medium text-brand-purple hover:text-brand-purple/80 transition"
+        >
+          View details
+          <i class="bi bi-arrow-right text-[10px]"></i>
+        </a>
+      </div>
     `;
   };
 
-  const updateFieldLabels = () => {
-    fieldsElement.innerHTML = FIELD_CONFIG.map((field) => `<li>${field.label}</li>`).join("");
+  const renderPropertyColumn = (property, index) => {
+    const propertyData = property?.property_info || property || {};
+
+    const headerHtml = renderPropertyHeader(propertyData);
+    const fieldsHtml = FIELD_CONFIG.map(field => {
+      const value = formatValue(propertyData, field);
+      return `
+        <div class="py-1.5 border-b border-border/50 last:border-0 h-[28px] flex items-center">
+          <div class="text-xs text-foreground leading-snug w-full line-clamp-1">${value}</div>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div class="p-3 border-r border-border last:border-r-0">
+        <div class="space-y-0">
+          ${headerHtml}
+          ${fieldsHtml}
+        </div>
+      </div>
+    `;
   };
 
-  const removeLoaderSlides = () => {
-    const loaders = listElement.querySelectorAll(".comparison-loader-slide");
-    loaders.forEach((slide) => {
-      try {
-        state.splide?.remove(slide);
+
+  const renderMobileSlider = () => {
+    if (!elements.listMobile) return;
+    
+    elements.listMobile.innerHTML = state.properties.map((property, index) => `
+      <li class="splide__slide">
+        ${renderPropertyColumn(property, index)}
+      </li>
+    `).join('');
+    
+    // Initialize Splide if not already initialized
+    if (state.splide) {
+      state.splide.destroy();
+    }
+    
+    if (elements.sliderMobile && state.properties.length > 0) {
+      state.splide = new Splide(elements.sliderMobile, {
+        perPage: 1,
+        gap: '1.5rem',
+        pagination: true,
+        arrows: state.properties.length > 1,
+        breakpoints: {
+          640: {
+            perPage: 1,
+          },
+        },
+      });
+      state.splide.mount();
+    }
+    
+    // Initialize videos
+    initializeVideos();
+  };
+
+  const initializeVideos = () => {
+    // Initialize video.js players
+    requestAnimationFrame(() => {
+      if (typeof window.videojs !== "undefined") {
+        document.querySelectorAll('video.video-js').forEach(video => {
+          if (!video.dataset.initialized) {
+            try {
+              window.videojs(video.id);
+              video.dataset.initialized = 'true';
       } catch (error) {
-        slide.remove();
+              console.warn('Failed to initialize video player:', error);
+            }
+          }
+        });
       }
     });
   };
 
-  const addLoaderSlides = (count) => {
-    for (let i = 0; i < count; i += 1) {
-      const loaderSlide = document.createElement("li");
-      loaderSlide.className = "splide__slide comparison-loader-slide";
-      loaderSlide.innerHTML = createLoaderSlide();
-      listElement.appendChild(loaderSlide);
+  const updateUI = () => {
+    const count = state.properties.length;
+    
+    // Update header count
+    if (elements.countHeader) {
+      elements.countHeader.textContent = count;
     }
-    state.splide?.refresh();
+    
+    // Show/hide clear all button
+    if (elements.clearAllBtn) {
+      elements.clearAllBtn.classList.toggle('hidden', count === 0);
+    }
+    
+    // Show/hide sections
+    if (elements.loading) elements.loading.classList.add('hidden');
+    
+    if (count === 0) {
+      if (elements.container) elements.container.classList.add('hidden');
+      if (elements.empty) {
+        elements.empty.classList.remove('hidden');
+        // Ensure empty state is visible
+        elements.empty.style.display = '';
+      }
+    } else {
+      if (elements.container) elements.container.classList.remove('hidden');
+      if (elements.empty) {
+        elements.empty.classList.add('hidden');
+        elements.empty.style.display = 'none';
+      }
+      
+      // Render based on screen size
+      if (window.innerWidth >= 1024) {
+        renderDesktopTable();
+      } else {
+        renderMobileSlider();
+      }
+    }
   };
 
+  // API Functions
   const fetchComparisonList = async () => {
     if (state.loading) return;
     state.loading = true;
 
-    const perPage = state.splide?.options?.perPage || 3;
-    addLoaderSlides(perPage);
+    // Show loading state
+    if (elements.loading) elements.loading.classList.remove('hidden');
+    if (elements.container) elements.container.classList.add('hidden');
+    if (elements.empty) elements.empty.classList.add('hidden');
 
     try {
-      const params = new URLSearchParams({
-        page_size: perPage,
-      });
-      if (state.next) params.set("page", state.next);
-
-      const response = await fetch(`${COMPARISON_API_URL}?${params.toString()}`, {
-        headers: {
-          "X-CSRFToken": csrf,
-        },
+      // Fetch all properties (request more than max to get all at once)
+      const params = new URLSearchParams({ page_size: 10 });
+      const response = await fetch(`${CONFIG.apiUrl}?${params.toString()}`, {
+        headers: { "X-CSRFToken": csrf },
         credentials: "same-origin",
       });
       
       if (!response.ok) {
-        let errorMessage = `Request failed with status ${response.status}`;
-        try {
-          const errorData = await response.json();
-          errorMessage = errorData.detail || errorData.message || errorMessage;
-        } catch (e) {
-          // If response is not JSON, use status text
-          errorMessage = response.statusText || errorMessage;
+        // Handle 403/401 - user not authenticated (just show empty state, don't require login)
+        if (response.status === 403 || response.status === 401) {
+          state.properties = [];
+          // Hide loading, show empty state (generic message, not sign-in required)
+          if (elements.loading) elements.loading.classList.add('hidden');
+          if (elements.container) elements.container.classList.add('hidden');
+          // Show empty state - page is accessible to all, but adding properties requires auth
+          state.loading = false;
+          updateUI(); // This will show the default empty state
+          return;
         }
-        throw new Error(errorMessage);
+        throw new Error(`Request failed with status ${response.status}`);
       }
 
       const data = await response.json();
-      state.next = data?.next || null;
-
-      const fragment = document.createDocumentFragment();
-      (data?.results || []).forEach((result) => {
-        // Pass the full result object - createComparisonSlide will extract property_info
-        if (!result || (!result.property_info && !result.id)) {
-          console.warn("Invalid property data in comparison result:", result);
-          return;
+      let allResults = [...(data?.results || [])];
+      
+      // Fetch remaining pages if paginated
+      let nextPage = data?.next || null;
+      while (nextPage && allResults.length < CONFIG.maxProperties) {
+        const nextParams = new URLSearchParams({ page_size: 10, page: nextPage });
+        const nextResponse = await fetch(`${CONFIG.apiUrl}?${nextParams.toString()}`, {
+          headers: { "X-CSRFToken": csrf },
+          credentials: "same-origin",
+        });
+        
+        if (nextResponse.ok) {
+          const nextData = await nextResponse.json();
+          allResults = [...allResults, ...(nextData?.results || [])];
+          nextPage = nextData?.next || null;
+        } else {
+          break;
         }
-        const slideWrapper = document.createElement("div");
-        slideWrapper.innerHTML = createComparisonSlide(result);
-        fragment.appendChild(slideWrapper.firstElementChild);
-      });
-
-      listElement.appendChild(fragment);
-      state.splide?.refresh();
-
-      removeLoaderSlides();
-
-      if (!data?.results?.length) {
-        listElement.innerHTML = `
-          <li class="splide__slide">
-            <div class="flex h-full flex-col items-center justify-center gap-6 rounded-2xl border border-dashed border-border bg-secondary/30 p-8 text-center">
-              <div class="flex size-20 items-center justify-center rounded-full bg-primary/10">
-                <i class="bi bi-arrow-left-right text-4xl text-primary"></i>
+      }
+      
+      // Limit to max properties
+      state.properties = allResults.slice(0, CONFIG.maxProperties);
+      updateUI();
+      
+    } catch (error) {
+      console.error("Failed to fetch comparison list:", error);
+      // Show error state
+      if (elements.empty) {
+        elements.empty.innerHTML = `
+          <div class="mx-auto max-w-md space-y-4 text-center">
+            <div class="mx-auto size-16 flex items-center justify-center rounded-full bg-destructive/10">
+              <i class="bi bi-exclamation-triangle text-3xl text-destructive"></i>
               </div>
               <div class="space-y-2">
-                <h3 class="text-lg font-semibold text-foreground">No properties to compare yet</h3>
-                <p class="max-w-md text-sm text-muted-foreground">
-                  Add up to 3 properties from search to compare them side-by-side. See pricing, specs, amenities, and more.
-                </p>
-              </div>
-              <a href="/property/search/" class="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary px-6 py-3 text-sm font-semibold text-white transition hover:bg-primary/90">
-                <i class="bi bi-plus-lg"></i>
-                <span>Browse properties to compare</span>
-              </a>
+              <h3 class="text-lg font-semibold text-foreground">Error loading comparison</h3>
+              <p class="text-sm text-muted-foreground">${error.message || 'Something went wrong. Please try again.'}</p>
             </div>
-          </li>
+            <button onclick="window.location.reload()" class="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-foreground transition hover:bg-muted">
+              <i class="bi bi-arrow-clockwise"></i>
+              Reload page
+            </button>
+          </div>
         `;
-        state.splide?.refresh();
+        elements.empty.classList.remove('hidden');
       }
-    } catch (error) {
-      console.error("Failed to fetch comparison list", error);
-      removeLoaderSlides();
-      const rawMessage = error.message || "Something went wrong while loading the comparison. Please try again.";
-      // Create error slide safely using DOM APIs to prevent XSS
-      const slide = document.createElement('li');
-      slide.className = 'splide__slide';
-      const errorDiv = document.createElement('div');
-      errorDiv.className = 'flex h-full flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-border bg-secondary/30 p-8 text-center text-sm text-destructive';
-      const title = document.createElement('p');
-      title.className = 'font-semibold';
-      title.textContent = 'Error loading comparison';
-      const message = document.createElement('p');
-      message.className = 'text-xs text-muted-foreground';
-      message.textContent = rawMessage;
-      const reloadButton = document.createElement('button');
-      reloadButton.onclick = () => window.location.reload();
-      reloadButton.className = 'mt-4 inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-xs font-medium text-foreground transition hover:bg-muted';
-      reloadButton.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Reload page';
-      errorDiv.appendChild(title);
-      errorDiv.appendChild(message);
-      errorDiv.appendChild(reloadButton);
-      slide.appendChild(errorDiv);
-      listElement.appendChild(slide);
-      state.splide?.refresh();
     } finally {
       state.loading = false;
     }
   };
 
-  const handleRemove = async (propertyId) => {
+  const removeProperty = async (propertyId) => {
     if (!propertyId) return;
+    
     try {
       const body = new URLSearchParams({ property: propertyId });
-      const response = await fetch(COMPARISON_REMOVE_API_URL, {
+      const response = await fetch(CONFIG.removeUrl, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
@@ -330,59 +442,90 @@
         credentials: "same-origin",
         body,
       });
+      
       if (!response.ok) throw new Error("Removal failed");
 
       // Emit event for comparison manager
       window.dispatchEvent(
-        new CustomEvent("compare:removed", {
-          detail: { propertyId },
-        })
+        new CustomEvent("compare:removed", { detail: { propertyId } })
       );
 
-      listElement.innerHTML = "";
-      state.next = 1;
-      state.maxForwardIndex = 0;
+      // Refresh list
       await fetchComparisonList();
+      
     } catch (error) {
-      console.error("Failed to remove property from comparison", error);
+      console.error("Failed to remove property from comparison:", error);
+      alert("Failed to remove property. Please try again.");
     }
   };
 
-  document.addEventListener("click", (event) => {
-    const removeButton = event.target.closest(".remove-from-comparison");
-    if (removeButton) {
-      event.preventDefault();
-      handleRemove(removeButton.dataset.property);
+  const clearAll = async () => {
+    if (state.properties.length === 0) return;
+    if (!confirm(`Remove all ${state.properties.length} properties from comparison?`)) return;
+    
+    try {
+      // Remove all properties
+      await Promise.all(
+        state.properties.map(prop => {
+          const propertyId = prop?.property_info?.id || prop?.id;
+          return propertyId ? removeProperty(propertyId) : Promise.resolve();
+        })
+      );
+      
+      // Refresh list
+      await fetchComparisonList();
+      
+    } catch (error) {
+      console.error("Failed to clear comparison:", error);
+      alert("Failed to clear comparison. Please try again.");
     }
-  });
+  };
 
-  updateFieldLabels();
-
-  state.splide = new Splide(sliderElement, {
-    perPage: 3,
-    gap: "1.5rem",
-    pagination: false,
-    arrows: true,
-    breakpoints: {
-      1280: {
-        perPage: 2,
-      },
-      900: {
-        perPage: 1,
-      },
-    },
-  });
-
-  state.splide.on("moved", (index) => {
-    if (state.maxForwardIndex >= index) return;
-    state.maxForwardIndex = index;
-    if (state.next) {
-      fetchComparisonList();
+  // Event Handlers
+  const handleRemoveClick = (event) => {
+    const button = event.target.closest('.remove-property');
+    if (!button) return;
+    
+    const propertyId = button.dataset.propertyId;
+    if (propertyId) {
+      removeProperty(propertyId);
     }
-  });
+  };
 
-  state.splide.mount();
+  const handleResize = () => {
+    // Re-render on resize to switch between desktop/mobile views
+    if (state.properties.length > 0) {
+      updateUI();
+    }
+  };
+
+  // Initialize
+  const init = () => {
+    // Check if required elements exist
+    if (!elements.main) {
+      console.warn("Comparison page elements not found");
+      return;
+    }
+    
+    // Attach event listeners
+    document.addEventListener('click', handleRemoveClick);
+    if (elements.clearAllBtn) {
+      elements.clearAllBtn.addEventListener('click', clearAll);
+    }
+    window.addEventListener('resize', handleResize);
+    
+    // Listen for comparison events
+    window.addEventListener('compare:added', fetchComparisonList);
+    window.addEventListener('compare:removed', fetchComparisonList);
+    
+    // Fetch initial data
   fetchComparisonList();
+  };
+
+  // Start when DOM is ready
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 })();
-
-

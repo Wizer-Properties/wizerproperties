@@ -412,8 +412,14 @@
     });
 
     // Prevent card click when clicking on buttons
+    // Note: compare/favorite buttons are handled by document-level delegation in compair-favorite.js
+    // so we don't stop propagation on them to allow the handler to receive the event
     const allButtons = card.querySelectorAll("button, a[data-card-schedule], a[data-card-media-buttons]");
     allButtons.forEach((btn) => {
+      // Skip compare/favorite buttons - let them bubble to document handler
+      if (btn.hasAttribute("data-card-compare") || btn.hasAttribute("data-card-favorite")) {
+        return;
+      }
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
       });
@@ -435,6 +441,104 @@
         // Don't force show/hide here - let responsive CSS handle it
       } else {
         description.classList.add("hidden");
+      }
+    }
+
+    // About this property - Short Description
+    const descriptionShort = card.querySelector("[data-card-description-short]");
+    const aboutSection = card.querySelector("[data-card-about-section]");
+    if (descriptionShort && aboutSection) {
+      if (property.description) {
+        descriptionShort.textContent = truncateText(property.description, 100);
+        aboutSection.classList.remove("hidden");
+      } else {
+        aboutSection.classList.add("hidden");
+      }
+    }
+
+    // Amenities Chips
+    const amenitiesContainer = card.querySelector("[data-card-amenities-chips]");
+    const amenitiesSection = card.querySelector("[data-card-amenities-section]");
+    if (amenitiesContainer && amenitiesSection) {
+      const amenities = [];
+      const chipClass = "inline-flex items-center gap-1.5 rounded-lg border border-border/60 bg-secondary/40 px-2.5 py-1 text-xs font-medium text-muted-foreground transition hover:border-brand-purple/40 hover:bg-brand-purple/5 hover:text-brand-purple";
+
+      // Ownership
+      if (property.have_freehold) {
+        amenities.push({
+          icon: '<i class="bi bi-shield-check text-brand-teal"></i>',
+          text: "Freehold"
+        });
+      }
+      if (property.have_leasehold) {
+        amenities.push({
+          icon: '<i class="bi bi-calendar-check text-brand-teal"></i>',
+          text: "Leasehold"
+        });
+      }
+
+      // Pool
+      if (property.have_infinity_pool) {
+        amenities.push({
+          icon: '<i class="bi bi-water text-brand-purple"></i>',
+          text: "Infinity Pool"
+        });
+      }
+
+      // Fitness
+      if (property.have_fitness_area) {
+        amenities.push({
+          icon: '<i class="bi bi-activity text-brand-purple"></i>',
+          text: "Gym"
+        });
+      }
+
+      // Sky Lounge
+      if (property.have_sky_lounge) {
+        amenities.push({
+          icon: '<i class="bi bi-building text-brand-purple"></i>',
+          text: "Sky Lounge"
+        });
+      }
+
+      // Other amenities
+      if (property.have_sauna) {
+        amenities.push({
+          icon: '<i class="bi bi-thermometer-half text-brand-purple"></i>',
+          text: "Sauna"
+        });
+      }
+      if (property.have_grocery) {
+        amenities.push({
+          icon: '<i class="bi bi-shop text-brand-purple"></i>',
+          text: "Grocery"
+        });
+      }
+      if (property.have_guard_house) {
+        amenities.push({
+          icon: '<i class="bi bi-shield-check text-brand-purple"></i>',
+          text: "Security"
+        });
+      }
+      if (property.have_pets_allowed) {
+        amenities.push({
+          icon: '<i class="bi bi-heart text-brand-purple"></i>',
+          text: "Pets Allowed"
+        });
+      }
+
+      if (amenities.length > 0) {
+        const fragment = document.createDocumentFragment();
+        amenities.forEach(amenity => {
+          const chip = document.createElement("div");
+          chip.className = chipClass;
+          chip.innerHTML = `${amenity.icon}<span>${amenity.text}</span>`;
+          fragment.appendChild(chip);
+        });
+        amenitiesContainer.appendChild(fragment);
+        amenitiesSection.classList.remove("hidden");
+      } else {
+        amenitiesSection.classList.add("hidden");
       }
     }
 
@@ -672,16 +776,17 @@
 
     // Media & Action Buttons
     const mediaButtonsContainer = card.querySelector("[data-card-media-buttons]");
+    const mediaGallerySection = card.querySelector("[data-card-media-gallery-section]");
     if (mediaButtonsContainer) {
       const fragments = document.createDocumentFragment();
-      const buttonClass = "inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/60 px-2.5 py-1 text-[10px] font-medium text-muted-foreground transition hover:border-accent/60 hover:bg-accent/10 hover:text-accent touch-manipulation min-h-[36px] sm:min-h-[40px] sm:px-3 sm:py-1.5 sm:text-xs";
+      const buttonClass = "inline-flex items-center gap-1.5 rounded-lg border border-border/60 bg-secondary/40 px-2.5 py-1 text-xs font-medium text-muted-foreground transition hover:border-brand-purple/40 hover:bg-brand-purple/5 hover:text-brand-purple";
 
       // Images
       if (property.total_default_images > 0) {
         const btn = document.createElement("a");
         btn.href = `${detailUrl}#gallery=image`;
         btn.className = buttonClass;
-        btn.innerHTML = '<i class="bi bi-images text-accent"></i><span>Images</span>';
+        btn.innerHTML = '<i class="bi bi-images text-brand-purple"></i><span>Images</span>';
         fragments.appendChild(btn);
       }
 
@@ -690,7 +795,7 @@
         const btn = document.createElement("a");
         btn.href = `${detailUrl}#gallery=unit_floor_plan`;
         btn.className = buttonClass;
-        btn.innerHTML = '<i class="bi bi-file-earmark-image text-accent"></i><span>Unit Plans</span>';
+        btn.innerHTML = '<i class="bi bi-file-earmark-image text-brand-purple"></i><span>Unit Plans</span>';
         fragments.appendChild(btn);
       }
 
@@ -699,7 +804,7 @@
         const btn = document.createElement("a");
         btn.href = `${detailUrl}#gallery=master_plan`;
         btn.className = buttonClass;
-        btn.innerHTML = '<i class="bi bi-diagram-3 text-accent"></i><span>Master Plan</span>';
+        btn.innerHTML = '<i class="bi bi-diagram-3 text-brand-purple"></i><span>Master Plan</span>';
         fragments.appendChild(btn);
       }
 
@@ -708,7 +813,7 @@
         const btn = document.createElement("a");
         btn.href = `${detailUrl}#gallery=video`;
         btn.className = buttonClass;
-        btn.innerHTML = '<i class="bi bi-play-circle text-accent"></i><span>Video</span>';
+        btn.innerHTML = '<i class="bi bi-play-circle text-brand-purple"></i><span>Video</span>';
         fragments.appendChild(btn);
       }
 
@@ -717,41 +822,31 @@
         const btn = document.createElement("a");
         btn.href = `${detailUrl}#gallery=interior_view`;
         btn.className = buttonClass;
-        btn.innerHTML = '<i class="bi bi-360 text-accent"></i><span>Interior 360°</span>';
-        fragments.appendChild(btn);
-      }
-
-      // Facilities
-      if (property.facility_view) {
-        const btn = document.createElement("a");
-        btn.href = `${detailUrl}#gallery=facility_view`;
-        btn.className = buttonClass;
-        btn.innerHTML = '<i class="bi bi-building text-accent"></i><span>Facilities</span>';
-        fragments.appendChild(btn);
-      }
-
-      // Aerial (already shown as button above, but can add here too if needed)
-      if (property.ariel_view) {
-        const btn = document.createElement("a");
-        btn.href = `${detailUrl}#gallery=aerial_drone_video`;
-        btn.className = buttonClass;
-        btn.innerHTML = '<i class="bi bi-camera-video text-accent"></i><span>Aerial</span>';
+        btn.innerHTML = '<i class="bi bi-360 text-brand-purple"></i><span>Interior 360°</span>';
         fragments.appendChild(btn);
       }
 
       // View Gallery
-      if (property.total_default_images > 0 || property.has_unit_plans || property.has_master_plan || property.has_video || property.interior_view || property.facility_view || property.ariel_view) {
+      if (property.total_default_images > 0 || property.has_unit_plans || property.has_master_plan || property.has_video || property.interior_view) {
         const btn = document.createElement("a");
         btn.href = `${detailUrl}#gallery`;
         btn.className = buttonClass;
-        btn.innerHTML = '<i class="bi bi-grid-3x3-gap text-accent"></i><span>View gallery</span>';
+        btn.innerHTML = '<i class="bi bi-grid-3x3-gap text-brand-purple"></i><span>View Gallery</span>';
         fragments.appendChild(btn);
       }
 
       if (fragments.childNodes.length > 0) {
         mediaButtonsContainer.appendChild(fragments);
+        // Show the media gallery section if it exists
+        if (mediaGallerySection) {
+          mediaGallerySection.classList.remove("hidden");
+        }
       } else {
+        // Hide both container and section if no media buttons
         mediaButtonsContainer.classList.add("hidden");
+        if (mediaGallerySection) {
+          mediaGallerySection.classList.add("hidden");
+        }
       }
     }
 

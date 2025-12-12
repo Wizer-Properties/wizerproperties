@@ -11,7 +11,15 @@ from utils.admin_settings import get_discount_property_cost, get_featured_proper
 
 
 def get_user_profile(request):
-    """Get the user's profile (agent or developer) and credit balance"""
+    """
+    Get the user's profile (agent or developer) and credit balance.
+    
+    Args:
+        request: Django HttpRequest object with authenticated user.
+    
+    Returns:
+        AgentProfile or DeveloperProfile: User's profile object, or None if user type is invalid.
+    """
     if request.user.user_type == "agent":
         return request.user.agentprofile
     elif request.user.user_type == "developer":
@@ -295,28 +303,6 @@ def edit_featured_property(request, featured_id):
         'property_type': 'featured'
     }
     return render(request, 'property/edit_discount_featured.html', context)
-
-
-@login_required
-def delete_discount_property(request, discount_id):
-    """Delete a discount property"""
-    if request.user.user_type not in ['agent', 'developer']:
-        messages.error(request, "Access denied. Only agents and developers can access this page.")
-        return redirect('/dashboard/')
-    
-    discount_property = get_object_or_404(DiscountProperty, id=discount_id, created_by=request.user)
-    
-    if request.method == 'POST':
-        property_title = discount_property.property.title if discount_property.property else 'Unknown'
-        discount_property.delete()
-        messages.success(request, f"Discount property '{property_title}' deleted successfully!")
-        return redirect('property:discount_list')
-    
-    context = {
-        'discount_property': discount_property,
-        'property_type': 'discount'
-    }
-    return render(request, 'property/delete_discount_featured.html', context)
 
 
 @login_required

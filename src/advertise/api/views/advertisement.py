@@ -36,8 +36,8 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
         
         if time_spent:
             try:
-                # Convert to float and validate
-                time_spent_seconds = float(time_spent)
+                # Convert to int and validate
+                time_spent_seconds = int(time_spent)
                 if time_spent_seconds > 0:
                     ad_obj.view_time += timedelta(seconds=time_spent_seconds)
                     ad_obj.save()

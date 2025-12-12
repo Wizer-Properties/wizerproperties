@@ -163,16 +163,33 @@
           <h3
             class="line-clamp-2 text-base font-medium leading-snug text-foreground transition-colors group-hover/link:text-primary sm:text-lg"
             data-card-title>Property title</h3>
-          <div class="flex items-center gap-1.5 text-base text-muted-foreground mt-1">
+          <div class="flex items-center gap-1.5 text-sm text-muted-foreground mt-1">
             <i class="bi bi-geo-alt-fill text-accent"></i>
             <span class="line-clamp-1" data-card-address>Address</span>
           </div>
         </a>
       </div>
 
-      <!-- Media & Action Buttons -->
-      <div class="flex flex-wrap gap-2" data-card-media-buttons>
-        <!-- Populated via JavaScript -->
+      <!-- About this property (Description) -->
+      <div class="space-y-1.5" data-card-about-section>
+        <h4 class="text-sm font-semibold text-foreground">About this property</h4>
+        <p class="text-sm leading-relaxed text-muted-foreground line-clamp-2" data-card-description-short></p>
+      </div>
+
+      <!-- Amenities -->
+      <div class="space-y-2" data-card-amenities-section>
+        <h4 class="text-sm font-semibold text-foreground">Amenities</h4>
+        <div class="flex flex-wrap gap-2" data-card-amenities-chips>
+          <!-- Populated via JavaScript -->
+        </div>
+      </div>
+
+      <!-- Media Gallery -->
+      <div class="space-y-2" data-card-media-gallery-section>
+        <h4 class="text-sm font-semibold text-foreground">Media Gallery</h4>
+        <div class="flex flex-wrap gap-2" data-card-media-buttons>
+          <!-- Populated via JavaScript -->
+        </div>
       </div>
 
       <!-- Description (Wide cards only) -->

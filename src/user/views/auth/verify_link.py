@@ -25,7 +25,7 @@ def verify_link(request):
 									is_used=False,
 									expiration_date__gte=timezone.now()
 								)
-	except:
+	except Exception:
 		return redirect('/')
 	
 	confirmation_code_obj.verify_confirmation_code()
@@ -41,7 +41,9 @@ def verify_link(request):
 						'django.contrib.auth.backends.ModelBackend')
 					return HttpResponseRedirect(reverse('user:password_reset_confirm'))
 				except Exception as e:
-					print('user can not log in after register')
+					import logging
+					logger = logging.getLogger(__name__)
+					logger.exception(f"User cannot log in after register: {e}")
 			else:
 				return redirect('/')
 

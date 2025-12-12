@@ -12,10 +12,20 @@
       this.maxCount = 3;
       this.bar = null;
       this.badge = null;
+      this.isAuthenticated = this.checkAuthentication();
       this.init();
     }
 
+    checkAuthentication() {
+      // Check if user is authenticated using global user_type variable
+      return typeof user_type !== "undefined" && user_type !== false && user_type !== null;
+    }
+
     init() {
+      // Only initialize if user is authenticated
+      if (!this.isAuthenticated) {
+        return;
+      }
       this.createFloatingBar();
       this.createBadge();
       this.fetchCount();
@@ -92,6 +102,13 @@
     }
 
     async fetchCount() {
+      // Don't fetch if user is not authenticated
+      if (!this.isAuthenticated) {
+        this.count = 0;
+        this.updateUI();
+        return;
+      }
+
       try {
         const response = await fetch("/property/api/compare/list/?page_size=1", {
           headers: {
@@ -113,9 +130,22 @@
             this.count = 0;
           }
           this.updateUI();
+        } else if (response.status === 403) {
+          // User is not authenticated or doesn't have permission
+          // Silently handle - just set count to 0
+          this.count = 0;
+          this.updateUI();
+        } else {
+          // Other errors - log but don't break
+          console.warn("Failed to fetch comparison count:", response.status, response.statusText);
+          this.count = 0;
+          this.updateUI();
         }
       } catch (error) {
-        console.error("Failed to fetch comparison count:", error);
+        // Network errors or other exceptions - handle gracefully
+        console.warn("Failed to fetch comparison count:", error);
+        this.count = 0;
+        this.updateUI();
       }
     }
 

@@ -10,7 +10,7 @@ class ComparePropertyViewSet(viewsets.ModelViewSet):
     permission_classes = [ComparePropertyPermission]
 
     def get_queryset(self):
-        return CompareProperty.objects.select_related("user", "property", "property__building").filter(user=self.request.user)
+        return CompareProperty.objects.select_related("user", "property", "property__building").filter(user=self.request.user).order_by("-created_at")
 
     def get_serializer_context(self):
         # Get the default context from the parent class
@@ -31,16 +31,18 @@ class ComparePropertyViewSet(viewsets.ModelViewSet):
             )
         serializer.save(user=self.request.user)
 
-    def perform_destroy(self, serializer):
-        # Get the property from the request data
-        property = self.request.data.get("property")
+    def destroy(self, request, *args, **kwargs):
+        """
+        Custom destroy method to handle deletion by property ID from request body.
+        """
+        property_id = request.data.get("property")
 
-        if property is None:
+        if property_id is None:
             return Response({"property": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
 
         # Try to get and delete the CompareProperty instance based on user and property
         try:
-            compare_property = CompareProperty.objects.get(user=self.request.user, property=property)
+            compare_property = CompareProperty.objects.get(user=request.user, property=property_id)
             compare_property.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except CompareProperty.DoesNotExist:

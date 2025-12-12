@@ -292,7 +292,8 @@ def chatbot_gpt_api_view(request):
                 try:
                     hist_data = json.loads(hist) if isinstance(hist, str) else hist
                     messages.append({"role": hist_data.get("role"), "content": hist_data.get("content")})
-                except:
+                except (json.JSONDecodeError, TypeError, AttributeError, KeyError):
+                    # Skip invalid conversation history entries
                     pass
         
         # Add current user message

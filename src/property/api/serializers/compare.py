@@ -1,6 +1,7 @@
 import logging
 from django.db.models import OuterRef, Subquery, Value, F, CharField, When, Case, BooleanField
 from django.db.models.functions import Concat
+from django.core.exceptions import ValidationError as DjangoValidationError
 from rest_framework import serializers
 from property.models import Property, PropertyMedia, CompareProperty
 from building.models import BuildingMedia
@@ -20,12 +21,41 @@ class ComparePropertySerializer(serializers.ModelSerializer):
         }
 
     def validate(self, attrs):
-        instance = CompareProperty(**attrs)
+        """
+        Validate that the property can be added to comparison.
+        Checks for duplicates and ensures user is authenticated.
+        """
         user = self.context["request"].user
-
-        instance.user = user
-        instance.full_clean()  # Perform full validation before saving
-
+        property_id = attrs.get("property")
+        
+        if not user or not user.is_authenticated:
+            raise serializers.ValidationError("You must be authenticated to add properties to comparison.")
+        
+        if not property_id:
+            raise serializers.ValidationError({"property": "Property is required."})
+        
+        # Check if this property is already in the user's comparison list
+        existing = CompareProperty.objects.filter(user=user, property=property_id).exists()
+        if existing:
+            raise serializers.ValidationError(
+                {"property": "This property is already in your comparison list."}
+            )
+        
+        # Create instance and validate using model's clean method
+        instance = CompareProperty(user=user, property=property_id)
+        try:
+            instance.full_clean()
+        except DjangoValidationError as e:
+            # Convert Django ValidationError to DRF ValidationError
+            error_dict = {}
+            if hasattr(e, 'message_dict'):
+                error_dict = e.message_dict
+            elif hasattr(e, 'messages'):
+                error_dict = {'__all__': e.messages}
+            else:
+                error_dict = {'__all__': [str(e)]}
+            raise serializers.ValidationError(error_dict)
+        
         return attrs
 
     def get_property_info(self, obj):
