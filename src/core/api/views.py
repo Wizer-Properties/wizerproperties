@@ -288,10 +288,27 @@ def chatbot_gpt_api_view(request):
         # Add conversation history if provided
         if conversation_history:
             import json
+            allowed_roles = {"user", "assistant", "system"}
             for hist in conversation_history:
                 try:
                     hist_data = json.loads(hist) if isinstance(hist, str) else hist
-                    messages.append({"role": hist_data.get("role"), "content": hist_data.get("content")})
+                    
+                    # Validate that both "role" and "content" exist
+                    role = hist_data.get("role")
+                    content = hist_data.get("content")
+                    
+                    # Validate that both are non-empty strings
+                    if not isinstance(role, str) or not role.strip():
+                        continue
+                    if not isinstance(content, str) or not content.strip():
+                        continue
+                    
+                    # Optionally validate that role is one of allowed roles
+                    if role not in allowed_roles:
+                        continue
+                    
+                    # All validations passed, append the message
+                    messages.append({"role": role, "content": content})
                 except (json.JSONDecodeError, TypeError, AttributeError, KeyError):
                     # Skip invalid conversation history entries
                     pass

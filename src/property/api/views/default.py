@@ -1,4 +1,5 @@
 import ast
+import logging
 import requests
 from geopy.distance import geodesic
 from django.utils import timezone
@@ -259,7 +260,14 @@ class PropertyViewSet(viewsets.ModelViewSet):
         if not api_params:
             return  # No valid parameters to send
 
-        geolocation_api_url = f"https://maps.googleapis.com/maps/api/geocode/json?{'&'.join(api_params)}&key=AIzaSyAFApEXkq_FxTWGAVwEOEYxCtIxJ3iR9kU"
+        # Validate Google Maps API key from settings
+        google_api_key = getattr(settings, 'GOOGLE_API_KEY', '')
+        if not google_api_key or not google_api_key.strip():
+            logger = logging.getLogger(__name__)
+            logger.error("GOOGLE_API_KEY is not configured in settings. Please set GOOGLE_API_KEY environment variable.")
+            return  # Skip geocoding if API key is not configured
+
+        geolocation_api_url = f"https://maps.googleapis.com/maps/api/geocode/json?{'&'.join(api_params)}&key={google_api_key}"
 
         try:
             geolocation_response = requests.get(geolocation_api_url)
@@ -300,7 +308,6 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
         except Exception as e:
             # Handle errors gracefully
-            import logging
             logger = logging.getLogger(__name__)
             logger.warning(f"Error handling searched places cookie: {e}")
 
