@@ -1336,50 +1336,131 @@
   }
 
   function renderUnitCard(unit) {
-    return `
-      <div class="h-full rounded-2xl border border-border bg-card shadow-sm flex flex-col overflow-hidden">
-        <div class="relative">
-          <img src="${unit.default_image}" alt="Unit image" class="h-40 w-full object-cover" loading="lazy" />
-          ${
-            !["agent", "developer"].includes(userType)
-              ? `<div class="absolute right-3 top-3 flex flex-col gap-2">
-                  <button class="inline-flex items-center gap-1 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-foreground shadow">
-                    <i class="bi bi-heart${unit.is_favorited ? "-fill text-primary" : ""}"></i>
-                    Favourite
-                  </button>
-                </div>`
-              : ""
+    // Validate and sanitize unit data
+    const unitId = parseInt(unit.id, 10);
+    if (isNaN(unitId) || unitId <= 0) {
+      console.error("Invalid unit ID:", unit.id);
+      return null;
+    }
+    
+    // Validate image URL - ensure it's a safe URL
+    let imageUrl = "";
+    if (unit.default_image) {
+      try {
+        // If it's a relative URL, it's safe; if absolute, validate the protocol
+        if (unit.default_image.startsWith("/") || unit.default_image.startsWith("./")) {
+          imageUrl = unit.default_image;
+        } else {
+          const url = new URL(unit.default_image, window.location.origin);
+          if (["http:", "https:"].includes(url.protocol)) {
+            imageUrl = url.href;
           }
-        </div>
-        <div class="flex flex-1 flex-col gap-4 p-4">
-          <div class="space-y-1">
-            <p class="text-base font-semibold text-foreground">฿ ${formatNumber(unit.price || 0)}</p>
-            <p class="text-xs text-muted-foreground">฿ ${formatNumber(unit.price_per_sqm || 0)} / sqm</p>
-          </div>
-          <div class="grid grid-cols-2 gap-3 text-xs text-muted-foreground">
-            <div class="rounded-lg bg-secondary/50 px-3 py-2">
-              <span class="block text-[11px] uppercase tracking-wide">Beds</span>
-              <span class="text-sm font-semibold text-foreground">${unit.number_of_bedroom}</span>
-            </div>
-            <div class="rounded-lg bg-secondary/50 px-3 py-2">
-              <span class="block text-[11px] uppercase tracking-wide">Baths</span>
-              <span class="text-sm font-semibold text-foreground">${unit.number_of_bathroom}</span>
-            </div>
-            <div class="rounded-lg bg-secondary/50 px-3 py-2">
-              <span class="block text-[11px] uppercase tracking-wide">Size</span>
-              <span class="text-sm font-semibold text-foreground">${unit.unit_area} sqm</span>
-            </div>
-            <div class="rounded-lg bg-secondary/50 px-3 py-2">
-              <span class="block text-[11px] uppercase tracking-wide">Floor</span>
-              <span class="text-sm font-semibold text-foreground">${unit.floor_number}</span>
-            </div>
-          </div>
-          <div class="mt-auto">
-            <a href="/property/details/${unit.id}/" class="btn-secondary w-full justify-center text-sm">View details</a>
-          </div>
-        </div>
-      </div>
-    `;
+        }
+      } catch (e) {
+        console.error("Invalid image URL:", unit.default_image);
+        imageUrl = "";
+      }
+    }
+    
+    // Create card container
+    const card = document.createElement("div");
+    card.className = "h-full rounded-2xl border border-border bg-card shadow-sm flex flex-col overflow-hidden";
+    
+    // Create image container
+    const imageContainer = document.createElement("div");
+    imageContainer.className = "relative";
+    
+    const img = document.createElement("img");
+    img.src = imageUrl || "";
+    img.alt = "Unit image";
+    img.className = "h-40 w-full object-cover";
+    img.loading = "lazy";
+    imageContainer.appendChild(img);
+    
+    // Add favorite button if user is prospect
+    if (!["agent", "developer"].includes(userType)) {
+      const favoriteContainer = document.createElement("div");
+      favoriteContainer.className = "absolute right-3 top-3 flex flex-col gap-2";
+      
+      const favoriteButton = document.createElement("button");
+      favoriteButton.className = "inline-flex items-center gap-1 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-foreground shadow";
+      
+      const heartIcon = document.createElement("i");
+      heartIcon.className = unit.is_favorited ? "bi bi-heart-fill text-primary" : "bi bi-heart";
+      favoriteButton.appendChild(heartIcon);
+      
+      const favoriteText = document.createTextNode("Favourite");
+      favoriteButton.appendChild(favoriteText);
+      
+      favoriteContainer.appendChild(favoriteButton);
+      imageContainer.appendChild(favoriteContainer);
+    }
+    
+    card.appendChild(imageContainer);
+    
+    // Create content container
+    const contentContainer = document.createElement("div");
+    contentContainer.className = "flex flex-1 flex-col gap-4 p-4";
+    
+    // Price section
+    const priceSection = document.createElement("div");
+    priceSection.className = "space-y-1";
+    
+    const priceP = document.createElement("p");
+    priceP.className = "text-base font-semibold text-foreground";
+    priceP.textContent = `฿ ${formatNumber(unit.price || 0)}`;
+    priceSection.appendChild(priceP);
+    
+    const pricePerSqmP = document.createElement("p");
+    pricePerSqmP.className = "text-xs text-muted-foreground";
+    pricePerSqmP.textContent = `฿ ${formatNumber(unit.price_per_sqm || 0)} / sqm`;
+    priceSection.appendChild(pricePerSqmP);
+    
+    contentContainer.appendChild(priceSection);
+    
+    // Specs grid
+    const specsGrid = document.createElement("div");
+    specsGrid.className = "grid grid-cols-2 gap-3 text-xs text-muted-foreground";
+    
+    // Helper function to create spec item
+    const createSpecItem = (label, value) => {
+      const item = document.createElement("div");
+      item.className = "rounded-lg bg-secondary/50 px-3 py-2";
+      
+      const labelSpan = document.createElement("span");
+      labelSpan.className = "block text-[11px] uppercase tracking-wide";
+      labelSpan.textContent = label;
+      item.appendChild(labelSpan);
+      
+      const valueSpan = document.createElement("span");
+      valueSpan.className = "text-sm font-semibold text-foreground";
+      valueSpan.textContent = value;
+      item.appendChild(valueSpan);
+      
+      return item;
+    };
+    
+    specsGrid.appendChild(createSpecItem("Beds", unit.number_of_bedroom || "—"));
+    specsGrid.appendChild(createSpecItem("Baths", unit.number_of_bathroom || "—"));
+    specsGrid.appendChild(createSpecItem("Size", unit.unit_area ? `${unit.unit_area} sqm` : "—"));
+    specsGrid.appendChild(createSpecItem("Floor", unit.floor_number || "—"));
+    
+    contentContainer.appendChild(specsGrid);
+    
+    // View details button
+    const buttonContainer = document.createElement("div");
+    buttonContainer.className = "mt-auto";
+    
+    const viewLink = document.createElement("a");
+    viewLink.href = `/property/details/${unitId}/`;
+    viewLink.className = "btn-secondary w-full justify-center text-sm";
+    viewLink.textContent = "View details";
+    buttonContainer.appendChild(viewLink);
+    
+    contentContainer.appendChild(buttonContainer);
+    card.appendChild(contentContainer);
+    
+    return card;
   }
 
   function calculatePerPage() {
@@ -1443,9 +1524,12 @@
       }
 
       items.forEach((unit) => {
+        const card = renderUnitCard(unit);
+        if (!card) return; // Skip invalid units
+        
         const li = document.createElement("li");
         li.className = "splide__slide";
-        li.innerHTML = renderUnitCard(unit);
+        li.appendChild(card);
         listEl.appendChild(li);
       });
 
@@ -1895,9 +1979,12 @@
         is_favorited: property.is_favorited || false,
       };
       
+      const card = renderUnitCard(unit);
+      if (!card) return; // Skip invalid units
+      
       const li = document.createElement("li");
       li.className = "splide__slide";
-      li.innerHTML = renderUnitCard(unit);
+      li.appendChild(card);
       els.similarProperties.appendChild(li);
     });
 

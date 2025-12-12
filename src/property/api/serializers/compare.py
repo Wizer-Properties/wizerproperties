@@ -23,25 +23,17 @@ class ComparePropertySerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         """
         Validate that the property can be added to comparison.
-        Checks for duplicates and ensures user is authenticated.
+        Delegates duplicate detection to model.clean() via full_clean().
+        Authentication is enforced by ComparePropertyPermission at the view level.
         """
         user = self.context["request"].user
         property_id = attrs.get("property")
         
-        if not user or not user.is_authenticated:
-            raise serializers.ValidationError("You must be authenticated to add properties to comparison.")
-        
         if not property_id:
             raise serializers.ValidationError({"property": "Property is required."})
         
-        # Check if this property is already in the user's comparison list
-        existing = CompareProperty.objects.filter(user=user, property=property_id).exists()
-        if existing:
-            raise serializers.ValidationError(
-                {"property": "This property is already in your comparison list."}
-            )
-        
         # Create instance and validate using model's clean method
+        # This will check for duplicates and other model-level validations
         instance = CompareProperty(user=user, property=property_id)
         try:
             instance.full_clean()
@@ -54,7 +46,7 @@ class ComparePropertySerializer(serializers.ModelSerializer):
                 error_dict = {'__all__': e.messages}
             else:
                 error_dict = {'__all__': [str(e)]}
-            raise serializers.ValidationError(error_dict)
+            raise serializers.ValidationError(error_dict) from e
         
         return attrs
 

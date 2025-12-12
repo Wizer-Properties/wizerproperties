@@ -653,10 +653,6 @@
           listView: false, // Always grid view
         });
 
-        // Apply list view styling if needed
-        if (false && card) { // List view removed
-          // List view removed - always use grid
-        }
 
         // Initialize responsive card behavior
         this.initializeCardBehavior(card);

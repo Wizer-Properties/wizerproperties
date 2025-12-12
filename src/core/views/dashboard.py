@@ -1,5 +1,6 @@
 from django.db.models import Q, Count
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils import timezone
@@ -20,7 +21,6 @@ def dashboard(request):
     else:
         # Default fallback: redirect to home or show error
         # This handles edge cases where user_type is None or unexpected value
-        from django.contrib import messages
         messages.warning(request, "Unable to determine dashboard. Please complete your profile.")
         to_return = redirect("/")
 
