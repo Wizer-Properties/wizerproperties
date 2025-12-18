@@ -8,8 +8,6 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
-      - ../package.json:/app/package.json
-      - ../jsconfig.json:/app/jsconfig.json
       - static_files:/app/wizerproperties/static_root/
       - media_files:/app/wizerproperties/media/
     depends_on:

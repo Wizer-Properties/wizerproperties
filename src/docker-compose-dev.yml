@@ -19,8 +19,6 @@ services:
           path: requirements.txt
     volumes:
       - .:/app
-      - ../package.json:/app/package.json
-      - ../jsconfig.json:/app/jsconfig.json
     depends_on:
       - db
     environment:
