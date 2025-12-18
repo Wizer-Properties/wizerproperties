@@ -21,7 +21,7 @@ class Contact(TimestampedModel):
     body = models.TextField(null=True)
     status = models.CharField(max_length=20, default="unread", choices=STATUS)
     
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.subject)
     
     
@@ -65,7 +65,7 @@ class AdminSettings(TimestampedModel):
         verbose_name = "Admin Setting"
         verbose_name_plural = "Admin Settings"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "Admin Settings"
 
 

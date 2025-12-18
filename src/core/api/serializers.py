@@ -1,8 +1,14 @@
+from typing import TYPE_CHECKING
 from rest_framework import serializers
 from core.models import Contact
 
+if TYPE_CHECKING:
+    _Base = serializers.ModelSerializer[Contact]
+else:
+    _Base = serializers.ModelSerializer
 
-class ContactSerializer(serializers.ModelSerializer):
+
+class ContactSerializer(_Base):
     class Meta:
         model = Contact
         fields = ["id", "email", "subject", "body"]

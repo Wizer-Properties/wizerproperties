@@ -1,18 +1,24 @@
+from typing import TYPE_CHECKING, Any
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import JsonResponse
 from utils.general_func import blur_email
 from user.models import ConfirmationCode
 
+if TYPE_CHECKING:
+    from django.http import HttpRequest, HttpResponse
+
 
 @login_required
-def email_verification(request):
-    user_email = blur_email(request.user.email)
-    context = {}
+def email_verification(request: "HttpRequest") -> "HttpResponse":
+    user = request.user
+    user_email = blur_email(user.email) if user.is_authenticated else ""
+    context: dict[str, Any] = {}
     try:
-        ConfirmationCode.objects.send_confirmation_code(request, request.user, "account_verification")
-        context["status"] = "success"
-        context["message"] = f"We have sent you a verification code to your email ({user_email}). Please check your email and verify your account."
+        if user.is_authenticated:
+            ConfirmationCode.objects.send_confirmation_code(request, user, "account_verification")
+            context["status"] = "success"
+            context["message"] = f"We have sent you a verification code to your email ({user_email}). Please check your email and verify your account."
     except Exception as e:
         import logging
         logger = logging.getLogger(__name__)

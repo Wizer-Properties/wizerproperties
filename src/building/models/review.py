@@ -1,4 +1,6 @@
+from typing import Any
 from django.db import models
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from core.models import TimestampedModel
 from .default import Building
@@ -13,13 +15,16 @@ class BuildingReview(TimestampedModel):
         (5, "5"),
     )
 
-    user = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True, related_name="building_reviews")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="building_reviews")
     building = models.ForeignKey(Building, on_delete=models.CASCADE, null=True, related_name="reviews")
     rating = models.IntegerField(choices=RATING_CHOICES, default=0)
     review_text = models.TextField(blank=True, null=True, max_length=1000)
     is_active = models.BooleanField(default=True)
 
-    def clean(self, *args, **kwargs):
+    def __str__(self) -> str:
+        return f"{self.user} - {self.building} - {self.rating}"
+
+    def clean(self, *args: Any, **kwargs: Any) -> None:
         super().clean()
 
         # Duplication check

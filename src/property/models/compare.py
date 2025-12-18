@@ -10,10 +10,11 @@ class CompareProperty(TimestampedModel):
     class Meta:
         verbose_name_plural = "compare properties"
 
-    def __str__(self):
-        return f"{self.user} - {self.property.title}"
+    def __str__(self) -> str:
+        property_title = self.property.title if self.property else "None"
+        return f"{self.user} - {property_title}"
 
-    def clean(self):
+    def clean(self) -> None:
         # Check if there is already an object with the same user and property
         existing_objects = self.__class__.objects.filter(user=self.user, property=self.property)
         if self.id:

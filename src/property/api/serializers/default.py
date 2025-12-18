@@ -1,8 +1,14 @@
 from rest_framework import serializers
 from property.models import Property
+from typing import Optional, Any, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    _Base = serializers.ModelSerializer[Property]
+else:
+    _Base = serializers.ModelSerializer
 
 
-class PropertySerializer(serializers.ModelSerializer):
+class PropertySerializer(_Base):
 
     class Meta:
         model = Property
@@ -20,7 +26,7 @@ class PropertySerializer(serializers.ModelSerializer):
             "updated_at",
         ]
         
-class PropertySerializerRead(serializers.ModelSerializer):
+class PropertySerializerRead(_Base):
     unit_position = serializers.SerializerMethodField()
     
     class Meta:
@@ -40,6 +46,6 @@ class PropertySerializerRead(serializers.ModelSerializer):
             "updated_at",
         ]
         
-    def get_unit_position(self, obj):
+    def get_unit_position(self, obj: Property) -> Optional[str]:
         return obj.get_unit_position_display() if obj.unit_position else None
         

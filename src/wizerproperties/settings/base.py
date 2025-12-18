@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import os
+from typing import Any
 from decouple import config
 from pathlib import Path
 
@@ -191,7 +192,7 @@ CONFIRMATION_CODE_EXPIRATION_TIME = 1440
 
 LOGIN_URL = "user:login"
 
-REST_FRAMEWORK = {
+REST_FRAMEWORK: dict[str, Any] = {
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
     "DEFAULT_FILTER_BACKENDS": [
         "django_filters.rest_framework.DjangoFilterBackend",

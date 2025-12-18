@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING, Optional, Set, Any
 from django.contrib import auth
 from django.shortcuts import render, redirect
 from django.views import View
@@ -6,8 +7,11 @@ from urllib.parse import urlparse
 
 from user.forms.auth import SignupForm
 
+if TYPE_CHECKING:
+    from django.http import HttpRequest, HttpResponse
 
-def is_safe_url(url, allowed_hosts=None):
+
+def is_safe_url(url: Optional[str], allowed_hosts: Optional[Set[str]] = None) -> bool:
     """
     Validate that a URL is safe for redirects (prevents open redirects).
     Only allows relative URLs for security.
@@ -34,22 +38,22 @@ class SignupView(View):
     form_class = SignupForm
     template_name = "auth/signup.html"
 
-    def get(self, request):
+    def get(self, request: "HttpRequest") -> "HttpResponse":
         if request.user.is_authenticated:
             # Support ?next= redirect for authenticated users
-            next_url = request.GET.get('next')
+            next_url: Any = request.GET.get('next')
             if next_url and is_safe_url(next_url):
-                return redirect(next_url)
+                return redirect(str(next_url))
             return redirect("dashboard")
         form = self.form_class()
         return render(request, self.template_name, {"signup_form": form})
 
-    def post(self, request):
+    def post(self, request: "HttpRequest") -> "HttpResponse":
         if request.user.is_authenticated:
             # Support ?next= redirect for authenticated users
-            next_url = request.GET.get('next')
+            next_url: Any = request.GET.get('next')
             if next_url and is_safe_url(next_url):
-                return redirect(next_url)
+                return redirect(str(next_url))
             return redirect("dashboard")
         form = self.form_class(request.POST)
         system_error = ""
@@ -60,9 +64,9 @@ class SignupView(View):
                 auth.login(request, user)
                 
                 # Support ?next= redirect after successful signup
-                next_url = request.GET.get('next')
-                if next_url and is_safe_url(next_url):
-                    return redirect(next_url)
+                next_url_reg: Any = request.GET.get('next')
+                if next_url_reg and is_safe_url(next_url_reg):
+                    return redirect(str(next_url_reg))
                 
                 # Default redirect to email verification
                 return redirect("user:email_verify")

@@ -1,5 +1,7 @@
 import django_filters
 from geopy.distance import geodesic
+from typing import Any, List, Optional, cast
+from django.db.models.query import QuerySet
 from property.models import Property
 
 
@@ -49,39 +51,42 @@ class PropertyFilter(django_filters.FilterSet):
             "building__have_fitness_area",
         ]
 
-    def filter_nearby(self, queryset, name, value):
+    def filter_nearby(self, queryset: QuerySet[Property], name: str, value: Any) -> QuerySet[Property]:
         """
         N.B >>>
             We have decided to iterate through the objects in a loop and get results.
             However, if the number of properties increases, find a better solution to optimize performance
             and reduce the processing time within a nearby distance.
         """
+        request: Any = self.request
 
-        if self.request and "lat" in self.request.query_params and "long" in self.request.query_params:
-            lat = float(self.request.query_params.get("lat"))
-            long = float(self.request.query_params.get("long"))
+        if request and "lat" in request.query_params and "long" in request.query_params:
+            lat = float(request.query_params.get("lat"))
+            long = float(request.query_params.get("long"))
 
             # Filter properties within the specified distance
-            properties_within_given_distance = [
-                property.id
-                for property in queryset.filter(building__latitude__isnull=False, building__longitude__isnull=False)
-                # Calculate and get properties within the specified distance by geodesic (geopy package)
-                if geodesic((lat, long), (property.building.latitude, property.building.longitude)).miles <= value
-            ]
+            properties_within_given_distance = []
+            for property_obj in queryset.filter(building__latitude__isnull=False, building__longitude__isnull=False):
+                building = property_obj.building
+                if building and building.latitude is not None and building.longitude is not None:
+                    # Calculate and get properties within the specified distance by geodesic (geopy package)
+                    if geodesic((lat, long), (building.latitude, building.longitude)).miles <= value:
+                        properties_within_given_distance.append(property_obj.id)
 
             return queryset.filter(id__in=properties_within_given_distance)
 
         return queryset
 
-    def filter_bounds(self, queryset, name, value):
+    def filter_bounds(self, queryset: QuerySet[Property], name: str, value: Any) -> QuerySet[Property]:
         """
         Filter properties by map bounds (north, south, east, west).
         Only applies filtering if all four bounds parameters are provided.
         """
-        if not self.request:
+        request: Any = self.request
+        if not request:
             return queryset
 
-        params = self.request.query_params
+        params = request.query_params
         bounds_north = params.get("bounds_north")
         bounds_south = params.get("bounds_south")
         bounds_east = params.get("bounds_east")

@@ -46,5 +46,21 @@ plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
 strict = true
 explicit_package_bases = true
 
+[[tool.mypy.overrides]]
+module = [
+    "decouple",
+    "decouple.*",
+    "allauth.*",
+    "phonenumber_field.*",
+    "django_ckeditor_5.*",
+    "geopy.*",
+    "django_widget_tweaks.*",
+    "openai.*",
+    "ckeditor_5.*",
+    "jwt.*",
+    "requests.*",
+]
+ignore_missing_imports = true
+
 [tool.django-stubs]
 django_settings_module = "wizerproperties.settings"

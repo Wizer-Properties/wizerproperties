@@ -5,7 +5,6 @@ from rest_framework.decorators import action
 from django.db.models import Count, F, IntegerField, ExpressionWrapper, OuterRef, Subquery, \
     Value, When, Case, Avg, FloatField, Sum, Min, Max
 from django.db.models.functions import Coalesce, TruncMonth
-from rest_framework.response import Response
 from django.contrib.contenttypes.models import ContentType
 from property.models import Property, PropertyVisitorLocation, PropertyVisitLog, \
     PropertyPriceRange, PropertyClicksLog
@@ -14,17 +13,25 @@ from building.models import Building
 from rest_framework.views import APIView
 from django.utils.dateparse import parse_date
 from datetime import datetime, timedelta, date
+from typing import Any, Dict, Optional, Union, cast, TYPE_CHECKING
+from user.models import User
 from utils.user_required import developer_or_agent_required
 # from django.utils.decorators import 
 from django.utils.decorators import method_decorator
 
 
-class PropertiesAnalyticsView(viewsets.ModelViewSet):
+if TYPE_CHECKING:
+    _Base = viewsets.ModelViewSet[Property]
+else:
+    _Base = viewsets.ModelViewSet
+
+
+class PropertiesAnalyticsView(_Base):
     queryset = Property.objects.all()
     permission_classes = [permissions.IsAuthenticated]
 
     @action(detail=False, methods=['get'])
-    def top_ranked_properties(self, request):
+    def top_ranked_properties(self, request: Any) -> Response:
         visited_logs_subquery = PropertyClicksLog.objects.filter(
             property=OuterRef('pk')
         ).values('property').annotate(
@@ -32,8 +39,9 @@ class PropertiesAnalyticsView(viewsets.ModelViewSet):
         ).values('visit_count')
 
         # Main query to get properties with visit counts
+        user = cast(User, request.user)
         properties = Property.objects.filter(
-            building__created_by=request.user
+            building__created_by=user
         ).annotate(
             visit_count=Coalesce(Subquery(visited_logs_subquery), 0),
             building_name=F("building__title"),
@@ -44,8 +52,9 @@ class PropertiesAnalyticsView(viewsets.ModelViewSet):
     
     
     @action(detail=False, methods=['get'])
-    def maximum_viewing_time_properties(self, request):
-        properties = Property.objects.filter(building__created_by=request.user).annotate(
+    def maximum_viewing_time_properties(self, request: Any) -> Response:
+        user = cast(User, request.user)
+        properties = Property.objects.filter(building__created_by=user).annotate(
             building_name=F("building__title"),
             building_location=F("building__address")).values(
             "id", "title", "view_time", "building_name", "building_location").order_by("-view_time")
@@ -53,8 +62,9 @@ class PropertiesAnalyticsView(viewsets.ModelViewSet):
         return Response(properties, status=status.HTTP_200_OK)
     
     @action(detail=False, methods=['get'])
-    def highest_search_appearances_properties(self, request):
-        properties = Property.objects.filter(building__created_by=request.user).annotate(
+    def highest_search_appearances_properties(self, request: Any) -> Response:
+        user = cast(User, request.user)
+        properties = Property.objects.filter(building__created_by=user).annotate(
             building_name=F("building__title"),
             building_location=F("building__address")).values(
             "id", "title", "search_appearance", "building_name", "building_location").order_by("-search_appearance")
@@ -62,22 +72,25 @@ class PropertiesAnalyticsView(viewsets.ModelViewSet):
         return Response(properties, status=status.HTTP_200_OK)
     
     @action(detail=False, methods=['get'])
-    def popular_search_location_properties(self, request):
+    def popular_search_location_properties(self, request: Any) -> Response:
+        user = cast(User, request.user)
         properties = PropertyVisitorLocation.objects.filter(
-            property__building__created_by=request.user).values(
+            property__building__created_by=user).values(
             "address", "view_from_this_location").order_by("-view_from_this_location")
         
         return Response(properties, status=status.HTTP_200_OK)
     
     @action(detail=False, methods=['get'])
-    def user_properties_locations(self, request):
-        location_list = list(PropertyVisitLog.objects.filter(user_obj=request.user).values_list("location", flat=True))
+    def user_properties_locations(self, request: Any) -> Response:
+        user = cast(User, request.user)
+        location_list = list(PropertyVisitLog.objects.filter(user_obj=user).values_list("location", flat=True))
         
         return Response(location_list, status=status.HTTP_200_OK)
     
     @action(detail=False, methods=['get'])
-    def user_gender_ratio(self, request):
-        properties = Property.objects.filter(building__created_by=request.user)
+    def user_gender_ratio(self, request: Any) -> Response:
+        user = cast(User, request.user)
+        properties = Property.objects.filter(building__created_by=user)
         
         # Aggregate the total number of male and female visitors
         totals = properties.aggregate(
@@ -105,14 +118,14 @@ class PropertiesAnalyticsView(viewsets.ModelViewSet):
         return Response(gender_ration, status=status.HTTP_200_OK)
     
     @action(detail=False, methods=['get'])
-    def most_in_demand_price_range(self, request):
+    def most_in_demand_price_range(self, request: Any) -> Response:
         properties = PropertyPriceRange.objects.values(
             "range", "search_appearance").order_by("-search_appearance")
         
         return Response(properties, status=status.HTTP_200_OK)
     
     @action(detail=False, methods=['get'])
-    def top_performing_properties_by_conversion(self, request):
+    def top_performing_properties_by_conversion(self, request: Any) -> Response:
         # Get the content type for Property model
         property_content_type = ContentType.objects.get_for_model(Property)
 
@@ -150,55 +163,58 @@ class PropertiesAnalyticsView(viewsets.ModelViewSet):
         return Response(properties, status=status.HTTP_200_OK)
     
     @action(detail=False, methods=['get'])
-    def top_rated_buildings(self, request):
-        properties = Building.objects.filter(created_by=request.user).annotate(
+    def top_rated_buildings(self, request: Any) -> Response:
+        user = cast(User, request.user)
+        properties = Building.objects.filter(created_by=user).annotate(
             average_rating=Coalesce(Avg('reviews__rating'), Value(0),  output_field=FloatField()),
             review_count=Coalesce(Count('reviews'), Value(0),  output_field=IntegerField())
         ).order_by('-average_rating', "-review_count")
         
-        properties = list(properties.values("id", "title", "address", "average_rating"))
+        properties_list = list(properties.values("id", "title", "address", "average_rating"))
         
-        return Response(properties, status=status.HTTP_200_OK)
+        return Response(properties_list, status=status.HTTP_200_OK)
     
     @action(detail=False, methods=['get'])
-    def most_favorite_properties(self, request):
-        properties = Property.objects.filter(building__created_by=request.user).annotate(
+    def most_favorite_properties(self, request: Any) -> Response:
+        user = cast(User, request.user)
+        properties = Property.objects.filter(building__created_by=user).annotate(
             favorite_count=Coalesce(Count('favorites'), Value(0),  output_field=IntegerField()),
             building_name=F("building__title"),
             building_location=F("building__address")
         ).order_by("-favorite_count")
         
-        properties = list(properties.values("id", "title", "favorite_count", "building_name", "building_location"))
+        properties_list = list(properties.values("id", "title", "favorite_count", "building_name", "building_location"))
         
-        return Response(properties, status=status.HTTP_200_OK)
+        return Response(properties_list, status=status.HTTP_200_OK)
     
     @action(detail=False, methods=['get'])
-    def most_appeared_on_the_compare_list(self, request):
-        properties = Property.objects.filter(building__created_by=request.user).annotate(
+    def most_appeared_on_the_compare_list(self, request: Any) -> Response:
+        user = cast(User, request.user)
+        properties = Property.objects.filter(building__created_by=user).annotate(
             compare_count=Coalesce(Count('compares'), Value(0),  output_field=IntegerField()),
             building_name=F("building__title"),
             building_location=F("building__address")
         ).order_by("-compare_count")
         
-        properties = list(properties.values("id", "title", "compare_count", "building_name", "building_location"))
+        properties_list = list(properties.values("id", "title", "compare_count", "building_name", "building_location"))
         
-        return Response(properties, status=status.HTTP_200_OK)
+        return Response(properties_list, status=status.HTTP_200_OK)
 
 
 
 class PropertyVisitAnalytics(APIView):
-    pagination = {
+    pagination: Dict[str, Union[bool, date]] = {
         "next" : False,
         "previous" : False,
     }
             
-    def get_day_suffix(self, day):
+    def get_day_suffix(self, day: int) -> str:
         if 4 <= day <= 20 or 24 <= day <= 30:
             return "th"
         else:
             return ["st", "nd", "rd"][day % 10 - 1]
         
-    def safe_parse_date(self, date_str):
+    def safe_parse_date(self, date_str: Optional[str]) -> date:
         """Safely parse a date string into a datetime.date object."""
         if not date_str or date_str.lower() in ['false', 'none']:
             return datetime.today().date()
@@ -211,7 +227,7 @@ class PropertyVisitAnalytics(APIView):
             return datetime.today().date()
     
     # generate labesl name for charts
-    def generate_labels(self, filter_type, start_date, end_date):
+    def generate_labels(self, filter_type: str, start_date: date, end_date: date) -> Any:
         labels = []
         if filter_type == 'weekly':
             week_days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
@@ -230,10 +246,11 @@ class PropertyVisitAnalytics(APIView):
     # calculate from start_date (oldest date) to end_date (newer date)
     # fow weekly, we start calculating from "Monday" to "Sunday"
     # fow year, the start date is 1st Jan and last is 31 Dec 
-    def filter_visited_logs(self, filter_type, start_date, end_date):
+    def filter_visited_logs(self, filter_type: str, start_date: date, end_date: date) -> Any:
         data = []
         today = date.today()
-        user_properties = Property.objects.filter(building__created_by=self.request.user)
+        user = cast(User, self.request.user)
+        user_properties = Property.objects.filter(building__created_by=user)
         visited_logs = PropertyClicksLog.objects.filter(
             property__in=user_properties,
             created_at__range=(start_date, end_date+timedelta(days=1))
@@ -280,7 +297,7 @@ class PropertyVisitAnalytics(APIView):
         return data
     
     @method_decorator(developer_or_agent_required)
-    def get(self, request):
+    def get(self, request: Any) -> Response:
         filter_type = request.query_params.get('filter_type', 'weekly')
         # Retrieve and parse date strings
         next_param = request.query_params.get('next')

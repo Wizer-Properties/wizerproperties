@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from user.models import DeveloperProfile, AgentProfile, ProspectProfile
+from typing import Any, Dict, Optional, Type
 from phonenumber_field.serializerfields import PhoneNumberField
 from utils.general_func import show_custom_error_message
 
@@ -23,14 +24,14 @@ class BaseProfileSerializer(serializers.ModelSerializer):
             "address": {"required": True, "allow_null": False},
         }
 
-    def __init__(self, instance=None, *args, **kwargs):
+    def __init__(self, instance: Optional[Any] = None, *args: Any, **kwargs: Any) -> None:
         super().__init__(instance, *args, **kwargs)
         if self.instance:
             if self.instance.user.user_type in ["developer", "agent"]:
                 self.fields["company_logo"].required = False
         show_custom_error_message(self.fields)
 
-    def validate(self, data):
+    def validate(self, data: Dict[str, Any]) -> Dict[str, Any]:
         user = self.context["user"]
         existing_profile = self.Meta.model.objects.filter(user=user).first()
 
@@ -40,7 +41,7 @@ class BaseProfileSerializer(serializers.ModelSerializer):
         data["user"] = user
         return data
 
-    def create(self, validated_data):
+    def create(self, validated_data: Dict[str, Any]) -> Any:
         profile_instance = self.Meta.model.objects.create(**validated_data)
         user = validated_data.get("user")
         user.is_complete_profile = True
@@ -49,6 +50,9 @@ class BaseProfileSerializer(serializers.ModelSerializer):
 
 
 class DeveloperProfileSerializer(BaseProfileSerializer):
+    def __init__(self, instance: Optional[DeveloperProfile] = None, *args: Any, **kwargs: Any) -> None:
+        super().__init__(instance, *args, **kwargs)
+
     class Meta(BaseProfileSerializer.Meta):
         model = DeveloperProfile
         fields = BaseProfileSerializer.Meta.fields + [
@@ -63,6 +67,9 @@ class DeveloperProfileSerializer(BaseProfileSerializer):
 
 
 class AgentProfileSerializer(BaseProfileSerializer):
+    def __init__(self, instance: Optional[AgentProfile] = None, *args: Any, **kwargs: Any) -> None:
+        super().__init__(instance, *args, **kwargs)
+
     class Meta(BaseProfileSerializer.Meta):
         model = AgentProfile
         fields = BaseProfileSerializer.Meta.fields + [

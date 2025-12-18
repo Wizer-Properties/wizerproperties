@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING
 from django.contrib import auth
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -9,8 +10,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from user.models import User, ConfirmationCode
 
+if TYPE_CHECKING:
+    from django.http import HttpRequest, HttpResponse
 
-def verify_link(request):
+
+def verify_link(request: "HttpRequest") -> "HttpResponse":
 	verification_type = request.GET.get('verification_type', None)
 	token = request.GET.get('token', None)
 	if not verification_type or not token:

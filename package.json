@@ -33,6 +33,7 @@
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/typography": "^0.5.19",
+    "@types/jquery": "^3.5.33",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",

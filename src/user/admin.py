@@ -1,3 +1,4 @@
+from typing import Any, Dict, Optional
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
@@ -7,7 +8,7 @@ from core.admin import custom_admin_site
 
 
 @admin.register(User, site=custom_admin_site)
-class UserAdmin(admin.ModelAdmin):
+class UserAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     list_display = [
         "id",
         "username",
@@ -19,10 +20,10 @@ class UserAdmin(admin.ModelAdmin):
         "created_at",
     ]
     
-    def has_add_permission(self, request):
+    def has_add_permission(self, request: Any) -> bool:
         return False
     
-    def change_view(self, request, object_id, form_url='', extra_context=None):
+    def change_view(self, request: Any, object_id: str, form_url: str = '', extra_context: Optional[Dict[str, Any]] = None) -> Any:
         # Add extra context to disable the "Save and add another" button
         extra_context = extra_context or {}
         extra_context['show_save_and_continue'] = False
@@ -30,7 +31,7 @@ class UserAdmin(admin.ModelAdmin):
         extra_context['show_delete'] = False
         return super(UserAdmin, self).change_view(request, object_id, form_url, extra_context=extra_context)
     
-    def add_view(self, request, form_url='', extra_context=None):
+    def add_view(self, request: Any, form_url: str = '', extra_context: Optional[Dict[str, Any]] = None) -> Any:
         extra_context = extra_context or {}
         extra_context['show_save_and_continue'] = False
         extra_context['show_save_and_add_another'] = False
@@ -53,7 +54,7 @@ class UserAdmin(admin.ModelAdmin):
 
 
 @admin.register(DeveloperProfile, site=custom_admin_site)
-class DeveloperProfileAdmin(admin.ModelAdmin):
+class DeveloperProfileAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     list_display = [
         "id",
         "_user",
@@ -64,7 +65,7 @@ class DeveloperProfileAdmin(admin.ModelAdmin):
         "created_at",
     ]
     
-    def _user(self, obj):
+    def _user(self, obj: DeveloperProfile) -> str:
         if obj.user:
             link = reverse("admin:user_user_change", args=[obj.user.id])
             return format_html('<a href="{}" target="_blank">{}</a>', link, obj.user.username)
@@ -73,7 +74,7 @@ class DeveloperProfileAdmin(admin.ModelAdmin):
     # def has_add_permission(self, request):
     #     return False
     
-    def change_view(self, request, object_id, form_url='', extra_context=None):
+    def change_view(self, request: Any, object_id: str, form_url: str = '', extra_context: Optional[Dict[str, Any]] = None) -> Any:
         # Add extra context to disable the "Save and add another" button
         extra_context = extra_context or {}
         extra_context['show_save_and_continue'] = False
@@ -81,7 +82,7 @@ class DeveloperProfileAdmin(admin.ModelAdmin):
         extra_context['show_delete'] = False
         return super(DeveloperProfileAdmin, self).change_view(request, object_id, form_url, extra_context=extra_context)
     
-    def add_view(self, request, form_url='', extra_context=None):
+    def add_view(self, request: Any, form_url: str = '', extra_context: Optional[Dict[str, Any]] = None) -> Any:
         extra_context = extra_context or {}
         extra_context['show_save_and_continue'] = False
         extra_context['show_save_and_add_another'] = False
@@ -90,7 +91,7 @@ class DeveloperProfileAdmin(admin.ModelAdmin):
 
 
 @admin.register(AgentProfile, site=custom_admin_site)
-class AgentProfileAdmin(admin.ModelAdmin):
+class AgentProfileAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     list_display = [
         "id",
         "_user",
@@ -101,16 +102,16 @@ class AgentProfileAdmin(admin.ModelAdmin):
         "created_at",
     ]
     
-    def _user(self, obj):
+    def _user(self, obj: AgentProfile) -> str:
         if obj.user:
             link = reverse("admin:user_user_change", args=[obj.user.id])
             return format_html('<a href="{}" target="_blank">{}</a>', link, obj.user.username)
         return "--"
     
-    def has_add_permission(self, request):
+    def has_add_permission(self, request: Any) -> bool:
         return False
     
-    def change_view(self, request, object_id, form_url='', extra_context=None):
+    def change_view(self, request: Any, object_id: str, form_url: str = '', extra_context: Optional[Dict[str, Any]] = None) -> Any:
         # Add extra context to disable the "Save and add another" button
         extra_context = extra_context or {}
         extra_context['show_save_and_continue'] = False
@@ -118,7 +119,7 @@ class AgentProfileAdmin(admin.ModelAdmin):
         extra_context['show_delete'] = False
         return super(AgentProfileAdmin, self).change_view(request, object_id, form_url, extra_context=extra_context)
     
-    def add_view(self, request, form_url='', extra_context=None):
+    def add_view(self, request: Any, form_url: str = '', extra_context: Optional[Dict[str, Any]] = None) -> Any:
         extra_context = extra_context or {}
         extra_context['show_save_and_continue'] = False
         extra_context['show_save_and_add_another'] = False
@@ -127,7 +128,7 @@ class AgentProfileAdmin(admin.ModelAdmin):
 
 
 @admin.register(ProspectProfile, site=custom_admin_site)
-class ProspectProfileAdmin(admin.ModelAdmin):
+class ProspectProfileAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     list_display = [
         "id",
         "_user",
@@ -138,16 +139,16 @@ class ProspectProfileAdmin(admin.ModelAdmin):
         "created_at",
     ]
     
-    def _user(self, obj):
+    def _user(self, obj: ProspectProfile) -> str:
         if obj.user:
             link = reverse("admin:user_user_change", args=[obj.user.id])
             return format_html('<a href="{}" target="_blank">{}</a>', link, obj.user.username)
         return "--"
     
-    def has_add_permission(self, request):
+    def has_add_permission(self, request: Any) -> bool:
         return False
     
-    def change_view(self, request, object_id, form_url='', extra_context=None):
+    def change_view(self, request: Any, object_id: str, form_url: str = '', extra_context: Optional[Dict[str, Any]] = None) -> Any:
         # Add extra context to disable the "Save and add another" button
         extra_context = extra_context or {}
         extra_context['show_save_and_continue'] = False
@@ -155,7 +156,7 @@ class ProspectProfileAdmin(admin.ModelAdmin):
         extra_context['show_delete'] = False
         return super(ProspectProfileAdmin, self).change_view(request, object_id, form_url, extra_context=extra_context)
     
-    def add_view(self, request, form_url='', extra_context=None):
+    def add_view(self, request: Any, form_url: str = '', extra_context: Optional[Dict[str, Any]] = None) -> Any:
         extra_context = extra_context or {}
         extra_context['show_save_and_continue'] = False
         extra_context['show_save_and_add_another'] = False

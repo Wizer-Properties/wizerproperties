@@ -1,6 +1,8 @@
 import requests
 import os
+import datetime
 from datetime import timedelta
+from typing import Any, Dict, List, Optional, Union, TYPE_CHECKING
 from django.utils import timezone
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
@@ -10,8 +12,11 @@ from openai import OpenAI
 from ipdata.models import IPData
 from utils.admin_settings import get_openai_api_key
 
+if TYPE_CHECKING:
+    from django.http import HttpRequest
 
-def send_email(subject: str, to_email: str, html_content: str, text_content: str = "", context: dict = None) -> None:
+
+def send_email(subject: str, to_email: str, html_content: str, text_content: str = "", context: Optional[Dict[str, Any]] = None) -> None:
     """
     Send an HTML email with optional text fallback.
     
@@ -70,7 +75,7 @@ def blur_email(email: str) -> str:
         return email
 
 
-def show_custom_error_message(fields: dict) -> None:
+def show_custom_error_message(fields: Dict[str, Any]) -> None:
     """
     Override default serializer error messages with custom formatted messages.
     
@@ -91,7 +96,7 @@ def show_custom_error_message(fields: dict) -> None:
         )
 
 
-def validate_media_file_extension(value, allowed_extensions: list) -> None:
+def validate_media_file_extension(value: Any, allowed_extensions: List[str]) -> None:
     """
     Validate that a media file has an allowed extension.
     
@@ -108,15 +113,15 @@ def validate_media_file_extension(value, allowed_extensions: list) -> None:
             raise ValidationError(f"Unsupported file format. Supported formats: {', '.join(allowed_extensions)}")
 
 
-def rename_dict_key(data_dict: dict, key_list: list) -> dict:
+def rename_dict_key(data_dict: Dict[str, Any], key_list: List[List[str]]) -> Dict[str, Any]:
     """
     Filters dict data by keys
-
++
         Parameters:
             data_dict (dict) : Dict data
             key_list (list) : List of keys \
                 (e.g: [["key", "modified_key"], ["key", "modified_key"]])
-
++
         Returns:
             Updated dict data
     """
@@ -139,12 +144,12 @@ def validate_date_format(value: str) -> None:
     """
     try:
         # Try to parse the value as a date in the expected format
-        timezone.datetime.strptime(value, "%m/%d/%Y")
+        datetime.datetime.strptime(value, "%m/%d/%Y")
     except ValueError:
         raise ValidationError("Invalid date format. Use mm/dd/yyyy.")
 
 
-def get_chatgpt_response(content: str, previous_response: str = None) -> str:
+def get_chatgpt_response(content: str, previous_response: Optional[str] = None) -> str:
     """
     Return generated message response using OpenRouter AI based on the provided 'content'.
     
@@ -168,7 +173,7 @@ def get_chatgpt_response(content: str, previous_response: str = None) -> str:
             api_key=api_key,
         )
         
-        messages = []
+        messages: List[Dict[str, str]] = []
         if previous_response:
             messages.append({"role": "system", "content": previous_response})
         messages.append({"role": "user", "content": content})
@@ -178,14 +183,14 @@ def get_chatgpt_response(content: str, previous_response: str = None) -> str:
         # Alternative: Can use openai/gpt-3.5-turbo for even lower cost
         response = client.chat.completions.create(
             model="openai/gpt-4o-mini",  # Cost-effective model via OpenRouter
-            messages=messages,
+            messages=messages, # type: ignore
         )
-        return response.choices[0].message.content
+        return str(response.choices[0].message.content)
     except Exception as e:
         return "I'm having trouble connecting right now. Please try again in a moment. I want to help you get the information you need."
 
 
-def get_user_ip(request) -> str:
+def get_user_ip(request: "HttpRequest") -> str:
     """
     Extract the user's IP address from the request.
     
@@ -198,14 +203,14 @@ def get_user_ip(request) -> str:
     x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
 
     if x_forwarded_for:
-        ip = x_forwarded_for.split(",")[0]
+        ip = str(x_forwarded_for).split(",")[0]
     else:
-        ip = request.META.get("REMOTE_ADDR")
+        ip = str(request.META.get("REMOTE_ADDR"))
 
     return ip
 
 
-def get_user_location(request) -> dict:
+def get_user_location(request: "HttpRequest") -> Optional[str]:
     """
     Get user's location based on IP address using proxycheck.io API.
     
@@ -246,12 +251,13 @@ def get_user_location(request) -> dict:
         if api_key_status == 'error':
             return None
         else:
-            if 'country' in ip_details[ip]:
-                country = ip_details[ip]['country']
-            if 'region' in ip_details[ip]:
-                region = ip_details[ip]['region']
-            if 'city' in ip_details[ip]:
-                city = ip_details[ip]['city']
+            details = ip_details.get(ip, {})
+            if 'country' in details:
+                country = details['country']
+            if 'region' in details:
+                region = details['region']
+            if 'city' in details:
+                city = details['city']
         
             address = ""
             if city:
@@ -264,10 +270,10 @@ def get_user_location(request) -> dict:
         ip_data_obj.address = address
         ip_data_obj.save()
         
-    return ip_data_obj.address
+    return str(ip_data_obj.address) if ip_data_obj.address else None
 
 
-def get_duration_without_milliseconds(duration) -> str:
+def get_duration_without_milliseconds(duration: Union[timedelta, str, Any]) -> str:
     """
     Format duration to remove microseconds and keep the format `days hours:minutes:seconds`.
     
@@ -289,11 +295,11 @@ def get_duration_without_milliseconds(duration) -> str:
         else:
             return f"{hours:02}:{minutes:02}:{seconds:02}"
 
-    return duration
+    return str(duration)
 
 
 
-def formatted_number(value) -> str:
+def formatted_number(value: Any) -> str:
     """
     Format number with comma separators for thousands.
     

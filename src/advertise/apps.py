@@ -5,5 +5,5 @@ class AdvertiseConfig(AppConfig):
     name = 'advertise'
     verbose_name = 'Advertisement'  # Display name in Django admin
 
-    def ready(self):
+    def ready(self) -> None:
         import advertise.signals

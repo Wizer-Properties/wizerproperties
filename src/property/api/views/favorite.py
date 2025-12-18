@@ -1,30 +1,40 @@
-from rest_framework import viewsets, status, permissions
+from rest_framework import viewsets, status, permissions, serializers
 from rest_framework.response import Response
+from typing import Any, Dict, Optional, cast, TYPE_CHECKING
 from property.api.permissions import ProspectPropertyFavoritePermission
 from property.api.serializers import ProspectFavoritePropertySerializer
 from property.models import ProspectFavoriteProperty
 
 
-class ProspectFavoritePropertyViewSet(viewsets.ModelViewSet):
+if TYPE_CHECKING:
+    _Base = viewsets.ModelViewSet[ProspectFavoriteProperty]
+else:
+    _Base = viewsets.ModelViewSet
+
+
+class ProspectFavoritePropertyViewSet(_Base):
     serializer_class = ProspectFavoritePropertySerializer
     permission_classes = [permissions.IsAuthenticated, ProspectPropertyFavoritePermission]
     serializer_method_fields = ["POST", "GET", "DELETE"]
 
-    def get_queryset(self):
+    def get_queryset(self) -> Any:
         return ProspectFavoriteProperty.objects.select_related("prospect", "property").filter(
-            prospect=self.request.user.prospectprofile
+            prospect=cast(Any, self.request.user).prospectprofile
         )
 
-    def get_serializer_context(self):
+    def get_serializer_context(self) -> Dict[str, Any]:
         # Get the default context from the parent class
-        context = super(ProspectFavoritePropertyViewSet, self).get_serializer_context()
+        context: Dict[str, Any] = super().get_serializer_context()
 
         # Add custom data to the context
         context["request"] = self.request
 
         return context
 
-    def perform_destroy(self, serializer):
+    def perform_destroy(self, instance: ProspectFavoriteProperty) -> None:
+        instance.delete()
+
+    def destroy(self, request: Any, *args: Any, **kwargs: Any) -> Response:
         # Get the property from the request data
         property = self.request.data.get("property")
 
@@ -33,10 +43,10 @@ class ProspectFavoritePropertyViewSet(viewsets.ModelViewSet):
 
         # Try to get and delete the FavoriteProperty instance based on prospect and property
         try:
-            compare_property = ProspectFavoriteProperty.objects.get(
-                prospect=self.request.user.prospectprofile, property=property
+            favorite_property = ProspectFavoriteProperty.objects.get(
+                prospect=cast(Any, self.request.user).prospectprofile, property=property
             )
-            compare_property.delete()
+            favorite_property.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except ProspectFavoriteProperty.DoesNotExist:
             return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)

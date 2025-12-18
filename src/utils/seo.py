@@ -1,20 +1,18 @@
-"""
-SEO Utilities for Wizer Properties
-Provides helper functions for generating SEO meta tags, structured data, and Open Graph tags
-"""
-
+from typing import Any, Optional, List, Tuple, cast
 from django.conf import settings
 from django.utils.html import format_html, escape
-from django.utils.safestring import mark_safe
+from django.utils.safestring import mark_safe, SafeString
 import json
 
 
-def get_site_url():
+def get_site_url() -> str:
     """Get the base site URL"""
-    return getattr(settings, 'SITE_HOST', 'https://wizerproperties.com')
+    return str(getattr(settings, 'SITE_HOST', 'https://wizerproperties.com'))
 
 
-def generate_meta_tags(title, description, keywords=None, image=None, url=None, og_type='website', **kwargs):
+def generate_meta_tags(title: str, description: str, keywords: Optional[str] = None, 
+                      image: Optional[str] = None, url: Optional[str] = None, 
+                      og_type: str = 'website', **kwargs: Any) -> SafeString:
     """
     Generate comprehensive SEO meta tags
     
@@ -67,10 +65,10 @@ def generate_meta_tags(title, description, keywords=None, image=None, url=None, 
     
     # Additional meta tags
     if kwargs.get('author'):
-        tags.append(f'<meta name="author" content="{escape(kwargs["author"])}">')
+        tags.append(f'<meta name="author" content="{escape(str(kwargs["author"]))}">')
     
     if kwargs.get('robots'):
-        tags.append(f'<meta name="robots" content="{escape(kwargs["robots"])}">')
+        tags.append(f'<meta name="robots" content="{escape(str(kwargs["robots"]))}">')
     else:
         tags.append('<meta name="robots" content="index, follow">')
     
@@ -83,7 +81,7 @@ def generate_meta_tags(title, description, keywords=None, image=None, url=None, 
     return mark_safe('\n    '.join(tags))
 
 
-def generate_property_schema(property_obj):
+def generate_property_schema(property_obj: Any) -> SafeString:
     """
     Generate JSON-LD structured data for a property listing
     
@@ -103,7 +101,7 @@ def generate_property_schema(property_obj):
             if hasattr(img, 'file') and img.file:
                 property_images.append(f"{site_url}{img.file.url}")
     
-    schema = {
+    schema: dict[str, Any] = {
         "@context": "https://schema.org",
         "@type": "Product",
         "name": property_obj.title or f"Property {property_obj.id}",
@@ -138,11 +136,11 @@ def generate_property_schema(property_obj):
     return format_html('<script type="application/ld+json">{}</script>', mark_safe(json_ld))
 
 
-def generate_organization_schema():
+def generate_organization_schema() -> SafeString:
     """Generate JSON-LD structured data for the organization"""
     site_url = get_site_url()
     
-    schema = {
+    schema: dict[str, Any] = {
         "@context": "https://schema.org",
         "@type": "Organization",
         "name": "Wizer Properties",
@@ -166,7 +164,7 @@ def generate_organization_schema():
     return format_html('<script type="application/ld+json">{}</script>', mark_safe(json_ld))
 
 
-def generate_article_schema(article_obj):
+def generate_article_schema(article_obj: Any) -> SafeString:
     """
     Generate JSON-LD structured data for a blog article
     
@@ -192,7 +190,7 @@ def generate_article_schema(article_obj):
     if hasattr(article_obj, 'banner_image') and article_obj.banner_image:
         image_url = f"{site_url}{article_obj.banner_image.url}"
     
-    schema = {
+    schema: dict[str, Any] = {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": article_obj.title or "Blog Post",
@@ -216,13 +214,13 @@ def generate_article_schema(article_obj):
     
     # Add categories as keywords
     if hasattr(article_obj, 'categories') and article_obj.categories.exists():
-        schema["keywords"] = ", ".join([cat.name for cat in article_obj.categories.all()])
+        schema["keywords"] = ", ".join([str(cat.name) for cat in article_obj.categories.all()])
     
     json_ld = json.dumps(schema, indent=2, ensure_ascii=False)
     return format_html('<script type="application/ld+json">{}</script>', mark_safe(json_ld))
 
 
-def generate_breadcrumb_schema(breadcrumbs):
+def generate_breadcrumb_schema(breadcrumbs: List[Tuple[str, str]]) -> SafeString:
     """
     Generate JSON-LD structured data for breadcrumbs
     
@@ -243,7 +241,7 @@ def generate_breadcrumb_schema(breadcrumbs):
             "item": f"{site_url}{url}" if not url.startswith('http') else url
         })
     
-    schema = {
+    schema: dict[str, Any] = {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": items
@@ -253,7 +251,7 @@ def generate_breadcrumb_schema(breadcrumbs):
     return format_html('<script type="application/ld+json">{}</script>', mark_safe(json_ld))
 
 
-def generate_building_schema(building_obj):
+def generate_building_schema(building_obj: Any) -> SafeString:
     """
     Generate JSON-LD structured data for a building/project listing
     
@@ -273,7 +271,7 @@ def generate_building_schema(building_obj):
             if hasattr(img, 'file') and img.file:
                 building_images.append(f"{site_url}{img.file.url}")
     
-    schema = {
+    schema: dict[str, Any] = {
         "@context": "https://schema.org",
         "@type": "Place",
         "name": building_obj.title or f"Building {building_obj.id}",

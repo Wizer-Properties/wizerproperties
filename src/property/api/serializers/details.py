@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from django.db.models import Avg
+from typing import Any, Dict, List, Optional
+from property.models import Property
 from .default import PropertySerializer
 from .media import PropertyMediaSerializer
 
@@ -60,19 +62,19 @@ class PropertyDetailsSerializer(PropertySerializer):
             "reviews",
         ]
 
-    def get_developer_image(self, obj):
+    def get_developer_image(self, obj: Property) -> str:
         user = obj.created_by
         if not user:
             return ""
         if hasattr(user, "developerprofile"):
             logo = user.developerprofile.company_logo
-            return logo.url if logo else ""
+            return str(logo.url) if logo else ""
         elif hasattr(user, "agentprofile"):
             logo = user.agentprofile.company_logo
-            return logo.url if logo else ""
+            return str(logo.url) if logo else ""
         return ""
 
-    def get_developer_phone_number(self, obj):
+    def get_developer_phone_number(self, obj: Property) -> str:
         user = obj.created_by
         if not user:
             return ""
@@ -82,7 +84,7 @@ class PropertyDetailsSerializer(PropertySerializer):
             return str(user.agentprofile.phone_number) if user.agentprofile.phone_number else ""
         return ""
 
-    def get_developer_company_name(self, obj):
+    def get_developer_company_name(self, obj: Property) -> str:
         user = obj.created_by
         if not user:
             return ""
@@ -92,33 +94,35 @@ class PropertyDetailsSerializer(PropertySerializer):
             return str(user.agentprofile.company_name) if user.agentprofile.company_name else ""
         return ""
 
-    def get_default_images(self, obj):
+    def get_default_images(self, obj: Property) -> Any:
         request = self.context.get("request")
         images = obj.media_files.filter(type="image")
 
         # Determine the number of default_images to return in the list based on the provided default_images_number parameter.
-        default_images_number = request.GET.get("default_images_number")
-        if default_images_number:
-            images = images[: int(default_images_number)]
+        if request:
+            default_images_number = request.GET.get("default_images_number")
+            if default_images_number:
+                images = images[: int(default_images_number)]
 
         return PropertyMediaSerializer(images, many=True).data
 
-    def get_reviews(self, obj):
+    def get_reviews(self, obj: Property) -> Dict[str, Any]:
         request = self.context.get("request")
-        reviews = obj.building.reviews.all()
+        reviews = obj.building.reviews.all() if obj.building else obj.building.reviews.none() # type: ignore
         total_rating = reviews.count()
         average_rating = reviews.aggregate(Avg("rating"))["rating__avg"]
-        data = {
+        data: Dict[str, Any] = {
             "total_rating": total_rating,
             "average_rating": round(average_rating, 2) if average_rating is not None else 0,
         }
-        reviewed_by = request.GET.get("reviewed_by")
-        if reviewed_by:
-            try:
-                has_reviewed = reviews.filter(user__id=reviewed_by).exists()
-                data["has_reviewed"] = has_reviewed
-            except ValueError:
-                # Handle the case where 'reviewed_by' is not a valid integer
-                pass
+        if request:
+            reviewed_by = request.GET.get("reviewed_by")
+            if reviewed_by:
+                try:
+                    has_reviewed = reviews.filter(user__id=reviewed_by).exists()
+                    data["has_reviewed"] = has_reviewed
+                except ValueError:
+                    # Handle the case where 'reviewed_by' is not a valid integer
+                    pass
 
         return data

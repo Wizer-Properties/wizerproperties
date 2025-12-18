@@ -1,14 +1,18 @@
+from typing import TYPE_CHECKING, List, Tuple
 from django.shortcuts import render
 from django.urls import reverse
 from .models import Category, Post
 
+if TYPE_CHECKING:
+    from django.http import HttpRequest, HttpResponse
 
-def blog_list(request):
+
+def blog_list(request: "HttpRequest") -> "HttpResponse":
     categories = Category.objects.filter(is_active=True)
     return render(request, "blog-list.html", {"categories": categories})
 
 
-def blog_details(request, slug):
+def blog_details(request: "HttpRequest", slug: str) -> "HttpResponse":
     
     # Get the post or redirect to 404 if not found
     try:
@@ -23,14 +27,15 @@ def blog_details(request, slug):
         is_liked = post.interactions.filter(interaction_type='like', user=request.user).exists()
         is_disliked = post.interactions.filter(interaction_type='dislike', user=request.user).exists()
     else:
-        is_liked = post.interactions.filter(interaction_type='like', ip_address=request.META.get('REMOTE_ADDR')).exists()
-        is_disliked = post.interactions.filter(interaction_type='dislike', ip_address=request.META.get('REMOTE_ADDR')).exists()
+        ip_addr = request.META.get('REMOTE_ADDR')
+        is_liked = post.interactions.filter(interaction_type='like', ip_address=ip_addr).exists()
+        is_disliked = post.interactions.filter(interaction_type='dislike', ip_address=ip_addr).exists()
     
     # Add breadcrumbs for structured data
-    breadcrumbs = [
+    breadcrumbs: List[Tuple[str, str]] = [
         ('Home', '/'),
-        ('Blog', reverse('blogs:blog_list')),
-        (post.title, post.get_absolute_url()),
+        ('Blog', str(reverse('blogs:blog_list'))),
+        (str(post.title), str(post.get_absolute_url())),
     ]
     
     context = {

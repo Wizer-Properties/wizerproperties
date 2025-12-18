@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from django.db.models import Avg
+from typing import Any, Dict, Optional
+from building.models import Building
 from .media import BuildingMediaSerializer
 from .default import BuildingSerializer
 
@@ -21,18 +23,19 @@ class BuildingDetailsSerializer(BuildingSerializer):
             "reviews",
         ]
 
-    def get_default_images(self, obj):
+    def get_default_images(self, obj: Building) -> Any:
         request = self.context.get("request")
         images = obj.media_files.filter(type="image")
 
         # Determine the number of default_images to return in the list based on the provided default_images_number parameter.
-        default_images_number = request.GET.get("default_images_number")
-        if default_images_number:
-            images = images[: int(default_images_number)]
+        if request:
+            default_images_number = request.GET.get("default_images_number")
+            if default_images_number:
+                images = images[: int(default_images_number)]
 
         return BuildingMediaSerializer(images, many=True).data
 
-    def get_reviews(self, obj):
+    def get_reviews(self, obj: Building) -> Dict[str, Any]:
         request = self.context.get("request")
         reviews = obj.reviews.all()
         total_rating = reviews.count()
@@ -41,12 +44,13 @@ class BuildingDetailsSerializer(BuildingSerializer):
             "total_rating": total_rating,
             "average_rating": round(average_rating, 2) if average_rating is not None else 0,
         }
-        reviewed_by = request.GET.get("reviewed_by")
-        if reviewed_by:
-            try:
-                has_reviewed = reviews.filter(user__id=reviewed_by).exists()
-                data["has_reviewed"] = has_reviewed
-            except ValueError:
-                # Handle the case where 'reviewed_by' is not a valid integer
-                pass
+        if request:
+            reviewed_by = request.GET.get("reviewed_by")
+            if reviewed_by:
+                try:
+                    has_reviewed = reviews.filter(user__id=reviewed_by).exists()
+                    data["has_reviewed"] = has_reviewed
+                except ValueError:
+                    # Handle the case where 'reviewed_by' is not a valid integer
+                    pass
         return data

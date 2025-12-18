@@ -25,5 +25,5 @@ class Reel(TimestampedModel):
     property = models.ForeignKey("property.Property", null=True, on_delete=models.SET_NULL, related_name="reels")
     created_by = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.id)

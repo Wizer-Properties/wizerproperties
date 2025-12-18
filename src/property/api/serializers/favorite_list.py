@@ -1,8 +1,14 @@
+from typing import TYPE_CHECKING
 from rest_framework import serializers
 from property.models import Property
 
+if TYPE_CHECKING:
+    _Base = serializers.ModelSerializer[Property]
+else:
+    _Base = serializers.ModelSerializer
 
-class PropertyFavoriteListSerializer(serializers.ModelSerializer):
+
+class PropertyFavoriteListSerializer(_Base):
     building_title = serializers.CharField(source="building.title", read_only=True)
     building_type = serializers.CharField(source="building.type", read_only=True)
     building_sub_type = serializers.CharField(source="building.get_sub_type_display", read_only=True)

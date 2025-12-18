@@ -1,4 +1,5 @@
 from datetime import timedelta
+from typing import Any, List, Optional, TYPE_CHECKING
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
@@ -12,7 +13,17 @@ from rest_framework import status
 from advertise.models import Advertisement
 from advertise.api.serializers import AdvertisementSuggestionSerializer
 
-class PostListView(generics.ListAPIView):
+if TYPE_CHECKING:
+    from django.db.models import QuerySet
+    _PostListBase = generics.ListAPIView[Post]
+    _RelatedPostListBase = generics.ListAPIView[Post]
+    _BlogAdBase = generics.ListAPIView[Advertisement]
+else:
+    _PostListBase = generics.ListAPIView
+    _RelatedPostListBase = generics.ListAPIView
+    _BlogAdBase = generics.ListAPIView
+
+class PostListView(_PostListBase):
     queryset = Post.objects.filter(status='published')
     serializer_class = PostListSerializer
     pagination_class = CustomPagination
@@ -21,7 +32,7 @@ class PostListView(generics.ListAPIView):
     ordering = ['-created_at']  # Default ordering
     # http_method_names = ['get', 'de']
     
-    def get_queryset(self):
+    def get_queryset(self) -> "QuerySet[Post]":
         queryset = self.queryset
         
         # Filter by category
@@ -47,20 +58,20 @@ class PostListView(generics.ListAPIView):
         return queryset
 
 
-class RelatedPostListView(generics.ListAPIView):
+class RelatedPostListView(_RelatedPostListBase):
     serializer_class = RelatedPostSerializer
     pagination_class = None
     
 
-    def get_queryset(self):
-        read_posts_id = self.request.GET.getlist('read_posts_id')
-        read_posts_id = [int(id) for id in read_posts_id if id.isdigit()]
+    def get_queryset(self) -> "QuerySet[Post]":
+        read_posts_id_raw: List[str] = self.request.GET.getlist('read_posts_id')
+        read_posts_id: List[int] = [int(id_str) for id_str in read_posts_id_raw if id_str.isdigit()]
 
         read_categories = self.request.GET.getlist('post_categories_name')
         read_categories = [cat.strip() for cat in read_categories if cat.strip()]
 
-        current_post_id = self.request.GET.get('current_post_id')
-        current_post_id = int(current_post_id) if current_post_id and current_post_id.isdigit() else None
+        current_post_id_raw: Optional[str] = self.request.GET.get('current_post_id')
+        current_post_id: Optional[int] = int(current_post_id_raw) if current_post_id_raw and current_post_id_raw.isdigit() else None
 
         queryset = Post.objects.filter(status='published').exclude(id__in=read_posts_id)
                         
@@ -74,7 +85,8 @@ class RelatedPostListView(generics.ListAPIView):
                     queryset = queryset.filter(categories__in=current_post.categories.all())
 
             # Order by popularity (read count) and recency
-            queryset = queryset.order_by('-total_read_count', '-total_likes', '-created_at').exclude(id=current_post_id).distinct()
+            query_filter = Q(id=current_post_id) if current_post_id else Q()
+            queryset = queryset.order_by('-total_read_count', '-total_likes', '-created_at').exclude(query_filter).distinct()
             
             # If not enough related posts, add popular and recent posts
             if queryset.count() < 5:
@@ -83,7 +95,7 @@ class RelatedPostListView(generics.ListAPIView):
                 ).order_by('-total_read_count', '-total_likes', '-created_at').distinct()
                 queryset = queryset | popular_posts
                 
-        except Exception as e:
+        except Exception:
             return Post.objects.none()  # Return an empty queryset instead of a list
 
         return queryset[:5]  # Limit to 5 posts
@@ -91,7 +103,7 @@ class RelatedPostListView(generics.ListAPIView):
 
 class PostLikeDislikeView(APIView):
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: Any, *args: Any, **kwargs: Any) -> Response:
         post_id = request.data.get('post_id')
         interaction_type = request.data.get('interaction_type')  # either 'like' or 'dislike'
         ip_address = request.META.get('REMOTE_ADDR')
@@ -125,7 +137,7 @@ class PostLikeDislikeView(APIView):
 
 class SaveReadTimeView(APIView):
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: Any, *args: Any, **kwargs: Any) -> Response:
         time_spent = request.data.get('time_spent')
         post_id = request.data.get('post_id')
 
@@ -148,11 +160,11 @@ class SaveReadTimeView(APIView):
             return Response({'error': 'Post not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
-class BlogAdvertisementView(generics.ListAPIView):
+class BlogAdvertisementView(_BlogAdBase):
     queryset = Advertisement.objects.all()
     serializer_class = AdvertisementSuggestionSerializer
     pagination_class = None
     
-    def get_queryset(self):
+    def get_queryset(self) -> "QuerySet[Advertisement]":
         queryset = self.queryset.filter(ad_location='blog')
         return queryset

@@ -1,10 +1,16 @@
+from typing import TYPE_CHECKING
 from rest_framework import serializers
 from property.models import Property
+
+if TYPE_CHECKING:
+    _Base = serializers.ModelSerializer[Property]
+else:
+    _Base = serializers.ModelSerializer
 
 
 # Serializer for handling popular, newly added, and discounted properties in search page.
 # This serializer is designed to retrieve a list of properties with various attributes.
-class PropertyVariousFeatureMinimalInfoSerializer(serializers.ModelSerializer):
+class PropertyVariousFeatureMinimalInfoSerializer(_Base):
     type = serializers.CharField(source="building.type", read_only=True)
     sub_type = serializers.CharField(source="building.get_sub_type_display", read_only=True)
     status = serializers.CharField(source="building.status", read_only=True)

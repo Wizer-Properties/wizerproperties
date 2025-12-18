@@ -1,16 +1,20 @@
+from typing import Any, Optional, Union, TYPE_CHECKING
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from datetime import date
-from django.utils import timezone
 
 from property.models import Property, DiscountProperty, FeatureProperty
+from user.models import AgentProfile, DeveloperProfile
 from utils.admin_settings import get_discount_property_cost, get_featured_property_cost
 
+if TYPE_CHECKING:
+    from django.http import HttpRequest, HttpResponse
 
-def get_user_profile(request):
+
+def get_user_profile(request: "HttpRequest") -> Optional[Union[AgentProfile, DeveloperProfile]]:
     """
     Get the user's profile (agent or developer) and credit balance.
     
@@ -20,21 +24,25 @@ def get_user_profile(request):
     Returns:
         AgentProfile or DeveloperProfile: User's profile object, or None if user type is invalid.
     """
-    if request.user.user_type == "agent":
-        return request.user.agentprofile
-    elif request.user.user_type == "developer":
-        return request.user.developerprofile
+    user = request.user
+    if not user.is_authenticated:
+        return None
+    if user.user_type == "agent":
+        return getattr(user, 'agentprofile', None)
+    elif user.user_type == "developer":
+        return getattr(user, 'developerprofile', None)
     return None
 
 
 @login_required
-def discount_property_list(request):
+def discount_property_list(request: "HttpRequest") -> "HttpResponse":
     """List all discount properties created by the current user"""
-    if request.user.user_type not in ['agent', 'developer']:
+    user = request.user
+    if not user.is_authenticated or user.user_type not in ['agent', 'developer']:
         messages.error(request, "Access denied. Only agents and developers can access this page.")
         return redirect('/dashboard/')
     
-    discount_properties = DiscountProperty.objects.filter(created_by=request.user).select_related('property', 'property__building').order_by('period')
+    discount_properties = DiscountProperty.objects.filter(created_by=user).select_related('property', 'property__building').order_by('period')
     
     context = {
         'discount_properties': discount_properties,
@@ -46,13 +54,14 @@ def discount_property_list(request):
 
 
 @login_required
-def featured_property_list(request):
+def featured_property_list(request: "HttpRequest") -> "HttpResponse":
     """List all featured properties created by the current user"""
-    if request.user.user_type not in ['agent', 'developer']:
+    user = request.user
+    if not user.is_authenticated or user.user_type not in ['agent', 'developer']:
         messages.error(request, "Access denied. Only agents and developers can access this page.")
         return redirect('/dashboard/')
     
-    featured_properties = FeatureProperty.objects.filter(created_by=request.user).select_related('property', 'property__building').order_by('expiry_date')
+    featured_properties = FeatureProperty.objects.filter(created_by=user).select_related('property', 'property__building').order_by('expiry_date')
     
     context = {
         'featured_properties': featured_properties,
@@ -64,9 +73,10 @@ def featured_property_list(request):
 
 
 @login_required
-def create_discount_property(request):
+def create_discount_property(request: "HttpRequest") -> "HttpResponse":
     """Create a new discount property"""
-    if request.user.user_type not in ['agent', 'developer']:
+    user = request.user
+    if not user.is_authenticated or user.user_type not in ['agent', 'developer']:
         messages.error(request, "Access denied. Only agents and developers can access this page.")
         return redirect('/dashboard/')
     
@@ -80,7 +90,7 @@ def create_discount_property(request):
     
     # Get properties owned by the user that are not already in discount or featured lists
     available_properties = Property.objects.filter(
-        created_by=request.user,
+        created_by=user,
         is_active=True
     ).exclude(
         discounts__isnull=False
@@ -96,24 +106,24 @@ def create_discount_property(request):
             messages.error(request, "Please select a property and expiry date.")
         else:
             try:
-                property_obj = get_object_or_404(Property, id=property_id, created_by=request.user)
+                property_obj = get_object_or_404(Property, id=property_id, created_by=user)
                 expiry_date_obj = date.fromisoformat(expiry_date)
                 
                 if expiry_date_obj < date.today():
                     messages.error(request, "Expiry date must be in the future.")
                 else:
-                    # Check if user has enough credits
-                    if user_profile.credit_balance < discount_cost:
-                        messages.error(request, f"Insufficient credits. You need {discount_cost} credits but only have {user_profile.credit_balance}.")
-                    else:
-                        # Deduct credits and create discount property
-                        user_profile.credit_balance -= discount_cost
-                        user_profile.save()
+                        # Check if user has enough credits
+                        if user_profile.credit_balance < discount_cost:
+                            messages.error(request, f"Insufficient credits. You need {discount_cost} credits but only have {user_profile.credit_balance}.")
+                        else:
+                            # Deduct credits and create discount property
+                            user_profile.credit_balance = float(user_profile.credit_balance) - float(discount_cost)
+                            user_profile.save()
                         
                         discount_property = DiscountProperty.objects.create(
                             property=property_obj,
                             period=expiry_date_obj,
-                            created_by=request.user
+                            created_by=user
                         )
                         messages.success(request, f"Discount property '{property_obj.title}' created successfully! {discount_cost} credits deducted.")
                         return redirect('property:discount_list')
@@ -135,9 +145,10 @@ def create_discount_property(request):
 
 
 @login_required
-def create_featured_property(request):
+def create_featured_property(request: "HttpRequest") -> "HttpResponse":
     """Create a new featured property"""
-    if request.user.user_type not in ['agent', 'developer']:
+    user = request.user
+    if not user.is_authenticated or user.user_type not in ['agent', 'developer']:
         messages.error(request, "Access denied. Only agents and developers can access this page.")
         return redirect('/dashboard/')
     
@@ -151,7 +162,7 @@ def create_featured_property(request):
     
     # Get properties owned by the user that are not already in discount or featured lists
     available_properties = Property.objects.filter(
-        created_by=request.user,
+        created_by=user,
         is_active=True
     ).exclude(
         discounts__isnull=False
@@ -167,24 +178,24 @@ def create_featured_property(request):
             messages.error(request, "Please select a property and expiry date.")
         else:
             try:
-                property_obj = get_object_or_404(Property, id=property_id, created_by=request.user)
+                property_obj = get_object_or_404(Property, id=property_id, created_by=user)
                 expiry_date_obj = date.fromisoformat(expiry_date)
                 
                 if expiry_date_obj < date.today():
                     messages.error(request, "Expiry date must be in the future.")
                 else:
-                    # Check if user has enough credits
-                    if user_profile.credit_balance < featured_cost:
-                        messages.error(request, f"Insufficient credits. You need {featured_cost} credits but only have {user_profile.credit_balance}.")
-                    else:
-                        # Deduct credits and create featured property
-                        user_profile.credit_balance -= featured_cost
-                        user_profile.save()
+                        # Check if user has enough credits
+                        if user_profile.credit_balance < featured_cost:
+                            messages.error(request, f"Insufficient credits. You need {featured_cost} credits but only have {user_profile.credit_balance}.")
+                        else:
+                            # Deduct credits and create featured property
+                            user_profile.credit_balance = float(user_profile.credit_balance) - float(featured_cost)
+                            user_profile.save()
                         
                         featured_property = FeatureProperty.objects.create(
                             property=property_obj,
                             expiry_date=expiry_date_obj,
-                            created_by=request.user
+                            created_by=user
                         )
                         messages.success(request, f"Featured property '{property_obj.title}' created successfully! {featured_cost} credits deducted.")
                         return redirect('property:featured_list')
@@ -206,13 +217,14 @@ def create_featured_property(request):
 
 
 @login_required
-def delete_discount_property(request, discount_id):
+def delete_discount_property(request: "HttpRequest", discount_id: int) -> "HttpResponse":
     """Delete a discount property"""
-    if request.user.user_type not in ['agent', 'developer']:
+    user = request.user
+    if not user.is_authenticated or user.user_type not in ['agent', 'developer']:
         messages.error(request, "Access denied. Only agents and developers can access this page.")
         return redirect('/dashboard/')
     
-    discount_property = get_object_or_404(DiscountProperty, id=discount_id, created_by=request.user)
+    discount_property = get_object_or_404(DiscountProperty, id=discount_id, created_by=user)
     
     if request.method == 'POST':
         property_title = discount_property.property.title if discount_property.property else 'Unknown'
@@ -228,13 +240,14 @@ def delete_discount_property(request, discount_id):
 
 
 @login_required
-def edit_discount_property(request, discount_id):
+def edit_discount_property(request: "HttpRequest", discount_id: int) -> "HttpResponse":
     """Edit an existing discount property"""
-    if request.user.user_type not in ['agent', 'developer']:
+    user = request.user
+    if not user.is_authenticated or user.user_type not in ['agent', 'developer']:
         messages.error(request, "Access denied. Only agents and developers can access this page.")
         return redirect('/dashboard/')
     
-    discount_property = get_object_or_404(DiscountProperty, id=discount_id, created_by=request.user)
+    discount_property = get_object_or_404(DiscountProperty, id=discount_id, created_by=user)
     
     if request.method == 'POST':
         expiry_date = request.POST.get('expiry_date')
@@ -267,13 +280,14 @@ def edit_discount_property(request, discount_id):
 
 
 @login_required
-def edit_featured_property(request, featured_id):
+def edit_featured_property(request: "HttpRequest", featured_id: int) -> "HttpResponse":
     """Edit an existing featured property"""
-    if request.user.user_type not in ['agent', 'developer']:
+    user = request.user
+    if not user.is_authenticated or user.user_type not in ['agent', 'developer']:
         messages.error(request, "Access denied. Only agents and developers can access this page.")
         return redirect('/dashboard/')
     
-    featured_property = get_object_or_404(FeatureProperty, id=featured_id, created_by=request.user)
+    featured_property = get_object_or_404(FeatureProperty, id=featured_id, created_by=user)
     
     if request.method == 'POST':
         expiry_date = request.POST.get('expiry_date')
@@ -306,13 +320,14 @@ def edit_featured_property(request, featured_id):
 
 
 @login_required
-def delete_featured_property(request, featured_id):
+def delete_featured_property(request: "HttpRequest", featured_id: int) -> "HttpResponse":
     """Delete a featured property"""
-    if request.user.user_type not in ['agent', 'developer']:
+    user = request.user
+    if not user.is_authenticated or user.user_type not in ['agent', 'developer']:
         messages.error(request, "Access denied. Only agents and developers can access this page.")
         return redirect('/dashboard/')
     
-    featured_property = get_object_or_404(FeatureProperty, id=featured_id, created_by=request.user)
+    featured_property = get_object_or_404(FeatureProperty, id=featured_id, created_by=user)
     
     if request.method == 'POST':
         property_title = featured_property.property.title if featured_property.property else 'Unknown'

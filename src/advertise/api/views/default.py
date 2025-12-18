@@ -1,6 +1,7 @@
 import ast
 from itertools import combinations
 from collections import OrderedDict
+from typing import Any, Dict, List, Optional, Tuple, cast, OrderedDict as OrderedDictType
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -13,20 +14,20 @@ from advertise.api.permissions import ReelPermission
 from advertise.api.pagination import ReelPagination
 
 
-class ReelViewSet(viewsets.ModelViewSet):
+class ReelViewSet(viewsets.ModelViewSet):  # type: ignore[type-arg]
     serializer_class = ReelSerializer
     permission_classes = [ReelPermission]
     pagination_class = ReelPagination
     queryset = Reel.objects.all()
     ordering = ["-created_at"]  # Default ordering
 
-    def list(self, request):
+    def list(self, request: Any) -> Response:
         # Returns Agent/Developer Reels
         queryset = self.get_queryset().filter(created_by=request.user).order_by("-created_at")
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
-    def retrieve(self, request, pk=None):
+    def retrieve(self, request: Any, pk: Optional[int] = None) -> Response:
         reel_obj = get_object_or_404(self.get_queryset(), pk=pk)
         serializer = self.serializer_class(reel_obj)
         if reel_obj.status == "active":
@@ -38,7 +39,7 @@ class ReelViewSet(viewsets.ModelViewSet):
         return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
 
     @action(detail=False, methods=["get"], url_path="active")
-    def active_reels(self, request):
+    def active_reels(self, request: Any) -> Response:
         # Returns active reels and filter reels if category provides
 
         category = request.query_params.get("category", None)
@@ -54,10 +55,12 @@ class ReelViewSet(viewsets.ModelViewSet):
     
 
     @action(detail=False, methods=["get"], url_path="suggested")
-    def suggested_reels(self, request):
+    def suggested_reels(self, request: Any) -> Response:
         category_type = request.GET.get("category")
         # Helper function to parse cookie values
-        def parse_cookie_value(value):
+        def parse_cookie_value(value: Optional[str]) -> Any:
+            if value is None:
+                return None
             try:
                 return ast.literal_eval(value)
             except (ValueError, SyntaxError):
@@ -91,15 +94,15 @@ class ReelViewSet(viewsets.ModelViewSet):
         query_params = {k: v for k, v in query_params.items() if v is not None}
 
         # Get all possible combinations of query parameters in descending order of their length
-        query_param_combinations = []
+        query_param_combinations: List[Tuple[Any, ...]] = []
         for i in range(len(query_params), 0, -1):
             query_param_combinations.extend(combinations(query_params.items(), i))
 
         property_qs = Property.objects.all().select_related("building")
 
-        unique_property_ids = OrderedDict()  # Defined in the outer scope
+        unique_property_ids: OrderedDictType[int, None] = OrderedDict()  # Defined in the outer scope
         # Function to add property IDs to unique_property_ids
-        def filter_and_add_ids(filters):
+        def filter_and_add_ids(filters: Dict[str, Any]) -> None:
             nonlocal unique_property_ids  # Allows modification of the unique_property_ids variable defined in the enclosing scope
             property_sub_qs = property_qs.filter(**filters)
             for prop_id in property_sub_qs.values_list("id", flat=True):
@@ -129,11 +132,11 @@ class ReelViewSet(viewsets.ModelViewSet):
                         filter_and_add_ids(place)
 
         # Convert OrderedDict keys to list to get unique property IDs in the original order
-        unique_property_ids = list(unique_property_ids.keys())
+        unique_property_ids_list = list(unique_property_ids.keys())
         # Get the queryset of the rest of the properties excluding the ones in unique_property_ids
-        rest_of_the_property_qs = property_qs.exclude(id__in=unique_property_ids).order_by("-created_at").values_list("id", flat=True)        
+        rest_of_the_property_qs = property_qs.exclude(id__in=unique_property_ids_list).order_by("-created_at").values_list("id", flat=True)        
         # Combine the unique property IDs with the rest, maintaining the original order first
-        property_ids = unique_property_ids + list(rest_of_the_property_qs)
+        property_ids = unique_property_ids_list + list(rest_of_the_property_qs)
        
         # Create a Case expression to order the properties based on their IDs
         order = Case(*[When(property__id=id, then=pos) for pos, id in enumerate(property_ids)])

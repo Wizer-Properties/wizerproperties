@@ -1,8 +1,14 @@
 from rest_framework import serializers
 from advertise.models import Reel
+from typing import Any, Dict, OrderedDict, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    _Base = serializers.ModelSerializer[Reel]
+else:
+    _Base = serializers.ModelSerializer
 
 
-class ReelSerializer(serializers.ModelSerializer):
+class ReelSerializer(_Base):
     property_title = serializers.CharField(source="property.title", read_only=True)
 
     class Meta:
@@ -17,7 +23,7 @@ class ReelSerializer(serializers.ModelSerializer):
             "property_title",
         ]
 
-    def validate(self, attrs):
+    def validate(self, attrs: OrderedDict[str, Any]) -> OrderedDict[str, Any]:
         """To check 'reel' validity needs 'user' instance but
         there is no 'user' instance in attrs"""
 

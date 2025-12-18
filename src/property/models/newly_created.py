@@ -11,7 +11,7 @@ class NewlyCreatedProperty(TimestampedModel):
     class Meta:
         verbose_name_plural = "Newly created properties"
 
-    def clean(self):
+    def clean(self) -> None:
         # Check if there is already an object with the same property
         existing_objects = self.__class__.objects.filter(property=self.property)
         if self.id:

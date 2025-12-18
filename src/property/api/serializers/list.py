@@ -1,5 +1,7 @@
 from django.utils import timezone
 from rest_framework import serializers
+from typing import Any, Dict, List, Optional, cast
+from property.models import Property
 from .default import PropertySerializer
 from .media import PropertyMediaSerializer
 
@@ -78,83 +80,85 @@ class PropertyListSerializer(PropertySerializer):
             "location_view",
         ]
 
-    def get_default_images(self, obj):
+    def get_default_images(self, obj: Property) -> Any:
         request = self.context.get("request")
         images = obj.media_files.filter(type="image")
 
         # Determine the number of default_images to return in the list based on the provided default_images_number parameter.
-        default_images_number = request.GET.get("default_images_number")
-        if default_images_number:
-            images = images[: int(default_images_number)]
+        if request:
+            default_images_number = request.GET.get("default_images_number")
+            if default_images_number:
+                images = images[: int(default_images_number)]
 
         return PropertyMediaSerializer(images, many=True).data
 
-    def get_total_default_images(self, obj):
+    def get_total_default_images(self, obj: Property) -> int:
         total_images = obj.media_files.filter(type="image").count()
         return total_images
 
-    def get_developer_image(self, obj):
+    def get_developer_image(self, obj: Property) -> str:
         user = obj.created_by
 
-        if hasattr(user, "developerprofile"):
-            return user.developerprofile.company_logo.url
-        elif hasattr(user, "agentprofile"):
-            return user.agentprofile.company_logo.url
+        if user and hasattr(user, "developerprofile"):
+            return str(user.developerprofile.company_logo.url)
+        elif user and hasattr(user, "agentprofile"):
+            return str(user.agentprofile.company_logo.url)
 
         return ""
 
-    def get_developer_phone_number(self, obj):
+    def get_developer_phone_number(self, obj: Property) -> str:
         user = obj.created_by
 
-        if hasattr(user, "developerprofile"):
+        if user and hasattr(user, "developerprofile"):
             return str(user.developerprofile.phone_number)
-        elif hasattr(user, "agentprofile"):
+        elif user and hasattr(user, "agentprofile"):
             return str(user.agentprofile.phone_number)
 
         return ""
 
-    def get_developer_company_name(self, obj):
+    def get_developer_company_name(self, obj: Property) -> str:
         user = obj.created_by
 
-        if hasattr(user, "developerprofile"):
+        if user and hasattr(user, "developerprofile"):
             return str(user.developerprofile.company_name)
-        elif hasattr(user, "agentprofile"):
+        elif user and hasattr(user, "agentprofile"):
             return str(user.agentprofile.company_name)
 
         return ""
 
-    def get_tag(self, obj):
+    def get_tag(self, obj: Property) -> str:
         """The ordering of tag is important. Depending of tag value we are providing
         instance custom style
         """
         tag = ""
-        if obj.discounted:
+        if hasattr(obj, "discounted") and cast(Any, obj).discounted:
             tag = "spotlight"
-        elif obj.featured:
+        elif hasattr(obj, "featured") and cast(Any, obj).featured:
             tag = "feature"
         elif obj.newly_createds.exists():
             tag = "newly_created"
 
         return tag
 
-    def get_images(self, obj):
+    def get_images(self, obj: Property) -> Any:
         """Return additional images for featured/discounted properties to show as thumbnails"""
-        if obj.featured or obj.discounted:
+        if (hasattr(obj, "featured") and cast(Any, obj).featured) or \
+           (hasattr(obj, "discounted") and cast(Any, obj).discounted):
             images = obj.media_files.filter(type="image")[1:4]  # Skip first image (main)
             return PropertyMediaSerializer(images, many=True).data
         return []
 
-    def get_discount_period(self, obj):
-        if obj.discounted:
+    def get_discount_period(self, obj: Property) -> Any:
+        if hasattr(obj, "discounted") and cast(Any, obj).discounted:
             first_discount = obj.discounts.first()
-            return first_discount.period
+            return first_discount.period if first_discount else None
         return None
 
-    def get_has_unit_plans(self, obj):
-        return obj.building.media_files.filter(type="unit_floor_plan").exists()
+    def get_has_unit_plans(self, obj: Property) -> bool:
+        return obj.building.media_files.filter(type="unit_floor_plan").exists() if obj.building else False
 
-    def get_has_master_plan(self, obj):
-        return obj.building.media_files.filter(type="master_plan").exists()
+    def get_has_master_plan(self, obj: Property) -> bool:
+        return obj.building.media_files.filter(type="master_plan").exists() if obj.building else False
 
-    def get_has_video(self, obj):
-        return obj.building.media_files.filter(type="video").exists()
+    def get_has_video(self, obj: Property) -> bool:
+        return obj.building.media_files.filter(type="video").exists() if obj.building else False

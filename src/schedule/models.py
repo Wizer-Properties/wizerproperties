@@ -34,9 +34,12 @@ class VisitingSchedule(TimestampedModel):
 	object_id = models.PositiveIntegerField(null=True)
 	content_object = GenericForeignKey('content_type', 'object_id')
 
-	def accept_schedule(self):
+	def accept_schedule(self) -> bool:
 		self.status = "accepted"
 		self.save()
+
+		if not self.content_type or not self.visiting_time or not self.prospect or not self.prospect.user:
+			return True
 
 		# detail page
 		if self.content_type.model == "property":
@@ -50,16 +53,19 @@ class VisitingSchedule(TimestampedModel):
 		}
 		send_email(
 		    subject="Builder has Approved Your Schedule Request",
-		    to_email=self.prospect.user.email,
+		    to_email=str(self.prospect.user.email),
 		    html_content="email/schedule_accept.html",
 		    context=context
 		)
 		return True
 
-	def cancel_schedule(self):
+	def cancel_schedule(self) -> bool:
 		self.status = "cancelled"
 		self.save()
   
+		if not self.content_type or not self.visiting_time or not self.prospect or not self.prospect.user:
+			return True
+
   		# detail page
 		if self.content_type.model == "property":
 			detail_page = f"{settings.SITE_HOST}{reverse('property:get', kwargs={'id': self.object_id})}"
@@ -72,7 +78,7 @@ class VisitingSchedule(TimestampedModel):
 		}
 		send_email(
 		    subject="Builder has Canceled Your Schedule Request",
-		    to_email=self.prospect.user.email,
+		    to_email=str(self.prospect.user.email),
 		    html_content="email/schedule_cancel.html",
 		    context=context
 		)

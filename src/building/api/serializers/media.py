@@ -1,14 +1,20 @@
 from urllib.parse import urlsplit
+from typing import Any, Dict, TYPE_CHECKING
 from rest_framework import serializers
 from building.models import BuildingMedia
 
+if TYPE_CHECKING:
+    _Base = serializers.ModelSerializer[BuildingMedia]
+else:
+    _Base = serializers.ModelSerializer
 
-class BuildingMediaSerializer(serializers.ModelSerializer):
+
+class BuildingMediaSerializer(_Base):
     class Meta:
         model = BuildingMedia
         fields = ["id", "file", "type"]
 
-    def to_representation(self, instance):
+    def to_representation(self, instance: BuildingMedia) -> Dict[str, Any]:
         representation = super().to_representation(instance)
 
         # Use urlsplit to get the path component

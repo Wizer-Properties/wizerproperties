@@ -1,3 +1,4 @@
+from typing import Any, TYPE_CHECKING
 from django.db.models import Q, Count
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -8,15 +9,21 @@ from building.models import Building, BuildingReview
 from property.models import Property, CompareProperty, DiscountProperty, FeatureProperty
 from schedule.models import VisitingSchedule
 
+if TYPE_CHECKING:
+    from django.http import HttpRequest, HttpResponse
+
 
 @login_required
-def dashboard(request):
+def dashboard(request: "HttpRequest") -> "HttpResponse":
     """Route users to their respective dashboards based on user type."""
-    if request.user.user_type == "developer" or request.user.user_type == "agent":
+    user = request.user
+    if not user.is_authenticated:
+        return redirect("login")
+    if user.user_type == "developer" or user.user_type == "agent":
         to_return = developer_or_agent_dashboard(request)
-    elif request.user.user_type == "prospect":
+    elif user.user_type == "prospect":
         to_return = prospect_dashboard(request)
-    elif request.user.is_superuser or request.user.is_staff:
+    elif user.is_superuser or user.is_staff:
         to_return = redirect(reverse("admin:index"))
     else:
         # Default fallback: redirect to home or show error
@@ -28,13 +35,16 @@ def dashboard(request):
 
 
 @login_required
-def developer_or_agent_dashboard(request):
-    buildings = Building.objects.filter(created_by=request.user).order_by("-created_at")
-    properties = Property.objects.filter(created_by=request.user).order_by("-created_at")
+def developer_or_agent_dashboard(request: "HttpRequest") -> "HttpResponse":
+    user = request.user
+    if not user.is_authenticated:
+        return redirect("login")
+    buildings = Building.objects.filter(created_by=user).order_by("-created_at")
+    properties = Property.objects.filter(created_by=user).order_by("-created_at")
     
     # Get discount and featured properties
-    discount_properties = DiscountProperty.objects.filter(created_by=request.user).select_related('property', 'property__building').order_by('period')
-    featured_properties = FeatureProperty.objects.filter(created_by=request.user).select_related('property', 'property__building').order_by('expiry_date')
+    discount_properties = DiscountProperty.objects.filter(created_by=user).select_related('property', 'property__building').order_by('period')
+    featured_properties = FeatureProperty.objects.filter(created_by=user).select_related('property', 'property__building').order_by('expiry_date')
 
     building_counts = buildings.aggregate(total=Count("id"), active=Count("id", filter=Q(is_active=True)))
     property_counts = properties.aggregate(total=Count("id"), active=Count("id", filter=Q(is_active=True)))
@@ -60,10 +70,13 @@ def developer_or_agent_dashboard(request):
 
 
 @login_required
-def prospect_dashboard(request):
-    total_comparisons = CompareProperty.objects.filter(user=request.user).count()
-    total_reviews = BuildingReview.objects.filter(user=request.user).count()
-    schedules = VisitingSchedule.objects.filter(prospect=request.user.prospectprofile).order_by("-created_at")
+def prospect_dashboard(request: "HttpRequest") -> "HttpResponse":
+    user = request.user
+    if not user.is_authenticated or not hasattr(user, "prospectprofile"):
+        return redirect("/")
+    total_comparisons = CompareProperty.objects.filter(user=user).count()
+    total_reviews = BuildingReview.objects.filter(user=user).count()
+    schedules = VisitingSchedule.objects.filter(prospect=user.prospectprofile).order_by("-created_at")
 
     schedule_counts = schedules.aggregate(total=Count("id"), accepted=Count("id", filter=Q(status="accepted")))
 

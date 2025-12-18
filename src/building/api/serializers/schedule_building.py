@@ -1,7 +1,14 @@
+from typing import TYPE_CHECKING
 from rest_framework import serializers
 from building.models import Building
 
-class ScheduleBuildingSerializer(serializers.ModelSerializer):
+if TYPE_CHECKING:
+    _Base = serializers.ModelSerializer[Building]
+else:
+    _Base = serializers.ModelSerializer
+
+
+class ScheduleBuildingSerializer(_Base):
     class Meta:
         model = Building
         fields = [

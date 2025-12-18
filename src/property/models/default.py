@@ -1,3 +1,4 @@
+from typing import Any, Optional, Union
 from django.utils import timezone
 from django.db import models
 from datetime import timedelta
@@ -5,12 +6,12 @@ from django.apps import apps
 from core.models import TimestampedModel
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
+from django.conf import settings
 from utils.general_data import UNIT_POSITION_TYPES
 from user.models import User
 from django.db.models import Sum
 from django.utils.timezone import now
 from utils.general_func import formatted_number
-
 
 
 class Property(TimestampedModel):
@@ -43,7 +44,7 @@ class Property(TimestampedModel):
     have_bathtub = models.BooleanField(default=False, verbose_name="Bathtub")
     have_duplex = models.BooleanField(default=False, verbose_name="Duplex")
     is_active = models.BooleanField(default=True, verbose_name="Active")
-    created_by = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True, related_name="properties")
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="properties")
     view_time = models.DurationField(default=timedelta(seconds=0))  # How long the viewers view this property
     search_appearance = models.PositiveIntegerField(default=0)  # Number to time it appear in search
     male_visitors = models.PositiveIntegerField(default=0)  # Number of men visit this property
@@ -52,20 +53,20 @@ class Property(TimestampedModel):
     class Meta:
         verbose_name_plural = "properties"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.title) if self.title else str(self.id)
     
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         from django.urls import reverse
-        return reverse('property:get', args=[self.id])
+        return str(reverse('property:get', args=[self.id]))
 
-    def clean(self):
+    def clean(self) -> None:
         if self.tenant_occupied_validity and self.tenant_occupied_validity < timezone.now().date():
             raise ValidationError(
                 {"tenant_occupied_validity": "Tenant occupied validity date must be greater than or equal to today."}
             )
     
-    def manage_property_analytics(self, user=None, location=None) -> None:
+    def manage_property_analytics(self, user: Optional[Any] = None, location: Optional[str] = None) -> None:
         """Depending on view of a property we are upending it's associates analytical value"""
         
         if user and hasattr(user, "prospectprofile"):
@@ -81,7 +82,7 @@ class Property(TimestampedModel):
             # Creating Property visiting log
             PropertyVisitLog.objects.create(
                 property=self,
-                user_obj=user,
+                user_obj=user if user and user.is_authenticated else None,
                 location=location
             )
 
@@ -96,7 +97,7 @@ class Property(TimestampedModel):
  
 
     # update how many user visited this property
-    def update_visit_count(self):
+    def update_visit_count(self) -> None:
         today = now().date()  # Get the current date
         click_logs_today = PropertyClicksLog.objects.filter(property=self, created_at__date=today)
         
@@ -111,12 +112,12 @@ class Property(TimestampedModel):
 
 
     @property
-    def format_price(self):
-        return formatted_number(self.price)
+    def format_price(self) -> str:
+        return formatted_number(self.price or 0)
     
     @property
-    def format_price_per_sqm(self):
-        return formatted_number(self.price_per_sqm)
+    def format_price_per_sqm(self) -> str:
+        return formatted_number(self.price_per_sqm or 0)
 
 
 class PropertyVisitLog(TimestampedModel):

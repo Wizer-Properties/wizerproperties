@@ -1,3 +1,4 @@
+from typing import Any, List, Optional
 from django.db import models
 from django.core.exceptions import ValidationError
 from utils.general_data import BUILDING_MEDIA_TYPES, ALLOWED_IMAGE_EXTENSIONS, ALLOWED_VIDEO_EXTENSIONS
@@ -7,22 +8,23 @@ from .default import Building
 
 
 class BuildingMedia(TimestampedModel):
-    def upload_to(self, filename):
+    def upload_to(self, filename: str) -> str:
         # Handle upload path based on media type (image, video, etc.)
         if self.type in ["image", "unit_floor_plan", "master_plan"]:
             return "building/images/{}".format(filename)
         elif self.type in ["video", "aerial_drone_video"]:
             return "building/videos/{}".format(filename)
+        return "building/others/{}".format(filename)
 
     type = models.CharField(max_length=100, null=True, choices=BUILDING_MEDIA_TYPES)
     file = models.FileField(null=True, upload_to=upload_to)
     building = models.ForeignKey(Building, on_delete=models.CASCADE, null=True, related_name="media_files")
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.id)
 
-    def clean(self):
-        allowed_extensions = None
+    def clean(self) -> None:
+        allowed_extensions: Optional[List[str]] = None
         if self.type in ["image", "unit_floor_plan", "master_plan"]:
             allowed_extensions = ALLOWED_IMAGE_EXTENSIONS
         elif self.type in ["video", "aerial_drone_video"]:
