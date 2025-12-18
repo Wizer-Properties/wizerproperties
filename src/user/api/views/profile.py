@@ -3,15 +3,19 @@ from user.api.serializers import DeveloperProfileSerializer, AgentProfileSeriali
 from user.api.permissions import DeveloperProfilePermission, AgentProfilePermission, ProspectProfilePermission
 from user.models import DeveloperProfile, AgentProfile, ProspectProfile
 from rest_framework.permissions import IsAuthenticated
+from typing import Any, Dict, cast
+from user.models import User
+from django.db.models import QuerySet
 
 
-class BaseProfileViewSet(viewsets.ModelViewSet):
-    def get_serializer_context(self):
+class BaseProfileViewSet(viewsets.ModelViewSet):  # type: ignore[type-arg]
+    def get_serializer_context(self) -> Dict[str, Any]:
         context = super().get_serializer_context()
         user_type = self.request.data.get('user_type')
+        user = self.request.user if self.request.user.is_authenticated else None
         context.update(
             {
-                "user": self.request.user,
+                "user": user,
                 "user_type": user_type,
             }
         )
@@ -22,21 +26,21 @@ class DeveloperProfileViewSet(BaseProfileViewSet):
     serializer_class = DeveloperProfileSerializer
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        return DeveloperProfile.objects.filter(user=self.request.user)
+    def get_queryset(self) -> QuerySet[DeveloperProfile]:
+        return DeveloperProfile.objects.filter(user=cast(User, self.request.user))
 
 
 class AgentProfileViewSet(BaseProfileViewSet):
     serializer_class = AgentProfileSerializer
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        return AgentProfile.objects.filter(user=self.request.user)
+    def get_queryset(self) -> QuerySet[AgentProfile]:
+        return AgentProfile.objects.filter(user=cast(User, self.request.user))
 
 
 class ProspectProfileViewSet(BaseProfileViewSet):
     serializer_class = ProspectProfileSerializer
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        return ProspectProfile.objects.filter(user=self.request.user)
+    def get_queryset(self) -> QuerySet[ProspectProfile]:
+        return ProspectProfile.objects.filter(user=cast(User, self.request.user))

@@ -4,7 +4,7 @@ Handles syncing leads, contacts, and deals to Zoho CRM
 """
 import requests
 import logging
-from typing import Dict, Optional, Any
+from typing import Dict, Optional, Any, cast
 from django.conf import settings
 from decouple import config
 
@@ -15,13 +15,20 @@ class ZohoCRM:
     """
     Zoho CRM API client for creating and updating records
     """
+    client_id: str
+    client_secret: str
+    refresh_token: str
+    api_domain: str
+    enabled: bool
+    access_token: Optional[str]
+    _base_url: str
     
-    def __init__(self):
-        self.client_id = config('ZOHO_CRM_CLIENT_ID', default='')
-        self.client_secret = config('ZOHO_CRM_CLIENT_SECRET', default='')
-        self.refresh_token = config('ZOHO_CRM_REFRESH_TOKEN', default='')
-        self.api_domain = config('ZOHO_CRM_API_DOMAIN', default='https://www.zohoapis.com')
-        self.enabled = config('ZOHO_CRM_ENABLED', default=False, cast=bool)
+    def __init__(self) -> None:
+        self.client_id = str(config('ZOHO_CRM_CLIENT_ID', default=''))
+        self.client_secret = str(config('ZOHO_CRM_CLIENT_SECRET', default=''))
+        self.refresh_token = str(config('ZOHO_CRM_REFRESH_TOKEN', default=''))
+        self.api_domain = str(config('ZOHO_CRM_API_DOMAIN', default='https://www.zohoapis.com'))
+        self.enabled = bool(config('ZOHO_CRM_ENABLED', default=False, cast=bool))
         
         self.access_token = None
         self._base_url = f"{self.api_domain}/crm/v2"
@@ -52,7 +59,7 @@ class ZohoCRM:
             logger.exception(f"Failed to get Zoho CRM access token: {e}")
             return None
     
-    def _make_request(self, method: str, endpoint: str, data: Optional[Dict] = None) -> Optional[Dict]:
+    def _make_request(self, method: str, endpoint: str, data: Optional[dict[str, Any]] = None) -> Optional[dict[str, Any]]:
         """
         Make authenticated request to Zoho CRM API
         """
@@ -81,16 +88,16 @@ class ZohoCRM:
                 return None
             
             response.raise_for_status()
-            return response.json()
+            return cast(dict[str, Any], response.json())
         except requests.exceptions.RequestException as e:
             logger.exception(f"Zoho CRM API request failed: {e}")
-            if hasattr(e.response, 'text'):
+            if e.response is not None and hasattr(e.response, 'text'):
                 logger.error(f"Response: {e.response.text}")
             return None
     
     def create_lead(self, email: str, first_name: str = '', last_name: str = '', 
                    phone: str = '', company: str = '', description: str = '',
-                   source: str = 'Website', **kwargs) -> Optional[Dict]:
+                   source: str = 'Website', **kwargs: Any) -> Optional[dict[str, Any]]:
         """
         Create a lead in Zoho CRM with real estate-specific fields support
         
@@ -122,7 +129,7 @@ class ZohoCRM:
         
         # Split name if only full name provided
         if not first_name and not last_name and 'name' in kwargs:
-            name_parts = kwargs.pop('name').split(' ', 1)
+            name_parts = str(kwargs.pop('name')).split(' ', 1)
             first_name = name_parts[0]
             last_name = name_parts[1] if len(name_parts) > 1 else ''
         
@@ -144,7 +151,7 @@ class ZohoCRM:
             logger.info(f"Created Zoho CRM lead for {email}")
         return result
     
-    def update_record(self, module: str, record_id: str, data: Dict) -> Optional[Dict]:
+    def update_record(self, module: str, record_id: str, data: dict[str, Any]) -> Optional[dict[str, Any]]:
         """
         Update an existing record in Zoho CRM
         
@@ -172,7 +179,7 @@ class ZohoCRM:
             logger.info(f"Updated {module} record {record_id}")
         return result
     
-    def create_note(self, module: str, record_id: str, note_title: str, note_content: str) -> Optional[Dict]:
+    def create_note(self, module: str, record_id: str, note_title: str, note_content: str) -> Optional[dict[str, Any]]:
         """
         Create a note/activity for a record in Zoho CRM
         
@@ -203,7 +210,7 @@ class ZohoCRM:
         return result
     
     def create_contact(self, email: str, first_name: str = '', last_name: str = '',
-                      phone: str = '', description: str = '', **kwargs) -> Optional[Dict]:
+                      phone: str = '', description: str = '', **kwargs: Any) -> Optional[dict[str, Any]]:
         """
         Create a contact in Zoho CRM
         
@@ -239,7 +246,7 @@ class ZohoCRM:
         return result
     
     def create_deal(self, deal_name: str, contact_email: str = '', stage: str = 'Qualification',
-                   amount: float = 0, description: str = '', **kwargs) -> Optional[Dict]:
+                   amount: float = 0, description: str = '', **kwargs: Any) -> Optional[dict[str, Any]]:
         """
         Create a deal in Zoho CRM with real estate-specific fields
         
@@ -286,7 +293,7 @@ class ZohoCRM:
             logger.info(f"Created Zoho CRM deal: {deal_name}")
         return result
     
-    def search_record(self, module: str, email: str = None, phone: str = None) -> Optional[Dict]:
+    def search_record(self, module: str, email: Optional[str] = None, phone: Optional[str] = None) -> Optional[dict[str, Any]]:
         """
         Search for existing record by email or phone
         
@@ -308,7 +315,7 @@ class ZohoCRM:
 
 
 def sync_contact_to_crm(email: str, subject: str = '', body: str = '', 
-                       phone: str = '', **kwargs) -> bool:
+                       phone: str = '', **kwargs: Any) -> bool:
     """
     Helper function to sync contact form submission to Zoho CRM
     
@@ -376,7 +383,7 @@ def sync_contact_to_crm(email: str, subject: str = '', body: str = '',
 
 def sync_schedule_to_crm(email: str, property_title: str = '', property_id: str = '',
                         visiting_time: str = '', asset_type: str = 'property',
-                        phone: str = '', property_url: str = '', **kwargs) -> bool:
+                        phone: str = '', property_url: str = '', **kwargs: Any) -> bool:
     """
     Helper function to sync schedule/booking to Zoho CRM with real estate-specific details
     

@@ -1,3 +1,5 @@
+import datetime
+from typing import Any, Optional
 from django.db import models
 from django.apps import apps
 from datetime import timedelta
@@ -55,10 +57,10 @@ class Advertisement(TimestampedModel):
     def __str__(self) -> str:
         return super().__str__()
     
-    def clean(self):
+    def clean(self) -> None:
         """To check some field validation manually we are modifying the default clean method"""
         
-        error_messages = {} # Error messages will append here
+        error_messages: dict[str, list[str]] = {} # Error messages will append here
 
         if self.content_type and not self.object_id:
             error_messages.update({'object_id': ['Related object must be set if content type is specified']})
@@ -72,7 +74,7 @@ class Advertisement(TimestampedModel):
             raise ValidationError(error_messages)
     
 
-    def save(self, *args, **kwargs):
+    def save(self, *args: Any, **kwargs: Any) -> None:
         """Overriding save method to set expired_at field based on ad_run_duration"""
 
         # If content_type cleared, also clear object_id to avoid dangling references
@@ -87,10 +89,10 @@ class Advertisement(TimestampedModel):
             # Save again to update expired_at
             super().save(update_fields=['expired_at'])
     
-    def end_at(self) -> str:
+    def end_at(self) -> datetime.datetime:
         """Returns Ad finishing time"""
 
-        end_at = self.created_at + timedelta(days=self.ad_run_duration)
+        end_at: datetime.datetime = self.created_at + timedelta(days=self.ad_run_duration)
         return end_at
     
     def conversion_rate(self) -> float:
@@ -114,7 +116,7 @@ class Advertisement(TimestampedModel):
         ).count()
         return round((visiting_schedule_count / self.number_of_clicked) * 100, 2)
 
-    def manage_ad_analytics(self, user=None, location=None) -> None:
+    def manage_ad_analytics(self, user: Optional[User] = None, location: Optional[str] = None) -> None:
         """Depending on view of an ad we are upending it's associates analytics value"""
         
         self.number_of_clicked += 1     # Increasing the ad click count
@@ -147,9 +149,9 @@ class Advertisement(TimestampedModel):
             ad_viewer_location_obj.view_from_this_location += 1
             ad_viewer_location_obj.save()
     
-    def view_time_without_milliseconds(self):
+    def view_time_without_milliseconds(self) -> str:
         view_time = get_duration_without_milliseconds(self.view_time)
-        return view_time
+        return str(view_time)
             
 
 class AdvertisementLog(TimestampedModel):

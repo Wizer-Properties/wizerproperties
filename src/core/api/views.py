@@ -2,9 +2,11 @@ import logging
 import openai
 import os
 import requests
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast, Iterable
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.request import Request
 from django.conf import settings
 
 from core.api.serializers import ContactSerializer
@@ -12,16 +14,27 @@ from core.models import Contact
 from utils.admin_settings import get_openai_api_key
 from utils.zoho_crm import sync_contact_to_crm
 
+if TYPE_CHECKING:
+    from django.db.models import QuerySet
+    from openai.types.chat import (
+        ChatCompletionMessageParam, 
+        ChatCompletionToolParam, 
+        ChatCompletionToolChoiceOptionParam
+    )
+    _Base = viewsets.ModelViewSet[Contact]
+else:
+    _Base = viewsets.ModelViewSet
+
 logger = logging.getLogger(__name__)
 
-class ContactViewSet(viewsets.ModelViewSet):
+class ContactViewSet(_Base):
     serializer_class = ContactSerializer
     serializer_method_fields = ["POST"]
 
-    def get_queryset(self):
+    def get_queryset(self) -> "QuerySet[Contact]":
         return Contact.objects.all()
     
-    def create(self, request, *args, **kwargs):
+    def create(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         """
         Override create to sync with Zoho CRM after saving
         """
@@ -55,7 +68,7 @@ class ContactViewSet(viewsets.ModelViewSet):
         return response
     
 
-def search_properties_api(params, request_obj):
+def search_properties_api(params: Dict[str, Any], request_obj: Request) -> Dict[str, Any]:
     """
     Search properties using the property API endpoint.
     Returns a list of properties matching the search criteria.
@@ -177,7 +190,7 @@ def search_properties_api(params, request_obj):
     
 
 @api_view(['POST'])
-def chatbot_gpt_api_view(request):
+def chatbot_gpt_api_view(request: Request) -> Response:
     data = {}
     status = 200
     
@@ -222,7 +235,7 @@ def chatbot_gpt_api_view(request):
         )
         
         # Define function/tool for property search
-        tools = [
+        tools: List["ChatCompletionToolParam"] = [
             {
                 "type": "function",
                 "function": {
@@ -278,7 +291,7 @@ def chatbot_gpt_api_view(request):
         ]
         
         # Build messages with conversation history
-        messages = [
+        messages: List["ChatCompletionMessageParam"] = [
             {"role": "system", "content": "You are a knowledgeable Bangkok property expert for the website wizerproperties.com helping international buyers understand property ownership, payment plans, and regulations in Thailand. You can also search for properties when users ask about finding listings. Be clear, accurate, and helpful."},
             {"role": "assistant", "content": "Provide answers specific to Thailand property regulations. Keep responses concise (10-50 words) and focus on what buyers need to know to make confident decisions. IMPORTANT: When users ask to 'show me', 'find', 'search for', 'list', 'see', or ask about properties matching criteria (like price, bedrooms, location, condo, villa), you MUST use the search_properties function. Do not provide generic answers about searching elsewhere. Always use the function to get actual property listings."},
             {"role": "assistant", "content": "When presenting property search results, format them cleanly:\n- Start with: 'Here are [X] properties matching your criteria:'\n- List each property as: **Title** • ฿Price • XBR • Location [View Property](url)\n- Use bullet points (•) to separate info, no verbose labels\n- Example: '**2-BR Condo, 94 sqm** • ฿39,000,000 • 2BR • Sukhumvit [View Property](url)'\n- Keep descriptions brief—just essential details\n- End with: 'Click any link for more details!'"},
@@ -295,12 +308,12 @@ def chatbot_gpt_api_view(request):
                     
                     # Validate that both "role" and "content" exist
                     role = hist_data.get("role")
-                    content = hist_data.get("content")
+                    hist_content = hist_data.get("content")
                     
                     # Validate that both are non-empty strings
                     if not isinstance(role, str) or not role.strip():
                         continue
-                    if not isinstance(content, str) or not content.strip():
+                    if not isinstance(hist_content, str) or not hist_content.strip():
                         continue
                     
                     # Optionally validate that role is one of allowed roles
@@ -308,7 +321,7 @@ def chatbot_gpt_api_view(request):
                         continue
                     
                     # All validations passed, append the message
-                    messages.append({"role": role, "content": content})
+                    messages.append({"role": cast(Any, role), "content": hist_content})
                 except (json.JSONDecodeError, TypeError, AttributeError, KeyError):
                     # Skip invalid conversation history entries
                     pass
@@ -335,11 +348,11 @@ def chatbot_gpt_api_view(request):
             model="openai/gpt-4o-mini",  # Supports function calling, cost-effective
             messages=messages,
             tools=tools,
-            tool_choice={"type": "function", "function": {"name": "search_properties"}} if is_search_query else "auto",  # Force function call for search queries
+            tool_choice=cast("ChatCompletionToolChoiceOptionParam", {"type": "function", "function": {"name": "search_properties"}}) if is_search_query else "auto",  # Force function call for search queries
         )
         
         message = response.choices[0].message
-        messages.append(message)
+        messages.append(cast(Any, message))
         
         # Log whether function calling was triggered
         logger.debug(f"AI response - tool_calls: {message.tool_calls}, content: {message.content[:100] if message.content else None}")
@@ -375,9 +388,8 @@ def chatbot_gpt_api_view(request):
                     messages.append({
                         "role": "tool",
                         "tool_call_id": tool_call.id,
-                        "name": function_name,
                         "content": function_response_str
-                    })
+                    } if cast(Any, "tool") == "tool" else cast(Any, None))
                 else:
                     logger.warning(f"Unknown function called: {function_name}")
             

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .default import PropertySerializer
+from typing import Any
 
 
 # Serializer for handling popular, newly added, and discounted properties.
@@ -26,7 +27,7 @@ class PropertyVariousFeatureSerializer(PropertySerializer):
             "default_image",
         ]
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         include_discount_period = kwargs.pop("include_discount_period", False)
         super().__init__(*args, **kwargs)
 

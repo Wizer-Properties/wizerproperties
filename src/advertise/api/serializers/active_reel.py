@@ -1,10 +1,19 @@
+from typing import TYPE_CHECKING
 from rest_framework import serializers
-from advertise.models import Reel
 from user.models import User, DeveloperProfile, AgentProfile
 from advertise.api.serializers import ReelSerializer
 
+if TYPE_CHECKING:
+    _DevBase = serializers.ModelSerializer[DeveloperProfile]
+    _AgentBase = serializers.ModelSerializer[AgentProfile]
+    _UserBase = serializers.ModelSerializer[User]
+else:
+    _DevBase = serializers.ModelSerializer
+    _AgentBase = serializers.ModelSerializer
+    _UserBase = serializers.ModelSerializer
 
-class DeveloperProfileSerializer(serializers.ModelSerializer):
+
+class DeveloperProfileSerializer(_DevBase):
     class Meta:
         model = DeveloperProfile
         fields = [
@@ -13,7 +22,7 @@ class DeveloperProfileSerializer(serializers.ModelSerializer):
             "company_name",
         ]
 
-class AgentProfileProfileSerializer(serializers.ModelSerializer):
+class AgentProfileProfileSerializer(_AgentBase):
     class Meta:
         model = AgentProfile
         fields = [
@@ -22,7 +31,7 @@ class AgentProfileProfileSerializer(serializers.ModelSerializer):
             "company_name",
         ]
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(_UserBase):
     developer = DeveloperProfileSerializer(source="developerprofile", read_only=True)
     agent = AgentProfileProfileSerializer(source="agentprofile", read_only=True)
 

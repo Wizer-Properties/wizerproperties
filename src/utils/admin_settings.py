@@ -24,7 +24,9 @@ def get_admin_settings() -> AdminSettings:
             return AdminSettings.objects.create()
         elif count == 1:
             # Single record, return it
-            return AdminSettings.objects.first()
+            settings = AdminSettings.objects.first()
+            assert settings is not None
+            return settings
         else:
             # Multiple records exist - prefer one with API key, or most recent
             import logging
@@ -46,6 +48,7 @@ def get_admin_settings() -> AdminSettings:
             
             # If no record has API key, use the most recently updated one
             settings = AdminSettings.objects.order_by('-updated_at').first()
+            assert settings is not None
             logger.warning(f"No AdminSettings record with API key found. Using most recently updated record (ID: {settings.id}). Please configure API key and delete duplicates.")
             return settings
             

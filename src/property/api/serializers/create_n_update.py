@@ -1,5 +1,7 @@
 from django.db import transaction
+from django.core.exceptions import ValidationError as DjangoValidationError
 from rest_framework import serializers
+from typing import Any, Dict, List, Optional, cast
 from property.models import Property, PropertyMedia
 from utils.general_func import show_custom_error_message
 from .default import PropertySerializer
@@ -33,9 +35,9 @@ class PropertyCreateAndUpdateSerializer(PropertySerializer):
         ]
 
     # Validate that all fields are required and not blank
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super(PropertySerializer, self).__init__(*args, **kwargs)
-        self.request = self.context.get("request")
+        self.request: Optional[Any] = self.context.get("request")
 
         for field_name, field in self.fields.items():
             if field_name not in ["tenant_occupied_validity"]:
@@ -44,15 +46,16 @@ class PropertyCreateAndUpdateSerializer(PropertySerializer):
                 else:
                     field.required = True
                     field.allow_null = False
-                    field.allow_blank = False
+                    if hasattr(field, "allow_blank"):
+                        field.allow_blank = False
 
-        show_custom_error_message(self.fields)
+        show_custom_error_message(cast(Any, self.fields))
 
-    def validate(self, data):
+    def validate(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """
         Validate the serializer fields.
         """
-        error_messages = {}
+        error_messages: Dict[str, Any] = {}
 
         have_tenant_occupied = data.get("have_tenant_occupied", False)
         tenant_occupied_validity = data.get("tenant_occupied_validity", None)
@@ -60,7 +63,7 @@ class PropertyCreateAndUpdateSerializer(PropertySerializer):
         if have_tenant_occupied and not tenant_occupied_validity:
             error_messages.update({"tenant_occupied_validity": ["Tenant Occupied Validity is required."]})
 
-        if self.request.method in ["POST", "PUT"]:
+        if self.request and self.request.method in ["POST", "PUT"]:
             # Remove unwanted attributes from data for 'Property' instance
             for attr in ["is_active", "images", "videos"]:
                 data.pop(attr, None)
@@ -69,7 +72,7 @@ class PropertyCreateAndUpdateSerializer(PropertySerializer):
             instance.created_by = self.request.user
             try:
                 instance.full_clean()  # Perform full validation before saving
-            except serializers.ValidationError as e:
+            except DjangoValidationError as e:
                 error_messages.update(e.message_dict)
 
         if error_messages:
@@ -77,7 +80,7 @@ class PropertyCreateAndUpdateSerializer(PropertySerializer):
 
         return data
 
-    def get_media_files(self, request):
+    def get_media_files(self, request: Optional[Any]) -> Dict[str, List[Any]]:
         """
         Extract media files from request.
         
@@ -87,12 +90,14 @@ class PropertyCreateAndUpdateSerializer(PropertySerializer):
         Returns:
             dict: Dictionary with 'image' and 'video' file lists
         """
-        return {
-            "image": self.request.FILES.getlist("images"),
-            "video": self.request.FILES.getlist("videos"),
-        }
+        if self.request:
+            return {
+                "image": self.request.FILES.getlist("images"),
+                "video": self.request.FILES.getlist("videos"),
+            }
+        return {"image": [], "video": []}
 
-    def create(self, validated_data):
+    def create(self, validated_data: Dict[str, Any]) -> Property:
         media_files_data = self.get_media_files(self.request)
 
         # Create PropertyMedia objects for different media types
@@ -103,14 +108,15 @@ class PropertyCreateAndUpdateSerializer(PropertySerializer):
                 media_file.save()
                 media_files.append(media_file)
 
-        property = Property.objects.create(**validated_data, created_by=self.request.user)
+        user = self.request.user if self.request else None
+        property = Property.objects.create(**validated_data, created_by=user)
         property.media_files.set(media_files)
 
         return property
 
-    def update(self, instance, validated_data):
+    def update(self, instance: Property, validated_data: Dict[str, Any]) -> Property:
         media_files_data = self.get_media_files(self.request)
-        deleted_images = self.request.data.getlist("deleted_images")
+        deleted_images = self.request.data.getlist("deleted_images") if self.request else []
 
         # Reverting any changes made to the instance media files field, If no exception occurs the changes will be committed when the block exits
         with transaction.atomic():
@@ -144,7 +150,7 @@ class PropertyCreateAndUpdateSerializer(PropertySerializer):
                 raise e
 
         # To remain unchange active status while Edit
-        if self.request.method == "PUT":
+        if self.request and self.request.method == "PUT":
             validated_data.pop("is_active", None)
 
         return super().update(instance, validated_data)

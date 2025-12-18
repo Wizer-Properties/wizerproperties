@@ -1,3 +1,4 @@
+from typing import Any, Optional, TypeVar
 from django.db import models
 from core.models import TimestampedModel
 from django_ckeditor_5.fields import CKEditor5Field
@@ -27,7 +28,7 @@ class Post(TimestampedModel):
         limit_choices_to={'is_superuser': True}
     )
     banner_image = models.ImageField(upload_to='blog/banner_images/', null=True)
-    categories = models.ManyToManyField('Category', related_name='posts')
+    categories: "models.ManyToManyField[Category, Post]" = models.ManyToManyField('Category', related_name='posts')
     estimated_read_time = models.IntegerField(default=0)
     total_read_time = models.DurationField(default=timedelta(seconds=0))
     total_read_count = models.IntegerField(default=0)
@@ -37,20 +38,20 @@ class Post(TimestampedModel):
     class Meta:
         ordering = ['-created_at']
 
-    def __str__(self):
-        return self.title
+    def __str__(self) -> str:
+        return str(self.title) if self.title else str(self.id)
     
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         from django.urls import reverse
-        return reverse('blogs:blog_details', args=[self.slug])
+        return str(reverse('blogs:blog_details', args=[self.slug]))
 
-    def clean(self):
+    def clean(self) -> None:
         # import here to avoid changing top-of-file imports
         super().clean()
         if self.creator and not self.creator.is_superuser:
             raise ValidationError({'creator': 'Creator must be an admin user.'})
     
-    def save(self, *args, **kwargs):
+    def save(self, *args: Any, **kwargs: Any) -> None:
         # validate that creator is superuser (and other field validation)
         self.full_clean()
 
@@ -58,7 +59,8 @@ class Post(TimestampedModel):
         self.estimated_read_time = round(len((self.description or '').split()) / 200)
 
         if not self.slug:
-            base_slug = slugify(self.title[:40])
+            title_prefix = self.title[:40] if self.title else "post"
+            base_slug = slugify(title_prefix)
             unique_slug = base_slug
             while Post.objects.filter(slug=unique_slug).exists():
                 unique_slug = f"{base_slug}-{str(uuid.uuid4())[:5]}"
@@ -74,8 +76,8 @@ class Category(TimestampedModel):
     class Meta:
         verbose_name_plural = "Categories"
 
-    def __str__(self):
-        return self.name
+    def __str__(self) -> str:
+        return str(self.name)
 
 class PostInteraction(TimestampedModel):
     INTERACTION_TYPES = (
@@ -88,7 +90,7 @@ class PostInteraction(TimestampedModel):
     ip_address = models.GenericIPAddressField(null=True, blank=True)
     interaction_type = models.CharField(max_length=10, choices=INTERACTION_TYPES)
 
-    def __str__(self):
+    def __str__(self) -> str:
         identifier = self.user.username if self.user else self.ip_address
         interaction = 'liked' if self.interaction_type == 'like' else 'disliked'
         return f"{identifier} - {self.post.title} - {interaction}"

@@ -1,12 +1,18 @@
 from rest_framework import serializers
 from property.models import Property
 import logging
+from typing import Any, Dict, List, Optional, Union, TYPE_CHECKING
 from urllib.parse import urlparse
+
+if TYPE_CHECKING:
+    _Base = serializers.ModelSerializer[Property]
+else:
+    _Base = serializers.ModelSerializer
 
 logger = logging.getLogger(__name__)
 
 
-class PropertyComparisonsListSerializer(serializers.ModelSerializer):
+class PropertyComparisonsListSerializer(_Base):
     building_title = serializers.SerializerMethodField()
     building_type = serializers.SerializerMethodField()
     building_sub_type = serializers.SerializerMethodField()
@@ -33,7 +39,7 @@ class PropertyComparisonsListSerializer(serializers.ModelSerializer):
     location_view = serializers.SerializerMethodField()
     view = serializers.SerializerMethodField()
     
-    def _get_building_field(self, obj, field_name, default=None):
+    def _get_building_field(self, obj: Property, field_name: str, default: Any = None) -> Any:
         """Helper method to safely get building field values"""
         try:
             if obj and obj.building:
@@ -45,78 +51,78 @@ class PropertyComparisonsListSerializer(serializers.ModelSerializer):
             logger.debug(f"Error getting building field {field_name}: {str(e)}")
         return default
     
-    def get_building_title(self, obj):
+    def get_building_title(self, obj: Property) -> Any:
         return self._get_building_field(obj, 'title')
     
-    def get_building_type(self, obj):
+    def get_building_type(self, obj: Property) -> Any:
         return self._get_building_field(obj, 'type')
     
-    def get_building_sub_type(self, obj):
+    def get_building_sub_type(self, obj: Property) -> Optional[str]:
         try:
             if obj.building:
                 # get_sub_type_display() is a Django method for choice fields
                 # It returns empty string if sub_type is None, which is fine
-                return obj.building.get_sub_type_display() or None
+                return str(obj.building.get_sub_type_display()) or None
         except (AttributeError, TypeError, Exception):
             pass
         return None
     
-    def get_building_status(self, obj):
+    def get_building_status(self, obj: Property) -> Optional[str]:
         try:
             if obj.building:
                 # get_status_display() is a Django method for choice fields
                 # It returns empty string if status is None, which is fine
-                return obj.building.get_status_display() or None
+                return str(obj.building.get_status_display()) or None
         except (AttributeError, TypeError, Exception):
             pass
         return None
     
-    def get_address(self, obj):
+    def get_address(self, obj: Property) -> Any:
         return self._get_building_field(obj, 'address')
     
-    def get_construction_year(self, obj):
+    def get_construction_year(self, obj: Property) -> Any:
         return self._get_building_field(obj, 'construction_year')
     
-    def get_quota(self, obj):
+    def get_quota(self, obj: Property) -> Any:
         return self._get_building_field(obj, 'quota')
     
-    def get_furnishing(self, obj):
+    def get_furnishing(self, obj: Property) -> Any:
         return self._get_building_field(obj, 'furnishing')
     
-    def get_distance_from_location_to_BTS_or_MRT(self, obj):
+    def get_distance_from_location_to_BTS_or_MRT(self, obj: Property) -> Any:
         return self._get_building_field(obj, 'distance_from_location_to_BTS_or_MRT')
     
-    def get_distance_from_location_to_ARL(self, obj):
+    def get_distance_from_location_to_ARL(self, obj: Property) -> Any:
         return self._get_building_field(obj, 'distance_from_location_to_ARL')
     
-    def get_have_freehold(self, obj):
+    def get_have_freehold(self, obj: Property) -> Any:
         return self._get_building_field(obj, 'have_freehold', False)
     
-    def get_have_leasehold(self, obj):
+    def get_have_leasehold(self, obj: Property) -> Any:
         return self._get_building_field(obj, 'have_leasehold', False)
     
-    def get_have_infinity_pool(self, obj):
+    def get_have_infinity_pool(self, obj: Property) -> Any:
         return self._get_building_field(obj, 'have_infinity_pool', False)
     
-    def get_have_pets_allowed(self, obj):
+    def get_have_pets_allowed(self, obj: Property) -> Any:
         return self._get_building_field(obj, 'have_pets_allowed', False)
     
-    def get_have_guard_house(self, obj):
+    def get_have_guard_house(self, obj: Property) -> Any:
         return self._get_building_field(obj, 'have_guard_house', False)
     
-    def get_have_sauna(self, obj):
+    def get_have_sauna(self, obj: Property) -> Any:
         return self._get_building_field(obj, 'have_sauna', False)
     
-    def get_have_sky_lounge(self, obj):
+    def get_have_sky_lounge(self, obj: Property) -> Any:
         return self._get_building_field(obj, 'have_sky_lounge', False)
     
-    def get_have_grocery(self, obj):
+    def get_have_grocery(self, obj: Property) -> Any:
         return self._get_building_field(obj, 'have_grocery', False)
     
-    def get_have_fitness_area(self, obj):
+    def get_have_fitness_area(self, obj: Property) -> Any:
         return self._get_building_field(obj, 'have_fitness_area', False)
     
-    def _validate_url(self, url):
+    def _validate_url(self, url: Any) -> Optional[str]:
         """
         Validate and format URL. Returns None if invalid or empty.
         Ensures URL has a valid protocol (http:// or https://).
@@ -146,22 +152,22 @@ class PropertyComparisonsListSerializer(serializers.ModelSerializer):
         
         # Validate: must have http/https scheme and a netloc (domain)
         if parsed.scheme in ("http", "https") and parsed.netloc:
-            return url
+            return str(url)
         
         return None
     
-    def get_facility_view(self, obj):
+    def get_facility_view(self, obj: Property) -> Optional[str]:
         url = self._get_building_field(obj, 'facility_view')
         return self._validate_url(url)
     
-    def get_location_view(self, obj):
+    def get_location_view(self, obj: Property) -> Optional[str]:
         url = self._get_building_field(obj, 'location_view')
         return self._validate_url(url)
     
-    def get_view(self, obj):
+    def get_view(self, obj: Property) -> Any:
         return self._get_building_field(obj, 'view')
 
-    def to_representation(self, instance):
+    def to_representation(self, instance: Property) -> Dict[str, Any]:
         """Override to catch any serialization errors and return a safe representation"""
         try:
             return super().to_representation(instance)

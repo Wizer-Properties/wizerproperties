@@ -1,11 +1,17 @@
 from django.db.models import OuterRef, Subquery, Value, F, CharField, When, Case, BooleanField
 from django.db.models.functions import Concat
 from rest_framework import serializers
+from typing import Any, Dict, List, Optional, cast, TYPE_CHECKING
 from property.models import Property, PropertyMedia, ProspectFavoriteProperty
 from .favorite_list import PropertyFavoriteListSerializer
 
+if TYPE_CHECKING:
+    _Base = serializers.ModelSerializer[ProspectFavoriteProperty]
+else:
+    _Base = serializers.ModelSerializer
 
-class ProspectFavoritePropertySerializer(serializers.ModelSerializer):
+
+class ProspectFavoritePropertySerializer(_Base):
     property_info = serializers.SerializerMethodField()
 
     class Meta:
@@ -13,26 +19,29 @@ class ProspectFavoritePropertySerializer(serializers.ModelSerializer):
         fields = ["id", "prospect", "property", "property_info"]
         extra_kwargs = {"property": {"required": False, "allow_null": False, "write_only": True}}
 
-    def validate(self, attrs):
+    def validate(self, attrs: Dict[str, Any]) -> Dict[str, Any]:
         instance = ProspectFavoriteProperty(**attrs)
-        prospect = self.context["request"].user.prospectprofile
+        request = self.context.get("request")
+        prospect = request.user.prospectprofile if request and hasattr(request.user, "prospectprofile") else None
 
         instance.prospect = prospect
         instance.full_clean()  # Perform full validation before saving
 
         return attrs
 
-    def create(self, request, *args, **kwargs):
-        instance = super().create(request, *args, **kwargs)
-        instance.prospect = self.context["request"].user.prospectprofile
-        instance.save()
+    def create(self, validated_data: Dict[str, Any]) -> ProspectFavoriteProperty:
+        instance = super().create(validated_data)
+        request = self.context.get("request")
+        if request and hasattr(request.user, "prospectprofile"):
+            instance.prospect = request.user.prospectprofile
+            instance.save()
         return instance
 
-    def get_property_info(self, obj):
+    def get_property_info(self, obj: ProspectFavoriteProperty) -> Any:
         request = self.context.get("request")
         if request and request.method == "GET" and obj.property:
-            property = (
-                Property.objects.filter(id=obj.property.id)
+            property_obj = (
+                Property.objects.filter(id=cast(Any, obj.property).id)
                 .annotate(
                     default_image_url=Subquery(
                         PropertyMedia.objects.filter(property=OuterRef("pk"), type="image")
@@ -52,6 +61,6 @@ class ProspectFavoritePropertySerializer(serializers.ModelSerializer):
                 )
                 .first()
             )
-            return PropertyFavoriteListSerializer(property).data
+            return PropertyFavoriteListSerializer(property_obj).data
         else:
-            return obj.property.title
+            return obj.property.title if obj.property else ""

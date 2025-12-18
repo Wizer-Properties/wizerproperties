@@ -8,11 +8,14 @@ ENV PYTHONUNBUFFERED 1
 # Set the working directory in the container
 WORKDIR /app
 
-# Install GDAL dependencies
+# Install GDAL dependencies and Node.js
 RUN apt-get update && apt-get install -y \
     gdal-bin \
     libgdal-dev \
-    && rm -rf /var/lib/apt/lists/*
+    nodejs \
+    npm \
+    && rm -rf /var/lib/apt/lists/* \
+    && npm install -g typescript
 
 ENV GDAL_LIBRARY_PATH /usr/lib/libgdal.so
 

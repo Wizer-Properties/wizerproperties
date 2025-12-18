@@ -8,10 +8,13 @@ from urllib.parse import urlparse, parse_qs
 from django.db.models import OuterRef, Subquery, Value, F, CharField, \
     Prefetch, Count, Exists, BooleanField, Case, When, Sum, Q
 from django.db.models.functions import Concat
+from django.db.models.query import QuerySet
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.request import Request
+from typing import Any, Dict, List, Optional, Union, cast, TYPE_CHECKING
 from datetime import timedelta
 from property.api.permissions import PropertyPermission
 from property.api.serializers import (
@@ -38,7 +41,15 @@ from utils.general_func import get_chatgpt_response, get_user_ip
 from utils.general_data import PRICE_RANGES
 from django.db.models.functions import Coalesce
 
-class PropertyViewSet(viewsets.ModelViewSet):
+logger = logging.getLogger(__name__)
+
+if TYPE_CHECKING:
+    _Base = viewsets.ModelViewSet[Property]
+else:
+    _Base = viewsets.ModelViewSet
+
+
+class PropertyViewSet(_Base):
     serializer_class = PropertySerializer
     permission_classes = [PropertyPermission]
     filterset_class = PropertyFilter
@@ -51,7 +62,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
     ordering_fields = ["created_at", "price", "visit_count"]
     # ordering = ["-visit_count"]  # Default ordering
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[Property]:
         current_date = timezone.now().date()
         
         # Create subqueries for DiscountProperty and FeatureProperty
@@ -95,7 +106,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
                     is_favorited=(
                         Exists(
                             ProspectFavoriteProperty.objects.filter(
-                                prospect=user.prospectprofile, property=OuterRef("pk")
+                                prospect=cast(Any, user).prospectprofile, property=OuterRef("pk")
                             )
                         )
                         if user.is_authenticated and hasattr(user, "prospectprofile")
@@ -122,9 +133,9 @@ class PropertyViewSet(viewsets.ModelViewSet):
                     ),
                 )
         
-        return queryset
+        return cast(QuerySet[Property], queryset)
 
-    def filter_queryset(self, queryset):
+    def filter_queryset(self, queryset: QuerySet[Property]) -> QuerySet[Property]:
         queryset = super().filter_queryset(queryset)
 
         # Retrieve the ordering parameter from the request
@@ -139,7 +150,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
         return queryset
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> Any:
         serializer = self.serializer_class
 
         if self.action == "list":  # For list
@@ -151,8 +162,8 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
         return serializer  # Return default serializer class
 
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
+    def get_serializer_context(self) -> Dict[str, Any]:
+        context: Dict[str, Any] = super().get_serializer_context()
         context.update(
             {
                 "request": self.request,
@@ -160,7 +171,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
         )
         return context
 
-    def _get_paginated_response(self, queryset, serializer_class, **serializer_context):
+    def _get_paginated_response(self, queryset: QuerySet[Any], serializer_class: Any, **serializer_context: Any) -> Response:
         paginated_queryset = self.paginate_queryset(queryset)
 
         if paginated_queryset is not None:
@@ -170,7 +181,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
         serializer = serializer_class(queryset, many=True, **serializer_context)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def list(self, request, *args, **kwargs):
+    def list(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         # Check if it's a search request (you can define this based on your logic)
         is_search_request = self.request.query_params.get("search", None) is not None
 
@@ -198,7 +209,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
         return response
     
-    def _save_query_filter_prize_range(self):
+    def _save_query_filter_prize_range(self) -> None:
         """We are storing price ranges"""
 
         query_params = self._get_query_params()
@@ -213,34 +224,45 @@ class PropertyViewSet(viewsets.ModelViewSet):
             price_range_obj.search_appearance += 1
             price_range_obj.save()
 
-    def _store_filter_data_in_cookies(self, response):
+    def _store_filter_data_in_cookies(self, response: Response) -> None:
         """We are storing search parameter is cookie"""
         query_params = self._get_query_params()
 
         if query_params.get("building__type", None):
-            response.set_cookie("building__type", query_params.get("building__type")[0], settings.COOKIE_EXPIRE_TIME)
-        if query_params.get("building__sub_type[]", None):
-            response.set_cookie("building__sub_type", query_params.get("building__sub_type[]"), settings.COOKIE_EXPIRE_TIME)
-        if query_params.get("min_price", None):
-            response.set_cookie("min_price", query_params.get("min_price")[0], settings.COOKIE_EXPIRE_TIME)
-        if query_params.get("max_price", None):
-            response.set_cookie("max_price", query_params.get("max_price")[0], settings.COOKIE_EXPIRE_TIME)
-        if query_params.get("min_number_of_bedroom", None):
-            response.set_cookie("min_number_of_bedroom", query_params.get("min_number_of_bedroom")[0], settings.COOKIE_EXPIRE_TIME)
-        if query_params.get("max_number_of_bedroom", None):
-            response.set_cookie("max_number_of_bedroom", query_params.get("max_number_of_bedroom")[0], settings.COOKIE_EXPIRE_TIME)
+             building_type = query_params.get("building__type")
+             if building_type:
+                response.set_cookie("building__type", building_type[0], settings.COOKIE_EXPIRE_TIME)
+        sub_types = query_params.get("building__sub_type[]")
+        if sub_types:
+            response.set_cookie("building__sub_type", str(sub_types), settings.COOKIE_EXPIRE_TIME)
+        
+        min_price = query_params.get("min_price")
+        if min_price:
+            response.set_cookie("min_price", min_price[0], settings.COOKIE_EXPIRE_TIME)
+            
+        max_price = query_params.get("max_price")
+        if max_price:
+            response.set_cookie("max_price", max_price[0], settings.COOKIE_EXPIRE_TIME)
+            
+        min_beds = query_params.get("min_number_of_bedroom")
+        if min_beds:
+            response.set_cookie("min_number_of_bedroom", min_beds[0], settings.COOKIE_EXPIRE_TIME)
+            
+        max_beds = query_params.get("max_number_of_bedroom")
+        if max_beds:
+            response.set_cookie("max_number_of_bedroom", max_beds[0], settings.COOKIE_EXPIRE_TIME)
 
-    def _get_query_params(self):
+    def _get_query_params(self) -> Dict[str, List[str]]:
         full_path = self.request.get_full_path()
         parsed_url = urlparse(full_path)
         query_params = parse_qs(parsed_url.query)
         return query_params
 
-    def _set_cookie_if_present(self, response, cookie_name, cookie_value):
+    def _set_cookie_if_present(self, response: Response, cookie_name: str, cookie_value: Any) -> None:
         if cookie_value:
             response.set_cookie(cookie_name, cookie_value, settings.COOKIE_EXPIRE_TIME)
 
-    def _store_searched_places_in_cookies(self, response):
+    def _store_searched_places_in_cookies(self, response: Response) -> None:
         query_params = self._get_query_params()
         address = query_params.get("search", [""])[0] or ""
         latitude = query_params.get("lat", [""])[0] or ""
@@ -263,7 +285,6 @@ class PropertyViewSet(viewsets.ModelViewSet):
         # Validate Google Maps API key from settings
         google_api_key = getattr(settings, 'GOOGLE_API_KEY', '')
         if not google_api_key or not google_api_key.strip():
-            logger = logging.getLogger(__name__)
             logger.error("GOOGLE_API_KEY is not configured in settings. Please set GOOGLE_API_KEY environment variable.")
             return  # Skip geocoding if API key is not configured
 
@@ -308,17 +329,18 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
         except Exception as e:
             # Handle errors gracefully
-            logger = logging.getLogger(__name__)
             logger.warning(f"Error handling searched places cookie: {e}")
 
     @action(detail=True, methods=["get"])
-    def media_files(self, request, pk=None):
+    def media_files(self, request: Request, pk: Optional[str] = None) -> Response:
         property = self.get_object()
         media_type = request.query_params.get("media_type")
-        building_media_files = property.building.media_files.all()
         property_media_files = property.media_files.all()
+        building_media_files = property.building.media_files.all() if property.building else BuildingMedia.objects.none()
 
         if media_type:
+            media_files: QuerySet[Any]
+            serializer_class: Any
             if media_type in ["image", "video"]:
                 media_files = property_media_files.filter(type=media_type)
                 serializer_class = PropertyMediaSerializer
@@ -331,23 +353,24 @@ class PropertyViewSet(viewsets.ModelViewSet):
             return Response({"detail": "Media type is required."}, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=True, methods=["get"])
-    def developer_info(self, request, pk=None):
+    def developer_info(self, request: Request, pk: Optional[str] = None) -> Response:
         property = self.get_object()
 
         user = property.created_by  # Get the user who created the property
 
         # Check if the user is an agent or developer
-        if hasattr(user, "agentprofile"):
-            profile_data = AgentProfileSerializer(user.agentprofile).data
-        elif hasattr(user, "developerprofile"):
-            profile_data = DeveloperProfileSerializer(user.developerprofile).data
-        else:
-            profile_data = {}
+        profile_data: Any = {}
+        if user and hasattr(user, "agentprofile"):
+            agent_profile = getattr(user, "agentprofile")
+            profile_data = AgentProfileSerializer(agent_profile).data
+        elif user and hasattr(user, "developerprofile"):
+            developer_profile = getattr(user, "developerprofile")
+            profile_data = DeveloperProfileSerializer(developer_profile).data
 
         return Response(profile_data, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=["get"])
-    def schedule(self, request, pk=None):
+    def schedule(self, request: Request, pk: Optional[str] = None) -> Response:
         property = self.get_object()
         serializer = SchedulePropertySerializer(property)
         data = serializer.data
@@ -361,7 +384,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
         return Response(data, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=["get"])
-    def building_info(self, request, pk=None):
+    def building_info(self, request: Request, pk: Optional[str] = None) -> Response:
         property = self.get_object()
 
         building = property.building  # Get the property building
@@ -370,19 +393,19 @@ class PropertyViewSet(viewsets.ModelViewSet):
         return Response(building_data, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=["get"])
-    def available_facilities(self, request, pk=None):
+    def available_facilities(self, request: Request, pk: Optional[str] = None) -> Response:
         property = self.get_object()
         serializer = PropertyFacilitiesSerializer(property)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=["get"])
-    def newly_created(self, request):
+    def newly_created(self, request: Request) -> Response:
         """
         Retrieve a list of newly created properties with pagination.
         """
         queryset = self.get_queryset().filter(newly_createds__isnull=False)
 
-        serializer_context = {}  # Default empty context
+        serializer_context: Dict[str, Any] = {}  # Default empty context
 
         serializer_class = (
             PropertyVariousFeatureMinimalInfoSerializer
@@ -392,13 +415,13 @@ class PropertyViewSet(viewsets.ModelViewSet):
         return self._get_paginated_response(queryset, serializer_class, **serializer_context)
 
     @action(detail=False, methods=["get"])
-    def popular(self, request):
+    def popular(self, request: Request) -> Response:
         """
         Retrieve a list of popular properties with pagination.
         """
         queryset = self.get_queryset().order_by("-visit_count")[:10]
 
-        serializer_context = {}  # Default empty context
+        serializer_context: Dict[str, Any] = {}  # Default empty context
 
         serializer_class = (
             PropertyVariousFeatureMinimalInfoSerializer
@@ -408,14 +431,14 @@ class PropertyViewSet(viewsets.ModelViewSet):
         return self._get_paginated_response(queryset, serializer_class, **serializer_context)
 
     @action(detail=False, methods=["get"])
-    def discount(self, request):
+    def discount(self, request: Request) -> Response:
         """
         Retrieve a list of discount properties with pagination.
         """
         today = timezone.now().date()
         queryset = self.get_queryset().filter(discounts__period__gte=today)
 
-        serializer_context = {}  # Default empty context
+        serializer_context: Dict[str, Any] = {}  # Default empty context
         if request.GET.get("towards") != "search":
             serializer_context["include_discount_period"] = True
 
@@ -428,15 +451,15 @@ class PropertyViewSet(viewsets.ModelViewSet):
         return self._get_paginated_response(queryset, serializer_class, **serializer_context)
 
     @action(detail=False, methods=["post"])
-    def generate_description(self, request):
+    def generate_description(self, request: Request) -> Response:
         """
         Return an automated professional property description with ChatGPT
         """
         property_info = request.data
 
-        building_info = {}
+        building_info: Dict[str, Any] = {}
 
-        building_id = request.data.get("building_id")
+        building_id = request.data.get("building_id") if isinstance(request.data, dict) else None
         if building_id:
             building = Building.objects.filter(id=building_id).first()
             if building:
@@ -461,28 +484,29 @@ class PropertyViewSet(viewsets.ModelViewSet):
         return Response({"generated_property_description": generated_property_description}, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=["post"])
-    def re_generate_description(self, request):
+    def re_generate_description(self, request: Request) -> Response:
         """
         Return an automated professional building description with ChatGPT
         """
-        content = request.data.get("content", None)
-        previous_response = request.data.get("previous_response", None)
-        generated_property_description = get_chatgpt_response(content, previous_response)
+        data = request.data if isinstance(request.data, dict) else {}
+        content = data.get("content", None)
+        previous_response = data.get("previous_response", None)
+        generated_property_description = get_chatgpt_response(str(content), previous_response)
 
         return Response(
             {"generated_property_description": generated_property_description}, status=status.HTTP_201_CREATED
         )
 
     @action(detail=False, methods=["get"])
-    def count_in_price_ranges(self, request):
+    def count_in_price_ranges(self, request: Request) -> Response:
         # Dictionary to store the count of properties for each price range
-        price_counts = {}
+        price_counts: Dict[str, int] = {}
 
         properties = Property.objects.all()
 
         # Variable to keep track of the highest count and range of properties among all ranges
         highest_count = 0
-        highest_count_range = None
+        highest_count_range: Optional[str] = None
 
         for price_range in PRICE_RANGES:
             min_price, max_price = price_range
@@ -505,16 +529,18 @@ class PropertyViewSet(viewsets.ModelViewSet):
         return Response(response_data, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=["get"])
-    def nearby_property_list(self, request, pk):
-        instance = self.get_object()
+    def nearby_property_list(self, request: Request, pk: Optional[str] = None) -> Response:
+        instance: Property = self.get_object()
 
-        properties_within_given_distance = [
+        properties_within_given_distance: List[int] = [
             property.id
             for property in Property.objects.filter(
                 building__latitude__isnull=False, building__longitude__isnull=False
             ).exclude(id=instance.id)
             # Calculate and get properties within the specified distance by geodesic (geopy package)
-            if geodesic(
+            if instance.building and instance.building.latitude is not None and instance.building.longitude is not None and \
+               property.building and property.building.latitude is not None and property.building.longitude is not None and \
+               geodesic(
                 (instance.building.latitude, instance.building.longitude),
                 (property.building.latitude, property.building.longitude),
             ).miles
@@ -535,17 +561,18 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
         return Response({"results": serializer.data}, status=200)
 
-    def nearest(self, request):
+    @action(detail=False, methods=["get"])
+    def nearest(self, request: Request) -> Response:
         user = request.user
+        location: tuple[float, float]
         if user.is_authenticated:
+            profile: Optional[Union[DeveloperProfile, AgentProfile, ProspectProfile]] = None
             if hasattr(user, "developerprofile"):
                 profile = DeveloperProfile.objects.get(user=user)
             elif hasattr(user, "agentprofile"):
                 profile = AgentProfile.objects.get(user=user)
             elif hasattr(user, "prospectprofile"):
                 profile = ProspectProfile.objects.get(user=user)
-            else:
-                profile = None
 
             # Get the profile location (latitude, longitude)
             if not profile or profile.latitude is None or profile.longitude is None:
@@ -571,34 +598,33 @@ class PropertyViewSet(viewsets.ModelViewSet):
                 if data.get("country") != "TH":
                     raise ValueError("Service restricted to Thailand")
 
-                location = data.get("loc").split(",")
-                location = (float(location[0]), float(location[1]))
+                location_split = cast(str, data.get("loc")).split(",")
+                location = (float(location_split[0]), float(location_split[1]))
             except Exception as e:
                 # Log the exception
-                import logging
-                logger = logging.getLogger(__name__)
                 logger.warning(f"Error determining location from IP: {e}")
 
         # Calculate the distance of each property from the prospect's location
         properties = self.get_queryset().filter(building__latitude__isnull=False, building__longitude__isnull=False)
-        properties_with_distance = []
+        properties_with_distance: List[tuple[Property, float]] = []
 
         for property in properties:
-            building_location = (property.building.latitude, property.building.longitude)
-            distance = geodesic(location, building_location).miles
-            properties_with_distance.append((property, distance))
+            if property.building and property.building.latitude is not None and property.building.longitude is not None:
+                building_location = (property.building.latitude, property.building.longitude)
+                distance = geodesic(location, building_location).miles
+                properties_with_distance.append((property, distance))
 
         # Sort properties by distance
         properties_with_distance.sort(key=lambda x: x[1])
 
         # Limit to 2 properties per building
-        filtered_properties = []
-        building_count = {}
+        filtered_properties: List[Property] = []
+        building_count: Dict[int, int] = {}
 
         for property, distance in properties_with_distance:
-            building_id = property.building_id
+            building_id = cast(int, property.building_id)
             if building_count.get(building_id, 0) < 2:
-                property.distance = distance
+                cast(Any, property).distance = distance
                 filtered_properties.append(property)
                 building_count[building_id] = building_count.get(building_id, 0) + 1
             if len(filtered_properties) >= 10:
@@ -610,9 +636,11 @@ class PropertyViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=["get"])
-    def suggested_properties(self, request):
+    def suggested_properties(self, request: Request) -> Response:
         # Helper function to parse cookie values
-        def parse_cookie_value(value):
+        def parse_cookie_value(value: Optional[str]) -> Any:
+            if value is None:
+                return None
             try:
                 return ast.literal_eval(value)
             except (ValueError, SyntaxError):
@@ -626,12 +654,13 @@ class PropertyViewSet(viewsets.ModelViewSet):
         min_number_of_bedroom = parse_cookie_value(request.COOKIES.get("min_number_of_bedroom"))
         max_number_of_bedroom = parse_cookie_value(request.COOKIES.get("max_number_of_bedroom"))
         
-        searched_places = request.COOKIES.get("searched_places")
-        if searched_places:
-            searched_places = parse_cookie_value(searched_places)
+        searched_places_raw = request.COOKIES.get("searched_places")
+        searched_places: List[Dict[str, str]] = []
+        if searched_places_raw:
+            searched_places = parse_cookie_value(searched_places_raw)
 
         # Create initial query parameters dictionary
-        query_params = {}
+        query_params: Dict[str, Any] = {}
         if building__type is not None:
             query_params["building__type"] = building__type
         if building__sub_type is not None:
@@ -648,7 +677,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
         property_qs = self.get_queryset().select_related("building")
 
         # Initialize an empty list to collect unique property IDs
-        unique_property_ids = []
+        unique_property_ids: List[int] = []
 
         if searched_places:
             for place in searched_places:
@@ -728,7 +757,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
         if unique_property_ids:
             property_qs = property_qs.filter(id__in=unique_property_ids).order_by(order)
 
-        serializer_context = {}  # Default empty context
+        serializer_context: Dict[str, Any] = {}  # Default empty context
         serializer_class = (
             PropertyVariousFeatureMinimalInfoSerializer
             if request.GET.get("towards") == "search"
@@ -739,12 +768,13 @@ class PropertyViewSet(viewsets.ModelViewSet):
     
 
     @action(detail=True, methods=["patch"])
-    def manage_property_view_time(self, request, pk=None):
+    def manage_property_view_time(self, request: Request, pk: Optional[str] = None) -> Response:
         # Managing Property and discount property view time
-        property_obj = self.get_object()
-        serializer = self.serializer_class(property_obj)
+        property_obj: Property = self.get_object()
+        serializer = self.get_serializer(property_obj)
 
-        time_spent = request.data.get("time_spent", None)
+        data = request.data if isinstance(request.data, dict) else {}
+        time_spent = data.get("time_spent", None)
         if time_spent:
             property_obj.view_time += timedelta(seconds=time_spent)
             property_obj.save()
@@ -755,7 +785,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
                 # Increment the viewing for the associated DiscountProperty
                 discount_property = property_obj.discounts.first()
                 today = timezone.now().date()
-                if discount_property and discount_property.period >= today:
+                if discount_property and discount_property.period and discount_property.period >= today:
                     discount_property.increase_view_time(time_spent=time_spent)
 
             # Check if 'featured=True' is in the URL
@@ -769,14 +799,14 @@ class PropertyViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=["get"])
-    def property_info(self, request, pk=None):
+    def property_info(self, request: Request, pk: Optional[str] = None) -> Response:
         property = self.get_object()
         serializer = PropertySerializerRead(property)
         return Response(serializer.data, status=200)
     
 
 @api_view(["GET"])
-def user_properties(request, user_id):
+def user_properties(request: Request, user_id: int) -> Response:
     properties_qs = (
         Property.objects.filter(building__created_by__id=user_id, is_active=True)
         .annotate(
@@ -790,7 +820,7 @@ def user_properties(request, user_id):
             is_favorited=(
                 Exists(
                     ProspectFavoriteProperty.objects.filter(
-                        prospect=request.user.prospectprofile, property=OuterRef("pk")
+                        prospect=cast(Any, request.user).prospectprofile, property=OuterRef("pk")
                     )
                 )
                 if request.user.is_authenticated and hasattr(request.user, "prospectprofile")

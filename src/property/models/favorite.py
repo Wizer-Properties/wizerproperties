@@ -1,3 +1,4 @@
+from typing import Any
 from django.db import models
 from django.core.exceptions import ValidationError
 
@@ -10,7 +11,10 @@ class ProspectFavoriteProperty(TimestampedModel):
     prospect = models.ForeignKey(ProspectProfile, null=True, blank=True, on_delete=models.CASCADE)
     property = models.ForeignKey(Property, null=True, on_delete=models.CASCADE, related_name="favorites")
 
-    def clean(self, *args, **kwargs):
+    def __str__(self) -> str:
+        return f"{self.prospect} - {self.property}"
+
+    def clean(self, *args: Any, **kwargs: Any) -> None:
         super().clean()
 
         # Duplication check

@@ -45,7 +45,7 @@
     if (Number.isNaN(date.getTime())) return "N/A";
 
     const now = new Date();
-    const diffMs = now - date;
+    const diffMs = now.getTime() - date.getTime();
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
     const diffWeeks = Math.floor(diffDays / 7);
     const diffMonths = Math.floor(diffDays / 30);
@@ -736,7 +736,7 @@
       if (property.updated_at && property.updated_at !== property.created_at) {
         const updatedDate = new Date(property.updated_at);
         const createdDate = new Date(property.created_at);
-        const daysDiff = (updatedDate - createdDate) / (1000 * 60 * 60 * 24);
+        const daysDiff = (updatedDate.getTime() - createdDate.getTime()) / (1000 * 60 * 60 * 24);
         if (daysDiff > 1 && daysDiff < 7) {
           labelText = "Reduced";
           dateToUse = property.updated_at;
@@ -752,7 +752,7 @@
       if (property.updated_at && property.updated_at !== property.created_at) {
         const updatedDate = new Date(property.updated_at);
         const createdDate = new Date(property.created_at);
-        const daysDiff = (updatedDate - createdDate) / (1000 * 60 * 60 * 24);
+        const daysDiff = (updatedDate.getTime() - createdDate.getTime()) / (1000 * 60 * 60 * 24);
         if (daysDiff > 1 && daysDiff < 7) {
           dateLabel.textContent = "Reduced on";
           created.textContent = formatDate(property.updated_at);

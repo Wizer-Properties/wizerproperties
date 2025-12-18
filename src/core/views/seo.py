@@ -1,14 +1,14 @@
-"""
-SEO-related views: robots.txt and sitemap index
-"""
-
+from typing import TYPE_CHECKING
 from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.conf import settings
 
+if TYPE_CHECKING:
+    from django.http import HttpRequest
+
 
 @require_http_methods(["GET"])
-def robots_txt(request):
+def robots_txt(request: "HttpRequest") -> HttpResponse:
     """
     Generate robots.txt file
     Allows all crawlers except for admin and API endpoints

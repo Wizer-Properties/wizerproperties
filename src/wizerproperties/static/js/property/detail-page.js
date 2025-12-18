@@ -53,7 +53,6 @@
     // New elements
     propertyTypeBadge: document.querySelector("[data-property-type-badge]"),
     propertyTypeDisplay: document.querySelector("[data-property-type-display]"),
-    propertyTypeBadge: document.querySelector("[data-property-type-badge]"),
     propertyTenure: document.querySelector("[data-property-tenure]"),
     imageCounter: document.querySelector("[data-image-counter]"),
     currentImage: document.querySelector("[data-current-image]"),
@@ -434,7 +433,7 @@
       if (property.updated_at && property.updated_at !== property.created_at) {
         const updatedDate = new Date(property.updated_at);
         const createdDate = new Date(property.created_at);
-        const daysDiff = (updatedDate - createdDate) / (1000 * 60 * 60 * 24);
+        const daysDiff = (updatedDate.getTime() - createdDate.getTime()) / (1000 * 60 * 60 * 24);
         if (daysDiff > 1 && daysDiff < 7) {
           labelText = "Reduced";
           dateToUse = property.updated_at;
@@ -1163,7 +1162,7 @@
           <div class="flex items-center gap-2 text-xl text-accent give-rating">
             ${createRatingStars(0)}
           </div>
-          <textarea class="give-review input min-h-[140px]" placeholder="Share your honest experience. What you loved, what could be better, and who this property is perfect for..."></textarea>
+          <textarea class="give-review input min-h-[140px]" placeholder="Share your experience with this property..."></textarea>
           <div class="review-warrning-text space-y-1 text-xs text-destructive"></div>
           <button class="btn w-full justify-center review-submit-btn text-sm">Share your review</button>
         </div>
@@ -1257,7 +1256,7 @@
     const textarea = document.querySelector(".give-review");
     const reviewText = textarea ? textarea.value.trim() : "";
     if (!reviewText) {
-      if (warning) warning.textContent = "Please share your experience. Your review helps other buyers make confident decisions.";
+      if (warning) warning.textContent = "Your review helps other buyers. Please share your experience.";
       return;
     }
     state.reviews.loading = true;

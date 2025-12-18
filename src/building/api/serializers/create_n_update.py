@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from django.db import transaction
+from django.core.exceptions import ValidationError as DjangoValidationError
+from typing import Any, Dict, List, Optional, cast
 from building.models import Building, BuildingMedia
 from .list import BuildingListSerializer
 from utils.general_func import show_custom_error_message
@@ -22,8 +24,8 @@ class BuildingCreateAndUpdateSerializer(BuildingListSerializer):
         ]
 
     # Validate that all fields are required and not blank
-    def __init__(self, *args, **kwargs):
-        super(BuildingCreateAndUpdateSerializer, self).__init__(*args, **kwargs)
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
         self.request = self.context.get("request")
 
         self.skip_attributes = [
@@ -55,17 +57,18 @@ class BuildingCreateAndUpdateSerializer(BuildingListSerializer):
                 ]:
                     field.required = True
                     field.allow_null = False
-                    field.allow_blank = False
+                    if hasattr(field, "allow_blank"):
+                        setattr(field, "allow_blank", False)
 
-        show_custom_error_message(self.fields)
+        show_custom_error_message(cast(Any, self.fields))
 
-    def validate(self, data):
-        error_messages = {}
+    def validate(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        error_messages: Dict[str, Any] = {}
 
-        if self.request.method == "PATCH" and data.get("is_active") is None:
+        if self.request and self.request.method == "PATCH" and data.get("is_active") is None:
             error_messages.update({"is_active": "This field is required."})
 
-        if self.request.method in ["POST", "PUT"]:
+        if self.request and self.request.method in ["POST", "PUT"]:
             # Remove unwanted attributes from data for 'Building' instance
             for attr in self.skip_attributes:
                 data.pop(attr, None)
@@ -81,10 +84,10 @@ class BuildingCreateAndUpdateSerializer(BuildingListSerializer):
                 data.pop("construction_year", None)
 
             instance = Building(**data)
-            instance.created_by = self.request.user
+            instance.created_by = cast(Any, self.request).user
             try:
                 instance.full_clean()  # Perform full validation before saving
-            except serializers.ValidationError as e:
+            except DjangoValidationError as e:
                 error_messages.update(e.message_dict)
 
         if error_messages:
@@ -92,7 +95,7 @@ class BuildingCreateAndUpdateSerializer(BuildingListSerializer):
 
         return data
 
-    def get_media_files(self, request):
+    def get_media_files(self, request: Any) -> Dict[str, List[Any]]:
         return {
             "image": request.FILES.getlist("images"),
             "unit_floor_plan": request.FILES.getlist("unit_floor_plans"),
@@ -101,7 +104,7 @@ class BuildingCreateAndUpdateSerializer(BuildingListSerializer):
             "aerial_drone_video": request.FILES.getlist("aerial_drone_videos"),
         }
 
-    def create(self, validated_data):
+    def create(self, validated_data: Dict[str, Any]) -> Building:
         media_files_data = self.get_media_files(self.request)
         # Create BuildingMedia objects for different media types
         media_files = []
@@ -111,14 +114,14 @@ class BuildingCreateAndUpdateSerializer(BuildingListSerializer):
                 media_file.save()
                 media_files.append(media_file)
 
-        building = Building.objects.create(**validated_data, created_by=self.request.user)
+        building = Building.objects.create(**validated_data, created_by=cast(Any, self.request).user)
         building.media_files.set(media_files)
 
         return building
 
-    def update(self, instance, validated_data):
+    def update(self, instance: Building, validated_data: Dict[str, Any]) -> Building:
         media_files_data = self.get_media_files(self.request)
-        deleted_images = self.request.data.getlist("deleted_images")
+        deleted_images = cast(Any, self.request).data.getlist("deleted_images")
 
         # Reverting any changes made to the instance media files field, If no exception occurs the changes will be committed when the block exits
         with transaction.atomic():
@@ -165,7 +168,7 @@ class BuildingCreateAndUpdateSerializer(BuildingListSerializer):
                 raise e
 
         # To remain unchange active status while Edit
-        if self.request.method == "PUT":
+        if self.request and self.request.method == "PUT":
             validated_data.pop("is_active", None)
 
         return super().update(instance, validated_data)

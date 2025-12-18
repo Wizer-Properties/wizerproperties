@@ -155,7 +155,7 @@ $(document).ready(function () {
   $("#property-create-form").on("submit", function (event) {
     event.preventDefault();
 
-    var formData = new FormData(this);
+    var formData = new FormData(/** @type {HTMLFormElement} */ (this));
     var createPropertyButtonText = $("#createPropertyButtonText");
     var loadingSpinner = $("#loadingSpinner");
 

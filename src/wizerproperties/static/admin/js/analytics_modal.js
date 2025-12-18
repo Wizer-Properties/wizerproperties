@@ -5,51 +5,55 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     // Get modal elements
-    const modal = document.getElementById('analyticsModal');
+    /** @type {HTMLElement} */
+    const modal = (/** @type {any} */ (document.getElementById('analyticsModal')));
     const closeBtn = document.querySelector('.analytics-close');
-    const loadingDiv = document.querySelector('.analytics-loading');
-    const contentDiv = document.querySelector('.analytics-content');
-    const errorDiv = document.querySelector('.analytics-error');
+    /** @type {HTMLElement} */
+    const loadingDiv = (/** @type {any} */ (document.querySelector('.analytics-loading')));
+    /** @type {HTMLElement} */
+    const contentDiv = (/** @type {any} */ (document.querySelector('.analytics-content')));
+    /** @type {HTMLElement} */
+    const errorDiv = (/** @type {any} */ (document.querySelector('.analytics-error')));
 
     // Function to show modal
     function showModal() {
-        modal.style.display = 'block';
+        if (modal) modal.style.display = 'block';
         document.body.style.overflow = 'hidden'; // Prevent background scrolling
     }
 
     // Function to hide modal
     function hideModal() {
-        modal.style.display = 'none';
+        if (modal) modal.style.display = 'none';
         document.body.style.overflow = 'auto'; // Restore scrolling
         resetModalState();
     }
 
     // Function to reset modal state
     function resetModalState() {
-        loadingDiv.style.display = 'block';
-        contentDiv.style.display = 'none';
-        errorDiv.style.display = 'none';
+        if (loadingDiv) loadingDiv.style.display = 'block';
+        if (contentDiv) contentDiv.style.display = 'none';
+        if (errorDiv) errorDiv.style.display = 'none';
     }
 
     // Function to show loading state
     function showLoading() {
-        loadingDiv.style.display = 'block';
-        contentDiv.style.display = 'none';
-        errorDiv.style.display = 'none';
+        if (loadingDiv) loadingDiv.style.display = 'block';
+        if (contentDiv) contentDiv.style.display = 'none';
+        if (errorDiv) errorDiv.style.display = 'none';
     }
 
     // Function to show content
     function showContent() {
-        loadingDiv.style.display = 'none';
-        contentDiv.style.display = 'block';
-        errorDiv.style.display = 'none';
+        if (loadingDiv) loadingDiv.style.display = 'none';
+        if (contentDiv) contentDiv.style.display = 'block';
+        if (errorDiv) errorDiv.style.display = 'none';
     }
 
     // Function to show error
     function showError() {
-        loadingDiv.style.display = 'none';
-        contentDiv.style.display = 'none';
-        errorDiv.style.display = 'block';
+        if (loadingDiv) loadingDiv.style.display = 'none';
+        if (contentDiv) contentDiv.style.display = 'none';
+        if (errorDiv) errorDiv.style.display = 'block';
     }
 
     // Function to populate analytics data
@@ -120,9 +124,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Event listener for analytics buttons
     document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('analytics-btn')) {
+        const target = /** @type {HTMLElement} */ (e.target);
+        if (target && target.classList.contains('analytics-btn')) {
             e.preventDefault();
-            const adId = e.target.getAttribute('data-ad-id');
+            const adId = target.getAttribute('data-ad-id');
             if (adId) {
                 showModal();
                 fetchAnalyticsData(adId);
@@ -144,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Event listener for escape key
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modal.style.display === 'block') {
+        if (e.key === 'Escape' && modal && modal.style.display === 'block') {
             hideModal();
         }
     });

@@ -1,5 +1,5 @@
 import math
-from typing import Union
+from typing import Union, Any, List, Optional
 from rest_framework import pagination
 from rest_framework.response import Response
 from django.db.models import F
@@ -11,24 +11,29 @@ class PropertySearchPagination(pagination.PageNumberPagination):
     page_size_query_param = "page_size"
 
     def _get_next_page(self) -> Union[int, None]:
-        if not self.page.has_next():
+        if not self.page or not self.page.has_next():
             return None
         page_number: int = self.page.next_page_number()
         return page_number
 
     def _get_previous_page(self) -> Union[int, None]:
-        if not self.page.has_previous():
+        if not self.page or not self.page.has_previous():
             return None
         page_number: int = self.page.previous_page_number()
         return page_number
 
     def _get_total_page(self) -> Union[int, None]:
+        if not self.page or not self.request:
+            return None
         count = self.page.paginator.count
         page_size = self.get_page_size(self.request)
 
+        if not page_size:
+            return None
+
         return math.ceil(count / page_size)
 
-    def get_paginated_response(self, data):
+    def get_paginated_response(self, data: Any) -> Response:
         # Extract the IDs of the objects from the paginated data
         object_ids = [item['id'] for item in data if 'id' in item]
 
@@ -37,10 +42,17 @@ class PropertySearchPagination(pagination.PageNumberPagination):
         if object_ids:
             Property.objects.filter(id__in=object_ids).update(search_appearance=F("search_appearance") + 1)
 
+        if not self.page or not self.request:
+            return Response({"results": data})
+
+        page_size = self.get_page_size(self.request)
+        if not page_size:
+            return Response({"results": data})
+
         return Response(
             {
                 "count": self.page.paginator.count,
-                "page_size": self.get_page_size(self.request),
+                "page_size": page_size,
                 "next": self._get_next_page(),
                 "previous": self._get_previous_page(),
                 "total_page": self._get_total_page(),

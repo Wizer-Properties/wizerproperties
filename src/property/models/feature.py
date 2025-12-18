@@ -1,4 +1,6 @@
+from typing import Any
 from django.db import models
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from datetime import timedelta
 
@@ -11,7 +13,7 @@ class FeatureProperty(TimestampedModel):
     number_of_clicked = models.PositiveIntegerField(default=0)  # How many times user has view this property
     view_time = models.DurationField(default=timedelta(seconds=0))  # How long the viewers view this property
     expiry_date = models.DateField(null=True, verbose_name="Expiry Date")
-    created_by = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True, related_name="featured_properties")
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="featured_properties")
 
     class Meta:
         verbose_name_plural = "Feature properties"
@@ -19,25 +21,34 @@ class FeatureProperty(TimestampedModel):
             models.UniqueConstraint(fields=['property'], name='unique_feature_property')
         ]
     
-    def clean(self):
+    def clean(self) -> None:
         # Check if the property is already associated with a DiscountProperty
         if self.property and self.property.discounts.exists():
             raise ValidationError({"property": "The property is already in the discount list."})
     
-    def duration_without_microseconds(self):
+    def duration_without_microseconds(self) -> str:
         if self.view_time:
             # Remove microseconds by subtracting them
             duration_without_microseconds = self.view_time - timedelta(microseconds=self.view_time.microseconds)
             return str(duration_without_microseconds)
         return "0:00:00"
     
-    def increase_total_view_count(self):
+    def increase_total_view_count(self) -> None:
         # Increasing view count by 1
         self.number_of_clicked += 1
         self.save()
     
-    def increase_view_time(self, time_spent):
+    def increase_view_time(self, time_spent: int) -> None:
         # Increasing viewing time
+        if not isinstance(time_spent, int):
+            try:
+                time_spent = int(time_spent)
+            except (ValueError, TypeError):
+                raise TypeError("time_spent must be an integer")
+        
+        if time_spent < 0:
+            raise ValueError("time_spent must be non-negative")
+            
         self.view_time += timedelta(seconds=time_spent)
         self.save()
 

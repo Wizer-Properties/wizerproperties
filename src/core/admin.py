@@ -1,13 +1,25 @@
+from typing import Any, Optional, Union, TYPE_CHECKING
 from django.contrib import admin
 from django import forms
+from django.http import HttpRequest, HttpResponse
+from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 from core.models import Contact, AdminSettings
+
+if TYPE_CHECKING:
+    _ContactAdminBase = admin.ModelAdmin[Contact]
+    _AdminSettingsFormBase = forms.ModelForm[AdminSettings]
+    _AdminSettingsAdminBase = admin.ModelAdmin[AdminSettings]
+else:
+    _ContactAdminBase = admin.ModelAdmin
+    _AdminSettingsFormBase = forms.ModelForm
+    _AdminSettingsAdminBase = admin.ModelAdmin
 
 
 class CustomAdminSite(admin.AdminSite):
     site_header = "WIP ADMIN"
 
-    def each_context(self, request):
+    def each_context(self, request: HttpRequest) -> dict[str, Any]:
         # Get the default context from the super class
         context = super().each_context(request)
         
@@ -20,14 +32,14 @@ custom_admin_site = CustomAdminSite(name='custom_admin')
 
 
 @admin.register(Contact, site=custom_admin_site)
-class ContactAdmin(admin.ModelAdmin):
+class ContactAdmin(_ContactAdminBase):
     list_display = ["email", "status", "subject", "created_at"]
     list_editable = ("status",)
     
-    def has_add_permission(self, request):
+    def has_add_permission(self, request: HttpRequest) -> bool:
         return False
     
-    def change_view(self, request, object_id, form_url='', extra_context=None):
+    def change_view(self, request: HttpRequest, object_id: str, form_url: str = '', extra_context: Optional[dict[str, Any]] = None) -> HttpResponse:
         # Add extra context to disable the "Save and add another" button
         extra_context = extra_context or {}
         extra_context['show_save_and_continue'] = False
@@ -35,7 +47,7 @@ class ContactAdmin(admin.ModelAdmin):
         extra_context['show_delete'] = False
         return super(ContactAdmin, self).change_view(request, object_id, form_url, extra_context=extra_context)
     
-    def add_view(self, request, form_url='', extra_context=None):
+    def add_view(self, request: HttpRequest, form_url: str = '', extra_context: Optional[dict[str, Any]] = None) -> HttpResponse:
         extra_context = extra_context or {}
         extra_context['show_save_and_continue'] = False
         extra_context['show_save_and_add_another'] = False
@@ -43,7 +55,7 @@ class ContactAdmin(admin.ModelAdmin):
         return super(ContactAdmin, self).add_view(request, form_url, extra_context=extra_context)
 
 
-class AdminSettingsForm(forms.ModelForm):
+class AdminSettingsForm(_AdminSettingsFormBase):
     """Custom form for AdminSettings to ensure API key is properly handled"""
     class Meta:
         model = AdminSettings
@@ -58,7 +70,7 @@ class AdminSettingsForm(forms.ModelForm):
             }),
         }
     
-    def clean_openai_api_key(self):
+    def clean_openai_api_key(self) -> Optional[str]:
         """Clean and validate the API key"""
         api_key = self.cleaned_data.get('openai_api_key')
         if api_key:
@@ -70,7 +82,7 @@ class AdminSettingsForm(forms.ModelForm):
 
 
 @admin.register(AdminSettings, site=custom_admin_site)
-class AdminSettingsAdmin(admin.ModelAdmin):
+class AdminSettingsAdmin(_AdminSettingsAdminBase):
     form = AdminSettingsForm
     list_display = [
         "id", 
@@ -81,22 +93,22 @@ class AdminSettingsAdmin(admin.ModelAdmin):
         "has_openai_key"  # Show if API key is configured
     ]
     
-    def has_openai_key(self, obj):
+    @admin.display(description="OpenRouter API Key")
+    def has_openai_key(self, obj: AdminSettings) -> str:
         """Display if OpenRouter API key is configured"""
         if obj.openai_api_key:
             return "✅ Configured"
         return "❌ Not Set"
-    has_openai_key.short_description = "OpenRouter API Key"
     
-    def has_add_permission(self, request):
+    def has_add_permission(self, request: HttpRequest) -> bool:
         # Only allow one AdminSettings record
         return not AdminSettings.objects.exists()
     
-    def has_delete_permission(self, request, obj=None):
+    def has_delete_permission(self, request: HttpRequest, obj: Optional[AdminSettings] = None) -> bool:
         # Allow deletion only if multiple records exist (for cleanup)
         return AdminSettings.objects.count() > 1
     
-    def get_queryset(self, request):
+    def get_queryset(self, request: HttpRequest) -> QuerySet[AdminSettings]:
         """Show all records if multiple exist (for cleanup)"""
         qs = super().get_queryset(request)
         count = qs.count()
@@ -125,7 +137,7 @@ class AdminSettingsAdmin(admin.ModelAdmin):
         }),
     )
     
-    def save_model(self, request, obj, form, change):
+    def save_model(self, request: HttpRequest, obj: AdminSettings, form: Any, change: bool) -> None:
         """Ensure API key is properly saved"""
         # Strip whitespace from API key
         if obj.openai_api_key:

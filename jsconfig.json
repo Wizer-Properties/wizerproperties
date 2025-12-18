@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2020",
+        "lib": ["es2020", "dom"],
+        "checkJs": true,
+        "strict": false,
+        "noImplicitAny": false,
+        "strictNullChecks": false,
+        "baseUrl": "./src",
+        "paths": {
+            "*": [
+                "*"
+            ]
+        }
+    },
+    "exclude": [
+        "node_modules",
+        "**/node_modules/*",
+        "src/wizerproperties/static_root",
+        "src/wizerproperties/static/js/libraries"
+    ]
+}

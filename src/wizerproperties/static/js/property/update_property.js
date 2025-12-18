@@ -29,7 +29,7 @@ $(document).ready(function () {
   $("#property-update-form").on("submit", function (event) {
     event.preventDefault();
 
-    var formData = new FormData(this);
+    var formData = new FormData(/** @type {HTMLFormElement} */ (this));
     if (deletedImages.length > 0) {
       deletedImages.forEach(function (id) {
         formData.append("deleted_images", id);

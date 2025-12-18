@@ -11,25 +11,30 @@ from schedule.api.permissions import VisitingSchedulePermission
 from building.models import Building
 from property.models import Property
 from utils.zoho_crm import sync_schedule_to_crm
+from typing import Any, Dict, Optional, cast
+from user.models import User
+from django.db.models import QuerySet
+from rest_framework.request import Request
 
 logger = logging.getLogger(__name__)
 
 
-class VisitingScheduleViewSet(viewsets.ModelViewSet):
+class VisitingScheduleViewSet(viewsets.ModelViewSet):  # type: ignore[type-arg]
     serializer_class = VisitingScheduleSerializer
     permission_classes = [VisitingSchedulePermission]
     pagination_class = None
     http_method = ["POST", "GET", "PATCH"]
     ordering = ["-created_at"]  # Default ordering
 
-    def get_queryset(self):
-        schedule_qs = None
+    def get_queryset(self) -> QuerySet[VisitingSchedule]:
+        schedule_qs = VisitingSchedule.objects.none()
+        user = cast(User, self.request.user)
 
-        if hasattr(self.request.user, "prospectprofile"):  # While a user is prospect
-            schedule_qs = VisitingSchedule.objects.filter(prospect=self.request.user.prospectprofile)
+        if hasattr(user, "prospectprofile"):  # While a user is prospect
+            schedule_qs = VisitingSchedule.objects.filter(prospect=user.prospectprofile)
         else:
-            building_ids = Building.objects.filter(created_by=self.request.user).values_list("id", flat=True)
-            property_ids = Property.objects.filter(created_by=self.request.user).values_list("id", flat=True)
+            building_ids = Building.objects.filter(created_by=user).values_list("id", flat=True)
+            property_ids = Property.objects.filter(created_by=user).values_list("id", flat=True)
             schedule_qs = VisitingSchedule.objects.filter(
                 Q(content_type__model="building", object_id__in=building_ids)
                 | Q(content_type__model="property", object_id__in=property_ids)
@@ -37,7 +42,7 @@ class VisitingScheduleViewSet(viewsets.ModelViewSet):
 
         return schedule_qs
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request: Any, *args: Any, **kwargs: Any) -> Response:
         serializer = self.get_serializer(data=request.data, context={"request": request})
 
         if serializer.is_valid():
@@ -65,7 +70,7 @@ class VisitingScheduleViewSet(viewsets.ModelViewSet):
                             property_url = f"{settings.SITE_HOST}{reverse('building:get', kwargs={'id': property_id})}"
                         
                         # Get price if available
-                        property_price = 0
+                        property_price = 0.0
                         property_bedrooms = ''
                         property_bathrooms = ''
                         property_size = ''
@@ -144,7 +149,7 @@ class VisitingScheduleViewSet(viewsets.ModelViewSet):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def partial_update(self, request, *args, **kwargs):
+    def partial_update(self, request: Any, *args: Any, **kwargs: Any) -> Response:
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, context={"request": request})
 
@@ -160,7 +165,7 @@ class VisitingScheduleViewSet(viewsets.ModelViewSet):
         methods=["PATCH"],
         url_path="accept",
     )
-    def accept_schedule(self, request, *args, **kwargs):
+    def accept_schedule(self, request: Any, *args: Any, **kwargs: Any) -> Response:
         instance = self.get_object()
         if instance.status != "pending":
             return Response({"status": "Can not change schedule status"}, status=status.HTTP_400_BAD_REQUEST)
@@ -174,7 +179,7 @@ class VisitingScheduleViewSet(viewsets.ModelViewSet):
         methods=["PATCH"],
         url_path="cancel",
     )
-    def cancel_schedule(self, request, *args, **kwargs):
+    def cancel_schedule(self, request: Any, *args: Any, **kwargs: Any) -> Response:
         instance = self.get_object()
         if instance.status != "pending":
             return Response({"status": "Can not change schedule status"}, status=status.HTTP_400_BAD_REQUEST)

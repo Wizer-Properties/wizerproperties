@@ -1,10 +1,11 @@
 from django.contrib import admin
+from typing import Any, Dict, Optional
 from .models import Building, BuildingMedia, BuildingReview
 from django.utils.html import format_html
 from core.admin import custom_admin_site
 
 
-class BuildingMediaInline(admin.TabularInline):
+class BuildingMediaInline(admin.TabularInline):  # type: ignore[type-arg]
     model = BuildingMedia
     extra = 0
     readonly_fields = ("type", "link", "created_at")
@@ -12,7 +13,8 @@ class BuildingMediaInline(admin.TabularInline):
     can_delete = False
     show_change_link = True
 
-    def link(self, obj):
+    @admin.display(description="Link")
+    def link(self, obj: BuildingMedia) -> str:
         if obj.file:
             return format_html(
                 '<a href="{}" target="_blank">Link</a>', 
@@ -20,12 +22,10 @@ class BuildingMediaInline(admin.TabularInline):
             )
        
         return "--"
-    
-    link.short_description = "Link"
 
 
 @admin.register(Building, site=custom_admin_site)
-class BuildingAdmin(admin.ModelAdmin):
+class BuildingAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     change_list_template = 'admin/building_detail_change_list.html'
     inlines = [BuildingMediaInline]
     list_display = [
@@ -43,13 +43,13 @@ class BuildingAdmin(admin.ModelAdmin):
     ]
     
     # Details link buttons
-    def _(self, obj):
+    def _(self, obj: Building) -> str:
         return format_html('<a href="#/" class="building-detail-view-admin-modal-button" data-id="{}">Detail</a>', obj.id)
     
     # def has_add_permission(self, request):
     #     return False
     
-    def change_view(self, request, object_id, form_url='', extra_context=None):
+    def change_view(self, request: Any, object_id: str, form_url: str = '', extra_context: Optional[Dict[str, Any]] = None) -> Any:
         # Add extra context to disable the "Save and add another" button
         extra_context = extra_context or {}
         extra_context['show_save_and_continue'] = False
@@ -57,7 +57,7 @@ class BuildingAdmin(admin.ModelAdmin):
         extra_context['show_delete'] = False
         return super(BuildingAdmin, self).change_view(request, object_id, form_url, extra_context=extra_context)
     
-    def add_view(self, request, form_url='', extra_context=None):
+    def add_view(self, request: Any, form_url: str = '', extra_context: Optional[Dict[str, Any]] = None) -> Any:
         extra_context = extra_context or {}
         extra_context['show_save_and_continue'] = False
         extra_context['show_save_and_add_another'] = False

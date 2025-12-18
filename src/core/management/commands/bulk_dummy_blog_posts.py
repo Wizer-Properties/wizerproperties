@@ -1,3 +1,4 @@
+from typing import Any
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from blog.models import Post, Category
@@ -11,15 +12,18 @@ User = get_user_model()
 class Command(BaseCommand):
     help = 'Create dummy blog posts'
 
-    def add_arguments(self, parser):
+    def add_arguments(self, parser: Any) -> None:
         parser.add_argument('total', type=int, help='Indicates the number of blog posts to be created')
 
-    def handle(self, *args, **options):
+    def handle(self, *args: Any, **options: Any) -> None:
         total = options['total']
         fake = Faker()
 
         # Ensure we have at least one user and category
         user = User.objects.all().first()
+        if not user:
+            self.stdout.write(self.style.ERROR('No user found.'))
+            return
         
         Post.objects.all().delete()
         
@@ -31,6 +35,8 @@ class Command(BaseCommand):
             subtitle = fake.sentence(nb_words=10)
             
             category = Category.objects.filter(id=random.randint(1, 6)).first()
+            if not category:
+                category = Category.objects.first()
             
             post = Post.objects.create(
                 title=title,
@@ -41,7 +47,8 @@ class Command(BaseCommand):
             )
             
             # Add category
-            post.categories.add(category)
+            if category:
+                post.categories.add(category)
 
             # Create dummy banner image
             image_file = ContentFile(fake.image())

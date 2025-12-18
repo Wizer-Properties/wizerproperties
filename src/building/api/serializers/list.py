@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from typing import Any, Dict
+from building.models import Building
 from .default import BuildingSerializer
 
 
@@ -34,8 +36,8 @@ class BuildingListSerializer(BuildingSerializer):
             "created_by",
         ]
 
-    def to_representation(self, instance):
+    def to_representation(self, instance: Building) -> Any:
         """Customizes the output of the serializer during retrieval."""
-        ret = super().to_representation(instance)
+        ret: Dict[str, Any] = super().to_representation(instance)
         ret["status"] = instance.get_status_display()
         return ret

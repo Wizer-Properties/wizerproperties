@@ -21,7 +21,7 @@ $(function () {
   $("#reels-create-form").on("submit", function (event) {
     event.preventDefault();
 
-    var formData = new FormData(this);
+    var formData = new FormData(/** @type {HTMLFormElement} */ (this));
     var $submitButton = $(this).find("button[type='submit']");
     var $buttonText = $("#createReelButtonText");
     var $spinner = $("#loadingSpinner");
@@ -106,7 +106,7 @@ $(document).ready(function(){
     $("#reels-create-form").submit(function (event) {
         event.preventDefault();
 
-        var formData = new FormData(this);
+        var formData = new FormData(/** @type {HTMLFormElement} */ (this));
         var createReelButtonText = $("#createReelButtonText");
         var loadingSpinner = $("#loadingSpinner");
 

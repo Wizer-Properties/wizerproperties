@@ -1,9 +1,15 @@
 from rest_framework import serializers
+from typing import Any, Optional, TYPE_CHECKING
 from django.contrib.contenttypes.models import ContentType
 from advertise.models import Advertisement
 
+if TYPE_CHECKING:
+    _Base = serializers.ModelSerializer[Advertisement]
+else:
+    _Base = serializers.ModelSerializer
 
-class AdvertisementSerializer(serializers.ModelSerializer):
+
+class AdvertisementSerializer(_Base):
     # Generic target title (works for Property or Building assuming they expose a `title` or `name` attr)
     content_title = serializers.SerializerMethodField()
     end_at = serializers.SerializerMethodField()
@@ -27,10 +33,10 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["created_at", "end_at", "content_title"]
 
-    def get_end_at(self, obj):
+    def get_end_at(self, obj: Advertisement) -> Any:
         return obj.end_at()
 
-    def get_content_title(self, obj):
+    def get_content_title(self, obj: Advertisement) -> Optional[str]:
         target = getattr(obj, "content_object", None)
         if not target:
             return None
@@ -39,13 +45,13 @@ class AdvertisementSerializer(serializers.ModelSerializer):
             if hasattr(target, attr):
                 try:
                     value = getattr(target, attr)
-                    return value() if callable(value) else value
+                    return str(value() if callable(value) else value)
                 except Exception:  # Fallback gracefully
                     continue
         return str(target)
 
 
-class AdvertisementSuggestionSerializer(serializers.ModelSerializer):
+class AdvertisementSuggestionSerializer(_Base):
     banner_image = serializers.SerializerMethodField()
     object_id = serializers.IntegerField(read_only=True)
     target_type = serializers.SerializerMethodField()
@@ -61,17 +67,17 @@ class AdvertisementSuggestionSerializer(serializers.ModelSerializer):
             "target_title",
         ]
 
-    def get_banner_image(self, obj):
+    def get_banner_image(self, obj: Advertisement) -> Optional[str]:
         if obj.banner:
-            return obj.banner.url
+            return str(obj.banner.url)
         return None
 
-    def get_target_type(self, obj):
+    def get_target_type(self, obj: Advertisement) -> Optional[str]:
         if obj.content_type:
             return obj.content_type.model  # 'property' or 'building'
         return None
 
-    def get_target_title(self, obj):
+    def get_target_title(self, obj: Advertisement) -> Optional[str]:
         target = getattr(obj, "content_object", None)
         if not target:
             return None
@@ -79,7 +85,7 @@ class AdvertisementSuggestionSerializer(serializers.ModelSerializer):
             if hasattr(target, attr):
                 try:
                     val = getattr(target, attr)
-                    return val() if callable(val) else val
+                    return str(val() if callable(val) else val)
                 except Exception:
                     continue
         return str(target)

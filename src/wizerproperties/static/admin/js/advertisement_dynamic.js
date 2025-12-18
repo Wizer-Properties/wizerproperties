@@ -48,7 +48,8 @@
   }
 
   document.addEventListener('DOMContentLoaded', function() {
-    const ctSelect = document.getElementById('id_content_type');
+    /** @type {HTMLSelectElement} */
+    const ctSelect = (/** @type {any} */ (document.getElementById('id_content_type')));
     if (!ctSelect) return;
     ctSelect.addEventListener('change', function() {
       // Clear previous selection so user must pick a new related object

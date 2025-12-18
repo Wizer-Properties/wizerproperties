@@ -1,8 +1,18 @@
 from rest_framework import serializers
 from advertise.models import Advertisement, AdDemography, AdViewerLocation
+from typing import Any, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    _DemographyBase = serializers.ModelSerializer[AdDemography]
+    _LocationBase = serializers.ModelSerializer[AdViewerLocation]
+    _AnalyticsBase = serializers.ModelSerializer[Advertisement]
+else:
+    _DemographyBase = serializers.ModelSerializer
+    _LocationBase = serializers.ModelSerializer
+    _AnalyticsBase = serializers.ModelSerializer
 
 
-class AdDemographySerializer(serializers.ModelSerializer):
+class AdDemographySerializer(_DemographyBase):
     
     class Meta:
         model = AdDemography
@@ -13,7 +23,7 @@ class AdDemographySerializer(serializers.ModelSerializer):
         ]
 
 
-class AdViewerLocationSerializer(serializers.ModelSerializer):
+class AdViewerLocationSerializer(_LocationBase):
     
     class Meta:
         model = AdViewerLocation
@@ -23,7 +33,7 @@ class AdViewerLocationSerializer(serializers.ModelSerializer):
             "view_from_this_location",
         ]
 
-class AdAnalyticsSerializer(serializers.ModelSerializer):
+class AdAnalyticsSerializer(_AnalyticsBase):
     property_title = serializers.CharField(source="property.title", read_only=True)
     conversion_rate = serializers.SerializerMethodField()
     formatted_view_time = serializers.SerializerMethodField()
@@ -43,8 +53,8 @@ class AdAnalyticsSerializer(serializers.ModelSerializer):
             "adviewerlocation",
         ]
     
-    def get_conversion_rate(self, obj):
+    def get_conversion_rate(self, obj: Advertisement) -> float:
         return obj.conversion_rate()
     
-    def get_formatted_view_time(self, obj):
+    def get_formatted_view_time(self, obj: Advertisement) -> str:
         return obj.view_time_without_milliseconds()

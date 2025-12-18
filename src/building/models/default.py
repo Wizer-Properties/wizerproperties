@@ -1,6 +1,8 @@
+from typing import Any, Dict, Optional
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
+from django.conf import settings
 from utils.general_data import (
     BUILDING_TYPES,
     COMMERCIAL_SUB_TYPES,
@@ -66,17 +68,17 @@ class Building(TimestampedModel):
     have_grocery = models.BooleanField(default=False, verbose_name="Grocery")
     have_fitness_area = models.BooleanField(default=False, verbose_name="Fitness Area")
     is_active = models.BooleanField(default=True, verbose_name="Active")
-    created_by = models.ForeignKey("user.User", on_delete=models.SET_NULL, null=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.title) if self.title else str(self.id)
     
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         from django.urls import reverse
-        return reverse('building:get', args=[self.id])
+        return str(reverse('building:get', args=[self.id]))
 
-    def clean(self):
-        error_messages = {}
+    def clean(self) -> None:
+        error_messages: Dict[str, Any] = {}
 
         # Ensure lowest_price is less than highest_price
         if self.lowest_price is not None and self.highest_price is not None:
@@ -111,8 +113,8 @@ class Building(TimestampedModel):
             raise ValidationError(error_messages)
         
 
-    def formatted_highest_price(self):
-        return formatted_number(self.highest_price)
+    def formatted_highest_price(self) -> str:
+        return formatted_number(self.highest_price or 0)
     
-    def formatted_lowest_price(self):
-        return formatted_number(self.lowest_price)
+    def formatted_lowest_price(self) -> str:
+        return formatted_number(self.lowest_price or 0)

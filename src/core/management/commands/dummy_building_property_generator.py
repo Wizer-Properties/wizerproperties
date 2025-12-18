@@ -1,3 +1,4 @@
+from typing import Any, Optional, List
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from faker import Faker
@@ -26,17 +27,17 @@ class Command(BaseCommand):
     """example command: sudo docker compose -f docker-compose-dev.yml run web python manage.py dummy_building_property_generator --buildings 55 --properties-per-building 10 --created-by-user-id 1
     """
 
-    def add_arguments(self, parser):
+    def add_arguments(self, parser: Any) -> None:
         parser.add_argument('--buildings', type=int, default=5, help='Number of buildings to create')
         parser.add_argument('--properties-per-building', type=int, default=5, help='Number of properties per building')
         parser.add_argument('--created-by-user-id', type=int, default=None, help='User ID to set as created_by')
 
-    def _get_random_choice_key(self, choices):
+    def _get_random_choice_key(self, choices: Any) -> Any:
         # choices is list/tuple of (key, label)
         keys = [c[0] for c in choices]
         return random.choice(keys)
 
-    def _pick_created_by(self, explicit_user_id):
+    def _pick_created_by(self, explicit_user_id: Optional[int]) -> Optional[User]:
         if explicit_user_id:
             try:
                 return User.objects.get(id=explicit_user_id)
@@ -46,7 +47,7 @@ class Command(BaseCommand):
         return User.objects.order_by('?').first()
 
     @transaction.atomic
-    def handle(self, *args, **options):
+    def handle(self, *args: Any, **options: Any) -> None:
         num_buildings = max(0, options.get('buildings') or 0)
         num_props_per_building = max(0, options.get('properties_per_building') or 0)
         locale = 'en_US'

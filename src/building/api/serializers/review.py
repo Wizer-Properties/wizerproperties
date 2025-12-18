@@ -1,8 +1,14 @@
+from typing import Any, Optional, Union, TYPE_CHECKING
 from rest_framework import serializers
 from building.models import BuildingReview
 
+if TYPE_CHECKING:
+    _Base = serializers.ModelSerializer[BuildingReview]
+else:
+    _Base = serializers.ModelSerializer
 
-class BuildingReviewSerializer(serializers.ModelSerializer):
+
+class BuildingReviewSerializer(_Base):
     reviewer_details = serializers.SerializerMethodField()
 
     class Meta:
@@ -14,25 +20,27 @@ class BuildingReviewSerializer(serializers.ModelSerializer):
             "building": {"write_only": True, "required": True, "allow_null": False},
         }
 
-    def validate(self, attrs):
+    def validate(self, attrs: dict[str, Any]) -> dict[str, Any]:
         instance = BuildingReview(**attrs)
-        user = self.context["request"].user
+        request = self.context.get("request")
+        user = request.user if request else None
 
         instance.user = user
         instance.full_clean()  # Perform full validation before saving
 
         return attrs
 
-    def create(self, request, *args, **kwargs):
-        instance = super().create(request, *args, **kwargs)
-        instance.user = self.context["request"].user
-        instance.save()
-        return instance
+    def create(self, validated_data: dict[str, Any]) -> BuildingReview:
+        request = self.context.get("request")
+        if request and request.user.is_authenticated:
+            validated_data["user"] = request.user
+        
+        return super().create(validated_data)
 
-    def get_reviewer_details(self, instance):
+    def get_reviewer_details(self, instance: BuildingReview) -> dict[str, Any]:
         if instance.user:
-            user_details = {}
-            if instance.user.prospectprofile:
+            user_details: dict[str, Any] = {}
+            if hasattr(instance.user, "prospectprofile"):
                 prospect = instance.user.prospectprofile
                 user_details["fullname"] = f"{prospect.first_name} {prospect.last_name}"
 

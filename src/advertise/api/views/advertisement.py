@@ -1,6 +1,7 @@
 import ast
 from itertools import combinations
 from collections import OrderedDict
+from typing import Any, Dict, List, Optional, Tuple, cast
 from rest_framework.decorators import action
 from rest_framework import viewsets, status
 from rest_framework.response import Response
@@ -18,7 +19,7 @@ from advertise.api.pagination import AdvertisementPagination
 from advertise.api.permissions import AdvertisementPermission
 
 
-class AdvertisementViewSet(viewsets.ModelViewSet):
+class AdvertisementViewSet(viewsets.ModelViewSet):  # type: ignore[type-arg]
     serializer_class = AdvertisementSerializer
     pagination_class = AdvertisementPagination
     permission_classes = [AdvertisementPermission]
@@ -29,7 +30,7 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
     ordering = ["position", "-created_at"]  # Default ordering
     
     @action(detail=True, methods=["patch"], url_path="manage-view-time")
-    def manage_advertisement_view_time(self, request, pk=None):
+    def manage_advertisement_view_time(self, request: Any, pk: Optional[int] = None) -> Response:
         """Updates Ad total view time"""
         ad_obj = self.get_object()
         time_spent = request.data.get("time_spent", None)
@@ -52,7 +53,7 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
 
 
     @action(detail=True, methods=["get"], url_path="analytics")
-    def advertisement_analytics(self, request, pk=None):
+    def advertisement_analytics(self, request: Any, pk: Optional[int] = None) -> Response:
         """Returns analytics of an advertisement"""
 
         ad_obj = self.get_object()
@@ -61,7 +62,7 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
 
 
     @action(detail=False, methods=["get"], url_path="list")
-    def advertisement_list(self, request):
+    def advertisement_list(self, request: Any) -> Response:
         """Returns agent/developer advertisement list.
         Previously filtered by property__created_by. Now we must derive this through the generic relation.
         We'll include only advertisements whose content_object (if it's a Property) was created by the user.
@@ -85,7 +86,7 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
 
 
     @action(detail=False, methods=["get"], url_path="suggested")
-    def suggested_advertisement(self, request):
+    def suggested_advertisement(self, request: Any) -> Response:
         """Suggest advertisements for both Property & Building targets.
         Strategy:
           1. Build ordered list of candidate Property IDs using cookie filters & place combinations.
@@ -95,7 +96,9 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
         property_qs = Property.objects.all().select_related("building")
         building_qs = Building.objects.all()
 
-        def parse_cookie_value(value):
+        def parse_cookie_value(value: Optional[str]) -> Any:
+            if value is None:
+                return None
             try:
                 return ast.literal_eval(value)
             except Exception:
@@ -124,13 +127,13 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
             query_params["number_of_bedroom__lte"] = max_number_of_bedroom
         query_params = {k: v for k, v in query_params.items() if v is not None}
 
-        query_param_combinations = []
+        query_param_combinations: List[Tuple[Any, ...]] = []
         for i in range(len(query_params), 0, -1):
             query_param_combinations.extend(combinations(query_params.items(), i))
 
-        unique_property_ids = []
+        unique_property_ids: List[int] = []
 
-        def add_property_ids(filters):
+        def add_property_ids(filters: Dict[str, Any]) -> None:
             for prop_id in property_qs.filter(**filters).values_list("id", flat=True):
                 if prop_id not in unique_property_ids:
                     unique_property_ids.append(prop_id)
@@ -161,9 +164,9 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
         else:
             property_id_list = list(property_qs.order_by("-created_at").values_list("id", flat=True))
 
-        matched_building_ids = []
+        matched_building_ids: List[int] = []
 
-        def add_building_ids(filters):
+        def add_building_ids(filters: Dict[str, Any]) -> None:
             for bid in building_qs.filter(**filters).values_list("id", flat=True):
                 if bid not in matched_building_ids:
                     matched_building_ids.append(bid)

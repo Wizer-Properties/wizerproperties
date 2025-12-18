@@ -1,11 +1,14 @@
 from rest_framework import pagination
 from rest_framework.response import Response
 
+from typing import Any
 class ReelPagination(pagination.PageNumberPagination):
     page_size = 4  # Number of items per page
     page_size_query_param = 'page_size'
 
-    def get_paginated_response(self, data):
+    def get_paginated_response(self, data: Any) -> Response:
+        if self.page is None:
+             return Response(data)
         next_page_number = None
         if self.page.has_next():
             next_page_number = self.page.next_page_number()

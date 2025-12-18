@@ -1,8 +1,9 @@
 from rest_framework import serializers
+from typing import Any, Dict, cast
 from property.models import SavedSearch
 
 
-class SavedSearchSerializer(serializers.ModelSerializer):
+class SavedSearchSerializer(serializers.ModelSerializer): # type: ignore[type-arg]
     """
     Serializer for SavedSearch model.
     Handles creation, update, and retrieval of saved property searches.
@@ -26,18 +27,18 @@ class SavedSearchSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Search name cannot be empty.")
         return value.strip()
 
-    def validate_search_params(self, value: dict) -> dict:
+    def validate_search_params(self, value: Dict[str, Any]) -> Dict[str, Any]:
         """Validate that search_params is a dictionary."""
         if not isinstance(value, dict):
             raise serializers.ValidationError("search_params must be a dictionary.")
         return value
 
-    def create(self, validated_data: dict) -> SavedSearch:
+    def create(self, validated_data: Dict[str, Any]) -> SavedSearch:
         """Create a new saved search for the authenticated user's prospect profile."""
         user = self.context["request"].user
         if not hasattr(user, "prospectprofile"):
             raise serializers.ValidationError("Only prospects can save searches.")
         
         validated_data["prospect"] = user.prospectprofile
-        return super().create(validated_data)
+        return cast(SavedSearch, super().create(validated_data))
 

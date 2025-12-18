@@ -2,6 +2,7 @@ from django.contrib import admin
 from django import forms
 from advertise.models import Reel, Advertisement, AdDemography, AdvertisementLog, AdViewerLocation
 from django.urls import reverse, path
+from typing import Any, Dict, List, Optional
 from django.utils.html import format_html
 from django.http import JsonResponse
 from core.admin import custom_admin_site
@@ -9,7 +10,7 @@ from advertise.api.serializers import AdAnalyticsSerializer
 from django.contrib.contenttypes.models import ContentType
 
 
-class AdvertisementAdminForm(forms.ModelForm):
+class AdvertisementAdminForm(forms.ModelForm):  # type: ignore[type-arg]
     """Custom form to provide a dynamic select for object_id based on chosen content_type."""
     # Use IntegerField so we don't enforce static choices server-side (JS supplies options dynamically)
     object_id = forms.IntegerField(required=False, label="Related object", widget=forms.Select())
@@ -18,7 +19,7 @@ class AdvertisementAdminForm(forms.ModelForm):
         model = Advertisement
         fields = "__all__"
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         # Initialize choices depending on current instance content_type
         ct = self.instance.content_type if self.instance and self.instance.pk else None
@@ -38,8 +39,8 @@ class AdvertisementAdminForm(forms.ModelForm):
         else:
             self.fields["object_id"].widget.choices = [("", "---------")]
 
-    def clean(self):
-        cleaned = super().clean()
+    def clean(self) -> Dict[str, Any]:
+        cleaned = super().clean() or {}
         ct = cleaned.get("content_type")
         obj_id = cleaned.get("object_id")
         if obj_id and not ct:
@@ -58,7 +59,7 @@ class AdvertisementAdminForm(forms.ModelForm):
 
 
 @admin.register(Advertisement, site=custom_admin_site)
-class AdvertisementAdmin(admin.ModelAdmin):
+class AdvertisementAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     list_display = ["id", "content_object", "ad_location", "position", "ad_run_duration", "number_of_clicked", "_view_time", "_analytics_button", "created_at", "expired_at"]
     list_editable = ["ad_location", "position"]
     readonly_fields = ['_view_time']  # Add to instance details view
@@ -76,11 +77,11 @@ class AdvertisementAdmin(admin.ModelAdmin):
         )
     
     @admin.display(description='View time (HH:MM:SS)')
-    def _view_time(self, obj):
+    def _view_time(self, obj: Advertisement) -> str:
         return obj.view_time_without_milliseconds()
     
     @admin.display(description='Analytics')
-    def _analytics_button(self, obj):
+    def _analytics_button(self, obj: Advertisement) -> str:
         """Display analytics button for each advertisement"""
         return format_html(
             '<button type="button" class="analytics-btn" data-ad-id="{}" '
@@ -89,7 +90,7 @@ class AdvertisementAdmin(admin.ModelAdmin):
             obj.id
         )
     
-    def get_urls(self):
+    def get_urls(self) -> List[Any]:
         """Add custom URL for analytics data"""
         urls = super().get_urls()
         custom_urls = [
@@ -98,7 +99,7 @@ class AdvertisementAdmin(admin.ModelAdmin):
         ]
         return custom_urls + urls
     
-    def analytics_data_view(self, request, ad_id):
+    def analytics_data_view(self, request: Any, ad_id: int) -> JsonResponse:
         """Return analytics data for a specific advertisement"""
         try:
             advertisement = Advertisement.objects.get(id=ad_id)
@@ -110,49 +111,52 @@ class AdvertisementAdmin(admin.ModelAdmin):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
     
-    def changelist_view(self, request, extra_context=None):
+    def changelist_view(self, request: Any, extra_context: Optional[Dict[str, Any]] = None) -> Any:
         """Add analytics modal to the changelist template"""
         extra_context = extra_context or {}
         extra_context['show_analytics_modal'] = True
         return super().changelist_view(request, extra_context)
 
-    def related_objects_view(self, request):
+    def related_objects_view(self, request: Any) -> JsonResponse:
         """AJAX endpoint returning object list for selected content type."""
         ct_id = request.GET.get("ct")
-        results = []
+        results: List[Dict[str, Any]] = []
         if ct_id:
             try:
                 ct = ContentType.objects.get(id=ct_id)
                 if ct.app_label in {"building", "property"}:
                     model_cls = ct.model_class()
-                    for obj in model_cls.objects.all().only("id")[:500]:
-                        label = getattr(obj, "title", str(obj))
-                        results.append({"id": obj.id, "text": label})
+                    if model_cls:
+                        # Cast to Any to avoid "Item "None" has no attribute "objects"" and similar
+                        model_any: Any = model_cls
+                        for obj in model_any.objects.all().only("id")[:500]:
+                            label = getattr(obj, "title", str(obj))
+                            results.append({"id": obj.id, "text": label})
             except ContentType.DoesNotExist:
                 pass
         return JsonResponse({"results": results})
 
 
 @admin.register(Reel, site=custom_admin_site)
-class ReelAdmin(admin.ModelAdmin):
+class ReelAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     list_display = ["id", "_building", "_property", "url", "social_media", "category", "status", "created_by"]
     
-    def _property(self, obj):
+    def _property(self, obj: Reel) -> str:
         if obj.property:
             link = reverse("admin:property_property_change", args=[obj.property.id]) 
             return format_html('<a href="{}" target="_blank">{}</a>', link, obj.property.title)
         return "--"
     
-    def _building(self, obj):
+    def _building(self, obj: Reel) -> str:
         if obj.property and obj.property.building:
             link = reverse("admin:building_building_change", args=[obj.property.building.id])
             return format_html('<a href="{}" target="_blank">{}</a>', link, obj.property.building.title)
         return "--"
     
-    def has_add_permission(self, request):
+    def has_add_permission(self, request: Any) -> bool:
         return False
     
-    def change_view(self, request, object_id, form_url='', extra_context=None):
+    def change_view(self, request: Any, object_id: str, form_url: str = '', extra_context: Optional[Dict[str, Any]] = None) -> Any:
         # Add extra context to disable the "Save and add another" button
         extra_context = extra_context or {}
         extra_context['show_save_and_continue'] = False
@@ -160,7 +164,7 @@ class ReelAdmin(admin.ModelAdmin):
         extra_context['show_delete'] = False
         return super(ReelAdmin, self).change_view(request, object_id, form_url, extra_context=extra_context)
     
-    def add_view(self, request, form_url='', extra_context=None):
+    def add_view(self, request: Any, form_url: str = '', extra_context: Optional[Dict[str, Any]] = None) -> Any:
         extra_context = extra_context or {}
         extra_context['show_save_and_continue'] = False
         extra_context['show_save_and_add_another'] = False
@@ -169,13 +173,13 @@ class ReelAdmin(admin.ModelAdmin):
     
 
 @admin.register(AdDemography, site=custom_admin_site)
-class AdDemographyAdmin(admin.ModelAdmin):
+class AdDemographyAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     list_display = ["id", "advertisement", "male_visitors", "female_visitors", "created_at"]
 
 @admin.register(AdvertisementLog, site=custom_admin_site)
-class AdvertisementLogAdmin(admin.ModelAdmin):
+class AdvertisementLogAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     list_display = ["id", "content_object", "advertisement", "user_obj", "location", "created_at"]
     
 @admin.register(AdViewerLocation, site=custom_admin_site)
-class AdViewerLocation(admin.ModelAdmin):
+class AdViewerLocationAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     list_display = ["id", "content_object", "advertisement", "address", "view_from_this_location", "created_at"]
