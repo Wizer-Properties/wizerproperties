@@ -1,3 +1,6 @@
+/// <reference types="datatables.net" />
+/// <reference types="bootstrap-datepicker" />
+
 // Global variables typically defined in Django templates or external scripts
 declare var csrfToken: string;
 declare var CSRF_TOKEN: string;
@@ -14,8 +17,6 @@ declare var videojs: any;
 declare var Cookies: any;
 declare var Globalize: any;
 declare var define: any;
-declare var jQuery: any;
-declare var $: any;
 
 // Project-specific globals (likely from Django templates)
 declare var ADS_SUGGEST_URL: any;
@@ -62,7 +63,6 @@ declare var RELATED_BUILDING_ID: any;
 declare var msg: any;
 declare var user_type: any;
 declare var formatBalance: any;
-declare var Analytics: any;
 declare var PropertyCardFactory: any;
 declare var MapManager: any;
 declare var mapManager: any;
@@ -75,79 +75,115 @@ declare var createPropertyAPIUrl: any;
 declare var propertyInformationURL: any;
 declare var COMPARISON_API_URL: any;
 declare var COMPARISON_REMOVE_API_URL: any;
-// declare var Countdown: any; // Conflicts with local definition
 declare var initPropertyFilters: any;
 declare var filter_data: any;
 declare var buildingGeocodeAddress: any;
 declare var favorite_removable: any;
 declare var updateBuildingAPIUrl: any;
+declare var Analytics: any;
+declare var jQuery: any;
+declare var $: any;
 
 // Suppress common property errors by making these more permissive
 interface Element {
-    value?: any;
-    dataset?: any;
-    style: any;
-    src?: any;
-    href?: any;
-    files?: any;
-    checked?: any;
-    innerHTML: any;
-    innerText: any;
-    textContent: any;
-    matches(selector: string): boolean;
-    closest(selector: string): any;
-    requestSubmit?(): void;
-    disabled?: any;
-    reset?(): void;
-    click?(): void;
-    open?: any;
-    focus?(): void;
+    [key: string]: any;
 }
 
 interface HTMLElement {
-    value?: any;
-    dataset?: any;
-    style: any;
-    src?: any;
-    href?: any;
-    files?: any;
-    checked?: any;
-    content?: any;
+    [key: string]: any;
 }
 
 interface EventTarget {
-    value?: any;
-    dataset?: any;
-    classList: any;
-    getAttribute(name: string): string | null;
-    closest(selector: string): any;
-    matches(selector: string): boolean;
-    href?: any;
-    detail?: any;
-    nodeType?: number;
-    ownerDocument?: any;
+    [key: string]: any;
+}
+
+interface Node {
+    [key: string]: any;
+}
+
+interface ParentNode {
+    [key: string]: any;
 }
 
 interface Event {
-    key?: string;
-    shiftKey?: boolean;
-    detail?: any;
+    [key: string]: any;
+}
+
+interface HTMLFormElement {
+    [key: string]: any;
 }
 
 // Global functions (often defined in other JS files or templates)
 declare function showModal(id?: any): void;
 declare function hideModal(id?: any): void;
 
+interface TagsInputOptions {
+    tagClass?: string | ((item: any) => string);
+    itemValue?: string | ((item: any) => any);
+    itemText?: string | ((item: any) => string);
+    confirmKeys?: number[];
+    maxTags?: number;
+    maxChars?: number;
+    trimValue?: boolean;
+    allowDuplicates?: boolean;
+    freeInput?: boolean;
+    typeahead?: any;
+    onTagExists?: (item: any, $tag: JQuery) => void;
+}
+
+interface FlipperOptions {
+    rotation?: string;
+    duration?: number;
+    onAnimationStart?: () => void;
+    onAnimationEnd?: () => void;
+}
+
+interface AnalyticsConfig {
+    ga4Id: string | null;
+    metaPixelId: string | null;
+    posthogKey: string | null;
+    posthogHost: string | null;
+    enabled: boolean;
+}
+
+interface AnalyticsInterface {
+    config: AnalyticsConfig;
+    init(config: Partial<AnalyticsConfig>): void;
+    initMetaPixel(): void;
+    initPostHog(): void;
+    track(eventName: string, properties?: Record<string, any>): void;
+    trackPageView(path: string, title: string): void;
+    mapToMetaEvent(eventName: string): string | null;
+    trackPropertyView(propertyId: string | number, propertyData?: Record<string, any>): void;
+    trackPropertyFavorite(propertyId: string | number, propertyData?: Record<string, any>, isFavorite?: boolean): void;
+    trackPropertyCompare(propertyId: string | number, propertyData?: Record<string, any>, isAdded?: boolean): void;
+    trackPropertyContact(propertyId: string | number, propertyData?: Record<string, any>, contactType?: string): void;
+    trackSearch(searchTerm: string, filters?: Record<string, any>, resultCount?: number): void;
+    trackSignup(userType?: string, method?: string): void;
+    trackLogin(userType?: string, method?: string): void;
+    trackFormSubmit(formName: string, formData?: Record<string, any>): void;
+    trackVideoPlay(videoId: string | number, videoTitle?: string): void;
+    setUserProperties(userId: string | number, properties?: Record<string, any>): void;
+    resetUser(): void;
+    trackCrmSync(eventType: string, entityType: string, entityId: string | number, success?: boolean): void;
+}
+
 // JQuery Plugins
 interface JQuery {
-    DataTable(options?: any): any;
-    datepicker(options?: any): any;
-    tagsinput(options?: any): any;
-    flipper(options?: any): any;
+    DataTable(options?: DataTables.Settings): DataTables.Api;
+    datepicker(options?: DatepickerOptions): JQuery;
+    tagsinput(options?: TagsInputOptions | 'add' | 'remove' | 'removeAll' | 'destroy' | 'focus' | 'input' | 'refresh' | 'items', ...args: any[]): JQuery;
+    flipper(options?: FlipperOptions | string): JQuery;
+    val(): any;
+    attr(name: string, value?: any): any;
+    prop(name: string, value?: any): any;
+    [key: string]: any;
 }
 
 // Window extensions
 interface Window {
+    csrfToken: string;
+    CSRF_TOKEN: string;
     inlineAds: any;
     fbq: any;
     _fbq: any;
@@ -168,5 +204,20 @@ interface Window {
     COMPARISON_REMOVE_API_URL: string;
     jQuery: any;
     $: any;
+    google: any;
+    [key: string]: any;
 }
 
+// Google Maps mock
+declare namespace google {
+    export namespace maps {
+        class Map { constructor(el: any, opts?: any); }
+        class Marker { constructor(opts?: any); setMap(map: any): void; }
+        class LatLng { constructor(lat: number, lng: number); }
+        class InfoWindow { constructor(opts?: any); open(map: any, marker: Marker): void; }
+        class Geocoder { constructor(); geocode(opts: any, cb: any): void; }
+        namespace event {
+            function addListener(instance: any, eventName: string, handler: Function): void;
+        }
+    }
+}

@@ -177,7 +177,7 @@ $(document).ready(function () {
     $("#building-create-form").submit(function (event) {
         event.preventDefault();
 
-        var formData = new FormData(this);
+        var formData = new FormData(/** @type {HTMLFormElement} */ (this));
 
         var createBuildingButtonText = $("#createBuildingButtonText");
         var loadingSpinner = $("#loadingSpinner");

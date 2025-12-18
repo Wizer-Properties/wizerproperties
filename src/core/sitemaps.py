@@ -3,7 +3,7 @@ Sitemap generation for Wizer Properties
 Generates XML sitemaps for all public pages
 """
 
-from typing import List, TYPE_CHECKING
+from typing import TYPE_CHECKING
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
 from property.models import Property
@@ -21,7 +21,7 @@ class StaticViewSitemap(Sitemap): # type: ignore[type-arg]
     priority = 1.0
     changefreq = 'monthly'
 
-    def items(self) -> List[str]:
+    def items(self) -> list[str]:
         return [
             'home',
             'contact',

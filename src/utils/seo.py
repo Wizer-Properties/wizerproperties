@@ -1,4 +1,4 @@
-from typing import Any, Optional, List, Tuple, cast
+from typing import Any, Optional
 from django.conf import settings
 from django.utils.html import format_html, escape
 from django.utils.safestring import mark_safe, SafeString
@@ -220,7 +220,7 @@ def generate_article_schema(article_obj: Any) -> SafeString:
     return format_html('<script type="application/ld+json">{}</script>', mark_safe(json_ld))
 
 
-def generate_breadcrumb_schema(breadcrumbs: List[Tuple[str, str]]) -> SafeString:
+def generate_breadcrumb_schema(breadcrumbs: list[tuple[str, str]]) -> SafeString:
     """
     Generate JSON-LD structured data for breadcrumbs
     

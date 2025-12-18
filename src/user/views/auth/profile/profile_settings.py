@@ -1,17 +1,16 @@
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
 if TYPE_CHECKING:
     from django.http import HttpRequest, HttpResponse
+    from user.models import User
 
 
 @login_required
 def profile_settings(request: "HttpRequest") -> "HttpResponse":
-    user = request.user
-    if not user.is_authenticated:
-        return redirect("login")
+    user = cast("User", request.user)
     if user.user_type in ("developer", "agent"):
         to_return = developer_or_agent_profile_settings(request)
     elif user.user_type == "prospect":
@@ -26,9 +25,7 @@ def profile_settings(request: "HttpRequest") -> "HttpResponse":
 
 @login_required
 def developer_or_agent_profile_settings(request: "HttpRequest") -> "HttpResponse":
-    user = request.user
-    if not user.is_authenticated:
-        return redirect("login")
+    user = cast("User", request.user)
     profile: Any = None
     if user.user_type == "developer":
         profile = getattr(user, "developerprofile", None)
@@ -40,8 +37,6 @@ def developer_or_agent_profile_settings(request: "HttpRequest") -> "HttpResponse
 
 @login_required
 def prospect_profile_settings(request: "HttpRequest") -> "HttpResponse":
-    user = request.user
-    if not user.is_authenticated:
-        return redirect("login")
+    user = cast("User", request.user)
     profile = getattr(user, "prospectprofile", None)
     return render(request, "auth/profile/prospect_profile_settings.html", {"profile": profile})

@@ -3,7 +3,7 @@ Django template tags for SEO utilities
 Makes it easy to use SEO functions in templates
 """
 
-from typing import Any, List, Tuple
+from typing import Any
 from django import template
 from django.utils.safestring import SafeString
 from utils.seo import (
@@ -42,7 +42,7 @@ def article_schema(article_obj: Any) -> SafeString:
 
 
 @register.simple_tag
-def breadcrumb_schema(breadcrumbs: List[Tuple[str, str]]) -> SafeString:
+def breadcrumb_schema(breadcrumbs: list[tuple[str, str]]) -> SafeString:
     """Generate breadcrumb schema markup
     
     Usage:

@@ -1,4 +1,5 @@
-from typing import Any, Callable, TYPE_CHECKING, List
+from typing import Any, TYPE_CHECKING
+from collections.abc import Callable
 from django.conf import settings
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -14,7 +15,7 @@ class CustomMiddleware:
 
     def __call__(self, request: "HttpRequest") -> "HttpResponse":
         # List of URLs to skip both email verification and profile completion checks
-        skip_urls: List[str] = [
+        skip_urls: list[str] = [
             reverse("user:logout"),
             reverse("user:email_verify"),
             reverse("user:password_reset_verify"),  # Updated to new primary name
@@ -31,10 +32,11 @@ class CustomMiddleware:
             and not request.user.is_superuser
             and not request.user.is_staff
             and request.path not in skip_urls
-            and request.path[:7] not in [settings.MEDIA_URL, "/admin/"]
+            and not (settings.MEDIA_URL and request.path.startswith(settings.MEDIA_URL))
+            and not request.path.startswith("/admin/")
         ):
             # Check email verification status
-            verify_link_paths: List[str] = [
+            verify_link_paths: list[str] = [
                 reverse("user:verify_link"),
                 reverse("user:verify_link_alt"),  # Include alternative path
             ]
@@ -43,7 +45,7 @@ class CustomMiddleware:
                 return redirect(reverse("user:email_verify"))
 
             # Check profile completion (only if email verification is complete)
-            complete_profile_paths: List[str] = [
+            complete_profile_paths: list[str] = [
                 reverse("user:complete_profile"),
                 reverse("user:complete_profile_alt"),  # Include alternative path
             ]

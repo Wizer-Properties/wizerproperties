@@ -11,7 +11,7 @@ $(document).ready(function () {
     $("#building-update-form").submit(function (event) {
         event.preventDefault();
 
-        var formData = new FormData(this);
+        var formData = new FormData(/** @type {HTMLFormElement} */ (this));
 
         if (deletedImages.length > 0) {
             for (var i = 0; i < deletedImages.length; i++) {

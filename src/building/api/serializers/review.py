@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional, Union, TYPE_CHECKING, cast
+from typing import Any, Optional, Union, TYPE_CHECKING
 from rest_framework import serializers
 from building.models import BuildingReview
 
@@ -20,7 +20,7 @@ class BuildingReviewSerializer(_Base):
             "building": {"write_only": True, "required": True, "allow_null": False},
         }
 
-    def validate(self, attrs: Dict[str, Any]) -> Dict[str, Any]:
+    def validate(self, attrs: dict[str, Any]) -> dict[str, Any]:
         instance = BuildingReview(**attrs)
         request = self.context.get("request")
         user = request.user if request else None
@@ -30,17 +30,16 @@ class BuildingReviewSerializer(_Base):
 
         return attrs
 
-    def create(self, validated_data: Dict[str, Any]) -> BuildingReview:
-        instance = super().create(validated_data)
+    def create(self, validated_data: dict[str, Any]) -> BuildingReview:
         request = self.context.get("request")
-        if request:
-            instance.user = request.user
-            instance.save()
-        return instance
+        if request and request.user.is_authenticated:
+            validated_data["user"] = request.user
+        
+        return super().create(validated_data)
 
-    def get_reviewer_details(self, instance: BuildingReview) -> Dict[str, Any]:
+    def get_reviewer_details(self, instance: BuildingReview) -> dict[str, Any]:
         if instance.user:
-            user_details: Dict[str, Any] = {}
+            user_details: dict[str, Any] = {}
             if hasattr(instance.user, "prospectprofile"):
                 prospect = instance.user.prospectprofile
                 user_details["fullname"] = f"{prospect.first_name} {prospect.last_name}"

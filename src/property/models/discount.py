@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, ClassVar
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
@@ -18,7 +18,7 @@ class DiscountProperty(TimestampedModel):
 
     class Meta:
         verbose_name_plural = "Discount properties"
-        constraints = [
+        constraints: ClassVar[list[Any]] = [
             models.UniqueConstraint(fields=['property'], name='unique_discount_property')
         ]
 

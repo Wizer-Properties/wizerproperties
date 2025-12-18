@@ -40,6 +40,15 @@ class FeatureProperty(TimestampedModel):
     
     def increase_view_time(self, time_spent: int) -> None:
         # Increasing viewing time
+        if not isinstance(time_spent, int):
+            try:
+                time_spent = int(time_spent)
+            except (ValueError, TypeError):
+                raise TypeError("time_spent must be an integer")
+        
+        if time_spent < 0:
+            raise ValueError("time_spent must be non-negative")
+            
         self.view_time += timedelta(seconds=time_spent)
         self.save()
 

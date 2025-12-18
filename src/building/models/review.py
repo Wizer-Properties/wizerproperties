@@ -18,13 +18,14 @@ class BuildingReview(TimestampedModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="building_reviews")
     building = models.ForeignKey(Building, on_delete=models.CASCADE, null=True, related_name="reviews")
     rating = models.IntegerField(choices=RATING_CHOICES, default=0)
-    review_text = models.TextField(blank=True, null=True, max_length=1000)
+    review_text = models.TextField(blank=True, default="", max_length=1000)
     is_active = models.BooleanField(default=True)
 
     def __str__(self) -> str:
-        return f"{self.user} - {self.building} - {self.rating}"
+        username = self.user.username if self.user else "Anonymous"
+        return f"{username} - {self.building} - {self.rating}"
 
-    def clean(self, *args: Any, **kwargs: Any) -> None:
+    def clean(self) -> None:
         super().clean()
 
         # Duplication check

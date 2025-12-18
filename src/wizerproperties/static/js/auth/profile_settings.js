@@ -62,7 +62,7 @@ $(document).ready(function () {
         var phoneNumber = $("input[name='phone_number']").val();
         var fullPhoneNumber = phoneCode + phoneNumber;
 
-        var formData = new FormData(this);
+        var formData = new FormData(/** @type {HTMLFormElement} */ (this));
 
         // Set modified phone number in formData
         formData.set("phone_number", fullPhoneNumber);
