@@ -53,7 +53,6 @@
     // New elements
     propertyTypeBadge: document.querySelector("[data-property-type-badge]"),
     propertyTypeDisplay: document.querySelector("[data-property-type-display]"),
-    propertyTypeBadge: document.querySelector("[data-property-type-badge]"),
     propertyTenure: document.querySelector("[data-property-tenure]"),
     imageCounter: document.querySelector("[data-image-counter]"),
     currentImage: document.querySelector("[data-current-image]"),
@@ -434,7 +433,7 @@
       if (property.updated_at && property.updated_at !== property.created_at) {
         const updatedDate = new Date(property.updated_at);
         const createdDate = new Date(property.created_at);
-        const daysDiff = (updatedDate - createdDate) / (1000 * 60 * 60 * 24);
+        const daysDiff = (updatedDate.getTime() - createdDate.getTime()) / (1000 * 60 * 60 * 24);
         if (daysDiff > 1 && daysDiff < 7) {
           labelText = "Reduced";
           dateToUse = property.updated_at;

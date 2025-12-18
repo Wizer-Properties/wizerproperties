@@ -372,7 +372,7 @@
       const date = new Date(data.date_listed);
       if (!isNaN(date.getTime())) {
         const now = new Date();
-        const diffMs = now - date;
+        const diffMs = now.getTime() - date.getTime();
         const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
         const diffWeeks = Math.floor(diffDays / 7);
         const diffMonths = Math.floor(diffDays / 30);
