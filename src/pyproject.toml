@@ -42,6 +42,7 @@ dev = [
 ]
 [tool.mypy]
 files = ["."]
+exclude = ["migrations/", "tests/fixtures/", "venv/", "third_party/"]
 plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
 strict = true
 explicit_package_bases = true

@@ -111,7 +111,7 @@
                         </div>
                     </div>
                     <!-- Map View Toggle -->
-                    <a href="/property/search-with-map/" label-name="view-tag" class="inline-flex items-center gap-1.5 rounded-lg border border-border/60 bg-white px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-brand-purple/40 hover:bg-brand-purple/5 hover:text-brand-purple">
+                    <a href="{% url 'property:search_with_map' %}" label-name="view-tag" class="inline-flex items-center gap-1.5 rounded-lg border border-border/60 bg-white px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-brand-purple/40 hover:bg-brand-purple/5 hover:text-brand-purple">
                         <i class="bi bi-map text-[11px]"></i>
                         <span class="hidden sm:inline">Map view</span>
                     </a>
@@ -148,7 +148,7 @@
                         <i class="bi bi-x-circle text-sm"></i>
                         <span>Clear all filters</span>
                     </button>
-                    <a href="/property/search/" class="inline-flex items-center justify-center gap-1.5 rounded-lg border border-border/60 bg-white px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-brand-purple/40 hover:bg-brand-purple/5 hover:text-brand-purple">
+                    <a href="{% url 'property:search' %}" class="inline-flex items-center justify-center gap-1.5 rounded-lg border border-border/60 bg-white px-4 py-2 text-sm font-medium text-muted-foreground transition hover:border-brand-purple/40 hover:bg-brand-purple/5 hover:text-brand-purple">
                         <i class="bi bi-arrow-clockwise text-sm"></i>
                         <span>Browse all properties</span>
                     </a>
