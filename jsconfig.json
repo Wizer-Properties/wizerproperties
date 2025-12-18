@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2016",
+        "checkJs": true,
+        "strict": true,
+        "noImplicitAny": false,
+        "baseUrl": "./src",
+        "paths": {
+            "*": [
+                "*"
+            ]
+        }
+    },
+    "exclude": [
+        "node_modules",
+        "**/node_modules/*"
+    ]
+}

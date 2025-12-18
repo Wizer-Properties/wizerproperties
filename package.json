@@ -12,7 +12,10 @@
     "tailwind:build": "tailwindcss -i ./src/wizerproperties/static/src/tailwind.css -o ./src/wizerproperties/static/css/tailwind.css --minify",
     "tailwind:watch": "tailwindcss -i ./src/wizerproperties/static/src/tailwind.css -o ./src/wizerproperties/static/css/tailwind.css --watch",
     "lint:css": "prettier --check \"src/wizerproperties/static/src/**/*.css\"",
-    "format:css": "prettier --write \"src/wizerproperties/static/src/**/*.css\""
+    "format:css": "prettier --write \"src/wizerproperties/static/src/**/*.css\"",
+    "type-check": "tsc -p jsconfig.json --noEmit",
+    "type-check:py": "cd src && poetry run mypy .",
+    "test": "npm run type-check && npm run type-check:py"
   },
   "repository": {
     "type": "git",
@@ -35,6 +38,7 @@
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.7.1",
     "tailwindcss": "^3.4.14",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "typescript": "^5.9.3"
   }
 }
