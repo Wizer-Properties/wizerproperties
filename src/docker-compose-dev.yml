@@ -1,3 +1,5 @@
+# Run from project root: docker compose -f src/docker-compose-dev.yml up
+# DB: Postgres 15 on host 5492. Assets volume .. mounts project root for npm.
 services:
   web:
     build:
@@ -16,7 +18,7 @@ services:
             - __pycache__/
             - "*.pyc"
         - action: rebuild
-          path: requirements.txt
+          path: poetry.lock
     volumes:
       - .:/app
     depends_on:
@@ -26,7 +28,7 @@ services:
       - PYTHONUNBUFFERED=1
 
   db:
-    image: postgres:15.4  # Use an appropriate PostgreSQL version
+    image: postgres:15-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:

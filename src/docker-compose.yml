@@ -1,3 +1,5 @@
+# Run from project root: docker compose -f src/docker-compose.yml up -d
+# DB: Postgres 15 on host 5492. Assets volume .. mounts project root for npm.
 services:
   web:
     restart: always
@@ -18,7 +20,7 @@ services:
 
   db:
     restart: always
-    image: postgres:15.4  # Use an appropriate PostgreSQL version
+    image: postgres:15-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -45,11 +47,11 @@ services:
       - web
 
   certbot:
-      image: certbot/certbot
-      volumes: 
-        - ./certbot/www/:/var/www/certbot/:rw
-        - ./certbot/conf/:/etc/letsencrypt/:rw
-      command: certonly --webroot -w /var/www/certbot --force-renewal --email satnam182@hotmail.com -d wizerproperties.com --agree-tos
+    image: certbot/certbot
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
+    command: certonly --webroot -w /var/www/certbot --force-renewal --email satnam182@hotmail.com -d wizerproperties.com --agree-tos
   
   assets:
     image: node:20-alpine

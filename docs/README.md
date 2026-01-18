@@ -1,0 +1,35 @@
+# Wizer Properties — Documentation
+
+Index of project documentation.
+
+---
+
+## Operations & deployment
+
+- **Docker:** See root [README.md](../README.md#quick-start-docker) for `docker-compose` and `docker-compose-dev`.
+- **PostgreSQL:** Default dev/test uses PostgreSQL 15; `localhost:5492` when running DB in Docker.
+- **SSL / nginx / certbot:** [operations-and-qa.md](operations-and-qa.md#2-deployment--ssl) — nginx, Certbot in Docker, renew commands.
+- **Static/media:** `collectstatic` and volume mounts for `static_root` and `media` are in `docker-compose.yml`.
+
+---
+
+## Testing & QA
+
+- **Backend:** pytest in `src/`. Use `WIZER_USE_POSTGRES_TESTS=1` and a running Postgres for full runs. Coverage: `pytest --cov` → `htmlcov/`, `coverage.xml`; `fail_under=75` in `pytest.ini`.
+- **Frontend:** Vitest in `src/wizerproperties/static/js/__tests__/`. Run via `npm run test` or `npm run test:coverage`.
+- **CI:** `.github/workflows/ci.yml` runs backend and frontend tests on push/PR.
+- **Acceptance tests & checklist:** [operations-and-qa.md](operations-and-qa.md#3-acceptance-test-checklist-structure).
+
+---
+
+## Product & marketing
+
+- [product-and-marketing.md](product-and-marketing.md) — Positioning, personas, landing, go-to-market, marketing tasks.
+
+---
+
+## Codebase & design
+
+- [audits-and-design.md](audits-and-design.md) — Codebase audit, home page audit, UI/UX redesign status.
+- [operations-and-qa.md](operations-and-qa.md) — Meeting notes, deployment, SSL, acceptance checklist.
+- [Wizer Properties WIP Task Tracker - 0812-UAT.csv](Wizer%20Properties%20WIP%20Task%20Tracker%20-%200812-UAT.csv) — UAT task tracker (optional).

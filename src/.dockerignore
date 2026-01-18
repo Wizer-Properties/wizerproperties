@@ -1,5 +1,15 @@
 __pycache__
 *.pyc
+*.pyo
 .venv
 .vscode
 .git
+node_modules
+htmlcov
+.pytest_cache
+.mypy_cache
+*.egg-info
+*.egg
+.coverage
+coverage.xml
+*.log
