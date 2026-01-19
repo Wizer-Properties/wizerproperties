@@ -46,9 +46,16 @@ Consolidated from: MEETING.MD, acceptance-test-checklist. Includes deployment an
 
 ### Nginx
 
-Create `src/nginx/conf/default.conf` and complete nginx setup for production.
+1. Create `src/nginx/conf/` (it is gitignored). Copy the example:
+   ```sh
+   mkdir -p src/nginx/conf
+   cp docs/nginx-default.conf.example src/nginx/conf/default.conf
+   ```
+2. The example includes `location /.well-known/acme-challenge/` (required for Certbot) and a proxy to `web:8000`. Adjust `server_name` and optional HTTPS block as needed.
 
 ### Certificates (Certbot in Docker)
+
+Ensure `src/certbot/www/` and `src/certbot/conf/` exist before `docker compose up` (e.g. `mkdir -p src/certbot/www src/certbot/conf`). They are wired in `docker-compose.yml`. Certbot has `depends_on: nginx` so nginx is up before certificate requests.
 
 **New certificate:**
 
@@ -61,8 +68,6 @@ sudo docker compose -f src/docker-compose.yml run --rm certbot certonly --webroo
 ```sh
 sudo docker compose -f src/docker-compose.yml run --rm certbot renew
 ```
-
-Ensure `src/certbot/www/` and `src/certbot/conf/` exist and are wired in `docker-compose.yml` as in the compose file.
 
 ---
 

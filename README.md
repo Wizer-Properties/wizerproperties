@@ -26,6 +26,28 @@ docker compose -f src/docker-compose-dev.yml up
 - **Web:** http://localhost:8000  
 - **DB:** PostgreSQL 15 on host `localhost:5492` (container `5432`)
 
+**PostgreSQL collation warning** (`has no actual collation version, but a version was recorded`): common with `postgres:15-alpine` (musl). New inits use `POSTGRES_INITDB_ARGS=--locale=C` to reduce it. For an **existing** volume, either run (from project root):
+
+**Development** (`docker-compose-dev.yml`):
+```sh
+docker compose -f src/docker-compose-dev.yml exec db psql -U postgres -d wip_db -c "ALTER DATABASE wip_db REFRESH COLLATION VERSION;"
+docker compose -f src/docker-compose-dev.yml exec db psql -U postgres -d postgres -c "ALTER DATABASE postgres REFRESH COLLATION VERSION;"
+docker compose -f src/docker-compose-dev.yml exec db psql -U postgres -d test_wip_db -c "ALTER DATABASE test_wip_db REFRESH COLLATION VERSION;"  # if it exists
+```
+
+**Production** (`docker-compose.yml`): use `-f src/docker-compose.yml` and the same `exec` commands; replace `postgres` with your `DB_USER` if different (e.g. `-U ${DB_USER}`).
+
+or recreate the volume (data loss): `docker compose -f src/docker-compose-dev.yml down -v` then `up` again.
+
+**`case_insensitive` collation version mismatch:** If you see `collation "case_insensitive" has version mismatch ... ALTER COLLATION public.case_insensitive REFRESH VERSION`, run in each affected database (e.g. `wip_db`, `test_wip_db`):
+
+```sh
+docker compose -f src/docker-compose-dev.yml exec db psql -U postgres -d wip_db -c "ALTER COLLATION public.case_insensitive REFRESH VERSION;"
+docker compose -f src/docker-compose-dev.yml exec db psql -U postgres -d test_wip_db -c "ALTER COLLATION public.case_insensitive REFRESH VERSION;"  # if it exists
+```
+
+For production: `docker compose -f src/docker-compose.yml exec db psql -U <user> -d wip_db -c "ALTER COLLATION public.case_insensitive REFRESH VERSION;"`
+
 ### Production
 
 ```sh
@@ -38,6 +60,8 @@ Then run a one-off Tailwind build and collect static files:
 docker compose -f src/docker-compose.yml run --rm assets sh -c "npm ci && npm run tailwind:build"
 docker compose -f src/docker-compose.yml exec web python manage.py collectstatic --noinput
 ```
+
+For nginx and Certbot (SSL), see [docs/operations-and-qa.md](docs/operations-and-qa.md#2-deployment--ssl).
 
 ---
 
@@ -96,6 +120,8 @@ TDD with **pytest** (backend) and **Vitest** (frontend). Coverage: backend ~75% 
 **Frontend:** `src/wizerproperties/static/js/__tests__/**/*.test.ts`
 
 **PostgreSQL for backend tests:** set `WIZER_USE_POSTGRES_TESTS=1`, `POSTGRES_HOST=localhost`, `POSTGRES_PORT=5492`, and start Postgres (e.g. `docker compose -f src/docker-compose-dev.yml up -d db`). Then: `cd src && poetry run pytest --cov`.
+
+**Known log noise:** When running pytest, an `ERROR` for `duplicate key ... ipdata_ipdata_ip_key` with `(ip)=(192.168.255.254)` can appear and is expected from `ipdata.tests.test_models::TestIPDataModel::test_ipdata_ip_unique`.
 
 ---
 
