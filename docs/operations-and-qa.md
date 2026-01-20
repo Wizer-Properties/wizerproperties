@@ -125,7 +125,7 @@ Use this as the QA map. Mark items ☑ Pass, ☐ Fail, or ⚠ Needs attention. A
 
 ### 7. Integration
 
-- **Google OAuth, Maps:** Login, callback, user create/update, session; Maps display, autocomplete, markers. *OAuth/Maps present; flows need dedicated tests.*
+- **Google OAuth, Maps:** Login, callback, user create/update, session; Maps display, autocomplete, markers. *OAuth/Maps present.* An integration test (`test_google_oauth2_integration_adapter_instantiation` in `core/tests/test_views_auth.py`) hits `GET /accounts/google/login/` with the real `CustomAccountAdapter` and asserts 302 to Google when test settings provide a dummy `SOCIALACCOUNT_PROVIDERS`.
 - **Zoho CRM, SalesIQ:** Sync, leads/contacts/deals, duplicate handling, token refresh; widget load, chat. *Config and sync logic; full E2E with Zoho needed separately.*
 - **Analytics:** GA4, Meta, PostHog, identification, ecommerce. *Config; events need verification.*
 - **OpenAI:** Descriptions, chat, errors, key in env. *Feature in use; key from env.*
@@ -175,7 +175,7 @@ Use this as the QA map. Mark items ☑ Pass, ☐ Fail, or ⚠ Needs attention. A
 
 ## 4. Automated test suite
 
-- **Backend:** `npm run test:backend` or `cd src && poetry run pytest --cov`. Coverage in `src/.coveragerc` (`fail_under=85`). Reports: `src/htmlcov/`, `src/coverage.xml`.
+- **Backend:** `npm run test:backend` or `cd src && poetry run pytest --cov`. Coverage in `src/.coveragerc` (`fail_under=85`). Reports: `src/htmlcov/`, `src/coverage.xml`. Test settings provide a dummy Google APP (`SOCIALACCOUNT_PROVIDERS`) so the `/accounts/google/login/` integration test and `CustomAccountAdapter` run. Tests include: `core/tests/test_templatetags_seo.py` (seo_tags), `core/tests/test_views_seo.py` (robots_txt without DB), and `test_google_oauth2_integration_adapter_instantiation` in `core/tests/test_views_auth.py`.
 - **Frontend:** `npm run test` (Vitest) or `npm run test:coverage`. Config in `vitest.config.ts`; coverage includes `src/wizerproperties/static/js/` (excl. `__tests__`, `libraries`); thresholds 85%.
 - **Both:** `npm run test:all`. CI: `.github/workflows/ci.yml`.
 

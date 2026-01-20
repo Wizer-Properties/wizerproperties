@@ -119,7 +119,7 @@ TDD with **pytest** (backend) and **Vitest** (frontend). Coverage: backend `fail
 **Backend:** `src/{app}/tests/test_*.py`, `factories.py`, `src/conftest.py`  
 **Frontend:** `src/wizerproperties/static/js/__tests__/**/*.test.ts`
 
-**PostgreSQL for backend tests:** set `WIZER_USE_POSTGRES_TESTS=1`, `POSTGRES_HOST=localhost`, `POSTGRES_PORT=5492`, and start Postgres (e.g. `docker compose -f src/docker-compose-dev.yml up -d db`). Then: `cd src && poetry run pytest --cov`.
+**PostgreSQL for backend tests:** set `WIZER_USE_POSTGRES_TESTS=1`, `POSTGRES_HOST=localhost`, `POSTGRES_PORT=5492`, and start Postgres (e.g. `docker compose -f src/docker-compose-dev.yml up -d db`). Then: `cd src && poetry run pytest --cov`. Test settings (`wizerproperties.settings.test`) override `SOCIALACCOUNT_PROVIDERS` with a dummy Google APP so the `/accounts/google/login/` integration test and `CustomAccountAdapter` run without real OAuth secrets.
 
 **Known log noise:** When running pytest, an `ERROR` for `duplicate key ... ipdata_ipdata_ip_key` with `(ip)=(192.168.255.254)` can appear and is expected from `ipdata.tests.test_models::TestIPDataModel::test_ipdata_ip_unique`.
 
@@ -137,6 +137,7 @@ cd src && poetry add <package>@<version>
 
 - **OpenAI:** Set `OPENAI_API_KEY` in `.env` (platform.openai.com).
 - **Zoho CRM:** Configure in admin; requires active Zoho subscription.
+- **Google OAuth:** Set `GOOGLE_AUTH_CLIENT_ID` and `GOOGLE_AUTH_CLIENT_SECRET` in `.env` for `/accounts/google/login/`. `user.adapters.CustomAccountAdapter` extends `DefaultSocialAccountAdapter` and runs when this path is used.
 
 ---
 

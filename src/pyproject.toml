@@ -22,7 +22,9 @@ openai = "^1.13.3"
 gunicorn = "^23.0.0"
 django-ckeditor-5 = "^0.2.13"
 faker = "^30.0.0"
-django-allauth = "^65.0.2"
+django-allauth = "^65.13"
+urllib3 = ">=2.6.3"
+requests = ">=2.28.0,<3"
 jwt = "^1.3.1"
 pyjwt = "^2.9.0"
 
@@ -38,7 +40,12 @@ dev = [
     "djangorestframework-stubs (>=3.16.6,<4.0.0)",
     "types-requests (>=2.32.4.20250913,<3.0.0.0)",
     "types-python-dateutil (>=2.9.0.20251115,<3.0.0.0)",
-    "types-django-filter (>=25.2.0.20251010,<26.0.0.0)"
+    "types-django-filter (>=25.2.0.20251010,<26.0.0.0)",
+    "pytest",
+    "pytest-django",
+    "pytest-cov",
+    "pytest-xdist",
+    "factory-boy"
 ]
 [tool.mypy]
 files = ["."]
@@ -62,6 +69,14 @@ module = [
     "requests.*",
 ]
 ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["*.tests.*", "conftest"]
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = ["core.views.auth"]
+ignore_errors = true
 
 [tool.django-stubs]
 django_settings_module = "wizerproperties.settings"

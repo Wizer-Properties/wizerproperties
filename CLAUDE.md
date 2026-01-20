@@ -160,7 +160,7 @@ npm install <package>
 
 **Coverage targets**: Backend `fail_under=85` in `src/.coveragerc` (goal 85%); frontend Vitest thresholds 85% (lines, functions, branches, statements) in `vitest.config.ts`.
 
-**Test settings**: `wizerproperties.settings.test` - uses PostgreSQL when `WIZER_USE_POSTGRES_TESTS=1`, otherwise SQLite in-memory (may fail on `db_collation` fields).
+**Test settings**: `wizerproperties.settings.test` - uses PostgreSQL when `WIZER_USE_POSTGRES_TESTS=1`, otherwise SQLite in-memory (may fail on `db_collation` fields). Overrides `SOCIALACCOUNT_PROVIDERS` with a dummy Google APP for `/accounts/google/login/` and adapter tests. New tests: `core/tests/test_templatetags_seo.py`, `core/tests/test_views_seo.py` (robots_txt without DB), and `test_google_oauth2_integration_adapter_instantiation` in `core/tests/test_views_auth.py`.
 
 ## Database Notes
 
@@ -198,7 +198,7 @@ Create `src/.env` from `src/demo.env`. Key vars:
 
 ## Integrations
 
-- **django-allauth**: Google OAuth2 login
+- **django-allauth**: Google OAuth2 login. `CustomAccountAdapter` (`user.adapters`) extends `DefaultSocialAccountAdapter` and accepts `request` in `__init__`. Test settings override `SOCIALACCOUNT_PROVIDERS` with a dummy Google APP for `/accounts/google/login/` and adapter tests.
 - **OpenAI**: Set `OPENAI_API_KEY` in `.env`
 - **Zoho CRM**: Configure in admin (requires active subscription)
 - **CKEditor 5**: Rich text editing at `/ckeditor5/`
