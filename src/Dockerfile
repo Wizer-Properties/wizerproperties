@@ -1,15 +1,17 @@
 # Use an official Python runtime as a parent image
-FROM python:3.11
+# Build context: src/ (e.g. docker compose -f src/docker-compose.yml from project root)
+FROM python:3.12
 
-# Set environment variables for Django (customize as needed)
+# Set environment variables for Django
 ENV DJANGO_SETTINGS_MODULE=wizerproperties.settings
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
 
 # Set the working directory in the container
 WORKDIR /app
 
 # Install GDAL dependencies and Node.js
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     gdal-bin \
     libgdal-dev \
     nodejs \
@@ -17,7 +19,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/* \
     && npm install -g typescript
 
-ENV GDAL_LIBRARY_PATH /usr/lib/libgdal.so
+ENV GDAL_LIBRARY_PATH=/usr/lib/libgdal.so
 
 # Copy the poetry.lock and pyproject.toml files and install dependencies without root
 # package-mode = false in pyproject.toml file

@@ -57,6 +57,23 @@ static_root/
 nginx/
 certbot/
 
-# Documentation and scripts
-docs/
+# Documentation and scripts (docs/ is tracked; add docs/*.md as needed)
 scripts/
+
+# Test coverage
+htmlcov/
+coverage.xml
+.coverage
+.coverage.*
+coverage/
+*.cover
+.hypothesis/
+.pytest_cache/
+.tox/
+.nyc_output
+.nyc_output/
+*.lcov
+vitest-coverage/
+
+# Serena
+.serena/

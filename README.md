@@ -1,146 +1,192 @@
-# WIZERPROPERTIES
+# Wizer Properties
 
-## Installations Process
+Property comparison platform for developers and buyers in Thailand and Malaysia. Django + Tailwind. Docker-supported.
 
-> Note: You should have installed docker to your machine for running successfully.
+## Prerequisites
+
+- **Docker** (recommended), or **Poetry + Node.js + PostgreSQL** locally
+- For production: nginx, certbot for SSL
+
+---
+
+## Quick start (Docker)
+
+Run all commands from the **project root** (parent of `src/`).
+
+Create a `.env` in `src/` using `demo.env` as reference (DB_NAME, DB_USER, DB_PASSWORD, etc.).
+
+### Development
+
+```sh
+docker compose -f src/docker-compose-dev.yml build
+docker compose -f src/docker-compose-dev.yml run --rm web python manage.py migrate
+docker compose -f src/docker-compose-dev.yml up
+```
+
+- **Web:** http://localhost:8000  
+- **DB:** PostgreSQL 15 on host `localhost:5492` (container `5432`)
+
+**PostgreSQL collation warning** (`has no actual collation version, but a version was recorded`): common with `postgres:15-alpine` (musl). New inits use `POSTGRES_INITDB_ARGS=--locale=C` to reduce it. For an **existing** volume, either run (from project root):
+
+**Development** (`docker-compose-dev.yml`):
+```sh
+docker compose -f src/docker-compose-dev.yml exec db psql -U postgres -d wip_db -c "ALTER DATABASE wip_db REFRESH COLLATION VERSION;"
+docker compose -f src/docker-compose-dev.yml exec db psql -U postgres -d postgres -c "ALTER DATABASE postgres REFRESH COLLATION VERSION;"
+docker compose -f src/docker-compose-dev.yml exec db psql -U postgres -d test_wip_db -c "ALTER DATABASE test_wip_db REFRESH COLLATION VERSION;"  # if it exists
+```
+
+**Production** (`docker-compose.yml`): use `-f src/docker-compose.yml` and the same `exec` commands; replace `postgres` with your `DB_USER` if different (e.g. `-U ${DB_USER}`).
+
+or recreate the volume (data loss): `docker compose -f src/docker-compose-dev.yml down -v` then `up` again.
+
+**`case_insensitive` collation version mismatch:** If you see `collation "case_insensitive" has version mismatch ... ALTER COLLATION public.case_insensitive REFRESH VERSION`, run in each affected database (e.g. `wip_db`, `test_wip_db`):
+
+```sh
+docker compose -f src/docker-compose-dev.yml exec db psql -U postgres -d wip_db -c "ALTER COLLATION public.case_insensitive REFRESH VERSION;"
+docker compose -f src/docker-compose-dev.yml exec db psql -U postgres -d test_wip_db -c "ALTER COLLATION public.case_insensitive REFRESH VERSION;"  # if it exists
+```
+
+For production: `docker compose -f src/docker-compose.yml exec db psql -U <user> -d wip_db -c "ALTER COLLATION public.case_insensitive REFRESH VERSION;"`
+
+### Production
+
+```sh
+docker compose -f src/docker-compose.yml up -d --build
+```
+
+Then run a one-off Tailwind build and collect static files:
+
+```sh
+docker compose -f src/docker-compose.yml run --rm assets sh -c "npm ci && npm run tailwind:build"
+docker compose -f src/docker-compose.yml exec web python manage.py collectstatic --noinput
+```
+
+For nginx and Certbot (SSL), see [docs/operations-and-qa.md](docs/operations-and-qa.md#2-deployment--ssl).
+
+---
+
+## Local setup (no Docker)
+
+### Backend
 
 ```sh
 cd src
+poetry install
+# create .env from demo.env
+poetry run python manage.py migrate
+poetry run python manage.py runserver
 ```
 
-```
-Create a .env file in project src directory following demo.env file.
-```
+### Frontend (Tailwind)
 
-### Docker Basic Command
-
-#### Build
+From **project root**:
 
 ```sh
-sudo docker compose -f src/docker-compose-dev.yml build
+npm ci
+npm run tailwind:build    # one-off
+npm run tailwind:watch    # watch (dev)
 ```
 
-##### Case-Insensitive Field Configuration in Postgresql
-> If you need to create case-insensitive fields in your models, follow these steps:
+### PostgreSQL: case-insensitive fields
 
-Create a new field in your model and set its `db_collation` attribute to ensure case-insensitivity. For example:
-```python
-email = models.EmailField(db_collation="case_insensitive", unique=True)
-```
+For `db_collation="case_insensitive"` on models, add `CreateCollation` before the first `CreateModel` in the initial migration:
 
-Before running the migration, make sure have/add `CreateCollation` before the first `CreateModel` operation in the initial migration. For example:
 ```python
 from django.contrib.postgres.operations import CreateCollation
 
-dependencies = [
-    ... your dependency
-]
-
 operations = [
-    CreateCollation(
-        "case_insensitive",
-        provider="icu",
-        locale="und-u-ks-level2",
-        deterministic=False,
-    ),
-    migrations.CreateModel(
-        ... Your code
-    ),
-    
+    CreateCollation("case_insensitive", provider="icu", locale="und-u-ks-level2", deterministic=False),
+    migrations.CreateModel(...),
 ]
 ```
-Reference:
-https://docs.djangoproject.com/en/4.2/ref/contrib/postgres/fields/#citext-fields
-https://docs.djangoproject.com/en/4.2/ref/contrib/postgres/operations/#managing-collations-using-migrations
 
+Ref: [Django Postgres collation](https://docs.djangoproject.com/en/4.2/ref/contrib/postgres/operations/#managing-collations-using-migrations)
 
-##### Migrate
+---
 
-```sh
-sudo docker compose -f src/docker-compose-dev.yml run --rm web python manage.py migrate
-```
+## Testing
 
-##### Up
+TDD with **pytest** (backend) and **Vitest** (frontend). Coverage: backend `fail_under=85` in `src/.coveragerc` (target 85%); frontend thresholds 85% in `vitest.config.ts`.
 
-```sh
-sudo docker compose -f src/docker-compose-dev.yml up
-```
+| Command | Description |
+|---------|-------------|
+| `npm run test:all` | Backend pytest + frontend Vitest |
+| `npm run test:backend` | `pytest` in `src/` |
+| `npm run test` | Vitest (frontend) |
+| `npm run test:backend:coverage` | Backend coverage → `src/htmlcov/`, `src/coverage.xml` |
+| `npm run test:coverage` | Frontend coverage (v8), `src/wizerproperties/static/js/` |
 
-### Install Packages Via Poetry
+**Backend:** `src/{app}/tests/test_*.py`, `factories.py`, `src/conftest.py`  
+**Frontend:** `src/wizerproperties/static/js/__tests__/**/*.test.ts`
 
-##### Package installation
+**PostgreSQL for backend tests:** set `WIZER_USE_POSTGRES_TESTS=1`, `POSTGRES_HOST=localhost`, `POSTGRES_PORT=5492`, and start Postgres (e.g. `docker compose -f src/docker-compose-dev.yml up -d db`). Then: `cd src && poetry run pytest --cov`. Test settings (`wizerproperties.settings.test`) override `SOCIALACCOUNT_PROVIDERS` with a dummy Google APP so the `/accounts/google/login/` integration test and `CustomAccountAdapter` run without real OAuth secrets.
+
+**Known log noise:** When running pytest, an `ERROR` for `duplicate key ... ipdata_ipdata_ip_key` with `(ip)=(192.168.255.254)` can appear and is expected from `ipdata.tests.test_models::TestIPDataModel::test_ipdata_ip_unique`.
+
+---
+
+## Dependencies
+
+### Python (Poetry)
 
 ```bash
-poetry add <package name>@<version>
+cd src && poetry add <package>@<version>
 ```
 
-### Integrate CHATGPT-3.5
-* For integrating ChatGPT API, first of all have to generate new API key from `platform.openai.com`.
-* Then assign generated API key to `OPENAI_API_KEY` in `.env` file.
+### Integrations
 
+- **OpenAI:** Set `OPENAI_API_KEY` in `.env` (platform.openai.com).
+- **Zoho CRM:** Configure in admin; requires active Zoho subscription.
+- **Google OAuth:** Set `GOOGLE_AUTH_CLIENT_ID` and `GOOGLE_AUTH_CLIENT_SECRET` in `.env` for `/accounts/google/login/`. `user.adapters.CustomAccountAdapter` extends `DefaultSocialAccountAdapter` and runs when this path is used.
 
-## For deployment in live server (production)
-```
-Create a default.conf in src/nginx/conf/ folder and write configuration step by step 
-```
-### Get new certificate
-```
-sudo docker compose -f src/docker-compose.yml run --rm certbot certonly --webroot --webroot-path /var/www/certbot/ -d wizerproperties.com -d www.wizerproperties.com
-``` 
-### For renew certificate
-```
-sudo docker compose -f src/docker-compose.yml run --rm certbot renew
-```
-## Admin Customization
+---
 
-In our project, we use a custom admin site. When registering models in the Django admin, follow these rules to ensure consistency and proper integration.
+## Admin
 
-### Normal Model Registration
-
-For models that do not require additional customization, use the following format to register them with the `custom_admin_site`:
+Use the custom admin site. Register models with `core.admin.custom_admin_site`:
 
 ```python
 from core.admin import custom_admin_site
-
-### Registering a model with the custom admin site
 custom_admin_site.register(ModelName)
 ```
->Note: Replace ModelName with the actual model class being registered.
 
-## Tailwind CSS with Docker (assets service)
+Or with decorator:
 
-We use a lightweight Node assets service to build/watch Tailwind CSS via the scripts already defined in `package.json`:
-- `npm run tailwind:build` – builds CSS once
-- `npm run tailwind:watch` – watches and rebuilds on file changes
-
-### Development (watch mode)
-Bring up Django and the Tailwind watcher together:
-```sh
-sudo docker compose -f src/docker-compose-dev.yml up --build
-```
-This starts an `assets` service based on `node:20-alpine` that runs:
-```sh
-npm ci && npm run tailwind:watch
-```
-Tailwind outputs to `src/wizerproperties/static/css/tailwind.css` and updates automatically on save.
-
-### Production (one-off build)
-Run a one-off Tailwind build, then bring the stack up and collect static files:
-```sh
-sudo docker compose -f src/docker-compose.yml run --rm assets sh -c "npm ci && npm run tailwind:build"
-sudo docker compose -f src/docker-compose.yml up -d --build
-sudo docker compose -f src/docker-compose.yml exec web python manage.py collectstatic --noinput
-```
-Nginx serves static files from `wizerproperties/static_root/` which is already mounted in the production compose file.
-
-### Model Registration with Admin Customization
-For models that require custom admin options (e.g., `list_display`, `search_fields`), use the `@admin.register` decorator with the `custom_admin_site`:
 ```python
 from django.contrib import admin
 from core.admin import custom_admin_site
 
 @admin.register(ModelName, site=custom_admin_site)
 class ModelNameAdmin(admin.ModelAdmin):
-    pass  # Add your custom admin configurations here (optional)
+    pass  # list_display, search_fields, etc.
 ```
->Note: Replace ModelName with the actual model class being registered.
+
+---
+
+## Tailwind & Docker
+
+- `npm run tailwind:build` — one-off build  
+- `npm run tailwind:watch` — watch (dev)
+
+**Dev:** `docker compose -f src/docker-compose-dev.yml up` runs an `assets` service with `npm ci && npm run tailwind:watch`. Output: `src/wizerproperties/static/css/tailwind.css`.
+
+**Prod:** See [Production](#production) for the one-off Tailwind build and `collectstatic`.
+
+---
+
+## Docs
+
+- [docs/README.md](docs/README.md) — Index of documentation (operations, deployment, product notes when added).
+
+---
+
+## GitHub
+
+- **CI:** `.github/workflows/ci.yml` — backend pytest, frontend Vitest, coverage.
+- **Docker:** `.github/workflows/docker.yml` — build and push (when configured).
+
+---
+
+## License
+
+ISC.
