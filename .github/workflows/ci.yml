@@ -1,4 +1,6 @@
 # CI: backend pytest + frontend Vitest on push/PR
+# Backend: wizerproperties.settings.test sets dummy SOCIALACCOUNT_PROVIDERS for
+# /accounts/google/login/ and CustomAccountAdapter. .coveragerc fail_under=85.
 name: CI
 
 on:
@@ -44,7 +46,7 @@ jobs:
         working-directory: src
         run: poetry install
 
-      - name: Run pytest
+      - name: Run pytest (coverage, fail_under=85)
         working-directory: src
         env:
           DJANGO_SETTINGS_MODULE: wizerproperties.settings.test
