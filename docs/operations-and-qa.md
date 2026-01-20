@@ -173,7 +173,15 @@ Use this as the QA map. Mark items ☑ Pass, ☐ Fail, or ⚠ Needs attention. A
 
 ---
 
-## 4. Test execution
+## 4. Automated test suite
+
+- **Backend:** `npm run test:backend` or `cd src && poetry run pytest --cov`. Coverage in `src/.coveragerc` (`fail_under=85`). Reports: `src/htmlcov/`, `src/coverage.xml`.
+- **Frontend:** `npm run test` (Vitest) or `npm run test:coverage`. Config in `vitest.config.ts`; coverage includes `src/wizerproperties/static/js/` (excl. `__tests__`, `libraries`); thresholds 85%.
+- **Both:** `npm run test:all`. CI: `.github/workflows/ci.yml`.
+
+---
+
+## 5. Test execution (acceptance / manual)
 
 ### Pre
 
@@ -195,7 +203,7 @@ Use this as the QA map. Mark items ☑ Pass, ☐ Fail, or ⚠ Needs attention. A
 
 ---
 
-## 5. Test accounts (from testing report)
+## 6. Test accounts (from testing report)
 
 - **Admin:** admin@example.com  
 - **Developer:** satnam182@gmail.com  
@@ -203,7 +211,7 @@ Use this as the QA map. Mark items ☑ Pass, ☐ Fail, or ⚠ Needs attention. A
 
 ---
 
-## 6. Page list (abridged)
+## 7. Page list (abridged)
 
 **Public:** /, /about-us/, /privacy/, /contact/, /developers/, /developers/pricing/, /reels/, /404/  
 **Auth:** /user/login|signup|complete-profile|profile-settings|password/reset|verify-link|…  

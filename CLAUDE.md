@@ -158,7 +158,7 @@ npm install <package>
 
 **Frontend**: Vitest with jsdom, testing-library/dom. Setup in `src/wizerproperties/static/js/__tests__/setup.ts`. Tests alongside source or in `__tests__/`.
 
-**Coverage targets**: Backend `fail_under=75` (goal: 85%), frontend 70% (lines/functions/branches/statements).
+**Coverage targets**: Backend `fail_under=85` in `src/.coveragerc` (goal 85%); frontend Vitest thresholds 85% (lines, functions, branches, statements) in `vitest.config.ts`.
 
 **Test settings**: `wizerproperties.settings.test` - uses PostgreSQL when `WIZER_USE_POSTGRES_TESTS=1`, otherwise SQLite in-memory (may fail on `db_collation` fields).
 

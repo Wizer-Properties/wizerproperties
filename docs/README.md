@@ -15,8 +15,8 @@ Index of project documentation.
 
 ## Testing & QA
 
-- **Backend:** pytest in `src/`. Use `WIZER_USE_POSTGRES_TESTS=1` and a running Postgres for full runs. Coverage: `pytest --cov` → `htmlcov/`, `coverage.xml`; `fail_under=75` in `pytest.ini`. Known log noise (e.g. ipdata duplicate key) is in the root README.
-- **Frontend:** Vitest in `src/wizerproperties/static/js/__tests__/`. Run via `npm run test` or `npm run test:coverage`.
+- **Backend:** pytest in `src/`. Use `WIZER_USE_POSTGRES_TESTS=1` and a running Postgres for full runs. Coverage: `pytest --cov` → `htmlcov/`, `coverage.xml`; `fail_under=85` in `src/.coveragerc`. Target 85%. Known log noise (e.g. ipdata duplicate key) is in the root README.
+- **Frontend:** Vitest in `src/wizerproperties/static/js/__tests__/`. Run via `npm run test` or `npm run test:coverage`. Coverage in `vitest.config.ts`: `include` for app JS, thresholds 85% (lines, functions, branches, statements).
 - **CI:** `.github/workflows/ci.yml` runs backend and frontend tests on push/PR.
 - **Acceptance tests & checklist:** [operations-and-qa.md](operations-and-qa.md#3-acceptance-test-checklist-structure).
 

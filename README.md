@@ -106,7 +106,7 @@ Ref: [Django Postgres collation](https://docs.djangoproject.com/en/4.2/ref/contr
 
 ## Testing
 
-TDD with **pytest** (backend) and **Vitest** (frontend). Coverage: backend ~75% (target 85%), `fail_under=75` in `pytest.ini`.
+TDD with **pytest** (backend) and **Vitest** (frontend). Coverage: backend `fail_under=85` in `src/.coveragerc` (target 85%); frontend thresholds 85% in `vitest.config.ts`.
 
 | Command | Description |
 |---------|-------------|
@@ -114,7 +114,7 @@ TDD with **pytest** (backend) and **Vitest** (frontend). Coverage: backend ~75% 
 | `npm run test:backend` | `pytest` in `src/` |
 | `npm run test` | Vitest (frontend) |
 | `npm run test:backend:coverage` | Backend coverage → `src/htmlcov/`, `src/coverage.xml` |
-| `npm run test:coverage` | Frontend coverage → `coverage/` |
+| `npm run test:coverage` | Frontend coverage (v8), `src/wizerproperties/static/js/` |
 
 **Backend:** `src/{app}/tests/test_*.py`, `factories.py`, `src/conftest.py`  
 **Frontend:** `src/wizerproperties/static/js/__tests__/**/*.test.ts`
