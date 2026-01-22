@@ -21,7 +21,7 @@ Wizer Properties is a developer-centric property comparison platform for Thailan
 **Developers:** *Sell unsold inventory at a fraction of traditional launch costs with better prospect targeting.*
 
 - Cost efficiency (subscription vs 150k+ MYR events)
-- Pre-qualified prospect database
+- Reach international buyers through our platform
 - 3D Matterport walkthroughs
 - Side-by-side comparison, credit-based promotions, direct control
 
@@ -75,6 +75,16 @@ Wizer Properties is a developer-centric property comparison platform for Thailan
 
 ## 3. Landing pages & sitemap
 
+### Pre-launch messaging guidelines
+
+**Important:** All landing pages use pre-launch appropriate messaging:
+- No false user/property counts (e.g., "10,000+ buyers", "1,200+ agents")
+- No claims about existing partnerships unless confirmed
+- Use forward-looking language: "Built for", "Join", "We're building"
+- Replace "Trusted by" with "Join" or "Built for"
+- Partner CTAs invite developers to join rather than claiming existing partnerships
+- All metrics removed or replaced with aspirational language
+
 ### Pages
 
 | Page | Audience | Goal | File |
@@ -82,9 +92,9 @@ Wizer Properties is a developer-centric property comparison platform for Thailan
 | Buyer homepage | Buyers, investors | Search & discovery | `core/templates/home.html` |
 | Developer homepage | Developers, agents | Signup & leads | `core/templates/home_developer.html` |
 
-**Buyer:** 14 sections — Hero (search), Sponsored ads, Problem, Trust band, Bangkok areas, Spotlight, Personalized, Comparison, Trusted developers, Account CTA, Resources, Other destinations, Blog, Developer CTA.
+**Buyer:** 14 sections — Hero (search), Sponsored ads, Problem, Trust band, Bangkok areas, Spotlight, Personalized, Comparison, Partner with us CTA, Account CTA, Resources, Other destinations, Blog, Developer CTA.
 
-**Developer:** 9 sections — Hero, Sponsored ads, Problem, Solution, How it works, Comparison, Pricing, FAQ, Final CTA.
+**Developer:** 10 sections — Hero, Sponsored ads, Problem, Solution, Partner with us CTA, How it works, Comparison, Pricing, FAQ, Final CTA.
 
 ### Design tokens (landing)
 
