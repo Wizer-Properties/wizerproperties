@@ -62,7 +62,7 @@
 }
 
 #location-search-btn{
-    border: none !important;
+    border: 1px solid #7f1377 !important;
     background: var(--th-color-1);
     padding: 5px 15px;
     color: #fff;
