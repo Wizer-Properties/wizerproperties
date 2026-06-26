@@ -24,6 +24,23 @@
     <link rel="stylesheet" href="{% static 'css/header.css' %}?v=1.05" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.09" />
 
+    <style>
+        .nav-trigger-flat,
+        .nav-group[open] .nav-trigger-flat {
+            background: none !important;
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+        }
+        .nav-trigger-flat:hover,
+        .nav-trigger-flat:focus-visible {
+            background: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+            opacity: 0.7;
+        }
+    </style>
+
     <!-- Google Analytics 4 -->
     {% if GA4_MEASUREMENT_ID %}
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ GA4_MEASUREMENT_ID }}"></script>
@@ -121,7 +138,7 @@
                     {% if request.user.is_authenticated and request.user.user_type in "developer,agent" %}
                         {# DEVELOPER NAVIGATION - Using buyer-focused language #}
                         <details class="nav-group" data-nav-group>
-                            <summary class="nav-trigger">
+                            <summary class="nav-trigger nav-trigger-flat">
                                 <span>Marketplace</span>
                                 <svg class="size-3 transition group-open:-rotate-180" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
                                     <path d="m4 6 4 4 4-4" stroke-linecap="round" stroke-linejoin="round" />
@@ -160,7 +177,7 @@
                         </details>
 
                         <details class="nav-group" data-nav-group>
-                            <summary class="nav-trigger">
+                            <summary class="nav-trigger nav-trigger-flat">
                                 <span>Insights & Tools</span>
                                 <svg class="size-3 transition group-open:-rotate-180" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
                                     <path d="m4 6 4 4 4-4" stroke-linecap="round" stroke-linejoin="round" />
@@ -209,7 +226,7 @@
                     {% else %}
                         {# BUYER NAVIGATION #}
                         <details class="nav-group" data-nav-group>
-                            <summary class="nav-trigger">
+                            <summary class="nav-trigger nav-trigger-flat">
                                 <span>Marketplace</span>
                                 <svg class="size-3 transition group-open:-rotate-180" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
                                     <path d="m4 6 4 4 4-4" stroke-linecap="round" stroke-linejoin="round" />
@@ -243,7 +260,7 @@
                         </details>
 
                         <details class="nav-group" data-nav-group>
-                            <summary class="nav-trigger">
+                            <summary class="nav-trigger nav-trigger-flat">
                                 <span>Insights & Tools</span>
                                 <svg class="size-3 transition group-open:-rotate-180" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
                                     <path d="m4 6 4 4 4-4" stroke-linecap="round" stroke-linejoin="round" />
@@ -278,7 +295,7 @@
                         </details>
 
                         <details class="nav-group" data-nav-group>
-                            <summary class="nav-trigger">
+                            <summary class="nav-trigger nav-trigger-flat">
                                 <span>Sell & Advertise</span>
                                 <svg class="size-3 transition group-open:-rotate-180" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
                                     <path d="m4 6 4 4 4-4" stroke-linecap="round" stroke-linejoin="round" />
