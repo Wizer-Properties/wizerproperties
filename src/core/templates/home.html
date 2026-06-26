@@ -78,25 +78,6 @@
                             </div>
                         </div>
                         
-                        <!-- Quick Filter Chips -->
-                        <div class="space-y-2">
-                            <p class="text-xs font-medium text-muted-foreground">Quick filters</p>
-                            <div class="flex flex-wrap gap-2">
-                                <button type="button" class="quick-filter-btn inline-flex items-center gap-1.5 px-2 py-1 text-xs font-medium transition" style="border: none; outline: none; background: none; box-shadow: none;" data-property-type="" aria-pressed="true" aria-label="Filter: Any property type">
-                                    <i class="bi bi-building text-muted-foreground" aria-hidden="true"></i>
-                                    <span>Any</span>
-                                </button>
-                                <button type="button" class="quick-filter-btn inline-flex items-center gap-1.5 px-2 py-1 text-xs font-medium transition" style="border: none; outline: none; background: none; box-shadow: none;" data-property-type="residence" aria-pressed="false" aria-label="Filter: Residential properties">
-                                    <i class="bi bi-house-heart text-muted-foreground" aria-hidden="true"></i>
-                                    <span>Residential</span>
-                                </button>
-                                <button type="button" class="quick-filter-btn inline-flex items-center gap-1.5 px-2 py-1 text-xs font-medium transition" style="border: none; outline: none; background: none; box-shadow: none;" data-property-type="commercial" aria-pressed="false" aria-label="Filter: Commercial properties">
-                                    <i class="bi bi-briefcase text-muted-foreground" aria-hidden="true"></i>
-                                    <span>Commercial</span>
-                                </button>
-                            </div>
-                        </div>
-                        
                         <!-- Collapsible Advanced Filters -->
                         <div class="space-y-3">
                             <button type="button" class="flex w-full items-center justify-between text-sm font-medium text-muted-foreground transition hover:text-foreground focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2" data-filter-toggle aria-expanded="false" aria-controls="advanced-filters-panel">
@@ -104,6 +85,20 @@
                                 <i class="bi bi-chevron-down transition-transform" data-filter-icon aria-hidden="true"></i>
                             </button>
                             <div id="advanced-filters-panel" class="hidden space-y-3 border-t border-border pt-3" data-filter-panel>
+                                <div class="flex flex-wrap gap-2">
+                                    <button type="button" class="quick-filter-btn inline-flex items-center gap-1.5 px-2 py-1 text-xs font-medium transition" style="border: none; outline: none; background: none; box-shadow: none;" data-property-type="" aria-pressed="true" aria-label="Filter: Any property type">
+                                        <i class="bi bi-building text-muted-foreground" aria-hidden="true"></i>
+                                        <span>Any</span>
+                                    </button>
+                                    <button type="button" class="quick-filter-btn inline-flex items-center gap-1.5 px-2 py-1 text-xs font-medium transition" style="border: none; outline: none; background: none; box-shadow: none;" data-property-type="residence" aria-pressed="false" aria-label="Filter: Residential properties">
+                                        <i class="bi bi-house-heart text-muted-foreground" aria-hidden="true"></i>
+                                        <span>Residential</span>
+                                    </button>
+                                    <button type="button" class="quick-filter-btn inline-flex items-center gap-1.5 px-2 py-1 text-xs font-medium transition" style="border: none; outline: none; background: none; box-shadow: none;" data-property-type="commercial" aria-pressed="false" aria-label="Filter: Commercial properties">
+                                        <i class="bi bi-briefcase text-muted-foreground" aria-hidden="true"></i>
+                                        <span>Commercial</span>
+                                    </button>
+                                </div>
                                 <div class="grid gap-3 sm:grid-cols-2">
                                     <label class="space-y-1.5 text-sm font-medium text-muted-foreground">
                                         <span>Min budget</span>
@@ -157,7 +152,7 @@
                         </div>
                         
                         <div>
-                            <button type="button" id="location-search-btn" class="btn w-full justify-center rounded-full text-white transition" style="background-color: #15c1b9; border: 1px solid #7f1377; outline: none; box-shadow: none;" aria-label="Start your verified property search">
+                            <button type="button" id="location-search-btn" class="btn w-full justify-center rounded-full text-white transition" style="background-color: #15c1b9; border: none; outline: none; box-shadow: none;" aria-label="Start your verified property search">
                                 <i class="bi bi-search me-2" aria-hidden="true"></i>
                                 <span>Find My Verified Property</span>
                             </button>
@@ -166,7 +161,7 @@
                     </div>
                     
                     <!-- Quick Search Links -->
-                    <div class="border-t border-border pt-4">
+                    <div class="border-t border-border pt-4" style="display: none;">
                         <p class="mb-2 text-xs font-medium uppercase tracking-[0.3em] text-muted-foreground">Popular Bangkok searches</p>
                         <div class="flex flex-wrap justify-center gap-2">
                             <a href="/property/search/?place=Thong%20Lo,%20Bangkok&latitude=13.7307&longitude=100.5853&fature_type=locality&building__type=residence" class="quick-filter-btn inline-flex items-center gap-1.5 px-2 py-1 text-xs font-medium transition" style="border: none; outline: none; background: none; box-shadow: none;">
