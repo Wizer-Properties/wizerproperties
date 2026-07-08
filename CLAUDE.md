@@ -220,3 +220,4 @@ Create `src/.env` from `src/demo.env`. Key vars:
 6. **Model imports** - import from app level (e.g., `from user.models import User`), not from submodules
 7. **Production nginx/certbot** - copy `docs/nginx-default.conf.example` to `src/nginx/conf/default.conf`; create `src/certbot/www` and `src/certbot/conf`. Certbot has `depends_on: nginx` in `docker-compose.yml`.
 8. **Pytest log noise** - `duplicate key ... ipdata_ipdata_ip_key` with `(ip)=(192.168.255.254)` during pytest is expected from `ipdata.tests.test_models::test_ipdata_ip_unique`.
+9. **Home Helper AI stale CSRF token** - after login, the CSRF token embedded in the chat page may be stale, causing 403 errors on chat API requests. Fix by ensuring the chat view always reads the token from the cookie (not a cached page token), or by redirecting to a fresh page load after login so the token is re-issued.
