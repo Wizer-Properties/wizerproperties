@@ -559,6 +559,20 @@
             </div>
         </header>
 
+        {% if messages %}
+        <div class="container max-w-7xl py-3 space-y-2" aria-live="polite">
+            {% for message in messages %}
+            <div class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium
+                {% if message.tags == 'error' %}bg-destructive/10 text-destructive
+                {% elif message.tags == 'success' %}bg-accent/10 text-accent
+                {% else %}bg-muted text-foreground{% endif %}">
+                <i class="bi {% if message.tags == 'error' %}bi-exclamation-circle{% elif message.tags == 'success' %}bi-check-circle{% else %}bi-info-circle{% endif %} flex-shrink-0"></i>
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
         <main class="flex-1">
             {% block content %}{% endblock %}
         </main>
