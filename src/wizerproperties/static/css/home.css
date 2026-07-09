@@ -957,6 +957,28 @@
     overflow-wrap: break-word;
 }
 
+/* Countdown timer segments */
+[data-date-count] .countdown-timer-segment {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 1px;
+}
+[data-date-count] .countdown-timer-segment .countdown-timer-count {
+    font-weight: 700;
+    font-size: 0.75rem;
+    line-height: 1;
+}
+[data-date-count] .countdown-timer-segment .countdown-timer-label {
+    font-size: 0.6rem;
+    opacity: 0.75;
+    font-weight: 400;
+}
+[data-date-count] .countdown-timer-separator {
+    margin: 0 2px;
+    opacity: 0.5;
+    font-size: 0.65rem;
+}
+
 /* Ensure developer name doesn't overflow */
 .property-carousel [data-card-developer-name] {
     max-width: 100%;

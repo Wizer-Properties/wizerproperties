@@ -119,8 +119,8 @@
     }
     if (property.discount_period) {
       const countdown = document.createElement("div");
-      countdown.className = "rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-primary backdrop-blur";
-      countdown.dataset.dateCount = property.discount_period;
+      countdown.className = "inline-flex items-center gap-1.5 rounded-full bg-black/70 px-3 py-1.5 text-xs font-bold text-white backdrop-blur shadow-lg";
+      countdown.innerHTML = `<svg class="h-3 w-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span data-date-count="${property.discount_period}"></span>`;
       fragments.appendChild(countdown);
     }
 

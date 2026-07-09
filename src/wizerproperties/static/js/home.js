@@ -67,7 +67,7 @@
   const refreshCountdowns = () => {
     if (!CountdownTimer) return;
     try {
-      new CountdownTimer({ template: "dd|hh|mm", labels: "Days|Hours|Minutes" });
+      new CountdownTimer({ template: "dd|hh|mm", labels: "d|h|m" });
     } catch (error) {
       console.warn("Failed to initialise countdown timer", error);
     }
