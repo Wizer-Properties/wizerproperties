@@ -223,12 +223,10 @@
         </div>
 
         <!-- Personalized Properties -->
-        <div class="space-y-8 bg-muted -mx-4 px-4 py-16 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 rounded-3xl">
+        <div class="space-y-8">
             <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div class="space-y-2">
-                    <span class="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-brand-purple">Hand-picked for you</span>
-                    <h2 class="text-3xl font-heading font-semibold text-brand-purple">Properties that match exactly what you're looking for</h2>
-                    <p class="text-base text-muted-foreground">You need to find the right property faster. We've curated verified listings based on your preferences. Save hours of searching and find your perfect property.</p>
+                    <h2 class="text-2xl font-heading font-semibold text-brand-purple">Recommended For You – Suggested By Your Search</h2>
                 </div>
                 <div class="flex flex-wrap gap-2">
                     <a href="/property/search/" class="btn-secondary whitespace-nowrap border-border text-foreground hover:border-accent hover:text-accent">Browse all properties</a>
@@ -241,9 +239,6 @@
             
             <!-- Recommended Properties (if authenticated) -->
             <div class="space-y-4" data-personalized-section="recommended">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-lg font-semibold text-foreground">Recommended for you</h3>
-                </div>
                 <div class="splide property-carousel" data-slider="recommended">
                     <div class="splide__track">
                         <ul class="splide__list" data-slider-list></ul>
