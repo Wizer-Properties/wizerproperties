@@ -32,12 +32,11 @@ document.addEventListener("DOMContentLoaded", () => {
     li.setAttribute("data-typing-indicator", "");
 
     const bubble = document.createElement("div");
-    bubble.className = "mr-auto max-w-[80%] rounded-2xl rounded-bl-md border px-4 py-3 text-sm text-foreground shadow-sm";
-    bubble.style.backgroundColor = "rgba(127, 19, 119, 0.08)";
-    bubble.style.borderColor = "rgba(127, 19, 119, 0.2)";
+    bubble.className = "mr-auto max-w-[80%] rounded-2xl rounded-bl-md px-4 py-3 text-sm text-white shadow-sm";
+    bubble.style.backgroundColor = "rgba(127, 19, 119, 1)";
     bubble.innerHTML = `
       <div class="flex items-center gap-2">
-        <span class="inline-flex size-2 animate-ping rounded-full bg-primary"></span>
+        <span class="inline-flex size-2 animate-ping rounded-full bg-white"></span>
         <span>Getting your answer…</span>
       </div>
     `;
@@ -73,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Bold: **text**
     html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
     // Inline links: [label](url) — only http/https
-    html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="underline">$1</a>');
+    html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="underline text-white hover:opacity-80">$1</a>');
     // Line breaks
     html = html.replace(/\n/g, "<br>");
     return html;
@@ -86,13 +85,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const bubble = document.createElement("div");
     bubble.className = role === "user"
       ? "ml-auto max-w-[80%] rounded-2xl rounded-br-md bg-accent px-4 py-3 text-sm font-medium text-white shadow-sm"
-      : "mr-auto max-w-[80%] rounded-2xl rounded-bl-md border px-4 py-3 text-sm text-foreground shadow-sm";
+      : "mr-auto max-w-[80%] rounded-2xl rounded-bl-md px-4 py-3 text-sm text-white shadow-sm";
 
     if (role === "user") {
       bubble.textContent = content;
     } else {
-      bubble.style.backgroundColor = "rgba(127, 19, 119, 0.08)";
-      bubble.style.borderColor = "rgba(127, 19, 119, 0.2)";
+      bubble.style.backgroundColor = "rgba(127, 19, 119, 1)";
       bubble.innerHTML = renderMarkdown(content);
     }
 
