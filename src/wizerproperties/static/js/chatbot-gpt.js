@@ -32,7 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
     li.setAttribute("data-typing-indicator", "");
 
     const bubble = document.createElement("div");
-    bubble.className = "mr-auto max-w-[80%] rounded-2xl rounded-bl-md border border-primary/20 bg-primary/10 px-4 py-3 text-sm text-foreground shadow-sm";
+    bubble.className = "mr-auto max-w-[80%] rounded-2xl rounded-bl-md border px-4 py-3 text-sm text-foreground shadow-sm";
+    bubble.style.backgroundColor = "rgba(127, 19, 119, 0.08)";
+    bubble.style.borderColor = "rgba(127, 19, 119, 0.2)";
     bubble.innerHTML = `
       <div class="flex items-center gap-2">
         <span class="inline-flex size-2 animate-ping rounded-full bg-primary"></span>
@@ -84,11 +86,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const bubble = document.createElement("div");
     bubble.className = role === "user"
       ? "ml-auto max-w-[80%] rounded-2xl rounded-br-md bg-accent px-4 py-3 text-sm font-medium text-white shadow-sm"
-      : "mr-auto max-w-[80%] rounded-2xl rounded-bl-md border border-primary/20 bg-primary/10 px-4 py-3 text-sm text-foreground shadow-sm";
+      : "mr-auto max-w-[80%] rounded-2xl rounded-bl-md border px-4 py-3 text-sm text-foreground shadow-sm";
 
     if (role === "user") {
       bubble.textContent = content;
     } else {
+      bubble.style.backgroundColor = "rgba(127, 19, 119, 0.08)";
+      bubble.style.borderColor = "rgba(127, 19, 119, 0.2)";
       bubble.innerHTML = renderMarkdown(content);
     }
 
