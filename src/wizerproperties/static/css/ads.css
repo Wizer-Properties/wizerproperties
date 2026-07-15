@@ -211,6 +211,126 @@
     border: 1px solid hsl(var(--border));
 }
 
+/* Mid-Page Home Banner (home_mid) */
+.home-mid-banner {
+    margin-top: 0;
+    padding-bottom: 0;
+}
+
+.home-mid-banner .splide__pagination {
+    bottom: -20px !important;
+}
+
+.home-mid-banner .splide__pagination__page {
+    background: hsl(var(--primary)) !important;
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.home-mid-banner .splide__pagination__page.is-active {
+    opacity: 1;
+}
+
+.home-mid-banner .top-banner-img {
+    height: 200px !important;
+}
+
+@media (min-width: 768px) {
+    .home-mid-banner .top-banner-img {
+        height: 240px !important;
+    }
+}
+
+/* Developer Strip Ad (details_developer_strip) */
+.developer-strip-scroll {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.5rem;
+    scrollbar-width: none;
+}
+
+.developer-strip-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.developer-strip-card {
+    flex-shrink: 0;
+    width: 200px;
+    scroll-snap-align: start;
+    text-decoration: none;
+    display: block;
+}
+
+.developer-strip-card-inner {
+    position: relative;
+    width: 200px;
+    height: 160px;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    border: 1px solid hsl(var(--border) / 0.5);
+    background: hsl(var(--card));
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.developer-strip-card:hover .developer-strip-card-inner {
+    box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    border-color: hsl(var(--accent) / 0.4);
+}
+
+.developer-strip-card-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.developer-strip-card:hover .developer-strip-card-inner img {
+    transform: scale(1.04);
+}
+
+.developer-strip-card-inner .ad-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    padding: 3px 8px;
+    border-radius: 9999px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: hsl(var(--muted-foreground));
+    border: 1px solid hsl(var(--border));
+}
+
+.developer-strip-card-title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.5rem 0.75rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .top-banner-img {

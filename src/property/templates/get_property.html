@@ -464,7 +464,28 @@
                         </dl>
                     </div>
                 </section>
-
+                <!-- Also by this Developer: Sponsored Strip -->
+                <section id="dev-strip-ad-section" class="rounded-2xl border border-border bg-card p-6 shadow-sm">
+                    <div class="mb-4 flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-2">
+                            <i class="bi bi-building-fill text-accent" aria-hidden="true"></i>
+                            <h2 class="text-base font-semibold text-foreground">Also by this developer</h2>
+                        </div>
+                        <span class="rounded-full border border-border/60 bg-muted/50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.3em] text-muted-foreground">Sponsored</span>
+                    </div>
+                    <div class="developer-strip-scroll" id="dev-strip-ad-container">
+                        <!-- Developer strip ads injected here by ads.js -->
+                        <div class="developer-strip-card flex-shrink-0">
+                            <div class="developer-strip-card-inner animate-pulse bg-muted"></div>
+                        </div>
+                        <div class="developer-strip-card flex-shrink-0">
+                            <div class="developer-strip-card-inner animate-pulse bg-muted"></div>
+                        </div>
+                        <div class="developer-strip-card flex-shrink-0">
+                            <div class="developer-strip-card-inner animate-pulse bg-muted"></div>
+                        </div>
+                    </div>
+                </section>
                 <section class="space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sm">
                     <div class="grid gap-6 lg:grid-cols-2">
                         <div class="space-y-3">
@@ -567,8 +588,9 @@
                     <div class="overflow-hidden rounded-xl border border-border">
                         <div id="sidebar-map" class="aspect-square min-h-[200px] w-full" role="img" aria-label="Property location on map"></div>
                     </div>
-                    <p class="mt-3 text-xs text-muted-foreground">{{ property.building.address|default:"Address not available" }}</p>
-                </div>
+                        <p class="mt-3 text-xs text-muted-foreground">{{ property.building.address|default:"Address not available" }}</p>
+                    <!-- Sponsored square ad below map -->
+                    <div id="map-below-ad-container" class="mt-4 w-full"></div>
 
                 <div class="rounded-2xl border border-border bg-card p-6 shadow-sm">
                     <h2 class="text-lg font-semibold text-foreground">Get instant price alerts</h2>
@@ -659,7 +681,7 @@
     const USER_ID = '{{ user.id|default:0 }}';
     const CSRF_TOKEN = '{{ csrf_token }}';
     const ADS_SUGGEST_URL = '/advertise/api/advertisement/suggested/';
-    const ADS_LOCATION_PARAM = ['details_sidebar', 'details_topbar'];
+    const ADS_LOCATION_PARAM = ['details_sidebar', 'details_topbar', 'details_developer_strip', 'map_below'];
     const propertyViewTimeURL = (function(property_id) {
         const template = '{% url "property:api:manage_property_view_time" "0" %}';
         return template.replace('0', property_id);

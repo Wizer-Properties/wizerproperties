@@ -274,6 +274,25 @@
 </section>
 
 
+<!-- Mid-Page Sponsored Banner -->
+<section class="bg-white py-6">
+    <div class="container max-w-7xl">
+        <div class="space-y-3">
+            <p class="text-center text-[11px] font-medium uppercase tracking-[0.35em] text-muted-foreground">Featured Developments</p>
+            <div class="home-mid-banner overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+                <div class="splide ads-home-mid-slider" aria-label="Featured developer projects">
+                    <div class="splide__track">
+                        <ul class="splide__list">
+                            <li class="splide__slide h-48 animate-pulse bg-muted sm:h-60"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center text-[11px] font-medium uppercase tracking-[0.35em] text-muted-foreground">Sponsored by developers</p>
+        </div>
+    </div>
+</section>
+
 <!-- Section 4: Final CTA & Resources -->
 <section class="bg-white py-16">
     <div class="container max-w-7xl space-y-16">
@@ -365,7 +384,7 @@
 <script src="{% static 'js/time-count-down.js' %}?v=1.00"></script>
 <script>
     const ADS_SUGGEST_URL = '/advertise/api/advertisement/suggested/';
-    const ADS_LOCATION_PARAM = ['home'];
+    const ADS_LOCATION_PARAM = ['home', 'home_mid'];
     // csrfToken is already defined in base.html
 </script>
 <script src="{% static 'js/home.js' %}?v=2.00"></script>

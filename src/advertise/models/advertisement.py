@@ -18,10 +18,12 @@ from django.db.models import Q
 class Advertisement(TimestampedModel):
     TYPE_CHOICES = (
         ('home', 'Home'),
+        ('home_mid', 'Home Mid-Page'),
         ('search', 'Search'),
         ('search_inline', 'Search Inline'),
         ('details_topbar', 'Details Topbar'),
         ('details_sidebar', 'Details Sidebar'),
+        ('details_developer_strip', 'Details Developer Strip'),
         ('map_below', 'Map Below'),
         ('blog', 'Blog'),
     )

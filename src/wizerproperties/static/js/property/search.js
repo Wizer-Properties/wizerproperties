@@ -639,7 +639,7 @@
       }
 
       const fragment = document.createDocumentFragment();
-      const INLINE_AD_INTERVAL = 6; // Insert ad after every 6 properties
+      const INLINE_AD_POSITIONS = new Set([2, 6]); // Insert ad after every 6 properties
       let adIndex = 0;
 
       properties.forEach((property, index) => {
@@ -666,8 +666,7 @@
 
         // Insert inline ad after every N properties (but not after the last one)
         if (window.inlineAds && window.inlineAds.length > 0 &&
-          (index + 1) % INLINE_AD_INTERVAL === 0 &&
-          index < properties.length - 1) {
+          INLINE_AD_POSITIONS.has(index) && index < properties.length - 1) {
           const adData = window.inlineAds[adIndex % window.inlineAds.length];
           const adCard = this.createInlineAdCard(adData);
           if (adCard) {
